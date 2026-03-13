@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="680" height="300" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 开发技术栈全景</text>
+
+  <!-- 5列 -->
+  <!-- LLM接口层 -->
+  <rect x="20" y="50" width="120" height="220" rx="10" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <rect x="20" y="50" width="120" height="36" rx="10" fill="#3498db"/>
+  <rect x="20" y="72" width="120" height="14" fill="#3498db"/>
+  <text x="80" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">LLM 接口层</text>
+  <text x="80" y="110" text-anchor="middle" font-size="11" fill="#2980b9" font-weight="bold">openai</text>
+  <text x="80" y="126" text-anchor="middle" font-size="10" fill="#7f8c8d">OpenAI 官方 SDK</text>
+  <line x1="30" y1="134" x2="130" y2="134" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="80" y="150" text-anchor="middle" font-size="11" fill="#2980b9" font-weight="bold">anthropic</text>
+  <text x="80" y="166" text-anchor="middle" font-size="10" fill="#7f8c8d">Claude API</text>
+  <line x1="30" y1="174" x2="130" y2="174" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="80" y="190" text-anchor="middle" font-size="11" fill="#2980b9" font-weight="bold">ollama</text>
+  <text x="80" y="206" text-anchor="middle" font-size="10" fill="#7f8c8d">本地模型</text>
+
+  <!-- Agent框架层 -->
+  <rect x="155" y="50" width="120" height="220" rx="10" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <rect x="155" y="50" width="120" height="36" rx="10" fill="#27ae60"/>
+  <rect x="155" y="72" width="120" height="14" fill="#27ae60"/>
+  <text x="215" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Agent 框架层</text>
+  <text x="215" y="110" text-anchor="middle" font-size="11" fill="#1e8449" font-weight="bold">langchain</text>
+  <text x="215" y="126" text-anchor="middle" font-size="10" fill="#7f8c8d">最流行的框架</text>
+  <line x1="165" y1="134" x2="265" y2="134" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="215" y="150" text-anchor="middle" font-size="11" fill="#1e8449" font-weight="bold">langgraph</text>
+  <text x="215" y="166" text-anchor="middle" font-size="10" fill="#7f8c8d">有状态图框架</text>
+  <line x1="165" y1="174" x2="265" y2="174" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="215" y="190" text-anchor="middle" font-size="11" fill="#1e8449" font-weight="bold">openai-agents</text>
+  <text x="215" y="206" text-anchor="middle" font-size="10" fill="#7f8c8d">官方 Agent SDK</text>
+
+  <!-- 向量数据库 -->
+  <rect x="290" y="50" width="120" height="220" rx="10" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <rect x="290" y="50" width="120" height="36" rx="10" fill="#8e44ad"/>
+  <rect x="290" y="72" width="120" height="14" fill="#8e44ad"/>
+  <text x="350" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">向量数据库</text>
+  <text x="350" y="110" text-anchor="middle" font-size="11" fill="#7d3c98" font-weight="bold">chromadb</text>
+  <text x="350" y="126" text-anchor="middle" font-size="10" fill="#7f8c8d">轻量级本地向量库</text>
+  <line x1="300" y1="134" x2="400" y2="134" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="350" y="150" text-anchor="middle" font-size="11" fill="#7d3c98" font-weight="bold">faiss-cpu</text>
+  <text x="350" y="166" text-anchor="middle" font-size="10" fill="#7f8c8d">高性能向量检索</text>
+  <line x1="300" y1="174" x2="400" y2="174" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="350" y="190" text-anchor="middle" font-size="11" fill="#7d3c98" font-weight="bold">pinecone</text>
+  <text x="350" y="206" text-anchor="middle" font-size="10" fill="#7f8c8d">云端向量数据库</text>
+
+  <!-- 工具与集成 -->
+  <rect x="425" y="50" width="120" height="220" rx="10" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <rect x="425" y="50" width="120" height="36" rx="10" fill="#e67e22"/>
+  <rect x="425" y="72" width="120" height="14" fill="#e67e22"/>
+  <text x="485" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">工具与集成</text>
+  <text x="485" y="110" text-anchor="middle" font-size="11" fill="#ca6f1e" font-weight="bold">requests</text>
+  <text x="485" y="126" text-anchor="middle" font-size="10" fill="#7f8c8d">HTTP 请求</text>
+  <line x1="435" y1="134" x2="535" y2="134" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="485" y="150" text-anchor="middle" font-size="11" fill="#ca6f1e" font-weight="bold">beautifulsoup4</text>
+  <text x="485" y="166" text-anchor="middle" font-size="10" fill="#7f8c8d">网页解析</text>
+  <line x1="435" y1="174" x2="535" y2="174" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="485" y="190" text-anchor="middle" font-size="11" fill="#ca6f1e" font-weight="bold">tavily-python</text>
+  <text x="485" y="206" text-anchor="middle" font-size="10" fill="#7f8c8d">AI 搜索 API</text>
+
+  <!-- 工程工具 -->
+  <rect x="560" y="50" width="100" height="220" rx="10" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <rect x="560" y="50" width="100" height="36" rx="10" fill="#e74c3c"/>
+  <rect x="560" y="72" width="100" height="14" fill="#e74c3c"/>
+  <text x="610" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">工程工具</text>
+  <text x="610" y="110" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">python-dotenv</text>
+  <text x="610" y="126" text-anchor="middle" font-size="10" fill="#7f8c8d">环境变量管理</text>
+  <line x1="570" y1="134" x2="650" y2="134" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="610" y="150" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">pydantic</text>
+  <text x="610" y="166" text-anchor="middle" font-size="10" fill="#7f8c8d">数据验证</text>
+  <line x1="570" y1="174" x2="650" y2="174" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="610" y="190" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">tenacity</text>
+  <text x="610" y="206" text-anchor="middle" font-size="10" fill="#7f8c8d">重试机制</text>
+  <line x1="570" y1="214" x2="650" y2="214" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="610" y="230" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">rich</text>
+  <text x="610" y="246" text-anchor="middle" font-size="10" fill="#7f8c8d">美化终端输出</text>
+
+  <!-- 底部说明 -->
+  <text x="340" y="285" text-anchor="middle" font-size="11" fill="#95a5a6">💡 推荐使用 uv 管理依赖：uv add openai langchain langgraph chromadb</text>
+</svg>

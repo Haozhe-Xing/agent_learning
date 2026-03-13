@@ -1,0 +1,356 @@
+# 从聊天机器人到智能体的演进
+
+> 📖 *"要理解 Agent 是什么，最好的方式是看看它是从哪里来的。"*
+
+## 一段简短的历史
+
+AI 与人类的交互方式经历了一段漫长而精彩的演进旅程。让我们坐上时光机，快速回顾这段历史：
+
+![AI 交互方式演进时间线](../svg/chapter_intro_01_timeline.svg)
+
+## 第一代：基于规则的聊天机器人
+
+最早的聊天机器人完全依赖**预设规则**。1966 年 MIT 的 ELIZA 就是一个经典例子——它通过简单的模式匹配来"伪装"成一个心理咨询师：
+
+```python
+# 第一代：基于规则的聊天机器人（模拟 ELIZA 的思路）
+# 核心原理：模式匹配 + 模板回复
+
+def rule_based_chatbot(user_input: str) -> str:
+    """
+    最原始的聊天机器人：基于关键词匹配规则
+    - 没有理解能力
+    - 只能处理预设的场景
+    - 遇到未知输入就"抓瞎"
+    """
+    user_input = user_input.lower()  # 统一转小写
+    
+    # 规则1：问候语
+    if any(word in user_input for word in ["你好", "hi", "hello"]):
+        return "你好！有什么我可以帮你的吗？"
+    
+    # 规则2：关于天气
+    if "天气" in user_input:
+        return "今天天气不错，适合出门哦！"
+    
+    # 规则3：关于时间
+    if "时间" in user_input or "几点" in user_input:
+        return "现在是工作时间，请问有什么需要？"
+    
+    # 兜底回复（遇到不认识的输入）
+    return "抱歉，我不太理解你的意思。能换个方式说吗？"
+
+# 测试
+print(rule_based_chatbot("你好"))        # ✅ 能处理
+print(rule_based_chatbot("今天天气怎样")) # ✅ 能处理
+print(rule_based_chatbot("帮我订机票"))   # ❌ 无法处理 → 兜底回复
+```
+
+**这种方式的问题显而易见：**
+
+![规则机器人工作方式与问题](../svg/chapter_intro_01_rule_bot.svg)
+
+| 问题 | 说明 |
+|------|------|
+| 🔴 理解能力为零 | 只是匹配关键词，不理解语义 |
+| 🔴 规则爆炸 | 场景越多，规则越多，维护成本指数增长 |
+| 🔴 无法泛化 | "天气好吗"能回答，"出门要带伞吗"就不行 |
+| 🔴 无状态 | 不记得之前说过什么，每轮对话都是独立的 |
+
+## 第二代：基于意图识别的对话系统
+
+2016 年左右，NLP 技术的发展催生了一批更智能的对话系统。它们的核心思路是：**先识别用户的意图，再做出相应的处理**。
+
+```python
+# 第二代：基于意图识别的对话系统（简化演示）
+# 核心原理：意图分类 + 槽位填充 + 对话管理
+
+from dataclasses import dataclass
+from typing import Optional
+
+@dataclass
+class Intent:
+    """用户意图"""
+    name: str           # 意图名称，如 "查天气"、"订机票"
+    confidence: float   # 置信度 0~1
+    slots: dict         # 槽位信息，如 {"城市": "北京", "日期": "明天"}
+
+def classify_intent(user_input: str) -> Intent:
+    """
+    意图识别（这里用规则模拟，实际中使用 NLP 模型）
+    进步：能识别用户"想做什么"
+    不足：意图是预定义的，无法处理开放域问题
+    """
+    if "天气" in user_input:
+        # 尝试从输入中提取城市信息（槽位填充）
+        city = "北京"  # 实际中会用 NER 模型提取
+        return Intent(name="查天气", confidence=0.95, slots={"城市": city})
+    elif "机票" in user_input or "航班" in user_input:
+        return Intent(name="订机票", confidence=0.88, slots={})
+    else:
+        return Intent(name="闲聊", confidence=0.5, slots={})
+
+def handle_intent(intent: Intent) -> str:
+    """
+    根据识别到的意图，执行对应的处理逻辑
+    """
+    handlers = {
+        "查天气": lambda: f"正在查询{intent.slots.get('城市', '你所在城市')}的天气...",
+        "订机票": lambda: "请告诉我出发城市、到达城市和日期。",
+        "闲聊": lambda: "哈哈，你说得很有趣！",
+    }
+    handler = handlers.get(intent.name, lambda: "抱歉，我暂时无法处理这个请求。")
+    return handler()
+
+# 使用流程
+user_input = "帮我查一下北京明天的天气"
+intent = classify_intent(user_input)
+print(f"识别意图: {intent.name} (置信度: {intent.confidence})")
+print(f"回复: {handle_intent(intent)}")
+```
+
+**第二代系统的处理流程：**
+
+![意图识别系统处理流程](../svg/chapter_intro_01_intent_system.svg)
+
+**比第一代好在哪？**
+- ✅ 有了"理解"的雏形（意图识别）
+- ✅ 能提取关键信息（槽位填充）
+- ✅ 更结构化的对话管理
+
+**但依然存在的问题：**
+- 🔴 意图是预定义的，无法处理"意料之外"的请求
+- 🔴 多轮对话能力有限
+- 🔴 不能执行复杂的、需要多步骤的任务
+
+## 第三代：LLM 驱动的对话 AI
+
+2022 年底，ChatGPT 横空出世，带来了划时代的变革。大语言模型（LLM）不再需要预定义意图，它能理解**任何**自然语言输入：
+
+```python
+# 第三代：LLM 驱动的对话 AI（以 OpenAI API 为例）
+# 核心原理：大语言模型生成式回答
+
+from openai import OpenAI
+
+client = OpenAI()  # 需要配置 OPENAI_API_KEY
+
+def llm_chatbot(user_input: str) -> str:
+    """
+    基于大语言模型的聊天机器人
+    巨大进步：
+    - 理解任何自然语言输入
+    - 能进行推理和分析
+    - 具有广泛的知识储备
+    
+    但仍然只是"嘴强"：
+    - 只能生成文本回复
+    - 无法执行实际操作（不能真的查天气、订机票）
+    - 知识有截止日期
+    """
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "你是一个有用的助手。"},
+            {"role": "user", "content": user_input}
+        ]
+    )
+    return response.choices[0].message.content
+
+# LLM 可以理解各种表达方式
+print(llm_chatbot("北京明天出门需要带伞吗？"))
+# → "关于北京明天是否需要带伞，我建议你查看最新的天气预报..."
+# 注意：它能理解问题，但无法真的去查天气！
+```
+
+**LLM 对话 AI 的特点：**
+
+![LLM对话AI特点与局限](../svg/chapter_intro_01_llm_limits.svg)
+
+> 💡 LLM 知识渊博，但只能“纸上谈兵”，无法真正执行操作。
+
+## 第四代：Agent —— 能说更能做
+
+终于，我们来到了 **Agent** 时代。Agent 在 LLM 强大的理解和推理能力基础上，增加了**行动能力**。它不仅能理解你的需求，还能真正去执行：
+
+```python
+# 第四代：Agent —— 不仅能理解，还能行动！
+# 核心原理：LLM（大脑）+ 工具（手脚）+ 规划（策略）
+
+import json
+from openai import OpenAI
+
+client = OpenAI()
+
+# ========== 定义 Agent 可以使用的工具 ==========
+
+def search_weather(city: str) -> str:
+    """真正去查询天气的工具"""
+    # 实际中会调用天气 API
+    return json.dumps({
+        "city": city,
+        "temperature": "18°C",
+        "condition": "多云转晴",
+        "suggestion": "不需要带伞"
+    }, ensure_ascii=False)
+
+def book_flight(from_city: str, to_city: str, date: str) -> str:
+    """真正去订机票的工具"""
+    # 实际中会调用航空公司 API
+    return json.dumps({
+        "status": "已找到航班",
+        "flight": "CA1234",
+        "price": "¥1,280",
+        "departure": f"{date} 08:00"
+    }, ensure_ascii=False)
+
+# ========== 工具描述（告诉 LLM 有哪些工具可用）==========
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "search_weather",
+            "description": "查询指定城市的天气信息",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string", "description": "城市名称"}
+                },
+                "required": ["city"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "book_flight",
+            "description": "预订机票",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "from_city": {"type": "string", "description": "出发城市"},
+                    "to_city": {"type": "string", "description": "到达城市"},
+                    "date": {"type": "string", "description": "出发日期"}
+                },
+                "required": ["from_city", "to_city", "date"]
+            }
+        }
+    }
+]
+
+# ========== Agent 的核心逻辑 ==========
+
+def agent(user_input: str) -> str:
+    """
+    一个简单的 Agent：
+    1. 理解用户需求（LLM）
+    2. 决定使用什么工具（推理）
+    3. 调用工具执行操作（行动）
+    4. 基于工具返回结果生成回复（总结）
+    """
+    print(f"🧑 用户: {user_input}")
+    
+    # 第一步：让 LLM 理解用户需求并决定是否需要调用工具
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "你是一个能干的 AI 助手，可以查天气和订机票。"},
+            {"role": "user", "content": user_input}
+        ],
+        tools=tools
+    )
+    
+    message = response.choices[0].message
+    
+    # 第二步：如果 LLM 决定调用工具
+    if message.tool_calls:
+        tool_call = message.tool_calls[0]
+        func_name = tool_call.function.name
+        func_args = json.loads(tool_call.function.arguments)
+        
+        print(f"🤖 思考: 我需要调用 {func_name} 工具")
+        print(f"🔧 工具参数: {func_args}")
+        
+        # 第三步：执行工具
+        available_tools = {
+            "search_weather": search_weather,
+            "book_flight": book_flight
+        }
+        tool_result = available_tools[func_name](**func_args)
+        
+        print(f"📊 工具返回: {tool_result}")
+        
+        # 第四步：将工具结果交给 LLM，生成最终回复
+        final_response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "你是一个能干的 AI 助手。"},
+                {"role": "user", "content": user_input},
+                message,
+                {"role": "tool", "content": tool_result, "tool_call_id": tool_call.id}
+            ]
+        )
+        result = final_response.choices[0].message.content
+    else:
+        # LLM 认为不需要工具，直接回答
+        result = message.content
+    
+    print(f"🤖 回复: {result}")
+    return result
+
+# 使用 Agent
+agent("北京明天需要带伞吗？")
+# 🧑 用户: 北京明天需要带伞吗？
+# 🤖 思考: 我需要调用 search_weather 工具
+# 🔧 工具参数: {"city": "北京"}
+# 📊 工具返回: {"city": "北京", "temperature": "18°C", "condition": "多云转晴", ...}
+# 🤖 回复: 根据查询结果，北京明天天气多云转晴，温度18°C，不需要带伞。
+#          可以放心出门！
+```
+
+## 四代演进对比总结
+
+下面这张图清晰地展示了四代 AI 交互方式的核心区别：
+
+![四代AI系统能力对比](../svg/chapter_intro_01_quadrant.svg)
+
+| 能力 | 规则机器人 | 意图识别 | LLM 对话 AI | Agent |
+|------|:--------:|:-------:|:-----------:|:-----:|
+| 语言理解 | ❌ | 🟡 | ✅ | ✅ |
+| 开放域对话 | ❌ | ❌ | ✅ | ✅ |
+| 使用工具 | ❌ | 🟡 | ❌ | ✅ |
+| 自主决策 | ❌ | ❌ | ❌ | ✅ |
+| 任务执行 | ❌ | 🟡 | ❌ | ✅ |
+| 多步规划 | ❌ | ❌ | ❌ | ✅ |
+| 自我纠错 | ❌ | ❌ | 🟡 | ✅ |
+
+> 图例：✅ 支持  🟡 部分支持  ❌ 不支持
+
+## 关键洞察
+
+> 💡 **Agent 的本质飞跃在于：从"只会说"到"能做事"。**
+>
+> - **聊天机器人** = 嘴（只能对话）
+> - **Agent** = 大脑 + 嘴 + 手脚（能思考、能说话、能行动）
+
+用一个生活类比来理解：
+
+![生活类比：从导诊台到真正的医生](../svg/chapter_intro_01_analogy.svg)
+
+## 本节小结
+
+- AI 交互方式经历了 **规则 → 意图识别 → LLM → Agent** 四个阶段
+- 每一代都在前一代的基础上增加了新的能力
+- Agent 的核心突破是：**在 LLM 的理解和推理能力上，增加了行动能力**
+- Agent 可以使用工具、执行任务、做出决策，而不仅仅是生成文本
+
+## 🤔 思考练习
+
+1. 你日常使用的 AI 产品（如 Siri、ChatGPT、Copilot）分别属于哪一代？
+2. 想一想，如果给 ChatGPT 配上"手脚"（工具），它能帮你完成哪些目前做不到的事？
+3. 你认为 Agent 的下一代演进方向可能是什么？
+
+---
+
+*在下一节中，我们将正式给出 Agent 的定义，并深入了解它的核心特征。*

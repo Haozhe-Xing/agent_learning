@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" width="560" height="160" font-family="'Courier New', 'PingFang SC', monospace">
+  <rect width="560" height="160" rx="12" fill="#1e1e2e"/>
+  <text x="24" y="30" font-size="13" font-weight="bold" fill="#cdd6f4">hello_agent/</text>
+  <!-- .env -->
+  <text x="24" y="56" font-size="12" fill="#6c7086">├──</text>
+  <text x="60" y="56" font-size="12" fill="#a6e3a1">.env</text>
+  <text x="130" y="56" font-size="12" fill="#585b70"># API Key</text>
+  <!-- agent.py -->
+  <text x="24" y="80" font-size="12" fill="#6c7086">├──</text>
+  <text x="60" y="80" font-size="12" fill="#89b4fa">agent.py</text>
+  <text x="160" y="80" font-size="12" fill="#585b70"># Agent 主逻辑</text>
+  <!-- tools.py -->
+  <text x="24" y="104" font-size="12" fill="#6c7086">├──</text>
+  <text x="60" y="104" font-size="12" fill="#89b4fa">tools.py</text>
+  <text x="160" y="104" font-size="12" fill="#585b70"># 工具定义</text>
+  <!-- main.py -->
+  <text x="24" y="128" font-size="12" fill="#6c7086">└──</text>
+  <text x="60" y="128" font-size="12" fill="#89b4fa">main.py</text>
+  <text x="160" y="128" font-size="12" fill="#585b70"># 入口文件</text>
+</svg>

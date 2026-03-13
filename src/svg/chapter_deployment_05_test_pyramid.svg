@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="600" height="380">
+  <defs>
+    <style>
+      text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="600" height="380" fill="#f8f9fa" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="300" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#2c3e50">测试金字塔</text>
+
+  <!-- 金字塔三层（从下到上） -->
+  <!-- 底层：单元测试 -->
+  <polygon points="60,310 540,310 460,220 140,220" fill="#27ae60" fill-opacity="0.85" stroke="#1e8449" stroke-width="1.5"/>
+  <text x="300" y="272" text-anchor="middle" font-size="16" font-weight="bold" fill="white">单元测试</text>
+  <text x="300" y="293" text-anchor="middle" font-size="12" fill="#d5f5e3">大量 · Mock LLM · 快速执行</text>
+
+  <!-- 中层：集成测试 -->
+  <polygon points="140,220 460,220 390,140 210,140" fill="#2980b9" fill-opacity="0.85" stroke="#1a6fa0" stroke-width="1.5"/>
+  <text x="300" y="185" text-anchor="middle" font-size="15" font-weight="bold" fill="white">集成测试</text>
+  <text x="300" y="204" text-anchor="middle" font-size="11" fill="#d6eaf8">VCR 录制回放 · 适量</text>
+
+  <!-- 顶层：E2E测试 -->
+  <polygon points="210,140 390,140 330,65 270,65" fill="#e74c3c" fill-opacity="0.85" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="300" y="108" text-anchor="middle" font-size="14" font-weight="bold" fill="white">E2E 测试</text>
+
+  <!-- 右侧标注 -->
+  <!-- E2E 标注 -->
+  <line x1="335" y1="100" x2="420" y2="85" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="422" y="68" width="148" height="36" rx="6" fill="#fdecea" stroke="#e74c3c" stroke-width="1"/>
+  <text x="496" y="83" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">少量端到端测试</text>
+  <text x="496" y="98" text-anchor="middle" font-size="10" fill="#c0392b">真实 API 调用</text>
+
+  <!-- 集成测试标注 -->
+  <line x1="462" y1="180" x2="422" y2="165" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="422" y="148" width="148" height="36" rx="6" fill="#eaf4fb" stroke="#2980b9" stroke-width="1"/>
+  <text x="496" y="163" text-anchor="middle" font-size="11" fill="#1a6fa0" font-weight="bold">VCR 录制回放</text>
+  <text x="496" y="178" text-anchor="middle" font-size="10" fill="#1a6fa0">适量，中等速度</text>
+
+  <!-- 单元测试标注 -->
+  <line x1="542" y1="265" x2="422" y2="248" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="422" y="230" width="148" height="36" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1"/>
+  <text x="496" y="245" text-anchor="middle" font-size="11" fill="#1e8449" font-weight="bold">大量单元测试</text>
+  <text x="496" y="260" text-anchor="middle" font-size="10" fill="#1e8449">Mock LLM，毫秒级</text>
+
+  <!-- 底部说明 -->
+  <text x="300" y="345" text-anchor="middle" font-size="12" fill="#7f8c8d">越往底层：数量越多、速度越快、成本越低</text>
+  <text x="300" y="363" text-anchor="middle" font-size="12" fill="#7f8c8d">越往顶层：覆盖越真实、速度越慢、成本越高</text>
+</svg>

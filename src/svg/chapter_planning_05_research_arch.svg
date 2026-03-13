@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="600" height="220" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="600" height="220" rx="12" fill="#f8f9fa"/>
+  <!-- 根节点 -->
+  <rect x="20" y="90" width="130" height="40" rx="8" fill="#2c3e50"/>
+  <text x="85" y="106" text-anchor="middle" font-size="12" font-weight="bold" fill="white">研究助手 Agent</text>
+  <text x="85" y="122" text-anchor="middle" font-size="10" fill="#bdc3c7">功能设计</text>
+  <!-- 主干 -->
+  <line x1="150" y1="110" x2="190" y2="110" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="20" x2="190" y2="200" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="20" x2="220" y2="20" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="68" x2="220" y2="68" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="140" x2="220" y2="140" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="176" x2="220" y2="176" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="200" x2="220" y2="200" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- 分支1 -->
+  <rect x="220" y="8" width="360" height="24" rx="6" fill="#3498db" opacity="0.15"/>
+  <rect x="220" y="8" width="4" height="24" rx="2" fill="#3498db"/>
+  <text x="236" y="24" font-size="12" fill="#2980b9">🔍 理解研究主题</text>
+
+  <!-- 分支2 -->
+  <rect x="220" y="52" width="360" height="32" rx="6" fill="#9b59b6" opacity="0.15"/>
+  <rect x="220" y="52" width="4" height="32" rx="2" fill="#9b59b6"/>
+  <text x="236" y="66" font-size="12" font-weight="bold" fill="#8e44ad">📋 制定研究计划</text>
+  <text x="236" y="80" font-size="10" fill="#7f8c8d">搜索相关信息 · 整理关键观点 · 识别知识缺口</text>
+
+  <!-- 分支3 -->
+  <rect x="220" y="128" width="360" height="24" rx="6" fill="#27ae60" opacity="0.15"/>
+  <rect x="220" y="128" width="4" height="24" rx="2" fill="#27ae60"/>
+  <text x="236" y="144" font-size="12" fill="#27ae60">🌐 自主搜索填补缺口</text>
+
+  <!-- 分支4 -->
+  <rect x="220" y="164" width="360" height="24" rx="6" fill="#e67e22" opacity="0.15"/>
+  <rect x="220" y="164" width="4" height="24" rx="2" fill="#e67e22"/>
+  <text x="236" y="180" font-size="12" fill="#e67e22">🧠 综合分析信息</text>
+
+  <!-- 分支5 -->
+  <rect x="220" y="188" width="360" height="24" rx="6" fill="#e74c3c" opacity="0.15"/>
+  <rect x="220" y="188" width="4" height="24" rx="2" fill="#e74c3c"/>
+  <text x="236" y="204" font-size="12" fill="#e74c3c">📄 生成结构化报告</text>
+</svg>

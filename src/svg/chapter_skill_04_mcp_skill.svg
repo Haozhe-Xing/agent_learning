@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" width="700" height="280">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr12" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="700" height="280" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">MCP 与技能的关系</text>
+
+  <!-- MCP Server = 工具提供者 -->
+  <rect x="30" y="42" width="300" height="35" rx="8" fill="#3498db"/>
+  <text x="180" y="65" text-anchor="middle" font-size="13" font-weight="bold" fill="white">MCP Server = 工具/资源提供者</text>
+
+  <!-- GitHub MCP -->
+  <rect x="30" y="90" width="300" height="70" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="180" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">github-mcp-server</text>
+  <text x="50" y="132" font-size="10" fill="#555">🔧 工具: create_issue, list_repos, create_pr</text>
+  <text x="50" y="150" font-size="10" fill="#27ae60">→ 作为技能: "GitHub 项目管理技能"</text>
+
+  <!-- Database MCP -->
+  <rect x="30" y="172" width="300" height="70" rx="10" fill="#e67e22" opacity="0.1" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="180" y="194" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">database-mcp-server</text>
+  <text x="50" y="214" font-size="10" fill="#555">🔧 工具: query, insert, update, describe_table</text>
+  <text x="50" y="232" font-size="10" fill="#27ae60">→ 作为技能: "数据库操作技能"</text>
+
+  <!-- MCP + A2A 协作 -->
+  <rect x="370" y="42" width="310" height="200" rx="10" fill="#9b59b6" opacity="0.06" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="525" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#9b59b6">MCP + A2A 协作</text>
+
+  <rect x="390" y="82" width="270" height="32" rx="6" fill="#3498db" opacity="0.15"/>
+  <text x="525" y="103" text-anchor="middle" font-size="11" fill="#2c3e50">MCP：Agent ↔ 工具/数据（垂直扩展）</text>
+
+  <rect x="390" y="122" width="270" height="32" rx="6" fill="#e67e22" opacity="0.15"/>
+  <text x="525" y="143" text-anchor="middle" font-size="11" fill="#2c3e50">A2A：Agent ↔ Agent（水平协作）</text>
+
+  <text x="525" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">结合使用：</text>
+  <text x="400" y="195" font-size="10" fill="#555">Agent A 通过 MCP 获得"数据库查询技能"</text>
+  <text x="400" y="212" font-size="10" fill="#555">Agent B 通过 MCP 获得"图表生成技能"</text>
+  <text x="400" y="229" font-size="10" fill="#27ae60">A 和 B 通过 A2A 协作完成"分析+可视化"</text>
+
+  <!-- 发现流程 -->
+  <rect x="30" y="252" width="650" height="22" rx="6" fill="#ecf0f1"/>
+  <text x="355" y="268" text-anchor="middle" font-size="11" fill="#555">📌 MCP 的技能发现：Agent 连接 MCP Server → 获取工具列表 → 自动获得"技能"</text>
+</svg>

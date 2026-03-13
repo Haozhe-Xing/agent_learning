@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300">
+  <rect width="760" height="300" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">数据分析 Agent 处理流程</text>
+
+  <!-- Step 1 -->
+  <rect x="30" y="70" width="130" height="70" rx="14" fill="#3498db"/>
+  <text x="95" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📝 需求理解</text>
+  <text x="95" y="118" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">自然语言 → 分析意图</text>
+
+  <line x1="160" y1="105" x2="180" y2="105" stroke="#95a5a6" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- Step 2 -->
+  <rect x="180" y="70" width="130" height="70" rx="14" fill="#27ae60"/>
+  <text x="245" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🔌 数据连接</text>
+  <text x="245" y="118" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">SQL · CSV · API</text>
+
+  <line x1="310" y1="105" x2="330" y2="105" stroke="#95a5a6" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- Step 3 -->
+  <rect x="330" y="70" width="130" height="70" rx="14" fill="#e67e22"/>
+  <text x="395" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📊 分析计算</text>
+  <text x="395" y="118" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">统计 · 建模 · 挖掘</text>
+
+  <line x1="460" y1="105" x2="480" y2="105" stroke="#95a5a6" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- Step 4 -->
+  <rect x="480" y="70" width="130" height="70" rx="14" fill="#9b59b6"/>
+  <text x="545" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📈 可视化</text>
+  <text x="545" y="118" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">图表 · 仪表板</text>
+
+  <line x1="610" y1="105" x2="630" y2="105" stroke="#95a5a6" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- Step 5 -->
+  <rect x="630" y="70" width="100" height="70" rx="14" fill="#e74c3c"/>
+  <text x="680" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📋 报告</text>
+  <text x="680" y="118" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">洞察 · 建议</text>
+
+  <!-- 反馈循环 -->
+  <path d="M 680 140 L 680 185 L 95 185 L 95 140" fill="none" stroke="#95a5a6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ar)"/>
+  <text x="390" y="180" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#95a5a6">🔄 迭代优化：根据反馈调整分析策略</text>
+
+  <!-- 底部工具栏 -->
+  <rect x="40" y="220" width="680" height="55" rx="14" fill="#34495e" opacity="0.08" stroke="#34495e" stroke-width="1"/>
+  <text x="60" y="245" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#34495e">🔧 技术栈：</text>
+  <text x="140" y="245" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Pandas · SQLAlchemy · Matplotlib · Plotly · OpenAI Code Interpreter</text>
+  <text x="60" y="265" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">🤖 Agent 能力：自然语言转 SQL · 自动选择统计方法 · 异常值检测 · 趋势预测</text>
+
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#95a5a6"/>
+    </marker>
+  </defs>
+</svg>

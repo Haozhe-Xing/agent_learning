@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 280" width="760" height="280">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="760" height="280" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">生活类比：从导诊台到真正的医生</text>
+
+  <!-- Box 1: 导诊台 -->
+  <rect x="30" y="60" width="200" height="180" rx="12" fill="#ffe3e3" stroke="#e74c3c" stroke-width="2"/>
+  <text x="130" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">🏥 聊天机器人</text>
+  <text x="130" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">= 医院导诊台</text>
+  <line x1="50" y1="118" x2="210" y2="118" stroke="#e74c3c" stroke-width="1" opacity="0.4"/>
+  <text x="130" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">只能告知科室位置</text>
+  <text x="130" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">"骨科在3楼"</text>
+  <text x="130" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">提供信息</text>
+  <text x="130" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">不能看病</text>
+  <text x="130" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">不能开药</text>
+
+  <!-- Box 2: 博学朋友 -->
+  <rect x="280" y="60" width="200" height="180" rx="12" fill="#fff3bf" stroke="#f39c12" stroke-width="2"/>
+  <text x="380" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">📚 LLM 对话 AI</text>
+  <text x="380" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">= 医学知识渊博的朋友</text>
+  <line x1="300" y1="118" x2="460" y2="118" stroke="#f39c12" stroke-width="1" opacity="0.4"/>
+  <text x="380" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">能分析症状给建议</text>
+  <text x="380" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">"可能是感冒，建议..."</text>
+  <text x="380" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">知识丰富</text>
+  <text x="380" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">但不能开检查单</text>
+  <text x="380" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">不能开药方</text>
+
+  <!-- Box 3: 真正的医生 -->
+  <rect x="530" y="60" width="200" height="180" rx="12" fill="#d3f9d8" stroke="#27ae60" stroke-width="2.5"/>
+  <text x="630" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">👨‍⚕️ Agent</text>
+  <text x="630" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">= 真正的医生</text>
+  <line x1="550" y1="118" x2="710" y2="118" stroke="#27ae60" stroke-width="1" opacity="0.4"/>
+  <text x="630" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">① 听取症状（感知）</text>
+  <text x="630" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">② 分析病因（思考）</text>
+  <text x="630" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">③ 开检查单（行动）</text>
+  <text x="630" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">④ 看结果调整（反馈）</text>
+  <text x="630" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">完整的感知-思考-行动循环</text>
+
+  <!-- Evolution arrows -->
+  <path d="M 233 150 L 275 150" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 483 150 L 525 150" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="254" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">进化</text>
+  <text x="504" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">进化</text>
+</svg>

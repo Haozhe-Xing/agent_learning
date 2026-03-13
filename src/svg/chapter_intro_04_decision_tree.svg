@@ -1,0 +1,84 @@
+git<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420" width="500" height="420">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3498db"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e67e22"/>
+    </marker>
+  </defs>
+  <rect width="500" height="420" fill="#f8f9fa" rx="12"/>
+  <text x="250" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#2c3e50">什么时候用传统程序？什么时候用 Agent？</text>
+
+  <!-- Start -->
+  <rect x="175" y="50" width="150" height="45" rx="10" fill="#4dabf7" opacity="0.25" stroke="#4dabf7" stroke-width="2"/>
+  <text x="250" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">你的任务是什么？</text>
+
+  <!-- Q1 -->
+  <path d="M 250 97 L 250 120" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <polygon points="250,123 310,145 250,167 190,145" fill="#fff3bf" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="250" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">规则明确、</text>
+  <text x="250" y="156" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">逻辑固定？</text>
+
+  <!-- Yes branch -->
+  <path d="M 310 145 L 400 145" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="355" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">是</text>
+  <rect x="403" y="120" width="80" height="50" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="443" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">✅ 传统</text>
+  <text x="443" y="156" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">程序</text>
+
+  <!-- No branch Q2 -->
+  <path d="M 250 167 L 250 190" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="235" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">否</text>
+  <polygon points="250,193 310,215 250,237 190,215" fill="#fff3bf" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="250" y="211" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">需要理解</text>
+  <text x="250" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">自然语言？</text>
+
+  <!-- Yes branch Q2 -->
+  <path d="M 310 215 L 400 215" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="355" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">是</text>
+  <rect x="403" y="190" width="80" height="50" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="443" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">✅ Agent</text>
+  <text x="443" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">客服/问答</text>
+
+  <!-- No branch Q3 -->
+  <path d="M 250 237 L 250 260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="235" y="253" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">否</text>
+  <polygon points="250,263 310,285 250,307 190,285" fill="#fff3bf" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="250" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">需要高度</text>
+  <text x="250" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">可靠可预测？</text>
+
+  <!-- Yes branch Q3 -->
+  <path d="M 310 285 L 400 285" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="355" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">是</text>
+  <rect x="403" y="260" width="80" height="50" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="443" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">✅ 传统</text>
+  <text x="443" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">程序</text>
+
+  <!-- No branch Q4 -->
+  <path d="M 250 307 L 250 330" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="235" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">否</text>
+  <polygon points="250,333 310,355 250,377 190,355" fill="#fff3bf" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="250" y="351" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">模糊、开放</text>
+  <text x="250" y="366" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">性问题？</text>
+
+  <!-- Yes branch Q4 -->
+  <path d="M 310 355 L 400 355" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="355" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">是</text>
+  <rect x="403" y="330" width="80" height="50" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="443" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">✅ Agent</text>
+  <text x="443" y="366" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">研究/分析</text>
+
+  <!-- No branch final -->
+  <line x1="190" y1="355" x2="80" y2="355" stroke="#e67e22" stroke-width="1.5" fill="none"/>
+  <line x1="80" y1="355" x2="80" y2="395" stroke="#e67e22" stroke-width="1.5" marker-end="url(#arrow-orange)" fill="none"/>
+  <text x="135" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e67e22">否</text>
+  <rect x="30" y="395" width="100" height="18" rx="6" fill="#fff3bf" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="80" y="408" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e67e22">💡 混合使用</text>
+</svg>

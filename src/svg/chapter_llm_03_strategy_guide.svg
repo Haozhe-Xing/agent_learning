@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" width="640" height="280">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="640" height="280" rx="14" fill="#f0f4f8"/>
+  <text x="320" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">提示策略选择指南</text>
+
+  <!-- 根节点 -->
+  <rect x="220" y="50" width="200" height="40" rx="10" fill="#2c3e50"/>
+  <text x="320" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">任务类型判断</text>
+
+  <!-- 第一层分支 -->
+  <line x1="320" y1="90" x2="320" y2="108" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="320" y1="108" x2="100" y2="108" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="320" y1="108" x2="540" y2="108" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="100" y1="108" x2="100" y2="125" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="220" y1="108" x2="220" y2="125" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="420" y1="108" x2="420" y2="125" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="540" y1="108" x2="540" y2="125" stroke="#95a5a6" stroke-width="1.5"/>
+
+  <!-- 4个分类 -->
+  <rect x="30" y="125" width="140" height="40" rx="8" fill="#3498db"/>
+  <text x="100" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="white">标准任务</text>
+  <text x="100" y="156" text-anchor="middle" font-size="10" fill="#d6eaf8">分类/翻译/摘要</text>
+
+  <rect x="150" y="125" width="140" height="40" rx="8" fill="#8e44ad"/>
+  <text x="220" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="white">复杂推理</text>
+  <text x="220" y="156" text-anchor="middle" font-size="10" fill="#e8daef">数学/逻辑/多步骤</text>
+
+  <rect x="350" y="125" width="140" height="40" rx="8" fill="#e67e22"/>
+  <text x="420" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="white">工具使用任务</text>
+  <text x="420" y="156" text-anchor="middle" font-size="10" fill="#fdebd0">需要调用外部工具</text>
+
+  <rect x="470" y="125" width="140" height="40" rx="8" fill="#7f8c8d"/>
+  <text x="540" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="white">不确定时</text>
+  <text x="540" y="156" text-anchor="middle" font-size="10" fill="#eaecee">先尝试再升级</text>
+
+  <!-- 第二层 -->
+  <line x1="100" y1="165" x2="100" y2="180" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="100" y1="180" x2="60" y2="180" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="100" y1="180" x2="140" y2="180" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="60" y1="180" x2="60" y2="195" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="140" y1="180" x2="140" y2="195" stroke="#95a5a6" stroke-width="1.2"/>
+
+  <rect x="20" y="195" width="80" height="50" rx="8" fill="#3498db" opacity="0.8"/>
+  <text x="60" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Zero-shot</text>
+  <text x="60" y="228" text-anchor="middle" font-size="10" fill="#d6eaf8">模型熟悉</text>
+  <text x="60" y="240" text-anchor="middle" font-size="10" fill="#d6eaf8">的任务</text>
+
+  <rect x="105" y="195" width="80" height="50" rx="8" fill="#3498db" opacity="0.9"/>
+  <text x="145" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Few-shot</text>
+  <text x="145" y="228" text-anchor="middle" font-size="10" fill="#d6eaf8">需要特定</text>
+  <text x="145" y="240" text-anchor="middle" font-size="10" fill="#d6eaf8">格式/风格</text>
+
+  <line x1="220" y1="165" x2="220" y2="180" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="220" y1="180" x2="185" y2="180" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="220" y1="180" x2="255" y2="180" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="185" y1="180" x2="185" y2="195" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="255" y1="180" x2="255" y2="195" stroke="#95a5a6" stroke-width="1.2"/>
+
+  <rect x="148" y="195" width="80" height="50" rx="8" fill="#8e44ad" opacity="0.8"/>
+  <text x="188" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="white">CoT</text>
+  <text x="188" y="228" text-anchor="middle" font-size="10" fill="#e8daef">单一推理</text>
+  <text x="188" y="240" text-anchor="middle" font-size="10" fill="#e8daef">路径</text>
+
+  <rect x="233" y="195" width="80" height="50" rx="8" fill="#8e44ad" opacity="0.9"/>
+  <text x="273" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ToT</text>
+  <text x="273" y="228" text-anchor="middle" font-size="10" fill="#e8daef">多路径</text>
+  <text x="273" y="240" text-anchor="middle" font-size="10" fill="#e8daef">决策</text>
+
+  <line x1="420" y1="165" x2="420" y2="195" stroke="#95a5a6" stroke-width="1.2"/>
+  <rect x="380" y="195" width="80" height="50" rx="8" fill="#e67e22"/>
+  <text x="420" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ReAct</text>
+  <text x="420" y="228" text-anchor="middle" font-size="10" fill="#fdebd0">推理+行动</text>
+  <text x="420" y="240" text-anchor="middle" font-size="10" fill="#fdebd0">交织</text>
+
+  <line x1="540" y1="165" x2="540" y2="195" stroke="#95a5a6" stroke-width="1.2"/>
+  <rect x="490" y="195" width="100" height="50" rx="8" fill="#7f8c8d"/>
+  <text x="540" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="white">先 Zero-shot</text>
+  <text x="540" y="228" text-anchor="middle" font-size="10" fill="#eaecee">效果差则</text>
+  <text x="540" y="240" text-anchor="middle" font-size="10" fill="#eaecee">升级策略</text>
+
+  <!-- 底部原则 -->
+  <text x="320" y="268" text-anchor="middle" font-size="11" fill="#95a5a6">💡 原则：不是"越复杂越好"，而是"恰到好处"</text>
+</svg>

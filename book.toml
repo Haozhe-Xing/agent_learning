@@ -1,0 +1,16 @@
+[book]
+authors = ["Agent Learning Team"]
+language = "zh-CN"
+multilingual = false
+src = "src"
+title = "从零开始学 Agent 开发 —— 基于 Python 的实战指南"
+
+[build]
+build-dir = "book"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = ""
+additional-css = []
+no-section-label = true

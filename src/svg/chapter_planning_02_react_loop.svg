@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" width="600" height="440">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <rect width="600" height="440" fill="#f8f9fa" rx="12"/>
+  <text x="300" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">ReAct：推理 + 行动循环</text>
+
+  <!-- User question -->
+  <rect x="200" y="50" width="200" height="45" rx="10" fill="#4dabf7" opacity="0.25" stroke="#4dabf7" stroke-width="2"/>
+  <text x="300" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">👤 用户问题</text>
+
+  <!-- Arrow -->
+  <path d="M 300 97 L 300 118" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Thought 1 -->
+  <rect x="150" y="121" width="300" height="55" rx="10" fill="#fff3bf" stroke="#f39c12" stroke-width="2"/>
+  <text x="300" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">💡 Thought（思考）</text>
+  <text x="300" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">我需要先搜索 X，然后基于结果计算 Y</text>
+
+  <!-- Arrow -->
+  <path d="M 300 178 L 300 198" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Action 1 -->
+  <rect x="150" y="201" width="300" height="50" rx="10" fill="#e8f5e9" stroke="#27ae60" stroke-width="2"/>
+  <text x="300" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">🔧 Action（行动）</text>
+  <text x="300" y="241" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">search('X')</text>
+
+  <!-- Arrow -->
+  <path d="M 300 253 L 300 273" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Observation 1 -->
+  <rect x="150" y="276" width="300" height="50" rx="10" fill="#e3f2fd" stroke="#3498db" stroke-width="2"/>
+  <text x="300" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">📊 Observation（观察）</text>
+  <text x="300" y="316" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">[搜索结果返回]</text>
+
+  <!-- Arrow -->
+  <path d="M 300 328 L 300 348" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Thought 2 -->
+  <rect x="150" y="351" width="300" height="50" rx="10" fill="#fff3bf" stroke="#f39c12" stroke-width="2"/>
+  <text x="300" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">💡 Thought（思考）</text>
+  <text x="300" y="391" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">根据结果，现在需要计算...</text>
+
+  <!-- Loop arrow (拆分为多段避免意外填充) -->
+  <line x1="453" y1="300" x2="490" y2="300" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" fill="none"/>
+  <line x1="490" y1="300" x2="490" y2="225" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" fill="none"/>
+  <line x1="490" y1="225" x2="453" y2="225" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)" fill="none"/>
+  <text x="510" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c" transform="rotate(90, 510, 265)">循环直到完成</text>
+
+  <!-- Final answer -->
+  <path d="M 300 403 L 300 418" stroke="#27ae60" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="175" y="420" width="250" height="14" rx="6" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="300" y="431" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">✅ 最终答案</text>
+</svg>

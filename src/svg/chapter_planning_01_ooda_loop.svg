@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="600" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="300" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OODA 决策循环</text>
+
+  <!-- 4个节点 -->
+  <rect x="220" y="50" width="160" height="50" rx="10" fill="#3498db"/>
+  <text x="300" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="white">👁 Observe（观察）</text>
+  <text x="300" y="90" text-anchor="middle" font-size="11" fill="#d6eaf8">收集和整理当前环境信息</text>
+
+  <rect x="380" y="140" width="160" height="50" rx="10" fill="#27ae60"/>
+  <text x="460" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🧭 Orient（定位）</text>
+  <text x="460" y="180" text-anchor="middle" font-size="11" fill="#d5f5e3">在知识框架中理解情况</text>
+
+  <rect x="220" y="230" width="160" height="50" rx="10" fill="#8e44ad"/>
+  <text x="300" y="252" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⚡ Act（行动）</text>
+  <text x="300" y="270" text-anchor="middle" font-size="11" fill="#e8daef">执行计划，生成响应</text>
+
+  <rect x="60" y="140" width="160" height="50" rx="10" fill="#e67e22"/>
+  <text x="140" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🎯 Decide（决策）</text>
+  <text x="140" y="180" text-anchor="middle" font-size="11" fill="#fdebd0">制定具体行动计划</text>
+
+  <!-- 循环箭头 -->
+  <line x1="340" y1="100" x2="400" y2="140" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="460" y1="190" x2="380" y2="230" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="260" y1="230" x2="200" y2="190" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="140" y1="140" x2="260" y2="100" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- 反馈循环标注 -->
+  <text x="300" y="175" text-anchor="middle" font-size="12" fill="#e74c3c" font-weight="bold">↺ 反馈循环</text>
+  <text x="300" y="192" text-anchor="middle" font-size="11" fill="#7f8c8d">每次行动结果</text>
+  <text x="300" y="207" text-anchor="middle" font-size="11" fill="#7f8c8d">重新触发观察</text>
+
+  <!-- 底部说明 -->
+  <text x="300" y="300" text-anchor="middle" font-size="11" fill="#95a5a6">Agent 的决策过程本质上是持续的 OODA 循环</text>
+</svg>

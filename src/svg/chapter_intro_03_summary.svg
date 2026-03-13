@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" width="700" height="280">
+  <rect width="700" height="280" fill="#f8f9fa" rx="12"/>
+  <text x="350" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">本节核心要点</text>
+
+  <!-- Center node -->
+  <rect x="260" y="55" width="180" height="50" rx="10" fill="#4dabf7" opacity="0.9"/>
+  <text x="350" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">📌 本节核心要点</text>
+  <text x="350" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">感知-思考-行动循环</text>
+
+  <!-- Key points -->
+  <rect x="30" y="130" width="300" height="40" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="180" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2980b9">1. Agent 运行机制 = 感知-思考-行动 循环</text>
+
+  <rect x="370" y="130" width="300" height="40" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="520" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#27ae60">2. 感知：从用户、工具、环境获取信息</text>
+
+  <rect x="30" y="185" width="300" height="40" rx="8" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="180" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#9b59b6">3. 思考：LLM 进行推理和决策</text>
+
+  <rect x="370" y="185" width="300" height="40" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="520" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e67e22">4. 行动：调用工具执行操作</text>
+
+  <rect x="30" y="240" width="300" height="30" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="180" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#e74c3c">5. 循环直到目标达成或触发终止条件</text>
+
+  <rect x="370" y="240" width="300" height="30" rx="8" fill="#f39c12" opacity="0.12" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="520" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#e67e22">6. 好的 Agent 需要有合理的终止机制</text>
+</svg>

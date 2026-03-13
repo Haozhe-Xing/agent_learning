@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350">
+  <rect width="760" height="350" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">数据分析 Agent 六步 Pipeline</text>
+
+  <!-- 箭头 marker -->
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <!-- 步骤1 -->
+  <rect x="30" y="70" width="105" height="75" rx="12" fill="#3498db" opacity="0.15"/>
+  <rect x="30" y="70" width="105" height="28" rx="12" fill="#3498db"/>
+  <rect x="30" y="86" width="105" height="12" fill="#3498db"/>
+  <text x="82" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">① 意图理解</text>
+  <text x="82" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">LLM 解析</text>
+  <text x="82" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">分析类型+目标表</text>
+
+  <line x1="135" y1="108" x2="150" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- 步骤2 -->
+  <rect x="155" y="70" width="105" height="75" rx="12" fill="#27ae60" opacity="0.15"/>
+  <rect x="155" y="70" width="105" height="28" rx="12" fill="#27ae60"/>
+  <rect x="155" y="86" width="105" height="12" fill="#27ae60"/>
+  <text x="207" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">② SQL 生成</text>
+  <text x="207" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">LLM 生成</text>
+  <text x="207" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">安全 SELECT</text>
+
+  <line x1="260" y1="108" x2="275" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- 步骤3 -->
+  <rect x="280" y="70" width="105" height="75" rx="12" fill="#e74c3c" opacity="0.15"/>
+  <rect x="280" y="70" width="105" height="28" rx="12" fill="#e74c3c"/>
+  <rect x="280" y="86" width="105" height="12" fill="#e74c3c"/>
+  <text x="332" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">③ 安全检查</text>
+  <text x="332" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">白名单验证</text>
+  <text x="332" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">参数化执行</text>
+
+  <line x1="385" y1="108" x2="400" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- 步骤4 -->
+  <rect x="405" y="70" width="105" height="75" rx="12" fill="#e67e22" opacity="0.15"/>
+  <rect x="405" y="70" width="105" height="28" rx="12" fill="#e67e22"/>
+  <rect x="405" y="86" width="105" height="12" fill="#e67e22"/>
+  <text x="457" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">④ 数据分析</text>
+  <text x="457" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">pandas 统计</text>
+  <text x="457" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">洞察提取</text>
+
+  <line x1="510" y1="108" x2="525" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- 步骤5 -->
+  <rect x="530" y="70" width="105" height="75" rx="12" fill="#9b59b6" opacity="0.15"/>
+  <rect x="530" y="70" width="105" height="28" rx="12" fill="#9b59b6"/>
+  <rect x="530" y="86" width="105" height="12" fill="#9b59b6"/>
+  <text x="582" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">⑤ 可视化</text>
+  <text x="582" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">matplotlib</text>
+  <text x="582" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">自动选图类型</text>
+
+  <line x1="635" y1="108" x2="650" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- 步骤6 -->
+  <rect x="655" y="70" width="75" height="75" rx="12" fill="#2c3e50" opacity="0.15"/>
+  <rect x="655" y="70" width="75" height="28" rx="12" fill="#2c3e50"/>
+  <rect x="655" y="86" width="75" height="12" fill="#2c3e50"/>
+  <text x="692" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">⑥ 报告</text>
+  <text x="692" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Markdown</text>
+  <text x="692" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">HTML/PDF</text>
+
+  <!-- 分隔线 -->
+  <line x1="30" y1="175" x2="730" y2="175" stroke="#bdc3c7" stroke-width="1" stroke-dasharray="6,3"/>
+
+  <!-- 下方: LLM驱动 vs 代码驱动 -->
+  <text x="380" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">驱动方式对比</text>
+
+  <!-- LLM 驱动 -->
+  <rect x="60" y="215" width="280" height="50" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1"/>
+  <text x="200" y="235" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#3498db">🧠 LLM 驱动（步骤 ①②④⑥）</text>
+  <text x="200" y="255" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">语义理解、SQL生成、洞察提取、摘要</text>
+
+  <!-- 代码驱动 -->
+  <rect x="420" y="215" width="280" height="50" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="1"/>
+  <text x="560" y="235" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">⚙️ 确定性代码（步骤 ③⑤）</text>
+  <text x="560" y="255" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">安全检查、数据库执行、图表生成</text>
+
+  <!-- 底部总结 -->
+  <rect x="120" y="290" width="520" height="35" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="380" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">💡 混合架构：LLM 负责理解和创造，代码负责安全和可靠性</text>
+</svg>

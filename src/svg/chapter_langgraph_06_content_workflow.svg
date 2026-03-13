@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="700" height="200">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  <rect width="700" height="200" rx="14" fill="#f0f4f8"/>
+  <text x="350" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">内容创作工作流（LangGraph）</text>
+
+  <!-- 节点 -->
+  <rect x="20" y="60" width="90" height="44" rx="8" fill="#3498db"/>
+  <text x="65" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="white">用户需求</text>
+  <text x="65" y="94" text-anchor="middle" font-size="10" fill="#d6eaf8">主题/受众/字数</text>
+
+  <rect x="130" y="60" width="90" height="44" rx="8" fill="#27ae60"/>
+  <text x="175" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="white">主题分析</text>
+  <text x="175" y="94" text-anchor="middle" font-size="10" fill="#d5f5e3">提取关键要素</text>
+
+  <rect x="240" y="60" width="90" height="44" rx="8" fill="#8e44ad"/>
+  <text x="285" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="white">大纲生成</text>
+  <text x="285" y="94" text-anchor="middle" font-size="10" fill="#e8daef">5个章节结构</text>
+
+  <rect x="350" y="60" width="90" height="44" rx="8" fill="#e67e22"/>
+  <text x="395" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="white">内容撰写</text>
+  <text x="395" y="94" text-anchor="middle" font-size="10" fill="#fdebd0">按大纲生成</text>
+
+  <rect x="460" y="60" width="90" height="44" rx="8" fill="#e74c3c"/>
+  <text x="505" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="white">质量审查</text>
+  <text x="505" y="94" text-anchor="middle" font-size="10" fill="#fadbd8">评分 1-10</text>
+
+  <rect x="590" y="60" width="90" height="44" rx="8" fill="#2ecc71"/>
+  <text x="635" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="white">发布准备</text>
+  <text x="635" y="94" text-anchor="middle" font-size="10" fill="#d5f5e3">最终输出</text>
+
+  <!-- 正向箭头 -->
+  <line x1="110" y1="82" x2="128" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="220" y1="82" x2="238" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="330" y1="82" x2="348" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="440" y1="82" x2="458" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="82" x2="588" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 条件路由标签 -->
+  <text x="569" y="75" text-anchor="middle" font-size="10" fill="#27ae60">≥8分</text>
+
+  <!-- 修改回环 -->
+  <line x1="505" y1="104" x2="505" y2="140" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="505" y1="140" x2="395" y2="140" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="395" y1="140" x2="395" y2="106" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-red)"/>
+  <text x="450" y="158" text-anchor="middle" font-size="11" fill="#e74c3c">＜8分 → 需要修改 → 重新撰写</text>
+
+  <!-- 底部说明 -->
+  <text x="350" y="185" text-anchor="middle" font-size="11" fill="#95a5a6">最多修改 2 次，之后无论分数如何都进入发布准备</text>
+</svg>

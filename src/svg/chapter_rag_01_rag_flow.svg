@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">RAG 工作原理：检索增强生成</text>
+  
+  <!-- Offline Phase Label -->
+  <rect x="20" y="55" width="760" height="185" rx="10" fill="#3498db" opacity="0.05" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="40" y="77" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">📚 离线阶段：建立知识库</text>
+  
+  <!-- Doc Sources -->
+  <rect x="40" y="88" width="100" height="130" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="90" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3498db">文档源</text>
+  <text x="90" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">📄 PDF</text>
+  <text x="90" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">📝 Word</text>
+  <text x="90" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">🌐 网页</text>
+  <text x="90" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">📊 CSV</text>
+  <text x="90" y="194" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">💬 Markdown</text>
+  
+  <path d="M145 153 L178 153" stroke="#3498db" stroke-width="2" marker-end="url(#b-arr)"/>
+  
+  <!-- Chunking -->
+  <rect x="181" y="88" width="120" height="130" rx="8" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="241" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#9b59b6">文本分割</text>
+  <text x="241" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">按大小切分</text>
+  <text x="241" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Chunk 1</text>
+  <text x="241" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Chunk 2</text>
+  <text x="241" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Chunk 3</text>
+  <text x="241" y="194" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">...重叠窗口</text>
+  
+  <path d="M306 153 L336 153" stroke="#9b59b6" stroke-width="2" marker-end="url(#p-arr)"/>
+  
+  <!-- Embedding -->
+  <rect x="339" y="88" width="130" height="130" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="404" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">向量嵌入</text>
+  <text x="404" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">文本 → 向量</text>
+  <text x="404" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888">[0.12, -0.45, 0.78,</text>
+  <text x="404" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888"> 0.23, ..., 1536维]</text>
+  <text x="404" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Embedding Model</text>
+  <text x="404" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888">text-embedding-3-small</text>
+  
+  <path d="M474 153 L504 153" stroke="#e67e22" stroke-width="2" marker-end="url(#o-arr)"/>
+  
+  <!-- Vector DB -->
+  <rect x="507" y="88" width="240" height="130" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="627" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">向量数据库</text>
+  <text x="560" y="132" font-family="Arial, sans-serif" font-size="10" fill="#555">• ChromaDB（本地轻量）</text>
+  <text x="560" y="148" font-family="Arial, sans-serif" font-size="10" fill="#555">• Pinecone（云端扩展）</text>
+  <text x="560" y="164" font-family="Arial, sans-serif" font-size="10" fill="#555">• FAISS（高性能）</text>
+  <text x="560" y="180" font-family="Arial, sans-serif" font-size="10" fill="#555">• Qdrant（功能丰富）</text>
+  <text x="560" y="196" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">💾 持久化存储</text>
+  
+  <!-- Online Phase Label -->
+  <rect x="20" y="265" width="760" height="210" rx="10" fill="#e74c3c" opacity="0.04" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="40" y="287" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">🔍 在线阶段：回答问题</text>
+  
+  <!-- User Question -->
+  <rect x="40" y="298" width="120" height="60" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="100" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3498db">用户问题</text>
+  <text x="100" y="342" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">"Python是什么？"</text>
+  
+  <path d="M165 328 L195 328" stroke="#3498db" stroke-width="2" marker-end="url(#b-arr)"/>
+  
+  <!-- Query Embedding -->
+  <rect x="198" y="298" width="120" height="60" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="258" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">查询向量化</text>
+  <text x="258" y="342" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">问题 → 向量</text>
+  
+  <path d="M323 328 L353 328" stroke="#e67e22" stroke-width="2" marker-end="url(#o-arr)"/>
+  
+  <!-- Similarity Search -->
+  <rect x="356" y="298" width="130" height="60" rx="8" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="421" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#9b59b6">相似度检索</text>
+  <text x="421" y="334" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">余弦相似度</text>
+  <text x="421" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Top-K 召回</text>
+  
+  <path d="M491 328 L521 328" stroke="#9b59b6" stroke-width="2" marker-end="url(#p-arr)"/>
+  
+  <!-- Retrieved Chunks -->
+  <rect x="524" y="298" width="120" height="60" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="584" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">相关 Chunk</text>
+  <text x="584" y="334" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Top-3 最相关</text>
+  <text x="584" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">文档片段</text>
+  
+  <path d="M649 328 L679 328" stroke="#27ae60" stroke-width="2" marker-end="url(#g-arr)"/>
+  
+  <!-- LLM + Context -->
+  <rect x="682" y="285" width="90" height="105" rx="8" fill="#2c3e50" opacity="0.12" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="727" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2c3e50">LLM</text>
+  <text x="727" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">问题 +</text>
+  <text x="727" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Context</text>
+  <text x="727" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">GPT-4o</text>
+  <text x="727" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888">↓ 生成回答</text>
+  
+  <!-- Final Answer -->
+  <rect x="180" y="405" width="430" height="55" rx="8" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+  <text x="395" y="427" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">✅ 最终回答（有来源依据）</text>
+  <text x="395" y="448" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">"根据参考资料，Python 是由 Guido van Rossum 创建的..."</text>
+  
+  <!-- Arrow from LLM to answer -->
+  <path d="M727 393 Q727 430 617 430" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#g-arr)"/>
+  
+  <defs>
+    <marker id="b-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3498db"/>
+    </marker>
+    <marker id="p-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#9b59b6"/>
+    </marker>
+    <marker id="o-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e67e22"/>
+    </marker>
+    <marker id="g-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+</svg>

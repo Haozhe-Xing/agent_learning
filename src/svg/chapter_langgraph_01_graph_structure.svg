@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" width="640" height="280">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="640" height="280" rx="14" fill="#f0f4f8"/>
+  <text x="320" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">LangGraph 图结构示例</text>
+
+  <!-- START -->
+  <rect x="270" y="50" width="80" height="36" rx="18" fill="#2c3e50"/>
+  <text x="310" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">START</text>
+
+  <!-- LLM 分析 -->
+  <rect x="210" y="115" width="200" height="44" rx="10" fill="#3498db"/>
+  <text x="310" y="132" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🧠 LLM 分析</text>
+  <text x="310" y="150" text-anchor="middle" font-size="11" fill="#d6eaf8">推理 / 决策 / 规划</text>
+
+  <!-- 两个分支 -->
+  <!-- 需要工具分支 -->
+  <rect x="60" y="200" width="160" height="44" rx="10" fill="#e67e22"/>
+  <text x="140" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="white">🔧 执行工具</text>
+  <text x="140" y="233" text-anchor="middle" font-size="11" fill="#fdebd0">调用外部 API / 函数</text>
+
+  <!-- 直接回答分支 -->
+  <rect x="420" y="200" width="160" height="44" rx="10" fill="#27ae60"/>
+  <text x="500" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="white">💬 生成回复</text>
+  <text x="500" y="233" text-anchor="middle" font-size="11" fill="#d5f5e3">直接回答用户</text>
+
+  <!-- END -->
+  <rect x="420" y="260" width="160" height="0" rx="0" fill="none"/>
+  <rect x="460" y="255" width="80" height="0" rx="0" fill="none"/>
+
+  <!-- 连接线 -->
+  <line x1="310" y1="86" x2="310" y2="113" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- LLM到两个分支 -->
+  <line x1="310" y1="159" x2="310" y2="175" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="310" y1="175" x2="140" y2="175" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="310" y1="175" x2="500" y2="175" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="140" y1="175" x2="140" y2="198" stroke="#e67e22" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="500" y1="175" x2="500" y2="198" stroke="#27ae60" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- 分支标签 -->
+  <text x="225" y="170" text-anchor="middle" font-size="11" fill="#e67e22" font-weight="bold">需要工具</text>
+  <text x="405" y="170" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">直接回答</text>
+
+  <!-- 工具执行后回到LLM（循环） -->
+  <line x1="60" y1="222" x2="40" y2="222" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="40" y1="222" x2="40" y2="137" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="40" y1="137" x2="208" y2="137" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="22" y="185" text-anchor="middle" font-size="10" fill="#e74c3c" transform="rotate(-90, 22, 185)">更新状态 → 循环</text>
+
+  <!-- END节点 -->
+  <rect x="460" y="255" width="80" height="0" rx="0" fill="none"/>
+  <line x1="500" y1="244" x2="500" y2="260" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="460" y="260" width="80" height="0" rx="0" fill="none"/>
+  <text x="500" y="275" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">END</text>
+</svg>

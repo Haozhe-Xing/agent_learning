@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" width="700" height="260">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2980b9"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="700" height="260" fill="#f8f9fa" rx="12"/>
+  <text x="350" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#2c3e50">MCP 架构</text>
+
+  <!-- LLM 应用/Host -->
+  <rect x="30" y="90" width="160" height="80" rx="10" fill="#e8f4fd" stroke="#2980b9" stroke-width="2"/>
+  <text x="110" y="122" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a5276">🖥️ LLM 应用</text>
+  <text x="110" y="142" text-anchor="middle" font-size="12" fill="#2980b9">Host</text>
+  <text x="110" y="158" text-anchor="middle" font-size="10" fill="#5d6d7e">（Claude / GPT 等）</text>
+
+  <!-- MCP Client -->
+  <rect x="270" y="90" width="160" height="80" rx="10" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <text x="350" y="122" text-anchor="middle" font-size="14" font-weight="bold" fill="#7d6608">🔌 MCP Client</text>
+  <text x="350" y="142" text-anchor="middle" font-size="12" fill="#f39c12">标准协议层</text>
+  <text x="350" y="158" text-anchor="middle" font-size="10" fill="#5d6d7e">（JSON-RPC 2.0）</text>
+
+  <!-- MCP Server -->
+  <rect x="510" y="90" width="160" height="80" rx="10" fill="#eafaf1" stroke="#27ae60" stroke-width="2"/>
+  <text x="590" y="122" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e8449">⚙️ MCP Server</text>
+  <text x="590" y="142" text-anchor="middle" font-size="12" fill="#27ae60">工具提供者</text>
+  <text x="590" y="158" text-anchor="middle" font-size="10" fill="#5d6d7e">（本地 / 远程）</text>
+
+  <!-- 双向箭头 LLM ↔ Client -->
+  <line x1="192" y1="125" x2="268" y2="125" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="268" y1="135" x2="192" y2="135" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 双向箭头 Client ↔ Server -->
+  <line x1="432" y1="125" x2="508" y2="125" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="508" y1="135" x2="432" y2="135" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- MCP Server 可以是 -->
+  <text x="350" y="200" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">MCP Server 可以提供：</text>
+
+  <!-- 三个类型 -->
+  <rect x="50" y="215" width="170" height="32" rx="8" fill="#fdecea" stroke="#e74c3c" stroke-width="1"/>
+  <text x="135" y="236" text-anchor="middle" font-size="12" fill="#c0392b">📁 本地工具（文件/代码执行）</text>
+
+  <rect x="265" y="215" width="170" height="32" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1"/>
+  <text x="350" y="236" text-anchor="middle" font-size="12" fill="#7d6608">🌐 外部服务（数据库/API）</text>
+
+  <rect x="480" y="215" width="170" height="32" rx="8" fill="#eafaf1" stroke="#27ae60" stroke-width="1"/>
+  <text x="565" y="236" text-anchor="middle" font-size="12" fill="#1e8449">📚 知识库（文档/向量存储）</text>
+</svg>

@@ -1,0 +1,41 @@
+ve<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260" width="600" height="260">
+  <rect width="600" height="260" fill="#f8f9fa" rx="12"/>
+  <text x="300" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#2c3e50">模型规模 vs 能力涌现</text>
+
+  <!-- Y axis -->
+  <line x1="80" y1="50" x2="80" y2="210" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="40" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">100</text>
+  <text x="40" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">50</text>
+  <text x="40" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">0</text>
+  <text x="20" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d" transform="rotate(-90, 20, 130)">能力得分</text>
+
+  <!-- X axis -->
+  <line x1="80" y1="210" x2="560" y2="210" stroke="#bdc3c7" stroke-width="2"/>
+
+  <!-- X labels -->
+  <text x="150" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">小模型</text>
+  <text x="270" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">中型模型</text>
+  <text x="390" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">大模型</text>
+  <text x="510" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">超大模型</text>
+
+  <!-- Bars -->
+  <rect x="120" y="202" width="60" height="8" rx="3" fill="#4dabf7" opacity="0.8"/>
+  <text x="150" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">5</text>
+
+  <rect x="240" y="170" width="60" height="40" rx="3" fill="#4dabf7" opacity="0.8"/>
+  <text x="270" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">20</text>
+
+  <rect x="360" y="122" width="60" height="88" rx="3" fill="#4dabf7" opacity="0.8"/>
+  <text x="390" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">45</text>
+
+  <rect x="480" y="55" width="60" height="155" rx="3" fill="#27ae60" opacity="0.85"/>
+  <text x="510" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">95 ⭐</text>
+
+  <!-- Emergence annotation -->
+  <path d="M 420 100 L 460 80" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="465" y="78" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">涌现！</text>
+
+  <!-- Legend -->
+  <rect x="80" y="245" width="440" height="10" rx="4" fill="#e3f2fd"/>
+  <text x="300" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2980b9">超大模型突然涌现出推理、代码生成、跨语言迁移等能力</text>
+</svg>

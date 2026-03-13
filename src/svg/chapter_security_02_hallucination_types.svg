@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <rect width="760" height="400" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">LLM 幻觉类型与防御策略</text>
+
+  <!-- 中心圆 -->
+  <circle cx="380" cy="200" r="50" fill="#e74c3c" opacity="0.2"/>
+  <circle cx="380" cy="200" r="45" fill="white" stroke="#e74c3c" stroke-width="2"/>
+  <text x="380" y="195" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">幻觉</text>
+  <text x="380" y="212" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#e74c3c">Hallucination</text>
+
+  <!-- 事实性幻觉 -->
+  <rect x="40" y="60" width="220" height="120" rx="14" fill="#3498db" opacity="0.12"/>
+  <rect x="40" y="60" width="220" height="32" rx="14" fill="#3498db"/>
+  <rect x="40" y="80" width="220" height="12" fill="#3498db"/>
+  <text x="150" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📋 事实性幻觉</text>
+  <text x="56" y="115" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">生成与事实不符的信息</text>
+  <text x="56" y="135" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: RAG 事实核查</text>
+  <text x="56" y="155" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 要求引用来源</text>
+  <line x1="260" y1="120" x2="335" y2="180" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="260" cy="120" r="3" fill="#3498db"/>
+
+  <!-- 引用幻觉 -->
+  <rect x="500" y="60" width="220" height="120" rx="14" fill="#27ae60" opacity="0.12"/>
+  <rect x="500" y="60" width="220" height="32" rx="14" fill="#27ae60"/>
+  <rect x="500" y="80" width="220" height="12" fill="#27ae60"/>
+  <text x="610" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📚 引用幻觉</text>
+  <text x="516" y="115" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">引用不存在的论文或链接</text>
+  <text x="516" y="135" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 外部验证 API</text>
+  <text x="516" y="155" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 禁止编造引用</text>
+  <line x1="500" y1="120" x2="425" y2="180" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="500" cy="120" r="3" fill="#27ae60"/>
+
+  <!-- 逻辑幻觉 -->
+  <rect x="40" y="230" width="220" height="120" rx="14" fill="#e67e22" opacity="0.12"/>
+  <rect x="40" y="230" width="220" height="32" rx="14" fill="#e67e22"/>
+  <rect x="40" y="250" width="220" height="12" fill="#e67e22"/>
+  <text x="150" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🧮 逻辑幻觉</text>
+  <text x="56" y="285" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">推理过程看似合理但有错</text>
+  <text x="56" y="305" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 自我一致性检查</text>
+  <text x="56" y="325" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 工具兜底计算</text>
+  <line x1="260" y1="290" x2="335" y2="220" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="260" cy="290" r="3" fill="#e67e22"/>
+
+  <!-- 指令幻觉 -->
+  <rect x="500" y="230" width="220" height="120" rx="14" fill="#9b59b6" opacity="0.12"/>
+  <rect x="500" y="230" width="220" height="32" rx="14" fill="#9b59b6"/>
+  <rect x="500" y="250" width="220" height="12" fill="#9b59b6"/>
+  <text x="610" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">⚙️ 指令幻觉</text>
+  <text x="516" y="285" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">声称执行了实际未做的操作</text>
+  <text x="516" y="305" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 操作结果验证</text>
+  <text x="516" y="325" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">防御: 权限最小化</text>
+  <line x1="500" y1="290" x2="425" y2="220" stroke="#9b59b6" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="500" cy="290" r="3" fill="#9b59b6"/>
+
+  <!-- 底部说明 -->
+  <text x="380" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#95a5a6">多层防御策略：要求引用 + RAG 核查 + 一致性检查 + 工具兜底</text>
+</svg>

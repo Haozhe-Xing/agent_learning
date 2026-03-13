@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="760" height="380">
+  <rect width="760" height="380" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">AI 编程助手 Agent 架构</text>
+
+  <!-- 用户输入 -->
+  <rect x="280" y="50" width="200" height="40" rx="14" fill="#9b59b6"/>
+  <text x="380" y="75" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="white">👩‍💻 用户需求</text>
+
+  <line x1="380" y1="90" x2="380" y2="115" stroke="#95a5a6" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 核心 Agent -->
+  <rect x="200" y="115" width="360" height="50" rx="14" fill="#3498db"/>
+  <text x="380" y="145" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="white">🧠 编程 Agent（LLM 推理核心）</text>
+
+  <!-- 三条线到下层 -->
+  <line x1="260" y1="165" x2="130" y2="200" stroke="#95a5a6" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="380" y1="165" x2="380" y2="200" stroke="#95a5a6" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="500" y1="165" x2="630" y2="200" stroke="#95a5a6" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 代码理解 -->
+  <rect x="40" y="200" width="180" height="70" rx="14" fill="#27ae60"/>
+  <text x="130" y="225" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🔍 代码理解</text>
+  <text x="130" y="245" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">AST 解析 · 语义搜索</text>
+  <text x="130" y="260" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">依赖分析 · 上下文构建</text>
+
+  <!-- 代码生成 -->
+  <rect x="290" y="200" width="180" height="70" rx="14" fill="#e67e22"/>
+  <text x="380" y="225" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">✍️ 代码生成</text>
+  <text x="380" y="245" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">功能实现 · 代码补全</text>
+  <text x="380" y="260" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">重构优化 · API 集成</text>
+
+  <!-- 测试修复 -->
+  <rect x="540" y="200" width="180" height="70" rx="14" fill="#e74c3c"/>
+  <text x="630" y="225" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🐛 测试 & 修复</text>
+  <text x="630" y="245" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">测试用例生成 · Bug 诊断</text>
+  <text x="630" y="260" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">自动修复 · 回归测试</text>
+
+  <!-- 工具层 -->
+  <rect x="40" y="300" width="680" height="50" rx="14" fill="#34495e" opacity="0.1" stroke="#34495e" stroke-width="1"/>
+  <text x="60" y="330" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#34495e">🔧 工具层：</text>
+  <text x="145" y="330" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">文件读写 · Shell 执行 · Git 操作 · LSP 集成 · 搜索引擎 · 文档检索</text>
+
+  <text x="380" y="370" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#95a5a6">核心循环：理解需求 → 分析代码 → 生成方案 → 执行修改 → 验证结果</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#95a5a6"/>
+    </marker>
+  </defs>
+</svg>

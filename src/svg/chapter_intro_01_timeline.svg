@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" width="820" height="380">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <!-- Background -->
+  <rect width="820" height="380" fill="#f8f9fa" rx="12"/>
+  <!-- Title -->
+  <text x="410" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">AI 交互方式演进时间线</text>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="100" x2="760" y2="100" stroke="#bdc3c7" stroke-width="3"/>
+  <path d="M 755 95 L 765 100 L 755 105 z" fill="#bdc3c7"/>
+
+  <!-- Year dots and labels -->
+  <!-- 1966 -->
+  <circle cx="100" cy="100" r="10" fill="#3498db"/>
+  <text x="100" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">1966</text>
+  <rect x="55" y="115" width="90" height="60" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="100" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">ELIZA</text>
+  <text x="100" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">第一个聊天机器人</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">（模式匹配）</text>
+
+  <!-- 1995 -->
+  <circle cx="210" cy="100" r="10" fill="#e67e22"/>
+  <text x="210" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">1995</text>
+  <rect x="163" y="115" width="94" height="60" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="210" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">ALICE</text>
+  <text x="210" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">规则驱动的</text>
+  <text x="210" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">对话系统</text>
+
+  <!-- 2011 -->
+  <circle cx="330" cy="100" r="10" fill="#9b59b6"/>
+  <text x="330" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9b59b6">2011</text>
+  <rect x="283" y="115" width="94" height="60" rx="8" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="330" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#9b59b6">Siri / Cortana</text>
+  <text x="330" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">语音助手</text>
+  <text x="330" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">时代</text>
+
+  <!-- 2016 -->
+  <circle cx="450" cy="100" r="10" fill="#e74c3c"/>
+  <text x="450" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">2016</text>
+  <rect x="403" y="115" width="94" height="60" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="450" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e74c3c">客服机器人</text>
+  <text x="450" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">意图识别</text>
+  <text x="450" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">对话系统</text>
+
+  <!-- 2022 -->
+  <circle cx="570" cy="100" r="10" fill="#27ae60"/>
+  <text x="570" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">2022</text>
+  <rect x="523" y="115" width="94" height="60" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="570" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">ChatGPT</text>
+  <text x="570" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">LLM 驱动的</text>
+  <text x="570" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">对话 AI</text>
+
+  <!-- 2023 -->
+  <circle cx="670" cy="100" r="10" fill="#1abc9c"/>
+  <text x="670" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1abc9c">2023</text>
+  <rect x="623" y="115" width="94" height="60" rx="8" fill="#1abc9c" opacity="0.12" stroke="#1abc9c" stroke-width="1.5"/>
+  <text x="670" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1abc9c">AutoGPT</text>
+  <text x="670" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Agent 概念</text>
+  <text x="670" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">爆发</text>
+
+  <!-- 2024 label above line -->
+  <circle cx="760" cy="100" r="10" fill="#f39c12"/>
+  <text x="760" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f39c12">2024</text>
+  <rect x="713" y="115" width="94" height="60" rx="8" fill="#f39c12" opacity="0.12" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="760" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#f39c12">多模态</text>
+  <text x="760" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">多 Agent 系统</text>
+  <text x="760" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">生态成熟</text>
+
+  <!-- Evolution arrow labels -->
+  <text x="410" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#7f8c8d">规则匹配 → 意图识别 → 语言理解 → 自主行动</text>
+
+  <!-- Four generation boxes -->
+  <rect x="60" y="255" width="155" height="100" rx="10" fill="#e74c3c" opacity="0.1" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="137" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">第一代</text>
+  <text x="137" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">规则机器人</text>
+  <text x="137" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">关键词匹配</text>
+  <text x="137" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">无理解能力</text>
+  <text x="137" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">1966 - 2010</text>
+
+  <rect x="230" y="255" width="155" height="100" rx="10" fill="#e67e22" opacity="0.1" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="307" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">第二代</text>
+  <text x="307" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">意图识别系统</text>
+  <text x="307" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">NLP + 槽位填充</text>
+  <text x="307" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">有限理解能力</text>
+  <text x="307" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">2011 - 2021</text>
+
+  <rect x="400" y="255" width="155" height="100" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="477" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">第三代</text>
+  <text x="477" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">LLM 对话 AI</text>
+  <text x="477" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">强大语言理解</text>
+  <text x="477" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">但无法执行操作</text>
+  <text x="477" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">2022 - 2022</text>
+
+  <rect x="570" y="255" width="185" height="100" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="2"/>
+  <text x="662" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">第四代 ⭐</text>
+  <text x="662" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">AI Agent</text>
+  <text x="662" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">理解 + 推理 + 行动</text>
+  <text x="662" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">自主完成复杂任务</text>
+  <text x="662" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">2023 至今</text>
+</svg>

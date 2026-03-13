@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 260" width="560" height="260" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="560" height="260" rx="12" fill="#f8f9fa"/>
+  <text x="280" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#2c3e50">多 Agent 软件开发团队流程</text>
+
+  <!-- 用户需求 -->
+  <rect x="190" y="38" width="180" height="28" rx="6" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1.5"/>
+  <text x="280" y="57" text-anchor="middle" font-size="12" fill="#2c3e50">👤 用户需求</text>
+  <line x1="280" y1="66" x2="280" y2="80" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 产品经理 -->
+  <rect x="160" y="82" width="240" height="28" rx="6" fill="#3498db" opacity="0.2"/>
+  <rect x="160" y="82" width="4" height="28" rx="2" fill="#3498db"/>
+  <text x="290" y="97" text-anchor="middle" font-size="12" fill="#2980b9">📋 产品经理 Agent</text>
+  <text x="420" y="97" font-size="10" fill="#7f8c8d">→ 需求文档</text>
+  <line x1="280" y1="110" x2="280" y2="124" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 架构师 -->
+  <rect x="160" y="126" width="240" height="28" rx="6" fill="#9b59b6" opacity="0.2"/>
+  <rect x="160" y="126" width="4" height="28" rx="2" fill="#9b59b6"/>
+  <text x="290" y="141" text-anchor="middle" font-size="12" fill="#8e44ad">🏗️ 架构师 Agent</text>
+  <text x="420" y="141" font-size="10" fill="#7f8c8d">→ 技术方案</text>
+  <line x1="280" y1="154" x2="280" y2="168" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 开发 -->
+  <rect x="160" y="170" width="240" height="28" rx="6" fill="#27ae60" opacity="0.2"/>
+  <rect x="160" y="170" width="4" height="28" rx="2" fill="#27ae60"/>
+  <text x="290" y="185" text-anchor="middle" font-size="12" fill="#27ae60">💻 开发 Agent</text>
+  <text x="420" y="185" font-size="10" fill="#7f8c8d">→ 代码实现</text>
+  <line x1="280" y1="198" x2="280" y2="212" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 测试 -->
+  <rect x="160" y="214" width="240" height="28" rx="6" fill="#e67e22" opacity="0.2"/>
+  <rect x="160" y="214" width="4" height="28" rx="2" fill="#e67e22"/>
+  <text x="290" y="229" text-anchor="middle" font-size="12" fill="#e67e22">🧪 测试 Agent</text>
+  <text x="420" y="229" font-size="10" fill="#7f8c8d">→ 测试用例</text>
+  <line x1="280" y1="242" x2="280" y2="256" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- DevOps -->
+  <rect x="160" y="258" width="240" height="28" rx="6" fill="#e74c3c" opacity="0.2"/>
+  <rect x="160" y="258" width="4" height="28" rx="2" fill="#e74c3c"/>
+  <text x="290" y="273" text-anchor="middle" font-size="12" fill="#e74c3c">🚀 DevOps Agent</text>
+  <text x="420" y="273" font-size="10" fill="#7f8c8d">→ 部署配置</text>
+</svg>

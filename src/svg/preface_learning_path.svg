@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" width="760" height="220" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#555"/>
+    </marker>
+  </defs>
+  <!-- 背景 -->
+  <rect width="760" height="220" rx="12" fill="#f8f9fa"/>
+  <!-- 标题 -->
+  <text x="380" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">推荐学习路线</text>
+
+  <!-- 路线1：零基础入门 -->
+  <rect x="20" y="55" width="720" height="44" rx="8" fill="#e8f5e9"/>
+  <text x="36" y="72" font-size="13" fill="#27ae60">🟢 零基础入门</text>
+  <!-- 章节节点 -->
+  <rect x="160" y="60" width="52" height="28" rx="6" fill="#27ae60"/>
+  <text x="186" y="79" text-anchor="middle" font-size="12" fill="white">第1章</text>
+  <line x1="212" y1="74" x2="228" y2="74" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="230" y="60" width="52" height="28" rx="6" fill="#27ae60"/>
+  <text x="256" y="79" text-anchor="middle" font-size="12" fill="white">第2章</text>
+  <line x1="282" y1="74" x2="298" y2="74" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="300" y="60" width="52" height="28" rx="6" fill="#27ae60"/>
+  <text x="326" y="79" text-anchor="middle" font-size="12" fill="white">第3章</text>
+  <line x1="352" y1="74" x2="368" y2="74" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="370" y="60" width="52" height="28" rx="6" fill="#27ae60"/>
+  <text x="396" y="79" text-anchor="middle" font-size="12" fill="white">第4章</text>
+  <line x1="422" y1="74" x2="438" y2="74" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="440" y="60" width="52" height="28" rx="6" fill="#27ae60"/>
+  <text x="466" y="79" text-anchor="middle" font-size="12" fill="white">第5章</text>
+
+  <!-- 路线2：有LLM经验 -->
+  <rect x="20" y="112" width="720" height="44" rx="8" fill="#fff8e1"/>
+  <text x="36" y="129" font-size="13" fill="#f39c12">🟡 有 LLM 经验</text>
+  <rect x="160" y="117" width="52" height="28" rx="6" fill="#f39c12"/>
+  <text x="186" y="136" text-anchor="middle" font-size="12" fill="white">第3章</text>
+  <line x1="212" y1="131" x2="228" y2="131" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="230" y="117" width="80" height="28" rx="6" fill="#f39c12"/>
+  <text x="270" y="136" text-anchor="middle" font-size="12" fill="white">第4-7章</text>
+  <line x1="310" y1="131" x2="326" y2="131" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="328" y="117" width="80" height="28" rx="6" fill="#f39c12"/>
+  <text x="368" y="136" text-anchor="middle" font-size="12" fill="white">第8-9章</text>
+
+  <!-- 路线3：直接实战 -->
+  <rect x="20" y="169" width="720" height="44" rx="8" fill="#fce4ec"/>
+  <text x="36" y="186" font-size="13" fill="#e74c3c">🔴 直接实战</text>
+  <rect x="160" y="174" width="80" height="28" rx="6" fill="#e74c3c"/>
+  <text x="200" y="193" text-anchor="middle" font-size="12" fill="white">第8-9章</text>
+  <line x1="240" y1="188" x2="256" y2="188" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="258" y="174" width="52" height="28" rx="6" fill="#e74c3c"/>
+  <text x="284" y="193" text-anchor="middle" font-size="12" fill="white">第11章</text>
+  <line x1="310" y1="188" x2="326" y2="188" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="328" y="174" width="90" height="28" rx="6" fill="#e74c3c"/>
+  <text x="373" y="193" text-anchor="middle" font-size="12" fill="white">第16-18章</text>
+</svg>

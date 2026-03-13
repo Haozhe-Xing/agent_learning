@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="640" height="200" rx="12" fill="#f8f9fa"/>
+  <!-- 根节点 -->
+  <rect x="20" y="72" width="160" height="56" rx="8" fill="#2c3e50"/>
+  <text x="100" y="96" text-anchor="middle" font-size="13" font-weight="bold" fill="white">LLM</text>
+  <text x="100" y="114" text-anchor="middle" font-size="11" fill="#bdc3c7">大语言模型</text>
+  <!-- 主干横线 -->
+  <line x1="180" y1="100" x2="220" y2="100" stroke="#7f8c8d" stroke-width="2"/>
+  <!-- 竖线 -->
+  <line x1="220" y1="28" x2="220" y2="172" stroke="#7f8c8d" stroke-width="2"/>
+  <!-- 横线到各分支 -->
+  <line x1="220" y1="28" x2="260" y2="28" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="220" y1="76" x2="260" y2="76" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="220" y1="124" x2="260" y2="124" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="220" y1="172" x2="260" y2="172" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- 分支1：架构 -->
+  <rect x="260" y="12" width="340" height="32" rx="6" fill="#3498db" opacity="0.15"/>
+  <rect x="260" y="12" width="4" height="32" rx="2" fill="#3498db"/>
+  <text x="276" y="24" font-size="12" font-weight="bold" fill="#2980b9">架构</text>
+  <text x="316" y="24" font-size="12" fill="#555">Transformer（注意力机制）</text>
+  <text x="276" y="38" font-size="11" fill="#7f8c8d">自注意力 · 多头注意力 · 位置编码</text>
+
+  <!-- 分支2：训练 -->
+  <rect x="260" y="60" width="340" height="32" rx="6" fill="#9b59b6" opacity="0.15"/>
+  <rect x="260" y="60" width="4" height="32" rx="2" fill="#9b59b6"/>
+  <text x="276" y="72" font-size="12" font-weight="bold" fill="#8e44ad">训练</text>
+  <text x="316" y="72" font-size="12" fill="#555">预训练 → 指令微调 → RLHF</text>
+  <text x="276" y="86" font-size="11" fill="#7f8c8d">海量文本 · 人类反馈 · 对齐优化</text>
+
+  <!-- 分支3：交互 -->
+  <rect x="260" y="108" width="340" height="32" rx="6" fill="#27ae60" opacity="0.15"/>
+  <rect x="260" y="108" width="4" height="32" rx="2" fill="#27ae60"/>
+  <text x="276" y="120" font-size="12" font-weight="bold" fill="#27ae60">交互</text>
+  <text x="316" y="120" font-size="12" fill="#555">Prompt → Completion</text>
+  <text x="276" y="134" font-size="11" fill="#7f8c8d">System · User · Assistant 三角色</text>
+
+  <!-- 分支4：参数 -->
+  <rect x="260" y="156" width="340" height="32" rx="6" fill="#e67e22" opacity="0.15"/>
+  <rect x="260" y="156" width="4" height="32" rx="2" fill="#e67e22"/>
+  <text x="276" y="168" font-size="12" font-weight="bold" fill="#e67e22">参数</text>
+  <text x="316" y="168" font-size="12" fill="#555">Temperature · Top-p · Max Tokens</text>
+  <text x="276" y="182" font-size="11" fill="#7f8c8d">控制输出的随机性与长度</text>
+</svg>

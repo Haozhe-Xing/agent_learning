@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320">
+  <rect width="760" height="320" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">AI 编程助手代码理解流程</text>
+
+  <!-- 箭头 marker -->
+  <defs>
+    <marker id="cfa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <!-- 输入 -->
+  <rect x="30" y="110" width="100" height="80" rx="14" fill="#2c3e50" opacity="0.1" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="80" y="143" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">📂 代码仓库</text>
+  <text x="80" y="163" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">.py .ts .java</text>
+  <text x="80" y="178" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">README configs</text>
+
+  <line x1="130" y1="150" x2="160" y2="150" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#cfa)"/>
+
+  <!-- 步骤1: 文件索引 -->
+  <rect x="165" y="75" width="120" height="60" rx="12" fill="#3498db" opacity="0.15"/>
+  <rect x="165" y="75" width="120" height="25" rx="12" fill="#3498db"/>
+  <rect x="165" y="90" width="120" height="10" fill="#3498db"/>
+  <text x="225" y="93" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="white">文件索引</text>
+  <text x="225" y="118" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">AST 解析+嵌入</text>
+
+  <!-- 步骤2: 依赖分析 -->
+  <rect x="165" y="165" width="120" height="60" rx="12" fill="#27ae60" opacity="0.15"/>
+  <rect x="165" y="165" width="120" height="25" rx="12" fill="#27ae60"/>
+  <rect x="165" y="180" width="120" height="10" fill="#27ae60"/>
+  <text x="225" y="183" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="white">依赖分析</text>
+  <text x="225" y="208" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">调用图+模块关系</text>
+
+  <line x1="285" y1="105" x2="325" y2="140" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#cfa)"/>
+  <line x1="285" y1="195" x2="325" y2="160" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#cfa)"/>
+
+  <!-- 步骤3: 上下文构建 -->
+  <rect x="330" y="115" width="130" height="70" rx="12" fill="#e67e22" opacity="0.15"/>
+  <rect x="330" y="115" width="130" height="28" rx="12" fill="#e67e22"/>
+  <rect x="330" y="131" width="130" height="12" fill="#e67e22"/>
+  <text x="395" y="134" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">上下文构建</text>
+  <text x="395" y="160" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">相关代码检索</text>
+  <text x="395" y="176" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">上下文窗口管理</text>
+
+  <line x1="460" y1="150" x2="490" y2="150" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#cfa)"/>
+
+  <!-- 步骤4: LLM 理解 -->
+  <rect x="495" y="115" width="120" height="70" rx="12" fill="#9b59b6" opacity="0.15"/>
+  <rect x="495" y="115" width="120" height="28" rx="12" fill="#9b59b6"/>
+  <rect x="495" y="131" width="120" height="12" fill="#9b59b6"/>
+  <text x="555" y="134" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">LLM 理解</text>
+  <text x="555" y="160" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">代码解释/重构</text>
+  <text x="555" y="176" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Bug 检测/修复</text>
+
+  <line x1="615" y1="150" x2="645" y2="150" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#cfa)"/>
+
+  <!-- 输出 -->
+  <rect x="650" y="110" width="80" height="80" rx="14" fill="#e74c3c" opacity="0.1" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="690" y="143" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#e74c3c">✨ 输出</text>
+  <text x="690" y="163" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#7f8c8d">代码补全</text>
+  <text x="690" y="178" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#7f8c8d">重构建议</text>
+
+  <!-- 底部注释 -->
+  <rect x="100" y="265" width="560" height="35" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="380" y="287" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">关键：代码的语义理解依赖 AST 结构化解析 + 向量化检索 + LLM 推理的协同</text>
+</svg>

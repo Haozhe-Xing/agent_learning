@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" width="700" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr15" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#9b59b6"/>
+    </marker>
+  </defs>
+  <rect width="700" height="320" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">技能系统发展脉络</text>
+
+  <!-- 时间线 -->
+  <line x1="350" y1="42" x2="350" y2="308" stroke="#bdc3c7" stroke-width="2"/>
+
+  <circle cx="350" cy="55" r="6" fill="#3498db"/>
+  <text x="200" y="55" text-anchor="end" font-size="12" font-weight="bold" fill="#3498db">2023</text>
+  <text x="370" y="55" font-size="11" fill="#555">HuggingGPT / JARVIS — 模型即技能，任务路由</text>
+
+  <circle cx="350" cy="90" r="6" fill="#3498db"/>
+  <text x="370" y="90" font-size="11" fill="#555">Voyager — 代码即技能，终身学习</text>
+
+  <circle cx="350" cy="125" r="6" fill="#3498db"/>
+  <text x="370" y="125" font-size="11" fill="#555">Semantic Kernel — Plugin 即技能，企业标准化</text>
+
+  <circle cx="350" cy="170" r="6" fill="#e67e22"/>
+  <text x="200" y="170" text-anchor="end" font-size="12" font-weight="bold" fill="#e67e22">2024</text>
+  <text x="370" y="170" font-size="11" fill="#555">CRAFT — 自动创造工具/技能（ICLR 2024）</text>
+
+  <circle cx="350" cy="210" r="6" fill="#27ae60"/>
+  <text x="200" y="210" text-anchor="end" font-size="12" font-weight="bold" fill="#27ae60">2025</text>
+  <text x="370" y="210" font-size="11" fill="#555">Anthropic Skills — 声明式技能框架 SKILL.md</text>
+
+  <circle cx="350" cy="245" r="6" fill="#27ae60"/>
+  <text x="370" y="245" font-size="11" fill="#555">A2A + add-skill — 技能发现 + 跨平台安装</text>
+
+  <circle cx="350" cy="285" r="6" fill="#9b59b6"/>
+  <text x="200" y="285" text-anchor="end" font-size="12" font-weight="bold" fill="#9b59b6">未来</text>
+  <text x="370" y="285" font-size="11" fill="#9b59b6" font-weight="bold">技能生态 — 类似 npm/pip 的技能市场</text>
+
+  <!-- 箭头 -->
+  <path d="M 344 62 L 344 82" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M 344 97 L 344 117" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M 344 132 L 344 162" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M 344 177 L 344 202" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M 344 217 L 344 237" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M 344 252 L 344 277" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+</svg>

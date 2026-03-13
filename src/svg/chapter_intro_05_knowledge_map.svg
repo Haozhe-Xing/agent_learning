@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" width="700" height="280">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="280" rx="14" fill="#f0f4f8"/>
+  <text x="350" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">第一章核心知识图谱</text>
+
+  <!-- 中心节点 -->
+  <rect x="250" y="50" width="200" height="44" rx="10" fill="#2c3e50"/>
+  <text x="350" y="77" text-anchor="middle" font-size="14" font-weight="bold" fill="white">第1章 什么是 Agent？</text>
+
+  <!-- 连接线 -->
+  <line x1="350" y1="94" x2="350" y2="110" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="350" y1="110" x2="100" y2="110" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="350" y1="110" x2="600" y2="110" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="100" y1="110" x2="100" y2="128" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="225" y1="110" x2="225" y2="128" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="350" y1="110" x2="350" y2="128" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="475" y1="110" x2="475" y2="128" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="600" y1="110" x2="600" y2="128" stroke="#95a5a6" stroke-width="1.5"/>
+
+  <!-- 5个子节点 -->
+  <rect x="30" y="128" width="140" height="40" rx="8" fill="#3498db"/>
+  <text x="100" y="143" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1.1 演进历程</text>
+  <text x="100" y="159" text-anchor="middle" font-size="10" fill="#d6eaf8">规则→意图→LLM→Agent</text>
+
+  <rect x="155" y="128" width="140" height="40" rx="8" fill="#27ae60"/>
+  <text x="225" y="143" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1.2 核心定义</text>
+  <text x="225" y="159" text-anchor="middle" font-size="10" fill="#d5f5e3">LLM+Prompt+Tools+Memory</text>
+
+  <rect x="280" y="128" width="140" height="40" rx="8" fill="#8e44ad"/>
+  <text x="350" y="143" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1.3 核心架构</text>
+  <text x="350" y="159" text-anchor="middle" font-size="10" fill="#e8daef">感知→思考→行动循环</text>
+
+  <rect x="405" y="128" width="140" height="40" rx="8" fill="#e67e22"/>
+  <text x="475" y="143" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1.4 与传统程序区别</text>
+  <text x="475" y="159" text-anchor="middle" font-size="10" fill="#fdebd0">确定性 vs 自主决策</text>
+
+  <rect x="530" y="128" width="140" height="40" rx="8" fill="#e74c3c"/>
+  <text x="600" y="143" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1.5 应用场景</text>
+  <text x="600" y="159" text-anchor="middle" font-size="10" fill="#fadbd8">编程/数据/教育/办公...</text>
+
+  <!-- 详细说明 -->
+  <rect x="30" y="195" width="640" height="65" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="350" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">核心公式</text>
+  <text x="350" y="235" text-anchor="middle" font-size="13" fill="#8e44ad" font-weight="bold">Agent = LLM + Prompt + Tools + Memory + Orchestration</text>
+  <text x="350" y="252" text-anchor="middle" font-size="11" fill="#7f8c8d">感知环境 → LLM 推理决策 → 调用工具行动 → 观察结果 → 循环直到目标达成</text>
+</svg>

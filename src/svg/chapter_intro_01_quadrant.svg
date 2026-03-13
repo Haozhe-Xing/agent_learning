@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <rect width="760" height="400" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">四代 AI 系统能力对比</text>
+
+  <!-- Axes -->
+  <!-- X axis -->
+  <line x1="100" y1="310" x2="700" y2="310" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="100" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">语言理解能力低</text>
+  <text x="700" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">语言理解能力高</text>
+  <text x="400" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">→ 语言理解能力</text>
+
+  <!-- Y axis -->
+  <line x1="100" y1="60" x2="100" y2="310" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="55" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">低</text>
+  <text x="55" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">高</text>
+  <text x="30" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d" transform="rotate(-90, 30, 185)">↑ 任务执行能力</text>
+
+  <!-- Quadrant dividers -->
+  <line x1="100" y1="185" x2="700" y2="185" stroke="#ecf0f1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="400" y1="60" x2="400" y2="310" stroke="#ecf0f1" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Quadrant labels -->
+  <text x="250" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#bdc3c7">能做但不理解</text>
+  <text x="550" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#bdc3c7">理想 Agent ⭐</text>
+  <text x="250" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#bdc3c7">既不理解也不能做</text>
+  <text x="550" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#bdc3c7">能说不能做</text>
+
+  <!-- Data points -->
+  <!-- 规则机器人: low language, low execution -->
+  <circle cx="155" cy="290" r="18" fill="#e74c3c" opacity="0.8"/>
+  <text x="155" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">规则</text>
+  <text x="155" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">规则机器人</text>
+
+  <!-- 意图识别: medium language, medium execution -->
+  <circle cx="310" cy="245" r="18" fill="#e67e22" opacity="0.8"/>
+  <text x="310" y="249" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">意图</text>
+  <text x="310" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e67e22">意图识别系统</text>
+
+  <!-- LLM对话AI: high language, low execution -->
+  <circle cx="620" cy="285" r="18" fill="#3498db" opacity="0.8"/>
+  <text x="620" y="289" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">LLM</text>
+  <text x="620" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">LLM 对话 AI</text>
+
+  <!-- Agent: high language, high execution -->
+  <circle cx="650" cy="90" r="22" fill="#27ae60" opacity="0.9"/>
+  <text x="650" y="94" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Agent</text>
+  <text x="650" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">Agent ⭐</text>
+
+  <!-- Legend / Capability table -->
+  <rect x="100" y="360" width="560" height="30" rx="6" fill="#ecf0f1"/>
+  <text x="380" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">✅ 支持  🟡 部分支持  ❌ 不支持  |  Agent 是唯一同时具备高语言理解和高任务执行能力的系统</text>
+</svg>

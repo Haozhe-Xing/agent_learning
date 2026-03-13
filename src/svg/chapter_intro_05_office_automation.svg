@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 220" width="700" height="220">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="220" rx="14" fill="#f8f9fa"/>
+  <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">办公自动化 Agent 示例</text>
+
+  <!-- 5个功能卡片 -->
+  <rect x="20" y="50" width="124" height="140" rx="10" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="82" y="78" text-anchor="middle" font-size="22">📧</text>
+  <text x="82" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">邮件处理</text>
+  <text x="82" y="118" text-anchor="middle" font-size="10" fill="#7f8c8d">按优先级分类</text>
+  <text x="82" y="132" text-anchor="middle" font-size="10" fill="#7f8c8d">紧急邮件摘要</text>
+  <text x="82" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">自动回复草稿</text>
+
+  <rect x="158" y="50" width="124" height="140" rx="10" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="220" y="78" text-anchor="middle" font-size="22">📅</text>
+  <text x="220" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">日程管理</text>
+  <text x="220" y="118" text-anchor="middle" font-size="10" fill="#7f8c8d">智能安排会议</text>
+  <text x="220" y="132" text-anchor="middle" font-size="10" fill="#7f8c8d">避开已有日程</text>
+  <text x="220" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">发送邀请通知</text>
+
+  <rect x="296" y="50" width="124" height="140" rx="10" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="358" y="78" text-anchor="middle" font-size="22">📝</text>
+  <text x="358" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">文档处理</text>
+  <text x="358" y="118" text-anchor="middle" font-size="10" fill="#7f8c8d">会议记录整理</text>
+  <text x="358" y="132" text-anchor="middle" font-size="10" fill="#7f8c8d">提取行动项</text>
+  <text x="358" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">分配给负责人</text>
+
+  <rect x="434" y="50" width="124" height="140" rx="10" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="496" y="78" text-anchor="middle" font-size="22">📊</text>
+  <text x="496" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">报告生成</text>
+  <text x="496" y="118" text-anchor="middle" font-size="10" fill="#7f8c8d">数据自动汇总</text>
+  <text x="496" y="132" text-anchor="middle" font-size="10" fill="#7f8c8d">生成可视化图表</text>
+  <text x="496" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">一键生成周报</text>
+
+  <rect x="572" y="50" width="108" height="140" rx="10" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="626" y="78" text-anchor="middle" font-size="22">🔍</text>
+  <text x="626" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">信息检索</text>
+  <text x="626" y="118" text-anchor="middle" font-size="10" fill="#7f8c8d">搜索公司文档</text>
+  <text x="626" y="132" text-anchor="middle" font-size="10" fill="#7f8c8d">政策快速查询</text>
+  <text x="626" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">知识库问答</text>
+
+  <!-- 底部说明 -->
+  <text x="350" y="205" text-anchor="middle" font-size="11" fill="#95a5a6">💡 Agent 将这些任务串联起来，实现端到端的办公自动化</text>
+</svg>

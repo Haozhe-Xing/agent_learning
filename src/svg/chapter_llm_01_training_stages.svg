@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 160" width="760" height="160">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="760" height="160" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#2c3e50">从预训练到对话：三个训练阶段</text>
+
+  <!-- Stage 1 -->
+  <rect x="30" y="45" width="210" height="100" rx="12" fill="#e3f2fd" stroke="#3498db" stroke-width="2"/>
+  <text x="135" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2980b9">📚 阶段一：预训练</text>
+  <text x="135" y="86" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">数据：万亿 Token 海量文本</text>
+  <text x="135" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">任务：预测下一个词</text>
+  <text x="135" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">结果：语言理解 + 世界知识</text>
+  <text x="135" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">Pre-training</text>
+
+  <!-- Arrow -->
+  <path d="M 243 95 L 268 95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 2 -->
+  <rect x="271" y="45" width="210" height="100" rx="12" fill="#fff3e0" stroke="#f39c12" stroke-width="2"/>
+  <text x="376" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">🎯 阶段二：指令微调</text>
+  <text x="376" y="86" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">数据：人工标注指令-回复对</text>
+  <text x="376" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">任务：学会"按指令行事"</text>
+  <text x="376" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">结果：能够遵循人类指令</text>
+  <text x="376" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">Instruction Fine-tuning</text>
+
+  <!-- Arrow -->
+  <path d="M 484 95 L 509 95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 3 -->
+  <rect x="512" y="45" width="218" height="100" rx="12" fill="#e8f5e9" stroke="#27ae60" stroke-width="2"/>
+  <text x="621" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">👍 阶段三：RLHF</text>
+  <text x="621" y="86" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">数据：人类对输出的排序偏好</text>
+  <text x="621" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">任务：让回复符合人类期望</text>
+  <text x="621" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">结果：更安全、有用、无害</text>
+  <text x="621" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">人类反馈强化学习</text>
+</svg>

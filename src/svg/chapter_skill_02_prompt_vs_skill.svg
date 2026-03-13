@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="700" height="200">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="700" height="200" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">普通 Agent vs 有技能的 Agent</text>
+
+  <!-- 普通 Agent -->
+  <rect x="30" y="48" width="300" height="65" rx="10" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="180" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">❌ 普通 Agent</text>
+  <text x="180" y="88" text-anchor="middle" font-size="11" fill="#555">System Prompt: "你是一个有用的 AI 助手"</text>
+  <text x="180" y="105" text-anchor="middle" font-size="11" fill="#888">→ 什么都知道一点，什么都不精通</text>
+
+  <!-- 有技能的 Agent -->
+  <rect x="370" y="48" width="300" height="65" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="520" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">✅ 有技能的 Agent</text>
+  <text x="520" y="88" text-anchor="middle" font-size="11" fill="#555">System Prompt + 加载"数据分析师技能"</text>
+  <text x="520" y="105" text-anchor="middle" font-size="11" fill="#888">→ 在数据分析领域表现得像专家</text>
+
+  <!-- 对比箭头 -->
+  <rect x="100" y="130" width="200" height="55" rx="8" fill="#e74c3c" opacity="0.1"/>
+  <text x="200" y="150" text-anchor="middle" font-size="11" fill="#e74c3c">📋 泛化能力</text>
+  <text x="200" y="170" text-anchor="middle" font-size="10" fill="#888">什么都能做，但不够深入</text>
+
+  <rect x="400" y="130" width="200" height="55" rx="8" fill="#27ae60" opacity="0.1"/>
+  <text x="500" y="150" text-anchor="middle" font-size="11" fill="#27ae60">🎯 专业能力</text>
+  <text x="500" y="170" text-anchor="middle" font-size="10" fill="#888">特定领域表现卓越</text>
+</svg>

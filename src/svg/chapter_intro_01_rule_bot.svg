@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">规则机器人的工作方式与问题</text>
+
+  <!-- User Input -->
+  <rect x="50" y="65" width="130" height="55" rx="10" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="115" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3498db">用户输入</text>
+  <text x="115" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">"帮我订机票"</text>
+
+  <!-- Arrow -->
+  <path d="M 183 92 L 225 92" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Keyword Match -->
+  <rect x="228" y="55" width="150" height="75" rx="10" fill="#f39c12" opacity="0.15" stroke="#f39c12" stroke-width="2"/>
+  <text x="303" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#f39c12">关键词匹配</text>
+  <text x="303" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">if "天气" in input</text>
+  <text x="303" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">if "你好" in input</text>
+
+  <!-- Arrow to success -->
+  <path d="M 378 75 L 430 75" stroke="#27ae60" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="404" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">匹配成功</text>
+
+  <!-- Success box -->
+  <rect x="433" y="55" width="140" height="55" rx="10" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+  <text x="503" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">✅ 返回预设回复</text>
+  <text x="503" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">"今天天气不错！"</text>
+
+  <!-- Arrow to fail -->
+  <path d="M 378 110 L 430 155" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="420" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">匹配失败</text>
+
+  <!-- Fail box -->
+  <rect x="433" y="140" width="140" height="55" rx="10" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+  <text x="503" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">❌ 兜底回复</text>
+  <text x="503" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">"我不理解你的意思"</text>
+
+  <!-- Problems section -->
+  <rect x="50" y="200" width="660" height="100" rx="10" fill="#e74c3c" opacity="0.06" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="380" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">⚠️ 核心问题</text>
+  <text x="100" y="245" font-family="Arial, sans-serif" font-size="12" fill="#555">🔴 理解能力为零：只匹配关键词，不理解语义</text>
+  <text x="100" y="265" font-family="Arial, sans-serif" font-size="12" fill="#555">🔴 规则爆炸：场景越多，规则越多，维护成本指数增长</text>
+  <text x="100" y="285" font-family="Arial, sans-serif" font-size="12" fill="#555">🔴 无法泛化："天气好吗"能回答，"出门要带伞吗"就不行</text>
+</svg>

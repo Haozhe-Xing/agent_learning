@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 280" width="760" height="280">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  <rect width="760" height="280" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#2c3e50">RAG vs 直接查询 LLM</text>
+
+  <!-- User question -->
+  <rect x="230" y="55" width="300" height="50" rx="10" fill="#4dabf7" opacity="0.2" stroke="#4dabf7" stroke-width="2"/>
+  <text x="380" y="76" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2980b9">👤 用户问题</text>
+  <text x="380" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">"我们公司的退款政策是什么？"</text>
+
+  <!-- Arrow left -->
+  <path d="M 280 105 L 180 140" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- Arrow right -->
+  <path d="M 480 105 L 580 140" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Direct LLM -->
+  <rect x="60" y="143" width="200" height="55" rx="10" fill="#ffe3e3" stroke="#e74c3c" stroke-width="2"/>
+  <text x="160" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">🧠 直接问 LLM</text>
+  <text x="160" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">无外部知识</text>
+
+  <!-- RAG -->
+  <rect x="500" y="143" width="200" height="55" rx="10" fill="#d3f9d8" stroke="#27ae60" stroke-width="2"/>
+  <text x="600" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">🔍 RAG</text>
+  <text x="600" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">先检索公司文档</text>
+
+  <!-- Arrows to results -->
+  <path d="M 160 200 L 160 225" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+  <path d="M 600 200 L 600 225" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+  <!-- Results -->
+  <rect x="30" y="228" width="260" height="40" rx="8" fill="#ffe3e3" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="160" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#e74c3c">❌ 不知道公司内部文档</text>
+  <text x="160" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#e74c3c">可能编造答案</text>
+
+  <rect x="470" y="228" width="260" height="40" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="600" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60">✅ 检索公司内部文档</text>
+  <text x="600" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60">基于真实文档回答</text>
+</svg>

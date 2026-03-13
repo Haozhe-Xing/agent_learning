@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" width="820" height="480">
+  <rect width="820" height="480" fill="#f8f9fa" rx="12"/>
+  <text x="410" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">Function Calling 完整流程</text>
+  
+  <!-- Step boxes -->
+  <!-- Step 1: User Input -->
+  <rect x="30" y="60" width="140" height="70" rx="10" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="100" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">① 用户输入</text>
+  <text x="100" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">"查询北京天气"</text>
+  <text x="100" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">+ 工具定义列表</text>
+  
+  <!-- Arrow -->
+  <path d="M175 95 L215 95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
+  
+  <!-- Step 2: LLM Reasoning -->
+  <rect x="218" y="60" width="155" height="70" rx="10" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="2"/>
+  <text x="295" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9b59b6">② LLM 推理</text>
+  <text x="295" y="103" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">分析是否需要工具</text>
+  <text x="295" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">选择合适工具和参数</text>
+  
+  <!-- Arrow -->
+  <path d="M376 95 L414 95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
+  
+  <!-- Step 3: Tool Call Request -->
+  <rect x="417" y="60" width="165" height="70" rx="10" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="2"/>
+  <text x="500" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">③ 工具调用请求</text>
+  <text x="500" y="103" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">finish_reason="tool_calls"</text>
+  <text x="500" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">{"city": "北京"}</text>
+  
+  <!-- Arrow -->
+  <path d="M585 95 L622 95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
+  
+  <!-- Step 4: Execute -->
+  <rect x="625" y="60" width="155" height="70" rx="10" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+  <text x="703" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">④ 执行工具</text>
+  <text x="703" y="103" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">调用 Python 函数</text>
+  <text x="703" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">get_weather("北京")</text>
+  
+  <!-- Return arrow (curve) -->
+  <path d="M703 133 Q703 170 500 185 Q295 200 100 185 Q50 180 50 160 L50 133" 
+        stroke="#27ae60" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#green-arr)"/>
+  <text x="400" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60" font-style="italic">工具结果反馈回 LLM（role: tool）</text>
+  
+  <!-- Second LLM call -->
+  <rect x="218" y="230" width="155" height="70" rx="10" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="2"/>
+  <text x="295" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9b59b6">⑤ LLM 再次推理</text>
+  <text x="295" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">基于工具结果</text>
+  <text x="295" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">生成最终回复</text>
+  
+  <path d="M100 185 Q100 240 215 265" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#green-arr)"/>
+  
+  <!-- Final output -->
+  <path d="M376 265 L430 265" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="433" y="230" width="190" height="70" rx="10" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+  <text x="528" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">⑥ 最终回复</text>
+  <text x="528" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">finish_reason="stop"</text>
+  <text x="528" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">"北京今天15°C，晴..."</text>
+  
+  <!-- Message structure section -->
+  <rect x="30" y="330" width="760" height="130" rx="10" fill="white" stroke="#ddd" stroke-width="1.5"/>
+  <text x="410" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#2c3e50">消息历史结构（messages 列表）</text>
+  
+  <!-- Message boxes -->
+  <rect x="50" y="362" width="100" height="85" rx="6" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1"/>
+  <text x="100" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#3498db">user</text>
+  <text x="100" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">"查询北京</text>
+  <text x="100" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">天气"</text>
+  
+  <path d="M155 405 L175 405" stroke="#ccc" stroke-width="1.5" marker-end="url(#small-arr)"/>
+  
+  <rect x="178" y="362" width="120" height="85" rx="6" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1"/>
+  <text x="238" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9b59b6">assistant</text>
+  <text x="238" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">tool_calls: [</text>
+  <text x="238" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">get_weather]</text>
+  <text x="238" y="423" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">content: null</text>
+  
+  <path d="M303 405 L323 405" stroke="#ccc" stroke-width="1.5" marker-end="url(#small-arr)"/>
+  
+  <rect x="326" y="362" width="130" height="85" rx="6" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1"/>
+  <text x="391" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">tool</text>
+  <text x="391" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">tool_call_id: xxx</text>
+  <text x="391" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">{"temp": 15,</text>
+  <text x="391" y="423" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">"city": "北京"}</text>
+  
+  <path d="M461 405 L481 405" stroke="#ccc" stroke-width="1.5" marker-end="url(#small-arr)"/>
+  
+  <rect x="484" y="362" width="140" height="85" rx="6" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1"/>
+  <text x="554" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9b59b6">assistant（最终）</text>
+  <text x="554" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">tool_calls: null</text>
+  <text x="554" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">content: "北京今天</text>
+  <text x="554" y="423" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">15°C，晴天..."</text>
+  
+  <text x="660" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#27ae60">✓</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="green-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="small-arr" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto">
+      <path d="M0,0 L0,5 L6,2.5 z" fill="#bbb"/>
+    </marker>
+  </defs>
+</svg>

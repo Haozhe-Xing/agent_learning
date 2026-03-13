@@ -1,0 +1,196 @@
+# 论文解读：技能系统前沿研究
+
+本节解读与 Agent 技能系统相关的核心论文，涵盖技能学习、工具创造和技能生态三个方向。
+
+---
+
+## Voyager：LLM 驱动的终身学习 Agent
+
+**论文**：*Voyager: An Open-Ended Embodied Agent with Large Language Models*  
+**作者**：Wang et al., NVIDIA & Caltech  
+**发表**：2023 | [arXiv:2305.16291](https://arxiv.org/abs/2305.16291)
+
+### 核心问题
+
+在开放世界环境中，Agent 能否像人类一样**持续探索、不断学习新技能**，而不是只能完成预定义的任务？
+
+### 方法原理
+
+Voyager 在 Minecraft 游戏中构建了 Agent 技能学习的完整闭环：
+
+![Voyager 详细架构](../svg/chapter_skill_06_voyager_detail.svg)
+
+### 关键发现
+
+1. **技能库是终身学习的关键**：没有技能库的 Agent 在 50 次迭代后就停滞不前，有技能库的 Voyager 能持续进步
+2. **技能的时间可扩展性**：早期学到的简单技能可以被后期的复杂任务复用，形成正向循环
+3. **自动课程 > 固定课程**：GPT-4 生成的自适应课程比人类设计的固定课程效率高 4.2 倍
+4. **代码作为技能表示**：用可执行代码表示技能，比自然语言描述更精确、更可靠
+
+### 实验对比
+
+| 指标 | Voyager | ReAct | Reflexion | AutoGPT |
+|------|---------|-------|-----------|---------|
+| 独特物品获取数 | **63** | 41 | 43 | 22 |
+| 技术树覆盖率 | **15.3/36** | 8.5/36 | 9.2/36 | 5.4/36 |
+| 距离探索（方块数） | **2,252** | 1,086 | 1,225 | 892 |
+
+### 对 Agent 开发的启示
+
+Voyager 证明了一个关键架构模式——**技能库 + 自动课程 + 迭代改进**可以让 Agent 实现终身学习。这个模式可以推广到任何 Agent 应用中：
+- 客服 Agent 可以从每次成功的对话中提取"对话技能"
+- 编程 Agent 可以从每次成功的代码修改中提取"编程技能"
+- 研究 Agent 可以从每次成功的调研中提取"研究技能"
+
+---
+
+## CRAFT：创建和检索专用工具集
+
+**论文**：*CRAFT: Customizing LLMs by Creating and Retrieving from Specialized Toolsets*  
+**作者**：Yuan et al., 北京大学  
+**发表**：2024 | ICLR 2024 | [arXiv:2309.17428](https://arxiv.org/abs/2309.17428)
+
+### 核心问题
+
+传统的 Agent 只能使用**预定义的工具**来解决问题。但如果遇到新类型的问题，没有现成工具怎么办？CRAFT 提出：**让 LLM 自己创造工具**。
+
+### 方法原理
+
+```
+传统方法（直接解决）：
+  问题 → LLM 直接生成代码解决 → 可能出错
+
+CRAFT 方法（先造工具再解决）：
+  问题 → 阶段1：创造工具
+           LLM 分析问题模式
+           抽象出可复用的工具函数
+           用测试用例验证工具
+         → 阶段2：使用工具
+           从工具库检索合适的工具
+           组合工具解决具体问题
+
+关键洞察：
+  "抽象化"让 LLM 更少犯错
+  创造一个"求和"工具 + 调用它
+  比直接写一大段求和代码更可靠
+```
+
+### CRAFT vs 直接代码生成
+
+```python
+# 直接代码生成（容易出错）
+def solve_directly(problem):
+    """
+    问题：计算以下矩阵的行列式
+    [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    """
+    # LLM 直接写完整的行列式计算代码
+    # 代码长，容易有 bug
+    matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    det = (matrix[0][0] * (matrix[1][1] * matrix[2][2] - ...)
+           - matrix[0][1] * (...))  # 容易写错！
+    return det
+
+# CRAFT 方法（先造工具再调用）
+def craft_approach():
+    # 阶段1：创造通用的行列式计算工具
+    def determinant(matrix):
+        """计算任意 n×n 矩阵的行列式"""
+        n = len(matrix)
+        if n == 1: return matrix[0][0]
+        if n == 2: return matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0]
+        det = 0
+        for j in range(n):
+            minor = [row[:j] + row[j+1:] for row in matrix[1:]]
+            det += ((-1)**j) * matrix[0][j] * determinant(minor)
+        return det
+    # 验证：determinant([[2,1],[1,2]]) == 3  ✅
+    
+    # 阶段2：调用工具解决具体问题
+    result = determinant([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    return result  # 更可靠
+```
+
+### 关键发现
+
+1. **"先抽象后使用"优于"直接解决"**：CRAFT 在数学推理和视觉问答任务上显著优于直接代码生成
+2. **工具复用率高**：约 60% 的新问题可以直接使用已创建的工具
+3. **工具组合能力**：多个简单工具组合可以解决复杂问题
+4. **质量验证是关键**：没有测试用例验证的工具，错误率高 3 倍
+
+### 对 Agent 开发的启示
+
+CRAFT 提供了一个重要的设计理念——Agent 不应该局限于使用预定义的工具，而应该能够**按需创造新工具**。在实际项目中：
+- 当 Agent 反复遇到类似的数据处理需求时，可以自动创建一个专用工具
+- 创建的工具经过验证后保存到工具库，下次直接复用
+- 这与 Voyager 的技能库思想异曲同工，只是应用场景不同
+
+---
+
+## Anthropic Skills 生态
+
+**项目**：*Anthropic Agent Skills*  
+**作者**：Anthropic  
+**发布**：2025 | [github.com/anthropics/skills](https://github.com/anthropics/skills)
+
+### 核心贡献
+
+Anthropic 开源了一套完整的**声明式技能框架**，用 `SKILL.md` 文件定义 Agent 技能。这是工业界首次系统化地定义 Agent 技能的标准。
+
+### 框架设计
+
+![SKILL.md 设计理念](../svg/chapter_skill_06_skillmd_design.svg)
+
+### 16 个示范技能覆盖的领域
+
+| 类别 | 示范技能 | 用途 |
+|------|---------|------|
+| 文档处理 | 文档分析、内容生成 | 处理各种格式的文档 |
+| 创意设计 | 主题工厂、画布设计 | 生成品牌素材和设计方案 |
+| 开发技术 | 代码审查、架构设计 | 辅助软件开发流程 |
+| 企业应用 | 商务沟通、数据分析 | 日常办公自动化 |
+
+### 对 Agent 开发的启示
+
+Anthropic Skills 的最大贡献是**降低了技能创建的门槛**——你不需要写代码，只需要写一份结构化的 Markdown 文档，就能为 Agent 添加新技能。社区项目 [add-skill](https://add-skill.org/) 进一步提供了跨平台的技能安装工具，支持 Claude Code、Cursor、OpenCode 等主流 AI 编程工具。
+
+---
+
+## 论文对比与发展脉络
+
+| 论文/项目 | 年份 | 技能类型 | 核心创新 | 适用场景 |
+|----------|------|---------|---------|---------|
+| HuggingGPT/JARVIS | 2023 | 模型路由 | 跨模型任务分发 | 多模态任务 |
+| **Voyager** | **2023** | **代码技能** | **技能库 + 终身学习** | 具身智能/探索 |
+| Semantic Kernel | 2023 | Plugin | 企业级技能封装 | 企业应用 |
+| **CRAFT** | **2024** | **工具创造** | **创建 + 检索 + 验证** | 问题求解 |
+| **Anthropic Skills** | **2025** | **声明式技能** | **SKILL.md 标准化** | 通用 Agent |
+| A2A Agent Card | 2025 | 技能声明 | 多 Agent 技能发现 | 多 Agent 协作 |
+
+**发展脉络**：
+
+![技能系统演进](../svg/chapter_skill_06_evolution.svg)
+
+```
+HuggingGPT / JARVIS (2023，模型即技能，任务路由)
+    ↓
+Voyager (2023，代码即技能，终身学习)
+    ↓
+Semantic Kernel (2023，Plugin 即技能，企业标准化)
+    ↓
+CRAFT (2024，自动创造工具/技能，ICLR 2024)
+    ↓
+Anthropic Skills (2025，声明式技能框架，SKILL.md)
+    ↓
+A2A + add-skill (2025，技能发现 + 跨平台安装)
+    ↓
+技能生态 (未来，类似 npm/pip 的技能市场)
+```
+
+> 💡 **前沿趋势（2025-2026）**：Agent 技能系统正在经历从"手工定义"到"生态化"的转变。三大趋势：① **技能标准化**：Anthropic 的 SKILL.md 和 Google 的 A2A Agent Card 正在成为技能描述的行业标准；② **技能市场化**：add-skill CLI 等社区工具让技能可以像 npm 包一样安装和共享；③ **技能自进化**：Voyager 和 CRAFT 展示了 Agent 自主学习和创造技能的可能性——未来的 Agent 将能够在工作中不断积累新技能，技能库持续增长。
+
+---
+
+*返回：[Agent 技能系统](./README.md)*
+
+*下一章：[第6章 记忆系统（Memory）](../chapter_memory/README.md)*
