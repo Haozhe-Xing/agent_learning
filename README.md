@@ -5,11 +5,11 @@
 **一本系统、全面、实战导向的 AI Agent 开发教程**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Stars](https://img.shields.io/github/stars/yourusername/agent_learning?style=social)](https://github.com/yourusername/agent_learning)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yourusername/agent_learning/pulls)
+[![Stars](https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=social)](https://github.com/Haozhe-Xing/agent_learning)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Haozhe-Xing/agent_learning/pulls)
 [![mdBook](https://img.shields.io/badge/built%20with-mdBook-blue)](https://rust-lang.github.io/mdBook/)
 
-[📖 在线阅读](https://yourusername.github.io/agent_learning) · [🐛 提交问题](https://github.com/yourusername/agent_learning/issues) · [💬 参与讨论](https://github.com/yourusername/agent_learning/discussions)
+[📖 在线阅读](https://Haozhe-Xing.github.io/agent_learning) · [🐛 提交问题](https://github.com/Haozhe-Xing/agent_learning/issues) · [💬 参与讨论](https://github.com/Haozhe-Xing/agent_learning/discussions)
 
 </div>
 
@@ -127,7 +127,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 ### 在线阅读（推荐）
 
-直接访问 👉 **[https://yourusername.github.io/agent_learning](https://yourusername.github.io/agent_learning)**
+直接访问 👉 **[https://Haozhe-Xing.github.io/agent_learning](https://Haozhe-Xing.github.io/agent_learning)**
 
 ### 本地构建
 
@@ -136,7 +136,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 cargo install mdbook
 
 # 克隆仓库
-git clone https://github.com/yourusername/agent_learning.git
+git clone https://github.com/Haozhe-Xing/agent_learning.git
 cd agent_learning
 
 # 本地预览
@@ -214,8 +214,8 @@ export OPENAI_API_KEY="your-key-here"
 
 欢迎任何形式的贡献！
 
-- 🐛 **发现错误**：[提交 Issue](https://github.com/yourusername/agent_learning/issues)
-- 💡 **内容建议**：[发起 Discussion](https://github.com/yourusername/agent_learning/discussions)
+- 🐛 **发现错误**：[提交 Issue](https://github.com/Haozhe-Xing/agent_learning/issues)
+- 💡 **内容建议**：[发起 Discussion](https://github.com/Haozhe-Xing/agent_learning/discussions)
 - 📝 **改进内容**：Fork → 修改 → 提交 PR
 - ⭐ **支持项目**：给本仓库点个 Star！
 
@@ -223,7 +223,7 @@ export OPENAI_API_KEY="your-key-here"
 
 ```bash
 # Fork 并克隆
-git clone https://github.com/YOUR_USERNAME/agent_learning.git
+git clone https://github.com/YOUR_USERNAME/agent_learning.git  # 替换为你的用户名
 
 # 创建特性分支
 git checkout -b feature/improve-chapter-4
