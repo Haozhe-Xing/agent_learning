@@ -12,21 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -36,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-def06b39.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-935f2e24.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -53,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -82,12 +81,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -102,39 +101,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,49 +141,46 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="56-论文解读记忆系统前沿进展"><a class="header" href="#56-论文解读记忆系统前沿进展">5.6 论文解读：记忆系统前沿进展</a></h1>
 <blockquote>
-<p>📖 <em>"记忆不只是存储，更是理解和推理的基础。"</em><br />
-<em>Agent 记忆系统的研究正在快速发展，以下是最有影响力的几项工作。</em></p>
+<p>📖 <em>“记忆不只是存储，更是理解和推理的基础。”</em><br><em>Agent 记忆系统的研究正在快速发展，以下是最有影响力的几项工作。</em></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="generative-agents虚拟小镇中的记忆里程碑"><a class="header" href="#generative-agents虚拟小镇中的记忆里程碑">Generative Agents：虚拟小镇中的记忆里程碑</a></h2>
-<p><strong>论文</strong>：<em>Generative Agents: Interactive Simulacra of Human Behavior</em><br />
-<strong>作者</strong>：Park et al., Stanford University &amp; Google Research<br />
-<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2304.03442">arXiv:2304.03442</a></p>
+<p><strong>论文</strong>：<em>Generative Agents: Interactive Simulacra of Human Behavior</em><br><strong>作者</strong>：Park et al., Stanford University &amp; Google Research<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2304.03442">arXiv:2304.03442</a></p>
 <h3 id="核心问题"><a class="header" href="#核心问题">核心问题</a></h3>
 <p>如何让 AI Agent 像人类一样拥有丰富的内心世界——记住过去的经历、反思这些经历的意义、并据此制定未来的计划？</p>
 <h3 id="实验设计"><a class="header" href="#实验设计">实验设计</a></h3>
@@ -217,18 +213,16 @@
 </code></pre>
 <h3 id="对-agent-开发的启示"><a class="header" href="#对-agent-开发的启示">对 Agent 开发的启示</a></h3>
 <ol>
-<li><strong>"观察-反思-检索"框架</strong>是设计 Agent 记忆系统的黄金范式。大多数后续研究都借鉴了这一框架</li>
+<li><strong>“观察-反思-检索“框架</strong>是设计 Agent 记忆系统的黄金范式。大多数后续研究都借鉴了这一框架</li>
 <li><strong>重要性评分</strong>的思想——不是所有信息都值得记忆，需要有选择性</li>
 <li><strong>多维度检索</strong>优于单维度检索（纯时间序列或纯语义相似度都不够）</li>
-<li><strong>反思机制</strong>让 Agent 能从具体经历中提炼出抽象知识——这是"智能"的关键标志</li>
+<li><strong>反思机制</strong>让 Agent 能从具体经历中提炼出抽象知识——这是“智能“的关键标志</li>
 </ol>
-<hr />
+<hr>
 <h2 id="memgpt操作系统式的记忆管理"><a class="header" href="#memgpt操作系统式的记忆管理">MemGPT：操作系统式的记忆管理</a></h2>
-<p><strong>论文</strong>：<em>MemGPT: Towards LLMs as Operating Systems</em><br />
-<strong>作者</strong>：Packer et al., UC Berkeley<br />
-<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2310.08560">arXiv:2310.08560</a></p>
+<p><strong>论文</strong>：<em>MemGPT: Towards LLMs as Operating Systems</em><br><strong>作者</strong>：Packer et al., UC Berkeley<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2310.08560">arXiv:2310.08560</a></p>
 <h3 id="核心问题-1"><a class="header" href="#核心问题-1">核心问题</a></h3>
-<p>LLM 的上下文窗口是有限的（即使 128K Token 也会耗尽）。当对话足够长或需要处理大量信息时，如何管理这个有限的"内存"？</p>
+<p>LLM 的上下文窗口是有限的（即使 128K Token 也会耗尽）。当对话足够长或需要处理大量信息时，如何管理这个有限的“内存“？</p>
 <h3 id="核心类比llm--计算机"><a class="header" href="#核心类比llm--计算机">核心类比：LLM = 计算机</a></h3>
 <p>MemGPT 最精妙的洞察是将 LLM 的上下文窗口类比为计算机的内存管理：</p>
 <pre><code>┌─────────────────────────────────────────────────────────┐
@@ -251,13 +245,13 @@
 <p>关键机制：</p>
 <ul>
 <li><strong>自我编辑函数</strong>：Agent 可以调用 <code>core_memory_append()</code>、<code>core_memory_replace()</code> 等函数来主动管理自己的记忆</li>
-<li><strong>自动换入换出</strong>：当 Agent 需要的信息不在主上下文中时，系统自动从外部存储中检索并"换入"</li>
+<li><strong>自动换入换出</strong>：当 Agent 需要的信息不在主上下文中时，系统自动从外部存储中检索并“换入“</li>
 <li><strong>暂停与恢复</strong>：Agent 可以暂停当前对话，去外部存储中搜索信息，然后恢复</li>
 </ul>
 <h3 id="关键发现"><a class="header" href="#关键发现">关键发现</a></h3>
 <ol>
 <li><strong>理论上无限的记忆</strong>：通过分层存储，LLM 可以突破上下文窗口的限制</li>
-<li><strong>主动记忆管理</strong>：Agent 自己决定哪些信息值得保留在"工作记忆"中</li>
+<li><strong>主动记忆管理</strong>：Agent 自己决定哪些信息值得保留在“工作记忆“中</li>
 <li><strong>多会话连续性</strong>：跨会话的信息可以通过外部存储持续保存</li>
 </ol>
 <h3 id="对-agent-开发的启示-1"><a class="header" href="#对-agent-开发的启示-1">对 Agent 开发的启示</a></h3>
@@ -267,13 +261,11 @@
 <li><strong>Agent 自管理记忆</strong>：给 Agent 提供记忆管理工具（如本书 5.5 节的实战项目）</li>
 <li><strong>参考 mem0 等开源方案</strong>：<a href="https://github.com/mem0ai/mem0">mem0</a> 是 MemGPT 理念的开源实现</li>
 </ul>
-<hr />
+<hr>
 <h2 id="memorybank遗忘曲线启发的记忆管理"><a class="header" href="#memorybank遗忘曲线启发的记忆管理">MemoryBank：遗忘曲线启发的记忆管理</a></h2>
-<p><strong>论文</strong>：<em>MemoryBank: Enhancing Large Language Models with Long-Term Memory</em><br />
-<strong>作者</strong>：Zhong et al.<br />
-<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2305.10250">arXiv:2305.10250</a></p>
+<p><strong>论文</strong>：<em>MemoryBank: Enhancing Large Language Models with Long-Term Memory</em><br><strong>作者</strong>：Zhong et al.<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2305.10250">arXiv:2305.10250</a></p>
 <h3 id="核心问题-2"><a class="header" href="#核心问题-2">核心问题</a></h3>
-<p>现有的记忆系统要么"全部记住"（存储爆炸），要么"只记最新"（遗忘重要信息）。如何模拟人类真实的记忆行为——重要的、经常回忆的记忆被巩固，不重要的、不常回忆的记忆逐渐淡化？</p>
+<p>现有的记忆系统要么“全部记住“（存储爆炸），要么“只记最新“（遗忘重要信息）。如何模拟人类真实的记忆行为——重要的、经常回忆的记忆被巩固，不重要的、不常回忆的记忆逐渐淡化？</p>
 <h3 id="方法原理-1"><a class="header" href="#方法原理-1">方法原理</a></h3>
 <p>MemoryBank 的核心创新是引入了<strong>艾宾浩斯遗忘曲线（Ebbinghaus Forgetting Curve）</strong>：</p>
 <pre><code>记忆强度 = 初始强度 × e^(-t/S)
@@ -292,19 +284,17 @@
 <ol>
 <li><strong>记忆写入</strong>：新信息带初始强度存入</li>
 <li><strong>记忆回忆</strong>：检索时更新访问时间，增加稳定性</li>
-<li><strong>记忆遗忘</strong>：定期扫描，强度低于阈值的记忆被移至"归档区"</li>
+<li><strong>记忆遗忘</strong>：定期扫描，强度低于阈值的记忆被移至“归档区“</li>
 </ol>
 <h3 id="对-agent-开发的启示-2"><a class="header" href="#对-agent-开发的启示-2">对 Agent 开发的启示</a></h3>
 <ul>
-<li><strong>自然的信息管理</strong>：比起手动设置"保留最近 N 条"，遗忘曲线更智能</li>
+<li><strong>自然的信息管理</strong>：比起手动设置“保留最近 N 条“，遗忘曲线更智能</li>
 <li><strong>用户画像随时间演进</strong>：用户的偏好可能会变化，旧偏好自然衰减</li>
 <li><strong>存储效率</strong>：自动淘汰不再需要的信息，控制存储成本</li>
 </ul>
-<hr />
+<hr>
 <h2 id="coalaagent-认知架构的统一框架"><a class="header" href="#coalaagent-认知架构的统一框架">CoALA：Agent 认知架构的统一框架</a></h2>
-<p><strong>论文</strong>：<em>Cognitive Architectures for Language Agents (CoALA)</em><br />
-<strong>作者</strong>：Sumers et al.<br />
-<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2309.02427">arXiv:2309.02427</a></p>
+<p><strong>论文</strong>：<em>Cognitive Architectures for Language Agents (CoALA)</em><br><strong>作者</strong>：Sumers et al.<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2309.02427">arXiv:2309.02427</a></p>
 <h3 id="核心问题-3"><a class="header" href="#核心问题-3">核心问题</a></h3>
 <p>Agent 的记忆系统、推理系统、行动系统之间是什么关系？是否存在一个统一的认知架构来组织这些组件？</p>
 <h3 id="coala-框架"><a class="header" href="#coala-框架">CoALA 框架</a></h3>
@@ -336,24 +326,22 @@
 <h3 id="核心贡献"><a class="header" href="#核心贡献">核心贡献</a></h3>
 <ol>
 <li><strong>统一分类</strong>：将现有的 Agent 系统按认知架构的组件进行分类和比较</li>
-<li><strong>记忆三分法</strong>：工作记忆 / 情景记忆 / 语义记忆 的划分比传统的"短期/长期"划分更精细</li>
-<li><strong>设计指导</strong>：为 Agent 开发者提供了一个"清单"——在设计 Agent 时需要考虑哪些认知组件</li>
+<li><strong>记忆三分法</strong>：工作记忆 / 情景记忆 / 语义记忆 的划分比传统的“短期/长期“划分更精细</li>
+<li><strong>设计指导</strong>：为 Agent 开发者提供了一个“清单“——在设计 Agent 时需要考虑哪些认知组件</li>
 </ol>
 <h3 id="对-agent-开发的启示-3"><a class="header" href="#对-agent-开发的启示-3">对 Agent 开发的启示</a></h3>
 <p>CoALA 框架帮助我们更系统地思考 Agent 设计：</p>
 <ul>
-<li><strong>情景记忆 ≠ 语义记忆</strong>：前者存储"我经历了什么"，后者存储"我知道什么"。两者的检索策略不同</li>
+<li><strong>情景记忆 ≠ 语义记忆</strong>：前者存储“我经历了什么“，后者存储“我知道什么“。两者的检索策略不同</li>
 <li><strong>工作记忆是推理的基础</strong>：复杂推理需要 Scratchpad（详见 5.4 节）</li>
 <li><strong>学习循环</strong>：Agent 不仅要使用记忆，还要从经验中学习并更新记忆</li>
 </ul>
-<hr />
-<hr />
+<hr>
+<hr>
 <h2 id="hipporag受海马体启发的长时记忆"><a class="header" href="#hipporag受海马体启发的长时记忆">HippoRAG：受海马体启发的长时记忆</a></h2>
-<p><strong>论文</strong>：<em>HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models</em><br />
-<strong>作者</strong>：Gutiérrez et al., 俄亥俄州立大学 NLP Group<br />
-<strong>发表</strong>：2024 | NeurIPS 2024 | <a href="https://arxiv.org/abs/2405.14831">arXiv:2405.14831</a></p>
+<p><strong>论文</strong>：<em>HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models</em><br><strong>作者</strong>：Gutiérrez et al., 俄亥俄州立大学 NLP Group<br><strong>发表</strong>：2024 | NeurIPS 2024 | <a href="https://arxiv.org/abs/2405.14831">arXiv:2405.14831</a></p>
 <h3 id="核心问题-4"><a class="header" href="#核心问题-4">核心问题</a></h3>
-<p>人类大脑的海马体能够高效地整合新信息并与已有知识关联，而现有的 RAG 系统只是简单地"检索最相似的片段"——缺乏对知识之间<strong>关联关系</strong>的建模。</p>
+<p>人类大脑的海马体能够高效地整合新信息并与已有知识关联，而现有的 RAG 系统只是简单地“检索最相似的片段“——缺乏对知识之间<strong>关联关系</strong>的建模。</p>
 <h3 id="方法原理-2"><a class="header" href="#方法原理-2">方法原理</a></h3>
 <p>HippoRAG 模拟了海马体的记忆索引理论（Complementary Learning Systems）：</p>
 <pre><code>传统 RAG：
@@ -379,12 +367,10 @@ HippoRAG：
 <li><strong>在多跳问答任务上显著优于标准 RAG</strong>：在 MuSiQue 等基准上提升 20%+</li>
 </ol>
 <h3 id="对-agent-开发的启示-4"><a class="header" href="#对-agent-开发的启示-4">对 Agent 开发的启示</a></h3>
-<p>HippoRAG 为 Agent 的长期记忆提供了一个新范式——用<strong>知识图谱作为记忆的索引层</strong>，向量数据库作为原始内容的存储层，两者协作实现高质量的记忆检索。这与 CoALA 框架中"语义记忆"的概念高度吻合。</p>
-<hr />
+<p>HippoRAG 为 Agent 的长期记忆提供了一个新范式——用<strong>知识图谱作为记忆的索引层</strong>，向量数据库作为原始内容的存储层，两者协作实现高质量的记忆检索。这与 CoALA 框架中“语义记忆“的概念高度吻合。</p>
+<hr>
 <h2 id="zep时序知识图谱驱动的-agent-记忆"><a class="header" href="#zep时序知识图谱驱动的-agent-记忆">Zep：时序知识图谱驱动的 Agent 记忆</a></h2>
-<p><strong>论文</strong>：<em>Zep: A Temporal Knowledge Graph Architecture for Agent Memory</em><br />
-<strong>作者</strong>：Rasmussen et al.<br />
-<strong>发表</strong>：2025 | <a href="https://arxiv.org/abs/2501.13956">arXiv:2501.13956</a></p>
+<p><strong>论文</strong>：<em>Zep: A Temporal Knowledge Graph Architecture for Agent Memory</em><br><strong>作者</strong>：Rasmussen et al.<br><strong>发表</strong>：2025 | <a href="https://arxiv.org/abs/2501.13956">arXiv:2501.13956</a></p>
 <h3 id="核心问题-5"><a class="header" href="#核心问题-5">核心问题</a></h3>
 <p>现有的 Agent 记忆系统大多忽略了<strong>时间维度</strong>——信息何时被记录、何时过期、不同时间点的信息如何演变。但在实际应用中，时间信息至关重要：</p>
 <pre><code>例子：用户偏好的演变
@@ -416,15 +402,21 @@ HippoRAG：
 <li><strong>知识图谱是记忆组织的理想结构</strong>：比纯向量列表更能表达实体间的复杂关系</li>
 <li>Zep 已开源并提供 Python SDK，可以直接集成到 LangChain / LangGraph 项目中</li>
 </ul>
-<hr />
+<hr>
 <h2 id="论文对比与发展脉络"><a class="header" href="#论文对比与发展脉络">论文对比与发展脉络</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>维度</th><th>Generative Agents</th><th>MemGPT</th><th>MemoryBank</th><th>CoALA</th><th>HippoRAG</th><th>Zep</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>Generative Agents</th><th>MemGPT</th><th>MemoryBank</th><th>CoALA</th><th>HippoRAG</th><th>Zep</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>年份</strong></td><td>2023</td><td>2023</td><td>2023</td><td>2023</td><td>2024</td><td>2025</td></tr>
 <tr><td><strong>核心创新</strong></td><td>观察-反思-检索框架</td><td>OS 式分层存储</td><td>遗忘曲线记忆管理</td><td>统一认知架构</td><td>海马体索引理论</td><td>时序知识图谱</td></tr>
 <tr><td><strong>记忆类型</strong></td><td>记忆流 + 反思</td><td>主上下文 + 外部存储</td><td>遗忘曲线驱动</td><td>工作/情景/语义</td><td>知识图谱索引</td><td>时序图 + 情景</td></tr>
 <tr><td><strong>特色</strong></td><td>反思机制</td><td>自我编辑内存</td><td>自然记忆衰减</td><td>理论框架</td><td>跨文档关联</td><td>时间感知</td></tr>
 <tr><td><strong>适用场景</strong></td><td>社会模拟</td><td>长对话</td><td>用户画像</td><td>系统设计</td><td>知识密集任务</td><td>个人助理</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <p><strong>发展脉络</strong>：</p>
 <pre><code>Generative Agents (建立了记忆系统的基本范式)
@@ -440,9 +432,9 @@ HippoRAG (用知识图谱作为记忆索引层, NeurIPS 2024)
 Zep + mem0 (时序图谱 + 工业级记忆方案, 2025)
 </code></pre>
 <blockquote>
-<p>💡 <strong>前沿趋势（2025-2026）</strong>：记忆系统正在从"被动存储"向"主动组织"演进，两大关键趋势：① <strong>知识图谱成为记忆的核心</strong>：HippoRAG、Zep、mem0 都采用了图结构来组织记忆，相比纯向量存储能更好地表达实体关系和支持多跳推理；② <strong>时间感知记忆</strong>：Agent 需要理解"什么时候知道了什么"、"哪些信息已过时"，Zep 的时序知识图谱和 MemoryBank 的遗忘曲线代表了两种互补的时间建模方案。<a href="https://github.com/mem0ai/mem0">mem0</a> 作为开源记忆层方案已获得广泛采用，支持自动记忆提取、冲突检测和图结构记忆。</p>
+<p>💡 <strong>前沿趋势（2025-2026）</strong>：记忆系统正在从“被动存储“向“主动组织“演进，两大关键趋势：① <strong>知识图谱成为记忆的核心</strong>：HippoRAG、Zep、mem0 都采用了图结构来组织记忆，相比纯向量存储能更好地表达实体关系和支持多跳推理；② <strong>时间感知记忆</strong>：Agent 需要理解“什么时候知道了什么“、“哪些信息已过时”，Zep 的时序知识图谱和 MemoryBank 的遗忘曲线代表了两种互补的时间建模方案。<a href="https://github.com/mem0ai/mem0">mem0</a> 作为开源记忆层方案已获得广泛采用，支持自动记忆提取、冲突检测和图结构记忆。</p>
 </blockquote>
-<hr />
+<hr>
 <p><em>返回：<a href="./README.html">第5章 记忆系统</a></em></p>
 
                     </main>
@@ -450,11 +442,11 @@ Zep + mem0 (时序图谱 + 工业级记忆方案, 2025)
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../chapter_memory/05_practice_memory_agent.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../chapter_planning/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -464,32 +456,21 @@ Zep + mem0 (时序图谱 + 工业级记忆方案, 2025)
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../chapter_memory/05_practice_memory_agent.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../chapter_planning/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -498,13 +479,13 @@ Zep + mem0 (时序图谱 + 工业级记忆方案, 2025)
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 
