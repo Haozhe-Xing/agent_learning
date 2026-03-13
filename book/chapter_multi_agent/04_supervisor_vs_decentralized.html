@@ -1,0 +1,469 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>12.4 Supervisor 模式 vs. 去中心化模式 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="supervisor-模式-vs-去中心化模式"><a class="header" href="#supervisor-模式-vs-去中心化模式">Supervisor 模式 vs. 去中心化模式</a></h1>
+<p>多 Agent 系统有一个根本性的架构决策：<strong>谁来协调？</strong> 是设置一个"项目经理"统一调度所有 Agent（Supervisor 模式），还是让 Agent 之间自由协商（去中心化模式）？</p>
+<p>这两种模式各有优劣，大多数实际项目会选择 Supervisor 模式，因为它更容易控制和调试。本节通过完整的代码示例对比两种方案。</p>
+<h2 id="supervisor中心化模式"><a class="header" href="#supervisor中心化模式">Supervisor（中心化）模式</a></h2>
+<p>Supervisor 模式的工作方式类似于项目管理：一个 Supervisor Agent 负责分析任务、分配子任务、监控进度、汇总结果。所有的决策都通过 Supervisor 来协调。</p>
+<p>下面的示例构建了一个"内容创作团队"——Supervisor 协调研究员、写作员和审查员三个子 Agent：</p>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END, START
+from langgraph.prebuilt import create_react_agent
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from typing import TypedDict, Annotated, Literal
+import operator
+
+llm = ChatOpenAI(model="gpt-4o")
+
+# ============================
+# 定义各子 Agent 的工具
+# ============================
+
+@tool
+def do_research(topic: str) -&gt; str:
+    """研究专员：深度研究指定主题"""
+    from openai import OpenAI
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": f"研究{topic}，给出3个核心观点"}],
+        max_tokens=200
+    )
+    return response.choices[0].message.content
+
+@tool
+def write_content(outline: str) -&gt; str:
+    """写作专员：根据大纲写内容"""
+    from openai import OpenAI
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": f"根据大纲写300字文章：{outline}"}],
+        max_tokens=400
+    )
+    return response.choices[0].message.content
+
+@tool
+def review_content(content: str) -&gt; str:
+    """审查专员：检查内容质量"""
+    from openai import OpenAI
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": f"评审以下内容（评分+建议）：{content[:200]}"}],
+        max_tokens=150
+    )
+    return response.choices[0].message.content
+
+# Supervisor Agent 有所有工具的访问权
+supervisor_tools = [do_research, write_content, review_content]
+supervisor_agent = create_react_agent(llm, supervisor_tools)
+
+# ============================
+# Supervisor 决策逻辑
+# ============================
+
+class SupervisorState(TypedDict):
+    messages: Annotated[list, operator.add]
+    task: str
+    research_done: bool
+    content_written: bool
+    review_done: bool
+
+def supervisor(state: SupervisorState) -&gt; dict:
+    """Supervisor：统一协调所有子任务"""
+    from langchain_core.messages import HumanMessage, SystemMessage
+    
+    context = f"""
+你是任务协调者，管理一个内容创作团队。
+可用工具：do_research, write_content, review_content
+
+任务：{state['task']}
+研究完成：{state.get('research_done', False)}
+写作完成：{state.get('content_written', False)}
+审查完成：{state.get('review_done', False)}
+
+请分析当前进展，决定下一步：
+1. 如果研究未完成 → 使用 do_research
+2. 如果研究完成但写作未完成 → 使用 write_content
+3. 如果写作完成但审查未完成 → 使用 review_content
+4. 如果全部完成 → 总结并结束
+
+当前消息历史（用于获取之前的输出）：
+{[m.content if hasattr(m, 'content') else str(m) for m in state.get('messages', [])[-3:]]}
+"""
+    
+    result = supervisor_agent.invoke({
+        "messages": [HumanMessage(content=context)]
+    })
+    
+    last_msg = result["messages"][-1]
+    content = last_msg.content if hasattr(last_msg, 'content') else ""
+    
+    # 更新状态
+    updates = {"messages": [last_msg]}
+    if "research" in content.lower():
+        updates["research_done"] = True
+    if "write" in content.lower() or "文章" in content:
+        updates["content_written"] = True
+    if "review" in content.lower() or "评审" in content:
+        updates["review_done"] = True
+    
+    return updates
+
+def should_continue(state: SupervisorState) -&gt; str:
+    if state.get("review_done"):
+        return "end"
+    return "continue"
+
+# 构建 Supervisor 图
+graph = StateGraph(SupervisorState)
+graph.add_node("supervisor", supervisor)
+graph.add_edge(START, "supervisor")
+graph.add_conditional_edges(
+    "supervisor",
+    should_continue,
+    {"end": END, "continue": "supervisor"}
+)
+
+supervisor_app = graph.compile()
+
+# 运行
+result = supervisor_app.invoke({
+    "messages": [],
+    "task": "写一篇关于 Python 异步编程的技术文章",
+    "research_done": False,
+    "content_written": False,
+    "review_done": False
+})
+
+print("最终状态：")
+print(f"  研究完成: {result['research_done']}")
+print(f"  写作完成: {result['content_written']}")
+print(f"  审查完成: {result['review_done']}")
+</code></pre>
+<h2 id="去中心化模式"><a class="header" href="#去中心化模式">去中心化模式</a></h2>
+<p>与 Supervisor 模式不同，去中心化模式没有中央协调者。每个 Agent 都有自己的收件箱，通过广播或点对点消息直接与其他 Agent 通信。这种模式更像是一个自组织团队——成员之间自由讨论，自行决定谁来做什么。</p>
+<p>优点是没有单点故障、灵活性高；缺点是协调成本大、容易出现冲突或死锁。</p>
+<pre><code class="language-python"># 去中心化：Agent 之间直接协商，没有中央协调者
+
+class PeerToPeerNetwork:
+    """点对点 Agent 网络"""
+    
+    def __init__(self):
+        self.agents = {}
+        self.message_board = {}  # 共享消息板
+    
+    def add_agent(self, name: str, specialization: str):
+        self.agents[name] = {
+            "name": name,
+            "specialization": specialization,
+            "inbox": [],
+        }
+    
+    def broadcast(self, sender: str, message: str, target: str = "all"):
+        """广播消息"""
+        if target == "all":
+            for name, agent in self.agents.items():
+                if name != sender:
+                    agent["inbox"].append({
+                        "from": sender,
+                        "message": message
+                    })
+        else:
+            if target in self.agents:
+                self.agents[target]["inbox"].append({
+                    "from": sender,
+                    "message": message
+                })
+    
+    def process_inbox(self, agent_name: str) -&gt; list[str]:
+        """处理收件箱"""
+        agent = self.agents[agent_name]
+        messages = agent["inbox"].copy()
+        agent["inbox"].clear()
+        return [m["message"] for m in messages]
+
+# 使用示例
+network = PeerToPeerNetwork()
+network.add_agent("research", "信息研究")
+network.add_agent("writing", "内容写作")
+network.add_agent("editing", "文章编辑")
+
+# Agent 之间直接通信，自组织完成任务
+# 这种模式更灵活，但也更难以控制
+</code></pre>
+<h2 id="两种模式对比"><a class="header" href="#两种模式对比">两种模式对比</a></h2>
+<pre><code>Supervisor（中心化）：
+✅ 易于协调和控制
+✅ 全局视野，避免重复工作
+✅ 易于调试和监控
+❌ Supervisor 成为瓶颈
+❌ Supervisor 失败则全体失败
+
+去中心化：
+✅ 无单点故障
+✅ 高度灵活，自适应
+✅ 更接近真实团队协作
+❌ 协调成本高
+❌ 可能产生冲突或死锁
+❌ 调试困难
+
+建议：
+- 大多数生产场景 → Supervisor 模式
+- 需要高容错性 → 去中心化
+- 任务边界清晰 → Supervisor 更合适
+</code></pre>
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>本节对比了多 Agent 系统的两大架构范式：</p>
+<ul>
+<li><strong>Supervisor（中心化）模式</strong>：由一个协调者 Agent 统一调度所有子 Agent，具有全局视野，易于协调和监控。代码示例展示了如何用 LangGraph 构建 Supervisor 循环，通过状态标记追踪任务进度。适合任务边界清晰、需要严格控制流程的场景。</li>
+<li><strong>去中心化模式</strong>：Agent 之间通过点对点网络直接通信，没有单点故障，灵活性高。但协调成本和调试难度也更大。</li>
+</ul>
+<p><strong>实际建议</strong>：大多数生产项目应优先选择 Supervisor 模式，其可控性和可调试性远优于去中心化方案。仅在需要高容错性或 Agent 数量极大时，才考虑去中心化架构。</p>
+<hr />
+<p><em>下一节：<a href="./05_practice_dev_team.html">11.5 实战：多 Agent 软件开发团队</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_multi_agent/03_role_assignment.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_multi_agent/05_practice_dev_team.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_multi_agent/03_role_assignment.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_multi_agent/05_practice_dev_team.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

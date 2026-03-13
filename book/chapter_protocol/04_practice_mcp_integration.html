@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>13.4 实战：基于 MCP 的工具集成 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="实战基于-mcp-的完整工具集成"><a class="header" href="#实战基于-mcp-的完整工具集成">实战：基于 MCP 的完整工具集成</a></h1>
+<p>本节展示如何将自定义工具封装为 MCP 服务器，并在 LangChain Agent 中使用。</p>
+<p>MCP 的核心价值在于<strong>标准化和解耦</strong>：工具的实现（MCP Server）和工具的使用（MCP Client / Agent）完全分离。这意味着你可以用任何语言编写工具服务器，任何支持 MCP 协议的 Agent 框架都能直接使用这些工具，不需要为每个框架单独适配。</p>
+<p>下面的代码实现了三个关键组件：</p>
+<ol>
+<li><strong>MCPTool 适配器</strong>：将 MCP 工具包装为 LangChain 的 <code>BaseTool</code>，这是一个"桥梁"模式——让 LangChain Agent 能够无缝使用 MCP 工具，就像使用原生工具一样</li>
+<li><strong>动态工具加载</strong>：从 MCP Server 自动发现并加载所有可用的工具，无需手动注册</li>
+<li><strong>Agent 集成</strong>：将加载到的 MCP 工具注入到 LangChain Agent 中</li>
+</ol>
+<h3 id="关于-session-生命周期"><a class="header" href="#关于-session-生命周期">关于 Session 生命周期</a></h3>
+<p>代码中有一个重要的设计考量：MCP 工具持有对 <code>ClientSession</code> 的引用，session 关闭后工具就无法使用了。在实际项目中，你需要确保 session 的生命周期覆盖工具的使用期——通常的做法是将 session 管理和 Agent 执行放在同一个 <code>async with</code> 上下文中。</p>
+<pre><code class="language-python"># mcp_langchain_integration.py
+"""
+将 MCP 工具集成到 LangChain Agent 的完整示例
+"""
+
+import asyncio
+import json
+from typing import Any
+from langchain_core.tools import BaseTool
+from langchain_openai import ChatOpenAI
+from langchain.agents import AgentExecutor, create_openai_tools_agent  # legacy，新项目推荐 LangGraph
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+# ============================
+# 1. MCP Tool 适配器
+# ============================
+
+class MCPTool(BaseTool):
+    """将 MCP 工具包装为 LangChain Tool"""
+    
+    name: str
+    description: str
+    session: Any  # MCP ClientSession
+    
+    def _run(self, **kwargs) -&gt; str:
+        """同步执行（通过 asyncio 桥接）"""
+        loop = asyncio.new_event_loop()
+        try:
+            result = loop.run_until_complete(
+                self.session.call_tool(self.name, kwargs)
+            )
+            if result.content:
+                return result.content[0].text
+            return "工具无返回内容"
+        finally:
+            loop.close()
+    
+    async def _arun(self, **kwargs) -&gt; str:
+        """异步执行"""
+        result = await self.session.call_tool(self.name, kwargs)
+        if result.content:
+            return result.content[0].text
+        return "工具无返回内容"
+
+
+# ============================
+# 2. 从 MCP Server 动态加载工具
+# ============================
+
+async def load_mcp_tools(server_command: str, server_args: list) -&gt; list[MCPTool]:
+    """从 MCP Server 加载所有工具
+    
+    注意：此函数返回的 tools 需要在 MCP session 存活期间使用。
+    在实际应用中，应该保持 session 的生命周期覆盖 tools 的使用期。
+    下面的 build_mcp_agent() 函数展示了正确的使用方式。
+    """
+    
+    server_params = StdioServerParameters(
+        command=server_command,
+        args=server_args
+    )
+    
+    tools = []
+    
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            
+            tools_result = await session.list_tools()
+            
+            for mcp_tool in tools_result.tools:
+                lc_tool = MCPTool(
+                    name=mcp_tool.name,
+                    description=mcp_tool.description or f"使用 {mcp_tool.name} 工具",
+                    session=session
+                )
+                tools.append(lc_tool)
+            
+            # ⚠️ 重要：tools 中持有 session 引用，
+            # 离开此上下文后 session 会关闭，tools 将无法使用。
+            # 生产环境中应该将 session 管理和 agent 执行
+            # 放在同一个 async with 上下文中。
+            return tools
+
+
+# ============================
+# 3. 构建使用 MCP 工具的 Agent
+# ============================
+
+async def build_mcp_agent():
+    """构建集成 MCP 工具的 Agent"""
+    
+    # 加载 MCP 工具
+    tools = await load_mcp_tools(
+        server_command="python",
+        server_args=["production_mcp_server.py"]
+    )
+    
+    print(f"已加载 {len(tools)} 个 MCP 工具：{[t.name for t in tools]}")
+    
+    # 构建 Agent
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", """你是一个功能强大的 Agent，通过 MCP 协议使用标准化工具。
+
+你有以下工具可用，请合理选择和使用：
+- 文件读写操作
+- 数据库查询
+- HTTP 请求
+
+遇到需要这些能力的任务时，主动使用相应工具。"""),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{input}"),
+        MessagesPlaceholder(variable_name="agent_scratchpad"),
+    ])
+    
+    agent = create_openai_tools_agent(llm, tools, prompt)
+    executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+    
+    return executor
+
+
+# ============================
+# 4. 使用示例
+# ============================
+
+async def main():
+    agent = await build_mcp_agent()
+    
+    # 测试文件操作
+    result = agent.invoke({
+        "input": "读取 README.md 文件，总结其主要内容",
+        "chat_history": []
+    })
+    print(result["output"])
+    
+    # 测试复合操作
+    result = agent.invoke({
+        "input": "查询数据库 ./data/sales.db 中的最新10条销售记录",
+        "chat_history": []
+    })
+    print(result["output"])
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</code></pre>
+<h2 id="mcp-最佳实践总结"><a class="header" href="#mcp-最佳实践总结">MCP 最佳实践总结</a></h2>
+<p>在将 MCP 工具部署到生产环境之前，安全性、错误处理和性能优化是三个必须认真考虑的维度。以下是一些关键的最佳实践：</p>
+<p><strong>安全性</strong>是首要考虑的问题，因为 MCP 工具通常涉及文件系统、数据库等敏感操作，而这些操作的参数是由 LLM 生成的——LLM 可能被 Prompt 注入攻击利用。</p>
+<p><strong>错误处理</strong>要确保任何工具调用失败都不会导致整个 Agent 崩溃，而是返回清晰的错误信息，让 LLM 能够理解并做出应对。</p>
+<p><strong>性能优化</strong>方面，对于只读的数据库查询等操作，使用缓存可以显著减少重复调用的开销。</p>
+<pre><code class="language-python"># 1. 工具安全性
+security_checklist = [
+    "✅ 文件操作：限制在工作目录内，防止路径遍历",
+    "✅ 数据库：只允许 SELECT，不允许 DDL/DML",
+    "✅ HTTP：白名单域名，设置超时",
+    "✅ 代码执行：使用沙箱（Docker/subprocess）",
+    "✅ 敏感数据：不返回完整的 API Key 等信息",
+]
+
+# 2. 错误处理
+def safe_tool_call(func):
+    """工具调用安全装饰器"""
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except PermissionError as e:
+            return {"error": "权限拒绝", "message": str(e)}
+        except FileNotFoundError as e:
+            return {"error": "文件不存在", "message": str(e)}
+        except Exception as e:
+            return {"error": "工具执行失败", "message": str(e)[:200]}
+    return wrapper
+
+# 3. 性能优化
+# 使用 @lru_cache 缓存不变的查询结果
+from functools import lru_cache
+
+@lru_cache(maxsize=100)
+def cached_database_query(db_path: str, sql: str) -&gt; str:
+    """带缓存的数据库查询（仅缓存只读查询）"""
+    import sqlite3
+    
+    # 安全检查
+    sql_upper = sql.strip().upper()
+    if not sql_upper.startswith("SELECT"):
+        raise PermissionError("只允许 SELECT 查询")
+    
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    conn.close()
+    return json.dumps(result)
+</code></pre>
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<p>本章构建了一个完整的 MCP 工具集成体系：</p>
+<ul>
+<li>✅ MCP Server：标准化的工具服务器</li>
+<li>✅ MCP Client：连接和调用工具</li>
+<li>✅ LangChain 集成：MCPTool 适配器</li>
+<li>✅ 安全最佳实践：权限控制和错误处理</li>
+</ul>
+<hr />
+<p><em>下一章：<a href="../chapter_evaluation/README.html">第13章 Agent 的评估与优化</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_protocol/03_message_passing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_evaluation/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_protocol/03_message_passing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_evaluation/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350">
+  <rect width="760" height="350" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">多模态 Agent 处理流程</text>
+
+  <!-- 输入模态 -->
+  <rect x="30" y="60" width="160" height="250" rx="14" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="110" y="85" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#3498db">输入模态</text>
+
+  <rect x="45" y="100" width="130" height="35" rx="8" fill="#3498db"/>
+  <text x="110" y="122" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">📝 文本</text>
+
+  <rect x="45" y="145" width="130" height="35" rx="8" fill="#27ae60"/>
+  <text x="110" y="167" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">🖼️ 图像</text>
+
+  <rect x="45" y="190" width="130" height="35" rx="8" fill="#e67e22"/>
+  <text x="110" y="212" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">🎤 语音</text>
+
+  <rect x="45" y="235" width="130" height="35" rx="8" fill="#9b59b6"/>
+  <text x="110" y="257" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">🎬 视频</text>
+
+  <!-- 箭头 -->
+  <line x1="190" y1="185" x2="230" y2="185" stroke="#95a5a6" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- 处理核心 -->
+  <rect x="230" y="80" width="300" height="210" rx="14" fill="#34495e" opacity="0.08" stroke="#34495e" stroke-width="1.5"/>
+  <text x="380" y="105" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#34495e">多模态 LLM 处理核心</text>
+
+  <rect x="250" y="120" width="260" height="35" rx="8" fill="#e74c3c" opacity="0.8"/>
+  <text x="380" y="142" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">① 模态编码（Encoder）</text>
+
+  <rect x="250" y="165" width="260" height="35" rx="8" fill="#e67e22" opacity="0.8"/>
+  <text x="380" y="187" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">② 跨模态融合（Cross-Attention）</text>
+
+  <rect x="250" y="210" width="260" height="35" rx="8" fill="#27ae60" opacity="0.8"/>
+  <text x="380" y="232" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">③ 推理与工具调用（Reasoning）</text>
+
+  <rect x="250" y="255" width="260" height="25" rx="8" fill="#3498db" opacity="0.8"/>
+  <text x="380" y="272" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">④ 生成多模态输出</text>
+
+  <!-- 箭头 -->
+  <line x1="530" y1="185" x2="570" y2="185" stroke="#95a5a6" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- 输出模态 -->
+  <rect x="570" y="100" width="160" height="180" rx="14" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="650" y="125" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#9b59b6">输出</text>
+
+  <rect x="585" y="140" width="130" height="30" rx="8" fill="#3498db"/>
+  <text x="650" y="160" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">💬 文本回复</text>
+
+  <rect x="585" y="180" width="130" height="30" rx="8" fill="#27ae60"/>
+  <text x="650" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">🖼️ 图像生成</text>
+
+  <rect x="585" y="220" width="130" height="30" rx="8" fill="#e67e22"/>
+  <text x="650" y="240" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">🔊 语音合成</text>
+
+  <text x="380" y="335" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#95a5a6">多模态 Agent = 多模态 LLM + 工具调用 + 模态转换管道</text>
+
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#95a5a6"/>
+    </marker>
+  </defs>
+</svg>

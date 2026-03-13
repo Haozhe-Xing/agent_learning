@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>11.4 Dify / Coze 等低代码 Agent 平台 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="dify--coze-等低代码-agent-平台"><a class="header" href="#dify--coze-等低代码-agent-平台">Dify / Coze 等低代码 Agent 平台</a></h1>
+<p>低代码平台让非程序员也能构建 Agent 应用，降低了 AI 应用的开发门槛。2024-2025 年，这一领域涌现了大量平台，竞争日趋激烈。</p>
+<h2 id="主流低代码平台"><a class="header" href="#主流低代码平台">主流低代码平台</a></h2>
+<h3 id="dify"><a class="header" href="#dify">Dify</a></h3>
+<p>Dify 是目前最流行的开源 LLM 应用开发平台，截至 2026 年初已在 GitHub 获得 90K+ Star：</p>
+<p><img src="../svg/chapter_frameworks_04_dify_features.svg" alt="Dify 主要特性" /></p>
+<p>Dify 通过 API 接入现有应用：</p>
+<pre><code class="language-python">import requests
+
+# Dify 应用 API 调用示例
+def call_dify_app(app_token: str, user_message: str) -&gt; str:
+    """调用 Dify 应用"""
+    url = "https://api.dify.ai/v1/chat-messages"
+    
+    response = requests.post(
+        url,
+        headers={
+            "Authorization": f"Bearer {app_token}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "inputs": {},
+            "query": user_message,
+            "response_mode": "blocking",
+            "user": "user_001"
+        }
+    )
+    
+    result = response.json()
+    return result.get("answer", "")
+
+# 使用示例
+answer = call_dify_app("your-app-token", "如何申请报销？")
+print(answer)
+</code></pre>
+<h3 id="coze扣子"><a class="header" href="#coze扣子">Coze（扣子）</a></h3>
+<p>字节跳动推出的 Agent 构建平台，是国内低代码 Agent 平台中功能最丰富的之一：</p>
+<pre><code>Coze 主要特性：
+├── 图形化 Agent 构建
+├── 丰富的内置插件（天气、搜索、代码、数据库等）
+├── 支持发布到微信、飞书、抖音、Discord 等平台
+├── Bot 市场（可分享和复用）
+├── 工作流编排（可视化拖拽）
+└── 知识库管理（支持 RAG）
+
+优势：
+- 不需要写代码
+- 与字节系产品生态深度集成
+- 免费额度慷慨
+- 工作流功能强大（支持条件分支、循环）
+</code></pre>
+<h3 id="n8n工作流自动化平台"><a class="header" href="#n8n工作流自动化平台">n8n：工作流自动化平台</a></h3>
+<pre><code class="language-python"># n8n 通过 Webhook 与外部系统集成
+# 在 n8n 中可以构建：
+# 接收消息 → 调用 LLM → 处理结果 → 发送通知
+
+# n8n 的 AI Agent 节点可以调用 OpenAI / Anthropic / 本地模型
+# 通过简单的拖拽配置实现复杂工作流
+
+# 典型工作流示例：
+workflow = """
+触发器：每天早上9点
+  ↓
+读取 Google Sheets 中的任务列表
+  ↓
+调用 GPT-4o 分析优先级
+  ↓
+发送日报到 Slack 频道
+"""
+</code></pre>
+<h3 id="其他值得关注的平台"><a class="header" href="#其他值得关注的平台">其他值得关注的平台</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>平台</th><th>特点</th><th>适合场景</th></tr></thead><tbody>
+<tr><td><strong>FastGPT</strong></td><td>开源，知识库 RAG 优秀</td><td>企业知识库问答</td></tr>
+<tr><td><strong>Langflow</strong></td><td>LangChain 可视化编排</td><td>开发者快速原型</td></tr>
+<tr><td><strong>Flowise</strong></td><td>低代码 LangChain 编排</td><td>简单 Agent 搭建</td></tr>
+<tr><td><strong>百度 AppBuilder</strong></td><td>百度生态，文心模型</td><td>国内企业应用</td></tr>
+<tr><td><strong>阿里百炼</strong></td><td>阿里云生态，通义模型</td><td>国内企业应用</td></tr>
+</tbody></table>
+</div>
+<h2 id="低代码-vs-代码开发"><a class="header" href="#低代码-vs-代码开发">低代码 vs 代码开发</a></h2>
+<p><img src="../svg/chapter_frameworks_04_lowcode_vs_code.svg" alt="低代码vs代码开发对比" /></p>
+<h3 id="如何选择"><a class="header" href="#如何选择">如何选择？</a></h3>
+<pre><code class="language-python">decision_guide = {
+    "选低代码平台": [
+        "快速验证 MVP（1-3 天内出原型）",
+        "非技术团队主导的项目",
+        "标准化的客服/问答/文档处理场景",
+        "对定制化要求不高的内部工具",
+    ],
+    "选代码开发": [
+        "需要深度定制 Agent 行为逻辑",
+        "对延迟/成本/安全有严格要求",
+        "需要与已有系统深度集成",
+        "多 Agent 协作等复杂架构",
+    ],
+    "混合方案": [
+        "用 Dify 快速搭建原型，验证产品方向",
+        "验证可行后用 LangChain/LangGraph 重写核心逻辑",
+        "保留 Dify 作为非核心模块的编排工具",
+    ],
+}
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>低代码平台降低了 Agent 开发门槛，但代码开发提供了更大的灵活性。最佳实践是：用低代码快速验证想法，用代码做精细实现和生产部署。随着 Dify、Coze 等平台的持续迭代，低代码平台的能力边界正在不断扩大。</p>
+<hr />
+<p><em>下一节：<a href="./05_how_to_choose.html">10.5 如何选择合适的框架？</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_frameworks/03_autogen.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_frameworks/05_how_to_choose.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_frameworks/03_autogen.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_frameworks/05_how_to_choose.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

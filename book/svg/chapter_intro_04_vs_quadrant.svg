@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <rect width="760" height="400" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">传统程序 vs Agent 适用场景</text>
+
+  <!-- Axes -->
+  <line x1="100" y1="310" x2="700" y2="310" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="100" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">任务规则清晰</text>
+  <text x="700" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">任务模糊开放</text>
+  <text x="400" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">→ 任务开放程度</text>
+
+  <line x1="100" y1="60" x2="100" y2="310" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="55" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">低</text>
+  <text x="55" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888">高</text>
+  <text x="30" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d" transform="rotate(-90, 30, 185)">↑ 可靠性要求</text>
+
+  <!-- Quadrant dividers -->
+  <line x1="100" y1="185" x2="700" y2="185" stroke="#ecf0f1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="400" y1="60" x2="400" y2="310" stroke="#ecf0f1" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Quadrant labels -->
+  <text x="250" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#3498db" font-weight="bold">传统程序领域</text>
+  <text x="550" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60" font-weight="bold">需要混合方案</text>
+  <text x="250" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#bdc3c7">不适合任何方案</text>
+  <text x="550" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60" font-weight="bold">Agent 领域</text>
+
+  <!-- Data points -->
+  <circle cx="150" cy="100" r="16" fill="#3498db" opacity="0.85"/>
+  <text x="150" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">计算</text>
+  <text x="150" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">计算工资</text>
+
+  <circle cx="200" cy="120" r="16" fill="#3498db" opacity="0.85"/>
+  <text x="200" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">导入</text>
+  <text x="200" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">数据导入</text>
+
+  <circle cx="160" cy="80" r="16" fill="#3498db" opacity="0.85"/>
+  <text x="160" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">金融</text>
+  <text x="160" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">金融交易</text>
+
+  <circle cx="600" cy="240" r="16" fill="#27ae60" opacity="0.85"/>
+  <text x="600" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">客服</text>
+  <text x="600" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">客服对话</text>
+
+  <circle cx="650" cy="220" r="16" fill="#27ae60" opacity="0.85"/>
+  <text x="650" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">研究</text>
+  <text x="650" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">智能研究</text>
+
+  <circle cx="580" cy="130" r="16" fill="#e67e22" opacity="0.85"/>
+  <text x="580" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">需求</text>
+  <text x="580" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e67e22">需求分析</text>
+
+  <!-- Legend -->
+  <rect x="100" y="365" width="560" height="25" rx="6" fill="#ecf0f1"/>
+  <circle cx="130" cy="377" r="7" fill="#3498db" opacity="0.85"/>
+  <text x="145" y="381" font-family="Arial, sans-serif" font-size="11" fill="#555">传统程序适合</text>
+  <circle cx="280" cy="377" r="7" fill="#27ae60" opacity="0.85"/>
+  <text x="295" y="381" font-family="Arial, sans-serif" font-size="11" fill="#555">Agent 适合</text>
+  <circle cx="420" cy="377" r="7" fill="#e67e22" opacity="0.85"/>
+  <text x="435" y="381" font-family="Arial, sans-serif" font-size="11" fill="#555">混合方案</text>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 340" width="700" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="340" rx="16" fill="#f0f4f8"/>
+  <text x="350" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#2c3e50">Agent 应用场景全景图</text>
+
+  <!-- Row 1 -->
+  <rect x="40" y="55" width="140" height="70" rx="10" fill="#3498db"/>
+  <text x="110" y="82" text-anchor="middle" font-size="22">💻</text>
+  <text x="110" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="white">编程开发</text>
+  <text x="110" y="118" text-anchor="middle" font-size="11" fill="#d6eaf8">代码生成 / 审查</text>
+
+  <rect x="200" y="55" width="140" height="70" rx="10" fill="#27ae60"/>
+  <text x="270" y="82" text-anchor="middle" font-size="22">📊</text>
+  <text x="270" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="white">数据分析</text>
+  <text x="270" y="118" text-anchor="middle" font-size="11" fill="#d5f5e3">智能分析师</text>
+
+  <rect x="360" y="55" width="140" height="70" rx="10" fill="#8e44ad"/>
+  <text x="430" y="82" text-anchor="middle" font-size="22">🎓</text>
+  <text x="430" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="white">教育培训</text>
+  <text x="430" y="118" text-anchor="middle" font-size="11" fill="#e8daef">AI 私人教师</text>
+
+  <rect x="520" y="55" width="140" height="70" rx="10" fill="#e67e22"/>
+  <text x="590" y="82" text-anchor="middle" font-size="22">💼</text>
+  <text x="590" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="white">办公自动化</text>
+  <text x="590" y="118" text-anchor="middle" font-size="11" fill="#fdebd0">智能助理</text>
+
+  <!-- Row 2 -->
+  <rect x="40" y="145" width="140" height="70" rx="10" fill="#e74c3c"/>
+  <text x="110" y="172" text-anchor="middle" font-size="22">🏥</text>
+  <text x="110" y="192" text-anchor="middle" font-size="13" font-weight="bold" fill="white">医疗健康</text>
+  <text x="110" y="208" text-anchor="middle" font-size="11" fill="#fadbd8">辅助诊断</text>
+
+  <rect x="200" y="145" width="140" height="70" rx="10" fill="#f39c12"/>
+  <text x="270" y="172" text-anchor="middle" font-size="22">💰</text>
+  <text x="270" y="192" text-anchor="middle" font-size="13" font-weight="bold" fill="white">金融投资</text>
+  <text x="270" y="208" text-anchor="middle" font-size="11" fill="#fef9e7">智能投研</text>
+
+  <rect x="360" y="145" width="140" height="70" rx="10" fill="#16a085"/>
+  <text x="430" y="172" text-anchor="middle" font-size="22">🛒</text>
+  <text x="430" y="192" text-anchor="middle" font-size="13" font-weight="bold" fill="white">电商零售</text>
+  <text x="430" y="208" text-anchor="middle" font-size="11" fill="#d1f2eb">智能客服</text>
+
+  <rect x="520" y="145" width="140" height="70" rx="10" fill="#2980b9"/>
+  <text x="590" y="172" text-anchor="middle" font-size="22">🔬</text>
+  <text x="590" y="192" text-anchor="middle" font-size="13" font-weight="bold" fill="white">科研助理</text>
+  <text x="590" y="208" text-anchor="middle" font-size="11" fill="#d6eaf8">文献研究</text>
+
+  <!-- Row 3 -->
+  <rect x="40" y="235" width="140" height="70" rx="10" fill="#7f8c8d"/>
+  <text x="110" y="262" text-anchor="middle" font-size="22">🎮</text>
+  <text x="110" y="282" text-anchor="middle" font-size="13" font-weight="bold" fill="white">游戏娱乐</text>
+  <text x="110" y="298" text-anchor="middle" font-size="11" fill="#eaecee">智能 NPC</text>
+
+  <rect x="200" y="235" width="140" height="70" rx="10" fill="#1abc9c"/>
+  <text x="270" y="262" text-anchor="middle" font-size="22">📱</text>
+  <text x="270" y="282" text-anchor="middle" font-size="13" font-weight="bold" fill="white">社交媒体</text>
+  <text x="270" y="298" text-anchor="middle" font-size="11" fill="#d1f2eb">内容运营</text>
+
+  <rect x="360" y="235" width="140" height="70" rx="10" fill="#d35400"/>
+  <text x="430" y="262" text-anchor="middle" font-size="22">🏭</text>
+  <text x="430" y="282" text-anchor="middle" font-size="13" font-weight="bold" fill="white">工业制造</text>
+  <text x="430" y="298" text-anchor="middle" font-size="11" fill="#fdebd0">故障预测</text>
+
+  <rect x="520" y="235" width="140" height="70" rx="10" fill="#95a5a6"/>
+  <text x="590" y="262" text-anchor="middle" font-size="22">🤖</text>
+  <text x="590" y="282" text-anchor="middle" font-size="13" font-weight="bold" fill="white">更多领域</text>
+  <text x="590" y="298" text-anchor="middle" font-size="11" fill="#eaecee">持续扩展中...</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <rect width="760" height="400" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Agent 安全防御分层架构</text>
+
+  <!-- 外层：输入过滤 -->
+  <rect x="40" y="50" width="680" height="310" rx="14" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="60" y="75" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">🛡️ 第1层：输入过滤（Input Filtering）</text>
+  <text x="60" y="93" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Prompt 注入检测 · 敏感词过滤 · 长度限制 · 格式校验</text>
+
+  <!-- 中层：权限控制 -->
+  <rect x="80" y="110" width="600" height="225" rx="14" fill="#e67e22" opacity="0.08" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="100" y="135" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">🔒 第2层：权限控制（Permission Control）</text>
+  <text x="100" y="153" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">工具白名单 · 沙箱隔离 · 操作审批 · 速率限制</text>
+
+  <!-- 内层：模型对齐 -->
+  <rect x="120" y="170" width="520" height="140" rx="14" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="140" y="195" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">🧠 第3层：模型对齐（Model Alignment）</text>
+  <text x="140" y="213" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">System Prompt 约束 · 输出校验 · 幻觉检测 · 事实核查</text>
+
+  <!-- 核心：Agent 逻辑 -->
+  <rect x="200" y="230" width="360" height="60" rx="14" fill="#3498db"/>
+  <text x="380" y="258" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="white">🤖 Agent 核心逻辑</text>
+  <text x="380" y="278" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">感知 → 推理 → 行动</text>
+
+  <!-- 右侧标注 -->
+  <text x="660" y="80" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#e74c3c">← 最外层防线</text>
+  <text x="660" y="268" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#3498db">← 受保护核心</text>
+
+  <!-- 底部说明 -->
+  <text x="380" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#95a5a6">纵深防御：攻击者需要突破所有层级才能影响 Agent 行为</text>
+</svg>

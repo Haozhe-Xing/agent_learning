@@ -1,0 +1,499 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>12.5 实战：多 Agent 软件开发团队 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="实战多-agent-软件开发团队"><a class="header" href="#实战多-agent-软件开发团队">实战：多 Agent 软件开发团队</a></h1>
+<p>综合本章所有知识，构建一个完整的多 Agent 软件开发系统，模拟真实的开发团队协作。</p>
+<h2 id="系统设计"><a class="header" href="#系统设计">系统设计</a></h2>
+<p>这个项目模拟了一个完整的软件开发团队，包含 6 个角色：产品经理、架构师、开发工程师、测试工程师、DevOps 工程师和文档工程师。每个角色由一个独立的 Agent 节点承担，它们通过<strong>共享状态</strong>（<code>DevState</code>）传递工作成果。</p>
+<h3 id="设计理念"><a class="header" href="#设计理念">设计理念</a></h3>
+<p>这个系统的设计遵循两个核心原则：</p>
+<ol>
+<li>
+<p><strong>专业分工</strong>：每个 Agent 只负责自己擅长的领域。产品经理不写代码，开发工程师不写测试用例。这种分工让每个 Agent 的 Prompt 可以更专注，输出质量更高。</p>
+</li>
+<li>
+<p><strong>流水线 + 并行</strong>：工作流并非完全串行——开发完成后，测试、运维和文档三个任务可以并行执行（它们之间没有依赖关系）。LangGraph 天然支持这种并行执行模式。</p>
+</li>
+</ol>
+<h3 id="工厂函数模式"><a class="header" href="#工厂函数模式">工厂函数模式</a></h3>
+<p>代码中使用了 <code>create_agent_node</code> 工厂函数来创建 Agent 节点，而不是为每个角色写一个独立的函数。这是因为所有角色的行为模式是相同的（接收上游输出 → 调用 LLM → 返回结果），只有角色名称、任务描述和输入/输出字段不同。工厂函数将这些差异参数化，大幅减少了重复代码。</p>
+<p><img src="../svg/chapter_multi_agent_05_dev_team_flow.svg" alt="多 Agent 软件开发团队流程" /></p>
+<h2 id="完整实现"><a class="header" href="#完整实现">完整实现</a></h2>
+<pre><code class="language-python"># dev_team_agent.py
+from langgraph.graph import StateGraph, END, START
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+from typing import TypedDict, Optional
+from rich.console import Console
+from rich.panel import Panel
+from rich.markdown import Markdown
+import json
+
+llm = ChatOpenAI(model="gpt-4o", temperature=0.3)
+console = Console()
+
+class DevState(TypedDict):
+    """开发团队共享状态"""
+    original_requirement: str
+    product_spec: Optional[str]
+    technical_design: Optional[str]
+    implementation: Optional[str]
+    test_cases: Optional[str]
+    deployment_config: Optional[str]
+    documentation: Optional[str]
+    current_phase: str
+    issues: list
+
+def create_agent_node(role: str, task_template: str, input_key: str, output_key: str):
+    """工厂函数：创建标准 Agent 节点"""
+    
+    def agent_node(state: DevState) -&gt; dict:
+        console.print(f"\n[bold cyan]👤 {role}[/bold cyan] 开始工作...")
+        
+        # 获取上下文
+        context = state.get(input_key, state.get("original_requirement", ""))
+        
+        response = llm.invoke([
+            HumanMessage(content=f"""你是{role}。
+
+任务：{task_template}
+
+输入：
+{context}
+
+请给出专业、详细的输出：""")
+        ])
+        
+        result = response.content
+        console.print(f"[green]✅ {role} 完成[/green]")
+        console.print(Panel(Markdown(result[:300] + "..." if len(result) &gt; 300 else result), 
+                           title=role, border_style="blue", expand=False))
+        
+        return {
+            output_key: result,
+            "current_phase": role
+        }
+    
+    return agent_node
+
+# 创建各角色节点
+product_manager_node = create_agent_node(
+    role="产品经理",
+    task_template="""分析需求，输出包含以下内容的产品规格文档：
+1. 功能描述（用户故事格式：作为...我想要...以便...）
+2. 功能模块列表
+3. 非功能性需求（性能、安全等）
+4. 验收标准""",
+    input_key="original_requirement",
+    output_key="product_spec"
+)
+
+architect_node = create_agent_node(
+    role="系统架构师",
+    task_template="""根据产品规格，设计技术方案：
+1. 技术栈选择（语言/框架/数据库），并说明理由
+2. 系统架构图（文字描述）
+3. 数据库表设计（主要表和字段）
+4. API 接口设计（端点、方法、参数、响应）
+5. 关键实现考虑点""",
+    input_key="product_spec",
+    output_key="technical_design"
+)
+
+developer_node = create_agent_node(
+    role="Python开发工程师",
+    task_template="""根据技术方案，使用 Python/FastAPI 实现代码：
+1. 主要的数据模型（Pydantic models）
+2. 核心业务逻辑函数
+3. API 路由实现
+4. 工具函数
+
+要求：
+- 代码完整可运行
+- 包含类型注解
+- 添加必要注释
+- 使用最佳实践""",
+    input_key="technical_design",
+    output_key="implementation"
+)
+
+tester_node = create_agent_node(
+    role="QA测试工程师",
+    task_template="""为实现代码编写测试用例：
+1. pytest 单元测试（覆盖主要功能）
+2. 边界条件测试
+3. 异常处理测试
+4. 集成测试用例描述（不需要实现）
+
+要求代码可以直接运行（pip install pytest httpx fastapi）""",
+    input_key="implementation",
+    output_key="test_cases"
+)
+
+devops_node = create_agent_node(
+    role="DevOps工程师",
+    task_template="""准备部署配置：
+1. Dockerfile（多阶段构建）
+2. docker-compose.yml（含数据库、应用服务）
+3. 环境变量示例文件(.env.example)
+4. 基础的 GitHub Actions CI/CD 配置""",
+    input_key="implementation",
+    output_key="deployment_config"
+)
+
+docs_node = create_agent_node(
+    role="技术文档工程师",
+    task_template="""撰写 API 文档（Markdown 格式）：
+1. 项目概述
+2. 快速开始（安装、配置、运行）
+3. API 参考（每个接口的详细说明）
+4. 代码示例（Python requests 调用示例）
+5. 常见问题""",
+    input_key="technical_design",
+    output_key="documentation"
+)
+
+# ============================
+# 构建开发工作流图
+# ============================
+
+# 工作流图的边定义了角色之间的依赖关系：
+# - 产品经理 → 架构师：架构设计需要先有产品规格
+# - 架构师 → 开发者：开发需要先有技术方案
+# - 开发者 → 测试/运维/文档（并行）：三者都依赖代码实现，但彼此独立
+#
+# 注意：LangGraph 在遇到一个节点有多条出边时，会并行执行所有目标节点。
+# 这意味着 tester、devops、docs 三个节点会同时启动，大幅缩短总执行时间。
+
+workflow = StateGraph(DevState)
+
+# 添加节点
+workflow.add_node("product_manager", product_manager_node)
+workflow.add_node("architect", architect_node)
+workflow.add_node("developer", developer_node)
+workflow.add_node("tester", tester_node)
+workflow.add_node("devops", devops_node)
+workflow.add_node("docs", docs_node)
+
+# 串联工作流
+workflow.add_edge(START, "product_manager")
+workflow.add_edge("product_manager", "architect")
+workflow.add_edge("architect", "developer")
+workflow.add_edge("developer", "tester")
+workflow.add_edge("developer", "devops")  # 并行：开发完成后，测试和运维同时开始
+workflow.add_edge("developer", "docs")   # 并行：文档也同时编写
+workflow.add_edge("tester", END)
+workflow.add_edge("devops", END)
+workflow.add_edge("docs", END)
+
+dev_team = workflow.compile()
+
+# ============================
+# 运行开发团队
+# ============================
+
+def develop(requirement: str) -&gt; dict:
+    """启动开发流程"""
+    console.print(Panel(
+        f"[bold]🚀 启动多 Agent 开发团队[/bold]\n"
+        f"需求：{requirement}",
+        border_style="green"
+    ))
+    
+    initial_state = {
+        "original_requirement": requirement,
+        "product_spec": None,
+        "technical_design": None,
+        "implementation": None,
+        "test_cases": None,
+        "deployment_config": None,
+        "documentation": None,
+        "current_phase": "初始化",
+        "issues": []
+    }
+    
+    result = dev_team.invoke(initial_state)
+    
+    console.print("\n" + Panel(
+        "[bold green]🎉 开发完成！[/bold green]\n\n"
+        f"✅ 产品规格：{'完成' if result['product_spec'] else '未完成'}\n"
+        f"✅ 技术方案：{'完成' if result['technical_design'] else '未完成'}\n"
+        f"✅ 代码实现：{'完成' if result['implementation'] else '未完成'}\n"
+        f"✅ 测试用例：{'完成' if result['test_cases'] else '未完成'}\n"
+        f"✅ 部署配置：{'完成' if result['deployment_config'] else '未完成'}\n"
+        f"✅ API文档：{'完成' if result['documentation'] else '未完成'}",
+        border_style="green"
+    ))
+    
+    return result
+
+
+if __name__ == "__main__":
+    result = develop("用户管理系统：包括注册、登录、个人信息修改、密码重置功能")
+    
+    # 保存到文件
+    import os
+    os.makedirs("output", exist_ok=True)
+    
+    for key, value in result.items():
+        if value and isinstance(value, str) and key not in ["current_phase"]:
+            with open(f"output/{key}.md", "w", encoding="utf-8") as f:
+                f.write(f"# {key}\n\n{value}")
+    
+    print("\n📁 所有文件已保存到 output/ 目录")
+</code></pre>
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<p>多 Agent 协作的核心要点：</p>
+<div class="table-wrapper"><table><thead><tr><th>要素</th><th>关键实践</th></tr></thead><tbody>
+<tr><td>角色设计</td><td>专业化、边界清晰</td></tr>
+<tr><td>通信机制</td><td>共享状态（LangGraph）或消息队列</td></tr>
+<tr><td>架构选择</td><td>Supervisor（推荐）或去中心化</td></tr>
+<tr><td>并行执行</td><td>无依赖的任务同时运行</td></tr>
+<tr><td>错误处理</td><td>每个 Agent 独立处理异常</td></tr>
+</tbody></table>
+</div>
+<hr />
+<p><em>下一章：<a href="../chapter_protocol/README.html">第12章 Agent 通信协议</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_multi_agent/04_supervisor_vs_decentralized.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_multi_agent/06_paper_readings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_multi_agent/04_supervisor_vs_decentralized.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_multi_agent/06_paper_readings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

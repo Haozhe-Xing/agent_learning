@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>10.5 Human-in-the-Loop：人机协作 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="human-in-the-loop人机协作"><a class="header" href="#human-in-the-loop人机协作">Human-in-the-Loop：人机协作</a></h1>
+<p>在生产环境中，让 Agent 完全自主运行是有风险的——删除文件、发送邮件、执行支付等操作一旦出错就无法撤回。<strong>Human-in-the-Loop（人机协作）</strong> 机制允许在 Agent 执行危险操作前暂停，等待人类确认后再继续。</p>
+<p>LangGraph 通过 <strong>Checkpointer</strong>（检查点）机制实现这一能力。Checkpointer 会在图执行的每一步保存状态快照，使得图可以在任意节点暂停并恢复。</p>
+<h2 id="使用-checkpointer-实现暂停恢复"><a class="header" href="#使用-checkpointer-实现暂停恢复">使用 Checkpointer 实现暂停恢复</a></h2>
+<h3 id="核心思路"><a class="header" href="#核心思路">核心思路</a></h3>
+<ol>
+<li><strong>分类工具的危险等级</strong>：将工具分为"安全"和"危险"两类</li>
+<li><strong>条件路由</strong>：检测到危险工具调用时，停止图执行</li>
+<li><strong>状态保存</strong>：通过 <code>MemorySaver</code> 保存图的当前状态</li>
+<li><strong>人工审批</strong>：在外部获取用户确认</li>
+<li><strong>恢复执行</strong>：审批通过后，用 <code>app.invoke(None, config)</code> 从上次暂停的位置继续</li>
+</ol>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END, START, MessagesState
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.prebuilt import ToolNode, tools_condition
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage, AIMessage
+
+# ============================
+# 定义需要人工确认的敏感工具
+# ============================
+
+@tool
+def send_email(to: str, subject: str, body: str) -&gt; str:
+    """发送邮件（危险操作，需要人工确认）"""
+    print(f"\n[模拟] 发送邮件给 {to}")
+    return f"邮件已发送给 {to}"
+
+@tool
+def delete_file(path: str) -&gt; str:
+    """删除文件（危险操作，需要人工确认）"""
+    print(f"\n[模拟] 删除文件：{path}")
+    return f"文件 {path} 已删除"
+
+@tool
+def safe_search(query: str) -&gt; str:
+    """安全搜索（不需要确认）"""
+    return f"搜索'{query}'的结果：[相关信息...]"
+
+DANGEROUS_TOOLS = {"send_email", "delete_file"}
+tools = [send_email, delete_file, safe_search]
+
+# ============================
+# 节点定义
+# ============================
+
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm_with_tools = llm.bind_tools(tools)
+
+def agent_node(state: MessagesState) -&gt; dict:
+    response = llm_with_tools.invoke(state["messages"])
+    return {"messages": [response]}
+
+def check_needs_approval(state: MessagesState) -&gt; str:
+    """检查是否有危险工具调用需要审批"""
+    last_msg = state["messages"][-1]
+    
+    if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+        for tc in last_msg.tool_calls:
+            if tc["name"] in DANGEROUS_TOOLS:
+                return "needs_approval"
+        return "tools"  # 安全工具直接执行
+    
+    return END
+
+# ============================
+# 构建带 Checkpointer 的图
+# ============================
+
+graph = StateGraph(MessagesState)
+graph.add_node("agent", agent_node)
+graph.add_node("tools", ToolNode(tools))
+
+graph.add_edge(START, "agent")
+graph.add_conditional_edges("agent", check_needs_approval, {
+    "needs_approval": END,  # 暂停！等待人工审批
+    "tools": "tools",
+    END: END
+})
+graph.add_edge("tools", "agent")
+
+# MemorySaver 允许恢复执行
+memory = MemorySaver()
+
+# 关于中断机制的说明：
+# 这里同时使用了两种互补的安全策略：
+# 1. check_needs_approval（条件路由）：对危险工具返回 END 直接停止图执行
+# 2. interrupt_before（编译参数）：作为额外安全网，在所有工具节点前暂停
+#
+# 实际效果：
+# - 安全工具（如 safe_search）：通过 check_needs_approval 路由到 "tools" 节点，
+#   但 interrupt_before 会在执行前暂停（可根据需要移除此行使安全工具自动执行）
+# - 危险工具（如 send_email）：直接在 check_needs_approval 中被路由到 END
+#
+# 如果只需要对危险工具中断，可以去掉 interrupt_before，
+# 完全依赖 check_needs_approval 的路由逻辑。
+
+app = graph.compile(
+    checkpointer=memory,
+    interrupt_before=["tools"]  # 额外安全网：在所有工具执行前暂停
+)
+
+# ============================
+# 运行并处理人工确认
+# ============================
+
+def run_with_human_approval(task: str):
+    """执行任务，危险操作需要人工确认"""
+    
+    thread_id = "human_approval_demo"
+    config = {"configurable": {"thread_id": thread_id}}
+    
+    print(f"\n任务：{task}")
+    
+    # 第一次运行
+    state = app.invoke(
+        {"messages": [HumanMessage(content=task)]},
+        config=config
+    )
+    
+    # 检查是否需要审批
+    last_msg = state["messages"][-1]
+    if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+        dangerous_calls = [
+            tc for tc in last_msg.tool_calls
+            if tc["name"] in DANGEROUS_TOOLS
+        ]
+        
+        if dangerous_calls:
+            print("\n⚠️  检测到危险操作，需要人工确认：")
+            for tc in dangerous_calls:
+                print(f"  工具：{tc['name']}")
+                print(f"  参数：{tc['args']}")
+            
+            approval = input("\n是否批准执行？(y/n)：").strip().lower()
+            
+            if approval == 'y':
+                print("✅ 已批准，继续执行...")
+                # 恢复执行
+                final_state = app.invoke(None, config=config)
+                return final_state["messages"][-1].content
+            else:
+                print("❌ 已拒绝，操作取消")
+                # 注入拒绝消息
+                app.invoke(
+                    {"messages": [HumanMessage(content="用户已拒绝此操作，请告知用户")]},
+                    config=config
+                )
+                return "操作已被用户取消"
+    
+    return last_msg.content if hasattr(last_msg, 'content') else "任务完成"
+
+# 测试
+result = run_with_human_approval("请帮我发邮件给 boss@company.com，主题是测试邮件")
+print(f"\n最终结果：{result}")
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>Human-in-the-Loop 的实现要点：</p>
+<ul>
+<li><strong>MemorySaver</strong>：保存图的执行状态，支持恢复</li>
+<li><strong>interrupt_before/after</strong>：在特定节点前后中断</li>
+<li><strong>thread_id</strong>：标识一个会话，用于状态恢复</li>
+<li><strong>安全策略</strong>：对危险操作（删除、发邮件、支付）必须要求确认</li>
+</ul>
+<hr />
+<p><em>下一节：<a href="./06_practice_workflow_agent.html">9.6 实战：工作流自动化 Agent</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_langgraph/04_conditional_routing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_langgraph/06_practice_workflow_agent.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_langgraph/04_conditional_routing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_langgraph/06_practice_workflow_agent.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

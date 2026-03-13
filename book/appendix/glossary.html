@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>附录 D：术语表 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="附录-d术语表"><a class="header" href="#附录-d术语表">附录 D：术语表</a></h1>
+<blockquote>
+<p>按字母顺序排列的 Agent 开发核心术语。</p>
+</blockquote>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>术语</th><th>英文</th><th>定义</th></tr></thead><tbody>
+<tr><td>A2A 协议</td><td>Agent-to-Agent Protocol</td><td>Google 提出的 Agent 间通信标准，让不同框架的 Agent 可以相互发现和调用</td></tr>
+<tr><td>AG2</td><td>AG2 (AutoGen fork)</td><td>AutoGen 0.2 的社区分叉版本，由原 AutoGen 核心贡献者维护</td></tr>
+<tr><td>Agent</td><td>Agent / 智能体</td><td>能自主感知环境、做出决策并执行行动的 AI 系统</td></tr>
+<tr><td>AST</td><td>Abstract Syntax Tree / 抽象语法树</td><td>源代码的树形结构化表示，用于代码分析和理解</td></tr>
+<tr><td>Chain</td><td>Chain / 链</td><td>将多个 LLM 调用或处理步骤串联起来的序列</td></tr>
+<tr><td>CoT</td><td>Chain-of-Thought</td><td>链式思维提示，引导模型逐步推理</td></tr>
+<tr><td>DeepSeek</td><td>DeepSeek</td><td>深度求索，中国 AI 公司，推出 DeepSeek-R2 等高性能推理模型</td></tr>
+<tr><td>Docker</td><td>Docker</td><td>容器化平台，将应用和依赖打包为可移植的容器镜像</td></tr>
+<tr><td>Embedding</td><td>Embedding / 嵌入</td><td>将文本转化为高维向量的过程</td></tr>
+<tr><td>FastAPI</td><td>FastAPI</td><td>Python 高性能异步 Web 框架，常用于 Agent API 服务化</td></tr>
+<tr><td>FastMCP</td><td>FastMCP</td><td>MCP Server 的简化创建方式，用装饰器快速定义工具</td></tr>
+<tr><td>Few-shot</td><td>Few-shot Learning</td><td>通过少量示例引导模型完成任务</td></tr>
+<tr><td>Fine-tuning</td><td>Fine-tuning / 微调</td><td>在预训练模型基础上，用特定数据集进一步训练以适应特定任务</td></tr>
+<tr><td>Flows</td><td>Flows（CrewAI）</td><td>CrewAI 的事件驱动工作流编排特性，使用 @start/@listen/@router 装饰器</td></tr>
+<tr><td>Function Calling</td><td>Function Calling</td><td>LLM 生成结构化的工具调用请求的能力</td></tr>
+<tr><td>Graph Agent</td><td>Graph Agent / 图 Agent</td><td>基于有向图结构构建的 Agent 工作流</td></tr>
+<tr><td>Hallucination</td><td>Hallucination / 幻觉</td><td>LLM 生成看似合理但实际错误的内容</td></tr>
+<tr><td>Handoff</td><td>Handoff / 交接</td><td>OpenAI Agents SDK 中 Agent 间转交控制权的机制</td></tr>
+<tr><td>Human-in-the-Loop</td><td>Human-in-the-Loop</td><td>在 Agent 执行关键操作前请求人类确认</td></tr>
+<tr><td>LCEL</td><td>LangChain Expression Language</td><td>LangChain 的声明式链构建语法</td></tr>
+<tr><td>LLM</td><td>Large Language Model</td><td>大语言模型，如 GPT-5、Claude 4、DeepSeek-R2、Llama 4</td></tr>
+<tr><td>MCP</td><td>Model Context Protocol</td><td>Anthropic 提出的模型与工具交互的标准协议</td></tr>
+<tr><td>Multi-Agent</td><td>Multi-Agent System</td><td>多个 Agent 协作完成任务的系统</td></tr>
+<tr><td>OpenAI Agents SDK</td><td>OpenAI Agents SDK</td><td>OpenAI 推出的轻量 Agent 开发框架，Swarm 的生产级继承者</td></tr>
+<tr><td>PII</td><td>Personally Identifiable Information</td><td>个人可识别信息，如姓名、身份证号、手机号等敏感数据</td></tr>
+<tr><td>Prompt</td><td>Prompt / 提示词</td><td>发送给 LLM 的输入文本</td></tr>
+<tr><td>Prompt Injection</td><td>Prompt Injection</td><td>通过恶意输入覆盖 Agent 系统指令的攻击</td></tr>
+<tr><td>Pydantic</td><td>Pydantic</td><td>Python 数据验证库，常用于定义工具的输入/输出 Schema</td></tr>
+<tr><td>RAG</td><td>Retrieval-Augmented Generation</td><td>检索增强生成，先检索相关文档再生成回答</td></tr>
+<tr><td>ReAct</td><td>Reasoning + Acting</td><td>推理与行动交替进行的 Agent 框架</td></tr>
+<tr><td>Reasoning Model</td><td>Reasoning Model / 推理模型</td><td>具备深度推理能力的 LLM，如 o3、DeepSeek-R2、Claude 4 Extended Thinking</td></tr>
+<tr><td>Reflection</td><td>Reflection / 反思</td><td>Agent 检查和纠正自己输出的机制</td></tr>
+<tr><td>Retriever</td><td>Retriever / 检索器</td><td>从知识库中检索相关文档的组件</td></tr>
+<tr><td>Runnable</td><td>Runnable / 可运行对象</td><td>LangChain 中所有可执行组件的基础接口</td></tr>
+<tr><td>Sandbox</td><td>Sandbox / 沙箱</td><td>隔离的安全执行环境，防止恶意代码影响宿主系统</td></tr>
+<tr><td>Semantic Cache</td><td>Semantic Cache / 语义缓存</td><td>基于语义相似度（而非精确匹配）缓存 LLM 查询结果的技术</td></tr>
+<tr><td>SSE</td><td>Server-Sent Events</td><td>服务器向客户端推送实时事件的协议</td></tr>
+<tr><td>State</td><td>State / 状态</td><td>Agent 在执行过程中维护的上下文信息，包括对话历史、中间结果、工作记忆等，是 Graph Agent 中节点间数据传递的核心机制</td></tr>
+<tr><td>Streamable HTTP</td><td>Streamable HTTP</td><td>MCP 2025 年引入的新传输协议，替代 HTTP + SSE，支持按需流式和 Session 恢复</td></tr>
+<tr><td>Supervisor</td><td>Supervisor / 监督者</td><td>多 Agent 系统中协调其他 Agent 的中心节点</td></tr>
+<tr><td>System Prompt</td><td>System Prompt / 系统提示词</td><td>定义 Agent 行为准则的初始指令</td></tr>
+<tr><td>Temperature</td><td>Temperature / 温度</td><td>控制 LLM 输出随机性的参数（0=确定性，1=更随机）</td></tr>
+<tr><td>Text-to-SQL</td><td>Text-to-SQL</td><td>将自然语言描述自动转换为 SQL 查询语句的技术</td></tr>
+<tr><td>Token</td><td>Token / 令牌</td><td>LLM 处理文本的最小单位（一个中文字约 1-2 个 Token）</td></tr>
+<tr><td>Tool</td><td>Tool / 工具</td><td>Agent 可以调用的外部功能（如搜索、计算、API 调用）</td></tr>
+<tr><td>uv</td><td>uv</td><td>Rust 编写的高性能 Python 包管理器，已成为 Python 包管理新标准</td></tr>
+<tr><td>Vector DB</td><td>Vector Database / 向量数据库</td><td>存储和检索向量嵌入的专用数据库（如 ChromaDB、Pinecone）</td></tr>
+<tr><td>Zero-shot</td><td>Zero-shot Learning</td><td>不提供示例，仅通过指令让模型完成任务</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../appendix/resources.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../appendix/resources.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

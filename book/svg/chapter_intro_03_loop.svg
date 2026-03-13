@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 480" width="500" height="480">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4dabf7"/>
+    </marker>
+  </defs>
+  <rect width="500" height="480" fill="#f8f9fa" rx="12"/>
+  <text x="250" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">感知 - 思考 - 行动 循环</text>
+
+  <!-- Goal -->
+  <rect x="175" y="55" width="150" height="50" rx="10" fill="#4dabf7" opacity="0.25" stroke="#4dabf7" stroke-width="2.5"/>
+  <text x="250" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2980b9">🎯 目标</text>
+  <text x="250" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">用户的任务请求</text>
+
+  <!-- Arrow down -->
+  <path d="M 250 107 L 250 135" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Perceive -->
+  <rect x="155" y="138" width="190" height="65" rx="10" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="250" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#3498db">👁️ 感知 Perceive</text>
+  <text x="250" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">获取信息 / 更新状态</text>
+  <text x="250" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">用户消息 / 工具结果 / 环境</text>
+
+  <!-- Arrow down -->
+  <path d="M 250 205 L 250 233" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Think -->
+  <rect x="155" y="236" width="190" height="65" rx="10" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9b59b6">🧠 思考 Think</text>
+  <text x="250" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">LLM 推理 / 做出决策</text>
+  <text x="250" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">分析情况 / 选择工具 / 规划步骤</text>
+
+  <!-- Arrow down -->
+  <path d="M 250 303 L 250 331" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Act -->
+  <rect x="155" y="334" width="190" height="65" rx="10" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+  <text x="250" y="358" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">🦸 行动 Act</text>
+  <text x="250" y="376" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">调用工具 / 执行操作</text>
+  <text x="250" y="392" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">搜索 / 计算 / API调用 / 代码执行</text>
+
+  <!-- Arrow down to decision -->
+  <path d="M 250 401 L 250 420" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="250,423 310,445 250,467 190,445" fill="#fff3bf" stroke="#f39c12" stroke-width="2"/>
+  <text x="250" y="441" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">目标</text>
+  <text x="250" y="456" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">达成？</text>
+
+  <!-- Yes arrow - right to finish -->
+  <path d="M 310 445 L 380 445" stroke="#27ae60" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="345" y="438" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">是</text>
+  <rect x="383" y="428" width="80" height="34" rx="8" fill="#27ae60" opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="423" y="449" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">🏁 完成</text>
+
+  <!-- No arrow - left back to Perceive (拆分为多段避免意外填充) -->
+  <line x1="190" y1="445" x2="55" y2="445" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3" fill="none"/>
+  <line x1="55" y1="445" x2="55" y2="170" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3" fill="none"/>
+  <line x1="55" y1="170" x2="153" y2="170" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow)" fill="none"/>
+  <text x="42" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#e74c3c" transform="rotate(-90, 42, 310)">否 → 继续循环</text>
+</svg>

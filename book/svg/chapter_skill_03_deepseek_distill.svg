@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 240" width="700" height="240">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr9" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#9b59b6"/>
+    </marker>
+  </defs>
+  <rect width="700" height="240" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">DeepSeek-R1 蒸馏链</text>
+
+  <!-- 各级模型 -->
+  <rect x="120" y="45" width="460" height="38" rx="8" fill="#2c3e50"/>
+  <text x="350" y="69" text-anchor="middle" font-size="13" font-weight="bold" fill="white">DeepSeek-R1（671B 参数）：推理能力接近 o1</text>
+  <text x="350" y="98" text-anchor="middle" font-size="16" fill="#9b59b6">↓ 蒸馏</text>
+
+  <rect x="160" y="108" width="380" height="34" rx="8" fill="#3498db"/>
+  <text x="350" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DeepSeek-R1-Distill-Qwen-32B：超过 o1-mini</text>
+  <text x="350" y="155" text-anchor="middle" font-size="16" fill="#9b59b6">↓ 蒸馏</text>
+
+  <rect x="200" y="163" width="300" height="34" rx="8" fill="#27ae60"/>
+  <text x="350" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DeepSeek-R1-Distill-Qwen-7B：仍有强推理能力</text>
+  <text x="350" y="208" text-anchor="middle" font-size="16" fill="#9b59b6">↓ 蒸馏</text>
+
+  <rect x="230" y="215" width="240" height="0" rx="0" fill="none"/>
+  <text x="350" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">💡 启示：特定技能可以被高效地压缩到小模型中</text>
+</svg>

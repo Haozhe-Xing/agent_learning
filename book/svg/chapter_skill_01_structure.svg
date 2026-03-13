@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 360" width="700" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="360" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">技能（Skill）的组成结构</text>
+
+  <!-- 外框 -->
+  <rect x="50" y="50" width="600" height="290" rx="12" fill="#9b59b6" opacity="0.06" stroke="#9b59b6" stroke-width="2"/>
+  <text x="350" y="78" text-anchor="middle" font-size="16" font-weight="bold" fill="#9b59b6">技能（Skill）—— "数据分析技能"</text>
+
+  <!-- 工具层 -->
+  <rect x="80" y="100" width="180" height="220" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="170" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🔧 工具层</text>
+  <rect x="100" y="140" width="140" height="28" rx="5" fill="#3498db" opacity="0.15"/>
+  <text x="170" y="159" text-anchor="middle" font-size="12" fill="#2c3e50">read_csv</text>
+  <rect x="100" y="176" width="140" height="28" rx="5" fill="#3498db" opacity="0.15"/>
+  <text x="170" y="195" text-anchor="middle" font-size="12" fill="#2c3e50">sql_query</text>
+  <rect x="100" y="212" width="140" height="28" rx="5" fill="#3498db" opacity="0.15"/>
+  <text x="170" y="231" text-anchor="middle" font-size="12" fill="#2c3e50">plot_chart</text>
+  <rect x="100" y="248" width="140" height="28" rx="5" fill="#3498db" opacity="0.15"/>
+  <text x="170" y="267" text-anchor="middle" font-size="12" fill="#2c3e50">write_md</text>
+
+  <!-- 知识层 -->
+  <rect x="280" y="100" width="180" height="220" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="370" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">📚 知识层</text>
+  <text x="300" y="155" font-size="11" fill="#555">知道如何选择图表类型</text>
+  <text x="300" y="185" font-size="11" fill="#555">知道如何处理异常数据</text>
+  <text x="300" y="215" font-size="11" fill="#555">知道行业分析惯例</text>
+  <text x="300" y="245" font-size="11" fill="#555">知道可视化最佳实践</text>
+  <text x="300" y="275" font-size="11" fill="#555">知道统计分析方法论</text>
+
+  <!-- 流程层 -->
+  <rect x="480" y="100" width="150" height="220" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="555" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">⚙️ 流程层</text>
+  <text x="555" y="157" text-anchor="middle" font-size="12" fill="#2c3e50">加载数据</text>
+  <text x="555" y="177" text-anchor="middle" font-size="16" fill="#e67e22">↓</text>
+  <text x="555" y="197" text-anchor="middle" font-size="12" fill="#2c3e50">清洗转换</text>
+  <text x="555" y="217" text-anchor="middle" font-size="16" fill="#e67e22">↓</text>
+  <text x="555" y="237" text-anchor="middle" font-size="12" fill="#2c3e50">分析计算</text>
+  <text x="555" y="257" text-anchor="middle" font-size="16" fill="#e67e22">↓</text>
+  <text x="555" y="277" text-anchor="middle" font-size="12" fill="#2c3e50">可视化</text>
+  <text x="555" y="297" text-anchor="middle" font-size="16" fill="#e67e22">↓</text>
+  <text x="555" y="315" text-anchor="middle" font-size="12" fill="#2c3e50">生成报告</text>
+</svg>

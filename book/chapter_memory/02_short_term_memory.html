@@ -1,0 +1,538 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>6.2 短期记忆：对话历史管理 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="短期记忆对话历史管理"><a class="header" href="#短期记忆对话历史管理">短期记忆：对话历史管理</a></h1>
+<p>短期记忆是最基础的记忆形式——维护对话历史，让 Agent 知道"刚才我们说了什么"。</p>
+<p>为什么这很重要？LLM 本身是<strong>无状态</strong>的——每次调用都是一次全新的请求，模型并不"记得"上一次对话的内容。如果用户在第一轮说"我叫张伟"，第二轮问"我叫什么名字"，模型如果不回传之前的对话历史，就会一脸茫然。短期记忆解决的正是这个问题：<strong>通过在每次请求中附带之前的对话记录，让模型"看起来"拥有了记忆。</strong></p>
+<p>但这带来一个新问题：LLM 的上下文窗口是有限的（GPT-4o 约 128K Token）。随着对话越来越长，Token 消耗急剧增加，不仅费用高昂，还可能超出模型的处理上限。因此，我们需要<strong>对话历史管理策略</strong>来平衡"记忆完整性"和"资源效率"。</p>
+<p>本节介绍三种策略：全量保留、滑动窗口、摘要压缩，它们适用于不同长度的对话场景。</p>
+<h2 id="基础对话历史管理"><a class="header" href="#基础对话历史管理">基础对话历史管理</a></h2>
+<p>我们先从最简单的开始：完整保留所有对话历史。这个 <code>ConversationHistory</code> 类封装了消息的添加、Token 统计和 API 调用。注意它使用 <code>tiktoken</code> 来精确计算每条消息的 Token 数——这对后面的窗口截断策略至关重要。</p>
+<pre><code class="language-python">from openai import OpenAI
+from dataclasses import dataclass, field
+from typing import Optional
+import tiktoken
+
+client = OpenAI()
+
+@dataclass
+class Message:
+    role: str  # "user", "assistant", "system", "tool"
+    content: str
+    token_count: int = 0
+
+class ConversationHistory:
+    """对话历史管理器"""
+    
+    def __init__(self, system_prompt: str = None, model: str = "gpt-4o"):
+        self.model = model
+        self.encoding = tiktoken.encoding_for_model(model)
+        self.messages: list[Message] = []
+        
+        if system_prompt:
+            self.add_message("system", system_prompt)
+    
+    def count_tokens(self, text: str) -&gt; int:
+        """计算文本的 Token 数"""
+        return len(self.encoding.encode(text))
+    
+    def add_message(self, role: str, content: str):
+        """添加一条消息"""
+        token_count = self.count_tokens(content)
+        msg = Message(role=role, content=content, token_count=token_count)
+        self.messages.append(msg)
+        return msg
+    
+    def total_tokens(self) -&gt; int:
+        """计算总 Token 数"""
+        return sum(m.token_count for m in self.messages)
+    
+    def to_api_format(self) -&gt; list[dict]:
+        """转换为 OpenAI API 格式"""
+        return [{"role": m.role, "content": m.content} for m in self.messages]
+    
+    def chat(self, user_message: str) -&gt; str:
+        """进行一轮对话"""
+        self.add_message("user", user_message)
+        
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=self.to_api_format()
+        )
+        
+        reply = response.choices[0].message.content
+        self.add_message("assistant", reply)
+        
+        return reply
+    
+    def get_stats(self) -&gt; dict:
+        """获取历史统计信息"""
+        return {
+            "消息数": len(self.messages),
+            "总Token数": self.total_tokens(),
+            "用户消息": sum(1 for m in self.messages if m.role == "user"),
+            "助手消息": sum(1 for m in self.messages if m.role == "assistant"),
+        }
+</code></pre>
+<h2 id="滑动窗口控制历史长度"><a class="header" href="#滑动窗口控制历史长度">滑动窗口：控制历史长度</a></h2>
+<p>全量保留方案的问题很明显：随着对话轮次增加，Token 消耗呈线性增长。当对话超过 50 轮时，光是对话历史就可能占用数万 Token。</p>
+<p><strong>滑动窗口</strong>是最直觉的解决方案——只保留最近 N 轮对话，丢弃更早的记录。这类似于人类的短期记忆容量限制（心理学中有名的"7±2"法则）。</p>
+<p>下面的实现有两个截断维度：<code>max_turns</code>（最大轮数）和 <code>max_tokens</code>（最大 Token 数）。这种双重保障很重要——有时候一轮对话就包含很长的代码，仅凭轮数无法有效控制 Token 消耗。<code>_get_window_messages</code> 方法会先按轮数截取，再检查 Token 是否超限，如果超限则进一步移除最早的轮次。</p>
+<p>注意 <code>system_prompt</code> 始终保留，不参与截断——这是因为系统提示定义了 Agent 的角色和行为，丢失它会导致 Agent "人格错乱"。</p>
+<pre><code class="language-python">class SlidingWindowMemory:
+    """滑动窗口对话管理：只保留最近 N 轮对话"""
+    
+    def __init__(
+        self,
+        system_prompt: str = None,
+        max_turns: int = 10,       # 最大保留轮数
+        max_tokens: int = 8000,    # 最大 Token 数
+        model: str = "gpt-4o-mini"
+    ):
+        self.model = model
+        self.max_turns = max_turns
+        self.max_tokens = max_tokens
+        self.system_prompt = system_prompt
+        self.all_messages: list[dict] = []  # 完整历史（不传给 LLM）
+        
+        self.encoding = tiktoken.encoding_for_model(model)
+    
+    def _count_tokens(self, messages: list[dict]) -&gt; int:
+        """计算消息列表的 Token 总数"""
+        total = 0
+        for msg in messages:
+            total += len(self.encoding.encode(msg.get("content", "")))
+        return total
+    
+    def _get_window_messages(self) -&gt; list[dict]:
+        """获取滑动窗口内的消息"""
+        # System prompt 始终保留
+        result = []
+        if self.system_prompt:
+            result.append({"role": "system", "content": self.system_prompt})
+        
+        # 只取最近 max_turns * 2 条（每轮包含 user + assistant）
+        recent = self.all_messages[-(self.max_turns * 2):]
+        
+        # 如果 Token 超限，进一步截断
+        while recent and self._count_tokens(result + recent) &gt; self.max_tokens:
+            recent = recent[2:]  # 每次移除最早的一轮（2条消息）
+        
+        return result + recent
+    
+    def chat(self, user_message: str) -&gt; str:
+        """对话（使用滑动窗口）"""
+        self.all_messages.append({"role": "user", "content": user_message})
+        
+        # 使用窗口内的消息
+        window_messages = self._get_window_messages()
+        
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=window_messages
+        )
+        
+        reply = response.choices[0].message.content
+        self.all_messages.append({"role": "assistant", "content": reply})
+        
+        # 显示窗口信息
+        print(f"[记忆] 总历史: {len(self.all_messages)} 条 | "
+              f"窗口使用: {len(window_messages)} 条 | "
+              f"窗口Token: {self._count_tokens(window_messages)}")
+        
+        return reply
+
+# 测试
+memory = SlidingWindowMemory(
+    system_prompt="你是一个编程助手",
+    max_turns=5
+)
+
+for i in range(8):  # 模拟长对话
+    reply = memory.chat(f"这是第 {i+1} 个问题，请用一句话回答什么是Python")
+    print(f"Q{i+1}: {reply[:50]}...")
+</code></pre>
+<h2 id="摘要压缩智能压缩历史"><a class="header" href="#摘要压缩智能压缩历史">摘要压缩：智能压缩历史</a></h2>
+<p>滑动窗口的缺点是"非此即彼"——窗口外的对话直接丢弃，无论其中是否包含重要信息。如果用户在对话开头介绍了自己的背景和需求，等窗口滑过去后 Agent 就完全忘了。</p>
+<p><strong>摘要压缩</strong>是一种更智能的方案：当对话历史超过阈值时，用 LLM 将旧对话压缩成一段简洁的摘要，然后只保留"摘要 + 最近的消息"。这样既控制了 Token 总量，又保留了早期对话中的关键信息（比如用户偏好、项目背景、已做的决策）。</p>
+<p>这个方案的代价是：每次压缩需要额外调用一次 LLM（可以用 <code>gpt-4o-mini</code> 这样的轻量模型来降低成本），而且压缩过程中不可避免地会丢失一些细节。在实践中，摘要压缩特别适合那些对话很长但信息密度不均匀的场景——比如技术支持对话，前半段可能是大量的排查尝试，真正有价值的是结论和决策。</p>
+<pre><code class="language-python">class SummaryMemory:
+    """
+    摘要记忆管理器
+    当对话历史超过阈值时，自动压缩旧对话为摘要
+    """
+    
+    def __init__(
+        self,
+        system_prompt: str = None,
+        max_tokens_before_summary: int = 3000,
+        model: str = "gpt-4o-mini",
+        summary_model: str = "gpt-4o-mini"
+    ):
+        self.model = model
+        self.summary_model = summary_model
+        self.system_prompt = system_prompt
+        self.max_tokens = max_tokens_before_summary
+        
+        self.summary: str = ""  # 压缩后的历史摘要
+        self.recent_messages: list[dict] = []  # 最近的消息（未压缩）
+        
+        self.encoding = tiktoken.encoding_for_model(model)
+    
+    def _count_tokens(self, text: str) -&gt; int:
+        return len(self.encoding.encode(text))
+    
+    def _should_summarize(self) -&gt; bool:
+        """判断是否需要压缩"""
+        total = sum(self._count_tokens(m["content"]) 
+                   for m in self.recent_messages)
+        return total &gt; self.max_tokens
+    
+    def _create_summary(self) -&gt; str:
+        """将当前对话历史压缩为摘要"""
+        if not self.recent_messages:
+            return self.summary
+        
+        # 构建压缩提示
+        conversation_text = "\n".join([
+            f"{m['role'].upper()}: {m['content']}"
+            for m in self.recent_messages
+        ])
+        
+        existing_summary = f"已有摘要：\n{self.summary}\n\n" if self.summary else ""
+        
+        summary_prompt = f"""{existing_summary}请将以下对话内容压缩为简洁摘要，保留关键信息、决策和用户偏好：
+
+{conversation_text}
+
+要求：
+1. 保留用户的关键需求和偏好
+2. 保留重要的决策和结论  
+3. 忽略闲聊和重复内容
+4. 使用第三人称描述，简洁客观
+5. 不超过300字"""
+        
+        response = client.chat.completions.create(
+            model=self.summary_model,
+            messages=[{"role": "user", "content": summary_prompt}],
+            max_tokens=400
+        )
+        
+        return response.choices[0].message.content
+    
+    def _build_messages(self) -&gt; list[dict]:
+        """构建发送给 LLM 的消息列表"""
+        messages = []
+        
+        # System prompt
+        if self.system_prompt:
+            messages.append({"role": "system", "content": self.system_prompt})
+        
+        # 历史摘要（如果有）
+        if self.summary:
+            messages.append({
+                "role": "system",
+                "content": f"【对话历史摘要】\n{self.summary}"
+            })
+        
+        # 最近消息
+        messages.extend(self.recent_messages)
+        
+        return messages
+    
+    def chat(self, user_message: str) -&gt; str:
+        """对话（自动摘要压缩）"""
+        self.recent_messages.append({"role": "user", "content": user_message})
+        
+        # 检查是否需要压缩
+        if self._should_summarize():
+            print("[记忆] 对话历史过长，正在压缩...")
+            self.summary = self._create_summary()
+            # 清空近期消息，只保留最后一条用户消息
+            self.recent_messages = [self.recent_messages[-1]]
+            print(f"[记忆] 压缩完成，摘要：{self.summary[:100]}...")
+        
+        # 调用 LLM
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=self._build_messages()
+        )
+        
+        reply = response.choices[0].message.content
+        self.recent_messages.append({"role": "assistant", "content": reply})
+        
+        return reply
+
+# 测试摘要记忆
+summary_mem = SummaryMemory(
+    system_prompt="你是一个 Python 编程助手",
+    max_tokens_before_summary=500  # 设小一点便于测试
+)
+
+conversations = [
+    "我叫张伟，是一名后端开发工程师，主要用 Python 和 Go",
+    "我正在开发一个微服务项目，用到了 FastAPI 和 SQLAlchemy",
+    "我比较偏好简洁的代码风格，不喜欢过度抽象",
+    "帮我写一个 FastAPI 的用户认证接口",
+    "这个接口需要支持 JWT Token",
+]
+
+for msg in conversations:
+    print(f"\n用户：{msg}")
+    reply = summary_mem.chat(msg)
+    print(f"助手：{reply[:100]}...")
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>短期记忆管理的三种策略：</p>
+<div class="table-wrapper"><table><thead><tr><th>策略</th><th>适用场景</th><th>优点</th><th>缺点</th></tr></thead><tbody>
+<tr><td>全量历史</td><td>短对话</td><td>信息完整</td><td>Token 消耗高</td></tr>
+<tr><td>滑动窗口</td><td>一般对话</td><td>简单高效</td><td>可能丢失早期信息</td></tr>
+<tr><td>摘要压缩</td><td>长对话</td><td>保留重要信息</td><td>需要额外 LLM 调用</td></tr>
+</tbody></table>
+</div>
+<hr />
+<p><em>下一节：<a href="./03_long_term_memory.html">5.3 长期记忆：向量数据库与检索</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_memory/01_why_memory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_memory/03_long_term_memory.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_memory/01_why_memory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_memory/03_long_term_memory.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

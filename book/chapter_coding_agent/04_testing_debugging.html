@@ -1,0 +1,457 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>17.4 测试生成与 Bug 修复 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="测试生成与-bug-修复"><a class="header" href="#测试生成与-bug-修复">测试生成与 Bug 修复</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：让 AI 编程助手自动生成单元测试，并能定位和修复代码中的 Bug。</p>
+</blockquote>
+<hr />
+<h2 id="测试策略概述"><a class="header" href="#测试策略概述">测试策略概述</a></h2>
+<p>AI 编程助手在测试领域可以发挥三个层次的作用：</p>
+<div class="table-wrapper"><table><thead><tr><th>层次</th><th>能力</th><th>说明</th></tr></thead><tbody>
+<tr><td><strong>L1 测试生成</strong></td><td>自动生成单元测试</td><td>分析函数签名和逻辑，生成测试用例</td></tr>
+<tr><td><strong>L2 Bug 诊断</strong></td><td>分析错误并定位根因</td><td>理解错误信息、堆栈跟踪、代码逻辑</td></tr>
+<tr><td><strong>L3 自动修复</strong></td><td>生成修复代码并验证</td><td>修复 → 运行测试 → 确认通过的闭环</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="自动生成测试"><a class="header" href="#自动生成测试">自动生成测试</a></h2>
+<pre><code class="language-python">class TestGenerator:
+    """自动测试生成器"""
+    
+    def __init__(self, llm):
+        self.llm = llm
+    
+    async def generate_tests(
+        self,
+        source_code: str,
+        file_path: str,
+        framework: str = "pytest"
+    ) -&gt; str:
+        """为给定代码自动生成测试"""
+        
+        prompt = f"""请为以下代码生成全面的单元测试。
+
+源代码文件：{file_path}
+```python
+{source_code}
+</code></pre>
+<p>测试框架：{framework}</p>
+<p>要求：</p>
+<ol>
+<li>为每个公共函数/方法生成至少 2 个测试用例</li>
+<li>覆盖正常情况、边界情况和异常情况</li>
+<li>测试名称要清晰表达测试意图</li>
+<li>使用 {framework} 的最佳实践</li>
+</ol>
+<p>请生成完整的测试文件代码。
+"""
+response = await self.llm.ainvoke(prompt)
+return response.content</p>
+<pre><code>async def analyze_coverage(
+    self,
+    source_code: str,
+    test_code: str,
+) -&gt; dict:
+    """分析测试覆盖率，建议补充哪些测试"""
+    
+    prompt = f"""分析以下测试代码对源代码的覆盖情况。
+</code></pre>
+<p>源代码：</p>
+<pre><code class="language-python">{source_code}
+</code></pre>
+<p>现有测试：</p>
+<pre><code class="language-python">{test_code}
+</code></pre>
+<p>请分析：</p>
+<ol>
+<li>哪些函数/分支已被测试覆盖</li>
+<li>哪些函数/分支尚未覆盖</li>
+<li>建议补充的测试用例</li>
+</ol>
+<p>以 JSON 格式返回：
+{{
+"covered": ["已覆盖的函数/分支列表"],
+"uncovered": ["未覆盖的函数/分支列表"],
+"suggestions": ["建议的测试用例描述"]
+}}
+"""
+response = await self.llm.ainvoke(prompt)
+import json
+return json.loads(response.content)</p>
+<pre><code>
+---
+
+## Bug 定位与修复
+
+```python
+class BugFixer:
+    """Bug 定位和修复器"""
+    
+    def __init__(self, llm):
+        self.llm = llm
+    
+    async def diagnose_and_fix(
+        self,
+        code: str,
+        error_message: str,
+        file_path: str
+    ) -&gt; dict:
+        """诊断并修复 Bug"""
+        
+        prompt = f"""以下代码运行时出现了错误，请帮我诊断并修复。
+
+文件：{file_path}
+代码：
+```python
+{code}
+</code></pre>
+<p>错误信息：</p>
+<pre><code>{error_message}
+</code></pre>
+<p>请分析：</p>
+<ol>
+<li>错误的根本原因</li>
+<li>出问题的代码位置</li>
+<li>修复方案</li>
+</ol>
+<p>以 JSON 格式回复：
+{{
+"root_cause": "根本原因分析",
+"bug_location": "出问题的函数/行号",
+"fix_description": "修复方案说明",
+"fixed_code": "修复后的完整代码"
+}}
+"""</p>
+<pre><code>    response = await self.llm.ainvoke(prompt)
+    import json
+    return json.loads(response.content)
+
+async def suggest_preventive_measures(
+    self,
+    bug_info: dict
+) -&gt; list[str]:
+    """基于 Bug 分析，建议预防措施"""
+    
+    prompt = f"""根据以下 Bug 分析，提出 3-5 条预防类似问题再次出现的建议：
+</code></pre>
+<p>根因：{bug_info['root_cause']}
+位置：{bug_info['bug_location']}
+修复：{bug_info['fix_description']}</p>
+<p>请返回建议列表（每条一行）。
+"""
+response = await self.llm.ainvoke(prompt)
+return response.content.strip().split('\n')</p>
+<pre><code>
+---
+
+## 集成使用：测试-诊断-修复闭环
+
+```python
+async def fix_workflow(llm, code: str, test_code: str):
+    """修复工作流：运行测试 → 发现失败 → 自动修复 → 验证修复"""
+    
+    fixer = BugFixer(llm)
+    test_gen = TestGenerator(llm)
+    
+    # 1. 如果没有测试，先生成
+    if not test_code:
+        test_code = await test_gen.generate_tests(code, "main.py")
+        print("✅ 已生成测试用例")
+    
+    # 2. 运行测试（简化演示）
+    print("🧪 运行测试中...")
+    # result = subprocess.run(["python", "-m", "pytest", ...])
+    
+    # 3. 如果有失败的测试，让 Agent 修复
+    error_msg = "AssertionError: expected 42, got 0"
+    
+    fix_result = await fixer.diagnose_and_fix(
+        code=code,
+        error_message=error_msg,
+        file_path="main.py"
+    )
+    
+    print(f"🔍 原因: {fix_result['root_cause']}")
+    print(f"🔧 修复: {fix_result['fix_description']}")
+    print(f"📝 位置: {fix_result['bug_location']}")
+    
+    # 4. 验证修复（回归测试）
+    print("🔄 回归测试：验证修复是否引入新问题...")
+    # re-run tests with fixed code
+    
+    # 5. 预防建议
+    preventive = await fixer.suggest_preventive_measures(fix_result)
+    print("💡 预防建议：")
+    for suggestion in preventive:
+        print(f"  {suggestion}")
+    
+    return fix_result["fixed_code"]
+</code></pre>
+<h3 id="最佳实践"><a class="header" href="#最佳实践">最佳实践</a></h3>
+<p>在将 AI 生成的测试和修复集成到开发流程中时，需要注意：</p>
+<pre><code class="language-python">best_practices = {
+    "人工审查": "AI 生成的测试和修复建议必须经过人工审查后再合并",
+    "增量测试": "先为新增/修改的代码生成测试，逐步覆盖已有代码",
+    "测试质量": "检查 AI 生成的测试是否真正验证了业务逻辑，而非仅仅'凑覆盖率'",
+    "修复验证": "自动修复后必须运行全量测试套件（回归测试），防止修复引入新问题",
+    "记录与学习": "将常见 Bug 模式记录到知识库，帮助 Agent 提升诊断准确率",
+}
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>功能</th><th>说明</th></tr></thead><tbody>
+<tr><td>测试生成</td><td>自动为代码生成 pytest 测试用例</td></tr>
+<tr><td>Bug 诊断</td><td>分析错误信息，定位根本原因</td></tr>
+<tr><td>自动修复</td><td>生成修复后的代码</td></tr>
+<tr><td>修复工作流</td><td>测试 → 诊断 → 修复 的闭环</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>下一节预告</strong>：最后，我们将所有组件整合为一个完整的 AI 编程助手。</p>
+</blockquote>
+<hr />
+<p><a href="./05_full_implementation.html">下一节：16.5 完整项目实现 →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_coding_agent/03_code_generation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_coding_agent/05_full_implementation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_coding_agent/03_code_generation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_coding_agent/05_full_implementation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

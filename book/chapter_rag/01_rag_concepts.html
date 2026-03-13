@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>8.1 RAG 的概念与工作原理 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rag-的概念与工作原理"><a class="header" href="#rag-的概念与工作原理">RAG 的概念与工作原理</a></h1>
+<p>RAG（Retrieval-Augmented Generation）是一种将<strong>信息检索</strong>与<strong>语言生成</strong>结合的技术架构。它让 LLM 能够基于外部知识库回答问题，而不是仅依赖训练时学到的知识。</p>
+<blockquote>
+<p>📄 <strong>论文出处</strong>：RAG 的概念由 Meta AI（当时的 Facebook AI Research）在论文 <em>"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"</em>（Lewis et al., 2020）中首次提出。原始论文将检索模型（DPR）和生成模型（BART）端到端联合训练，在开放域问答任务上大幅超越了传统的"先检索后阅读"方案。虽然今天的 RAG 实现方式已经与原始论文有很大不同（我们通常不做端到端训练，而是将检索和生成解耦），但核心思想完全一致：<strong>让模型在生成回答时能够参考外部知识。</strong></p>
+</blockquote>
+<h2 id="为什么需要-rag"><a class="header" href="#为什么需要-rag">为什么需要 RAG？</a></h2>
+<p>LLM 有三个根本局限：</p>
+<pre><code class="language-python"># 局限 1：知识截止日期
+question = "最新版本的 GPT-4 有哪些新功能？"
+# LLM 只知道训练数据截止前的信息
+
+# 局限 2：领域知识匮乏
+question = "我们公司的退款政策是什么？"
+# LLM 不知道你公司的内部文档
+
+# 局限 3：幻觉风险
+question = "张三博士2023年发表了哪些论文？"
+# LLM 可能编造不存在的论文
+</code></pre>
+<p>RAG 通过"先检索、再生成"解决这三个问题：</p>
+<ul>
+<li>✅ 检索最新文档 → 解决知识截止</li>
+<li>✅ 检索内部知识库 → 解决领域匮乏</li>
+<li>✅ 基于真实文档生成 → 减少幻觉</li>
+</ul>
+<h2 id="rag-工作流程"><a class="header" href="#rag-工作流程">RAG 工作流程</a></h2>
+<p><img src="../svg/chapter_rag_01_rag_flow.svg" alt="RAG 工作流程" /></p>
+<h2 id="核心概念"><a class="header" href="#核心概念">核心概念</a></h2>
+<h3 id="1-chunk文本块"><a class="header" href="#1-chunk文本块">1. Chunk（文本块）</a></h3>
+<p>文档被分割为一段段的文本块（Chunk），每个 Chunk 独立存储和检索。</p>
+<pre><code class="language-python"># 一个文档可能被分成很多 Chunk
+document = "这是一篇关于Python的长文章..." 
+
+chunks = [
+    "Python 是由 Guido van Rossum 创建的...",     # Chunk 1
+    "Python 的设计哲学强调代码的可读性...",          # Chunk 2
+    "Python 在人工智能领域应用广泛，包括...",         # Chunk 3
+    # ...
+]
+</code></pre>
+<h3 id="2-embedding向量嵌入"><a class="header" href="#2-embedding向量嵌入">2. Embedding（向量嵌入）</a></h3>
+<p>将文本转化为可比较的数字向量：</p>
+<pre><code class="language-python">from openai import OpenAI
+
+client = OpenAI()
+
+def embed(text: str) -&gt; list[float]:
+    """将文本转为 1536 维向量"""
+    response = client.embeddings.create(
+        input=text,
+        model="text-embedding-3-small"
+    )
+    return response.data[0].embedding
+
+# 语义相似的文本有相近的向量
+v1 = embed("Python 编程语言")
+v2 = embed("Python 是用于编程的工具")
+v3 = embed("今天天气不错")
+
+# v1 和 v2 的余弦相似度 &gt; 0.9
+# v1 和 v3 的余弦相似度 &lt; 0.5
+</code></pre>
+<h3 id="3-相似度检索"><a class="header" href="#3-相似度检索">3. 相似度检索</a></h3>
+<pre><code class="language-python">import chromadb
+import numpy as np
+
+# 用余弦相似度找最相关的文档块
+def find_relevant_chunks(query: str, collection, n: int = 5) -&gt; list[str]:
+    """从向量库中找最相关的文档块"""
+    
+    query_embedding = embed(query)
+    
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=n,
+        include=["documents", "distances"]
+    )
+    
+    chunks = results["documents"][0]
+    distances = results["distances"][0]
+    
+    # 返回并打印相关性
+    for chunk, dist in zip(chunks, distances):
+        similarity = 1 - dist  # 转换为相似度
+        print(f"[{similarity:.2f}] {chunk[:80]}...")
+    
+    return chunks
+</code></pre>
+<h3 id="4-上下文注入context-injection"><a class="header" href="#4-上下文注入context-injection">4. 上下文注入（Context Injection）</a></h3>
+<p>将检索到的相关文档块注入到 Prompt 中：</p>
+<pre><code class="language-python">def answer_with_context(question: str, context_chunks: list[str]) -&gt; str:
+    """基于上下文回答问题"""
+    
+    # 构建上下文字符串
+    context = "\n\n---\n\n".join(context_chunks)
+    
+    prompt = f"""请基于以下参考资料回答问题。
+    
+【参考资料】
+{context}
+
+【问题】
+{question}
+
+【要求】
+- 只使用参考资料中的信息
+- 如果资料中没有相关信息，明确说明
+- 引用具体的信息来支持你的回答
+"""
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    
+    return response.choices[0].message.content
+
+# 完整流程
+question = "Python 是什么时候创建的？"
+relevant_chunks = find_relevant_chunks(question, collection)
+answer = answer_with_context(question, relevant_chunks)
+print(answer)
+</code></pre>
+<h2 id="rag-vs-直接查询-llm"><a class="header" href="#rag-vs-直接查询-llm">RAG vs 直接查询 LLM</a></h2>
+<p><img src="../svg/chapter_rag_01_rag_vs_llm.svg" alt="RAG vs 直接查询LLM对比" /></p>
+<pre><code class="language-python">def compare_approaches(question: str, has_relevant_docs: bool = True):
+    """对比 RAG 和直接查询的效果"""
+    
+    # 方式1：直接问 LLM（可能幻觉）
+    direct_response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": question}]
+    )
+    
+    print("=== 直接问 LLM ===")
+    print(direct_response.choices[0].message.content[:300])
+    
+    # 方式2：RAG（基于文档）
+    if has_relevant_docs:
+        chunks = find_relevant_chunks(question, collection)
+        rag_answer = answer_with_context(question, chunks)
+        
+        print("\n=== RAG 回答 ===")
+        print(rag_answer[:300])
+
+# 特别适合内部知识库查询
+compare_approaches("我们公司的产品退款流程是什么？")
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>RAG 的核心价值：</p>
+<ul>
+<li><strong>解决知识局限</strong>：外挂任意知识库</li>
+<li><strong>减少幻觉</strong>：基于真实文档生成</li>
+<li><strong>实时更新</strong>：更新文档即更新知识</li>
+<li><strong>可溯源</strong>：每个回答都有文档依据</li>
+</ul>
+<h3 id="rag-的局限与挑战"><a class="header" href="#rag-的局限与挑战">RAG 的局限与挑战</a></h3>
+<p>RAG 不是万能的，在实际应用中你可能会遇到以下挑战：</p>
+<div class="table-wrapper"><table><thead><tr><th>挑战</th><th>描述</th><th>应对策略</th></tr></thead><tbody>
+<tr><td><strong>检索质量瓶颈</strong></td><td>如果检索到了无关文档，再好的 LLM 也无法生成正确答案</td><td>优化嵌入模型、使用混合检索、重排序（详见 7.4 节）</td></tr>
+<tr><td><strong>长上下文稀释</strong></td><td>检索到太多文档会"稀释"关键信息，反而降低回答质量</td><td>控制检索数量（top_k）、压缩文档摘要</td></tr>
+<tr><td><strong>跨文档推理困难</strong></td><td>答案分散在多个文档中时，LLM 难以有效整合</td><td>使用 Map-Reduce 策略、分步骤推理</td></tr>
+<tr><td><strong>数据新鲜度</strong></td><td>向量索引需要定期更新，否则包含过时信息</td><td>设计增量更新机制、添加时间戳过滤</td></tr>
+<tr><td><strong>结构化数据不友好</strong></td><td>RAG 对表格、数据库等结构化数据的处理效果不如非结构化文本</td><td>结合 Text-to-SQL 方案（详见第 17 章）</td></tr>
+</tbody></table>
+</div>
+<p>理解这些局限有助于你在实际项目中合理评估 RAG 的适用范围，并选择正确的优化方向。</p>
+<blockquote>
+<p>📖 <strong>想深入了解 RAG 的学术前沿？</strong> 请阅读 <a href="./06_paper_readings.html">7.6 论文解读：RAG 前沿进展</a>，涵盖 RAG 原始论文、Self-RAG、CRAG、GraphRAG、Modular RAG 等核心论文的深度解读，以及从 Naive RAG 到 Agentic RAG 的完整演进脉络。</p>
+</blockquote>
+<hr />
+<p><em>下一节：<a href="./02_document_loading.html">7.2 文档加载与文本分割</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_rag/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_rag/02_document_loading.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_rag/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_rag/02_document_loading.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

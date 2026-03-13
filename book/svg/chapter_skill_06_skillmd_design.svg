@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" width="700" height="260">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="260" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">SKILL.md 设计理念</text>
+
+  <!-- 1. 声明式 -->
+  <rect x="20" y="48" width="320" height="90" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="180" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">1. 📝 声明式</text>
+  <text x="40" y="92" font-size="11" fill="#555">用 Markdown 而非代码定义技能</text>
+  <text x="40" y="112" font-size="11" fill="#555">→ 降低门槛，非程序员也可创建</text>
+  <text x="40" y="130" font-size="10" fill="#888">格式：标准 Markdown + YAML frontmatter</text>
+
+  <!-- 2. 层级化 -->
+  <rect x="360" y="48" width="320" height="90" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="520" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">2. 🏗 层级化</text>
+  <text x="380" y="92" font-size="11" fill="#555">技能可以嵌套</text>
+  <text x="380" y="112" font-size="11" fill="#555">skills/ → writing/ → technical/</text>
+  <text x="380" y="130" font-size="10" fill="#888">→ 从通用到专用的技能层级</text>
+
+  <!-- 3. 上下文感知 -->
+  <rect x="20" y="150" width="320" height="90" rx="10" fill="#e67e22" opacity="0.1" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="180" y="172" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">3. 🎯 上下文感知</text>
+  <text x="40" y="194" font-size="11" fill="#555">按需加载，不是所有技能同时激活</text>
+  <text x="40" y="214" font-size="11" fill="#555">→ 根据任务动态激活相关技能</text>
+  <text x="40" y="232" font-size="10" fill="#888">优化 Token 使用，降低成本</text>
+
+  <!-- 4. 可移植 -->
+  <rect x="360" y="150" width="320" height="90" rx="10" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="520" y="172" text-anchor="middle" font-size="14" font-weight="bold" fill="#9b59b6">4. 🔄 可移植</text>
+  <text x="380" y="194" font-size="11" fill="#555">不绑定特定模型</text>
+  <text x="380" y="214" font-size="11" fill="#555">→ 同一 SKILL.md 可用于 Claude/GPT/开源</text>
+  <text x="380" y="232" font-size="10" fill="#888">技能即文档，天然版本管理</text>
+</svg>

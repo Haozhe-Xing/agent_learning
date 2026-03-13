@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440">
+  <rect width="800" height="440" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">Agent 记忆系统三层架构</text>
+  
+  <!-- Working Memory -->
+  <rect x="280" y="55" width="240" height="100" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="400" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e74c3c">工作记忆（Scratchpad）</text>
+  <text x="400" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">• 当前任务的推理步骤</text>
+  <text x="400" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">• 中间计算结果</text>
+  <text x="400" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">⚡ 临时存在，任务完成后清空</text>
+  
+  <!-- Short-term Memory -->
+  <rect x="160" y="180" width="480" height="110" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#3498db">短期记忆（对话历史）</text>
+  <text x="220" y="226" font-family="Arial, sans-serif" font-size="11" fill="#555">• 当前会话的消息历史</text>
+  <text x="220" y="244" font-family="Arial, sans-serif" font-size="11" fill="#555">• 滑动窗口（最近 N 轮）</text>
+  <text x="220" y="262" font-family="Arial, sans-serif" font-size="11" fill="#555">• 摘要压缩（节省 Token）</text>
+  <text x="480" y="226" font-family="Arial, sans-serif" font-size="11" fill="#555">• 容量受 Context Window 限制</text>
+  <text x="480" y="244" font-family="Arial, sans-serif" font-size="11" fill="#555">• 会话结束后消失</text>
+  <text x="480" y="262" font-family="Arial, sans-serif" font-size="11" fill="#555">🔵 当前会话持续存在</text>
+  
+  <!-- Long-term Memory -->
+  <rect x="40" y="315" width="720" height="105" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">长期记忆（向量数据库）</text>
+  <text x="80" y="362" font-family="Arial, sans-serif" font-size="11" fill="#555">• 用户偏好和个人信息</text>
+  <text x="80" y="380" font-family="Arial, sans-serif" font-size="11" fill="#555">• 历史对话摘要</text>
+  <text x="80" y="398" font-family="Arial, sans-serif" font-size="11" fill="#555">• 用户文档和知识库</text>
+  <text x="300" y="362" font-family="Arial, sans-serif" font-size="11" fill="#555">• 重要决策和结论</text>
+  <text x="300" y="380" font-family="Arial, sans-serif" font-size="11" fill="#555">• 语义检索（向量相似度）</text>
+  <text x="300" y="398" font-family="Arial, sans-serif" font-size="11" fill="#555">• 持久存储（跨会话）</text>
+  <text x="560" y="362" font-family="Arial, sans-serif" font-size="11" fill="#27ae60">• ChromaDB / Pinecone</text>
+  <text x="560" y="380" font-family="Arial, sans-serif" font-size="11" fill="#27ae60">• FAISS / Qdrant</text>
+  <text x="560" y="398" font-family="Arial, sans-serif" font-size="11" fill="#27ae60">💾 永久保存</text>
+  
+  <!-- Arrows showing layer relationship -->
+  <path d="M 400 156 L 400 177" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#darr)"/>
+  <path d="M 400 291 L 400 312" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#darr)"/>
+  
+  <!-- Labels on arrows -->
+  <text x="415" y="170" font-family="Arial, sans-serif" font-size="10" fill="#999">重要信息向下沉淀</text>
+  <text x="415" y="305" font-family="Arial, sans-serif" font-size="10" fill="#999">语义检索向上提取</text>
+  
+  <defs>
+    <marker id="darr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+</svg>

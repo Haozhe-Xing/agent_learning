@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>15.4 敏感数据保护 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="敏感数据保护"><a class="header" href="#敏感数据保护">敏感数据保护</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：学会识别和保护 Agent 交互中的敏感数据，防止数据泄露。</p>
+</blockquote>
+<hr />
+<h2 id="agent-面临的数据风险"><a class="header" href="#agent-面临的数据风险">Agent 面临的数据风险</a></h2>
+<p>Agent 在与用户交互和执行任务的过程中，可能会接触到各种敏感数据：</p>
+<div class="table-wrapper"><table><thead><tr><th>数据类型</th><th>示例</th><th>风险</th></tr></thead><tbody>
+<tr><td>个人身份信息（PII）</td><td>姓名、身份证号、手机号</td><td>隐私泄露</td></tr>
+<tr><td>认证凭据</td><td>API Key、密码、Token</td><td>账号被盗</td></tr>
+<tr><td>金融数据</td><td>银行卡号、交易记录</td><td>财务损失</td></tr>
+<tr><td>业务机密</td><td>内部文档、代码、策略</td><td>商业损失</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="pii-检测与脱敏"><a class="header" href="#pii-检测与脱敏">PII 检测与脱敏</a></h2>
+<pre><code class="language-python">import re
+from dataclasses import dataclass
+
+@dataclass
+class PIIEntity:
+    """个人身份信息实体"""
+    type: str       # 类型
+    value: str      # 原始值
+    masked: str     # 脱敏后的值
+    start: int      # 在文本中的起始位置
+    end: int        # 结束位置
+
+
+class PIIDetector:
+    """PII 检测器"""
+    
+    PATTERNS = {
+        "phone": {
+            "regex": r"1[3-9]\d{9}",
+            "mask": lambda m: m[:3] + "****" + m[-4:]
+        },
+        "id_card": {
+            "regex": r"\d{17}[\dXx]",
+            "mask": lambda m: m[:6] + "********" + m[-4:]
+        },
+        "email": {
+            "regex": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+            "mask": lambda m: m[0] + "***@" + m.split("@")[1]
+        },
+        "bank_card": {
+            "regex": r"\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}",
+            "mask": lambda m: re.sub(r'\d', '*', m[:-4]) + m[-4:]
+        },
+        "api_key": {
+            "regex": r"(sk|pk|api)[_-][a-zA-Z0-9]{20,}",
+            "mask": lambda m: m[:6] + "*" * (len(m) - 10) + m[-4:]
+        }
+    }
+    
+    def detect(self, text: str) -&gt; list[PIIEntity]:
+        """检测文本中的 PII"""
+        entities = []
+        
+        for pii_type, config in self.PATTERNS.items():
+            for match in re.finditer(config["regex"], text):
+                entities.append(PIIEntity(
+                    type=pii_type,
+                    value=match.group(),
+                    masked=config["mask"](match.group()),
+                    start=match.start(),
+                    end=match.end()
+                ))
+        
+        return entities
+    
+    def mask(self, text: str) -&gt; tuple[str, list[PIIEntity]]:
+        """检测并脱敏文本中的 PII"""
+        entities = self.detect(text)
+        
+        # 从后向前替换，避免位置偏移
+        masked_text = text
+        for entity in sorted(entities, key=lambda e: e.start, reverse=True):
+            masked_text = (
+                masked_text[:entity.start] + 
+                entity.masked + 
+                masked_text[entity.end:]
+            )
+        
+        return masked_text, entities
+
+
+# 使用示例
+detector = PIIDetector()
+
+text = "用户张三的手机号是13812345678，邮箱是zhangsan@example.com"
+masked, entities = detector.mask(text)
+
+print(masked)
+# 用户张三的手机号是138****5678，邮箱是z***@example.com
+
+print(f"发现 {len(entities)} 个 PII：")
+for e in entities:
+    print(f"  [{e.type}] {e.value} → {e.masked}")
+</code></pre>
+<hr />
+<h2 id="agent-对话数据保护"><a class="header" href="#agent-对话数据保护">Agent 对话数据保护</a></h2>
+<pre><code class="language-python">class SecureConversationManager:
+    """安全的对话管理器 —— 在存储前脱敏"""
+    
+    def __init__(self):
+        self.pii_detector = PIIDetector()
+        self.conversations = {}  # session_id -&gt; messages
+    
+    def add_message(self, session_id: str, role: str, content: str):
+        """添加消息（自动脱敏后存储）"""
+        
+        # 脱敏处理
+        masked_content, entities = self.pii_detector.mask(content)
+        
+        if entities:
+            print(f"⚠️ 检测到 {len(entities)} 个敏感信息，已脱敏")
+        
+        if session_id not in self.conversations:
+            self.conversations[session_id] = []
+        
+        self.conversations[session_id].append({
+            "role": role,
+            "content": masked_content,  # 存储脱敏后的内容
+            "has_pii": len(entities) &gt; 0,
+            "pii_types": list(set(e.type for e in entities))
+        })
+    
+    def get_history(self, session_id: str) -&gt; list[dict]:
+        """获取对话历史（已脱敏）"""
+        return self.conversations.get(session_id, [])
+</code></pre>
+<hr />
+<h2 id="数据最小化原则"><a class="header" href="#数据最小化原则">数据最小化原则</a></h2>
+<p>只收集和处理完成任务所必需的数据：</p>
+<pre><code class="language-python">class DataMinimizer:
+    """数据最小化处理器"""
+    
+    @staticmethod
+    def minimize_for_llm(data: dict, task: str) -&gt; dict:
+        """根据任务类型，只向 LLM 传递必要的数据字段"""
+        
+        # 不同任务需要的字段
+        task_fields = {
+            "order_query": ["order_id", "status", "create_time"],
+            "product_recommend": ["preferences", "budget"],
+            "complaint": ["issue_type", "description"],
+        }
+        
+        # 不应传递给 LLM 的字段
+        sensitive_fields = {
+            "password", "credit_card", "id_number",
+            "bank_account", "ssn", "api_key"
+        }
+        
+        allowed = task_fields.get(task, list(data.keys()))
+        
+        return {
+            k: v for k, v in data.items()
+            if k in allowed and k not in sensitive_fields
+        }
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>概念</th><th>说明</th></tr></thead><tbody>
+<tr><td>PII 检测</td><td>用正则等方式识别敏感信息</td></tr>
+<tr><td>数据脱敏</td><td>替换敏感信息为掩码形式</td></tr>
+<tr><td>对话保护</td><td>存储前自动脱敏处理</td></tr>
+<tr><td>数据最小化</td><td>只传递完成任务所需的最少数据</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>下一节预告</strong>：最后，我们来讨论如何确保 Agent 的行为符合人类的期望和价值观。</p>
+</blockquote>
+<hr />
+<p><a href="./05_alignment.html">下一节：14.5 Agent 行为的可控性与对齐 →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_security/03_permission_sandbox.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_security/05_alignment.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_security/03_permission_sandbox.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_security/05_alignment.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

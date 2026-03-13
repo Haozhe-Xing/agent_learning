@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>11.5 如何选择合适的框架？ - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="如何选择合适的框架"><a class="header" href="#如何选择合适的框架">如何选择合适的框架？</a></h1>
+<p>框架选择是 Agent 项目成功的关键决策之一。随着 2025 年 OpenAI Agents SDK 的发布和各框架的快速迭代，选择变得更加丰富。本节提供系统的决策框架。</p>
+<h2 id="框架能力对比矩阵"><a class="header" href="#框架能力对比矩阵">框架能力对比矩阵</a></h2>
+<pre><code class="language-python">framework_comparison = {
+    "框架": [
+        "LangChain", "LangGraph", "CrewAI",
+        "AutoGen", "OpenAI Agents SDK", "Dify", "Coze/n8n"
+    ],
+    
+    "学习曲线": ["中等", "较高", "低", "中等", "低", "低", "很低"],
+    
+    "多Agent支持": [
+        "有限", "原生支持", "核心特性",
+        "核心特性", "原生支持", "支持", "有限"
+    ],
+    
+    "工作流复杂度": [
+        "线性", "复杂循环", "顺序/Flow",
+        "事件驱动", "Handoff 交接", "可视化", "可视化"
+    ],
+    
+    "MCP 支持": [
+        "社区集成", "社区集成", "社区集成",
+        "社区集成", "原生支持", "插件", "不支持"
+    ],
+    
+    "生产就绪": ["高", "高", "中", "中", "高", "中", "低"],
+    
+    "最适场景": [
+        "RAG/通用链",
+        "有状态工作流",
+        "角色协作任务",
+        "代码生成/对话",
+        "轻量生产Agent",
+        "快速原型",
+        "非技术用户"
+    ]
+}
+
+# 打印对比
+for key, values in framework_comparison.items():
+    print(f"\n{key}：")
+    for framework, value in zip(framework_comparison["框架"], values):
+        if key != "框架":
+            print(f"  {framework}: {value}")
+</code></pre>
+<h2 id="决策树"><a class="header" href="#决策树">决策树</a></h2>
+<pre><code class="language-python">def choose_framework(requirements: dict) -&gt; str:
+    """根据需求选择框架（2026 年更新版）"""
+    
+    # 非技术团队 → 低代码
+    if not requirements.get("technical_team"):
+        return "Dify 或 Coze（低代码平台）"
+    
+    # 需要代码自动执行 → AutoGen
+    if requirements.get("code_execution"):
+        return "AutoGen 0.4"
+    
+    # 轻量 Agent、快速上线 → OpenAI Agents SDK
+    if (requirements.get("lightweight") and 
+        not requirements.get("complex_control_flow")):
+        return "OpenAI Agents SDK"
+    
+    # 角色分工明确的多 Agent → CrewAI
+    if (requirements.get("multi_agent") and 
+        not requirements.get("complex_control_flow")):
+        return "CrewAI"
+    
+    # 复杂状态管理/循环/Human-in-Loop → LangGraph
+    if (requirements.get("complex_control_flow") or
+        requirements.get("human_in_the_loop") or
+        requirements.get("stateful_workflow")):
+        return "LangGraph"
+    
+    # 标准 RAG/单 Agent → LangChain
+    return "LangChain"
+
+
+# 测试决策
+scenarios = [
+    {
+        "name": "企业知识库问答",
+        "technical_team": True,
+        "multi_agent": False,
+        "code_execution": False,
+        "complex_control_flow": False,
+        "lightweight": False
+    },
+    {
+        "name": "自动化软件开发助手",
+        "technical_team": True,
+        "multi_agent": True,
+        "code_execution": True,
+        "complex_control_flow": True,
+        "lightweight": False
+    },
+    {
+        "name": "内容创作团队",
+        "technical_team": True,
+        "multi_agent": True,
+        "code_execution": False,
+        "complex_control_flow": False,
+        "lightweight": False
+    },
+    {
+        "name": "客服自动化（业务配置）",
+        "technical_team": False,
+        "multi_agent": False,
+        "code_execution": False,
+        "complex_control_flow": False,
+        "lightweight": False
+    },
+    {
+        "name": "快速构建工具调用 Agent",
+        "technical_team": True,
+        "multi_agent": False,
+        "code_execution": False,
+        "complex_control_flow": False,
+        "lightweight": True
+    }
+]
+
+print("框架选择建议：\n")
+for scenario in scenarios:
+    name = scenario["name"]  # 使用 [] 读取而非 pop()，避免修改原始字典
+    # 构造不含 name 的需求字典传给决策函数
+    requirements = {k: v for k, v in scenario.items() if k != "name"}
+    framework = choose_framework(requirements)
+    print(f"场景：{name}")
+    print(f"推荐：{framework}\n")
+</code></pre>
+<h2 id="实际项目的框架策略"><a class="header" href="#实际项目的框架策略">实际项目的框架策略</a></h2>
+<pre><code class="language-python"># 大多数生产项目会混合使用多个框架
+
+class HybridAgentSystem:
+    """
+    实际生产系统的典型架构（2025-2026）：
+    - LangGraph 管理复杂工作流状态
+    - OpenAI Agents SDK 处理轻量 Agent 逻辑
+    - LangChain 处理 RAG 和链式调用
+    - MCP 统一工具接口
+    - 自定义代码处理业务逻辑
+    """
+    
+    def __init__(self):
+        # LangGraph 负责工作流
+        from langgraph.graph import StateGraph
+        self.workflow = None  # 用 LangGraph 构建
+        
+        # LangChain 负责 RAG
+        from langchain_community.vectorstores import Chroma
+        self.knowledge_base = None  # 用 LangChain 构建
+        
+        # OpenAI Agents SDK 负责轻量 Agent
+        # from agents import Agent, Runner
+        self.agents = {}
+        
+        # 自定义工具（可通过 MCP 标准化）
+        self.tools = {}
+    
+    def build(self):
+        """组合各框架构建完整系统"""
+        # 1. 用 LangChain 建立知识库
+        # 2. 用 LangGraph 建立工作流
+        # 3. 用 OpenAI Agents SDK 创建轻量 Agent
+        # 4. 用 MCP 标准化工具接口
+        pass
+
+# 建议：不要被任何单一框架绑定
+# 理解各框架的优势，按需组合
+</code></pre>
+<h2 id="最终建议"><a class="header" href="#最终建议">最终建议</a></h2>
+<pre><code>选择框架的核心原则：
+
+1. 从简单开始
+   先尝试 OpenAI Agents SDK 或 LangChain + 直接 API 调用
+   够用就不要引入复杂框架
+
+2. 根据瓶颈升级
+   发现需要状态管理 → 引入 LangGraph
+   需要多角色协作 → 考虑 CrewAI
+   需要代码执行 → 考虑 AutoGen
+
+3. 拥抱标准协议
+   用 MCP 统一工具接口，降低框架切换成本
+   关注 A2A 协议发展，为 Agent 间互操作做准备
+
+4. 保持框架无关的代码
+   业务逻辑不要与框架强耦合
+   工具函数保持通用性
+
+5. 重视调试与可观测性
+   生产环境首选有良好日志和观测性的方案
+   LangSmith、Dify 等都提供了较好的可观测能力
+
+6. 社区和生态
+   选择活跃维护的框架（查看 GitHub 活跃度）
+   2025 年最活跃：LangGraph、CrewAI、OpenAI Agents SDK
+</code></pre>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<p>主流框架一览：</p>
+<div class="table-wrapper"><table><thead><tr><th>框架</th><th>核心优势</th><th>推荐场景</th></tr></thead><tbody>
+<tr><td>LangChain</td><td>生态丰富，RAG 强大</td><td>通用 Agent，快速开发</td></tr>
+<tr><td>LangGraph</td><td>状态管理，复杂工作流</td><td>生产级有状态 Agent</td></tr>
+<tr><td>CrewAI</td><td>简单的多 Agent + Flows</td><td>角色分工明确的任务</td></tr>
+<tr><td>AutoGen 0.4</td><td>事件驱动，代码执行</td><td>编程自动化任务</td></tr>
+<tr><td>OpenAI Agents SDK</td><td>轻量、MCP 原生</td><td>快速构建生产 Agent</td></tr>
+<tr><td>Dify/Coze</td><td>低代码可视化</td><td>非技术团队快速验证</td></tr>
+</tbody></table>
+</div>
+<hr />
+<p><em>下一章：<a href="../chapter_multi_agent/README.html">第11章 多 Agent 协作</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_frameworks/04_low_code_platforms.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_multi_agent/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_frameworks/04_low_code_platforms.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_multi_agent/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

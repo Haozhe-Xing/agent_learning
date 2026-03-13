@@ -1,0 +1,18 @@
+# IDE
+.idea/
+.vscode/
+
+# 工具缓存
+.codebuddy/
+.workbuddy/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# macOS
+.DS_Store

@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>5.1 技能系统概述 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="技能系统概述"><a class="header" href="#技能系统概述">技能系统概述</a></h1>
+<h2 id="skill-vs-tool一个关键的区分"><a class="header" href="#skill-vs-tool一个关键的区分">Skill vs Tool：一个关键的区分</a></h2>
+<p>在第 4 章中，我们学会了让 Agent 调用工具——搜索网页、执行代码、读写文件。这些工具就像工匠的锤子、锯子、尺子。但一个优秀的工匠之所以能造出精美的家具，不仅仅是因为他有工具，更因为他有<strong>木工技能</strong>——知道什么时候用什么工具、按什么顺序操作、遇到问题如何处理。</p>
+<p><img src="../svg/chapter_skill_01_structure.svg" alt="技能结构图" /></p>
+<p>让我们用一个具体例子来感受这个区别：</p>
+<pre><code class="language-python"># ❌ 只有工具，没有技能 —— Agent 需要被手把手指导
+user: "帮我分析一下这个 CSV 文件的销售数据"
+agent: "好的，我可以用 read_csv 工具读取文件。"
+       # 读取后只是把原始数据展示出来
+       # 不知道要做什么分析
+       # 不知道怎么处理缺失值
+       # 不知道用什么图表
+
+# ✅ 有工具 + 有技能 —— Agent 像数据分析师一样工作
+user: "帮我分析一下这个 CSV 文件的销售数据"
+agent: # 自动执行完整的分析流程：
+       # 1. 读取 CSV 并检查数据质量
+       # 2. 处理缺失值和异常值
+       # 3. 计算关键指标（总销售额、增长率、Top 产品）
+       # 4. 选择合适的图表（趋势用折线图、占比用饼图）
+       # 5. 生成结构化的分析报告
+</code></pre>
+<h2 id="技能的三个核心特征"><a class="header" href="#技能的三个核心特征">技能的三个核心特征</a></h2>
+<h3 id="特征一技能是可复用的"><a class="header" href="#特征一技能是可复用的">特征一：技能是可复用的</a></h3>
+<p>工具调用是"一次性"的——每次你都需要告诉 Agent 该怎么做。而技能是"一次学会、反复使用"的：</p>
+<pre><code class="language-python"># 工具调用：每次都要详细指导
+messages = [
+    {"role": "system", "content": """你要做以下事情：
+    1. 先用 read_csv 读取文件
+    2. 检查是否有空值，用中位数填充
+    3. 计算各列的均值和标准差
+    4. 用 plot_chart 生成折线图
+    5. 用 write_report 生成 Markdown 报告
+    ...(详细的 20 行指令）"""},
+]
+
+# 技能调用：简单一句话
+messages = [
+    {"role": "system", "content": "你具备数据分析技能。"},
+    {"role": "user", "content": "分析 sales.csv 的销售趋势"},
+]
+# Agent 自动执行完整的分析流程
+</code></pre>
+<h3 id="特征二技能包含领域知识"><a class="header" href="#特征二技能包含领域知识">特征二：技能包含领域知识</a></h3>
+<p>工具本身是"通用的"，不包含业务知识。而技能将领域知识编码进去：</p>
+<pre><code class="language-python"># 工具只知道"怎么做"
+def execute_sql(query: str) -&gt; str:
+    """执行 SQL 查询"""
+    return db.execute(query)
+
+# 技能还知道"做什么"和"为什么"
+DATA_ANALYSIS_SKILL = """
+你是一个专业的数据分析师。在分析数据时：
+
+数据质量检查：
+- 缺失值超过 30% 的列应该考虑删除
+- 数值型异常值用 IQR 方法检测（1.5倍四分位距）
+- 日期列检查连续性
+
+分析方法选择：
+- 时间序列数据 → 趋势分析 + 季节性分解
+- 分类数据 → 频率分布 + 交叉分析
+- 数值数据 → 描述统计 + 相关性分析
+
+可视化最佳实践：
+- 趋势 → 折线图
+- 比较 → 柱状图
+- 占比 → 饼图/环形图
+- 分布 → 直方图/箱线图
+- 关系 → 散点图
+"""
+</code></pre>
+<h3 id="特征三技能可以被发现和组合"><a class="header" href="#特征三技能可以被发现和组合">特征三：技能可以被发现和组合</a></h3>
+<p>在多 Agent 系统中，每个 Agent 拥有不同的技能。当一个 Agent 接到一个复杂任务时，它可以发现并调用其他 Agent 的技能：</p>
+<p><img src="../svg/chapter_skill_01_composition.svg" alt="技能组合与任务分配" /></p>
+<h2 id="技能的三层架构"><a class="header" href="#技能的三层架构">技能的三层架构</a></h2>
+<p>我们将技能系统分为三个层次：</p>
+<p><img src="../svg/chapter_skill_01_three_layers.svg" alt="技能三层架构" /></p>
+<h3 id="第一层基础工具层"><a class="header" href="#第一层基础工具层">第一层：基础工具层</a></h3>
+<p>这是第 4 章已经介绍的内容——单个可调用的工具函数。</p>
+<h3 id="第二层技能定义层"><a class="header" href="#第二层技能定义层">第二层：技能定义层</a></h3>
+<p>将工具、知识和流程封装为可复用的技能单元。有三种主要的封装方式：</p>
+<div class="table-wrapper"><table><thead><tr><th>封装方式</th><th>原理</th><th>代表</th><th>适用场景</th></tr></thead><tbody>
+<tr><td><strong>Prompt-based</strong></td><td>用精心设计的系统提示注入领域知识和行为指南</td><td>Anthropic Skills、Claude Code</td><td>知识密集型任务</td></tr>
+<tr><td><strong>Code-based</strong></td><td>将技能实现为可执行的代码模块</td><td>Voyager 技能库、Semantic Kernel Plugin</td><td>需要精确控制的任务</td></tr>
+<tr><td><strong>Workflow-based</strong></td><td>将技能编排为状态图或工作流</td><td>LangGraph Subgraph、CrewAI Task</td><td>多步骤流程型任务</td></tr>
+</tbody></table>
+</div>
+<h3 id="第三层技能管理层"><a class="header" href="#第三层技能管理层">第三层：技能管理层</a></h3>
+<p>管理技能的注册、发现、选择和版本控制。这在多 Agent 系统中尤其重要——每个 Agent 需要声明自己有什么技能，其他 Agent 需要能发现和调用这些技能。</p>
+<h2 id="技能系统的发展脉络"><a class="header" href="#技能系统的发展脉络">技能系统的发展脉络</a></h2>
+<p><img src="../svg/chapter_skill_01_timeline.svg" alt="技能系统发展脉络" /></p>
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>概念</th><th>工具（Tool）</th><th>技能（Skill）</th></tr></thead><tbody>
+<tr><td><strong>粒度</strong></td><td>单个操作</td><td>一类问题的完整解决方案</td></tr>
+<tr><td><strong>包含</strong></td><td>函数 + 参数描述</td><td>工具 + 知识 + 流程 + 经验</td></tr>
+<tr><td><strong>复用性</strong></td><td>通用（任何场景都能用）</td><td>领域化（特定类型任务）</td></tr>
+<tr><td><strong>类比</strong></td><td>锤子、锯子</td><td>木工技能、数据分析技能</td></tr>
+<tr><td><strong>定义方式</strong></td><td>函数定义 + JSON Schema</td><td>Prompt / 代码 / 工作流</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>💡 <strong>核心观点</strong>：<strong>Tool 是 Skill 的组成部分</strong>。一个技能通常包含多个工具的组合使用、专业的领域知识、标准化的处理流程，以及从经验中积累的最佳实践。随着 Agent 的应用场景越来越复杂，技能系统正在成为 Agent 架构中不可或缺的一层。</p>
+</blockquote>
+<hr />
+<p><em>下一节：<a href="./02_skill_definition.html">5.2 技能的定义与封装</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_skill/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_skill/02_skill_definition.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_skill/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_skill/02_skill_definition.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

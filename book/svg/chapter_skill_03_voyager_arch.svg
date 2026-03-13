@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 340" width="700" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="340" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Voyager 架构</text>
+
+  <!-- 外框 -->
+  <rect x="30" y="42" width="640" height="285" rx="12" fill="#9b59b6" opacity="0.04" stroke="#9b59b6" stroke-width="1.5"/>
+
+  <!-- 1. 自动课程 -->
+  <rect x="50" y="55" width="280" height="75" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="190" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">1. 自动课程（Automatic Curriculum）</text>
+  <text x="190" y="98" text-anchor="middle" font-size="11" fill="#555">GPT-4 根据当前状态提出下一个目标</text>
+  <text x="190" y="118" text-anchor="middle" font-size="11" fill="#888" font-style="italic">"你已经有了木头，下一步试试制作工作台"</text>
+
+  <!-- 2. 技能库 -->
+  <rect x="370" y="55" width="280" height="75" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="510" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">2. 技能库（Skill Library）</text>
+  <text x="510" y="98" text-anchor="middle" font-size="11" fill="#555">成功的行为保存为可执行代码</text>
+  <text x="510" y="118" text-anchor="middle" font-size="11" fill="#888">用向量数据库索引，按任务检索</text>
+
+  <!-- 3. 迭代提示 -->
+  <rect x="50" y="145" width="600" height="55" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="350" y="168" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">3. 迭代提示机制（Iterative Prompting）</text>
+  <text x="350" y="190" text-anchor="middle" font-size="11" fill="#555">代码生成 → 执行 → 观察结果 → 修正（最多 4 次重试）</text>
+
+  <!-- 技能条目 -->
+  <rect x="50" y="215" width="600" height="100" rx="10" fill="#2c3e50" opacity="0.06" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="350" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">技能库内容</text>
+  <rect x="70" y="248" width="130" height="26" rx="5" fill="#3498db" opacity="0.2"/>
+  <text x="135" y="266" text-anchor="middle" font-size="11" fill="#2c3e50">mineWoodLog()</text>
+  <rect x="210" y="248" width="130" height="26" rx="5" fill="#27ae60" opacity="0.2"/>
+  <text x="275" y="266" text-anchor="middle" font-size="11" fill="#2c3e50">craftWorkbench()</text>
+  <rect x="350" y="248" width="130" height="26" rx="5" fill="#e67e22" opacity="0.2"/>
+  <text x="415" y="266" text-anchor="middle" font-size="11" fill="#2c3e50">buildHouse()</text>
+  <rect x="490" y="248" width="130" height="26" rx="5" fill="#9b59b6" opacity="0.2"/>
+  <text x="555" y="266" text-anchor="middle" font-size="11" fill="#2c3e50">mineIronOre()</text>
+  <text x="350" y="302" text-anchor="middle" font-size="10" fill="#888">存储方式：代码 + 描述 + 向量嵌入 | 检索方式：任务描述 → 语义相似度匹配</text>
+</svg>

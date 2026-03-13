@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="680" height="320" rx="14" fill="#f8f9fa"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">推理模式四大类型</text>
+
+  <!-- 演绎推理 -->
+  <rect x="20" y="50" width="150" height="120" rx="10" fill="#3498db"/>
+  <text x="95" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">演绎推理</text>
+  <text x="95" y="92" text-anchor="middle" font-size="11" fill="#d6eaf8">Deductive</text>
+  <line x1="30" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="95" y="116" text-anchor="middle" font-size="10" fill="white">从一般到特殊</text>
+  <text x="95" y="132" text-anchor="middle" font-size="10" fill="#d6eaf8">"所有Python函数</text>
+  <text x="95" y="148" text-anchor="middle" font-size="10" fill="#d6eaf8">都有返回值"</text>
+  <text x="95" y="162" text-anchor="middle" font-size="10" fill="#aed6f1">→ 逻辑必然成立</text>
+
+  <!-- 归纳推理 -->
+  <rect x="185" y="50" width="150" height="120" rx="10" fill="#27ae60"/>
+  <text x="260" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">归纳推理</text>
+  <text x="260" y="92" text-anchor="middle" font-size="11" fill="#d5f5e3">Inductive</text>
+  <line x1="195" y1="100" x2="325" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="260" y="116" text-anchor="middle" font-size="10" fill="white">从特殊到一般</text>
+  <text x="260" y="132" text-anchor="middle" font-size="10" fill="#d5f5e3">"见过100个快速</text>
+  <text x="260" y="148" text-anchor="middle" font-size="10" fill="#d5f5e3">排序实现..."</text>
+  <text x="260" y="162" text-anchor="middle" font-size="10" fill="#a9dfbf">→ 总结一般规律</text>
+
+  <!-- 溯因推理 -->
+  <rect x="350" y="50" width="150" height="120" rx="10" fill="#8e44ad"/>
+  <text x="425" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">溯因推理</text>
+  <text x="425" y="92" text-anchor="middle" font-size="11" fill="#e8daef">Abductive</text>
+  <line x1="360" y1="100" x2="490" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="425" y="116" text-anchor="middle" font-size="10" fill="white">最佳解释推断</text>
+  <text x="425" y="132" text-anchor="middle" font-size="10" fill="#e8daef">"程序崩溃了，</text>
+  <text x="425" y="148" text-anchor="middle" font-size="10" fill="#e8daef">可能是空指针"</text>
+  <text x="425" y="162" text-anchor="middle" font-size="10" fill="#d2b4de">→ 检查验证假设</text>
+
+  <!-- 类比推理 -->
+  <rect x="515" y="50" width="150" height="120" rx="10" fill="#e67e22"/>
+  <text x="590" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">类比推理</text>
+  <text x="590" y="92" text-anchor="middle" font-size="11" fill="#fdebd0">Analogical</text>
+  <line x1="525" y1="100" x2="655" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="590" y="116" text-anchor="middle" font-size="10" fill="white">相似问题迁移</text>
+  <text x="590" y="132" text-anchor="middle" font-size="10" fill="#fdebd0">"这个问题和</text>
+  <text x="590" y="148" text-anchor="middle" font-size="10" fill="#fdebd0">之前的XX类似"</text>
+  <text x="590" y="162" text-anchor="middle" font-size="10" fill="#f0b27a">→ 迁移解决方案</text>
+
+  <!-- 底部：Agent 综合运用 -->
+  <rect x="20" y="195" width="640" height="100" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1.2"/>
+  <text x="340" y="218" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">Agent 综合运用多种推理模式</text>
+  <text x="340" y="240" text-anchor="middle" font-size="11" fill="#7f8c8d">面对复杂问题时，Agent 会灵活切换推理模式：</text>
+  <text x="340" y="258" text-anchor="middle" font-size="11" fill="#3498db">演绎</text>
+  <text x="360" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">（验证逻辑）→</text>
+  <text x="420" y="258" text-anchor="middle" font-size="11" fill="#27ae60">归纳</text>
+  <text x="440" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">（总结规律）→</text>
+  <text x="505" y="258" text-anchor="middle" font-size="11" fill="#8e44ad">溯因</text>
+  <text x="525" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">（诊断问题）→</text>
+  <text x="590" y="258" text-anchor="middle" font-size="11" fill="#e67e22">类比</text>
+  <text x="610" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">（迁移经验）</text>
+  <text x="340" y="280" text-anchor="middle" font-size="11" fill="#95a5a6">元认知能力：知道自己不知道什么，选择最合适的推理方式</text>
+</svg>

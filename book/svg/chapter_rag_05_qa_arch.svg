@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 180" width="560" height="180" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="560" height="180" rx="12" fill="#f8f9fa"/>
+  <!-- 根节点 -->
+  <rect x="20" y="70" width="130" height="40" rx="8" fill="#2c3e50"/>
+  <text x="85" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="white">文档问答 Agent</text>
+  <text x="85" y="102" text-anchor="middle" font-size="10" fill="#bdc3c7">系统架构</text>
+  <!-- 主干 -->
+  <line x1="150" y1="90" x2="190" y2="90" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="28" x2="190" y2="152" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="28" x2="220" y2="28" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="76" x2="220" y2="76" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="124" x2="220" y2="124" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="152" x2="220" y2="152" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- 分支1 -->
+  <rect x="220" y="14" width="320" height="28" rx="6" fill="#3498db" opacity="0.15"/>
+  <rect x="220" y="14" width="4" height="28" rx="2" fill="#3498db"/>
+  <text x="236" y="28" font-size="12" font-weight="bold" fill="#2980b9">📁 文档管理</text>
+  <text x="236" y="38" font-size="10" fill="#7f8c8d">添加 / 删除 / 更新文档</text>
+
+  <!-- 分支2 -->
+  <rect x="220" y="62" width="320" height="28" rx="6" fill="#9b59b6" opacity="0.15"/>
+  <rect x="220" y="62" width="4" height="28" rx="2" fill="#9b59b6"/>
+  <text x="236" y="76" font-size="12" font-weight="bold" fill="#8e44ad">🔍 智能检索</text>
+  <text x="236" y="86" font-size="10" fill="#7f8c8d">语义搜索 · 向量相似度匹配</text>
+
+  <!-- 分支3 -->
+  <rect x="220" y="110" width="320" height="28" rx="6" fill="#27ae60" opacity="0.15"/>
+  <rect x="220" y="110" width="4" height="28" rx="2" fill="#27ae60"/>
+  <text x="236" y="124" font-size="12" font-weight="bold" fill="#27ae60">💬 答案生成</text>
+  <text x="236" y="134" font-size="10" fill="#7f8c8d">基于检索内容 · LLM 生成回答</text>
+
+  <!-- 分支4 -->
+  <rect x="220" y="138" width="320" height="28" rx="6" fill="#e67e22" opacity="0.15"/>
+  <rect x="220" y="138" width="4" height="28" rx="2" fill="#e67e22"/>
+  <text x="236" y="152" font-size="12" font-weight="bold" fill="#e67e22">📌 来源引用</text>
+  <text x="236" y="162" font-size="10" fill="#7f8c8d">每个答案标注来源文档</text>
+</svg>

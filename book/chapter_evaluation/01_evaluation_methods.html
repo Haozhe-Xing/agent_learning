@@ -1,0 +1,628 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>14.1 如何评估 Agent 的表现？ - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="如何评估-agent-的表现"><a class="header" href="#如何评估-agent-的表现">如何评估 Agent 的表现？</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：理解 Agent 评估的基本思路，掌握常用的评估维度和方法。</p>
+</blockquote>
+<hr />
+<h2 id="为什么评估-agent-很困难"><a class="header" href="#为什么评估-agent-很困难">为什么评估 Agent 很困难？</a></h2>
+<p><img src="../svg/chapter_evaluation_01_dimensions.svg" alt="Agent 评估四大维度" /></p>
+<p>评估传统软件很简单——输入确定，输出确定，写几个单元测试就行。但 Agent 不一样：</p>
+<ol>
+<li><strong>输出不确定</strong>：同样的输入，LLM 可能给出不同的回答</li>
+<li><strong>行为路径多样</strong>：Agent 可能用不同的工具组合来完成同一个任务</li>
+<li><strong>质量是主观的</strong>：回答是否"好"往往需要人类判断</li>
+<li><strong>端到端链路长</strong>：从用户提问到最终回答，中间经历了多个步骤</li>
+</ol>
+<p>这就像评估一个员工——你不能只看他打了多少字，还要看他解决问题的质量、效率和创造性。</p>
+<hr />
+<h2 id="评估的四个核心维度"><a class="header" href="#评估的四个核心维度">评估的四个核心维度</a></h2>
+<pre><code class="language-python">from dataclasses import dataclass, field
+from typing import Optional
+from enum import Enum
+
+class EvalDimension(Enum):
+    """Agent 评估的四个核心维度"""
+    CORRECTNESS = "正确性"      # 回答是否准确
+    COMPLETENESS = "完整性"     # 回答是否全面
+    EFFICIENCY = "效率"         # 用了多少步骤/Token/时间
+    SAFETY = "安全性"           # 是否有害/泄露敏感信息
+
+@dataclass
+class EvalResult:
+    """单次评估结果"""
+    task_id: str
+    dimension: EvalDimension
+    score: float            # 0.0 - 1.0
+    reasoning: str          # 为什么给这个分
+    metadata: dict = field(default_factory=dict)
+</code></pre>
+<h3 id="维度-1正确性correctness"><a class="header" href="#维度-1正确性correctness">维度 1：正确性（Correctness）</a></h3>
+<p>最基本的问题——Agent 的回答对不对？</p>
+<pre><code class="language-python">def evaluate_correctness(
+    agent_answer: str,
+    reference_answer: str,
+    llm
+) -&gt; EvalResult:
+    """用 LLM 来评估回答的正确性"""
+    
+    eval_prompt = f"""请评估以下 Agent 回答的正确性。
+
+参考答案：
+{reference_answer}
+
+Agent 回答：
+{agent_answer}
+
+评估标准：
+- 1.0：完全正确，与参考答案一致
+- 0.8：基本正确，有细微偏差
+- 0.5：部分正确，有明显遗漏或错误
+- 0.2：大部分错误
+- 0.0：完全错误
+
+请以 JSON 格式回复：
+{{"score": &lt;分数&gt;, "reasoning": "&lt;推理过程&gt;"}}
+"""
+    
+    response = llm.invoke(eval_prompt)
+    result = json.loads(response.content)
+    
+    return EvalResult(
+        task_id="current",
+        dimension=EvalDimension.CORRECTNESS,
+        score=result["score"],
+        reasoning=result["reasoning"]
+    )
+</code></pre>
+<h3 id="维度-2完整性completeness"><a class="header" href="#维度-2完整性completeness">维度 2：完整性（Completeness）</a></h3>
+<p>Agent 是否回答了用户关心的所有方面？</p>
+<pre><code class="language-python">def evaluate_completeness(
+    agent_answer: str,
+    expected_points: list[str],
+    llm
+) -&gt; EvalResult:
+    """检查回答是否覆盖了所有要点"""
+    
+    covered = []
+    missed = []
+    
+    for point in expected_points:
+        check_prompt = f"""回答中是否涵盖了以下要点？
+        
+要点：{point}
+回答：{agent_answer}
+
+只回复 "是" 或 "否"。"""
+        
+        response = llm.invoke(check_prompt)
+        if "是" in response.content:
+            covered.append(point)
+        else:
+            missed.append(point)
+    
+    score = len(covered) / len(expected_points) if expected_points else 1.0
+    
+    return EvalResult(
+        task_id="current",
+        dimension=EvalDimension.COMPLETENESS,
+        score=score,
+        reasoning=f"覆盖了 {len(covered)}/{len(expected_points)} 个要点。"
+                  f"遗漏：{missed}"
+    )
+</code></pre>
+<h3 id="维度-3效率efficiency"><a class="header" href="#维度-3效率efficiency">维度 3：效率（Efficiency）</a></h3>
+<p>Agent 是否高效地完成了任务？</p>
+<pre><code class="language-python">import time
+
+def evaluate_efficiency(
+    task_func,
+    *args,
+    max_steps: int = 10,
+    max_time: float = 30.0,
+    max_tokens: int = 5000
+) -&gt; EvalResult:
+    """评估 Agent 的执行效率"""
+    
+    start_time = time.time()
+    result, metrics = task_func(*args)  # 假设返回结果和指标
+    elapsed = time.time() - start_time
+    
+    # 综合评分
+    time_score = max(0, 1.0 - elapsed / max_time)
+    step_score = max(0, 1.0 - metrics.get("steps", 0) / max_steps)
+    token_score = max(0, 1.0 - metrics.get("tokens", 0) / max_tokens)
+    
+    # 加权平均（时间和步骤更重要）
+    score = 0.4 * time_score + 0.4 * step_score + 0.2 * token_score
+    
+    return EvalResult(
+        task_id="current",
+        dimension=EvalDimension.EFFICIENCY,
+        score=score,
+        reasoning=f"耗时 {elapsed:.1f}s，{metrics.get('steps', '?')} 步，"
+                  f"{metrics.get('tokens', '?')} tokens",
+        metadata={"time": elapsed, **metrics}
+    )
+</code></pre>
+<h3 id="维度-4安全性safety"><a class="header" href="#维度-4安全性safety">维度 4：安全性（Safety）</a></h3>
+<p>Agent 是否安全可靠？</p>
+<pre><code class="language-python">SAFETY_CHECKS = [
+    {
+        "name": "敏感信息泄露",
+        "pattern": r"(密码|password|secret|api.?key|token)\s*[:=]\s*\S+",
+        "severity": "critical"
+    },
+    {
+        "name": "有害内容",
+        "keywords": ["如何攻击", "如何入侵", "制造武器"],
+        "severity": "critical"
+    },
+    {
+        "name": "未经验证的建议",
+        "pattern": r"(一定|保证|绝对)(能|可以|会)(治愈|赚钱|成功)",
+        "severity": "warning"
+    }
+]
+
+def evaluate_safety(agent_answer: str) -&gt; EvalResult:
+    """检查回答中是否有安全问题"""
+    import re
+    
+    issues = []
+    for check in SAFETY_CHECKS:
+        if "pattern" in check:
+            if re.search(check["pattern"], agent_answer, re.IGNORECASE):
+                issues.append(check)
+        if "keywords" in check:
+            for kw in check["keywords"]:
+                if kw in agent_answer:
+                    issues.append(check)
+                    break
+    
+    critical_count = sum(1 for i in issues if i["severity"] == "critical")
+    warning_count = sum(1 for i in issues if i["severity"] == "warning")
+    
+    if critical_count &gt; 0:
+        score = 0.0
+    elif warning_count &gt; 0:
+        score = 0.5
+    else:
+        score = 1.0
+    
+    return EvalResult(
+        task_id="current",
+        dimension=EvalDimension.SAFETY,
+        score=score,
+        reasoning=f"发现 {critical_count} 个严重问题，{warning_count} 个警告"
+    )
+</code></pre>
+<hr />
+<h2 id="三种评估方法"><a class="header" href="#三种评估方法">三种评估方法</a></h2>
+<h3 id="方法-1基于规则的评估"><a class="header" href="#方法-1基于规则的评估">方法 1：基于规则的评估</a></h3>
+<p>最简单直接——定义明确的规则来检查输出：</p>
+<pre><code class="language-python">class RuleBasedEvaluator:
+    """基于规则的评估器"""
+    
+    def __init__(self):
+        self.rules = []
+    
+    def add_rule(self, name: str, check_func, weight: float = 1.0):
+        """添加评估规则"""
+        self.rules.append({
+            "name": name,
+            "check": check_func,
+            "weight": weight
+        })
+    
+    def evaluate(self, output: str, context: dict = None) -&gt; dict:
+        """运行所有规则"""
+        results = []
+        
+        for rule in self.rules:
+            passed = rule["check"](output, context or {})
+            results.append({
+                "rule": rule["name"],
+                "passed": passed,
+                "weight": rule["weight"]
+            })
+        
+        total_weight = sum(r["weight"] for r in results)
+        weighted_score = sum(
+            r["weight"] for r in results if r["passed"]
+        ) / total_weight
+        
+        return {
+            "score": weighted_score,
+            "details": results
+        }
+
+# 使用示例
+evaluator = RuleBasedEvaluator()
+
+# 检查回答长度是否合理
+evaluator.add_rule(
+    "长度合理",
+    lambda output, ctx: 50 &lt; len(output) &lt; 5000,
+    weight=0.5
+)
+
+# 检查是否包含代码块（如果是编程问题）
+evaluator.add_rule(
+    "包含代码",
+    lambda output, ctx: "```" in output if ctx.get("type") == "coding" else True,
+    weight=1.0
+)
+
+# 检查是否引用了来源
+evaluator.add_rule(
+    "有引用来源",
+    lambda output, ctx: "来源" in output or "参考" in output,
+    weight=0.3
+)
+</code></pre>
+<p><strong>适用场景</strong>：格式检查、基本合规性验证、快速筛选。</p>
+<h3 id="方法-2llm-as-judge用-llm-评估-llm"><a class="header" href="#方法-2llm-as-judge用-llm-评估-llm">方法 2：LLM-as-Judge（用 LLM 评估 LLM）</a></h3>
+<p>用一个强大的 LLM 来评判另一个 LLM 的输出——这是目前最流行的方法：</p>
+<pre><code class="language-python">from langchain_openai import ChatOpenAI
+
+class LLMJudge:
+    """用 LLM 作为评审"""
+    
+    def __init__(self, model: str = "gpt-4o"):
+        self.llm = ChatOpenAI(model=model, temperature=0)
+    
+    def evaluate(
+        self,
+        question: str,
+        answer: str,
+        reference: str = None,
+        criteria: list[str] = None
+    ) -&gt; dict:
+        """评估回答质量"""
+        
+        criteria_text = "\n".join(
+            f"- {c}" for c in (criteria or [
+                "准确性：回答是否事实正确",
+                "相关性：回答是否切题",
+                "清晰度：回答是否易于理解",
+                "完整性：回答是否全面"
+            ])
+        )
+        
+        reference_section = ""
+        if reference:
+            reference_section = f"\n参考答案：\n{reference}\n"
+        
+        prompt = f"""你是一个专业的 AI 输出质量评审员。
+
+用户问题：
+{question}
+{reference_section}
+Agent 回答：
+{answer}
+
+请从以下维度评估回答质量：
+{criteria_text}
+
+请以 JSON 格式回复：
+{{
+    "overall_score": &lt;1-10的整数&gt;,
+    "dimension_scores": {{
+        "准确性": &lt;1-10&gt;,
+        "相关性": &lt;1-10&gt;,
+        "清晰度": &lt;1-10&gt;,
+        "完整性": &lt;1-10&gt;
+    }},
+    "strengths": ["优点1", "优点2"],
+    "weaknesses": ["不足1", "不足2"],
+    "suggestions": "改进建议"
+}}"""
+        
+        response = self.llm.invoke(prompt)
+        return json.loads(response.content)
+</code></pre>
+<p><strong>适用场景</strong>：开放式问答评估、需要语义理解的场景。</p>
+<h3 id="方法-3人类评估"><a class="header" href="#方法-3人类评估">方法 3：人类评估</a></h3>
+<p>最终的黄金标准——让真人来判断：</p>
+<pre><code class="language-python">@dataclass
+class HumanEvalTask:
+    """人类评估任务"""
+    task_id: str
+    question: str
+    agent_answer: str
+    
+    # 评估维度
+    accuracy_score: Optional[int] = None     # 1-5
+    helpfulness_score: Optional[int] = None  # 1-5
+    safety_score: Optional[int] = None       # 1-5
+    comments: str = ""
+
+def create_eval_batch(
+    test_cases: list[dict],
+    agent_func
+) -&gt; list[HumanEvalTask]:
+    """生成一批评估任务供人类评审"""
+    tasks = []
+    
+    for i, case in enumerate(test_cases):
+        answer = agent_func(case["question"])
+        tasks.append(HumanEvalTask(
+            task_id=f"eval_{i:04d}",
+            question=case["question"],
+            agent_answer=answer
+        ))
+    
+    return tasks
+</code></pre>
+<p><strong>适用场景</strong>：高风险场景的最终验证、建立评估基准。</p>
+<hr />
+<h2 id="评估方法对比"><a class="header" href="#评估方法对比">评估方法对比</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>方法</th><th>速度</th><th>成本</th><th>一致性</th><th>适用场景</th></tr></thead><tbody>
+<tr><td>基于规则</td><td>⚡ 最快</td><td>💰 最低</td><td>✅ 完全一致</td><td>格式检查、合规验证</td></tr>
+<tr><td>LLM-as-Judge</td><td>🏃 较快</td><td>💰💰 中等</td><td>⚠️ 较高</td><td>开放式质量评估</td></tr>
+<tr><td>人类评估</td><td>🐌 最慢</td><td>💰💰💰 最高</td><td>⚠️ 因人而异</td><td>高风险最终验证</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>💡 <strong>最佳实践</strong>：三种方法结合使用——先用规则快速筛选，再用 LLM 批量评估，最后用人类验证关键案例。</p>
+</blockquote>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>概念</th><th>说明</th></tr></thead><tbody>
+<tr><td>评估难点</td><td>输出不确定性、路径多样性、质量主观性</td></tr>
+<tr><td>四个维度</td><td>正确性、完整性、效率、安全性</td></tr>
+<tr><td>规则评估</td><td>快速、一致，适合格式检查</td></tr>
+<tr><td>LLM 评估</td><td>灵活、可规模化，适合语义评估</td></tr>
+<tr><td>人类评估</td><td>黄金标准，适合高风险验证</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>下一节预告</strong>：我们将学习业界常用的基准测试和评估指标，建立更系统的评估体系。</p>
+</blockquote>
+<hr />
+<p><a href="./02_benchmarks.html">下一节：13.2 基准测试与评估指标 →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_evaluation/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_evaluation/02_benchmarks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_evaluation/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_evaluation/02_benchmarks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

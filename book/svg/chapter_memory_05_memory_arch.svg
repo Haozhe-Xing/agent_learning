@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="600" height="200" rx="12" fill="#f8f9fa"/>
+  <!-- 根节点 -->
+  <rect x="20" y="80" width="130" height="40" rx="8" fill="#2c3e50"/>
+  <text x="85" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="white">个人助理 Agent</text>
+  <text x="85" y="112" text-anchor="middle" font-size="10" fill="#bdc3c7">记忆系统架构</text>
+  <!-- 主干 -->
+  <line x1="150" y1="100" x2="190" y2="100" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="28" x2="190" y2="172" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="28" x2="220" y2="28" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="76" x2="220" y2="76" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="124" x2="220" y2="124" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="190" y1="172" x2="220" y2="172" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- 分支1 -->
+  <rect x="220" y="12" width="360" height="32" rx="6" fill="#3498db" opacity="0.15"/>
+  <rect x="220" y="12" width="4" height="32" rx="2" fill="#3498db"/>
+  <text x="236" y="26" font-size="12" font-weight="bold" fill="#2980b9">短期记忆</text>
+  <text x="296" y="26" font-size="12" fill="#555">当前对话历史</text>
+  <text x="236" y="40" font-size="10" fill="#7f8c8d">SlidingWindowMemory · 滑动窗口保留最近 N 轮</text>
+
+  <!-- 分支2 -->
+  <rect x="220" y="60" width="360" height="32" rx="6" fill="#9b59b6" opacity="0.15"/>
+  <rect x="220" y="60" width="4" height="32" rx="2" fill="#9b59b6"/>
+  <text x="236" y="74" font-size="12" font-weight="bold" fill="#8e44ad">长期记忆</text>
+  <text x="296" y="74" font-size="12" fill="#555">ChromaDB 向量存储</text>
+  <text x="236" y="88" font-size="10" fill="#7f8c8d">跨会话持久化 · 语义检索 · 自动提取重要信息</text>
+
+  <!-- 分支3 -->
+  <rect x="220" y="108" width="360" height="32" rx="6" fill="#27ae60" opacity="0.15"/>
+  <rect x="220" y="108" width="4" height="32" rx="2" fill="#27ae60"/>
+  <text x="236" y="122" font-size="12" font-weight="bold" fill="#27ae60">工作记忆</text>
+  <text x="296" y="122" font-size="12" fill="#555">Scratchpad 草稿本</text>
+  <text x="236" y="136" font-size="10" fill="#7f8c8d">复杂任务时使用 · 临时推理空间</text>
+
+  <!-- 分支4 -->
+  <rect x="220" y="156" width="360" height="32" rx="6" fill="#e67e22" opacity="0.15"/>
+  <rect x="220" y="156" width="4" height="32" rx="2" fill="#e67e22"/>
+  <text x="236" y="170" font-size="12" font-weight="bold" fill="#e67e22">记忆提取</text>
+  <text x="296" y="170" font-size="12" fill="#555">自动从对话中提取重要信息</text>
+  <text x="236" y="184" font-size="10" fill="#7f8c8d">LLM 判断 · 结构化存储 · 定期整理</text>
+</svg>

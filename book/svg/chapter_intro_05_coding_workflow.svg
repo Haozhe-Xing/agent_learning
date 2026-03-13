@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="700" height="200">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="700" height="200" rx="14" fill="#f8f9fa"/>
+  <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">AI 编程 Agent 工作流程</text>
+
+  <!-- 节点 -->
+  <rect x="20" y="60" width="90" height="44" rx="8" fill="#3498db"/>
+  <text x="65" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="white">用户需求</text>
+
+  <rect x="140" y="60" width="90" height="44" rx="8" fill="#27ae60"/>
+  <text x="185" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="white">理解需求</text>
+
+  <rect x="260" y="60" width="100" height="44" rx="8" fill="#8e44ad"/>
+  <text x="310" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="white">搜索相关</text>
+  <text x="310" y="96" text-anchor="middle" font-size="11" fill="#e8daef">代码/文档</text>
+
+  <rect x="390" y="60" width="90" height="44" rx="8" fill="#e67e22"/>
+  <text x="435" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="white">编写代码</text>
+
+  <rect x="510" y="60" width="90" height="44" rx="8" fill="#16a085"/>
+  <text x="555" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="white">运行测试</text>
+
+  <!-- 箭头 -->
+  <line x1="110" y1="82" x2="138" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="230" y1="82" x2="258" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="360" y1="82" x2="388" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="82" x2="508" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 测试结果分支 -->
+  <line x1="555" y1="104" x2="555" y2="130" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="555" y1="130" x2="435" y2="130" stroke="#e74c3c" stroke-width="1.5"/>
+  <line x1="435" y1="130" x2="435" y2="106" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="495" y="148" text-anchor="middle" font-size="11" fill="#e74c3c">测试失败 → 分析错误 → 修改代码</text>
+
+  <!-- 成功分支 -->
+  <rect x="620" y="60" width="60" height="44" rx="8" fill="#2ecc71"/>
+  <text x="650" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="white">提交</text>
+  <text x="650" y="96" text-anchor="middle" font-size="11" fill="#d5f5e3">代码</text>
+  <line x1="600" y1="82" x2="618" y2="82" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="609" y="75" text-anchor="middle" font-size="10" fill="#27ae60">通过</text>
+</svg>

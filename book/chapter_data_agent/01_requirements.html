@@ -1,0 +1,467 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>18.1 需求分析与架构设计 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="需求分析与架构设计"><a class="header" href="#需求分析与架构设计">需求分析与架构设计</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：设计一个智能数据分析 Agent 的整体方案。</p>
+</blockquote>
+<hr />
+<h2 id="项目背景"><a class="header" href="#项目背景">项目背景</a></h2>
+<p>数据分析是很多企业的刚需，但传统数据分析需要掌握 SQL、Python、统计学等技能。我们要构建一个 Agent，让用户用自然语言就能完成数据分析。</p>
+<p><strong>用户说</strong>："帮我分析上个月的销售数据，按区域对比增长率"</p>
+<p><strong>Agent 做</strong>：连接数据库 → 写 SQL 查询 → 分析数据 → 生成可视化图表 → 输出报告</p>
+<p><img src="../svg/chapter_data_agent_01_pipeline.svg" alt="数据分析 Agent 处理流程" /></p>
+<hr />
+<h2 id="核心功能"><a class="header" href="#核心功能">核心功能</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>功能</th><th>描述</th></tr></thead><tbody>
+<tr><td>自然语言查询</td><td>用中文描述分析需求，自动转换为 SQL</td></tr>
+<tr><td>数据探索</td><td>自动了解表结构、数据分布</td></tr>
+<tr><td>统计分析</td><td>描述性统计、趋势分析、对比分析</td></tr>
+<tr><td>可视化</td><td>自动生成图表</td></tr>
+<tr><td>报告生成</td><td>整合分析结果为结构化报告</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="架构设计"><a class="header" href="#架构设计">架构设计</a></h2>
+<pre><code class="language-python">from dataclasses import dataclass, field
+from enum import Enum
+
+class AnalysisType(Enum):
+    DESCRIPTIVE = "descriptive"    # 描述性分析
+    COMPARATIVE = "comparative"    # 对比分析
+    TREND = "trend"               # 趋势分析
+    CORRELATION = "correlation"   # 相关性分析
+
+@dataclass
+class AnalysisRequest:
+    """分析请求"""
+    question: str                  # 用户的自然语言问题
+    analysis_type: AnalysisType = None  # 自动识别
+    target_tables: list[str] = field(default_factory=list)
+    time_range: dict = field(default_factory=dict)
+
+@dataclass
+class AnalysisResult:
+    """分析结果"""
+    summary: str                   # 文字总结
+    data: dict = field(default_factory=dict)  # 原始数据
+    sql_query: str = ""            # 使用的 SQL
+    chart_path: str = ""           # 图表文件路径
+    insights: list[str] = field(default_factory=list)  # 洞察
+</code></pre>
+<hr />
+<h2 id="技术选型"><a class="header" href="#技术选型">技术选型</a></h2>
+<p>构建数据分析 Agent 需要从多个维度选择技术栈：</p>
+<pre><code class="language-python">TECH_STACK = {
+    "LLM 层": {
+        "推荐": "GPT-4o",
+        "原因": "SQL 生成准确率最高，代码理解能力强",
+        "备选": "GPT-4o-mini（成本敏感场景）、Claude 4（长上下文分析）",
+    },
+    "数据库连接层": {
+        "推荐": "SQLAlchemy",
+        "原因": "支持多种数据库（SQLite、PostgreSQL、MySQL）的统一接口",
+        "备选": "直接使用各数据库驱动（sqlite3、psycopg2）",
+    },
+    "数据处理层": {
+        "推荐": "pandas",
+        "原因": "数据清洗、转换、统计分析的事实标准",
+        "备选": "polars（大数据量场景，性能更好）",
+    },
+    "可视化层": {
+        "推荐": "matplotlib + seaborn",
+        "原因": "功能全面、文档丰富、图表质量高",
+        "备选": "plotly（交互式图表）、pyecharts（中文友好）",
+    },
+    "Agent 框架": {
+        "推荐": "LangGraph",
+        "原因": "有状态的分析流程控制、支持人工审核节点",
+        "备选": "原生 OpenAI API（简单场景）",
+    },
+}
+</code></pre>
+<h3 id="关键依赖安装"><a class="header" href="#关键依赖安装">关键依赖安装</a></h3>
+<pre><code class="language-bash"># 数据分析 Agent 的核心依赖
+pip install langchain langchain-openai langgraph \
+            sqlalchemy pandas matplotlib seaborn \
+            tabulate python-dotenv
+</code></pre>
+<hr />
+<h2 id="安全设计考量"><a class="header" href="#安全设计考量">安全设计考量</a></h2>
+<p>数据分析 Agent 直接与数据库交互，安全性是<strong>第一优先级</strong>：</p>
+<pre><code class="language-python">SECURITY_REQUIREMENTS = {
+    "SQL 注入防护": {
+        "措施": "只允许 SELECT 语句，禁止 INSERT/UPDATE/DELETE/DROP",
+        "实现": "正则白名单 + 参数化查询",
+        "优先级": "P0（必须）",
+    },
+    "数据库权限最小化": {
+        "措施": "使用只读账号连接数据库",
+        "实现": "创建专用 readonly 用户，仅授予 SELECT 权限",
+        "优先级": "P0（必须）",
+    },
+    "查询资源限制": {
+        "措施": "防止生成消耗大量资源的查询（如全表扫描、笛卡尔积）",
+        "实现": "强制添加 LIMIT、设置查询超时时间",
+        "优先级": "P1（重要）",
+    },
+    "敏感数据脱敏": {
+        "措施": "避免将敏感数据（手机号、身份证）发送给 LLM",
+        "实现": "查询结果中自动检测并遮蔽敏感字段",
+        "优先级": "P1（重要）",
+    },
+}
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>重要提醒</strong>：永远不要让 LLM 生成的 SQL 直接执行。必须经过安全检查层——这是数据分析 Agent 与聊天机器人最大的安全差异。</p>
+</blockquote>
+<hr />
+<h2 id="完整-pipeline-设计"><a class="header" href="#完整-pipeline-设计">完整 Pipeline 设计</a></h2>
+<p><img src="../svg/chapter_data_agent_02_analysis_flow.svg" alt="数据分析 Agent 六步 Pipeline" /></p>
+<p>将分析流程分为六个阶段，每个阶段有明确的输入和输出：</p>
+<pre><code>用户自然语言提问
+    ↓
+┌─────────────────────────────────────────┐
+│ 阶段1：意图理解                          │
+│   输入: 用户问题 + 表结构元数据           │
+│   输出: 分析类型 + 目标表 + 时间范围       │
+├─────────────────────────────────────────┤
+│ 阶段2：SQL 生成                          │
+│   输入: 用户意图 + 表结构                 │
+│   输出: 安全的 SELECT 查询               │
+├─────────────────────────────────────────┤
+│ 阶段3：安全检查 + 执行                    │
+│   输入: SQL 查询                         │
+│   输出: 查询结果 (DataFrame)              │
+├─────────────────────────────────────────┤
+│ 阶段4：数据分析                          │
+│   输入: 查询结果 + 分析类型               │
+│   输出: 统计指标 + 关键洞察               │
+├─────────────────────────────────────────┤
+│ 阶段5：可视化生成                        │
+│   输入: 查询结果 + 分析类型               │
+│   输出: 图表文件路径                      │
+├─────────────────────────────────────────┤
+│ 阶段6：报告整合                          │
+│   输入: 统计 + 洞察 + 图表               │
+│   输出: Markdown 分析报告                 │
+└─────────────────────────────────────────┘
+    ↓
+结构化分析报告（含图表）
+</code></pre>
+<hr />
+<h2 id="agent-核心结构"><a class="header" href="#agent-核心结构">Agent 核心结构</a></h2>
+<p>下面是 <code>DataAnalysisAgent</code> 的骨架设计。每个方法代表分析流程中的一个独立阶段，我们将在后续章节中逐一实现。这里先说明每个方法的<strong>设计思路</strong>：</p>
+<pre><code class="language-python">class DataAnalysisAgent:
+    """智能数据分析 Agent"""
+    
+    def __init__(self, llm, db_connection):
+        self.llm = llm
+        self.db = db_connection
+        self.table_schemas = self._load_schemas()
+    
+    def _load_schemas(self) -&gt; dict:
+        """加载数据库表结构
+        
+        设计思路：
+        - 查询 INFORMATION_SCHEMA 获取所有表名、列名、数据类型
+        - 将表结构格式化为 LLM 可理解的文本（如 "users(id INT, name TEXT, ..."）
+        - 结果缓存到 self.table_schemas，避免每次分析重复查询
+        - 这些结构信息将作为 LLM 生成 SQL 时的上下文
+        """
+        schemas = {}
+        # 实际实现见 17.2 节 SafeDatabaseConnector
+        return schemas
+    
+    async def analyze(self, request: AnalysisRequest) -&gt; AnalysisResult:
+        """执行分析流程——六步 Pipeline"""
+        
+        # 1. 理解用户意图
+        #    将自然语言映射到 AnalysisType（描述、对比、趋势、相关性）
+        #    提取时间范围、目标表等关键信息
+        intent = await self._understand_intent(request.question)
+        
+        # 2. 生成 SQL 查询
+        #    结合表结构 + 用户意图，让 LLM 生成安全的 SELECT 查询
+        #    包含 SQL 注入防护（只允许 SELECT，禁止 DDL/DML）
+        sql = await self._generate_sql(request.question, intent)
+        
+        # 3. 执行查询
+        #    通过参数化查询执行，返回结构化数据（dict/DataFrame）
+        data = self._execute_query(sql)
+        
+        # 4. 分析数据
+        #    根据分析类型选择不同的分析策略（统计指标、增长率计算等）
+        #    让 LLM 从数据中提取关键洞察
+        insights = await self._analyze_data(data, request.question)
+        
+        # 5. 生成可视化
+        #    根据分析类型自动选择图表类型（柱状图、折线图、散点图等）
+        #    使用 matplotlib 生成图表并保存
+        chart_path = self._create_chart(data, intent)
+        
+        # 6. 生成总结
+        #    将数据、洞察、图表整合为自然语言的分析报告
+        summary = await self._generate_summary(
+            data, insights, request.question
+        )
+        
+        return AnalysisResult(
+            summary=summary,
+            data=data,
+            sql_query=sql,
+            chart_path=chart_path,
+            insights=insights
+        )
+</code></pre>
+<blockquote>
+<p><strong>架构要点</strong>：这个六步 Pipeline 的关键设计决策是将"理解"（步骤1-2）和"执行"（步骤3-6）分离。理解阶段由 LLM 驱动，执行阶段由确定性代码完成。这种混合架构既利用了 LLM 的语义理解能力，又保证了数据处理的可靠性和可控性。各个方法的完整实现将在 17.2-17.4 节中逐步展开。</p>
+</blockquote>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>本节确定了数据分析 Agent 的核心功能和架构。接下来我们将逐步实现各个模块。</p>
+<hr />
+<p><a href="./02_data_connection.html">下一节：17.2 数据连接与查询 →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_data_agent/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_data_agent/02_data_connection.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_data_agent/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_data_agent/02_data_connection.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>6.5 实战：带记忆的个人助理 Agent - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="实战带记忆的个人助理-agent"><a class="header" href="#实战带记忆的个人助理-agent">实战：带记忆的个人助理 Agent</a></h1>
+<p>综合前四节的知识，构建一个真正有"记忆"的个人助理——它能记住你的偏好、持续跨会话学习。</p>
+<p>这个项目是本章知识的综合应用。我们将短期记忆（滑动窗口）和长期记忆（ChromaDB 向量检索）组合在一起，再加上自动记忆提取，构建一个真正"懂你"的个人助理。</p>
+<h3 id="核心设计思路"><a class="header" href="#核心设计思路">核心设计思路</a></h3>
+<p>个人助理的记忆系统分三层协作：</p>
+<ol>
+<li><strong>短期记忆</strong>（滑动窗口）：保持当前会话的连贯性，让助理能追踪对话上下文</li>
+<li><strong>长期记忆</strong>（ChromaDB）：跨会话持久化，记住用户的身份、偏好、技能等长期信息</li>
+<li><strong>自动提取</strong>（LLM 分析）：每轮对话结束后，自动从对话中识别值得记忆的信息</li>
+</ol>
+<p>这三层的协作方式是：每次用户发消息时，先从长期记忆中检索与当前话题相关的信息，连同短期记忆中的近期对话一起发给 LLM；LLM 回复后，自动提取器分析本轮对话是否产生了新的值得记忆的信息。整个过程对用户完全透明。</p>
+<h2 id="系统架构"><a class="header" href="#系统架构">系统架构</a></h2>
+<p><img src="../svg/chapter_memory_05_memory_arch.svg" alt="个人助理 Agent 记忆系统架构" /></p>
+<h2 id="完整实现"><a class="header" href="#完整实现">完整实现</a></h2>
+<p>下面的 <code>PersonalAssistant</code> 类是整个系统的核心。注意代码中 <code>chat</code> 方法的处理流程——这正是上述三层记忆的工作顺序：检索长期记忆 → 构建消息（含短期记忆和相关的长期记忆）→ 调用 LLM → 更新短期记忆 → 自动提取新记忆。</p>
+<pre><code class="language-python"># personal_assistant.py
+import json
+import os
+import datetime
+import chromadb
+import uuid
+from openai import OpenAI
+from dotenv import load_dotenv
+from rich.console import Console
+from rich.panel import Panel
+
+load_dotenv()
+
+client = OpenAI()
+console = Console()
+
+
+class PersonalAssistant:
+    """
+    带完整记忆系统的个人助理
+    - 短期记忆：对话历史（最近10轮）
+    - 长期记忆：ChromaDB 向量存储
+    - 自动记忆提取和存储
+    """
+    
+    def __init__(self, user_id: str, assistant_name: str = "小助"):
+        self.user_id = user_id
+        self.assistant_name = assistant_name
+        
+        # 初始化向量数据库
+        self.chroma = chromadb.PersistentClient(path=f"./data/memory_{user_id}")
+        self.memory_collection = self.chroma.get_or_create_collection(
+            name="long_term_memory",
+            metadata={"hnsw:space": "cosine"}
+        )
+        
+        # 短期记忆：对话历史
+        self.conversation_history: list[dict] = []
+        self.max_history_turns = 10
+        
+        # 会话ID（用于追踪）
+        self.session_id = str(uuid.uuid4())[:8]
+        
+        count = self.memory_collection.count()
+        console.print(f"[dim]{assistant_name} 已加载，长期记忆库：{count} 条[/dim]")
+    
+    # =====================
+    # 记忆操作
+    # =====================
+    
+    def _embed(self, text: str) -&gt; list[float]:
+        """生成嵌入向量"""
+        response = client.embeddings.create(
+            input=text,
+            model="text-embedding-3-small"
+        )
+        return response.data[0].embedding
+    
+    def save_memory(self, content: str, memory_type: str = "general", importance: int = 5):
+        """保存一条长期记忆"""
+        memory_id = str(uuid.uuid4())
+        
+        self.memory_collection.add(
+            ids=[memory_id],
+            embeddings=[self._embed(content)],
+            documents=[content],
+            metadatas=[{
+                "type": memory_type,
+                "importance": importance,
+                "user_id": self.user_id,
+                "session_id": self.session_id,
+                "created_at": datetime.datetime.now().isoformat()
+            }]
+        )
+    
+    def recall_memories(self, query: str, n: int = 5) -&gt; list[dict]:
+        """检索相关记忆"""
+        if self.memory_collection.count() == 0:
+            return []
+        
+        results = self.memory_collection.query(
+            query_embeddings=[self._embed(query)],
+            n_results=min(n, self.memory_collection.count()),
+            where={"user_id": self.user_id},
+            include=["documents", "metadatas", "distances"]
+        )
+        
+        memories = []
+        if results["documents"] and results["documents"][0]:
+            for doc, meta, dist in zip(
+                results["documents"][0],
+                results["metadatas"][0],
+                results["distances"][0]
+            ):
+                relevance = 1 - dist
+                if relevance &gt; 0.4:  # 过滤低相关性记忆
+                    memories.append({
+                        "content": doc,
+                        "type": meta.get("type", "general"),
+                        "importance": meta.get("importance", 5),
+                        "relevance": relevance
+                    })
+        
+        return sorted(memories, key=lambda x: x["relevance"], reverse=True)
+    
+    def _auto_extract_memories(self, user_msg: str, assistant_reply: str):
+        """自动从对话中提取值得记忆的信息"""
+        
+        prompt = f"""从以下对话中提取值得长期记忆的用户信息。
+
+用户说：{user_msg}
+助手回复：{assistant_reply[:200]}
+
+提取规则：
+✅ 要提取：用户的个人信息、偏好、工作、技能、正在做的项目、明确表达的需求
+❌ 不提取：日常问候、临时查询、助手说的话、没有持久价值的内容
+
+返回JSON数组（无值得提取的内容返回空数组[]）：
+[{{"content": "简洁陈述", "type": "fact|preference|task|skill", "importance": 1-10}}]"""
+        
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+                response_format={"type": "json_object"},
+                max_tokens=300
+            )
+            
+            result = json.loads(response.choices[0].message.content)
+            memories = result if isinstance(result, list) else result.get("memories", [])
+            
+            for m in memories:
+                if isinstance(m, dict) and m.get("content"):
+                    self.save_memory(
+                        m["content"],
+                        m.get("type", "general"),
+                        m.get("importance", 5)
+                    )
+                    console.print(f"[dim]💾 记忆：{m['content'][:60]}[/dim]")
+        
+        except Exception as e:
+            pass  # 记忆提取失败不影响主功能
+    
+    def _get_window_history(self) -&gt; list[dict]:
+        """获取滑动窗口内的对话历史"""
+        return self.conversation_history[-(self.max_history_turns * 2):]
+    
+    # =====================
+    # 对话
+    # =====================
+    
+    def chat(self, user_message: str) -&gt; str:
+        """与助理对话"""
+        
+        # 1. 从长期记忆中检索相关信息
+        relevant_memories = self.recall_memories(user_message, n=5)
+        
+        # 2. 构建消息
+        system_content = f"""你是 {self.assistant_name}，用户 {self.user_id} 的专属个人助理。
+
+你能帮用户处理各种任务：回答问题、写作、分析、编程等。
+回答要个性化——根据你了解的用户信息提供有针对性的帮助。
+"""
+        
+        if relevant_memories:
+            memory_text = "\n".join([
+                f"- [{m['type']}] {m['content']}"
+                for m in relevant_memories[:3]  # 最多3条最相关的
+            ])
+            system_content += f"\n【关于用户的记忆】\n{memory_text}\n"
+        
+        messages = [
+            {"role": "system", "content": system_content}
+        ] + self._get_window_history() + [
+            {"role": "user", "content": user_message}
+        ]
+        
+        # 3. 调用 LLM
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=messages,
+            max_tokens=800
+        )
+        
+        reply = response.choices[0].message.content
+        
+        # 4. 更新对话历史
+        self.conversation_history.append({"role": "user", "content": user_message})
+        self.conversation_history.append({"role": "assistant", "content": reply})
+        
+        # 5. 异步提取记忆（不阻塞响应）
+        self._auto_extract_memories(user_message, reply)
+        
+        return reply
+    
+    def show_memories(self):
+        """展示所有记忆"""
+        if self.memory_collection.count() == 0:
+            console.print("[dim]暂无长期记忆[/dim]")
+            return
+        
+        results = self.memory_collection.get(
+            where={"user_id": self.user_id},
+            include=["documents", "metadatas"]
+        )
+        
+        from rich.table import Table
+        table = Table(title=f"📚 {self.user_id} 的长期记忆库")
+        table.add_column("类型", style="cyan", width=10)
+        table.add_column("重要性", style="yellow", width=6)
+        table.add_column("内容", style="white")
+        
+        entries = list(zip(results["documents"], results["metadatas"]))
+        entries.sort(key=lambda x: x[1].get("importance", 0), reverse=True)
+        
+        for doc, meta in entries[:20]:  # 只显示前20条
+            importance = meta.get("importance", 5)
+            table.add_row(
+                meta.get("type", "general"),
+                "★" * min(importance // 2, 5),
+                doc[:80]
+            )
+        
+        console.print(table)
+
+
+# ============================
+# 主程序
+# ============================
+
+def main():
+    console.print(Panel(
+        "[bold]🤖 个人助理 Agent[/bold]\n"
+        "我会记住关于你的信息，提供个性化服务\n\n"
+        "命令：\n"
+        "  memory  → 查看我记住的关于你的信息\n"
+        "  clear   → 清空对话历史\n"  
+        "  quit    → 退出",
+        title="启动",
+        border_style="green"
+    ))
+    
+    user_id = input("\n请输入您的用户名：").strip() or "default_user"
+    
+    assistant = PersonalAssistant(
+        user_id=user_id,
+        assistant_name="小智"
+    )
+    
+    console.print(f"\n[bold green]小智：[/bold green]你好，{user_id}！有什么我可以帮你的吗？")
+    
+    while True:
+        user_input = input(f"\n[{user_id}]：").strip()
+        
+        if not user_input:
+            continue
+        
+        if user_input.lower() == "quit":
+            console.print("[bold]再见！我会记住今天的对话 😊[/bold]")
+            break
+        
+        if user_input.lower() == "memory":
+            assistant.show_memories()
+            continue
+        
+        if user_input.lower() == "clear":
+            assistant.conversation_history.clear()
+            console.print("[dim]对话历史已清空（长期记忆保留）[/dim]")
+            continue
+        
+        reply = assistant.chat(user_input)
+        console.print(f"\n[bold green]小智：[/bold green]{reply}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<h2 id="关键实现细节"><a class="header" href="#关键实现细节">关键实现细节</a></h2>
+<p>让我们深入理解代码中几个重要的设计决策：</p>
+<p><strong>记忆检索的相关性过滤</strong>：<code>recall_memories</code> 方法设置了 <code>relevance &gt; 0.4</code> 的阈值。这是因为向量检索总是会返回"最相似"的结果，但这些结果不一定真的相关。比如用户问"今天吃什么"，即使记忆库里没有饮食相关的信息，ChromaDB 依然会返回某些结果（只是相似度很低）。设置阈值可以过滤掉这些噪音。</p>
+<p><strong>记忆注入 System Prompt</strong>：在 <code>chat</code> 方法中，检索到的相关记忆被注入到系统提示中（<code>【关于用户的记忆】</code>段落），而不是作为用户消息发送。这是因为系统提示中的信息会被模型视为"背景知识"，不会在回复中直接引用或暴露给用户，更加自然。</p>
+<p><strong>静默的记忆提取</strong>：<code>_auto_extract_memories</code> 方法使用 <code>try...except</code> 包裹，失败时不影响主对话流程。这是因为记忆提取是一个"锦上添花"的功能——即使偶尔提取失败，也不应该影响用户的正常对话体验。</p>
+<h2 id="演示效果"><a class="header" href="#演示效果">演示效果</a></h2>
+<pre><code>[张伟]：我叫张伟，是一名 Python 工程师，正在做一个 AI 项目
+💾 记忆：用户名为张伟
+💾 记忆：用户是 Python 工程师
+💾 记忆：用户正在做 AI 项目
+
+小智：你好，张伟！很高兴认识你。作为 Python 工程师做 AI 项目，
+你是在做什么方向呢？是 Agent 开发、模型训练还是其他方向？
+
+[张伟]：帮我写一个 Python 函数来计算斐波那契数列
+
+小智：（基于"Python工程师"的记忆，给出专业级代码）
+def fibonacci(n: int) -&gt; list[int]:
+    """返回前 n 个斐波那契数"""
+    ...
+
+-- 下次启动 --
+[张伟]：昨天那个斐波那契函数能优化吗？
+
+小智：（从记忆中知道张伟是Python工程师，给出针对性回答）
+可以用生成器或记忆化来优化...
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>本章构建了一个完整的记忆系统：</p>
+<div class="table-wrapper"><table><thead><tr><th>组件</th><th>技术</th><th>用途</th></tr></thead><tbody>
+<tr><td>短期记忆</td><td>滑动窗口</td><td>当前对话连贯性</td></tr>
+<tr><td>长期记忆</td><td>ChromaDB</td><td>跨会话个性化</td></tr>
+<tr><td>记忆提取</td><td>LLM 分析</td><td>自动识别重要信息</td></tr>
+<tr><td>语义检索</td><td>向量相似度</td><td>精准召回相关记忆</td></tr>
+</tbody></table>
+</div>
+<p>这个框架可以作为构建个性化 Agent 应用的基础。</p>
+<hr />
+<p><em>下一章：<a href="../chapter_planning/README.html">第6章 规划与推理（Planning &amp; Reasoning）</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_memory/04_working_memory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_memory/06_paper_readings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_memory/04_working_memory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_memory/06_paper_readings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

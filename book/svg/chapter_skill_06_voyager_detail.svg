@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr13" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+    <marker id="arr13g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arr13r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  <rect width="720" height="420" fill="#f0f4f8" rx="14"/>
+  <text x="360" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Voyager 详细架构</text>
+
+  <!-- 自动课程系统 -->
+  <rect x="230" y="45" width="260" height="55" rx="10" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="360" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">📋 自动课程系统（Curriculum）</text>
+  <text x="360" y="88" text-anchor="middle" font-size="10" fill="#555">GPT-4 根据当前状态提出下一个目标</text>
+
+  <!-- 任务箭头 -->
+  <line x1="360" y1="100" x2="360" y2="122" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr13)"/>
+  <text x="380" y="115" font-size="10" fill="#888">任务</text>
+
+  <!-- 代码生成器 -->
+  <rect x="230" y="125" width="160" height="55" rx="10" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="310" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">⚙️ 代码生成器</text>
+  <text x="310" y="168" text-anchor="middle" font-size="10" fill="#555">Action Agent, 生成 JS 代码</text>
+
+  <!-- 技能库检索 -->
+  <rect x="440" y="125" width="160" height="55" rx="10" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="520" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">🔍 技能库检索</text>
+  <text x="520" y="168" text-anchor="middle" font-size="10" fill="#555">"有没有类似的已有技能？"</text>
+
+  <!-- 检索到代码生成器 -->
+  <line x1="440" y1="152" x2="392" y2="152" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr13g)"/>
+
+  <!-- 代码箭头 -->
+  <line x1="310" y1="180" x2="310" y2="205" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr13)"/>
+  <text x="330" y="198" font-size="10" fill="#888">代码</text>
+
+  <!-- 环境执行 -->
+  <rect x="200" y="208" width="220" height="55" rx="10" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="310" y="231" text-anchor="middle" font-size="13" font-weight="bold" fill="#9b59b6">🎮 环境执行（Minecraft）</text>
+  <text x="310" y="251" text-anchor="middle" font-size="10" fill="#555">执行代码并观察结果</text>
+
+  <!-- 成功分支 -->
+  <line x1="420" y1="235" x2="520" y2="235" stroke="#27ae60" stroke-width="1.5"/>
+  <line x1="520" y1="235" x2="520" y2="282" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr13g)"/>
+  <text x="470" y="228" font-size="10" fill="#27ae60">成功 ✅</text>
+
+  <!-- 失败分支 -->
+  <line x1="200" y1="245" x2="140" y2="245" stroke="#e74c3c" stroke-width="1.5"/>
+  <line x1="140" y1="245" x2="140" y2="152" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="140" y1="152" x2="228" y2="152" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr13r)"/>
+  <text x="100" y="210" font-size="10" fill="#e74c3c">失败 ❌</text>
+  <text x="100" y="225" font-size="9" fill="#e74c3c">错误反馈</text>
+  <text x="100" y="240" font-size="9" fill="#e74c3c">重试(最多4次)</text>
+
+  <!-- 技能库 -->
+  <rect x="100" y="285" width="520" height="120" rx="12" fill="#2c3e50" opacity="0.06" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="360" y="308" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">📦 技能库（Skill Library）</text>
+
+  <rect x="120" y="320" width="110" height="28" rx="5" fill="#3498db" opacity="0.2"/>
+  <text x="175" y="339" text-anchor="middle" font-size="11" fill="#2c3e50">mineWoodLog()</text>
+  <rect x="240" y="320" width="115" height="28" rx="5" fill="#27ae60" opacity="0.2"/>
+  <text x="297" y="339" text-anchor="middle" font-size="11" fill="#2c3e50">craftWorkbench()</text>
+  <rect x="365" y="320" width="110" height="28" rx="5" fill="#e67e22" opacity="0.2"/>
+  <text x="420" y="339" text-anchor="middle" font-size="11" fill="#2c3e50">buildHouse()</text>
+  <rect x="485" y="320" width="120" height="28" rx="5" fill="#9b59b6" opacity="0.2"/>
+  <text x="545" y="339" text-anchor="middle" font-size="11" fill="#2c3e50">cookFood() ...</text>
+
+  <text x="360" y="377" text-anchor="middle" font-size="10" fill="#888">存储方式：代码 + 描述 + 向量嵌入</text>
+  <text x="360" y="395" text-anchor="middle" font-size="10" fill="#888">检索方式：任务描述 → 语义相似度匹配 | 100+ 技能</text>
+</svg>

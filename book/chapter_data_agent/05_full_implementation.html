@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>18.5 完整项目实现 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="完整项目实现"><a class="header" href="#完整项目实现">完整项目实现</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：整合所有组件，构建一个完整的智能数据分析 Agent。</p>
+</blockquote>
+<hr />
+<h2 id="完整实现"><a class="header" href="#完整实现">完整实现</a></h2>
+<pre><code class="language-python">"""
+智能数据分析 Agent —— 完整实现
+用自然语言完成数据分析的全流程
+"""
+import asyncio
+from langchain_openai import ChatOpenAI
+
+# 导入前面实现的组件
+# 各组件的完整实现请参考对应章节：
+# from db_connector import SafeDatabaseConnector   # → 17.2 节
+# from text_to_sql import TextToSQL                # → 17.2 节
+# from data_analyzer import DataAnalyzer           # → 17.3 节
+# from chart_generator import ChartGenerator       # → 17.3 节
+# from insight_generator import InsightGenerator   # → 17.3 节
+# from report_generator import ReportGenerator     # → 17.4 节
+# 提示：运行本节代码前，需先将 17.2-17.4 节的代码保存为独立模块
+
+
+class SmartDataAnalyst:
+    """智能数据分析 Agent"""
+    
+    def __init__(self, db_path: str):
+        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
+        self.db = SafeDatabaseConnector(db_path)
+        self.text2sql = TextToSQL(self.llm, self.db)
+        self.analyzer = DataAnalyzer()
+        self.chart_gen = ChartGenerator()
+        self.insight_gen = InsightGenerator(self.llm)
+        self.report_gen = ReportGenerator(self.llm)
+    
+    async def ask(self, question: str) -&gt; str:
+        """用自然语言提问，获取完整分析"""
+        
+        print(f"🤔 理解问题: {question}")
+        
+        # 1. 自然语言 → SQL
+        print("📝 生成查询...")
+        sql = await self.text2sql.convert(question)
+        print(f"   SQL: {sql}")
+        
+        # 2. 执行查询
+        print("🔍 查询数据...")
+        try:
+            data = self.db.execute_readonly(sql)
+        except Exception as e:
+            return f"❌ 查询出错: {e}"
+        
+        if not data:
+            return "📭 查询没有返回结果，请换个问法试试。"
+        
+        print(f"   获得 {len(data)} 条数据")
+        
+        # 3. 统计分析
+        print("📊 分析数据...")
+        stats = self.analyzer.describe(data)
+        
+        # 4. 生成图表
+        print("🎨 生成图表...")
+        chart_path = self.chart_gen.auto_chart(data, question)
+        
+        # 5. 生成洞察
+        print("💡 提取洞察...")
+        insights = await self.insight_gen.generate_insights(
+            data, stats, question
+        )
+        
+        # 6. 生成报告
+        print("📄 生成报告...")
+        report = await self.report_gen.generate_report(
+            question=question,
+            sql_query=sql,
+            data=data,
+            stats=stats,
+            insights=insights,
+            chart_path=chart_path
+        )
+        
+        # 保存报告
+        filepath = self.report_gen.save_report(report)
+        print(f"✅ 报告已保存: {filepath}")
+        
+        return report
+
+
+async def main():
+    """交互式数据分析"""
+    import sys
+    
+    db_path = sys.argv[1] if len(sys.argv) &gt; 1 else "example.db"
+    
+    print("📊 智能数据分析助手")
+    print("=" * 40)
+    print("用自然语言描述你的分析需求")
+    print("输入 'quit' 退出\n")
+    
+    analyst = SmartDataAnalyst(db_path)
+    
+    # 展示可用的表
+    schemas = analyst.db.get_table_schemas()
+    print(f"📁 数据库中有 {len(schemas)} 张表:")
+    for table, info in schemas.items():
+        cols = [c['name'] for c in info['columns']]
+        print(f"   • {table}: {', '.join(cols)}")
+    print()
+    
+    while True:
+        question = input("你的问题: ").strip()
+        
+        if question.lower() in ('quit', 'exit', 'q'):
+            print("👋 再见！")
+            break
+        
+        if not question:
+            continue
+        
+        result = await analyst.ask(question)
+        print(f"\n{result}\n")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</code></pre>
+<hr />
+<h2 id="使用效果"><a class="header" href="#使用效果">使用效果</a></h2>
+<pre><code>📊 智能数据分析助手
+========================================
+📁 数据库中有 3 张表:
+   • orders: id, customer_id, product, amount, date, region
+   • customers: id, name, email, city, register_date
+   • products: id, name, category, price
+
+你的问题: 哪个区域的订单金额最高？按区域排序
+🤔 理解问题: 哪个区域的订单金额最高？按区域排序
+📝 生成查询...
+   SQL: SELECT region, SUM(amount) as total FROM orders GROUP BY region ORDER BY total DESC
+🔍 查询数据...
+   获得 4 条数据
+📊 分析数据...
+🎨 生成图表...
+💡 提取洞察...
+📄 生成报告...
+✅ 报告已保存: report_20260312_140000.md
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>步骤</th><th>组件</th><th>说明</th></tr></thead><tbody>
+<tr><td>理解</td><td>TextToSQL</td><td>自然语言 → SQL</td></tr>
+<tr><td>查询</td><td>SafeDB</td><td>安全执行只读查询</td></tr>
+<tr><td>分析</td><td>DataAnalyzer</td><td>统计分析</td></tr>
+<tr><td>可视化</td><td>ChartGenerator</td><td>自动图表</td></tr>
+<tr><td>洞察</td><td>InsightGenerator</td><td>LLM 生成洞察</td></tr>
+<tr><td>报告</td><td>ReportGenerator</td><td>完整分析报告</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>🎓 <strong>本章总结</strong>：我们构建了一个"用自然语言做数据分析"的完整 Agent。从 Text-to-SQL 到自动可视化，展示了 Agent 在数据分析领域的强大应用。</p>
+</blockquote>
+<hr />
+<p><a href="../chapter_multimodal/README.html">下一章：第18章 项目实战：多模态 Agent →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_data_agent/04_report_generation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_multimodal/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_data_agent/04_report_generation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_multimodal/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

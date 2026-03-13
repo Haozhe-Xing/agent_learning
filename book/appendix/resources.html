@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>附录 C：推荐学习资源与社区 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="附录-c推荐学习资源与社区"><a class="header" href="#附录-c推荐学习资源与社区">附录 C：推荐学习资源与社区</a></h1>
+<hr />
+<h2 id="-官方文档"><a class="header" href="#-官方文档">📚 官方文档</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>资源</th><th>链接</th><th>说明</th></tr></thead><tbody>
+<tr><td>LangChain 文档</td><td><a href="https://python.langchain.com/">python.langchain.com</a></td><td>最全面的 Agent 框架文档</td></tr>
+<tr><td>LangGraph 文档</td><td><a href="https://langchain-ai.github.io/langgraph/">langchain-ai.github.io/langgraph</a></td><td>有状态 Agent 开发</td></tr>
+<tr><td>OpenAI API 文档</td><td><a href="https://platform.openai.com/docs">platform.openai.com/docs</a></td><td>模型 API 使用指南</td></tr>
+<tr><td>Anthropic 文档</td><td><a href="https://docs.anthropic.com/">docs.anthropic.com</a></td><td>Claude 模型文档</td></tr>
+<tr><td>MCP 规范</td><td><a href="https://modelcontextprotocol.io/">modelcontextprotocol.io</a></td><td>Agent 工具标准协议</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-推荐书籍与课程"><a class="header" href="#-推荐书籍与课程">📖 推荐书籍与课程</a></h2>
+<h3 id="书籍"><a class="header" href="#书籍">书籍</a></h3>
+<ul>
+<li><strong>《Building LLM Powered Applications》</strong> —— 实用的 LLM 应用开发指南</li>
+<li><strong>《Generative AI with LangChain》</strong> —— LangChain 框架深入指南</li>
+<li><strong>《Designing Autonomous AI Agent Systems》</strong> —— Agent 系统设计原理</li>
+</ul>
+<h3 id="在线课程"><a class="header" href="#在线课程">在线课程</a></h3>
+<ul>
+<li><strong>DeepLearning.AI</strong> 的 "Building Agentic RAG with LlamaIndex" 系列</li>
+<li><strong>LangChain Academy</strong> —— LangChain 官方课程（免费）</li>
+<li><strong>Andrew Ng</strong> 的 "AI Agentic Design Patterns" 系列</li>
+</ul>
+<hr />
+<h2 id="-开源项目"><a class="header" href="#-开源项目">🛠️ 开源项目</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>项目</th><th>说明</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/langchain-ai/langchain">LangChain</a></td><td>最流行的 Agent 开发框架</td></tr>
+<tr><td><a href="https://github.com/langchain-ai/langgraph">LangGraph</a></td><td>有状态 Agent 工作流</td></tr>
+<tr><td><a href="https://github.com/crewAIInc/crewAI">CrewAI</a></td><td>多 Agent 角色扮演框架</td></tr>
+<tr><td><a href="https://github.com/microsoft/autogen">AutoGen</a></td><td>微软多 Agent 框架（0.4 事件驱动架构）</td></tr>
+<tr><td><a href="https://github.com/langgenius/dify">Dify</a></td><td>开源 LLM 应用平台</td></tr>
+<tr><td><a href="https://github.com/mem0ai/mem0">mem0</a></td><td>Agent 记忆层</td></tr>
+<tr><td><a href="https://github.com/chroma-core/chroma">ChromaDB</a></td><td>轻量级向量数据库</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-社区与论坛"><a class="header" href="#-社区与论坛">🌐 社区与论坛</a></h2>
+<h3 id="英文社区"><a class="header" href="#英文社区">英文社区</a></h3>
+<ul>
+<li><strong>LangChain Discord</strong> —— 活跃的开发者社区</li>
+<li><strong>Reddit r/LangChain</strong> —— 讨论和分享</li>
+<li><strong>GitHub Discussions</strong> —— 各框架的官方讨论区</li>
+<li><strong>Hugging Face</strong> —— 开源模型社区</li>
+</ul>
+<h3 id="中文社区"><a class="header" href="#中文社区">中文社区</a></h3>
+<ul>
+<li><strong>掘金 / 稀土掘金</strong> —— 搜索 "Agent 开发"、"LangChain 实战" 等话题，有大量中文实践文章</li>
+<li><strong>知乎</strong> —— 关注 "AI Agent"、"LLM 应用开发" 话题，跟踪行业讨论和技术分析</li>
+<li><strong>CSDN</strong> —— Agent 开发教程和踩坑记录</li>
+<li><strong>B 站 / YouTube 中文频道</strong> —— 搜索 "Agent 开发教程"，有不少优质视频教程</li>
+<li><strong>微信公众号</strong> —— 推荐关注：机器之心、量子位、AI科技大本营等（跟踪最新 Agent 技术动态）</li>
+<li><strong>通义千问社区</strong> —— 阿里云的 LLM 开发者社区，适合使用国内模型的开发者</li>
+</ul>
+<hr />
+<h2 id="-重要学术论文"><a class="header" href="#-重要学术论文">📄 重要学术论文</a></h2>
+<p>以下是本书涉及的核心学术论文，按技术主题分类。每个主题在书中都有对应的<strong>独立论文解读章节</strong>，建议按照学习进度有选择地阅读。</p>
+<blockquote>
+<p>💡 <strong>深度解读章节索引</strong>：</p>
+<ul>
+<li>工具使用 → <a href="../chapter_tools/06_paper_readings.html">4.6 论文解读：工具学习前沿进展</a></li>
+<li>记忆系统 → <a href="../chapter_memory/06_paper_readings.html">5.6 论文解读：记忆系统前沿进展</a></li>
+<li>规划与推理 → <a href="../chapter_planning/06_paper_readings.html">6.6 论文解读：规划与推理前沿研究</a></li>
+<li>RAG → <a href="../chapter_rag/06_paper_readings.html">7.6 论文解读：RAG 前沿进展</a></li>
+<li>多 Agent → <a href="../chapter_multi_agent/06_paper_readings.html">11.6 论文解读：多 Agent 系统前沿研究</a></li>
+<li>安全与可靠性 → <a href="../chapter_security/06_paper_readings.html">14.6 论文解读：安全与可靠性前沿研究</a></li>
+</ul>
+</blockquote>
+<h3 id="提示策略与推理"><a class="header" href="#提示策略与推理">提示策略与推理</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</td><td>Wei et al. (Google Brain)</td><td>2022</td><td>2.3</td><td><a href="https://arxiv.org/abs/2201.11903">arXiv:2201.11903</a></td></tr>
+<tr><td>Large Language Models are Zero-Shot Reasoners</td><td>Kojima et al.</td><td>2022</td><td>2.3</td><td><a href="https://arxiv.org/abs/2205.11916">arXiv:2205.11916</a></td></tr>
+<tr><td>Self-Consistency Improves Chain of Thought Reasoning</td><td>Wang et al. (Google Brain)</td><td>2023</td><td>2.3, 14.2</td><td><a href="https://arxiv.org/abs/2203.11171">arXiv:2203.11171</a></td></tr>
+<tr><td>Tree of Thoughts: Deliberate Problem Solving with LLMs</td><td>Yao et al. (Princeton)</td><td>2023</td><td>2.3</td><td><a href="https://arxiv.org/abs/2305.10601">arXiv:2305.10601</a></td></tr>
+<tr><td>ReAct: Synergizing Reasoning and Acting in Language Models</td><td>Yao et al. (Princeton)</td><td>2022</td><td>2.3, 6.2</td><td><a href="https://arxiv.org/abs/2210.03629">arXiv:2210.03629</a></td></tr>
+<tr><td>Plan-and-Solve Prompting</td><td>Wang et al.</td><td>2023</td><td>6.3</td><td><a href="https://arxiv.org/abs/2305.04091">arXiv:2305.04091</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="工具使用"><a class="header" href="#工具使用">工具使用</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Toolformer: Language Models Can Teach Themselves to Use Tools</td><td>Schick et al. (Meta)</td><td>2023</td><td>4.1</td><td><a href="https://arxiv.org/abs/2302.04761">arXiv:2302.04761</a></td></tr>
+<tr><td>Gorilla: Large Language Model Connected with Massive APIs</td><td>Patil et al. (UC Berkeley)</td><td>2023</td><td>4.1</td><td><a href="https://arxiv.org/abs/2305.15334">arXiv:2305.15334</a></td></tr>
+<tr><td>ToolLLM: Facilitating LLMs to Master 16000+ Real-world APIs</td><td>Qin et al.</td><td>2023</td><td>4.1</td><td><a href="https://arxiv.org/abs/2307.16789">arXiv:2307.16789</a></td></tr>
+<tr><td>ToolACE: Winning the Points of LLM Function Calling</td><td>Liu et al. (华为诺亚方舟 &amp; 中科大)</td><td>2024</td><td>4.6</td><td><a href="https://arxiv.org/abs/2409.00920">arXiv:2409.00920</a></td></tr>
+<tr><td>RAG-MCP: Mitigating Prompt Bloat in LLM Tool Selection</td><td>Gan et al.</td><td>2025</td><td>4.6</td><td><a href="https://arxiv.org/abs/2505.03275">arXiv:2505.03275</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="技能系统"><a class="header" href="#技能系统">技能系统</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Voyager: An Open-Ended Embodied Agent with LLMs</td><td>Wang et al. (NVIDIA &amp; Caltech)</td><td>2023</td><td>5.6</td><td><a href="https://arxiv.org/abs/2305.16291">arXiv:2305.16291</a></td></tr>
+<tr><td>CRAFT: Customizing LLMs by Creating and Retrieving from Specialized Toolsets</td><td>Yuan et al. (北京大学)</td><td>2024</td><td>5.6</td><td><a href="https://arxiv.org/abs/2309.17428">arXiv:2309.17428</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="记忆系统"><a class="header" href="#记忆系统">记忆系统</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Generative Agents: Interactive Simulacra of Human Behavior</td><td>Park et al. (Stanford)</td><td>2023</td><td>5.1</td><td><a href="https://arxiv.org/abs/2304.03442">arXiv:2304.03442</a></td></tr>
+<tr><td>MemGPT: Towards LLMs as Operating Systems</td><td>Packer et al. (UC Berkeley)</td><td>2023</td><td>5.1</td><td><a href="https://arxiv.org/abs/2310.08560">arXiv:2310.08560</a></td></tr>
+<tr><td>MemoryBank: Enhancing LLMs with Long-Term Memory</td><td>Zhong et al.</td><td>2023</td><td>5.1</td><td><a href="https://arxiv.org/abs/2305.10250">arXiv:2305.10250</a></td></tr>
+<tr><td>Cognitive Architectures for Language Agents (CoALA)</td><td>Sumers et al.</td><td>2023</td><td>5.1</td><td><a href="https://arxiv.org/abs/2309.02427">arXiv:2309.02427</a></td></tr>
+<tr><td>HippoRAG: Neurobiologically Inspired Long-Term Memory for LLMs</td><td>Gutiérrez et al. (OSU)</td><td>2024</td><td>5.6</td><td><a href="https://arxiv.org/abs/2405.14831">arXiv:2405.14831</a></td></tr>
+<tr><td>Zep: A Temporal Knowledge Graph Architecture for Agent Memory</td><td>Rasmussen et al.</td><td>2025</td><td>5.6</td><td><a href="https://arxiv.org/abs/2501.13956">arXiv:2501.13956</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="反思与自我纠错"><a class="header" href="#反思与自我纠错">反思与自我纠错</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Reflexion: Language Agents with Verbal Reinforcement Learning</td><td>Shinn et al.</td><td>2023</td><td>6.4</td><td><a href="https://arxiv.org/abs/2303.11366">arXiv:2303.11366</a></td></tr>
+<tr><td>Self-Refine: Iterative Refinement with Self-Feedback</td><td>Madaan et al. (CMU)</td><td>2023</td><td>6.4</td><td><a href="https://arxiv.org/abs/2303.17651">arXiv:2303.17651</a></td></tr>
+<tr><td>CRITIC: LLMs Can Self-Correct with Tool-Interactive Critiquing</td><td>Gou et al.</td><td>2023</td><td>6.4</td><td><a href="https://arxiv.org/abs/2305.11738">arXiv:2305.11738</a></td></tr>
+<tr><td>Large Language Models Cannot Self-Correct Reasoning Yet</td><td>Huang et al.</td><td>2023</td><td>6.4</td><td><a href="https://arxiv.org/abs/2310.01798">arXiv:2310.01798</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="检索增强生成rag"><a class="header" href="#检索增强生成rag">检索增强生成（RAG）</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</td><td>Lewis et al. (Meta AI)</td><td>2020</td><td>7.1</td><td><a href="https://arxiv.org/abs/2005.11401">arXiv:2005.11401</a></td></tr>
+<tr><td>Self-RAG: Learning to Retrieve, Generate, and Critique</td><td>Asai et al.</td><td>2023</td><td>7.1</td><td><a href="https://arxiv.org/abs/2310.11511">arXiv:2310.11511</a></td></tr>
+<tr><td>Corrective Retrieval Augmented Generation (CRAG)</td><td>Yan et al.</td><td>2024</td><td>7.1</td><td><a href="https://arxiv.org/abs/2401.15884">arXiv:2401.15884</a></td></tr>
+<tr><td>From Local to Global: A Graph RAG Approach</td><td>Edge et al. (Microsoft)</td><td>2024</td><td>7.1</td><td><a href="https://arxiv.org/abs/2404.16130">arXiv:2404.16130</a></td></tr>
+<tr><td>LightRAG: Simple and Fast Retrieval-Augmented Generation</td><td>Guo et al. (香港大学)</td><td>2024</td><td>7.6</td><td><a href="https://arxiv.org/abs/2410.05779">arXiv:2410.05779</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="规划与推理"><a class="header" href="#规划与推理">规划与推理</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>ReAct: Synergizing Reasoning and Acting in Language Models</td><td>Yao et al. (Princeton)</td><td>2022</td><td>6.2</td><td><a href="https://arxiv.org/abs/2210.03629">arXiv:2210.03629</a></td></tr>
+<tr><td>Plan-and-Solve Prompting</td><td>Wang et al.</td><td>2023</td><td>6.3</td><td><a href="https://arxiv.org/abs/2305.04091">arXiv:2305.04091</a></td></tr>
+<tr><td>Reflexion: Language Agents with Verbal Reinforcement Learning</td><td>Shinn et al.</td><td>2023</td><td>6.4</td><td><a href="https://arxiv.org/abs/2303.11366">arXiv:2303.11366</a></td></tr>
+<tr><td>Learning to Reason with LLMs (OpenAI o1)</td><td>OpenAI</td><td>2024</td><td>6.6</td><td><a href="https://openai.com/index/learning-to-reason-with-llms/">openai.com</a></td></tr>
+<tr><td>DeepSeek-R1: Incentivizing Reasoning Capability via RL</td><td>DeepSeek-AI</td><td>2025</td><td>6.6</td><td><a href="https://arxiv.org/abs/2501.12948">arXiv:2501.12948</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="多-agent-系统"><a class="header" href="#多-agent-系统">多 Agent 系统</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>MetaGPT: Meta Programming for Multi-Agent Collaboration</td><td>Hong et al.</td><td>2023</td><td>11.1</td><td><a href="https://arxiv.org/abs/2308.00352">arXiv:2308.00352</a></td></tr>
+<tr><td>Communicative Agents for Software Development (ChatDev)</td><td>Qian et al.</td><td>2023</td><td>11.1</td><td><a href="https://arxiv.org/abs/2307.07924">arXiv:2307.07924</a></td></tr>
+<tr><td>AutoGen: Enabling Next-Gen LLM Applications</td><td>Wu et al. (Microsoft)</td><td>2023</td><td>11.1</td><td><a href="https://arxiv.org/abs/2308.08155">arXiv:2308.08155</a></td></tr>
+<tr><td>AgentVerse: Facilitating Multi-Agent Collaboration</td><td>Chen et al.</td><td>2023</td><td>11.1</td><td><a href="https://arxiv.org/abs/2308.10848">arXiv:2308.10848</a></td></tr>
+<tr><td>Magentic-One: A Generalist Multi-Agent System</td><td>Fourney et al. (Microsoft)</td><td>2024</td><td>11.6</td><td><a href="https://arxiv.org/abs/2411.04468">arXiv:2411.04468</a></td></tr>
+<tr><td>Multi-Agent Collaboration Mechanisms: A Survey of LLMs</td><td>Nguyen et al.</td><td>2025</td><td>11.6</td><td><a href="https://arxiv.org/abs/2501.06322">arXiv:2501.06322</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="安全与可靠性"><a class="header" href="#安全与可靠性">安全与可靠性</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>本书章节</th><th>链接</th></tr></thead><tbody>
+<tr><td>Not What You've Signed Up For: Indirect Prompt Injection</td><td>Greshake et al.</td><td>2023</td><td>14.1</td><td><a href="https://arxiv.org/abs/2302.12173">arXiv:2302.12173</a></td></tr>
+<tr><td>HackAPrompt: Exposing Systemic Weaknesses of LLMs</td><td>Schulhoff et al.</td><td>2023</td><td>14.1</td><td><a href="https://arxiv.org/abs/2311.16119">arXiv:2311.16119</a></td></tr>
+<tr><td>FActScore: Fine-grained Atomic Evaluation of Factual Precision</td><td>Min et al. (UW)</td><td>2023</td><td>14.2</td><td><a href="https://arxiv.org/abs/2305.14251">arXiv:2305.14251</a></td></tr>
+<tr><td>A Survey on Hallucination in Large Language Models</td><td>Huang et al.</td><td>2023</td><td>14.2</td><td><a href="https://arxiv.org/abs/2311.05232">arXiv:2311.05232</a></td></tr>
+<tr><td>InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Agents</td><td>Zhan et al.</td><td>2024</td><td>14.6</td><td><a href="https://arxiv.org/abs/2403.02691">arXiv:2403.02691</a></td></tr>
+<tr><td>AgentDojo: Dynamic Environment for Agent Attack/Defense</td><td>Debenedetti et al. (ETH Zurich)</td><td>2024</td><td>14.6</td><td><a href="https://arxiv.org/abs/2406.13352">arXiv:2406.13352</a></td></tr>
+<tr><td>Agent Security Bench (ASB): Attacks and Defenses in LLM Agents</td><td>Zhang et al.</td><td>2025</td><td>14.6</td><td><a href="https://arxiv.org/abs/2410.02644">arXiv:2410.02644</a></td></tr>
+</tbody></table>
+</div>
+<h3 id="agent-综述"><a class="header" href="#agent-综述">Agent 综述</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>说明</th><th>链接</th></tr></thead><tbody>
+<tr><td>A Survey on Large Language Model based Autonomous Agents</td><td>Wang et al. (人大)</td><td>2023</td><td>最全面的 LLM Agent 综述</td><td><a href="https://arxiv.org/abs/2308.11432">arXiv:2308.11432</a></td></tr>
+<tr><td>The Rise and Potential of Large Language Model Based Agents: A Survey</td><td>Xi et al.</td><td>2023</td><td>Agent 的崛起与潜力综述</td><td><a href="https://arxiv.org/abs/2309.07864">arXiv:2309.07864</a></td></tr>
+<tr><td>LLM Powered Autonomous Agents</td><td>Lilian Weng (OpenAI)</td><td>2023</td><td>优秀的技术博客，适合入门</td><td><a href="https://lilianweng.github.io/posts/2023-06-23-agent/">lilianweng.github.io</a></td></tr>
+<tr><td>Multi-Agent Collaboration Mechanisms: A Survey of LLMs</td><td>Nguyen et al.</td><td>2025</td><td>多 Agent 协作机制综述</td><td><a href="https://arxiv.org/abs/2501.06322">arXiv:2501.06322</a></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>💡 <strong>阅读建议</strong>：如果时间有限，优先阅读以下 7 篇"必读"论文：① ReAct（Agent 基本范式）② Generative Agents（记忆系统设计）③ RAG 原始论文（知识增强）④ Reflexion（自我改进）⑤ DeepSeek-R1（推理模型，2025）⑥ Magentic-One（通用多 Agent 系统，2024）⑦ A Survey on LLM based Autonomous Agents（全景综述）。</p>
+</blockquote>
+<hr />
+<h2 id="-保持更新"><a class="header" href="#-保持更新">📰 保持更新</a></h2>
+<p>Agent 领域发展很快，建议关注：</p>
+<ul>
+<li><strong>LangChain Blog</strong> —— 框架更新和最佳实践</li>
+<li><strong>OpenAI Blog</strong> —— 模型能力更新和 Agents SDK 发展</li>
+<li><strong>Anthropic Blog</strong> —— Claude 模型和 MCP 协议更新</li>
+<li><strong>Google AI Blog</strong> —— Gemini 模型和 A2A 协议动态</li>
+<li><strong>The Batch</strong> (by Andrew Ng) —— AI 行业周报</li>
+<li><strong>arXiv</strong> —— 最新研究论文（搜索 "LLM Agent"）</li>
+<li><strong>DeepSeek Blog</strong> —— 开源推理模型的最新进展</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../appendix/faq.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendix/glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../appendix/faq.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendix/glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

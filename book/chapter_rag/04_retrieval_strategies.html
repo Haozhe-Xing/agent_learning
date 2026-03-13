@@ -1,0 +1,536 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>8.4 检索策略与重排序 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="检索策略与重排序"><a class="header" href="#检索策略与重排序">检索策略与重排序</a></h1>
+<p>基础的向量检索并不总是最优的。本节介绍多种高级检索策略，显著提升 RAG 系统的准确率。</p>
+<p>纯向量检索有两个常见的问题：</p>
+<ol>
+<li>
+<p><strong>语义漂移</strong>：向量检索擅长捕捉语义相似性，但对精确的关键词匹配不够敏感。比如用户问"Error 404 怎么解决"，向量检索可能返回关于"HTTP 错误"的通用介绍，而不是包含"404"这个具体关键词的文档。</p>
+</li>
+<li>
+<p><strong>召回率不足</strong>：用户的一个问题可能有多种表述方式，单一查询可能错过一些相关文档。</p>
+</li>
+</ol>
+<p>针对这些问题，业界发展出了三种主要的优化策略：<strong>混合检索</strong>（结合向量和关键词）、<strong>重排序</strong>（用 LLM 对初步结果二次排序）和<strong>查询扩展</strong>（将一个查询拓展为多个变体）。</p>
+<h2 id="混合检索向量--关键词"><a class="header" href="#混合检索向量--关键词">混合检索：向量 + 关键词</a></h2>
+<p>混合检索的核心思想是"两条腿走路"：用向量检索捕捉语义相似性，用 BM25 关键词检索保证精确匹配，然后将两种检索的结果按权重融合。</p>
+<p>BM25 是一个经典的信息检索算法，基于词频（TF）和逆文档频率（IDF）来评估文档与查询的相关性。它对精确关键词匹配非常有效，但不理解同义词和语义关系。</p>
+<p>两种检索方式的优缺点恰好互补：向量检索能理解"Python 编程语言"和"用 Python 写代码"是同一个意思，但可能对专有名词不够敏感；BM25 能精确匹配"FastAPI"这样的专有名词，但不理解"高性能 Web 框架"和 "FastAPI" 的语义关系。</p>
+<p>下面的 <code>HybridRetriever</code> 将两者融合，默认权重 0.7:0.3（向量:关键词），你可以根据实际场景调整：</p>
+<pre><code class="language-python">from openai import OpenAI
+import chromadb
+from rank_bm25 import BM25Okapi  # pip install rank-bm25
+import jieba  # pip install jieba (中文分词)
+import numpy as np
+from typing import List
+
+client = OpenAI()
+
+class HybridRetriever:
+    """混合检索：向量相似度 + BM25 关键词匹配"""
+    
+    def __init__(self, collection, documents: List[str]):
+        self.collection = collection
+        self.documents = documents
+        
+        # 初始化 BM25（基于词频的关键词检索）
+        tokenized_docs = [list(jieba.cut(doc)) for doc in documents]
+        self.bm25 = BM25Okapi(tokenized_docs)
+    
+    def _vector_search(self, query: str, n: int = 10) -&gt; dict:
+        """向量语义搜索"""
+        from openai import OpenAI
+        response = client.embeddings.create(
+            input=query,
+            model="text-embedding-3-small"
+        )
+        query_embedding = response.data[0].embedding
+        
+        results = self.collection.query(
+            query_embeddings=[query_embedding],
+            n_results=min(n, self.collection.count()),
+            include=["documents", "distances", "ids"]
+        )
+        
+        scores = {}
+        if results["documents"] and results["documents"][0]:
+            for doc_id, doc, dist in zip(
+                results["ids"][0],
+                results["documents"][0],
+                results["distances"][0]
+            ):
+                scores[doc_id] = {
+                    "document": doc,
+                    "vector_score": 1 - dist
+                }
+        return scores
+    
+    def _keyword_search(self, query: str, n: int = 10) -&gt; dict:
+        """BM25 关键词搜索"""
+        tokens = list(jieba.cut(query))
+        scores = self.bm25.get_scores(tokens)
+        
+        # 标准化分数
+        max_score = max(scores) if max(scores) &gt; 0 else 1
+        
+        results = {}
+        top_indices = np.argsort(scores)[::-1][:n]
+        
+        for idx in top_indices:
+            if scores[idx] &gt; 0:
+                results[f"doc_{idx}"] = {
+                    "document": self.documents[idx],
+                    "keyword_score": scores[idx] / max_score,
+                    "doc_idx": idx
+                }
+        
+        return results
+    
+    def retrieve(self, query: str, n: int = 5,
+                  vector_weight: float = 0.7, keyword_weight: float = 0.3) -&gt; List[dict]:
+        """
+        混合检索，融合两种检索结果
+        
+        Args:
+            vector_weight: 向量分数权重（0-1）
+            keyword_weight: 关键词分数权重（0-1）
+        """
+        vector_results = self._vector_search(query, n=n*2)
+        keyword_results = self._keyword_search(query, n=n*2)
+        
+        # 融合分数
+        combined = {}
+        
+        for doc_id, data in vector_results.items():
+            combined[doc_id] = {
+                "document": data["document"],
+                "vector_score": data["vector_score"],
+                "keyword_score": 0,
+                "combined_score": data["vector_score"] * vector_weight
+            }
+        
+        for doc_id, data in keyword_results.items():
+            if doc_id in combined:
+                combined[doc_id]["keyword_score"] = data["keyword_score"]
+                combined[doc_id]["combined_score"] += data["keyword_score"] * keyword_weight
+            else:
+                combined[doc_id] = {
+                    "document": data["document"],
+                    "vector_score": 0,
+                    "keyword_score": data["keyword_score"],
+                    "combined_score": data["keyword_score"] * keyword_weight
+                }
+        
+        # 按综合分数排序
+        sorted_results = sorted(
+            combined.values(),
+            key=lambda x: x["combined_score"],
+            reverse=True
+        )
+        
+        return sorted_results[:n]
+</code></pre>
+<h2 id="重排序reranking"><a class="header" href="#重排序reranking">重排序（Reranking）</a></h2>
+<p>初步检索（无论是向量检索还是混合检索）通常会返回一批"大致相关"的候选文档。但这些文档的排序可能并不准确——真正最相关的文档可能排在第 3 位或第 5 位。</p>
+<p>重排序就是对初步检索结果进行"二次精排"。它的工作方式是：将查询和所有候选文档一起交给一个更强的模型（比如 GPT-4o-mini），让模型逐一评估每个文档与查询的相关性，然后按相关性重新排序。</p>
+<p>这种"先粗筛再精排"的两阶段架构在搜索引擎领域是标准做法——第一阶段追求<strong>召回率</strong>（不遗漏相关文档），第二阶段追求<strong>精准率</strong>（将最相关的排在最前面）。</p>
+<pre><code class="language-python">class Reranker:
+    """使用 LLM 对初步检索结果进行重排序"""
+    
+    def __init__(self, model: str = "gpt-4o-mini"):
+        self.model = model
+    
+    def rerank(self, query: str, candidates: List[str], top_k: int = 3) -&gt; List[dict]:
+        """
+        对候选文档进行重排序
+        
+        Args:
+            query: 用户查询
+            candidates: 候选文档列表
+            top_k: 返回前 K 个
+        
+        Returns:
+            重排序后的文档列表
+        """
+        if len(candidates) &lt;= top_k:
+            return [{"document": c, "rank": i+1, "relevant": True} for i, c in enumerate(candidates)]
+        
+        # 让 LLM 评估每个候选文档的相关性
+        numbered_candidates = "\n\n".join([
+            f"[{i+1}] {doc[:300]}" for i, doc in enumerate(candidates)
+        ])
+        
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""对以下候选文档按与查询的相关性进行排序。
+
+查询：{query}
+
+候选文档：
+{numbered_candidates}
+
+请按相关性从高到低排序，返回JSON格式：
+{{
+  "ranked_indices": [3, 1, 5, 2, 4],  // 按相关性排序的文档编号（1-indexed）
+  "top_{top_k}_reason": "选择前{top_k}个的原因"
+}}"""
+                }
+            ],
+            response_format={"type": "json_object"}
+        )
+        
+        import json
+        result = json.loads(response.choices[0].message.content)
+        ranked_indices = result.get("ranked_indices", list(range(1, len(candidates)+1)))
+        
+        reranked = []
+        for i, idx in enumerate(ranked_indices[:top_k]):
+            if 1 &lt;= idx &lt;= len(candidates):
+                reranked.append({
+                    "document": candidates[idx-1],
+                    "rank": i + 1,
+                    "original_rank": idx,
+                    "relevant": True
+                })
+        
+        return reranked
+
+
+## 查询扩展
+
+查询扩展解决的是"用户的表述方式可能很单一"的问题。
+
+假设知识库中有一段文档："Python 装饰器是一种设计模式，使用 `@` 语法糖来修改函数行为。" 用户可能问"怎么用 `@` 符号"、"装饰器模式"或"函数修饰"——这些表述的语义都接近，但单一查询可能只匹配其中一种。
+
+查询扩展的做法是：用 LLM 将用户的原始查询"改写"为多个变体，从不同角度表达相同的信息需求，然后用所有变体分别检索，合并去重后得到更全面的候选文档集。
+
+class QueryExpander:
+    """通过生成多个查询变体来提升召回率"""
+    
+    def expand(self, query: str, n_variations: int = 3) -&gt; List[str]:
+        """生成查询的多个变体"""
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""为以下查询生成 {n_variations} 个不同的变体，
+以提高信息检索的召回率。变体应该从不同角度表达相同的信息需求。
+
+原始查询：{query}
+
+返回JSON格式：
+{{"variations": ["变体1", "变体2", "变体3"]}}"""
+                }
+            ],
+            response_format={"type": "json_object"}
+        )
+        
+        import json
+        result = json.loads(response.choices[0].message.content)
+        variations = result.get("variations", [])
+        
+        # 原始查询 + 变体
+        return [query] + variations[:n_variations]
+
+
+# 使用示例
+expander = QueryExpander()
+expanded = expander.expand("Python 装饰器怎么用？")
+print("查询扩展：")
+for q in expanded:
+    print(f"  - {q}")
+</code></pre>
+<h2 id="完整高级检索管道"><a class="header" href="#完整高级检索管道">完整高级检索管道</a></h2>
+<p>最后，我们将上述三种策略组合成一个完整的检索管道。它的处理流程是：<strong>查询扩展 → 多查询检索 → 结果合并 → 重排序</strong>。每一步都在为下一步打基础：扩展保证了召回率，多查询进一步扩大候选集，合并去除了重复，重排序保证了最终结果的精准性。</p>
+<pre><code class="language-python">class AdvancedRAGPipeline:
+    """高级 RAG 检索管道"""
+    
+    def __init__(self, vector_store):
+        self.store = vector_store
+        self.reranker = Reranker()
+        self.query_expander = QueryExpander()
+    
+    def retrieve(self, query: str, n_final: int = 3) -&gt; List[dict]:
+        """完整检索流程"""
+        print(f"查询：{query}")
+        
+        # 步骤1：查询扩展
+        expanded_queries = self.query_expander.expand(query, n_variations=2)
+        
+        # 步骤2：多查询检索（每个变体单独检索）
+        all_candidates = {}
+        for q in expanded_queries:
+            results = self.store.search(q, n_results=5)
+            for r in results:
+                doc = r["document"]
+                if doc not in all_candidates:
+                    all_candidates[doc] = r["relevance"]
+                else:
+                    all_candidates[doc] = max(all_candidates[doc], r["relevance"])
+        
+        # 步骤3：重排序
+        candidate_docs = list(all_candidates.keys())
+        print(f"初步候选：{len(candidate_docs)} 个文档")
+        
+        reranked = self.reranker.rerank(query, candidate_docs, top_k=n_final)
+        
+        return reranked
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>检索策略的进阶要点：</p>
+<ul>
+<li><strong>混合检索</strong>：语义 + 关键词，互补提升召回率</li>
+<li><strong>重排序</strong>：LLM 二次评估，提升精准率</li>
+<li><strong>查询扩展</strong>：多角度检索，减少漏检</li>
+</ul>
+<hr />
+<p><em>下一节：<a href="./05_practice_qa_agent.html">7.5 实战：智能文档问答 Agent</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_rag/03_embeddings_vectordb.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_rag/05_practice_qa_agent.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_rag/03_embeddings_vectordb.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_rag/05_practice_qa_agent.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

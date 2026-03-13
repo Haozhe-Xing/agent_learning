@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>4.1 为什么 Agent 需要工具？ - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="为什么-agent-需要工具"><a class="header" href="#为什么-agent-需要工具">为什么 Agent 需要工具？</a></h1>
+<p>LLM 本身是强大的，但它有三个根本性的限制：<strong>知识截止</strong>、<strong>无法行动</strong>、<strong>无法获取实时信息</strong>。工具的出现，正是为了突破这三个限制。</p>
+<h2 id="llm-的局限性"><a class="header" href="#llm-的局限性">LLM 的局限性</a></h2>
+<p><img src="../svg/chapter_tools_01_llm_limits.svg" alt="LLM三大天生局限工具解决" /></p>
+<pre><code class="language-python"># 假设你直接问 LLM
+response = "今天苹果公司股价是多少？"
+# LLM 可能会说：
+# "苹果公司（AAPL）的股价我无法实时查询，
+#  根据我的训练数据，在 2024 年初大约在 150-190 美元之间..."
+
+# 问题：
+# 1. 数据不是实时的（可能已经过时很久）
+# 2. 无法确认准确性
+# 3. 不能执行任何操作
+</code></pre>
+<p>工具让 Agent 能够：</p>
+<div class="table-wrapper"><table><thead><tr><th>能力</th><th>工具类型</th><th>示例</th></tr></thead><tbody>
+<tr><td>获取实时信息</td><td>搜索工具</td><td>Tavily、Bing Search</td></tr>
+<tr><td>执行计算</td><td>计算工具</td><td>Python executor</td></tr>
+<tr><td>操作文件</td><td>文件工具</td><td>读写、创建文件</td></tr>
+<tr><td>访问数据库</td><td>数据库工具</td><td>SQL 查询</td></tr>
+<tr><td>调用外部服务</td><td>API 工具</td><td>天气、地图、邮件</td></tr>
+<tr><td>控制浏览器</td><td>浏览器工具</td><td>Playwright</td></tr>
+<tr><td>执行代码</td><td>代码工具</td><td>Python REPL</td></tr>
+</tbody></table>
+</div>
+<h2 id="工具分类体系"><a class="header" href="#工具分类体系">工具分类体系</a></h2>
+<p><img src="../svg/chapter_tools_01_tool_categories.svg" alt="Agent工具体系分类" /></p>
+<h2 id="工具的本质llm-与现实世界的桥梁"><a class="header" href="#工具的本质llm-与现实世界的桥梁">工具的本质：LLM 与现实世界的桥梁</a></h2>
+<pre><code class="language-python"># 没有工具的 LLM：在文字世界里打转
+def llm_without_tools(question: str) -&gt; str:
+    # 只能基于训练数据回答
+    # 无法获取实时信息
+    # 无法执行任何操作
+    return "基于我的知识，我认为..."
+
+# 有工具的 Agent：能够感知和影响现实世界
+def agent_with_tools(question: str) -&gt; str:
+    # 分析问题需要什么工具
+    if "天气" in question:
+        weather_data = call_weather_api(location)  # 真实数据！
+    if "计算" in question:
+        result = execute_calculation(expression)   # 精确计算！
+    if "最新" in question:
+        news = search_internet(query)              # 实时信息！
+    # 基于真实数据给出答案
+    return generate_answer(question, tool_results)
+</code></pre>
+<h2 id="一个工具如何影响-agent-的能力边界"><a class="header" href="#一个工具如何影响-agent-的能力边界">一个工具如何影响 Agent 的能力边界</a></h2>
+<p>让我们用一个具体例子感受工具的威力：</p>
+<pre><code class="language-python"># 场景：分析竞争对手
+# 没有工具的 LLM 能做什么？
+# → 只能给出通用建议，无法获取实时数据
+
+# 有了这些工具，Agent 能做什么？
+tools = [
+    "search",           # 搜索最新新闻和信息
+    "web_scraper",      # 抓取网页内容
+    "python_executor",  # 数据分析
+    "chart_generator",  # 生成可视化图表
+    "file_writer",      # 保存报告到文件
+]
+
+# Agent 可以：
+# 1. 搜索竞争对手最新动态
+# 2. 抓取竞争对手官网产品信息
+# 3. 分析数据，计算市场份额
+# 4. 生成对比图表
+# 5. 输出完整分析报告到 PDF
+</code></pre>
+<h2 id="工具安全性能力越大责任越大"><a class="header" href="#工具安全性能力越大责任越大">工具安全性：能力越大，责任越大</a></h2>
+<p>工具赋予了 Agent 强大的能力，但也带来了风险：</p>
+<pre><code class="language-python"># ⚠️ 危险的工具（需要谨慎）
+dangerous_tools = {
+    "file_deleter": "可以删除任意文件",
+    "email_sender": "可以以你的名义发邮件",
+    "payment_api": "可以发起支付",
+    "code_executor": "可以执行任意代码",
+}
+
+# 安全措施：
+# 1. 沙箱隔离（代码执行在隔离环境中）
+# 2. 权限最小化（只给必要权限）
+# 3. 确认机制（危险操作需要用户确认）
+# 4. 审计日志（记录所有工具调用）
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>工具是 Agent 突破 LLM 局限的关键：</p>
+<ul>
+<li>LLM 有知识截止、无法行动的天然限制</li>
+<li>工具让 Agent 能够获取实时信息、执行操作</li>
+<li>工具分为：信息获取、计算执行、内容生成、交互操作、记忆存储五大类</li>
+<li>强大的工具需要配套的安全机制</li>
+</ul>
+<blockquote>
+<p>📖 <strong>想深入了解工具学习的学术前沿？</strong> 请阅读 <a href="./06_paper_readings.html">4.6 论文解读：工具学习前沿进展</a>，涵盖 Toolformer、Gorilla、ToolLLM 三篇奠基性论文的深度解读。</p>
+</blockquote>
+<hr />
+<p><em>下一节：<a href="./02_function_calling.html">4.2 Function Calling 机制详解</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_tools/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_tools/02_function_calling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_tools/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_tools/02_function_calling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

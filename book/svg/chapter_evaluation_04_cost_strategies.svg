@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320">
+  <rect width="760" height="320" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Agent 成本优化策略矩阵</text>
+
+  <!-- 策略1 -->
+  <rect x="40" y="55" width="330" height="115" rx="14" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="60" y="80" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#3498db">🎯 智能模型路由</text>
+  <text x="60" y="102" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">简单问题 → GPT-4o-mini（$0.15/1M）</text>
+  <text x="60" y="120" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">复杂推理 → GPT-4o（$2.50/1M）</text>
+  <text x="60" y="140" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">💰 预估节省：40-60% Token 费用</text>
+  <text x="60" y="158" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#95a5a6">难度低 → 小模型，难度高 → 大模型</text>
+
+  <!-- 策略2 -->
+  <rect x="390" y="55" width="330" height="115" rx="14" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="410" y="80" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">📦 Prompt 缓存</text>
+  <text x="410" y="102" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">相似查询复用已有回复</text>
+  <text x="410" y="120" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">语义缓存（Semantic Cache）</text>
+  <text x="410" y="140" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">💰 预估节省：20-40% API 调用</text>
+  <text x="410" y="158" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#95a5a6">适用于高重复率的客服/FAQ 场景</text>
+
+  <!-- 策略3 -->
+  <rect x="40" y="185" width="330" height="115" rx="14" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="60" y="210" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">✂️ Token 优化</text>
+  <text x="60" y="232" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">精简 System Prompt</text>
+  <text x="60" y="250" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">压缩对话历史（摘要替代全文）</text>
+  <text x="60" y="268" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">💰 预估节省：15-30% Token 消耗</text>
+  <text x="60" y="288" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#95a5a6">限制工具描述长度 · 按需加载上下文</text>
+
+  <!-- 策略4 -->
+  <rect x="390" y="185" width="330" height="115" rx="14" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="410" y="210" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#9b59b6">🔄 循环控制</text>
+  <text x="410" y="232" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">设定最大循环步数</text>
+  <text x="410" y="250" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">死循环检测与提前终止</text>
+  <text x="410" y="268" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">💰 预估节省：避免 10x 意外开销</text>
+  <text x="410" y="288" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#95a5a6">设预算上限 · 监控异常消耗 · 自动告警</text>
+</svg>

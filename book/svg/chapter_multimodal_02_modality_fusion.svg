@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="760" height="380">
+  <rect width="760" height="380" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">多模态 Agent 设计模式</text>
+
+  <!-- 箭头 marker -->
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <!-- 左侧: 输入模态 -->
+  <rect x="30" y="70" width="120" height="40" rx="10" fill="#3498db" opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
+  <text x="90" y="95" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#3498db" font-weight="bold">📝 文本</text>
+
+  <rect x="30" y="130" width="120" height="40" rx="10" fill="#27ae60" opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="90" y="155" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#27ae60" font-weight="bold">🖼️ 图像</text>
+
+  <rect x="30" y="190" width="120" height="40" rx="10" fill="#e67e22" opacity="0.2" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="90" y="215" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#e67e22" font-weight="bold">🎤 语音</text>
+
+  <rect x="30" y="250" width="120" height="40" rx="10" fill="#9b59b6" opacity="0.2" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="90" y="275" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#9b59b6" font-weight="bold">🎬 视频</text>
+
+  <!-- 箭头到中心 -->
+  <line x1="150" y1="90" x2="230" y2="165" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="150" y1="150" x2="230" y2="165" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="150" y1="210" x2="230" y2="195" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="150" y1="270" x2="230" y2="195" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 中心: 模态路由器 -->
+  <rect x="235" y="140" width="140" height="80" rx="14" fill="#e74c3c" opacity="0.15"/>
+  <rect x="235" y="140" width="140" height="30" rx="14" fill="#e74c3c"/>
+  <rect x="235" y="158" width="140" height="12" fill="#e74c3c"/>
+  <text x="305" y="160" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">模态路由器</text>
+  <text x="305" y="190" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">识别输入类型</text>
+  <text x="305" y="207" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">选择处理管道</text>
+
+  <!-- 右侧: 处理管道 -->
+  <line x1="375" y1="155" x2="420" y2="100" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="375" y1="180" x2="420" y2="180" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="375" y1="205" x2="420" y2="260" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 文本处理 -->
+  <rect x="425" y="75" width="150" height="50" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1"/>
+  <text x="500" y="96" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#3498db">GPT-4o-mini</text>
+  <text x="500" y="114" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">纯文本（低成本）</text>
+
+  <!-- 多模态处理 -->
+  <rect x="425" y="155" width="150" height="50" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1"/>
+  <text x="500" y="176" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">GPT-4o</text>
+  <text x="500" y="194" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">图像 + 文本理解</text>
+
+  <!-- 语音处理 -->
+  <rect x="425" y="235" width="150" height="50" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1"/>
+  <text x="500" y="256" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">Whisper → LLM</text>
+  <text x="500" y="274" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">语音转文本 → 理解</text>
+
+  <!-- 最右侧: 输出 -->
+  <line x1="575" y1="100" x2="625" y2="180" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="575" y1="180" x2="625" y2="180" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="575" y1="260" x2="625" y2="180" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="630" y="150" width="100" height="60" rx="14" fill="#2c3e50" opacity="0.1" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="680" y="176" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">统一响应</text>
+  <text x="680" y="196" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">文本 / 图片 / 语音</text>
+
+  <!-- 底部说明 -->
+  <rect x="80" y="315" width="600" height="40" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="380" y="340" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">💡 推荐方案：在已有文本 Agent 上通过工具增强多模态能力（模式二），渐进式扩展</text>
+</svg>

@@ -1,0 +1,448 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>9.4 LCEL：LangChain 表达式语言 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="lcellangchain-表达式语言"><a class="header" href="#lcellangchain-表达式语言">LCEL：LangChain 表达式语言</a></h1>
+<p>LCEL（LangChain Expression Language）是 LangChain 的核心构建语言，用 <code>|</code> 符号将组件连接成处理管道，代码简洁且功能强大。</p>
+<p>如果你用过 Unix 管道（<code>cat file.txt | grep "error" | wc -l</code>），LCEL 的思路完全相同：数据从左到右流过一系列处理组件，每个组件接收上一个的输出作为自己的输入。在 LLM 应用中，一个典型的管道是：<code>提示词模板 | LLM | 输出解析器</code>——模板填充变量生成完整提示，LLM 生成回复，解析器提取结构化结果。</p>
+<p>LCEL 的核心抽象是 <strong>Runnable 协议</strong>——所有组件都实现了统一的接口（<code>invoke</code>、<code>stream</code>、<code>batch</code> 等），因此任何组件都可以与其他组件自由组合。这种设计的好处是：你写好一条链之后，自动获得了流式输出、异步调用和批处理能力，不需要额外编码。</p>
+<h2 id="lcel-核心概念"><a class="header" href="#lcel-核心概念">LCEL 核心概念</a></h2>
+<p>下面的代码展示了 LCEL 的核心组件和使用模式。建议你关注以下几个要点：</p>
+<ul>
+<li><strong><code>|</code> 操作符</strong>：这是 LCEL 的灵魂，它背后调用的是 Python 的 <code>__or__</code> 方法，将两个 Runnable 串联成一个新的 Runnable</li>
+<li><strong><code>RunnablePassthrough</code></strong>：原样传递输入，常用于需要在处理的同时保留原始数据的场景</li>
+<li><strong><code>RunnableLambda</code></strong>：将普通的 Python 函数包装为 Runnable，让你可以在管道中插入自定义逻辑</li>
+<li><strong><code>RunnableParallel</code></strong>：并行执行多个 Runnable，将结果合并为字典——这在 RAG 中很常见（同时检索上下文和传递问题）</li>
+</ul>
+<pre><code class="language-python">from langchain_core.runnables import (
+    RunnablePassthrough,
+    RunnableParallel,
+    RunnableLambda,
+    RunnableBranch
+)
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+# ============================
+# LCEL 的 Runnable 协议
+# ============================
+
+# 所有 LCEL 组件都实现了 Runnable 接口，支持：
+# .invoke(input)         → 同步调用
+# .ainvoke(input)        → 异步调用
+# .stream(input)         → 流式输出
+# .astream(input)        → 异步流式
+# .batch(inputs)         → 批处理
+# .abatch(inputs)        → 异步批处理
+
+# 基础链
+chain = (
+    ChatPromptTemplate.from_messages([("human", "{question}")])
+    | llm
+    | StrOutputParser()
+)
+
+# 四种调用方式
+result = chain.invoke({"question": "什么是Python？"})        # 同步
+results = chain.batch([{"question": "Q1"}, {"question": "Q2"}])  # 批处理
+
+# ============================
+# RunnablePassthrough：传递输入
+# ============================
+
+# 场景：需要在处理的同时保留原始输入
+from langchain_core.runnables import RunnablePassthrough
+
+# 注意：RunnablePassthrough() 会传递整个输入字典，而不是提取单个字段。
+# 如果输入是 {"question": "xxx"}，RunnablePassthrough() 的结果是 {"question": "xxx"}。
+# 使用 itemgetter("question") 来提取特定字段。
+
+from operator import itemgetter
+
+rag_chain = (
+    RunnableParallel({
+        "context": lambda x: "文档内容..." + x["question"],  # 模拟检索
+        "question": itemgetter("question")  # 正确：提取 question 字段的值
+    })
+    | ChatPromptTemplate.from_messages([
+        ("system", "基于以下上下文回答：{context}"),
+        ("human", "{question}")
+    ])
+    | llm
+    | StrOutputParser()
+)
+
+# ============================
+# RunnableLambda：包装普通函数
+# ============================
+
+import json
+
+def extract_json(text: str) -&gt; dict:
+    """从文本中提取 JSON"""
+    start = text.find("{")
+    end = text.rfind("}") + 1
+    if start != -1 and end &gt; 0:
+        return json.loads(text[start:end])
+    return {}
+
+json_chain = (
+    ChatPromptTemplate.from_messages([
+        ("system", "将用户描述转为JSON格式的任务，包含title和priority字段"),
+        ("human", "{description}")
+    ])
+    | llm
+    | StrOutputParser()
+    | RunnableLambda(extract_json)  # 包装普通函数为 Runnable
+)
+
+result = json_chain.invoke({"description": "明天下午开会，很重要"})
+print(result)  # {'title': '开会', 'priority': 'high'}
+
+# ============================
+# 使用 itemgetter 提取字段
+# ============================
+
+from operator import itemgetter
+
+# 多输入链的字段路由
+multi_input_chain = (
+    {
+        "language": itemgetter("language"),
+        "code": itemgetter("code"),
+        "task": itemgetter("task")
+    }
+    | ChatPromptTemplate.from_messages([
+        ("system", "你是{language}代码专家，帮助用户{task}"),
+        ("human", "代码：\n{code}")
+    ])
+    | llm
+    | StrOutputParser()
+)
+
+result = multi_input_chain.invoke({
+    "language": "Python",
+    "code": "def add(a, b): return a + b",
+    "task": "添加类型注解和注释"
+})
+print(result)
+
+# ============================
+# 链的组合与复用
+# ============================
+
+# 定义可复用的子链
+summarize_chain = (
+    ChatPromptTemplate.from_messages([
+        ("system", "将文本压缩为50字以内的摘要"),
+        ("human", "{text}")
+    ])
+    | llm
+    | StrOutputParser()
+)
+
+translate_chain = (
+    ChatPromptTemplate.from_messages([
+        ("system", "将文本翻译成英文"),
+        ("human", "{text}")
+    ])
+    | llm
+    | StrOutputParser()
+)
+
+# 组合：先摘要再翻译
+summarize_then_translate = (
+    summarize_chain
+    | RunnableLambda(lambda x: {"text": x})
+    | translate_chain
+)
+
+result = summarize_then_translate.invoke({
+    "text": "LangChain 是一个强大的框架，它提供了构建 LLM 应用所需的所有工具..."
+})
+print(result)
+</code></pre>
+<h2 id="错误处理和重试"><a class="header" href="#错误处理和重试">错误处理和重试</a></h2>
+<p>在生产环境中，LLM API 调用可能因为网络抖动、速率限制等原因偶尔失败。LCEL 内置了两种恢复机制：</p>
+<ul>
+<li><strong><code>with_retry</code></strong>：自动重试失败的调用，支持指数退避（每次重试间隔递增），避免在 API 限流时雪崩</li>
+<li><strong><code>with_fallbacks</code></strong>：当主链失败后，自动切换到备用链——比如主模型用 GPT-4o，备用模型用 GPT-3.5-turbo，保证服务可用性</li>
+</ul>
+<pre><code class="language-python">from langchain_core.runnables import RunnableRetry
+from langchain_core.exceptions import OutputParserException
+
+# 添加重试逻辑
+resilient_chain = (
+    ChatPromptTemplate.from_messages([("human", "{input}")])
+    | llm.with_retry(
+        stop_after_attempt=3,
+        wait_exponential_jitter=True
+    )
+    | StrOutputParser()
+)
+
+# 添加 fallback（备用链）
+fallback_chain = (
+    ChatPromptTemplate.from_messages([("human", "{input}")])
+    | ChatOpenAI(model="gpt-4o-mini")  # 备用模型
+    | StrOutputParser()
+)
+
+chain_with_fallback = resilient_chain.with_fallbacks([fallback_chain])
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>LCEL 的核心优势：</p>
+<ul>
+<li><strong>统一接口</strong>：所有组件都是 Runnable，支持相同的调用方式</li>
+<li><strong>声明式</strong>：代码即文档，清晰表达数据流向</li>
+<li><strong>内置支持</strong>：自动支持流式、异步、批处理</li>
+<li><strong>可组合性</strong>：子链可以自由组合复用</li>
+</ul>
+<hr />
+<p><em>下一节：<a href="./05_practice_customer_service.html">8.5 实战：多功能客服 Agent</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_langchain/03_langchain_agents.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_langchain/05_practice_customer_service.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_langchain/03_langchain_agents.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_langchain/05_practice_customer_service.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

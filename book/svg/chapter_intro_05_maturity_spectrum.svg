@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="700" height="200">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="700" height="200" rx="14" fill="#f8f9fa"/>
+  <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Agent 应用成熟度光谱（2024-2025）</text>
+
+  <!-- 渐变轴 -->
+  <defs>
+    <linearGradient id="maturity" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#f39c12;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#e74c3c;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <rect x="40" y="55" width="620" height="16" rx="8" fill="url(#maturity)"/>
+  <text x="40" y="90" text-anchor="start" font-size="11" fill="#27ae60" font-weight="bold">已成熟</text>
+  <text x="660" y="90" text-anchor="end" font-size="11" fill="#e74c3c" font-weight="bold">探索中</text>
+
+  <!-- 5个阶段 -->
+  <circle cx="90" cy="63" r="6" fill="white" stroke="#2ecc71" stroke-width="2"/>
+  <circle cx="230" cy="63" r="6" fill="white" stroke="#27ae60" stroke-width="2"/>
+  <circle cx="370" cy="63" r="6" fill="white" stroke="#f39c12" stroke-width="2"/>
+  <circle cx="510" cy="63" r="6" fill="white" stroke="#e67e22" stroke-width="2"/>
+  <circle cx="620" cy="63" r="6" fill="white" stroke="#e74c3c" stroke-width="2"/>
+
+  <!-- 标签 -->
+  <text x="90" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">🟢 编程辅助</text>
+  <text x="90" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">代码生成</text>
+  <text x="90" y="136" text-anchor="middle" font-size="10" fill="#7f8c8d">代码审查</text>
+
+  <text x="230" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">🟢 客服对话</text>
+  <text x="230" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">智能客服</text>
+  <text x="230" y="136" text-anchor="middle" font-size="10" fill="#7f8c8d">文案写作</text>
+
+  <text x="370" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#f39c12">🟡 数据分析</text>
+  <text x="370" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">办公自动化</text>
+  <text x="370" y="136" text-anchor="middle" font-size="10" fill="#7f8c8d">积极发展中</text>
+
+  <text x="510" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">🟡 科研助理</text>
+  <text x="510" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">医疗诊断</text>
+  <text x="510" y="136" text-anchor="middle" font-size="10" fill="#7f8c8d">部分落地</text>
+
+  <text x="620" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">🔴 完全自主</text>
+  <text x="620" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">决策系统</text>
+  <text x="620" y="136" text-anchor="middle" font-size="10" fill="#7f8c8d">早期探索</text>
+
+  <!-- 图例 -->
+  <circle cx="200" cy="175" r="6" fill="#2ecc71"/>
+  <text x="212" y="179" font-size="11" fill="#555">已在生产环境广泛使用</text>
+  <circle cx="390" cy="175" r="6" fill="#f39c12"/>
+  <text x="402" y="179" font-size="11" fill="#555">积极发展中，部分落地</text>
+  <circle cx="560" cy="175" r="6" fill="#e74c3c"/>
+  <text x="572" y="179" font-size="11" fill="#555">早期探索阶段</text>
+</svg>

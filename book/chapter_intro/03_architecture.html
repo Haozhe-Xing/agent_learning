@@ -1,0 +1,529 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>1.3 Agent 架构：感知-思考-行动循环 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="agent-的典型架构感知-思考-行动循环"><a class="header" href="#agent-的典型架构感知-思考-行动循环">Agent 的典型架构：感知-思考-行动循环</a></h1>
+<blockquote>
+<p>📖 <em>"所有 Agent 的行为，都可以归结为一个不断重复的循环：感知 → 思考 → 行动。"</em></p>
+</blockquote>
+<h2 id="核心循环perceive--think--act"><a class="header" href="#核心循环perceive--think--act">核心循环：Perceive → Think → Act</a></h2>
+<p>Agent 的运行机制可以用一个核心循环来描述。就像人类处理事务一样——观察情况、思考对策、采取行动，然后再观察结果：</p>
+<p><img src="../svg/chapter_intro_03_loop.svg" alt="Agent感知-思考-行动循环" /></p>
+<p>让我们用一个具体的例子来感受这个循环：</p>
+<pre><code class="language-python">"""
+场景：用户说 "帮我调研一下 Python 和 Rust 哪个更适合做 Web 开发"
+
+Agent 的 感知-思考-行动 循环：
+"""
+
+# ═══ 第1轮循环 ═══
+# 👁️ 感知：接收到用户请求 "对比 Python 和 Rust 的 Web 开发能力"
+# 🧠 思考：这是一个对比分析任务，我需要从多个维度收集信息
+#         → 先搜索 Python Web 开发的最新情况
+# 🦾 行动：调用 web_search("Python Web development 2024 frameworks ecosystem")
+# 📊 结果：获得 Python Web 框架（Django, FastAPI, Flask）的相关信息
+
+# ═══ 第2轮循环 ═══
+# 👁️ 感知：已获得 Python 的信息，还缺 Rust 的
+# 🧠 思考：现在需要获取 Rust Web 开发的对应信息
+# 🦾 行动：调用 web_search("Rust Web development 2024 frameworks ecosystem")
+# 📊 结果：获得 Rust Web 框架（Actix, Axum, Rocket）的相关信息
+
+# ═══ 第3轮循环 ═══
+# 👁️ 感知：两种语言的信息都有了
+# 🧠 思考：信息充分了，可以进行对比分析并生成报告
+# 🦾 行动：生成包含多个维度（性能、生态、学习曲线等）的对比分析报告
+# ✅ 目标达成，结束循环
+</code></pre>
+<h2 id="用-python-实现感知-思考-行动循环"><a class="header" href="#用-python-实现感知-思考-行动循环">用 Python 实现感知-思考-行动循环</a></h2>
+<p>下面是一个极简但完整的 Agent 循环实现：</p>
+<pre><code class="language-python">"""
+最小可运行的 Agent 循环实现
+展示了 Perceive-Think-Act 的核心逻辑
+"""
+
+from dataclasses import dataclass
+from typing import Optional
+from openai import OpenAI
+import json
+
+@dataclass
+class AgentState:
+    """Agent 在每个循环中的状态"""
+    goal: str                          # 用户的目标
+    observations: list[str]            # 感知到的信息
+    thoughts: list[str]                # 思考过程
+    actions_taken: list[str]           # 已执行的行动
+    is_complete: bool = False          # 是否已完成目标
+
+class SimpleAgent:
+    """
+    最简单的 Agent 实现，展示核心循环
+    """
+    
+    def __init__(self, tools: dict):
+        self.client = OpenAI()
+        self.tools = tools       # 可用的工具集
+        self.max_loops = 5       # 最大循环次数（防止死循环）
+    
+    def run(self, user_goal: str) -&gt; str:
+        """运行 Agent 的核心循环"""
+        
+        state = AgentState(
+            goal=user_goal,
+            observations=[],
+            thoughts=[],
+            actions_taken=[]
+        )
+        
+        print(f"🎯 目标: {user_goal}\n")
+        
+        for loop_num in range(self.max_loops):
+            print(f"═══ 第 {loop_num + 1} 轮循环 ═══")
+            
+            # ---- 步骤1：感知（Perceive）----
+            perception = self._perceive(state)
+            state.observations.append(perception)
+            print(f"👁️ 感知: {perception}")
+            
+            # ---- 步骤2：思考（Think）----
+            thought, action_plan = self._think(state)
+            state.thoughts.append(thought)
+            print(f"🧠 思考: {thought}")
+            
+            # 判断是否完成
+            if action_plan.get("type") == "finish":
+                state.is_complete = True
+                print(f"✅ 目标达成！\n")
+                return action_plan.get("answer", "任务完成")
+            
+            # ---- 步骤3：行动（Act）----
+            result = self._act(action_plan)
+            state.actions_taken.append(f"{action_plan} → {result}")
+            print(f"🦾 行动: {action_plan.get('tool')}({action_plan.get('args')})")
+            print(f"📊 结果: {result}\n")
+        
+        return "达到最大循环次数，任务未能完成。"
+    
+    def _perceive(self, state: AgentState) -&gt; str:
+        """感知阶段：收集当前可用的信息"""
+        if not state.actions_taken:
+            return f"收到新任务: {state.goal}"
+        else:
+            return f"上一步行动结果: {state.actions_taken[-1]}"
+    
+    def _think(self, state: AgentState) -&gt; tuple[str, dict]:
+        """思考阶段：基于当前状态进行推理和决策"""
+        # 构造给 LLM 的提示
+        prompt = f"""
+当前任务: {state.goal}
+已有信息: {state.observations}
+已执行操作: {state.actions_taken}
+
+请决定下一步行动。返回 JSON 格式:
+- 如果需要使用工具: {{"type": "tool", "tool": "工具名", "args": {{...}}}}
+- 如果任务已完成: {{"type": "finish", "answer": "最终回答"}}
+
+可用工具: {list(self.tools.keys())}
+"""
+        response = self.client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "你是一个善于分析和规划的 Agent。"},
+                {"role": "user", "content": prompt}
+            ],
+            response_format={"type": "json_object"}
+        )
+        
+        result = json.loads(response.choices[0].message.content)
+        thought = f"决定{'完成任务' if result['type'] == 'finish' else f'使用工具 {result.get(\"tool\")}'}"
+        return thought, result
+    
+    def _act(self, action_plan: dict) -&gt; str:
+        """行动阶段：执行决定的操作"""
+        tool_name = action_plan.get("tool")
+        tool_args = action_plan.get("args", {})
+        
+        if tool_name in self.tools:
+            return self.tools[tool_name](**tool_args)
+        else:
+            return f"错误: 工具 {tool_name} 不存在"
+</code></pre>
+<h2 id="agent-循环的内部细节"><a class="header" href="#agent-循环的内部细节">Agent 循环的内部细节</a></h2>
+<p>让我们更深入地看看每个阶段内部发生了什么：</p>
+<h3 id="感知阶段perceive"><a class="header" href="#感知阶段perceive">感知阶段（Perceive）</a></h3>
+<p><img src="../svg/chapter_intro_03_perceive.svg" alt="感知阶段信息整合流程" /></p>
+<h3 id="思考阶段think"><a class="header" href="#思考阶段think">思考阶段（Think）</a></h3>
+<p>这是 Agent 最核心的阶段，LLM 在此发挥作用：</p>
+<pre><code class="language-python">"""
+思考阶段的核心工作：
+
+1. 情境理解 — "现在是什么情况？"
+2. 目标评估 — "距离目标还差什么？"
+3. 方案生成 — "有哪些可行的下一步？"
+4. 方案选择 — "哪个方案最好？"
+5. 行动规划 — "具体怎么执行？"
+"""
+
+# 思考阶段常见的 Prompt 模板
+THINK_PROMPT = """
+你是一个善于分析和规划的 AI Agent。
+
+## 当前状态
+- 用户目标: {goal}
+- 已收集的信息: {observations}
+- 已完成的步骤: {completed_steps}
+
+## 可用工具
+{available_tools}
+
+## 请你思考
+1. 当前进展如何？还缺少什么信息？
+2. 下一步应该做什么？为什么？
+3. 需要使用哪个工具？参数是什么？
+
+请按以下格式回答:
+Thought: &lt;你的思考过程&gt;
+Action: &lt;要执行的工具名&gt;
+Action Input: &lt;工具的参数（JSON格式）&gt;
+"""
+</code></pre>
+<h3 id="行动阶段act"><a class="header" href="#行动阶段act">行动阶段（Act）</a></h3>
+<p><img src="../svg/chapter_intro_03_act.svg" alt="行动阶段工具调用执行流程" /></p>
+<h2 id="完整示例一个简单的研究-agent"><a class="header" href="#完整示例一个简单的研究-agent">完整示例：一个简单的研究 Agent</a></h2>
+<p>让我们把所有概念串起来，实现一个能做简单研究的 Agent：</p>
+<pre><code class="language-python">"""
+完整示例：一个能回答研究问题的 Agent
+演示完整的 感知-思考-行动 循环
+"""
+
+def mock_web_search(query: str) -&gt; str:
+    """模拟搜索引擎（实际中会调用真正的搜索 API）"""
+    mock_results = {
+        "Python web framework": "Django(全功能)、FastAPI(高性能异步)、Flask(轻量级)是最流行的三大 Python Web 框架",
+        "Rust web framework": "Actix-web和Axum是Rust最流行的Web框架，性能极高但生态还在发展中",
+    }
+    for key, value in mock_results.items():
+        if key.lower() in query.lower():
+            return value
+    return "未找到相关结果"
+
+def mock_calculator(expression: str) -&gt; str:
+    """模拟计算器"""
+    try:
+        return str(eval(expression))  # 注意：生产中不要用 eval
+    except:
+        return "计算错误"
+
+# 定义工具集
+tools = {
+    "web_search": mock_web_search,
+    "calculator": mock_calculator
+}
+
+# 创建并运行 Agent
+agent = SimpleAgent(tools=tools)
+result = agent.run("对比 Python 和 Rust 的 Web 开发框架")
+print(f"\n📝 最终结果: {result}")
+</code></pre>
+<p>运行后的输出类似：</p>
+<pre><code>🎯 目标: 对比 Python 和 Rust 的 Web 开发框架
+
+═══ 第 1 轮循环 ═══
+👁️ 感知: 收到新任务: 对比 Python 和 Rust 的 Web 开发框架
+🧠 思考: 决定使用工具 web_search
+🦾 行动: web_search({"query": "Python web framework"})
+📊 结果: Django(全功能)、FastAPI(高性能异步)、Flask(轻量级)...
+
+═══ 第 2 轮循环 ═══
+👁️ 感知: 上一步行动结果: 获取了 Python 框架信息
+🧠 思考: 决定使用工具 web_search
+🦾 行动: web_search({"query": "Rust web framework"})
+📊 结果: Actix-web和Axum是Rust最流行的Web框架...
+
+═══ 第 3 轮循环 ═══
+👁️ 感知: 已获取两种语言的框架信息
+🧠 思考: 决定完成任务
+✅ 目标达成！
+
+📝 最终结果: Python 拥有更成熟的 Web 生态（Django/FastAPI/Flask），
+适合快速开发；Rust 框架（Actix/Axum）性能更高，但生态还在发展中。
+</code></pre>
+<h2 id="循环终止条件"><a class="header" href="#循环终止条件">循环终止条件</a></h2>
+<p>一个设计良好的 Agent 需要知道<strong>什么时候停下来</strong>：</p>
+<pre><code class="language-python"># Agent 循环的终止条件
+
+def should_stop(state: AgentState, loop_count: int) -&gt; tuple[bool, str]:
+    """判断 Agent 是否应该停止循环"""
+    
+    # 条件1：目标已达成
+    if state.is_complete:
+        return True, "目标已达成 ✅"
+    
+    # 条件2：达到最大循环次数（防止无限循环）
+    if loop_count &gt;= MAX_LOOPS:
+        return True, "达到最大循环次数 ⚠️"
+    
+    # 条件3：遇到无法恢复的错误
+    if state.has_fatal_error:
+        return True, "遇到致命错误 ❌"
+    
+    # 条件4：陷入重复行动（检测死循环）
+    if is_repeating(state.actions_taken, window=3):
+        return True, "检测到重复行动，可能陷入死循环 🔄"
+    
+    # 继续循环
+    return False, "继续执行 🔄"
+</code></pre>
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<p><img src="../svg/chapter_intro_03_summary.svg" alt="本节核心要点总结" /></p>
+<h2 id="-思考练习"><a class="header" href="#-思考练习">🤔 思考练习</a></h2>
+<ol>
+<li>如果 Agent 的思考阶段做出了错误的决策，循环会怎样？Agent 能自我纠正吗？</li>
+<li>为什么需要设置最大循环次数？如果不设置会有什么风险？</li>
+<li>你能想到哪些现实世界中的"感知-思考-行动"循环的例子？</li>
+</ol>
+<hr />
+<p><em>下一节，我们将对比 Agent 和传统程序的区别，帮你更深入地理解 Agent 的本质。</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_intro/02_core_concepts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_intro/04_agent_vs_traditional.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_intro/02_core_concepts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_intro/04_agent_vs_traditional.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

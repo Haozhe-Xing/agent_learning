@@ -1,0 +1,597 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>12.6 论文解读：多 Agent 系统前沿研究 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="116-论文解读多-agent-系统前沿研究"><a class="header" href="#116-论文解读多-agent-系统前沿研究">11.6 论文解读：多 Agent 系统前沿研究</a></h1>
+<blockquote>
+<p>📖 <em>"一个人走得快，一群人走得远。多 Agent 系统是 Agent 研究中最活跃的方向。"</em><br />
+<em>本节深入解读多 Agent 协作领域的核心论文。</em></p>
+</blockquote>
+<hr />
+<h2 id="metagpt用-sop-约束的多-agent-协作"><a class="header" href="#metagpt用-sop-约束的多-agent-协作">MetaGPT：用 SOP 约束的多 Agent 协作</a></h2>
+<p><strong>论文</strong>：<em>MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework</em><br />
+<strong>作者</strong>：Hong et al.<br />
+<strong>发表</strong>：2023 | ICLR 2024 Oral | <a href="https://arxiv.org/abs/2308.00352">arXiv:2308.00352</a></p>
+<h3 id="核心问题"><a class="header" href="#核心问题">核心问题</a></h3>
+<p>当多个 Agent 自由地用自然语言交流时，信息传递会出现什么问题？</p>
+<ul>
+<li><strong>信息丢失</strong>：A 告诉 B 的需求，B 转述给 C 时遗漏了细节</li>
+<li><strong>理解偏差</strong>：每个 Agent 对同一句话可能有不同理解</li>
+<li><strong>效率低下</strong>：Agent 之间大量的"闲聊"并不产生有效信息</li>
+</ul>
+<h3 id="核心洞察"><a class="header" href="#核心洞察">核心洞察</a></h3>
+<p><strong>多 Agent 系统需要 SOP（标准操作流程）来约束协作行为。</strong></p>
+<p>MetaGPT 模拟了一个真实的软件公司，定义了清晰的角色和工作流程：</p>
+<pre><code>产品经理（Product Manager）
+  → 输出：PRD 文档（产品需求文档）
+    ↓
+架构师（Architect）
+  → 输出：系统设计文档 + 接口定义
+    ↓
+项目经理（Project Manager）
+  → 输出：任务分配 + 开发计划
+    ↓
+工程师（Engineer）
+  → 输出：代码文件
+    ↓
+QA 工程师（QA Engineer）
+  → 输出：测试用例 + 测试报告
+</code></pre>
+<h3 id="关键创新结构化工件传递"><a class="header" href="#关键创新结构化工件传递">关键创新：结构化工件传递</a></h3>
+<p>MetaGPT 的 Agent 之间不传递松散的自然语言消息，而是传递<strong>结构化的工件（Artifact）</strong>：</p>
+<pre><code>❌ 松散的聊天消息：
+  产品经理："我们需要做一个天气查询功能，要能查北京的天气，
+            界面好看一点，加个图表..."
+
+✅ 结构化的 PRD 文档：
+  {
+    "产品名": "天气查询系统",
+    "功能列表": [
+      {"名称": "城市天气查询", "优先级": "P0", "描述": "..."},
+      {"名称": "天气趋势图表", "优先级": "P1", "描述": "..."}
+    ],
+    "技术要求": ["Python 3.10+", "FastAPI", "..."],
+    "API 接口": [{...}]
+  }
+</code></pre>
+<h3 id="实验结果"><a class="header" href="#实验结果">实验结果</a></h3>
+<p>在 SoftwareDev 基准上：</p>
+<ul>
+<li><strong>MetaGPT 代码执行成功率：87%</strong></li>
+<li>ChatDev 代码执行成功率：44%</li>
+<li>成功率的巨大差距主要归因于结构化通信减少了信息丢失</li>
+</ul>
+<h3 id="对-agent-开发的启示"><a class="header" href="#对-agent-开发的启示">对 Agent 开发的启示</a></h3>
+<ol>
+<li><strong>结构化通信 &gt; 自然语言通信</strong>：Agent 之间传递结构化数据比自然语言更可靠</li>
+<li><strong>SOP 的价值</strong>：定义清晰的工作流程可以避免 Agent 之间的混乱协作</li>
+<li><strong>角色化 Prompt</strong>：每个 Agent 的 System Prompt 应该明确定义角色职责和输出格式</li>
+</ol>
+<hr />
+<h2 id="chatdev聊天链驱动的软件开发"><a class="header" href="#chatdev聊天链驱动的软件开发">ChatDev：聊天链驱动的软件开发</a></h2>
+<p><strong>论文</strong>：<em>Communicative Agents for Software Development</em><br />
+<strong>作者</strong>：Qian et al.<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2307.07924">arXiv:2307.07924</a></p>
+<h3 id="核心思想"><a class="header" href="#核心思想">核心思想</a></h3>
+<p>ChatDev 模拟了一个软件公司的组织结构，但采用了与 MetaGPT 不同的通信方式——<strong>聊天链（Chat Chain）</strong>：</p>
+<pre><code>开发流程被分解为多个阶段：
+设计阶段 → 编码阶段 → 测试阶段 → 文档阶段
+
+每个阶段只有两个 Agent 对话：
+  设计阶段：CEO ↔ CTO
+  编码阶段：CTO ↔ 程序员
+  测试阶段：程序员 ↔ 测试员
+  文档阶段：CEO ↔ 程序员
+</code></pre>
+<h3 id="inception-prompting"><a class="header" href="#inception-prompting">Inception Prompting</a></h3>
+<p>ChatDev 使用了一种称为**"Inception Prompting"（初始提示）**的技术来引导每个阶段的对话：</p>
+<pre><code>在每个聊天阶段开始时，两个 Agent 都会收到：
+1. 角色描述："你是 CTO，负责选择技术方案..."
+2. 阶段目标："本阶段的目标是确定使用的编程语言和框架"
+3. 输出格式："对话结束时，请总结出技术选型方案"
+4. 前置信息：前一阶段的输出结果
+</code></pre>
+<h3 id="与-metagpt-的对比"><a class="header" href="#与-metagpt-的对比">与 MetaGPT 的对比</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>MetaGPT</th><th>ChatDev</th></tr></thead><tbody>
+<tr><td>通信方式</td><td>结构化工件（共享消息池）</td><td>双人聊天链</td></tr>
+<tr><td>协作模式</td><td>发布-订阅</td><td>两两对话</td></tr>
+<tr><td>优势</td><td>信息传递更精确</td><td>设计更简洁直观</td></tr>
+<tr><td>代码成功率</td><td>87%</td><td>44%</td></tr>
+<tr><td>设计理念</td><td>工程化、流程化</td><td>社交化、对话化</td></tr>
+</tbody></table>
+</div>
+<h3 id="对-agent-开发的启示-1"><a class="header" href="#对-agent-开发的启示-1">对 Agent 开发的启示</a></h3>
+<p>ChatDev 的**"每阶段只有两个 Agent 对话"**的设计降低了多 Agent 协调的复杂度——N 个 Agent 的全连接通信复杂度是 O(N²)，而两两对话将其降为 O(N)。在实际项目中，如果 Agent 数量不多（&lt; 5个），两两对话可能比复杂的共享状态更容易调试。</p>
+<hr />
+<h2 id="autogen可对话-agent-框架"><a class="header" href="#autogen可对话-agent-框架">AutoGen：可对话 Agent 框架</a></h2>
+<p><strong>论文</strong>：<em>AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation</em><br />
+<strong>作者</strong>：Wu et al., Microsoft Research<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2308.08155">arXiv:2308.08155</a></p>
+<h3 id="核心抽象conversable-agent"><a class="header" href="#核心抽象conversable-agent">核心抽象：Conversable Agent</a></h3>
+<p>AutoGen 提出了"可对话 Agent（Conversable Agent）"的抽象——每个 Agent 都是一个独立的对话参与者：</p>
+<pre><code class="language-python"># AutoGen 的核心抽象（概念示意）
+class ConversableAgent:
+    """每个 Agent 都可以与其他 Agent 或人类对话"""
+    
+    def __init__(self, name, system_message, llm_config):
+        self.name = name
+        self.system_message = system_message
+    
+    def generate_reply(self, messages):
+        """根据收到的消息生成回复"""
+        ...
+    
+    def receive(self, message, sender):
+        """接收来自其他 Agent 或人类的消息"""
+        ...
+    
+    def initiate_chat(self, recipient, message):
+        """向另一个 Agent 发起对话"""
+        ...
+</code></pre>
+<h3 id="三种预定义-agent"><a class="header" href="#三种预定义-agent">三种预定义 Agent</a></h3>
+<pre><code>1. AssistantAgent（AI 助手）
+   - 由 LLM 驱动
+   - 根据对话历史生成回复
+
+2. UserProxyAgent（用户代理）
+   - 代表人类用户
+   - 可以执行代码、请求人类输入
+   - 是 Human-in-the-Loop 的关键
+
+3. GroupChatManager（群聊管理器）
+   - 管理多个 Agent 的群组对话
+   - 决定下一个发言的 Agent
+</code></pre>
+<h3 id="human-in-the-loop"><a class="header" href="#human-in-the-loop">Human-in-the-Loop</a></h3>
+<p>AutoGen 特别强调人类参与——人类可以随时加入多 Agent 对话，提供反馈或修正方向：</p>
+<pre><code>Agent A: "我认为应该使用 React 来构建前端..."
+Agent B: "同意，React 的生态更成熟..."
+Human:   "等一下，我们的项目要求使用 Vue.js，请重新讨论。"
+Agent A: "好的，那我们用 Vue 3 + Composition API..."
+</code></pre>
+<h3 id="对-agent-开发的启示-2"><a class="header" href="#对-agent-开发的启示-2">对 Agent 开发的启示</a></h3>
+<ol>
+<li><strong>灵活的对话模式</strong>：Agent 之间可以一对一、一对多、群聊等多种模式</li>
+<li><strong>代码执行能力</strong>：UserProxyAgent 可以在本地执行代码，这对编程任务非常重要</li>
+<li><strong>人类参与的重要性</strong>：完全自主的多 Agent 系统可能偏离方向，适时的人类干预很关键</li>
+</ol>
+<hr />
+<h2 id="agentverse多-agent-的涌现行为"><a class="header" href="#agentverse多-agent-的涌现行为">AgentVerse：多 Agent 的涌现行为</a></h2>
+<p><strong>论文</strong>：<em>AgentVerse: Facilitating Multi-Agent Collaboration and Exploring Emergent Behaviors</em><br />
+<strong>作者</strong>：Chen et al.<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2308.10848">arXiv:2308.10848</a></p>
+<h3 id="核心问题-1"><a class="header" href="#核心问题-1">核心问题</a></h3>
+<p>当多个 Agent 自由交互时，会出现哪些<strong>涌现行为（Emergent Behaviors）</strong>？这些行为是好的还是坏的？</p>
+<h3 id="发现的涌现行为"><a class="header" href="#发现的涌现行为">发现的涌现行为</a></h3>
+<pre><code>正面涌现：
+✅ 互补增强：不同 Agent 弥补了彼此的知识盲区
+✅ 质量提升：多 Agent 讨论后的方案优于任何单个 Agent
+✅ 创造性组合：不同观点的碰撞产生了新的解决方案
+
+负面涌现：
+❌ 群体极化：多数派的意见被过度放大，少数派被忽视
+❌ 社会惰化：有些 Agent 在群组中"搭便车"，不贡献有价值的内容
+❌ 信息级联：第一个发言的 Agent 的观点过度影响后续 Agent
+</code></pre>
+<h3 id="动态角色调整"><a class="header" href="#动态角色调整">动态角色调整</a></h3>
+<p>AgentVerse 提出了一种<strong>动态角色调整机制</strong>：在协作过程中，根据任务需要动态添加或移除 Agent 角色，而不是固定使用预定义的团队配置。</p>
+<h3 id="对-agent-开发的启示-3"><a class="header" href="#对-agent-开发的启示-3">对 Agent 开发的启示</a></h3>
+<ol>
+<li><strong>注意群体动力学</strong>：多 Agent 系统不仅要设计好个体 Agent，还要关注群体行为</li>
+<li><strong>发言顺序很重要</strong>：第一个发言的 Agent 可能过度影响结果——可以引入随机性</li>
+<li><strong>独立思考 → 讨论 → 投票</strong>：先让每个 Agent 独立思考，再进行讨论，最后投票决策</li>
+</ol>
+<hr />
+<h2 id="magentic-one通用多-agent-系统"><a class="header" href="#magentic-one通用多-agent-系统">Magentic-One：通用多 Agent 系统</a></h2>
+<p><strong>论文/技术报告</strong>：<em>Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks</em><br />
+<strong>作者</strong>：Fourney et al., Microsoft Research<br />
+<strong>发表</strong>：2024 年 11 月 | <a href="https://arxiv.org/abs/2411.04468">arXiv:2411.04468</a></p>
+<h3 id="核心问题-2"><a class="header" href="#核心问题-2">核心问题</a></h3>
+<p>之前的多 Agent 系统（MetaGPT、ChatDev）大多聚焦于<strong>软件开发</strong>这一特定领域。能否构建一个<strong>通用的</strong>多 Agent 系统，像人类专家团队一样处理各种复杂任务？</p>
+<h3 id="架构设计"><a class="header" href="#架构设计">架构设计</a></h3>
+<p>Magentic-One 采用了**"指挥官 + 专家团"**架构：</p>
+<pre><code>┌─────────────────────────────────────────┐
+│           Orchestrator（指挥官）          │
+│  ├── 任务分解与规划                       │
+│  ├── 子任务分配给专家 Agent               │
+│  ├── 进度追踪与动态重规划                  │
+│  └── 错误检测与恢复                       │
+├─────────────────────────────────────────┤
+│  WebSurfer │ FileSurfer │ Coder │ Terminal│
+│  浏览网页   │ 读取文件   │ 写代码 │ 执行命令 │
+└─────────────────────────────────────────┘
+
+关键特性：
+1. 模块化设计：每个 Agent 可以独立替换或升级
+2. 模型无关：支持 GPT-4o、Claude 等不同 LLM
+3. 动态重规划：Orchestrator 在执行中持续评估进度
+4. 自我恢复：当子任务失败时自动调整策略
+</code></pre>
+<h3 id="实验结果-1"><a class="header" href="#实验结果-1">实验结果</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>基准</th><th>任务类型</th><th>Magentic-One 表现</th></tr></thead><tbody>
+<tr><td>GAIA</td><td>通用 AI 助手</td><td>接近人类水平</td></tr>
+<tr><td>AssistantBench</td><td>复杂网页任务</td><td>当时的 SOTA</td></tr>
+<tr><td>WebArena</td><td>网页交互</td><td>竞争力表现</td></tr>
+</tbody></table>
+</div>
+<h3 id="对-agent-开发的启示-4"><a class="header" href="#对-agent-开发的启示-4">对 Agent 开发的启示</a></h3>
+<ol>
+<li><strong>Orchestrator 模式的有效性</strong>：一个专门的协调 Agent 比"Agent 自由讨论"更可靠</li>
+<li><strong>错误恢复是关键</strong>：Magentic-One 约 30% 的成功来自于执行中的动态重规划</li>
+<li><strong>基于 AutoGen 构建</strong>：展示了 AutoGen 0.4 事件驱动架构的工程能力</li>
+</ol>
+<hr />
+<h2 id="openai-swarm轻量级多-agent-编排"><a class="header" href="#openai-swarm轻量级多-agent-编排">OpenAI Swarm：轻量级多 Agent 编排</a></h2>
+<p><strong>项目</strong>：<em>Swarm: Educational Framework for Ergonomic, Lightweight Multi-Agent Orchestration</em><br />
+<strong>作者</strong>：OpenAI Solutions Team<br />
+<strong>发布</strong>：2024 年 10 月 | <a href="https://github.com/openai/swarm">github.com/openai/swarm</a></p>
+<h3 id="核心理念"><a class="header" href="#核心理念">核心理念</a></h3>
+<p>与 MetaGPT、AutoGen 等重量级框架不同，Swarm 追求<strong>极简主义</strong>——只用两个核心概念：</p>
+<pre><code class="language-python"># 概念1：Agent = 指令 + 工具
+agent_a = Agent(
+    name="销售顾问",
+    instructions="你是一个友好的销售顾问...",
+    functions=[check_inventory, get_price]
+)
+
+# 概念2：Handoff = Agent 之间的交接
+def transfer_to_support():
+    """当用户需要技术支持时，交接给技术支持 Agent"""
+    return agent_b  # 返回另一个 Agent 即完成交接
+
+agent_a = Agent(
+    name="销售顾问",
+    functions=[check_inventory, transfer_to_support]  # handoff 是普通函数
+)
+</code></pre>
+<h3 id="设计哲学"><a class="header" href="#设计哲学">设计哲学</a></h3>
+<pre><code>重量级框架（AutoGen、CrewAI）：
+  - 丰富的抽象（角色、任务、流程）
+  - 内置的状态管理和记忆
+  - 适合复杂的多 Agent 工作流
+  
+Swarm 的极简哲学：
+  - Agent 就是 instructions + functions
+  - Handoff（交接）就是返回另一个 Agent
+  - 没有状态管理（无状态，每次调用独立）
+  - 适合简单的路由和交接场景
+</code></pre>
+<h3 id="与-openai-agents-sdk-的关系"><a class="header" href="#与-openai-agents-sdk-的关系">与 OpenAI Agents SDK 的关系</a></h3>
+<p>Swarm 是<strong>教育性质的实验框架</strong>（不建议生产使用），但其核心理念——<strong>Handoff（Agent 交接）和 Routines（例程）</strong>——被继承到了 2025 年发布的 <strong>OpenAI Agents SDK</strong> 中，后者是面向生产环境的正式框架。</p>
+<h3 id="对-agent-开发的启示-5"><a class="header" href="#对-agent-开发的启示-5">对 Agent 开发的启示</a></h3>
+<ol>
+<li><strong>简单比复杂好</strong>：不是所有场景都需要 AutoGen 或 CrewAI，简单的路由和交接用 Swarm 模式就够了</li>
+<li><strong>Handoff 是多 Agent 协作的原语</strong>：Agent 之间的交接可以用普通函数调用实现</li>
+<li><strong>OpenAI 的 Agent 方向</strong>：从 Swarm 到 Agents SDK，体现了"极简 + 可组合"的设计理念</li>
+</ol>
+<hr />
+<h2 id="多-agent-协作综述2025"><a class="header" href="#多-agent-协作综述2025">多 Agent 协作综述（2025）</a></h2>
+<p><strong>论文</strong>：<em>Multi-Agent Collaboration Mechanisms: A Survey of LLMs</em><br />
+<strong>作者</strong>：Nguyen et al., University College Cork &amp; 釜山大学<br />
+<strong>发表</strong>：2025 年 1 月 | <a href="https://arxiv.org/abs/2501.06322">arXiv:2501.06322</a></p>
+<h3 id="核心贡献"><a class="header" href="#核心贡献">核心贡献</a></h3>
+<p>这是截至 2025 年初最全面的多 Agent 协作机制综述，系统梳理了协作的四大维度：</p>
+<pre><code>多 Agent 协作的四大维度：
+
+1. 通信机制
+   ├── 自然语言通信（ChatDev）
+   ├── 结构化消息传递（MetaGPT）
+   ├── 共享状态空间（LangGraph）
+   └── 标准化协议（A2A, MCP）
+
+2. 协调策略
+   ├── 集中式（Orchestrator 模式）
+   ├── 去中心化（对等协商）
+   ├── 层次化（Manager-Worker）
+   └── 混合式（动态切换）
+
+3. 角色设计
+   ├── 静态角色（预定义专家）
+   ├── 动态角色（根据任务自适应）
+   └── 涌现角色（训练过程中自发形成）
+
+4. 评估方法
+   ├── 任务完成率
+   ├── 协作效率（通信轮次）
+   ├── 可扩展性（Agent 数量增加时的表现）
+   └── 鲁棒性（个别 Agent 失败时的恢复能力）
+</code></pre>
+<h3 id="关键发现"><a class="header" href="#关键发现">关键发现</a></h3>
+<ol>
+<li><strong>结构化通信显著优于自然语言通信</strong>：MetaGPT 的成功验证了这一点</li>
+<li><strong>Orchestrator 模式在大多数场景下最可靠</strong>：但在创意类任务中，去中心化讨论可能产生更好的结果</li>
+<li><strong>Agent 数量存在"甜蜜点"</strong>：通常 3-5 个 Agent 效果最好，超过 7 个后协调成本急剧上升</li>
+<li><strong>标准化协议是趋势</strong>：A2A 和 MCP 正在改变 Agent 之间的互操作方式</li>
+</ol>
+<hr />
+<h2 id="综合综述"><a class="header" href="#综合综述">综合综述</a></h2>
+<p><strong>论文</strong>：<em>A Survey on Large Language Model based Autonomous Agents</em><br />
+<strong>作者</strong>：Wang et al., 中国人民大学高瓴人工智能学院<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2308.11432">arXiv:2308.11432</a></p>
+<p>这是目前最全面的 LLM Agent 综述论文，系统梳理了 Agent 的四大组成部分：</p>
+<pre><code>Agent 构建框架：
+├── Profile（身份设定）
+│   └── 角色描述、专业背景、行为约束
+├── Memory（记忆系统）
+│   └── 短期记忆、长期记忆、混合记忆
+├── Planning（规划能力）
+│   └── 任务分解、反思、外部规划器
+└── Action（行动能力）
+    └── 工具使用、API 调用、环境交互
+</code></pre>
+<blockquote>
+<p>💡 <strong>强烈推荐作为本书的伴读材料</strong>，特别是在阅读多 Agent 相关章节时参考。</p>
+</blockquote>
+<hr />
+<h2 id="论文对比与发展脉络"><a class="header" href="#论文对比与发展脉络">论文对比与发展脉络</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>年份</th><th>通信模式</th><th>Agent 数量</th><th>核心贡献</th></tr></thead><tbody>
+<tr><td>MetaGPT</td><td>2023</td><td>结构化工件</td><td>5</td><td>SOP + 结构化通信</td></tr>
+<tr><td>ChatDev</td><td>2023</td><td>双人聊天链</td><td>4-6</td><td>聊天链分阶段协作</td></tr>
+<tr><td>AutoGen</td><td>2023</td><td>自由对话</td><td>2+</td><td>可对话 Agent 抽象</td></tr>
+<tr><td>AgentVerse</td><td>2023</td><td>群组讨论</td><td>3+</td><td>涌现行为研究</td></tr>
+<tr><td><strong>Swarm</strong></td><td><strong>2024</strong></td><td><strong>Handoff 交接</strong></td><td><strong>2+</strong></td><td><strong>极简多 Agent 编排</strong></td></tr>
+<tr><td><strong>Magentic-One</strong></td><td><strong>2024</strong></td><td><strong>Orchestrator 指挥</strong></td><td><strong>5</strong></td><td><strong>通用多 Agent 系统</strong></td></tr>
+<tr><td><strong>协作综述</strong></td><td><strong>2025</strong></td><td><strong>系统分类</strong></td><td><strong>—</strong></td><td><strong>四维度协作机制分析</strong></td></tr>
+</tbody></table>
+</div>
+<p><strong>发展脉络</strong>：</p>
+<pre><code>AutoGPT / BabyAGI (2023初，单 Agent 自主循环)
+    ↓
+ChatDev (聊天驱动)  ←→  MetaGPT (SOP 驱动)
+    ↓                       ↓
+AutoGen (灵活对话)        AgentVerse (涌现行为)
+    ↓                       ↓
+Swarm (极简交接)         Magentic-One (通用系统)
+    ↓                       ↓
+OpenAI Agents SDK        AutoGen 0.4 事件驱动
+    ↓                       ↓
+    └───── A2A + MCP (2025，标准化 Agent 互操作) ─────┘
+</code></pre>
+<blockquote>
+<p>💡 <strong>前沿趋势（2025-2026）</strong>：多 Agent 系统正在从"框架竞争"转向"协议标准化"。三大趋势：① <strong>Orchestrator 模式占主导</strong>：Magentic-One 和 OpenAI Agents SDK 都采用了这种"一个协调者 + 多个专家"的架构；② <strong>互操作标准化</strong>：Google 的 A2A 和 Anthropic 的 MCP 协议让不同框架构建的 Agent 可以互相协作（详见第 12 章）；③ <strong>从软件开发向通用场景扩展</strong>：科学研究、商业分析、教育模拟等更广泛的多 Agent 应用正在涌现。</p>
+</blockquote>
+<hr />
+<p><em>返回：<a href="./README.html">第11章 多 Agent 协作</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_multi_agent/05_practice_dev_team.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_protocol/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_multi_agent/05_practice_dev_team.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_protocol/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

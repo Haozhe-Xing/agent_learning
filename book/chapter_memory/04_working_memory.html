@@ -1,0 +1,527 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>6.4 工作记忆：Scratchpad 模式 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="工作记忆scratchpad-模式"><a class="header" href="#工作记忆scratchpad-模式">工作记忆：Scratchpad 模式</a></h1>
+<p>工作记忆是 Agent 在执行复杂任务时的"草稿纸"——记录推理步骤、中间结果，帮助 Agent 保持任务状态。</p>
+<h2 id="为什么需要工作记忆"><a class="header" href="#为什么需要工作记忆">为什么需要工作记忆？</a></h2>
+<pre><code class="language-python"># 没有工作记忆的 Agent 在处理复杂任务时会"忘记"中间步骤
+user_task = """
+分析我们公司Q1财务数据：
+1. 计算总收入
+2. 找出增长最快的产品线
+3. 识别成本异常
+4. 生成摘要报告
+"""
+
+# 问题：
+# - 步骤1的结果，步骤3能用到吗？
+# - 分析了20个产品线，如何记住哪个增长最快？
+# - 发现了3个异常，每个异常的详情是什么？
+
+# 解决方案：Scratchpad（草稿纸）
+# 在推理过程中，将中间结果写入 Scratchpad
+# 后续步骤可以读取并使用这些中间结果
+</code></pre>
+<h2 id="基础-scratchpad-实现"><a class="header" href="#基础-scratchpad-实现">基础 Scratchpad 实现</a></h2>
+<pre><code class="language-python">import json
+from datetime import datetime
+from openai import OpenAI
+from typing import Any
+
+client = OpenAI()
+
+class Scratchpad:
+    """工作记忆/草稿纸"""
+    
+    def __init__(self):
+        self._notes: dict[str, Any] = {}
+        self._log: list[dict] = []
+    
+    def write(self, key: str, value: Any, description: str = ""):
+        """写入一条笔记"""
+        self._notes[key] = {
+            "value": value,
+            "description": description,
+            "updated_at": datetime.now().isoformat()
+        }
+        self._log.append({
+            "action": "write",
+            "key": key,
+            "description": description,
+            "time": datetime.now().isoformat()
+        })
+    
+    def read(self, key: str) -&gt; Any:
+        """读取一条笔记"""
+        entry = self._notes.get(key)
+        return entry["value"] if entry else None
+    
+    def list_keys(self) -&gt; list[str]:
+        """列出所有键"""
+        return list(self._notes.keys())
+    
+    def to_prompt_text(self) -&gt; str:
+        """将 Scratchpad 内容格式化为 Prompt 文本"""
+        if not self._notes:
+            return "工作记忆：（空）"
+        
+        lines = ["【工作记忆 - 已知信息】"]
+        for key, entry in self._notes.items():
+            desc = f"（{entry['description']}）" if entry['description'] else ""
+            lines.append(f"- {key}{desc}: {json.dumps(entry['value'], ensure_ascii=False)}")
+        
+        return "\n".join(lines)
+    
+    def clear(self):
+        """清空（任务完成后调用）"""
+        self._notes.clear()
+
+
+class ScratchpadAgent:
+    """使用 Scratchpad 的多步骤推理 Agent"""
+    
+    def __init__(self):
+        self.scratchpad = Scratchpad()
+    
+    def _build_system_prompt(self) -&gt; str:
+        """构建包含当前 Scratchpad 内容的系统提示"""
+        base_prompt = """你是一个能够解决复杂多步骤问题的 AI 助手。
+
+在解决问题时，你需要：
+1. 将问题分解为多个步骤
+2. 逐步执行，每步完成后记录结果
+3. 后续步骤可以引用前面步骤的结果
+
+"""
+        scratchpad_content = self.scratchpad.to_prompt_text()
+        return base_prompt + "\n" + scratchpad_content
+    
+    def _tools_for_scratchpad(self) -&gt; list[dict]:
+        """定义 Scratchpad 相关工具"""
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": "save_to_scratchpad",
+                    "description": "将中间计算结果或重要信息保存到工作记忆，以便后续步骤使用",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string",
+                                "description": "保存的键名，英文蛇形命名，如 total_revenue"
+                            },
+                            "value": {
+                                "description": "要保存的值（可以是任何类型）"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "这条信息的简短描述"
+                            }
+                        },
+                        "required": ["key", "value"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "read_from_scratchpad",
+                    "description": "读取之前保存的中间结果",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string",
+                                "description": "要读取的键名"
+                            }
+                        },
+                        "required": ["key"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "list_scratchpad_keys",
+                    "description": "列出工作记忆中的所有键名",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {}
+                    }
+                }
+            }
+        ]
+    
+    def _execute_tool(self, tool_name: str, tool_args: dict) -&gt; str:
+        """执行 Scratchpad 工具"""
+        if tool_name == "save_to_scratchpad":
+            self.scratchpad.write(
+                tool_args["key"],
+                tool_args["value"],
+                tool_args.get("description", "")
+            )
+            return f"已保存：{tool_args['key']} = {tool_args['value']}"
+        
+        elif tool_name == "read_from_scratchpad":
+            value = self.scratchpad.read(tool_args["key"])
+            if value is not None:
+                return f"{tool_args['key']} = {json.dumps(value, ensure_ascii=False)}"
+            else:
+                return f"未找到键：{tool_args['key']}，可用键：{self.scratchpad.list_keys()}"
+        
+        elif tool_name == "list_scratchpad_keys":
+            keys = self.scratchpad.list_keys()
+            return f"工作记忆中的键：{keys}"
+        
+        return "未知工具"
+    
+    def solve(self, problem: str) -&gt; str:
+        """解决一个复杂问题"""
+        self.scratchpad.clear()
+        
+        print(f"\n{'='*50}")
+        print(f"问题：{problem}")
+        print('='*50)
+        
+        messages = [
+            {
+                "role": "system",
+                "content": self._build_system_prompt()
+            },
+            {
+                "role": "user",
+                "content": f"{problem}\n\n请分步骤解决，每步完成后将中间结果保存到工作记忆。"
+            }
+        ]
+        
+        tools = self._tools_for_scratchpad()
+        max_steps = 10
+        step = 0
+        
+        while step &lt; max_steps:
+            step += 1
+            
+            # 每次调用都更新 system prompt（反映最新的 scratchpad 状态）
+            messages[0]["content"] = self._build_system_prompt()
+            
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=messages,
+                tools=tools,
+                tool_choice="auto"
+            )
+            
+            message = response.choices[0].message
+            finish_reason = response.choices[0].finish_reason
+            messages.append(message)
+            
+            if finish_reason == "stop":
+                print(f"\n[最终答案]\n{message.content}")
+                return message.content
+            
+            if finish_reason == "tool_calls" and message.tool_calls:
+                for tc in message.tool_calls:
+                    result = self._execute_tool(
+                        tc.function.name,
+                        json.loads(tc.function.arguments)
+                    )
+                    print(f"[工具] {tc.function.name}: {result[:100]}")
+                    
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tc.id,
+                        "content": result
+                    })
+        
+        return "超过最大步骤数"
+
+
+# 测试：财务数据分析（使用模拟数据）
+test_data = {
+    "Q1营收": {"产品A": 120, "产品B": 85, "产品C": 200, "产品D": 60},
+    "Q1成本": {"产品A": 45, "产品B": 80, "产品C": 60, "产品D": 55},
+    "上季度营收": {"产品A": 100, "产品B": 70, "产品C": 190, "产品D": 50},
+}
+
+agent = ScratchpadAgent()
+result = agent.solve(f"""
+请分析以下Q1财务数据：
+{json.dumps(test_data, ensure_ascii=False, indent=2)}
+
+请完成：
+1. 计算每个产品的利润率
+2. 找出增长最快的产品
+3. 识别利润率异常低的产品（低于20%）
+4. 生成分析摘要
+""")
+</code></pre>
+<h2 id="react-中的工作记忆"><a class="header" href="#react-中的工作记忆">ReAct 中的工作记忆</a></h2>
+<p>ReAct 模式本身就是工作记忆的一种体现：</p>
+<pre><code class="language-python">react_with_scratchpad = """
+任务：{task}
+
+思考（Thought）：分析当前状态，决定下一步
+行动（Action）：选择工具
+观察（Observation）：工具返回的结果
+[重复思考-行动-观察，直到任务完成]
+最终答案（Final Answer）：...
+
+当前工作记忆：
+{scratchpad_content}
+"""
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>工作记忆（Scratchpad）的价值：</p>
+<ul>
+<li>支持<strong>复杂多步骤任务</strong>，步骤间共享中间结果</li>
+<li>避免重复计算和信息丢失</li>
+<li>让 Agent 的推理过程更透明可追踪</li>
+<li>任务完成后可清空，不污染长期记忆</li>
+</ul>
+<hr />
+<p><em>下一节：<a href="./05_practice_memory_agent.html">5.5 实战：带记忆的个人助理 Agent</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_memory/03_long_term_memory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_memory/05_practice_memory_agent.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_memory/03_long_term_memory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_memory/05_practice_memory_agent.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

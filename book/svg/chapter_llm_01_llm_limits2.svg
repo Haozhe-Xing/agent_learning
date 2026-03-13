@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" width="700" height="280">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <rect width="700" height="280" fill="#f8f9fa" rx="12"/>
+  <text x="350" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#2c3e50">LLM 的两大局限与解决方案</text>
+
+  <!-- LLM center -->
+  <rect x="270" y="55" width="160" height="50" rx="10" fill="#4dabf7" opacity="0.9"/>
+  <text x="350" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">🧠 LLM</text>
+
+  <!-- Knowledge cutoff -->
+  <rect x="30" y="140" width="270" height="80" rx="10" fill="#ffe3e3" stroke="#e74c3c" stroke-width="2"/>
+  <text x="165" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">📅 知识截止日期</text>
+  <text x="165" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">不知道截止日期后的事件</text>
+  <text x="165" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">可能会编造最新信息</text>
+
+  <!-- Hallucination -->
+  <rect x="400" y="140" width="270" height="80" rx="10" fill="#ffe3e3" stroke="#e74c3c" stroke-width="2"/>
+  <text x="535" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">🌀 幻觉 Hallucination</text>
+  <text x="535" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">自信地给出错误答案</text>
+  <text x="535" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">目标是预测续写，非确保为真</text>
+
+  <!-- Arrows from LLM -->
+  <path d="M 310 105 L 200 138" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 390 105 L 500 138" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Solutions -->
+  <rect x="30" y="238" width="270" height="32" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="165" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">🔧 解决方案：工具调用（搜索引擎）</text>
+
+  <rect x="400" y="238" width="270" height="32" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="535" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">🔧 解决方案：工具验证 + RAG</text>
+
+  <!-- Arrows to solutions -->
+  <path d="M 165 222 L 165 236" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <path d="M 535 222 L 535 236" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+</svg>

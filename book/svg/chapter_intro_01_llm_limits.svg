@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="760" height="340">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrow-dash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">第三代：LLM 对话 AI 的特点与局限</text>
+
+  <!-- User -->
+  <rect x="50" y="70" width="120" height="55" rx="10" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="110" y="93" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3498db">👤 用户输入</text>
+  <text x="110" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">自然语言请求</text>
+
+  <!-- Arrow -->
+  <path d="M 173 97 L 215 97" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LLM -->
+  <rect x="218" y="55" width="160" height="85" rx="12" fill="#4dabf7" opacity="0.2" stroke="#4dabf7" stroke-width="2.5"/>
+  <text x="298" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2980b9">🧠 大语言模型</text>
+  <text x="298" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">GPT-4 / Claude 等</text>
+  <text x="298" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">理解能力强，知识丰富</text>
+  <text x="298" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">但只能生成文本</text>
+
+  <!-- Arrow to text output -->
+  <path d="M 378 97 L 420 97" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Text output -->
+  <rect x="423" y="70" width="130" height="55" rx="10" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+  <text x="488" y="93" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">💬 文本回复</text>
+  <text x="488" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">生成式文字输出</text>
+
+  <!-- Dashed arrows to impossible actions -->
+  <line x1="378" y1="80" x2="560" y2="165" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="378" y1="97" x2="560" y2="210" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="378" y1="115" x2="560" y2="255" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Cannot do boxes -->
+  <rect x="563" y="148" width="150" height="35" rx="8" fill="#ffe3e3" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="638" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e74c3c">❌ 无法查天气</text>
+
+  <rect x="563" y="193" width="150" height="35" rx="8" fill="#ffe3e3" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="638" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e74c3c">❌ 无法订机票</text>
+
+  <rect x="563" y="238" width="150" height="35" rx="8" fill="#ffe3e3" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="638" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e74c3c">❌ 无法发邮件</text>
+
+  <!-- Cannot labels -->
+  <text x="490" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">无法执行</text>
+  <text x="490" y="207" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">无法执行</text>
+  <text x="490" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">无法执行</text>
+
+  <!-- Key insight box -->
+  <rect x="50" y="195" width="380" height="120" rx="10" fill="#fff3e0" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="240" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">💡 关键洞察</text>
+  <text x="70" y="242" font-family="Arial, sans-serif" font-size="11" fill="#555">LLM 知识渊博，但只能"纸上谈兵"</text>
+  <text x="70" y="262" font-family="Arial, sans-serif" font-size="11" fill="#555">• 知识截止日期：不了解最新事件</text>
+  <text x="70" y="282" font-family="Arial, sans-serif" font-size="11" fill="#555">• 幻觉问题：可能自信地给出错误答案</text>
+  <text x="70" y="302" font-family="Arial, sans-serif" font-size="11" fill="#555">• 无法执行操作：只能输出文字，不能行动</text>
+</svg>

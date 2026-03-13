@@ -1,0 +1,517 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>3.3 API Key 管理与安全最佳实践 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="api-key-管理与安全最佳实践"><a class="header" href="#api-key-管理与安全最佳实践">API Key 管理与安全最佳实践</a></h1>
+<p>API Key 是访问 LLM 服务的凭证，一旦泄露可能导致严重的费用损失。本节讲解如何安全地管理 API Key。</p>
+<h2 id="绝对不要这样做"><a class="header" href="#绝对不要这样做">绝对不要这样做</a></h2>
+<pre><code class="language-python"># ❌ 永远不要这样做！
+client = OpenAI(api_key="sk-proj-abc123xyz...")  # 硬编码在代码里
+
+# ❌ 也不要提交到 Git
+# 即使是私有仓库，也要养成好习惯
+</code></pre>
+<p>一旦 API Key 被提交到 GitHub，即使立刻删除，也可能已经被自动扫描工具发现。GitHub 本身也有 Secret Scanning 功能，会检测并通知 OpenAI 撤销泄露的 Key。</p>
+<h2 id="正确做法使用-env-文件"><a class="header" href="#正确做法使用-env-文件">正确做法：使用 .env 文件</a></h2>
+<pre><code class="language-bash"># 创建 .env 文件（不提交到版本控制）
+cat &gt; .env &lt;&lt; EOF
+# LLM API Keys
+OPENAI_API_KEY=sk-proj-your-key-here
+ANTHROPIC_API_KEY=your-anthropic-key
+DASHSCOPE_API_KEY=your-qwen-key
+
+# 其他配置
+DEFAULT_MODEL=gpt-4o-mini
+MAX_TOKENS=2000
+EOF
+
+# 确保 .gitignore 包含 .env
+echo ".env" &gt;&gt; .gitignore
+echo ".env.local" &gt;&gt; .gitignore
+</code></pre>
+<pre><code class="language-python"># config.py：统一的配置管理
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+# 加载 .env 文件
+# 从当前目录向上查找 .env
+load_dotenv()
+
+class Config:
+    """应用配置"""
+    
+    # LLM 配置
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
+    
+    # 模型配置
+    DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "gpt-4o-mini")
+    MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "2000"))
+    TEMPERATURE: float = float(os.getenv("TEMPERATURE", "0.7"))
+    
+    @classmethod
+    def validate(cls):
+        """验证必要的配置是否存在"""
+        required_keys = ["OPENAI_API_KEY"]
+        missing = [k for k in required_keys if not getattr(cls, k)]
+        
+        if missing:
+            raise ValueError(
+                f"缺少必要的环境变量：{', '.join(missing)}\n"
+                f"请检查 .env 文件或设置环境变量"
+            )
+        return True
+
+# 在应用启动时验证
+config = Config()
+config.validate()
+</code></pre>
+<h2 id="创建-envexample-模板"><a class="header" href="#创建-envexample-模板">创建 .env.example 模板</a></h2>
+<p>把 <code>.env.example</code> 提交到 Git，让其他开发者知道需要哪些 Key：</p>
+<pre><code class="language-bash"># .env.example（提交到 Git，不含真实值）
+# 复制此文件为 .env 并填入真实的 API Key
+
+# OpenAI API Key
+# 获取地址：https://platform.openai.com/api-keys
+OPENAI_API_KEY=your-openai-api-key-here
+
+# Anthropic API Key（可选）
+# 获取地址：https://console.anthropic.com/
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
+
+# 阿里云通义千问（可选）
+DASHSCOPE_API_KEY=your-dashscope-api-key-here
+
+# DeepSeek（可选，性价比极高）
+# 获取地址：https://platform.deepseek.com/
+DEEPSEEK_API_KEY=your-deepseek-api-key-here
+
+# 默认模型配置
+DEFAULT_MODEL=gpt-4o-mini
+MAX_TOKENS=2000
+</code></pre>
+<h2 id="多环境配置管理"><a class="header" href="#多环境配置管理">多环境配置管理</a></h2>
+<pre><code class="language-python"># settings.py：支持多环境的配置管理
+from pydantic_settings import BaseSettings
+from typing import Optional
+
+class Settings(BaseSettings):
+    """
+    使用 pydantic-settings 管理配置
+    自动从环境变量读取，支持类型验证
+    """
+    
+    # API Keys
+    openai_api_key: str
+    anthropic_api_key: Optional[str] = None
+    dashscope_api_key: Optional[str] = None
+    
+    # 模型配置
+    default_model: str = "gpt-4o-mini"
+    max_tokens: int = 2000
+    temperature: float = 0.7
+    
+    # 应用配置
+    debug: bool = False
+    log_level: str = "INFO"
+    
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        case_sensitive = False  # OPENAI_API_KEY = openai_api_key
+
+# 安装：pip install pydantic-settings
+settings = Settings()
+print(f"使用模型：{settings.default_model}")
+</code></pre>
+<h2 id="实际开发中的-key-管理最佳实践"><a class="header" href="#实际开发中的-key-管理最佳实践">实际开发中的 Key 管理最佳实践</a></h2>
+<h3 id="1-按用途申请不同的-key"><a class="header" href="#1-按用途申请不同的-key">1. 按用途申请不同的 Key</a></h3>
+<pre><code>开发 Key   → 用于本地开发，设置较低的用量限制
+测试 Key   → 用于 CI/CD 测试
+生产 Key   → 最高权限，只有生产环境能访问
+</code></pre>
+<h3 id="2-设置用量告警"><a class="header" href="#2-设置用量告警">2. 设置用量告警</a></h3>
+<p>在 OpenAI 后台设置用量限制和告警：</p>
+<ul>
+<li>每月硬限制（Hard Limit）：防止超支</li>
+<li>告警阈值（Alert Threshold）：提前预警</li>
+</ul>
+<h3 id="3-key-轮换"><a class="header" href="#3-key-轮换">3. Key 轮换</a></h3>
+<pre><code class="language-python"># 支持多个 Key 轮换，避免单点故障
+import itertools
+import os
+
+class APIKeyRotator:
+    """API Key 轮换管理器"""
+    
+    def __init__(self):
+        # 从环境变量读取多个 Key
+        keys = []
+        for i in range(1, 6):  # 最多5个 Key
+            key = os.getenv(f"OPENAI_API_KEY_{i}")
+            if key:
+                keys.append(key)
+        
+        # 也接受单个 Key
+        single_key = os.getenv("OPENAI_API_KEY")
+        if single_key:
+            keys.append(single_key)
+        
+        if not keys:
+            raise ValueError("没有找到任何 API Key")
+        
+        self._key_cycle = itertools.cycle(keys)
+        self._key_count = len(keys)
+    
+    def get_next_key(self) -&gt; str:
+        """获取下一个 Key（轮换）"""
+        return next(self._key_cycle)
+    
+    @property
+    def key_count(self) -&gt; int:
+        return self._key_count
+
+# 使用
+rotator = APIKeyRotator()
+print(f"已加载 {rotator.key_count} 个 API Key")
+</code></pre>
+<h3 id="4-生产环境使用密钥管理服务"><a class="header" href="#4-生产环境使用密钥管理服务">4. 生产环境：使用密钥管理服务</a></h3>
+<pre><code class="language-python"># 生产环境不应该用 .env 文件
+# 而应该使用专业的密钥管理服务
+
+# 方案1：AWS Secrets Manager
+import boto3
+import json
+
+def get_secret_from_aws(secret_name: str, region: str = "us-east-1") -&gt; dict:
+    """从 AWS Secrets Manager 获取密钥"""
+    client = boto3.client("secretsmanager", region_name=region)
+    response = client.get_secret_value(SecretId=secret_name)
+    return json.loads(response["SecretString"])
+
+# 使用：
+# secrets = get_secret_from_aws("prod/openai-keys")
+# OPENAI_API_KEY = secrets["api_key"]
+
+# 方案2：阿里云密钥管理 KMS
+# 方案3：HashiCorp Vault
+# 方案4：Kubernetes Secrets
+</code></pre>
+<h2 id="检测-key-是否有效"><a class="header" href="#检测-key-是否有效">检测 Key 是否有效</a></h2>
+<pre><code class="language-python"># key_validator.py
+from openai import OpenAI, AuthenticationError
+
+def validate_openai_key(api_key: str) -&gt; bool:
+    """验证 OpenAI API Key 是否有效"""
+    try:
+        client = OpenAI(api_key=api_key)
+        # 用最便宜的方式验证 Key
+        client.models.list()
+        return True
+    except AuthenticationError:
+        return False
+    except Exception as e:
+        print(f"验证时发生错误：{e}")
+        return False
+
+# 在应用启动时验证
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+key = os.getenv("OPENAI_API_KEY")
+if validate_openai_key(key):
+    print("✅ API Key 有效")
+else:
+    print("❌ API Key 无效，请检查")
+</code></pre>
+<h2 id="日志中隐藏敏感信息"><a class="header" href="#日志中隐藏敏感信息">日志中隐藏敏感信息</a></h2>
+<pre><code class="language-python">import logging
+import re
+
+class SensitiveDataFilter(logging.Filter):
+    """过滤日志中的敏感信息"""
+    
+    # 匹配 OpenAI Key 格式
+    PATTERNS = [
+        (r'sk-[a-zA-Z0-9]{20,}', 'sk-***REDACTED***'),
+        (r'Bearer [a-zA-Z0-9\-._~+/]+=*', 'Bearer ***REDACTED***'),
+    ]
+    
+    def filter(self, record: logging.LogRecord) -&gt; bool:
+        record.msg = self._redact(str(record.msg))
+        return True
+    
+    def _redact(self, text: str) -&gt; str:
+        for pattern, replacement in self.PATTERNS:
+            text = re.sub(pattern, replacement, text)
+        return text
+
+# 配置日志
+logger = logging.getLogger(__name__)
+logger.addFilter(SensitiveDataFilter())
+
+# 测试：即使不小心打印了 Key，也会被过滤
+logger.info("Using key: sk-proj-abc123xyz789...")
+# 输出：Using key: sk-***REDACTED***
+</code></pre>
+<hr />
+<h2 id="安全检查清单"><a class="header" href="#安全检查清单">安全检查清单</a></h2>
+<p>在每次代码提交前，确认以下事项：</p>
+<ul>
+<li><input disabled="" type="checkbox"/>
+<code>.env</code> 文件在 <code>.gitignore</code> 中</li>
+<li><input disabled="" type="checkbox"/>
+代码中没有硬编码的 API Key</li>
+<li><input disabled="" type="checkbox"/>
+已创建 <code>.env.example</code> 模板</li>
+<li><input disabled="" type="checkbox"/>
+已在 OpenAI 后台设置用量限制</li>
+<li><input disabled="" type="checkbox"/>
+日志不会输出完整的 API Key</li>
+</ul>
+<hr />
+<p><em>下一节：<a href="./04_hello_agent.html">3.4 第一个 Agent：Hello Agent！</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_setup/02_install_libs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_setup/04_hello_agent.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_setup/02_install_libs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_setup/04_hello_agent.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <!-- Background -->
+  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">Chain-of-Thought (CoT) 推理对比</text>
+  
+  <!-- Left: Direct Answer (Without CoT) -->
+  <rect x="30" y="55" width="350" height="330" rx="10" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="2"/>
+  <text x="205" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e74c3c">❌ 不使用 CoT（直接回答）</text>
+  
+  <!-- Question box -->
+  <rect x="50" y="95" width="310" height="50" rx="8" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="205" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">问题：Roger 有5个网球，他又买了</text>
+  <text x="205" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">2罐网球，每罐3个，共有几个网球？</text>
+  
+  <!-- Arrow down -->
+  <path d="M 205 148 L 205 168" stroke="#e74c3c" stroke-width="2" marker-end="url(#red-arrow)"/>
+  
+  <!-- Direct answer box -->
+  <rect x="80" y="170" width="250" height="40" rx="8" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="205" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#c0392b">模型直接输出：11</text>
+  
+  <!-- Wrong mark -->
+  <circle cx="345" cy="190" r="15" fill="#e74c3c" opacity="0.8"/>
+  <text x="345" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">✗</text>
+  
+  <!-- Problem analysis -->
+  <rect x="50" y="225" width="310" height="145" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
+  <text x="205" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">问题分析</text>
+  <text x="65" y="268" font-family="Arial, sans-serif" font-size="11" fill="#666">• 模型跳过推理，直接"拍脑袋"</text>
+  <text x="65" y="286" font-family="Arial, sans-serif" font-size="11" fill="#666">• 容易在多步计算中犯错</text>
+  <text x="65" y="304" font-family="Arial, sans-serif" font-size="11" fill="#666">• 无法知道错在哪里</text>
+  <text x="65" y="322" font-family="Arial, sans-serif" font-size="11" fill="#666">• 正确答案应该是：</text>
+  <text x="65" y="340" font-family="Arial, sans-serif" font-size="11" fill="#e74c3c">  5 + (2 × 3) = 5 + 6 = 11  ✓（这个是对的）</text>
+  <text x="65" y="358" font-family="Arial, sans-serif" font-size="11" fill="#666">• 但复杂问题直接回答准确率低</text>
+  
+  <!-- Right: With CoT -->
+  <rect x="420" y="55" width="350" height="330" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="595" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">✅ 使用 CoT（思维链推理）</text>
+  
+  <!-- Same question box -->
+  <rect x="440" y="95" width="310" height="50" rx="8" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="595" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">问题：Roger 有5个网球，他又买了</text>
+  <text x="595" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">2罐网球，每罐3个，共有几个网球？</text>
+  
+  <!-- Arrow down -->
+  <path d="M 595 148 L 595 168" stroke="#27ae60" stroke-width="2" marker-end="url(#green-arrow)"/>
+  
+  <!-- CoT trigger -->
+  <rect x="460" y="170" width="270" height="28" rx="6" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="1"/>
+  <text x="595" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-style="italic" fill="#1a8a4a">"让我们一步步思考..." 触发 CoT</text>
+  
+  <!-- Arrow down -->
+  <path d="M 595 200 L 595 218" stroke="#27ae60" stroke-width="2" marker-end="url(#green-arrow)"/>
+  
+  <!-- Steps boxes -->
+  <rect x="440" y="220" width="310" height="28" rx="6" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1"/>
+  <text x="595" y="239" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#2980b9">步骤1：Roger 最初有5个网球</text>
+  
+  <path d="M 595 250 L 595 262" stroke="#27ae60" stroke-width="1.5" marker-end="url(#green-arrow)"/>
+  
+  <rect x="440" y="264" width="310" height="28" rx="6" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1"/>
+  <text x="595" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#2980b9">步骤2：每罐3个，买了2罐 → 2×3=6个</text>
+  
+  <path d="M 595 294 L 595 306" stroke="#27ae60" stroke-width="1.5" marker-end="url(#green-arrow)"/>
+  
+  <rect x="440" y="308" width="310" height="28" rx="6" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1"/>
+  <text x="595" y="327" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#2980b9">步骤3：总共 5 + 6 = 11 个</text>
+  
+  <path d="M 595 338 L 595 350" stroke="#27ae60" stroke-width="1.5" marker-end="url(#green-arrow)"/>
+  
+  <!-- Final answer -->
+  <rect x="460" y="352" width="270" height="28" rx="8" fill="#27ae60" opacity="0.25" stroke="#27ae60" stroke-width="2"/>
+  <text x="595" y="371" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1a8a4a">答案：11 个网球 ✓</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="red-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="green-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+  
+  <!-- Bottom stats -->
+  <rect x="30" y="398" width="740" height="10" rx="5" fill="#ecf0f1"/>
+  <rect x="30" y="398" width="185" height="10" rx="5" fill="#e74c3c" opacity="0.5"/>
+  <rect x="420" y="398" width="350" height="10" rx="5" fill="#27ae60" opacity="0.6"/>
+</svg>

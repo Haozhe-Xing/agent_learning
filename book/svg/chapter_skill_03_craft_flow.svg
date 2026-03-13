@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" width="700" height="300">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="700" height="300" fill="#f0f4f8" rx="14"/>
+  <text x="350" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">CRAFT 工作流程</text>
+
+  <!-- 创建阶段 -->
+  <rect x="30" y="45" width="310" height="110" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="185" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">1. 创建阶段（Create）</text>
+  <text x="50" y="90" font-size="11" fill="#555">问题："计算给定数组中所有质数的和"</text>
+  <text x="50" y="108" font-size="11" fill="#555">↓ LLM 创建专用工具函数</text>
+  <text x="50" y="126" font-size="11" fill="#888" font-style="italic">def sum_of_primes(arr): ...</text>
+  <text x="50" y="144" font-size="11" fill="#888" font-style="italic">    return sum(x for x in arr if is_prime(x))</text>
+
+  <!-- 验证阶段 -->
+  <rect x="360" y="45" width="310" height="70" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="515" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">2. 验证阶段（Verify）</text>
+  <text x="380" y="90" font-size="11" fill="#555">用测试用例验证工具的正确性</text>
+  <text x="380" y="108" font-size="11" fill="#27ae60">sum_of_primes([1,2,3,4,5]) == 10  ✅</text>
+
+  <!-- 箭头 -->
+  <line x1="340" y1="90" x2="358" y2="90" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+  <!-- 存储阶段 -->
+  <rect x="30" y="175" width="310" height="55" rx="10" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="185" y="198" text-anchor="middle" font-size="13" font-weight="bold" fill="#9b59b6">3. 存储阶段（Store）</text>
+  <text x="50" y="220" font-size="11" fill="#555">将验证通过的工具保存到工具库 💾</text>
+
+  <!-- 箭头 -->
+  <line x1="515" y1="115" x2="515" y2="145" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="515" y1="145" x2="185" y2="145" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="185" y1="145" x2="185" y2="173" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+  <!-- 检索阶段 -->
+  <rect x="360" y="175" width="310" height="75" rx="10" fill="#e67e22" opacity="0.1" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="515" y="198" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">4. 检索阶段（Retrieve）</text>
+  <text x="380" y="220" font-size="11" fill="#555">下次遇到类似问题时，检索已有工具</text>
+  <text x="380" y="240" font-size="11" fill="#888">"计算偶数的和" → 检索到 sum_of_primes</text>
+
+  <!-- 箭头 -->
+  <line x1="340" y1="202" x2="358" y2="202" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+  <!-- 说明 -->
+  <rect x="30" y="262" width="640" height="28" rx="6" fill="#ecf0f1"/>
+  <text x="350" y="281" text-anchor="middle" font-size="11" fill="#555">💡 关键洞察："先抽象后使用" 比 "直接解决" 更可靠，工具复用率约 60%</text>
+</svg>

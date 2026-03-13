@@ -1,0 +1,558 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>14.3 Prompt 调优策略 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="prompt-调优策略"><a class="header" href="#prompt-调优策略">Prompt 调优策略</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：掌握系统化的 Prompt 调优方法，学会通过迭代优化来提升 Agent 表现。</p>
+</blockquote>
+<hr />
+<h2 id="prompt-调优的核心思路"><a class="header" href="#prompt-调优的核心思路">Prompt 调优的核心思路</a></h2>
+<p>Prompt 调优就像调收音机——不是随便转旋钮，而是有方法地微调，直到信号清晰。核心流程是：</p>
+<ol>
+<li><strong>明确问题</strong>：Agent 在哪些任务上表现不好？</li>
+<li><strong>分析原因</strong>：是指令不清？上下文不够？还是格式有误？</li>
+<li><strong>有针对性地修改</strong>：调整 Prompt 的特定部分</li>
+<li><strong>对比评估</strong>：用基准测试验证是否有改善</li>
+</ol>
+<hr />
+<h2 id="策略一系统提示词优化"><a class="header" href="#策略一系统提示词优化">策略一：系统提示词优化</a></h2>
+<p>系统提示词（System Prompt）是 Agent 的"行为准则"，对其表现影响巨大：</p>
+<pre><code class="language-python"># ❌ 不好的系统提示词
+bad_system_prompt = "你是一个助手，请帮助用户。"
+
+# ✅ 优化后的系统提示词
+good_system_prompt = """你是一名专业的 Python 技术顾问，拥有 10 年开发经验。
+
+## 你的职责
+- 回答 Python 相关的技术问题
+- 提供代码示例和最佳实践建议
+- 帮助调试代码问题
+
+## 回答要求
+1. **准确性优先**：不确定的内容请明确说明，不要编造
+2. **代码可运行**：所有代码示例必须是可以直接运行的完整代码
+3. **解释清楚**：对关键概念和代码逻辑进行解释
+4. **版本明确**：涉及库或工具时，标注适用的版本号
+
+## 回答格式
+- 先用 1-2 句话直接回答问题
+- 然后提供代码示例（如果适用）
+- 最后补充注意事项或最佳实践
+
+## 限制
+- 只回答 Python 相关问题，其他语言请建议用户咨询专业人士
+- 不要提供可能存在安全风险的代码（如 eval 用户输入）
+- 回答长度控制在 500 字以内，除非问题确实需要更长的解释
+"""
+</code></pre>
+<h3 id="系统提示词的关键要素"><a class="header" href="#系统提示词的关键要素">系统提示词的关键要素</a></h3>
+<pre><code class="language-python">SYSTEM_PROMPT_TEMPLATE = """
+# 角色定义
+你是{role_name}，{role_description}。
+
+# 核心能力
+{capabilities}
+
+# 行为准则
+{behavioral_rules}
+
+# 输出格式
+{output_format}
+
+# 限制与边界
+{constraints}
+
+# 示例（可选）
+{examples}
+"""
+</code></pre>
+<p>每个要素的作用：</p>
+<div class="table-wrapper"><table><thead><tr><th>要素</th><th>作用</th><th>缺失时的影响</th></tr></thead><tbody>
+<tr><td>角色定义</td><td>设定 Agent 的身份和专业背景</td><td>回答缺乏专业性</td></tr>
+<tr><td>核心能力</td><td>明确 Agent 能做什么</td><td>可能超范围回答</td></tr>
+<tr><td>行为准则</td><td>规范回答的方式</td><td>输出质量不稳定</td></tr>
+<tr><td>输出格式</td><td>统一回答的结构</td><td>格式混乱，不便解析</td></tr>
+<tr><td>限制与边界</td><td>约束 Agent 不该做什么</td><td>可能产生不安全的输出</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="策略二few-shot-示例优化"><a class="header" href="#策略二few-shot-示例优化">策略二：Few-shot 示例优化</a></h2>
+<p>好的示例能显著提升 Agent 的表现：</p>
+<pre><code class="language-python">def build_few_shot_prompt(
+    task: str,
+    examples: list[dict],
+    user_input: str
+) -&gt; str:
+    """构建 Few-shot 提示"""
+    
+    prompt = f"任务：{task}\n\n"
+    prompt += "以下是一些示例：\n\n"
+    
+    for i, ex in enumerate(examples, 1):
+        prompt += f"--- 示例 {i} ---\n"
+        prompt += f"输入：{ex['input']}\n"
+        prompt += f"输出：{ex['output']}\n"
+        if "explanation" in ex:
+            prompt += f"说明：{ex['explanation']}\n"
+        prompt += "\n"
+    
+    prompt += "--- 你的任务 ---\n"
+    prompt += f"输入：{user_input}\n"
+    prompt += "输出："
+    
+    return prompt
+
+# 示例选择的技巧
+few_shot_tips = {
+    "数量": "通常 3-5 个示例效果最佳，过多反而会增加噪音",
+    "多样性": "示例要覆盖不同的情况（简单/复杂/边界情况）",
+    "顺序": "把最相关的示例放在最后（靠近用户输入）",
+    "格式一致": "所有示例的输入输出格式要统一",
+    "动态选择": "根据用户输入，动态选择最相关的示例"
+}
+</code></pre>
+<h3 id="动态示例选择"><a class="header" href="#动态示例选择">动态示例选择</a></h3>
+<p>根据用户输入自动选择最相关的示例：</p>
+<pre><code class="language-python">from langchain_openai import OpenAIEmbeddings
+import numpy as np
+
+class DynamicExampleSelector:
+    """基于语义相似度动态选择示例"""
+    
+    def __init__(self, examples: list[dict], k: int = 3):
+        self.examples = examples
+        self.k = k
+        self.embeddings = OpenAIEmbeddings()
+        
+        # 预计算所有示例的 embedding
+        self.example_vectors = self.embeddings.embed_documents(
+            [ex["input"] for ex in examples]
+        )
+    
+    def select(self, query: str) -&gt; list[dict]:
+        """选择与查询最相关的 k 个示例"""
+        query_vector = self.embeddings.embed_query(query)
+        
+        # 计算余弦相似度
+        similarities = [
+            np.dot(query_vector, ev) / (
+                np.linalg.norm(query_vector) * np.linalg.norm(ev)
+            )
+            for ev in self.example_vectors
+        ]
+        
+        # 选择 top-k
+        top_indices = np.argsort(similarities)[-self.k:][::-1]
+        return [self.examples[i] for i in top_indices]
+</code></pre>
+<hr />
+<h2 id="策略三ab-测试框架"><a class="header" href="#策略三ab-测试框架">策略三：A/B 测试框架</a></h2>
+<p>像互联网产品一样，对 Prompt 做 A/B 测试：</p>
+<pre><code class="language-python">import random
+
+class PromptABTest:
+    """Prompt A/B 测试框架"""
+    
+    def __init__(self, prompts: dict[str, str], test_cases: list[dict]):
+        """
+        Args:
+            prompts: {"A": prompt_a, "B": prompt_b, ...}
+            test_cases: [{"input": "...", "expected": "..."}, ...]
+        """
+        self.prompts = prompts
+        self.test_cases = test_cases
+        self.results = {name: [] for name in prompts}
+    
+    def run(self, llm, judge_llm=None) -&gt; dict:
+        """运行 A/B 测试"""
+        
+        for case in self.test_cases:
+            for name, prompt in self.prompts.items():
+                # 拼接完整提示
+                full_prompt = f"{prompt}\n\n用户问题：{case['input']}"
+                
+                # 获取回答
+                response = llm.invoke(full_prompt)
+                
+                # 评估（如果有评审 LLM）
+                score = self._evaluate(
+                    case, response.content, judge_llm
+                )
+                
+                self.results[name].append({
+                    "input": case["input"],
+                    "output": response.content,
+                    "score": score
+                })
+        
+        # 汇总结果
+        summary = {}
+        for name, results in self.results.items():
+            scores = [r["score"] for r in results if r["score"] is not None]
+            summary[name] = {
+                "avg_score": sum(scores) / len(scores) if scores else 0,
+                "total_cases": len(results),
+                "scored_cases": len(scores)
+            }
+        
+        return summary
+    
+    def _evaluate(self, case, response, judge_llm) -&gt; float:
+        """评估单个回答"""
+        if judge_llm is None:
+            return None
+        
+        eval_prompt = f"""对比以下回答和预期答案，给出 1-10 的评分。
+
+问题：{case['input']}
+预期：{case['expected']}
+实际回答：{response}
+
+只回复一个数字（1-10）。"""
+        
+        result = judge_llm.invoke(eval_prompt)
+        try:
+            return float(result.content.strip()) / 10
+        except ValueError:
+            return None
+</code></pre>
+<hr />
+<h2 id="策略四常见-prompt-问题排查清单"><a class="header" href="#策略四常见-prompt-问题排查清单">策略四：常见 Prompt 问题排查清单</a></h2>
+<p>当 Agent 表现不佳时，按这个清单逐一排查：</p>
+<pre><code class="language-python">PROMPT_DEBUGGING_CHECKLIST = [
+    {
+        "问题": "Agent 回答太笼统、没有深度",
+        "可能原因": "指令不够具体",
+        "修复方法": "添加具体的角色背景和专业领域描述",
+        "示例": "❌ '回答问题' → ✅ '作为有 10 年经验的后端工程师，提供带代码示例的详细解答'"
+    },
+    {
+        "问题": "Agent 不使用工具，直接编造答案",
+        "可能原因": "没有明确要求使用工具",
+        "修复方法": "在系统提示中强调：'如果需要查询数据，必须使用对应的工具，不要猜测'",
+        "示例": "添加规则：'任何需要实时数据的问题，都必须先使用搜索工具查询'"
+    },
+    {
+        "问题": "Agent 输出格式不一致",
+        "可能原因": "缺少明确的格式要求",
+        "修复方法": "提供详细的输出格式模板和示例",
+        "示例": "指定 JSON Schema 或 Markdown 模板"
+    },
+    {
+        "问题": "Agent 重复调用同一个工具",
+        "可能原因": "缺少终止条件或步骤限制",
+        "修复方法": "添加最大步骤限制和终止条件说明",
+        "示例": "'最多执行 5 步，如果仍未解决问题，请总结当前进展并请求用户帮助'"
+    },
+    {
+        "问题": "Agent 回答中有明显的事实错误",
+        "可能原因": "模型幻觉，或使用了过时知识",
+        "修复方法": "要求 Agent 标注信息来源，并添加 '不确定时明确说明' 的规则",
+        "示例": "'回答时请标注信息来源。如果你不确定某个事实，请说 \"我不确定，建议您查证\"'"
+    }
+]
+</code></pre>
+<hr />
+<h2 id="实操案例迭代优化一个客服-agent"><a class="header" href="#实操案例迭代优化一个客服-agent">实操案例：迭代优化一个客服 Agent</a></h2>
+<pre><code class="language-python"># 第 1 版 —— 基础版（问题：回答太简短，缺乏同理心）
+v1_prompt = "你是客服，请回答用户问题。"
+
+# 第 2 版 —— 添加角色细节（改善：更专业，但还是不够温暖）
+v2_prompt = """你是"小慧"，一名专业的客户服务代表。
+你需要准确回答用户关于产品和订单的问题。"""
+
+# 第 3 版 —— 添加行为准则（改善：更有同理心，但格式不统一）
+v3_prompt = """你是"小慧"，一名有 3 年经验的客户服务代表。
+
+## 行为准则
+1. 始终以友好、耐心的态度回应
+2. 先表达对客户处境的理解，再提供解决方案
+3. 如果问题超出你的能力范围，指引客户联系人工客服
+4. 不确定的信息不要编造，承诺稍后确认"""
+
+# 第 4 版 —— 添加格式规范和示例（当前最优版本）
+v4_prompt = """你是"小慧"，一名有 3 年经验的客户服务代表。
+
+## 行为准则
+1. 始终以友好、耐心的态度回应
+2. 先表达理解（1句），再提供方案（要点清晰）
+3. 超范围问题 → 指引人工客服
+4. 不确定 → 承诺稍后确认
+
+## 回答格式
+[理解客户] → [具体方案] → [后续跟进]
+
+## 示例
+客户：我的订单三天了还没发货
+小慧：完全理解您的着急，三天确实等得比较久了。我帮您查一下订单状态...
+  1. 订单 #xxx 目前在仓库拣货中
+  2. 预计明天发货，正常 2-3 天送达
+  3. 我会持续跟进，有更新第一时间通知您
+  如果有其他问题，随时联系我 😊
+"""
+</code></pre>
+<p>每个版本的评估分数变化：</p>
+<div class="table-wrapper"><table><thead><tr><th>版本</th><th>准确率</th><th>满意度</th><th>改进点</th></tr></thead><tbody>
+<tr><td>v1</td><td>0.65</td><td>2.1/5</td><td>基线</td></tr>
+<tr><td>v2</td><td>0.78</td><td>3.0/5</td><td>+角色定义</td></tr>
+<tr><td>v3</td><td>0.80</td><td>3.8/5</td><td>+行为准则</td></tr>
+<tr><td>v4</td><td>0.85</td><td>4.3/5</td><td>+格式+示例</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>策略</th><th>核心要点</th><th>效果</th></tr></thead><tbody>
+<tr><td>系统提示词优化</td><td>角色+能力+准则+格式+限制</td><td>全面提升</td></tr>
+<tr><td>Few-shot 优化</td><td>3-5 个多样化示例，动态选择</td><td>显著提升一致性</td></tr>
+<tr><td>A/B 测试</td><td>数据驱动，用评分说话</td><td>科学决策</td></tr>
+<tr><td>问题排查清单</td><td>对症下药，逐一排查</td><td>快速定位问题</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>下一节预告</strong>：除了 Prompt 调优，成本控制也是生产环境中必须面对的问题。</p>
+</blockquote>
+<hr />
+<p><a href="./04_cost_optimization.html">下一节：13.4 成本控制与性能优化 →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_evaluation/02_benchmarks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_evaluation/04_cost_optimization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_evaluation/02_benchmarks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_evaluation/04_cost_optimization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

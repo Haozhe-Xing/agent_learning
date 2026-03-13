@@ -1,0 +1,447 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>13.3 Agent 间的消息传递与状态共享 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="agent-间的消息传递与状态共享"><a class="header" href="#agent-间的消息传递与状态共享">Agent 间的消息传递与状态共享</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：学习 Agent 间消息传递的实现方式，并通过 MCP 工具集成实战加深理解。</p>
+</blockquote>
+<hr />
+<h2 id="生产级-mcp-工具服务器"><a class="header" href="#生产级-mcp-工具服务器">生产级 MCP 工具服务器</a></h2>
+<pre><code class="language-python"># production_mcp_server.py
+"""
+完整的生产级 MCP 工具服务器
+包含：文件操作、数据库查询、HTTP请求
+"""
+
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.types import Tool, TextContent, CallToolResult, ListToolsResult
+import json
+import os
+import sqlite3
+import requests
+import asyncio
+
+server = Server("production-tools-server")
+
+# ============================
+# 工具定义
+# ============================
+
+TOOLS = [
+    Tool(
+        name="read_file",
+        description="读取本地文件内容。支持 .txt .md .py .json .csv 格式。",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "文件相对路径"}
+            },
+            "required": ["path"]
+        }
+    ),
+    Tool(
+        name="write_file",
+        description="写入内容到文件（覆盖写入）。",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "文件路径"},
+                "content": {"type": "string", "description": "文件内容"}
+            },
+            "required": ["path", "content"]
+        }
+    ),
+    Tool(
+        name="query_database",
+        description="查询 SQLite 数据库（只允许 SELECT 语句）。",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "db_path": {"type": "string", "description": "数据库文件路径"},
+                "sql": {"type": "string", "description": "SELECT SQL 语句"}
+            },
+            "required": ["db_path", "sql"]
+        }
+    ),
+    Tool(
+        name="http_get",
+        description="发送 HTTP GET 请求获取数据。",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "请求 URL"},
+                "headers": {"type": "object", "description": "请求头（可选）"}
+            },
+            "required": ["url"]
+        }
+    )
+]
+
+@server.list_tools()
+async def list_tools() -&gt; ListToolsResult:
+    return ListToolsResult(tools=TOOLS)
+
+@server.call_tool()
+async def call_tool(name: str, arguments: dict) -&gt; CallToolResult:
+    try:
+        if name == "read_file":
+            path = arguments["path"]
+            # 安全检查：防止路径遍历
+            abs_path = os.path.abspath(path)
+            if not abs_path.startswith(os.getcwd()):
+                raise PermissionError("不允许访问当前目录外的文件")
+            
+            with open(abs_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            return CallToolResult(
+                content=[TextContent(type="text", text=content[:10000])]
+            )
+        
+        elif name == "write_file":
+            path = arguments["path"]
+            content = arguments["content"]
+            
+            os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+            with open(path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            
+            return CallToolResult(
+                content=[TextContent(type="text", text=f"已写入 {len(content)} 字符到 {path}")]
+            )
+        
+        elif name == "query_database":
+            db_path = arguments["db_path"]
+            sql = arguments["sql"].strip()
+            
+            # 安全检查：只允许 SELECT，禁止危险关键词
+            sql_upper = sql.upper()
+            if not sql_upper.startswith("SELECT"):
+                raise PermissionError("只允许 SELECT 查询")
+            
+            # 检查是否包含危险操作（防止 SELECT 后跟分号执行其他语句）
+            dangerous_keywords = [
+                "DROP", "DELETE", "UPDATE", "INSERT", 
+                "ALTER", "CREATE", "TRUNCATE", "EXEC",
+            ]
+            for keyword in dangerous_keywords:
+                if keyword in sql_upper:
+                    raise PermissionError(f"SQL 中包含禁止的关键词: {keyword}")
+            
+            # 禁止多语句执行（分号分隔）
+            if ";" in sql.rstrip(";"):
+                raise PermissionError("不允许执行多条 SQL 语句")
+            
+            conn = sqlite3.connect(db_path)
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute(sql)
+            rows = cursor.fetchmany(100)  # 最多100行
+            conn.close()
+            
+            result = [dict(row) for row in rows]
+            return CallToolResult(
+                content=[TextContent(type="text", text=json.dumps(result, ensure_ascii=False, indent=2))]
+            )
+        
+        elif name == "http_get":
+            url = arguments["url"]
+            headers = arguments.get("headers", {})
+            
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            
+            content = response.text[:5000]  # 限制返回长度
+            return CallToolResult(
+                content=[TextContent(type="text", text=content)]
+            )
+        
+        else:
+            return CallToolResult(
+                content=[TextContent(type="text", text=f"未知工具：{name}")],
+                isError=True
+            )
+    
+    except Exception as e:
+        return CallToolResult(
+            content=[TextContent(type="text", text=f"工具执行失败：{str(e)}")],
+            isError=True
+        )
+
+async def main():
+    async with stdio_server() as (read_stream, write_stream):
+        await server.run(read_stream, write_stream)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</code></pre>
+<h2 id="在-claude-desktop-中使用-mcp"><a class="header" href="#在-claude-desktop-中使用-mcp">在 Claude Desktop 中使用 MCP</a></h2>
+<p>MCP Server 编写完成后，需要在客户端（Host）中注册才能使用。以 Claude Desktop 为例，只需在配置文件中指定 MCP Server 的启动命令和路径。Claude 会在启动时自动连接这些 Server，并在对话中展示可用的工具列表。</p>
+<pre><code class="language-json">// ~/.config/claude/claude_desktop_config.json
+{
+  "mcpServers": {
+    "my-tools": {
+      "command": "python",
+      "args": ["/path/to/production_mcp_server.py"],
+      "env": {
+        "PYTHONPATH": "/path/to/your/project"
+      }
+    }
+  }
+}
+</code></pre>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<p>Agent 通信协议的核心：</p>
+<div class="table-wrapper"><table><thead><tr><th>协议</th><th>定位</th><th>主要场景</th></tr></thead><tbody>
+<tr><td>MCP</td><td>LLM ↔ 工具/数据源</td><td>标准化工具调用</td></tr>
+<tr><td>A2A</td><td>Agent ↔ Agent</td><td>跨框架 Agent 协作</td></tr>
+</tbody></table>
+</div>
+<p>两者互补：MCP 解决工具集成，A2A 解决 Agent 互操作。</p>
+<hr />
+<p><em>下一节：<a href="./04_practice_mcp_integration.html">12.4 实战：基于 MCP 的工具集成</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_protocol/02_a2a_protocol.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_protocol/04_practice_mcp_integration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_protocol/02_a2a_protocol.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_protocol/04_practice_mcp_integration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2.4 模型 API 调用入门 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="模型-api-调用入门openai--开源模型"><a class="header" href="#模型-api-调用入门openai--开源模型">模型 API 调用入门（OpenAI / 开源模型）</a></h1>
+<p>理论学够了，动手写代码！本节将带你完成第一次真正的模型 API 调用，并掌握流式输出、错误处理等生产环境必备技能。</p>
+<h2 id="环境准备"><a class="header" href="#环境准备">环境准备</a></h2>
+<pre><code class="language-bash"># 安装必要的库
+pip install openai python-dotenv
+
+# 创建 .env 文件存储 API Key（不要硬编码在代码里！）
+echo "OPENAI_API_KEY=your-api-key-here" &gt; .env
+</code></pre>
+<pre><code class="language-python"># config.py：统一的配置管理
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # 从 .env 文件加载环境变量
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise ValueError("请设置 OPENAI_API_KEY 环境变量")
+</code></pre>
+<h2 id="openai-sdk最基础的调用"><a class="header" href="#openai-sdk最基础的调用">OpenAI SDK：最基础的调用</a></h2>
+<pre><code class="language-python">from openai import OpenAI
+import os
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# 最简单的调用
+def simple_chat(message: str) -&gt; str:
+    """最基本的单轮对话"""
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",  # 便宜又快的入门模型
+        messages=[
+            {"role": "user", "content": message}
+        ]
+    )
+    return response.choices[0].message.content
+
+# 测试
+answer = simple_chat("用一句话解释什么是 Python 的 GIL？")
+print(answer)
+</code></pre>
+<h2 id="多轮对话管理"><a class="header" href="#多轮对话管理">多轮对话管理</a></h2>
+<p>在 Agent 开发中，维护对话历史是关键：</p>
+<pre><code class="language-python">class ChatSession:
+    """管理多轮对话历史的简单封装"""
+    
+    def __init__(self, system_prompt: str = None, model: str = "gpt-4o-mini"):
+        self.model = model
+        self.messages = []
+        
+        if system_prompt:
+            self.messages.append({
+                "role": "system",
+                "content": system_prompt
+            })
+    
+    def chat(self, user_message: str) -&gt; str:
+        """发送消息并获取回复"""
+        # 添加用户消息
+        self.messages.append({
+            "role": "user",
+            "content": user_message
+        })
+        
+        # 调用 API
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=self.messages
+        )
+        
+        # 获取回复
+        assistant_message = response.choices[0].message.content
+        
+        # 保存到历史
+        self.messages.append({
+            "role": "assistant",
+            "content": assistant_message
+        })
+        
+        return assistant_message
+    
+    def clear_history(self):
+        """清除对话历史（保留 system prompt）"""
+        system_msgs = [m for m in self.messages if m["role"] == "system"]
+        self.messages = system_msgs
+    
+    def get_history(self) -&gt; list:
+        """获取对话历史"""
+        return [m for m in self.messages if m["role"] != "system"]
+
+# 使用示例
+session = ChatSession(
+    system_prompt="你是一位专业的 Python 编程导师，讲解要简洁易懂。"
+)
+
+# 多轮对话
+questions = [
+    "什么是装饰器？",
+    "能给一个实际的使用例子吗？",
+    "如何给装饰器传参数？"
+]
+
+for q in questions:
+    print(f"\n用户：{q}")
+    answer = session.chat(q)
+    print(f"助手：{answer}")
+</code></pre>
+<h2 id="流式输出实时显示生成内容"><a class="header" href="#流式输出实时显示生成内容">流式输出：实时显示生成内容</a></h2>
+<p>流式输出让用户体验更好——不用等模型全部生成完再显示：</p>
+<pre><code class="language-python">def stream_chat(message: str, system: str = None) -&gt; str:
+    """流式输出，实时打印生成内容"""
+    
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": message})
+    
+    # stream=True 开启流式模式
+    stream = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages,
+        stream=True
+    )
+    
+    full_response = ""
+    print("助手：", end="", flush=True)
+    
+    for chunk in stream:
+        # 每个 chunk 包含一小段文本
+        if chunk.choices[0].delta.content is not None:
+            content = chunk.choices[0].delta.content
+            print(content, end="", flush=True)
+            full_response += content
+    
+    print()  # 换行
+    return full_response
+
+# 测试流式输出
+result = stream_chat("写一首关于 Python 的短诗")
+print(f"\n完整内容（{len(result)} 字）")
+</code></pre>
+<pre><code class="language-python"># 异步流式输出（生产环境推荐）
+import asyncio
+from openai import AsyncOpenAI
+
+async_client = AsyncOpenAI()
+
+async def async_stream_chat(message: str) -&gt; str:
+    """异步流式输出"""
+    stream = await async_client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": message}],
+        stream=True
+    )
+    
+    full_response = ""
+    async for chunk in stream:
+        if chunk.choices[0].delta.content is not None:
+            content = chunk.choices[0].delta.content
+            print(content, end="", flush=True)
+            full_response += content
+    
+    return full_response
+
+# 运行异步函数
+asyncio.run(async_stream_chat("解释一下什么是异步编程"))
+</code></pre>
+<h2 id="错误处理生产环境必备"><a class="header" href="#错误处理生产环境必备">错误处理：生产环境必备</a></h2>
+<pre><code class="language-python">from openai import OpenAI, RateLimitError, APIError, APITimeoutError
+import time
+import logging
+
+logger = logging.getLogger(__name__)
+
+def robust_chat(
+    message: str,
+    max_retries: int = 3,
+    retry_delay: float = 1.0
+) -&gt; str:
+    """带重试机制的鲁棒调用"""
+    
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": message}],
+                timeout=30  # 30秒超时
+            )
+            return response.choices[0].message.content
+            
+        except RateLimitError as e:
+            # 触发速率限制，等待后重试
+            wait_time = retry_delay * (2 ** attempt)  # 指数退避
+            logger.warning(f"触发速率限制，{wait_time}秒后重试（第{attempt+1}次）")
+            time.sleep(wait_time)
+            
+        except APITimeoutError:
+            logger.warning(f"请求超时，重试中（第{attempt+1}次）")
+            time.sleep(retry_delay)
+            
+        except APIError as e:
+            if e.status_code &gt;= 500:  # 服务器错误，可以重试
+                logger.error(f"API 服务器错误 {e.status_code}，重试中")
+                time.sleep(retry_delay)
+            else:  # 客户端错误（400等），不重试
+                raise
+    
+    raise RuntimeError(f"API 调用在 {max_retries} 次重试后仍然失败")
+
+# 使用示例
+try:
+    result = robust_chat("你好，今天天气怎么样？")
+    print(result)
+except RuntimeError as e:
+    print(f"调用失败：{e}")
+</code></pre>
+<h2 id="调用开源模型ollama-本地部署"><a class="header" href="#调用开源模型ollama-本地部署">调用开源模型：Ollama 本地部署</a></h2>
+<p>如果不想依赖付费 API，可以使用开源模型本地运行：</p>
+<pre><code class="language-bash"># 安装 Ollama（本地模型运行框架）
+# macOS/Linux:
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# 拉取并运行模型
+ollama pull llama4
+ollama run llama4
+</code></pre>
+<pre><code class="language-python"># Ollama 兼容 OpenAI API 格式！
+from openai import OpenAI
+
+# 指向本地 Ollama 服务
+ollama_client = OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama"  # Ollama 不需要真实 API Key
+)
+
+def chat_with_ollama(message: str, model: str = "llama4") -&gt; str:
+    """调用本地 Ollama 模型"""
+    response = ollama_client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": message}]
+    )
+    return response.choices[0].message.content
+
+# 使用方式完全相同！
+result = chat_with_ollama("你好，介绍一下自己")
+print(result)
+</code></pre>
+<h2 id="调用国内模型以通义千问为例"><a class="header" href="#调用国内模型以通义千问为例">调用国内模型：以通义千问为例</a></h2>
+<pre><code class="language-python"># 通义千问 / DashScope 兼容 OpenAI 格式
+from openai import OpenAI
+
+qwen_client = OpenAI(
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
+)
+
+def chat_with_qwen(message: str) -&gt; str:
+    response = qwen_client.chat.completions.create(
+        model="qwen-plus",
+        messages=[{"role": "user", "content": message}]
+    )
+    return response.choices[0].message.content
+
+# 智谱 AI（GLM 系列）
+zhipu_client = OpenAI(
+    api_key=os.getenv("ZHIPU_API_KEY"),
+    base_url="https://open.bigmodel.cn/api/paas/v4/"
+)
+
+# 百川 AI
+baichuan_client = OpenAI(
+    api_key=os.getenv("BAICHUAN_API_KEY"),
+    base_url="https://api.baichuan-ai.com/v1"
+)
+</code></pre>
+<h2 id="完整的-llm-调用封装"><a class="header" href="#完整的-llm-调用封装">完整的 LLM 调用封装</a></h2>
+<p>实际项目中，建议封装一个统一的 LLM 客户端：</p>
+<pre><code class="language-python">from enum import Enum
+from dataclasses import dataclass
+from typing import Optional, Generator
+import os
+
+class ModelProvider(Enum):
+    OPENAI = "openai"
+    OLLAMA = "ollama"
+    QWEN = "qwen"
+    DEEPSEEK = "deepseek"
+    ZHIPU = "zhipu"
+
+@dataclass
+class LLMConfig:
+    provider: ModelProvider
+    model: str
+    temperature: float = 0.7
+    max_tokens: int = 2000
+    timeout: int = 30
+
+class UnifiedLLMClient:
+    """统一的 LLM 调用客户端，支持多个提供商"""
+    
+    def __init__(self, config: LLMConfig):
+        self.config = config
+        self.client = self._create_client()
+    
+    def _create_client(self) -&gt; OpenAI:
+        """根据配置创建对应的客户端"""
+        configs = {
+            ModelProvider.OPENAI: {
+                "api_key": os.getenv("OPENAI_API_KEY"),
+                "base_url": None
+            },
+            ModelProvider.OLLAMA: {
+                "api_key": "ollama",
+                "base_url": "http://localhost:11434/v1"
+            },
+            ModelProvider.QWEN: {
+                "api_key": os.getenv("DASHSCOPE_API_KEY"),
+                "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            },
+            ModelProvider.DEEPSEEK: {
+                "api_key": os.getenv("DEEPSEEK_API_KEY"),
+                "base_url": "https://api.deepseek.com"
+            },
+            ModelProvider.ZHIPU: {
+                "api_key": os.getenv("ZHIPU_API_KEY"),
+                "base_url": "https://open.bigmodel.cn/api/paas/v4/"
+            }
+        }
+        
+        provider_config = configs[self.config.provider]
+        return OpenAI(**{k: v for k, v in provider_config.items() if v is not None})
+    
+    def chat(self, messages: list, stream: bool = False):
+        """统一的对话接口"""
+        kwargs = {
+            "model": self.config.model,
+            "messages": messages,
+            "temperature": self.config.temperature,
+            "max_tokens": self.config.max_tokens,
+            "stream": stream
+        }
+        
+        return self.client.chat.completions.create(**kwargs)
+    
+    def simple_chat(self, message: str, system: str = None) -&gt; str:
+        """简单的单轮对话"""
+        messages = []
+        if system:
+            messages.append({"role": "system", "content": system})
+        messages.append({"role": "user", "content": message})
+        
+        response = self.chat(messages)
+        return response.choices[0].message.content
+
+# 使用示例
+# 使用 OpenAI
+openai_llm = UnifiedLLMClient(LLMConfig(
+    provider=ModelProvider.OPENAI,
+    model="gpt-4o-mini",
+    temperature=0.7
+))
+
+# 使用本地 Ollama
+local_llm = UnifiedLLMClient(LLMConfig(
+    provider=ModelProvider.OLLAMA,
+    model="llama4",
+    temperature=0.5
+))
+
+# 无论哪个提供商，接口完全一致
+result = openai_llm.simple_chat("Python 和 JavaScript 的主要区别是什么？")
+print(result)
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>本节掌握了 LLM API 调用的核心技能：</p>
+<div class="table-wrapper"><table><thead><tr><th>技能</th><th>要点</th></tr></thead><tbody>
+<tr><td>基础调用</td><td><code>client.chat.completions.create()</code> + messages 列表</td></tr>
+<tr><td>多轮对话</td><td>维护 messages 历史，包含 assistant 消息</td></tr>
+<tr><td>流式输出</td><td><code>stream=True</code>，迭代 chunks</td></tr>
+<tr><td>错误处理</td><td>重试机制 + 指数退避</td></tr>
+<tr><td>多模型支持</td><td>大多数国产/开源模型兼容 OpenAI 格式</td></tr>
+</tbody></table>
+</div>
+<p>下一节，我们深入了解影响模型输出的关键参数。</p>
+<hr />
+<p><em>下一节：<a href="./05_model_parameters.html">2.5 Token、Temperature 与模型参数详解</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_llm/03_prompting_strategies.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_llm/05_model_parameters.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_llm/03_prompting_strategies.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_llm/05_model_parameters.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

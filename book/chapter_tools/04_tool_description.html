@@ -1,0 +1,551 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>4.4 工具描述的编写技巧 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="工具描述的编写技巧"><a class="header" href="#工具描述的编写技巧">工具描述的编写技巧</a></h1>
+<p>工具描述（Tool Description）是告诉 LLM"这个工具是什么、什么时候用、怎么用"的关键信息。描述质量直接决定 LLM 能否正确地选择和调用工具。</p>
+<h2 id="为什么工具描述如此重要"><a class="header" href="#为什么工具描述如此重要">为什么工具描述如此重要？</a></h2>
+<p>LLM 选择工具完全依赖工具描述，它无法"看到"工具的代码实现：</p>
+<pre><code class="language-python"># 糟糕的描述 → LLM 可能选错工具或传错参数
+{
+    "name": "search",
+    "description": "搜索东西",  # 太模糊！
+    "parameters": {
+        "query": {"type": "string"}  # 没有说明期望的格式
+    }
+}
+
+# 优质的描述 → LLM 能准确理解和使用
+{
+    "name": "search_web",
+    "description": """在互联网上搜索实时信息。
+    
+    适合用于：
+    - 查询最新新闻和时事
+    - 获取产品价格和评价  
+    - 查找特定网站的内容
+    - 获取天气、股价等实时数据
+    
+    不适合用于：
+    - 已知的历史知识（直接回答即可）
+    - 需要深度分析的任务（搜索后再分析）""",
+    
+    "parameters": {
+        "query": {
+            "type": "string",
+            "description": "搜索关键词，建议简洁明了。例如：'北京2024天气预报' 而非 '我想知道北京明天天气怎么样'"
+        }
+    }
+}
+</code></pre>
+<h2 id="描述编写的六要素"><a class="header" href="#描述编写的六要素">描述编写的六要素</a></h2>
+<h3 id="1-清晰的功能描述一句话版本"><a class="header" href="#1-清晰的功能描述一句话版本">1. 清晰的功能描述（一句话版本）</a></h3>
+<p>第一句话最重要——这是 LLM 决定是否考虑此工具的依据：</p>
+<pre><code class="language-python"># 第一句话要包含：动词 + 操作对象 + 核心特征
+
+# ❌ 模糊
+"description": "处理文本"
+
+# ✅ 清晰  
+"description": "将任意语言的文本翻译成指定目标语言，保持原文格式和语气"
+</code></pre>
+<h3 id="2-适用场景何时使用"><a class="header" href="#2-适用场景何时使用">2. 适用场景（何时使用）</a></h3>
+<pre><code class="language-python">good_description = """
+查询指定公司或股票代码的实时财务数据。
+
+适合用于：
+- 获取股票实时价格和涨跌幅
+- 查询公司市值、PE 等基本面数据
+- 获取最近的财务报表数据（营收、利润等）
+- 比较多支股票的关键指标
+
+不适合用于：
+- 预测股价走势（这需要你的分析，工具只提供数据）
+- 获取历史超过5年的数据（请使用 get_historical_data 工具）
+"""
+</code></pre>
+<h3 id="3-参数描述精确说明每个参数"><a class="header" href="#3-参数描述精确说明每个参数">3. 参数描述（精确说明每个参数）</a></h3>
+<pre><code class="language-python"># 参数描述要包含：类型、含义、格式要求、示例值
+
+parameters = {
+    "type": "object",
+    "properties": {
+        "symbol": {
+            "type": "string",
+            "description": """股票代码。
+            - 美股：如 'AAPL'（苹果）、'GOOGL'（谷歌）
+            - A股：如 '600036.SS'（招行）、'000001.SZ'（平安银行）
+            - 港股：如 '0700.HK'（腾讯）
+            格式要求：大写字母，A股需要带交易所后缀（.SS/.SZ/.HK）"""
+        },
+        "metric": {
+            "type": "string",
+            "enum": ["price", "pe", "pb", "market_cap", "revenue"],
+            "description": """要查询的指标类型：
+            - price: 当前股价
+            - pe: 市盈率
+            - pb: 市净率  
+            - market_cap: 市值（亿元）
+            - revenue: 最近季度营收（亿元）"""
+        }
+    },
+    "required": ["symbol", "metric"]
+}
+</code></pre>
+<h3 id="4-返回值说明"><a class="header" href="#4-返回值说明">4. 返回值说明</a></h3>
+<pre><code class="language-python"># 告诉 LLM 工具返回什么格式的数据，方便它解读结果
+description = """
+...
+
+返回格式：
+{
+    "symbol": "AAPL",
+    "name": "苹果公司",
+    "price": 150.5,
+    "currency": "USD",
+    "change_percent": "+1.2%",
+    "last_updated": "2024-01-15 15:30:00"
+}
+
+如果查询失败，返回：{"error": "错误原因"}
+"""
+</code></pre>
+<h3 id="5-限制和注意事项"><a class="header" href="#5-限制和注意事项">5. 限制和注意事项</a></h3>
+<pre><code class="language-python">description = """
+在数据库中执行 SQL 查询。
+
+⚠️ 重要限制：
+- 只允许 SELECT 查询，不支持 INSERT/UPDATE/DELETE
+- 每次查询最多返回1000条记录
+- 查询超时限制：30秒
+- 表名必须是已知的业务表，不要猜测
+
+可用的表：users, orders, products, inventory, logs
+如需了解表结构，先使用 get_table_schema 工具
+"""
+</code></pre>
+<h3 id="6-使用示例"><a class="header" href="#6-使用示例">6. 使用示例</a></h3>
+<pre><code class="language-python">description = """
+发送企业微信消息给指定用户或群组。
+
+示例用法：
+- 发给个人：to="张三", message="会议在10点开始"
+- 发给群组：to="@产品团队", message="新版本已发布"
+- 发带@提醒：to="@全体", message="@李四 请查看最新文档"
+
+注意：to 字段支持用户名（中文）或工号（如 empXXXX）
+"""
+</code></pre>
+<h2 id="工具描述模板"><a class="header" href="#工具描述模板">工具描述模板</a></h2>
+<pre><code class="language-python">def create_tool_schema(
+    name: str,
+    one_liner: str,
+    when_to_use: list[str],
+    when_not_to_use: list[str],
+    parameters: dict,
+    returns: str,
+    notes: list[str] = None
+) -&gt; dict:
+    """生成标准格式的工具 Schema"""
+    
+    description_parts = [one_liner, ""]
+    
+    if when_to_use:
+        description_parts.append("适合用于：")
+        for item in when_to_use:
+            description_parts.append(f"- {item}")
+        description_parts.append("")
+    
+    if when_not_to_use:
+        description_parts.append("不适合用于：")
+        for item in when_not_to_use:
+            description_parts.append(f"- {item}")
+        description_parts.append("")
+    
+    description_parts.append(f"返回：{returns}")
+    
+    if notes:
+        description_parts.append("")
+        description_parts.append("注意事项：")
+        for note in notes:
+            description_parts.append(f"⚠️ {note}")
+    
+    return {
+        "type": "function",
+        "function": {
+            "name": name,
+            "description": "\n".join(description_parts),
+            "parameters": {
+                "type": "object",
+                "properties": parameters,
+                "required": [k for k, v in parameters.items() 
+                           if not v.get("default")]
+            }
+        }
+    }
+
+# 使用示例
+email_tool = create_tool_schema(
+    name="send_email",
+    one_liner="向指定邮箱发送邮件，支持 HTML 格式和附件",
+    when_to_use=[
+        "用户要求发送通知或报告",
+        "需要将分析结果以邮件形式传达",
+        "定时提醒类任务"
+    ],
+    when_not_to_use=[
+        "实时通知（改用消息推送）",
+        "发送大量数据（改用文件传输）"
+    ],
+    parameters={
+        "to": {
+            "type": "string",
+            "description": "收件人邮箱，多个用逗号分隔"
+        },
+        "subject": {
+            "type": "string",
+            "description": "邮件主题，建议简洁（50字以内）"
+        },
+        "body": {
+            "type": "string",
+            "description": "邮件正文，支持纯文本或 HTML"
+        },
+        "format": {
+            "type": "string",
+            "enum": ["plain", "html"],
+            "description": "正文格式：plain=纯文本，html=HTML",
+            "default": "plain"
+        }
+    },
+    returns="发送成功返回消息ID，失败返回错误信息",
+    notes=["每小时发送限额 100 封", "不支持超过 10MB 的附件"]
+)
+</code></pre>
+<h2 id="多工具场景下的描述策略"><a class="header" href="#多工具场景下的描述策略">多工具场景下的描述策略</a></h2>
+<p>当工具很多时，要特别注意区分相似工具：</p>
+<pre><code class="language-python"># 搜索类工具的区分
+search_tools = [
+    {
+        "name": "search_web",
+        "description": """通用网络搜索，适合查找：新闻、百科知识、产品评测。
+        搜索结果包含摘要，不包含完整页面内容。"""
+    },
+    {
+        "name": "search_academic",
+        "description": """学术论文搜索（Google Scholar/ArXiv），适合查找：
+        学术研究、技术报告、学位论文。返回论文标题、作者、摘要。"""
+    },
+    {
+        "name": "search_code",
+        "description": """代码搜索（GitHub/Stack Overflow），适合查找：
+        开源代码示例、编程解决方案、代码片段。"""
+    },
+    {
+        "name": "browse_url",
+        "description": """访问指定 URL 并返回完整页面内容。
+        当你已有 URL 需要详细阅读时使用，而非搜索未知内容。"""
+    }
+]
+</code></pre>
+<h2 id="测试工具描述质量"><a class="header" href="#测试工具描述质量">测试工具描述质量</a></h2>
+<pre><code class="language-python">def test_tool_description_quality(tool_schema: dict, test_cases: list) -&gt; None:
+    """
+    测试工具描述质量
+    通过给 LLM 一系列场景，看它是否能正确选择工具
+    """
+    from openai import OpenAI
+    
+    client = OpenAI()
+    
+    print(f"测试工具：{tool_schema['function']['name']}")
+    print("=" * 50)
+    
+    for case in test_cases:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": case["input"]}],
+            tools=[tool_schema],
+            tool_choice="auto"
+        )
+        
+        message = response.choices[0].message
+        if message.tool_calls:
+            tool_name = message.tool_calls[0].function.name
+            tool_args = message.tool_calls[0].function.arguments
+            result = "✅ 正确调用" if tool_name == tool_schema["function"]["name"] else "❌ 错误工具"
+            print(f"{result} | 输入: {case['input'][:30]}...")
+            if case.get("expected_args"):
+                print(f"  预期参数: {case['expected_args']}")
+                print(f"  实际参数: {tool_args}")
+        else:
+            expected_call = case.get("should_call", True)
+            if not expected_call:
+                print(f"✅ 正确跳过 | 输入: {case['input'][:30]}...")
+            else:
+                print(f"❌ 未调用工具 | 输入: {case['input'][:30]}...")
+
+# 测试示例
+test_tool_description_quality(
+    tool_schema=email_tool,
+    test_cases=[
+        {"input": "发邮件给 boss@company.com 说会议推迟到3点", "should_call": True},
+        {"input": "什么是 SMTP 协议？", "should_call": False},
+        {"input": "请通知 team@xxx.com 项目已完成", "should_call": True},
+    ]
+)
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>工具描述的关键要素：</p>
+<ol>
+<li><strong>一句话功能说明</strong>（LLM 第一判断依据）</li>
+<li><strong>适用 / 不适用场景</strong>（帮助 LLM 做出正确选择）</li>
+<li><strong>精确的参数说明</strong>（包含格式、示例、枚举值）</li>
+<li><strong>返回值格式</strong>（帮助 LLM 解读结果）</li>
+<li><strong>限制和注意事项</strong>（防止错误使用）</li>
+</ol>
+<p>好的工具描述能显著提升 Agent 的可靠性。</p>
+<hr />
+<p><em>下一节：<a href="./05_practice_search_calc.html">4.5 实战：搜索引擎 + 计算器 Agent</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_tools/03_custom_tools.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_tools/05_practice_search_calc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_tools/03_custom_tools.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_tools/05_practice_search_calc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 160" width="680" height="160" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="160" rx="12" fill="#f8f9fa"/>
+  <text x="340" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#2c3e50">向量数据库工作原理</text>
+
+  <!-- 存储流程 -->
+  <text x="340" y="52" text-anchor="middle" font-size="12" fill="#7f8c8d">【存储阶段】</text>
+  <!-- 节点 -->
+  <rect x="20" y="60" width="90" height="36" rx="6" fill="#3498db" opacity="0.15"/>
+  <rect x="20" y="60" width="90" height="4" rx="2" fill="#3498db"/>
+  <text x="65" y="82" text-anchor="middle" font-size="12" fill="#2980b9">原始文本</text>
+  <line x1="110" y1="78" x2="130" y2="78" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="132" y="60" width="110" height="36" rx="6" fill="#9b59b6" opacity="0.15"/>
+  <rect x="132" y="60" width="110" height="4" rx="2" fill="#9b59b6"/>
+  <text x="187" y="82" text-anchor="middle" font-size="12" fill="#8e44ad">嵌入模型</text>
+  <line x1="242" y1="78" x2="262" y2="78" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="264" y="60" width="130" height="36" rx="6" fill="#27ae60" opacity="0.15"/>
+  <rect x="264" y="60" width="130" height="4" rx="2" fill="#27ae60"/>
+  <text x="329" y="78" text-anchor="middle" font-size="12" fill="#27ae60">向量（数字数组）</text>
+  <line x1="394" y1="78" x2="414" y2="78" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="416" y="60" width="120" height="36" rx="6" fill="#e67e22" opacity="0.15"/>
+  <rect x="416" y="60" width="120" height="4" rx="2" fill="#e67e22"/>
+  <text x="476" y="82" text-anchor="middle" font-size="12" fill="#e67e22">向量数据库</text>
+
+  <!-- 查询流程 -->
+  <text x="340" y="118" text-anchor="middle" font-size="12" fill="#7f8c8d">【查询阶段】</text>
+  <rect x="20" y="126" width="90" height="28" rx="6" fill="#3498db" opacity="0.15"/>
+  <text x="65" y="144" text-anchor="middle" font-size="11" fill="#2980b9">查询文本</text>
+  <line x1="110" y1="140" x2="130" y2="140" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="132" y="126" width="80" height="28" rx="6" fill="#9b59b6" opacity="0.15"/>
+  <text x="172" y="144" text-anchor="middle" font-size="11" fill="#8e44ad">嵌入</text>
+  <line x1="212" y1="140" x2="232" y2="140" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="234" y="126" width="110" height="28" rx="6" fill="#27ae60" opacity="0.15"/>
+  <text x="289" y="144" text-anchor="middle" font-size="11" fill="#27ae60">相似度比较</text>
+  <line x1="344" y1="140" x2="364" y2="140" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="366" y="126" width="140" height="28" rx="6" fill="#e74c3c" opacity="0.15"/>
+  <text x="436" y="144" text-anchor="middle" font-size="11" fill="#e74c3c">返回最相关的记忆</text>
+
+  <!-- 核心思想 -->
+  <rect x="540" y="60" width="128" height="94" rx="8" fill="#fff3cd" stroke="#f39c12" stroke-width="1"/>
+  <text x="604" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">核心思想</text>
+  <text x="604" y="96" text-anchor="middle" font-size="10" fill="#555">语义相似的</text>
+  <text x="604" y="110" text-anchor="middle" font-size="10" fill="#555">文本，会有</text>
+  <text x="604" y="124" text-anchor="middle" font-size="10" fill="#555">相近的向量</text>
+  <text x="604" y="138" text-anchor="middle" font-size="10" fill="#555">表示</text>
+</svg>

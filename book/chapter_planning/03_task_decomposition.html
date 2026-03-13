@@ -1,0 +1,470 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>7.3 任务分解：将复杂问题拆解为子任务 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="任务分解将复杂问题拆解为子任务"><a class="header" href="#任务分解将复杂问题拆解为子任务">任务分解：将复杂问题拆解为子任务</a></h1>
+<p>复杂任务往往超出单个 LLM 调用的能力范围。任务分解是将大问题拆成可管理的小问题，然后逐步解决。</p>
+<blockquote>
+<p>📄 <strong>学术背景</strong>：任务分解的思想在 AI 规划领域有悠久的历史（如层次任务网络 HTN），但将其与 LLM 结合是近年的研究热点。<em>"Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning"</em>（Wang et al., 2023）是该方向的代表性工作，它提出让 LLM 先制定计划（"Let's first understand the problem and devise a plan"），再逐步执行每个子任务，在 GSM8K 等数学推理基准上比标准 Zero-shot CoT 提升了 5-6 个百分点。</p>
+</blockquote>
+<h2 id="plan-and-execute-模式"><a class="header" href="#plan-and-execute-模式">Plan-and-Execute 模式</a></h2>
+<pre><code class="language-python">from openai import OpenAI
+import json
+
+client = OpenAI()
+
+class PlanAndExecuteAgent:
+    """
+    规划-执行模式 Agent
+    先制定完整计划，再逐步执行
+    """
+    
+    def __init__(self, available_tools: dict):
+        self.tools = available_tools
+    
+    def plan(self, goal: str) -&gt; list[dict]:
+        """
+        将目标分解为有序的子任务列表
+        
+        Returns:
+            [{"step": 1, "task": "...", "tool": "...", "depends_on": []}]
+        """
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"""你是一个任务规划专家。将用户目标分解为可执行的子任务。
+
+可用工具：{list(self.tools.keys())}
+
+返回 JSON 格式的执行计划：
+{{
+  "goal": "总目标",
+  "steps": [
+    {{
+      "step": 1,
+      "task": "任务描述",
+      "tool": "工具名（可选）",
+      "expected_output": "预期产出",
+      "depends_on": []
+    }}
+  ]
+}}"""
+                },
+                {"role": "user", "content": f"请为以下目标制定执行计划：{goal}"}
+            ],
+            response_format={"type": "json_object"}
+        )
+        
+        plan = json.loads(response.choices[0].message.content)
+        return plan
+    
+    def execute_step(self, step: dict, context: dict) -&gt; str:
+        """执行单个步骤"""
+        task = step["task"]
+        tool_name = step.get("tool")
+        
+        print(f"\n[步骤 {step['step']}] {task}")
+        
+        if tool_name and tool_name in self.tools:
+            # 让 LLM 决定工具参数
+            param_response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": f"""
+任务：{task}
+已有信息：{json.dumps(context, ensure_ascii=False)}
+请生成调用工具 "{tool_name}" 所需的参数（JSON格式，只返回参数值）："""
+                    }
+                ]
+            )
+            
+            try:
+                params = json.loads(param_response.choices[0].message.content)
+                result = self.tools[tool_name](**params)
+            except:
+                result = self.tools[tool_name](task)
+        else:
+            # 直接用 LLM 处理
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": f"你正在执行以下任务，已有的上下文信息：{json.dumps(context, ensure_ascii=False)}"
+                    },
+                    {"role": "user", "content": task}
+                ]
+            )
+            result = response.choices[0].message.content
+        
+        print(f"  结果：{str(result)[:200]}")
+        return str(result)
+    
+    def execute(self, goal: str) -&gt; str:
+        """执行完整目标"""
+        # 1. 制定计划
+        plan = self.plan(goal)
+        print(f"\n📋 执行计划：{plan.get('goal', goal)}")
+        for step in plan.get("steps", []):
+            print(f"  步骤{step['step']}: {step['task']}")
+        
+        # 2. 逐步执行
+        context = {}  # 各步骤结果的共享上下文
+        
+        for step in plan.get("steps", []):
+            result = self.execute_step(step, context)
+            context[f"step_{step['step']}_result"] = result
+        
+        # 3. 汇总结果
+        summary_response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""
+目标：{goal}
+
+各步骤执行结果：
+{json.dumps(context, ensure_ascii=False, indent=2)}
+
+请综合以上结果，给出最终回答："""
+                }
+            ]
+        )
+        
+        final_answer = summary_response.choices[0].message.content
+        print(f"\n✅ 最终结果：\n{final_answer}")
+        return final_answer
+
+
+# 测试工具
+def mock_search(query: str) -&gt; str:
+    return f"搜索'{query}'的结果：[相关信息...]"
+
+def mock_calculate(expression: str) -&gt; str:
+    import math
+    try:
+        result = eval(expression, {"__builtins__": {}, "math": math})
+        return f"{expression} = {result}"
+    except:
+        return "计算失败"
+
+def mock_write_file(filename: str, content: str) -&gt; str:
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(content)
+    return f"文件 {filename} 已创建"
+
+# 执行示例
+agent = PlanAndExecuteAgent({
+    "search": mock_search,
+    "calculate": mock_calculate,
+    "write_file": mock_write_file
+})
+
+result = agent.execute(
+    "研究Python在AI开发中的主要应用场景，并写一份300字的总结报告"
+)
+</code></pre>
+<h2 id="层次化任务分解htn"><a class="header" href="#层次化任务分解htn">层次化任务分解（HTN）</a></h2>
+<p>对于更复杂的任务，可以采用层次化分解：</p>
+<pre><code class="language-python">def hierarchical_decompose(task: str, depth: int = 2) -&gt; dict:
+    """
+    层次化任务分解
+    将任务递归分解，直到达到"原子操作"级别
+    """
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "system",
+                "content": """你是任务分解专家。将复杂任务分解为子任务。
+                
+判断标准：
+- 原子任务（leaf）：可以直接执行，不需要进一步分解
+- 复合任务（composite）：需要分解为子任务
+
+返回JSON格式：
+{
+  "task": "任务描述",
+  "type": "leaf|composite",
+  "subtasks": [],  // composite时填写
+  "tool": "使用的工具（leaf时）",
+  "estimated_minutes": 5
+}"""
+            },
+            {
+                "role": "user",
+                "content": f"分解此任务（深度{depth}层）：{task}"
+            }
+        ],
+        response_format={"type": "json_object"}
+    )
+    
+    return json.loads(response.choices[0].message.content)
+
+# 示例
+task_tree = hierarchical_decompose(
+    "开发一个天气预报 Python 应用"
+)
+print(json.dumps(task_tree, ensure_ascii=False, indent=2))
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>任务分解的核心模式：</p>
+<ul>
+<li><strong>Plan-and-Execute</strong>：先规划再执行，步骤共享上下文</li>
+<li><strong>层次化分解</strong>：递归拆解直到原子任务</li>
+<li><strong>依赖管理</strong>：并行执行无依赖的子任务</li>
+</ul>
+<blockquote>
+<p>📖 <strong>想深入了解任务规划的学术前沿？</strong> 请阅读 <a href="./06_paper_readings.html">6.6 论文解读：规划与推理前沿研究</a>，涵盖 Plan-and-Solve、HuggingGPT、LLM+P 等论文的深度解读。</p>
+</blockquote>
+<hr />
+<p><em>下一节：<a href="./04_reflection.html">6.4 反思与自我纠错机制</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_planning/02_react_framework.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_planning/04_reflection.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_planning/02_react_framework.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_planning/04_reflection.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

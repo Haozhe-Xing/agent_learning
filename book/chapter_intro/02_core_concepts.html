@@ -1,0 +1,479 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>1.2 Agent 的核心概念与定义 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="agent-的核心概念与定义"><a class="header" href="#agent-的核心概念与定义">Agent 的核心概念与定义</a></h1>
+<blockquote>
+<p>📖 <em>"如果你无法清晰地定义一个概念，你就无法真正理解它。"</em></p>
+</blockquote>
+<h2 id="agent-的正式定义"><a class="header" href="#agent-的正式定义">Agent 的正式定义</a></h2>
+<p>在 AI 领域，<strong>Agent（智能体）</strong> 的定义是：</p>
+<blockquote>
+<p><strong>Agent 是一个能够自主感知环境、进行推理决策，并采取行动以实现特定目标的系统。</strong></p>
+</blockquote>
+<p>让我们拆解这个定义中的每个关键词：</p>
+<p><img src="../svg/chapter_intro_02_agent_definition.svg" alt="Agent定义的四个关键要素" /></p>
+<h2 id="agent-的五大核心特征"><a class="header" href="#agent-的五大核心特征">Agent 的五大核心特征</a></h2>
+<h3 id="特征1自主性autonomy"><a class="header" href="#特征1自主性autonomy">特征1：自主性（Autonomy）</a></h3>
+<p>Agent 能够在没有人类逐步指导的情况下，<strong>自己决定下一步做什么</strong>。</p>
+<pre><code class="language-python"># ❌ 非自主的程序（需要人类逐步操作）
+def manual_workflow():
+    """传统方式：人类决定每一步"""
+    data = input("请输入数据文件路径: ")       # 人决定
+    format_type = input("请选择分析方式: ")     # 人决定
+    output_path = input("结果保存到哪里: ")     # 人决定
+    # ... 每一步都需要人类干预
+
+# ✅ 自主的 Agent（自己决定执行步骤）
+def autonomous_agent(goal: str):
+    """Agent 方式：告诉目标，自主完成"""
+    # 人只需要说："帮我分析上个月的销售数据，找出增长最快的产品"
+    # Agent 自主决定：
+    #   1. 去哪里找数据？ → 连接数据库
+    #   2. 用什么方法分析？ → 选择统计方法
+    #   3. 如何呈现结果？ → 生成图表和报告
+    #   4. 结果是否可靠？ → 自我验证
+    pass
+</code></pre>
+<h3 id="特征2感知能力perception"><a class="header" href="#特征2感知能力perception">特征2：感知能力（Perception）</a></h3>
+<p>Agent 能够从各种渠道获取信息，理解当前的"环境"：</p>
+<pre><code class="language-python"># Agent 可以从多种来源"感知"信息
+
+class AgentPerception:
+    """Agent 的感知能力示例"""
+    
+    def perceive_user_input(self, text: str):
+        """感知用户的自然语言输入"""
+        # "帮我看看今天的新闻中有没有关于AI的"
+        pass
+    
+    def perceive_tool_results(self, result: dict):
+        """感知工具调用的返回结果"""
+        # {"status": "success", "data": [...]}
+        pass
+    
+    def perceive_environment(self):
+        """感知当前环境状态"""
+        # 当前时间、系统状态、可用资源等
+        pass
+    
+    def perceive_feedback(self, error: Exception):
+        """感知错误和反馈"""
+        # API 调用失败、数据格式错误等
+        pass
+</code></pre>
+<h3 id="特征3推理能力reasoning"><a class="header" href="#特征3推理能力reasoning">特征3：推理能力（Reasoning）</a></h3>
+<p>Agent 能够基于当前信息进行<strong>分析、判断和规划</strong>：</p>
+<pre><code class="language-python"># Agent 的推理过程（以 ReAct 模式为例）
+
+reasoning_example = """
+🧑 用户: "帮我对比一下北京和上海今天的天气，推荐一个适合出行的城市"
+
+🤖 Agent 的推理过程:
+
+Thought 1: 用户想比较两个城市的天气，我需要分别查询两个城市的天气。
+Action 1: 调用 search_weather("北京")
+Observation 1: 北京 — 雾霾，PM2.5: 180，温度: 5°C
+
+Thought 2: 已经得到北京的天气了，现在查上海。
+Action 2: 调用 search_weather("上海")
+Observation 2: 上海 — 晴天，PM2.5: 35，温度: 15°C
+
+Thought 3: 对比结果：
+  - 北京：雾霾严重，空气质量差，不适合户外活动
+  - 上海：晴天，空气好，温度适宜
+  结论：推荐上海
+Action 3: 生成最终回答
+
+🤖 回复: "对比两个城市的天气后，我推荐去上海出行！
+  上海今天晴天，温度15°C，空气质量优良（PM2.5: 35），
+  非常适合户外活动。而北京今天有雾霾，空气质量较差，
+  建议尽量减少外出。"
+"""
+print(reasoning_example)
+</code></pre>
+<h3 id="特征4行动能力action"><a class="header" href="#特征4行动能力action">特征4：行动能力（Action）</a></h3>
+<p>Agent 能够通过<strong>调用工具</strong>来执行实际操作：</p>
+<pre><code class="language-python"># Agent 可以使用的工具类型
+
+class AgentToolkit:
+    """Agent 的工具箱"""
+    
+    # 🔍 信息获取类工具
+    def web_search(self, query: str): 
+        """搜索互联网"""
+        ...
+    
+    def query_database(self, sql: str): 
+        """查询数据库"""
+        ...
+    
+    # 💻 代码执行类工具
+    def run_python(self, code: str): 
+        """执行 Python 代码"""
+        ...
+    
+    def run_shell(self, command: str): 
+        """执行 Shell 命令"""
+        ...
+    
+    # 📧 通信类工具
+    def send_email(self, to: str, subject: str, body: str): 
+        """发送邮件"""
+        ...
+    
+    def call_api(self, url: str, params: dict): 
+        """调用外部 API"""
+        ...
+    
+    # 📁 文件操作类工具
+    def read_file(self, path: str): 
+        """读取文件"""
+        ...
+    
+    def write_file(self, path: str, content: str): 
+        """写入文件"""
+        ...
+</code></pre>
+<h3 id="特征5学习与适应能力learning--adaptation"><a class="header" href="#特征5学习与适应能力learning--adaptation">特征5：学习与适应能力（Learning &amp; Adaptation）</a></h3>
+<p>Agent 能够从执行结果中学习，<strong>不断改进自己的行为</strong>：</p>
+<pre><code class="language-python"># Agent 的自我改进循环
+
+def agent_with_learning(task: str):
+    """带有学习能力的 Agent"""
+    
+    max_retries = 3
+    
+    for attempt in range(max_retries):
+        # 制定计划
+        plan = think(task, past_failures=memory.get_failures())
+        
+        # 执行计划
+        result = execute(plan)
+        
+        # 评估结果
+        if evaluate(result, task):
+            return result  # ✅ 任务成功完成
+        else:
+            # ❌ 失败了，从错误中学习
+            failure_reason = analyze_failure(result)
+            memory.store_failure(
+                task=task,
+                plan=plan,
+                failure_reason=failure_reason
+            )
+            print(f"第 {attempt + 1} 次尝试失败: {failure_reason}")
+            print("正在调整策略重试...")
+    
+    return "经过多次尝试仍无法完成，请提供更多信息。"
+</code></pre>
+<h2 id="agent-的核心组成要素"><a class="header" href="#agent-的核心组成要素">Agent 的核心组成要素</a></h2>
+<p>一个完整的 AI Agent 通常由以下几个核心模块组成：</p>
+<p><img src="../svg/chapter_intro_02_agent_components.svg" alt="AI Agent核心组成要素" /></p>
+<p>让我们用代码来表达这个结构：</p>
+<pre><code class="language-python">from dataclasses import dataclass, field
+from typing import Callable
+
+@dataclass
+class AgentComponent:
+    """Agent 的核心组件定义"""
+    
+    # 🧠 大脑：大语言模型
+    llm: str = "gpt-4"
+    
+    # 📝 系统提示词：定义 Agent 的角色和行为准则
+    system_prompt: str = """你是一个智能助手，能够：
+    1. 理解用户的自然语言请求
+    2. 制定解决问题的计划
+    3. 使用可用的工具来完成任务
+    4. 在遇到困难时调整策略
+    """
+    
+    # 🔧 工具集：Agent 可以使用的工具
+    tools: list[Callable] = field(default_factory=list)
+    
+    # 💾 记忆：存储对话历史和重要信息
+    memory: list[dict] = field(default_factory=list)
+    
+    # 🔄 最大推理步数：防止无限循环
+    max_steps: int = 10
+
+# 创建一个 Agent 实例
+my_agent = AgentComponent(
+    llm="gpt-4",
+    system_prompt="你是一个数据分析专家...",
+    tools=[web_search, run_python, read_file],
+    max_steps=5
+)
+</code></pre>
+<h2 id="一句话理解-agent"><a class="header" href="#一句话理解-agent">一句话理解 Agent</a></h2>
+<p>如果要用一句话总结 Agent 是什么，可以这样说：</p>
+<blockquote>
+<p>🎯 <strong>Agent = LLM（大脑）+ Prompt（人格）+ Tools（手脚）+ Memory（记忆）+ Orchestration（控制流）</strong></p>
+</blockquote>
+<p>就像一个人：</p>
+<ul>
+<li><strong>LLM</strong> 是大脑——负责思考和判断</li>
+<li><strong>Prompt</strong> 是性格和专业背景——决定它是医生还是程序员</li>
+<li><strong>Tools</strong> 是手脚——让它能够操作外部世界</li>
+<li><strong>Memory</strong> 是记忆——让它记住之前发生的事</li>
+<li><strong>Orchestration</strong> 是工作习惯——决定它如何安排工作流程</li>
+</ul>
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>概念</th><th>说明</th></tr></thead><tbody>
+<tr><td><strong>Agent 定义</strong></td><td>能自主感知、推理并行动以实现目标的系统</td></tr>
+<tr><td><strong>五大特征</strong></td><td>自主性、感知能力、推理能力、行动能力、学习适应</td></tr>
+<tr><td><strong>核心公式</strong></td><td>Agent = LLM + Prompt + Tools + Memory + Orchestration</td></tr>
+<tr><td><strong>与聊天机器人区别</strong></td><td>Agent 能做事，聊天机器人只能说话</td></tr>
+</tbody></table>
+</div>
+<h2 id="-思考练习"><a class="header" href="#-思考练习">🤔 思考练习</a></h2>
+<ol>
+<li>回想你使用过的 AI 产品，它们具备 Agent 的五大特征中的哪些？缺少哪些？</li>
+<li>如果让你设计一个"私人健身教练 Agent"，它需要具备哪些工具？</li>
+<li>为什么说 LLM 是 Agent 的"大脑"？没有 LLM 之前，能实现 Agent 吗？</li>
+</ol>
+<hr />
+<p><em>理解了 Agent 的核心概念后，让我们在下一节深入探索它的内部架构——"感知-思考-行动"循环。</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_intro/01_evolution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_intro/03_architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_intro/01_evolution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_intro/03_architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

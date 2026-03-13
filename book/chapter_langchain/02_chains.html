@@ -1,0 +1,445 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>9.2 Chain：构建处理管道 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="chain构建处理管道"><a class="header" href="#chain构建处理管道">Chain：构建处理管道</a></h1>
+<p>Chain（链）是 LangChain 的核心概念——将多个处理步骤串联成可复用的流水线。你可以把 Chain 想象成一条装配线：原材料（用户输入）从一端进入，经过多个加工站（提示模板、LLM、解析器等），最终从另一端输出成品（结构化结果）。</p>
+<p>在 LangChain 中，Chain 使用 <strong>LCEL（LangChain Expression Language）</strong> 语法来构建。LCEL 的核心符号是 <code>|</code>（管道符），它的工作方式类似于 Unix 命令行中的管道——前一个组件的输出会自动成为下一个组件的输入。</p>
+<p>本节将通过四种常见的 Chain 模式，带你掌握 LCEL 的核心用法。</p>
+<h2 id="lcel现代链式语法"><a class="header" href="#lcel现代链式语法">LCEL：现代链式语法</a></h2>
+<h3 id="基础准备"><a class="header" href="#基础准备">基础准备</a></h3>
+<p>首先导入必要的模块。LCEL 的核心构建块包括：<code>ChatPromptTemplate</code>（提示模板）、<code>ChatOpenAI</code>（LLM）、<code>StrOutputParser</code>（字符串解析器）以及各类 <code>Runnable</code> 组件。</p>
+<pre><code class="language-python">from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.runnables import RunnableParallel, RunnableLambda, RunnablePassthrough
+from operator import itemgetter
+
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+# ============================
+# 基础链：提示 → LLM → 解析
+# ============================
+
+# 翻译链
+translate_prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一位专业翻译，将文本翻译成{target_lang}"),
+    ("human", "{text}")
+])
+
+translate_chain = translate_prompt | llm | StrOutputParser()
+
+result = translate_chain.invoke({
+    "target_lang": "英语",
+    "text": "人工智能正在改变世界"
+})
+print(result)
+
+# ============================
+# 顺序链：一步步处理
+# ============================
+
+# 顺序链将多个步骤串联起来——前一步的输出成为后一步的输入。
+# 这里的示例是"先提取关键词，再结合原文生成摘要"的两步流程。
+# 关键挑战：后续步骤需要同时访问前一步的结果和原始输入。
+# 解决方案：用 RunnableParallel 同时执行提取和传递原始输入。
+keyword_prompt = ChatPromptTemplate.from_messages([
+    ("system", "从文本中提取3个关键词，用逗号分隔，只输出关键词"),
+    ("human", "{text}")
+])
+
+summary_prompt = ChatPromptTemplate.from_messages([
+    ("system", "根据以下关键词和原文，生成一段简洁摘要"),
+    ("human", "关键词：{keywords}\n原文：{original_text}")
+])
+
+# 方式1：使用 RunnablePassthrough 传递原始输入
+analysis_chain = (
+    RunnableParallel(
+        keywords=keyword_prompt | llm | StrOutputParser(),
+        original_text=RunnablePassthrough()
+    )
+    | RunnableLambda(lambda x: {
+        "keywords": x["keywords"],
+        "original_text": x["original_text"]["text"]
+    })
+    | summary_prompt | llm | StrOutputParser()
+)
+
+result = analysis_chain.invoke({"text": "Python是一种强大的编程语言，广泛用于AI开发"})
+print(result)
+
+# ============================
+# 并行链：同时执行多个任务
+# ============================
+
+# RunnableParallel 可以让多个链同时运行，适合需要对同一输入
+# 执行多种独立分析的场景。每个分支独立执行，互不影响，
+# 最终结果汇聚成一个字典返回。这比逐个串行调用快得多。
+
+def analyze_text_parallel(text: str) -&gt; dict:
+    """同时进行情感分析和摘要生成"""
+    
+    sentiment_prompt = ChatPromptTemplate.from_messages([
+        ("system", "对文本做情感分析，只返回：正面/负面/中性"),
+        ("human", "{text}")
+    ])
+    
+    summary_prompt = ChatPromptTemplate.from_messages([
+        ("system", "用一句话概括文本主要内容"),
+        ("human", "{text}")
+    ])
+    
+    keywords_prompt = ChatPromptTemplate.from_messages([
+        ("system", "提取文本的5个关键词，用逗号分隔"),
+        ("human", "{text}")
+    ])
+    
+    # 并行执行
+    parallel_chain = RunnableParallel(
+        sentiment=sentiment_prompt | llm | StrOutputParser(),
+        summary=summary_prompt | llm | StrOutputParser(),
+        keywords=keywords_prompt | llm | StrOutputParser()
+    )
+    
+    return parallel_chain.invoke({"text": text})
+
+result = analyze_text_parallel("今天发布的新版本修复了很多bug，性能也大幅提升！")
+print(f"情感：{result['sentiment']}")
+print(f"摘要：{result['summary']}")
+print(f"关键词：{result['keywords']}")
+
+# ============================
+# 条件链：根据条件路由
+# ============================
+
+# 条件链（RunnableBranch）根据输入的特征选择不同的处理分支。
+# 典型场景：客服系统根据用户意图（技术问题、业务咨询、投诉等）
+# 路由到不同的专业处理链。
+#
+# ⚠️ 性能要点：RunnableBranch 会依次检查每个条件函数，
+# 如果条件函数中调用了 LLM，应该先执行一次分类、缓存结果，
+# 避免每个条件分支都重复调用 LLM（见下方优化后的实现）。
+
+from langchain_core.runnables import RunnableBranch
+
+def classify_intent(input_dict: dict) -&gt; str:
+    """分类用户意图"""
+    text = input_dict.get("text", "")
+    
+    classify_prompt = ChatPromptTemplate.from_messages([
+        ("system", "判断以下文本的意图类型，只返回：技术问题/业务咨询/投诉/其他"),
+        ("human", "{text}")
+    ])
+    
+    intent = (classify_prompt | llm | StrOutputParser()).invoke({"text": text})
+    return intent.strip()
+
+# 不同意图对应不同处理链
+tech_chain = ChatPromptTemplate.from_messages([
+    ("system", "你是技术支持工程师，提供详细技术解答"),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+business_chain = ChatPromptTemplate.from_messages([
+    ("system", "你是业务顾问，提供专业业务建议"),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+complaint_chain = ChatPromptTemplate.from_messages([
+    ("system", "你是客户关系经理，处理投诉时要有耐心和同理心"),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+default_chain = ChatPromptTemplate.from_messages([
+    ("system", "你是通用客服助手"),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+# 路由链
+# 注意：先用 RunnableLambda 分类一次并缓存结果到字典中，避免多次调用 LLM
+branch_chain = (
+    RunnableLambda(lambda x: {**x, "_intent": classify_intent(x)})
+    | RunnableBranch(
+        (lambda x: "技术问题" in x["_intent"], tech_chain),
+        (lambda x: "业务咨询" in x["_intent"], business_chain),
+        (lambda x: "投诉" in x["_intent"], complaint_chain),
+        default_chain  # 默认分支
+    )
+)
+
+# 测试
+response = branch_chain.invoke({"text": "API返回500错误怎么办？"})
+print(response)
+</code></pre>
+<h2 id="流式输出链"><a class="header" href="#流式输出链">流式输出链</a></h2>
+<p>在实际应用中，用户不希望等待 LLM 生成完整回复后才看到内容。流式输出可以让回复逐字显示（类似 ChatGPT 的打字效果），大幅提升用户体验。LCEL 构建的所有链都天然支持流式输出，无需额外修改代码。</p>
+<pre><code class="language-python"># LCEL 天然支持流式输出
+async def stream_response(question: str):
+    """流式输出"""
+    chain = ChatPromptTemplate.from_messages([
+        ("system", "你是一个有帮助的助手"),
+        ("human", "{question}")
+    ]) | llm | StrOutputParser()
+    
+    print("回答：", end="", flush=True)
+    async for chunk in chain.astream({"question": question}):
+        print(chunk, end="", flush=True)
+    print()  # 换行
+
+import asyncio
+asyncio.run(stream_response("什么是量子纠缠？"))
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>LCEL（<code>|</code> 管道语法）是 LangChain 的核心构建方式：</p>
+<ul>
+<li><strong>顺序链</strong>：步骤间传递结果</li>
+<li><strong>并行链</strong>：<code>RunnableParallel</code> 同时执行</li>
+<li><strong>条件链</strong>：<code>RunnableBranch</code> 按条件路由</li>
+<li><strong>流式输出</strong>：所有 LCEL 链都支持 <code>.stream()</code> 和 <code>.astream()</code></li>
+</ul>
+<hr />
+<p><em>下一节：<a href="./03_langchain_agents.html">8.3 使用 LangChain 构建 Agent</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_langchain/01_langchain_overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_langchain/03_langchain_agents.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_langchain/01_langchain_overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_langchain/03_langchain_agents.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

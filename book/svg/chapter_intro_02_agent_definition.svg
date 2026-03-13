@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" width="700" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4dabf7"/>
+    </marker>
+  </defs>
+  <rect width="700" height="320" fill="#f8f9fa" rx="12"/>
+  <text x="350" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Agent 定义的四个关键要素</text>
+
+  <!-- Center target -->
+  <circle cx="350" cy="175" r="45" fill="#4dabf7" opacity="0.9"/>
+  <text x="350" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">🎯 特定</text>
+  <text x="350" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">目标</text>
+
+  <!-- 自主性 - top left -->
+  <rect x="50" y="60" width="160" height="80" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="130" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e74c3c">🧠 自主性</text>
+  <text x="130" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">不需要人类</text>
+  <text x="130" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">逐步指导</text>
+  <!-- Arrow from 自主性 to center -->
+  <path d="M 210 115 L 308 155" stroke="#e74c3c" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.7"/>
+
+  <!-- 感知能力 - top right -->
+  <rect x="490" y="60" width="160" height="80" rx="10" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="2"/>
+  <text x="570" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9b59b6">👁️ 感知能力</text>
+  <text x="570" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">接收外部</text>
+  <text x="570" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">信息输入</text>
+  <!-- Arrow from 感知能力 to center -->
+  <path d="M 490 115 L 392 155" stroke="#9b59b6" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.7"/>
+
+  <!-- 推理能力 - bottom left -->
+  <rect x="50" y="210" width="160" height="80" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="130" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">💡 推理能力</text>
+  <text x="130" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">分析信息</text>
+  <text x="130" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">制定计划</text>
+  <!-- Arrow from 推理能力 to center -->
+  <path d="M 210 235 L 308 195" stroke="#27ae60" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.7"/>
+
+  <!-- 行动能力 - bottom right -->
+  <rect x="490" y="210" width="160" height="80" rx="10" fill="#f39c12" opacity="0.12" stroke="#f39c12" stroke-width="2"/>
+  <text x="570" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f39c12">💪 行动能力</text>
+  <text x="570" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">执行操作</text>
+  <text x="570" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#555">改变环境</text>
+  <!-- Arrow from 行动能力 to center -->
+  <path d="M 490 235 L 392 195" stroke="#f39c12" stroke-width="1.8" marker-end="url(#arrow)" opacity="0.7"/>
+</svg>

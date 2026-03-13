@@ -1,0 +1,537 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>17.1 项目架构设计 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="项目架构设计"><a class="header" href="#项目架构设计">项目架构设计</a></h1>
+<blockquote>
+<p><strong>本节目标</strong>：设计一个 AI 编程助手的整体架构，明确各模块的职责和交互方式。</p>
+</blockquote>
+<hr />
+<h2 id="项目目标"><a class="header" href="#项目目标">项目目标</a></h2>
+<p>我们要构建一个 AI 编程助手，它能够：</p>
+<ul>
+<li>理解代码仓库的结构和逻辑</li>
+<li>回答关于代码的问题</li>
+<li>生成新代码和修改现有代码</li>
+<li>自动生成测试和修复 Bug</li>
+</ul>
+<p>这不是一个简单的"代码补全"工具，而是一个能理解项目上下文、进行多步推理的 Agent。</p>
+<p><img src="../svg/chapter_coding_agent_01_architecture.svg" alt="AI 编程助手 Agent 架构" /></p>
+<hr />
+<h2 id="整体架构"><a class="header" href="#整体架构">整体架构</a></h2>
+<pre><code class="language-python">"""
+AI 编程助手架构
+
+┌─────────────────────────────────────────────┐
+│                用户接口层                     │
+│   CLI / IDE 插件 / Web 界面                  │
+└───────────────────┬─────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────┐
+│              Agent 核心层                    │
+│   ┌──────────┐  ┌──────────┐  ┌──────────┐  │
+│   │ 意图理解 │→ │ 任务规划 │→ │ 执行引擎 │  │
+│   └──────────┘  └──────────┘  └──────────┘  │
+└───────────────────┬─────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────┐
+│              工具层                          │
+│   代码搜索 │ 文件读写 │ AST解析 │ 测试运行  │
+└───────────────────┬─────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────┐
+│              知识层                          │
+│   代码索引 │ 向量数据库 │ 项目上下文         │
+└─────────────────────────────────────────────┘
+"""
+</code></pre>
+<hr />
+<h2 id="核心组件设计"><a class="header" href="#核心组件设计">核心组件设计</a></h2>
+<pre><code class="language-python">from dataclasses import dataclass, field
+from enum import Enum
+from typing import Optional
+
+class TaskType(Enum):
+    """编程助手支持的任务类型"""
+    CODE_QA = "code_qa"              # 代码问答
+    CODE_GENERATE = "code_generate"  # 代码生成
+    CODE_MODIFY = "code_modify"      # 代码修改
+    CODE_REVIEW = "code_review"      # 代码审查
+    TEST_GENERATE = "test_generate"  # 测试生成
+    BUG_FIX = "bug_fix"            # Bug 修复
+    EXPLAIN = "explain"            # 代码解释
+
+@dataclass
+class ProjectContext:
+    """项目上下文信息"""
+    root_path: str
+    language: str
+    framework: Optional[str] = None
+    file_tree: list[str] = field(default_factory=list)
+    dependencies: dict = field(default_factory=dict)
+    
+@dataclass
+class CodingTask:
+    """编程任务"""
+    task_type: TaskType
+    description: str
+    target_files: list[str] = field(default_factory=list)
+    context: Optional[ProjectContext] = None
+    constraints: list[str] = field(default_factory=list)
+
+class CodingAssistant:
+    """AI 编程助手主类"""
+    
+    def __init__(self, llm, project_path: str):
+        self.llm = llm
+        self.project_path = project_path
+        self.context = self._build_context()
+    
+    def _build_context(self) -&gt; ProjectContext:
+        """构建项目上下文"""
+        import os
+        
+        # 扫描文件树
+        file_tree = []
+        for root, dirs, files in os.walk(self.project_path):
+            # 跳过隐藏目录和常见的忽略目录
+            dirs[:] = [d for d in dirs 
+                      if not d.startswith('.') 
+                      and d not in ('node_modules', '__pycache__', 'venv')]
+            
+            for f in files:
+                rel_path = os.path.relpath(
+                    os.path.join(root, f), self.project_path
+                )
+                file_tree.append(rel_path)
+        
+        # 检测语言和框架
+        language = self._detect_language(file_tree)
+        framework = self._detect_framework(file_tree)
+        
+        return ProjectContext(
+            root_path=self.project_path,
+            language=language,
+            framework=framework,
+            file_tree=file_tree[:200]  # 限制数量
+        )
+    
+    def _detect_language(self, files: list[str]) -&gt; str:
+        """检测项目主要语言"""
+        ext_count = {}
+        lang_map = {
+            '.py': 'python', '.js': 'javascript', '.ts': 'typescript',
+            '.java': 'java', '.go': 'go', '.rs': 'rust',
+        }
+        
+        for f in files:
+            ext = os.path.splitext(f)[1]
+            if ext in lang_map:
+                ext_count[ext] = ext_count.get(ext, 0) + 1
+        
+        if ext_count:
+            most_common = max(ext_count, key=ext_count.get)
+            return lang_map.get(most_common, "unknown")
+        return "unknown"
+    
+    def _detect_framework(self, files: list[str]) -&gt; str:
+        """检测使用的框架"""
+        indicators = {
+            "requirements.txt": "python",
+            "package.json": "node",
+            "Cargo.toml": "rust",
+            "go.mod": "go",
+        }
+        
+        for f in files:
+            if os.path.basename(f) in indicators:
+                return indicators[os.path.basename(f)]
+        return None
+    
+    async def handle(self, task: CodingTask) -&gt; str:
+        """处理编程任务"""
+        task.context = self.context
+        
+        handlers = {
+            TaskType.CODE_QA: self._handle_qa,
+            TaskType.CODE_GENERATE: self._handle_generate,
+            TaskType.CODE_REVIEW: self._handle_review,
+            TaskType.BUG_FIX: self._handle_bug_fix,
+            TaskType.EXPLAIN: self._handle_explain,
+        }
+        
+        handler = handlers.get(task.task_type)
+        if handler:
+            return await handler(task)
+        else:
+            return f"暂不支持任务类型: {task.task_type.value}"
+    
+    async def _handle_qa(self, task: CodingTask) -&gt; str:
+        """处理代码问答"""
+        # 搜索相关代码 → 构建上下文 → LLM 回答
+        relevant_code = self._search_relevant_code(task.description)
+        
+        prompt = f"""基于以下项目代码，回答用户的问题。
+
+项目语言：{task.context.language}
+相关代码：
+{relevant_code}
+
+问题：{task.description}
+"""
+        response = await self.llm.ainvoke(prompt)
+        return response.content
+    
+    async def _handle_generate(self, task):
+        """处理代码生成"""
+        prompt = f"""请根据以下需求生成代码。
+
+项目语言：{task.context.language}
+需求：{task.description}
+约束：{', '.join(task.constraints) if task.constraints else '无'}
+
+请生成完整的、可运行的代码。"""
+        
+        response = await self.llm.ainvoke(prompt)
+        return response.content
+    
+    async def _handle_review(self, task):
+        """处理代码审查"""
+        code = self._read_files(task.target_files)
+        
+        prompt = f"""请审查以下代码，指出：
+1. 潜在的 Bug
+2. 性能问题
+3. 安全隐患
+4. 代码风格问题
+5. 改进建议
+
+代码：
+{code}"""
+        
+        response = await self.llm.ainvoke(prompt)
+        return response.content
+    
+    async def _handle_bug_fix(self, task):
+        """处理 Bug 修复"""
+        code = self._read_files(task.target_files)
+        
+        prompt = f"""以下代码存在 Bug，请找出并修复。
+
+Bug 描述：{task.description}
+
+代码：
+{code}
+
+请提供修复后的完整代码和修复说明。"""
+        
+        response = await self.llm.ainvoke(prompt)
+        return response.content
+    
+    async def _handle_explain(self, task):
+        """处理代码解释"""
+        code = self._read_files(task.target_files)
+        
+        prompt = f"""请用通俗易懂的语言解释以下代码：
+
+{code}
+
+要求：
+1. 先概述整体功能
+2. 逐个解释重要的函数/类
+3. 说明关键的设计模式或算法"""
+        
+        response = await self.llm.ainvoke(prompt)
+        return response.content
+    
+    def _search_relevant_code(self, query: str) -&gt; str:
+        """搜索相关代码（简化版，实际应使用向量搜索）"""
+        # 简单的关键词匹配搜索
+        import os
+        
+        results = []
+        keywords = query.lower().split()
+        
+        for filepath in self.context.file_tree[:50]:
+            full_path = os.path.join(self.project_path, filepath)
+            try:
+                with open(full_path, 'r') as f:
+                    content = f.read()
+                    if any(kw in content.lower() for kw in keywords):
+                        results.append(f"--- {filepath} ---\n{content[:500]}")
+            except (UnicodeDecodeError, FileNotFoundError):
+                continue
+        
+        return "\n\n".join(results[:5]) if results else "未找到相关代码"
+    
+    def _read_files(self, file_paths: list[str]) -&gt; str:
+        """读取文件内容"""
+        import os
+        
+        contents = []
+        for path in file_paths:
+            full_path = os.path.join(self.project_path, path)
+            try:
+                with open(full_path) as f:
+                    contents.append(f"--- {path} ---\n{f.read()}")
+            except FileNotFoundError:
+                contents.append(f"--- {path} ---\n[文件不存在]")
+        
+        return "\n\n".join(contents)
+</code></pre>
+<hr />
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>组件</th><th>职责</th></tr></thead><tbody>
+<tr><td>用户接口层</td><td>接收用户指令，展示结果</td></tr>
+<tr><td>Agent 核心层</td><td>意图理解、任务规划、执行控制</td></tr>
+<tr><td>工具层</td><td>代码搜索、文件操作、AST 分析</td></tr>
+<tr><td>知识层</td><td>项目索引、向量检索</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>下一节预告</strong>：有了架构，我们来实现代码理解能力——让 Agent 真正"读懂"代码。</p>
+</blockquote>
+<hr />
+<p><a href="./02_code_understanding.html">下一节：16.2 代码理解与分析能力 →</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_coding_agent/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_coding_agent/02_code_understanding.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_coding_agent/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_coding_agent/02_code_understanding.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

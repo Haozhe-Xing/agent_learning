@@ -1,0 +1,700 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>5.2 技能的定义与封装 - 从零开始学 Agent 开发 —— 基于 Python 的实战指南</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent 开发 —— 基于 Python 的实战指南</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="技能的定义与封装"><a class="header" href="#技能的定义与封装">技能的定义与封装</a></h1>
+<p>上一节我们了解了技能的概念。本节深入探讨三种主流的技能封装方式，从最简单到最复杂，每种方式都有其适用场景。</p>
+<h2 id="方式一prompt-based-skill提示型技能"><a class="header" href="#方式一prompt-based-skill提示型技能">方式一：Prompt-based Skill（提示型技能）</a></h2>
+<p>这是最简单也是最流行的技能封装方式——<strong>用结构化的 Prompt 将领域知识和行为指南注入 Agent</strong>。</p>
+<h3 id="基本原理"><a class="header" href="#基本原理">基本原理</a></h3>
+<p><img src="../svg/chapter_skill_02_prompt_vs_skill.svg" alt="普通 Agent vs 有技能的 Agent" /></p>
+<h3 id="anthropic-skills-框架"><a class="header" href="#anthropic-skills-框架">Anthropic Skills 框架</a></h3>
+<p>2025 年，Anthropic 开源了 <a href="https://github.com/anthropics/skills">Agent Skills</a> 框架，用 <code>SKILL.md</code> 文件定义技能。这是目前最简洁优雅的提示型技能方案。</p>
+<p>一个 Skill 的目录结构：</p>
+<pre><code>my-skill/
+├── SKILL.md          # 技能定义文件（核心）
+├── examples/         # 示例文件（可选）
+│   ├── example1.md
+│   └── example2.md
+└── templates/        # 模板文件（可选）
+    └── report.md
+</code></pre>
+<p><code>SKILL.md</code> 的结构：</p>
+<pre><code class="language-markdown">---
+name: data-analyst
+description: 专业的数据分析技能，能够自动完成数据清洗、分析和可视化
+---
+
+# 数据分析师技能
+
+## 你的角色
+你是一名专业的数据分析师。当用户提供数据或提出分析需求时，
+你会自动执行完整的分析流程。
+
+## 工作流程
+1. **数据理解**：检查数据结构、类型、缺失值
+2. **数据清洗**：处理异常值和缺失数据
+3. **探索性分析**：计算描述统计、发现数据模式
+4. **可视化呈现**：选择合适的图表类型
+5. **洞察总结**：提供可操作的业务建议
+
+## 关键规则
+- 缺失值超过 30% 的列，优先考虑删除而非填充
+- 数值异常值使用 IQR 方法（1.5倍四分位距）检测
+- 始终在分析开头提供数据质量报告
+- 每个可视化都必须有清晰的标题和说明
+
+## 可视化选择指南
+| 数据类型 | 分析目标 | 推荐图表 |
+|---------|---------|---------|
+| 时间序列 | 趋势 | 折线图 |
+| 分类 | 比较 | 柱状图 |
+| 数值 | 分布 | 直方图/箱线图 |
+| 两个数值 | 关系 | 散点图 |
+| 占比 | 构成 | 饼图/环形图 |
+</code></pre>
+<h3 id="提示型技能的层级机制"><a class="header" href="#提示型技能的层级机制">提示型技能的层级机制</a></h3>
+<p>技能可以嵌套和组合，形成层级结构：</p>
+<pre><code>项目级技能/
+├── SKILL.md                    # 项目总技能
+├── code-review/
+│   └── SKILL.md                # 代码审查子技能
+├── data-analysis/
+│   ├── SKILL.md                # 数据分析子技能
+│   └── visualization/
+│       └── SKILL.md            # 可视化子技能（更细粒度）
+└── report-writing/
+    └── SKILL.md                # 报告撰写子技能
+</code></pre>
+<h3 id="渐进式信息披露"><a class="header" href="#渐进式信息披露">渐进式信息披露</a></h3>
+<p>好的技能设计应该遵循<strong>渐进式信息披露</strong>原则——不是一次性把所有知识都塞进上下文，而是按需加载：</p>
+<pre><code class="language-python">class SkillManager:
+    """渐进式技能加载管理器"""
+    
+    def __init__(self):
+        self.skills = {}
+        self.loaded_skills = set()
+    
+    def register_skill(self, name: str, skill_path: str):
+        """注册技能（不立即加载内容）"""
+        self.skills[name] = {
+            "path": skill_path,
+            "summary": self._extract_summary(skill_path),  # 只加载摘要
+        }
+    
+    def get_skill_summaries(self) -&gt; str:
+        """返回所有技能的简短摘要（用于 LLM 决策）"""
+        summaries = []
+        for name, skill in self.skills.items():
+            summaries.append(f"- {name}: {skill['summary']}")
+        return "\n".join(summaries)
+    
+    def load_skill(self, name: str) -&gt; str:
+        """按需加载完整技能内容"""
+        if name not in self.skills:
+            raise ValueError(f"未知技能: {name}")
+        
+        skill_path = self.skills[name]["path"]
+        with open(skill_path, "r") as f:
+            content = f.read()
+        
+        self.loaded_skills.add(name)
+        return content
+    
+    def build_system_prompt(self, base_prompt: str, task: str) -&gt; str:
+        """根据任务动态构建系统提示"""
+        # 第一步：让 LLM 看到所有技能的摘要
+        prompt = f"""{base_prompt}
+
+你具备以下技能：
+{self.get_skill_summaries()}
+
+当前任务：{task}
+
+请先判断需要使用哪些技能，然后我会加载详细的技能指南。
+"""
+        return prompt
+</code></pre>
+<h3 id="提示型技能的优缺点"><a class="header" href="#提示型技能的优缺点">提示型技能的优缺点</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>优点</th><th>缺点</th></tr></thead><tbody>
+<tr><td>零代码，纯文本定义</td><td>受限于上下文窗口长度</td></tr>
+<tr><td>跨模型通用（GPT、Claude、开源模型）</td><td>复杂逻辑难以精确控制</td></tr>
+<tr><td>易于版本管理（Git）</td><td>模型可能不完全遵循指南</td></tr>
+<tr><td>快速迭代</td><td>大量技能加载时 Token 成本高</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="方式二code-based-skill代码型技能"><a class="header" href="#方式二code-based-skill代码型技能">方式二：Code-based Skill（代码型技能）</a></h2>
+<p>代码型技能将技能实现为<strong>可执行的代码模块</strong>——不是通过 Prompt 告诉 Agent 怎么做，而是直接提供可运行的代码。</p>
+<h3 id="基本原理-1"><a class="header" href="#基本原理-1">基本原理</a></h3>
+<pre><code class="language-python"># 代码型技能：将分析流程封装为可执行代码
+class DataAnalysisSkill:
+    """数据分析技能"""
+    
+    def __init__(self):
+        self.name = "data_analysis"
+        self.description = "自动化数据分析：清洗、统计、可视化、报告生成"
+    
+    def analyze(self, file_path: str, analysis_type: str = "auto") -&gt; dict:
+        """执行完整的数据分析流程"""
+        # 1. 加载数据
+        df = self._load_data(file_path)
+        
+        # 2. 数据质量检查
+        quality_report = self._check_quality(df)
+        
+        # 3. 自动分析
+        if analysis_type == "auto":
+            analysis_type = self._detect_analysis_type(df)
+        
+        results = self._run_analysis(df, analysis_type)
+        
+        # 4. 生成可视化
+        charts = self._create_visualizations(df, results)
+        
+        # 5. 生成报告
+        report = self._generate_report(quality_report, results, charts)
+        
+        return {
+            "quality_report": quality_report,
+            "analysis_results": results,
+            "charts": charts,
+            "report": report
+        }
+    
+    def _check_quality(self, df) -&gt; dict:
+        """数据质量检查"""
+        return {
+            "total_rows": len(df),
+            "missing_values": df.isnull().sum().to_dict(),
+            "duplicates": df.duplicated().sum(),
+            "dtypes": df.dtypes.to_dict()
+        }
+    
+    def _detect_analysis_type(self, df) -&gt; str:
+        """自动检测分析类型"""
+        has_date = any(df[col].dtype == 'datetime64[ns]' for col in df.columns)
+        numeric_cols = df.select_dtypes(include=['number']).columns
+        
+        if has_date and len(numeric_cols) &gt; 0:
+            return "time_series"
+        elif len(numeric_cols) &gt;= 2:
+            return "correlation"
+        else:
+            return "descriptive"
+    
+    # ... 更多内部方法
+</code></pre>
+<h3 id="voyager-的代码技能库"><a class="header" href="#voyager-的代码技能库">Voyager 的代码技能库</a></h3>
+<p>Voyager（2023，NVIDIA）是代码型技能的经典案例。它在 Minecraft 游戏中，让 Agent 将学会的行为保存为 JavaScript 代码技能：</p>
+<pre><code class="language-javascript">// Voyager 自动生成的技能示例
+// 技能名：mineWoodLog
+// 描述：挖掘木头并收集木材
+async function mineWoodLog(bot) {
+  // 找到最近的树木
+  const woodBlock = bot.findBlock({
+    matching: block =&gt; block.name.includes('log'),
+    maxDistance: 32
+  });
+  
+  if (!woodBlock) {
+    bot.chat("附近没有找到树木");
+    return false;
+  }
+  
+  // 走到树木旁边
+  await bot.pathfinder.goto(woodBlock.position);
+  
+  // 挖掘木头
+  await bot.dig(woodBlock);
+  
+  bot.chat("成功获取木材！");
+  return true;
+}
+</code></pre>
+<p>技能库的管理：</p>
+<pre><code class="language-python"># Voyager 技能库的核心逻辑（简化版）
+class SkillLibrary:
+    """Voyager 风格的代码技能库"""
+    
+    def __init__(self, embedding_model):
+        self.skills = {}           # 技能名 → 技能代码
+        self.descriptions = {}     # 技能名 → 技能描述
+        self.embeddings = {}       # 技能名 → 描述的向量嵌入
+        self.embedding_model = embedding_model
+    
+    def add_skill(self, name: str, code: str, description: str):
+        """添加新技能到库中"""
+        self.skills[name] = code
+        self.descriptions[name] = description
+        self.embeddings[name] = self.embedding_model.embed(description)
+        print(f"✅ 新技能已添加: {name}")
+    
+    def retrieve_skills(self, task: str, top_k: int = 5) -&gt; list:
+        """根据任务描述检索最相关的技能"""
+        task_embedding = self.embedding_model.embed(task)
+        
+        # 计算与所有技能的相似度
+        similarities = {}
+        for name, emb in self.embeddings.items():
+            similarities[name] = cosine_similarity(task_embedding, emb)
+        
+        # 返回最相关的 top_k 个技能
+        sorted_skills = sorted(similarities.items(), 
+                              key=lambda x: x[1], reverse=True)
+        
+        return [
+            {"name": name, "code": self.skills[name], 
+             "description": self.descriptions[name]}
+            for name, _ in sorted_skills[:top_k]
+        ]
+</code></pre>
+<h3 id="semantic-kernel-的-plugin-模式"><a class="header" href="#semantic-kernel-的-plugin-模式">Semantic Kernel 的 Plugin 模式</a></h3>
+<p>微软的 Semantic Kernel 从一开始就将"技能"（后更名为 Plugin）作为核心概念：</p>
+<pre><code class="language-python"># Semantic Kernel Plugin 示例
+from semantic_kernel import Kernel
+from semantic_kernel.functions import kernel_function
+
+class WeatherPlugin:
+    """天气查询技能"""
+    
+    @kernel_function(
+        name="get_weather",
+        description="获取指定城市的当前天气信息"
+    )
+    def get_weather(self, city: str) -&gt; str:
+        # 调用天气 API
+        weather = call_weather_api(city)
+        return f"{city}当前天气：{weather['condition']}，" \
+               f"温度 {weather['temp']}°C"
+    
+    @kernel_function(
+        name="get_forecast",
+        description="获取指定城市未来几天的天气预报"
+    )
+    def get_forecast(self, city: str, days: int = 3) -&gt; str:
+        forecast = call_forecast_api(city, days)
+        return format_forecast(forecast)
+
+# 注册到 Kernel
+kernel = Kernel()
+kernel.add_plugin(WeatherPlugin(), plugin_name="weather")
+</code></pre>
+<h3 id="代码型技能的优缺点"><a class="header" href="#代码型技能的优缺点">代码型技能的优缺点</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>优点</th><th>缺点</th></tr></thead><tbody>
+<tr><td>执行精确、可靠</td><td>需要编码能力</td></tr>
+<tr><td>可测试、可调试</td><td>跨平台适配复杂</td></tr>
+<tr><td>性能好（不消耗 LLM Token）</td><td>灵活性不如 Prompt 型</td></tr>
+<tr><td>可以处理复杂的业务逻辑</td><td>更新和维护成本高</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="方式三workflow-based-skill工作流型技能"><a class="header" href="#方式三workflow-based-skill工作流型技能">方式三：Workflow-based Skill（工作流型技能）</a></h2>
+<p>工作流型技能将技能编排为<strong>有状态的处理流程</strong>——定义节点（步骤）和边（转换条件），构成一个完整的工作流。</p>
+<h3 id="基本原理-2"><a class="header" href="#基本原理-2">基本原理</a></h3>
+<pre><code class="language-python"># 使用 LangGraph 定义工作流型技能
+from langgraph.graph import StateGraph, END
+from typing import TypedDict, Annotated
+
+class AnalysisState(TypedDict):
+    """分析流程的状态"""
+    file_path: str
+    raw_data: dict
+    clean_data: dict
+    analysis_results: dict
+    charts: list
+    report: str
+    quality_score: float
+
+def load_data(state: AnalysisState) -&gt; AnalysisState:
+    """步骤1：加载数据"""
+    df = pd.read_csv(state["file_path"])
+    return {"raw_data": df.to_dict()}
+
+def check_quality(state: AnalysisState) -&gt; AnalysisState:
+    """步骤2：检查数据质量"""
+    df = pd.DataFrame(state["raw_data"])
+    missing_ratio = df.isnull().sum().sum() / df.size
+    quality_score = 1 - missing_ratio
+    return {"quality_score": quality_score}
+
+def should_clean(state: AnalysisState) -&gt; str:
+    """条件路由：是否需要清洗？"""
+    if state["quality_score"] &lt; 0.9:
+        return "clean"      # 质量不够 → 需要清洗
+    else:
+        return "analyze"     # 质量足够 → 直接分析
+
+def clean_data(state: AnalysisState) -&gt; AnalysisState:
+    """步骤3a：数据清洗"""
+    df = pd.DataFrame(state["raw_data"])
+    df = df.fillna(df.median(numeric_only=True))
+    df = df.drop_duplicates()
+    return {"clean_data": df.to_dict()}
+
+def analyze(state: AnalysisState) -&gt; AnalysisState:
+    """步骤3b/4：数据分析"""
+    data = state.get("clean_data") or state["raw_data"]
+    df = pd.DataFrame(data)
+    results = {
+        "mean": df.mean(numeric_only=True).to_dict(),
+        "std": df.std(numeric_only=True).to_dict(),
+        "correlation": df.corr(numeric_only=True).to_dict()
+    }
+    return {"analysis_results": results}
+
+def visualize(state: AnalysisState) -&gt; AnalysisState:
+    """步骤5：生成可视化"""
+    # 生成图表
+    return {"charts": ["trend.png", "distribution.png"]}
+
+def generate_report(state: AnalysisState) -&gt; AnalysisState:
+    """步骤6：生成报告"""
+    report = format_report(state["analysis_results"], state["charts"])
+    return {"report": report}
+
+# 构建工作流
+workflow = StateGraph(AnalysisState)
+
+# 添加节点
+workflow.add_node("load", load_data)
+workflow.add_node("check", check_quality)
+workflow.add_node("clean", clean_data)
+workflow.add_node("analyze", analyze)
+workflow.add_node("visualize", visualize)
+workflow.add_node("report", generate_report)
+
+# 添加边
+workflow.set_entry_point("load")
+workflow.add_edge("load", "check")
+workflow.add_conditional_edges("check", should_clean, {
+    "clean": "clean",
+    "analyze": "analyze"
+})
+workflow.add_edge("clean", "analyze")
+workflow.add_edge("analyze", "visualize")
+workflow.add_edge("visualize", "report")
+workflow.add_edge("report", END)
+
+# 编译为可执行的技能
+data_analysis_skill = workflow.compile()
+
+# 使用技能
+result = data_analysis_skill.invoke({
+    "file_path": "sales.csv"
+})
+print(result["report"])
+</code></pre>
+<h3 id="工作流型技能的可视化"><a class="header" href="#工作流型技能的可视化">工作流型技能的可视化</a></h3>
+<p><img src="../svg/chapter_skill_02_workflow.svg" alt="数据分析工作流型技能" /></p>
+<h3 id="工作流型技能的优缺点"><a class="header" href="#工作流型技能的优缺点">工作流型技能的优缺点</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>优点</th><th>缺点</th></tr></thead><tbody>
+<tr><td>流程可视化，逻辑清晰</td><td>架构复杂度较高</td></tr>
+<tr><td>支持条件分支和循环</td><td>需要学习工作流框架</td></tr>
+<tr><td>可以包含人机协作节点</td><td>调试比纯代码更难</td></tr>
+<tr><td>天然支持状态管理和错误恢复</td><td>简单任务可能过度工程化</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="三种方式的对比与选择"><a class="header" href="#三种方式的对比与选择">三种方式的对比与选择</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>Prompt-based</th><th>Code-based</th><th>Workflow-based</th></tr></thead><tbody>
+<tr><td><strong>定义方式</strong></td><td>Markdown / 文本</td><td>Python / JS 代码</td><td>状态图 / DAG</td></tr>
+<tr><td><strong>复杂度</strong></td><td>低</td><td>中</td><td>高</td></tr>
+<tr><td><strong>精确度</strong></td><td>中（依赖 LLM 理解）</td><td>高</td><td>高</td></tr>
+<tr><td><strong>灵活性</strong></td><td>高（自然语言）</td><td>中</td><td>中</td></tr>
+<tr><td><strong>可测试性</strong></td><td>低</td><td>高</td><td>高</td></tr>
+<tr><td><strong>适用场景</strong></td><td>知识密集、创意型</td><td>精确计算、API 集成</td><td>多步流程、需要审批</td></tr>
+<tr><td><strong>代表框架</strong></td><td>Anthropic Skills</td><td>Semantic Kernel</td><td>LangGraph</td></tr>
+<tr><td><strong>Token 成本</strong></td><td>高（占用上下文）</td><td>低</td><td>低</td></tr>
+</tbody></table>
+</div>
+<h3 id="选择建议"><a class="header" href="#选择建议">选择建议</a></h3>
+<p><img src="../svg/chapter_skill_02_decision_tree.svg" alt="技能封装方式选择" /></p>
+<h3 id="混合使用示例"><a class="header" href="#混合使用示例">混合使用示例</a></h3>
+<p>实际项目中，三种方式经常混合使用：</p>
+<pre><code class="language-python"># 混合技能：Prompt + Code + Workflow
+class HybridDataAnalystSkill:
+    
+    # Prompt-based: 注入分析方法论
+    SYSTEM_PROMPT = """
+    你是一名资深数据分析师。
+    分析原则：先看数据质量，再做探索性分析，最后给出建议。
+    """
+    
+    # Code-based: 精确的数据处理
+    def clean_data(self, df):
+        """代码保证数据清洗的精确性"""
+        df = df.dropna(thresh=len(df) * 0.7, axis=1)
+        for col in df.select_dtypes(include=['number']):
+            q1, q3 = df[col].quantile([0.25, 0.75])
+            iqr = q3 - q1
+            df = df[(df[col] &gt;= q1 - 1.5 * iqr) &amp; 
+                     (df[col] &lt;= q3 + 1.5 * iqr)]
+        return df
+    
+    # Workflow-based: 多步骤流程编排
+    def build_workflow(self):
+        """状态图保证流程的可控性"""
+        graph = StateGraph(AnalysisState)
+        graph.add_node("load", self.load_data)
+        graph.add_node("quality_check", self.check_quality)
+        graph.add_node("clean", self.clean_data)
+        graph.add_node("llm_analyze", self.llm_analyze)  # LLM + Prompt
+        graph.add_node("code_visualize", self.visualize)  # 代码生成图表
+        # ... 编排
+        return graph.compile()
+</code></pre>
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<ul>
+<li><strong>Prompt-based Skill</strong> 最适合知识密集型任务——用 Markdown 文件快速定义领域知识和行为指南</li>
+<li><strong>Code-based Skill</strong> 最适合需要精确控制的任务——用可执行代码实现可靠的技能逻辑</li>
+<li><strong>Workflow-based Skill</strong> 最适合复杂多步骤流程——用状态图编排带条件分支的工作流</li>
+<li>实际项目中<strong>三种方式混合使用</strong>是最佳实践</li>
+</ul>
+<blockquote>
+<p>💡 <strong>实践建议</strong>：初学者建议从 Prompt-based Skill 开始——用 <code>SKILL.md</code> 文件定义你的第一个技能。当需要更精确的控制时，逐步引入 Code-based 和 Workflow-based 技能。</p>
+</blockquote>
+<hr />
+<p><em>下一节：<a href="./03_skill_learning.html">5.3 技能学习与获取</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_skill/01_skill_overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_skill/03_skill_learning.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_skill/01_skill_overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_skill/03_skill_learning.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
