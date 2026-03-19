@@ -1,0 +1,790 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>18.3 PPO：近端策略优化 - 从零开始学 Agent</title>
+
+
+        <!-- Custom HTML head -->
+        <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+          }
+        };
+        </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="183-ppo近端策略优化"><a class="header" href="#183-ppo近端策略优化">18.3 PPO：近端策略优化</a></h1>
+<p>在 <a href="./01_agentic_rl_overview.html">18.1 节</a> 中，我们介绍了 Agentic-RL 的两阶段训练范式（SFT → RL）。RL 阶段的核心问题是：<strong>如何根据奖励信号来更新模型参数？</strong> 这正是策略优化算法要解决的问题。</p>
+<p>本节将从零开始，<strong>系统性地讲解 PPO（Proximal Policy Optimization）算法</strong>——它是 InstructGPT 和 ChatGPT 的核心训练算法，也是理解后续 DPO、GRPO 算法的基础。我们将从最基本的直觉出发，逐步推导数学公式，并通过大量图示帮助理解。</p>
+<p><img src="../svg/chapter_agentic_rl_03_three_algorithms.svg" alt="三大策略优化算法架构对比" /></p>
+<h2 id="预备知识策略梯度的基本思想"><a class="header" href="#预备知识策略梯度的基本思想">预备知识：策略梯度的基本思想</a></h2>
+<p>在深入三种算法之前，我们需要理解一个共同的起点——<strong>策略梯度（Policy Gradient）</strong> [1]。</p>
+<h3 id="核心直觉"><a class="header" href="#核心直觉">核心直觉</a></h3>
+<p>想象你在练习投篮。每次投篮后，你会得到一个反馈：进了（奖励 +1）或没进（奖励 0）。策略梯度的思想极其朴素：</p>
+<blockquote>
+<p><strong>如果某个动作获得了高奖励，就增加该动作的概率；如果获得了低奖励，就降低该动作的概率。</strong></p>
+</blockquote>
+<p>形式化地，策略梯度定理给出的梯度方向为：</p>
+<p>$$\nabla_\theta J(\theta) = \mathbb{E}<em>{\tau \sim \pi</em>\theta} \left[ \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t | s_t) \cdot R(\tau) \right]$$</p>
+<p>下面我们<strong>逐项拆解</strong>这个公式，并用一个具体的语言模型例子来帮助理解。</p>
+<hr />
+<h4 id="①-nabla_theta-jtheta--我该往哪个方向调参数"><a class="header" href="#①-nabla_theta-jtheta--我该往哪个方向调参数">① $\nabla_\theta J(\theta)$ —— "我该往哪个方向调参数？"</a></h4>
+<ul>
+<li>$J(\theta)$ 是我们的<strong>总目标</strong>：模型在所有可能输入上的期望累积奖励。$J$ 越大，模型整体表现越好</li>
+<li>$\nabla_\theta$ 是对模型参数 $\theta$（即模型中数十亿个权重值）求梯度</li>
+<li>$\nabla_\theta J(\theta)$ 就是一个与 $\theta$ 同维度的向量，<strong>它告诉我们：如果把每个参数往哪个方向微调一点点，$J$ 会增大最快</strong></li>
+<li>训练时我们做的就是：$\theta \leftarrow \theta + \alpha \cdot \nabla_\theta J(\theta)$（$\alpha$ 是学习率），即沿梯度方向"上坡"</li>
+</ul>
+<blockquote>
+<p><strong>类比</strong>：你蒙着眼站在山坡上，梯度就是"脚下最陡的上坡方向"。每走一步（更新一次参数），你就往山顶（最大奖励）靠近一点。</p>
+</blockquote>
+<hr />
+<h4 id="②-nabla_theta-log-pi_thetaa_t--s_t--怎样调参数才能让这个动作更可能发生"><a class="header" href="#②-nabla_theta-log-pi_thetaa_t--s_t--怎样调参数才能让这个动作更可能发生">② $\nabla_\theta \log \pi_\theta(a_t | s_t)$ —— "怎样调参数才能让这个动作更可能发生？"</a></h4>
+<p>这是公式中最核心也最难理解的部分，我们分层解释：</p>
+<p><strong>第一层：$\pi_\theta(a_t | s_t)$ 是什么？</strong></p>
+<p>$\pi_\theta$ 就是我们的语言模型。给定当前状态 $s_t$（对话历史 + 已生成的 token），它输出一个概率分布，表示"下一个 token 是什么"的概率。例如：</p>
+<div class="table-wrapper"><table><thead><tr><th>下一个 token ($a_t$)</th><th>概率 $\pi_\theta(a_t | s_t)$</th></tr></thead><tbody>
+<tr><td>"搜索"</td><td>0.35</td></tr>
+<tr><td>"回答"</td><td>0.25</td></tr>
+<tr><td>"计算"</td><td>0.20</td></tr>
+<tr><td>"我"</td><td>0.10</td></tr>
+<tr><td>...</td><td>...</td></tr>
+</tbody></table>
+</div>
+<p>$\pi_\theta(\text{"搜索"} | s_t) = 0.35$ 表示：在当前上下文下，模型认为下一步输出"搜索"的概率是 35%。</p>
+<p><strong>第二层：$\log \pi_\theta(a_t | s_t)$ 为什么取对数？</strong></p>
+<p>取对数有两个好处：</p>
+<ol>
+<li><strong>数值稳定</strong>：概率值在 0 到 1 之间，连乘多个 token 的概率会变得极小（如 $0.35 \times 0.20 \times 0.15 = 0.0105$），取对数后变为加法（$\log 0.35 + \log 0.20 + \log 0.15 = -4.56$），避免数值下溢</li>
+<li><strong>梯度形式简洁</strong>：$\nabla_\theta \log f(\theta) = \frac{\nabla_\theta f(\theta)}{f(\theta)}$，这个比率形式恰好是我们需要的</li>
+</ol>
+<p><strong>第三层：$\nabla_\theta \log \pi_\theta(a_t | s_t)$ 到底是什么？</strong></p>
+<p>这被称为<strong>得分函数（score function）</strong>。它是一个与模型参数 $\theta$ 同维度的向量，指出：</p>
+<blockquote>
+<p><strong>"如果想让动作 $a_t$ 在状态 $s_t$ 下的概率增大，模型的每个参数应该分别往哪个方向调？"</strong></p>
+</blockquote>
+<ul>
+<li>它不直接改变概率，而是给出一个<strong>方向</strong></li>
+<li>沿这个方向调整参数 → $\pi_\theta(a_t | s_t)$ 增大（这个动作变得更可能）</li>
+<li>沿相反方向调整参数 → $\pi_\theta(a_t | s_t)$ 减小（这个动作变得更不可能）</li>
+</ul>
+<blockquote>
+<p><strong>类比</strong>：得分函数就像动作 $a_t$ 的"方向盘"——转动它可以增加或减少这个动作被选中的概率。但光有方向盘不够，你还需要知道<strong>该转多少</strong>——这就是下面 $R(\tau)$ 的作用。</p>
+</blockquote>
+<hr />
+<h4 id="③-rtau--这个方向盘该转多少"><a class="header" href="#③-rtau--这个方向盘该转多少">③ $R(\tau)$ —— "这个方向盘该转多少？"</a></h4>
+<p>$R(\tau) = \sum_{t=0}^{T} r_t$ 是整条轨迹（从开始到结束的完整交互过程）的<strong>累积奖励</strong>，它充当<strong>权重</strong>：</p>
+<ul>
+<li>
+<p><strong>$R(\tau) &gt; 0$（正奖励）</strong>：说明这条轨迹整体表现不错</p>
+<ul>
+<li>梯度 = 正权重 × 得分函数 → 沿得分函数方向更新 → <strong>增加</strong>轨迹中每个动作的概率</li>
+<li>直觉：这次表现好，下次要更多地做类似的事情</li>
+</ul>
+</li>
+<li>
+<p><strong>$R(\tau) &lt; 0$（负奖励）</strong>：说明这条轨迹整体表现很差</p>
+<ul>
+<li>梯度 = 负权重 × 得分函数 → 沿得分函数<strong>反方向</strong>更新 → <strong>减少</strong>轨迹中每个动作的概率</li>
+<li>直觉：这次表现差，下次要避免做类似的事情</li>
+</ul>
+</li>
+<li>
+<p><strong>$R(\tau) = 0$（零奖励）</strong>：这条轨迹对梯度无贡献</p>
+</li>
+<li>
+<p><strong>$|R(\tau)|$ 越大</strong>：权重越大，这条轨迹对参数更新的影响越大。奖励/惩罚越极端，模型"记忆"越深刻</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>类比</strong>：$R(\tau)$ 就像教练的评分。得分函数指明了方向盘，$R(\tau)$ 决定了转多大的角度。教练打高分（$R &gt; 0$）→ 大力转向"增加该动作概率"；教练打低分（$R &lt; 0$）→ 大力转向"减少该动作概率"。</p>
+</blockquote>
+<hr />
+<h4 id="④-sum_t0t--轨迹中每一步都要算"><a class="header" href="#④-sum_t0t--轨迹中每一步都要算">④ $\sum_{t=0}^{T}$ —— "轨迹中每一步都要算"</a></h4>
+<p>一条轨迹包含 $T+1$ 个时间步（从 $t=0$ 到 $t=T$），每一步都有一个 $(s_t, a_t)$ 对。求和意味着：轨迹中<strong>每一步的得分函数都被同一个 $R(\tau)$ 加权</strong>。</p>
+<p>在语言模型中，一步 = 生成一个 token。如果模型生成了一个 50 token 的回答，$T = 49$，那么这 50 个 token 中每一个的生成概率都会被同一个总奖励加权更新。</p>
+<blockquote>
+<p><strong>注意</strong>：这其实是一个粗糙的做法——用整条轨迹的总奖励来加权每一步。如果轨迹中前 30 个 token 是正确推理，后 20 个 token 是错误结论，它们都会被总奖励同等对待。这就是"<strong>信用分配问题（credit assignment）</strong>"——PPO 的优势函数 $A_t$ 正是为了解决这个问题（见 §1.3）。</p>
+</blockquote>
+<hr />
+<h4 id="⑤-mathbbetau-sim-pitheta--对很多次尝试取平均"><a class="header" href="#⑤-mathbbetau-sim-pitheta--对很多次尝试取平均">⑤ $\mathbb{E}<em>{\tau \sim \pi</em>\theta}$ —— "对很多次尝试取平均"</a></h4>
+<p>$\mathbb{E}$ 是<strong>期望运算符</strong>，$\tau \sim \pi_\theta$ 表示轨迹 $\tau$ 是按策略 $\pi_\theta$ 随机采样的。</p>
+<ul>
+<li>因为语言模型的生成是<strong>随机的</strong>（通过 temperature 采样），同一个输入可能产生不同的输出</li>
+<li>每次采样得到一条轨迹 $\tau$，对应一个 $R(\tau)$ 值</li>
+<li>期望就是<strong>对所有可能轨迹加权平均</strong>——概率越高的轨迹权重越大</li>
+</ul>
+<p><strong>实际操作中</strong>：我们无法枚举所有可能轨迹（语言模型的输出空间是天文数字级的），因此用<strong>蒙特卡洛近似</strong>——采样 $N$ 条轨迹，取平均作为期望的估计：</p>
+<p>$$\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t^{(n)} | s_t^{(n)}) \cdot R(\tau^{(n)}) \right]$$</p>
+<p>$N$ 越大，估计越准确，但计算成本也越高。这就是训练中 batch size 的本质。</p>
+<hr />
+<h4 id="完整例子语言模型-agent-的一次策略梯度更新"><a class="header" href="#完整例子语言模型-agent-的一次策略梯度更新">完整例子：语言模型 Agent 的一次策略梯度更新</a></h4>
+<p>假设我们正在训练一个能调用搜索工具的 Agent，用户提问"北京今天天气如何？"</p>
+<p><strong>采样两条轨迹：</strong></p>
+<div class="table-wrapper"><table><thead><tr><th></th><th>轨迹 A（好的回答）</th><th>轨迹 B（差的回答）</th></tr></thead><tbody>
+<tr><td>$s_0$</td><td>用户："北京今天天气如何？"</td><td>用户："北京今天天气如何？"</td></tr>
+<tr><td>$a_0$</td><td><code>&lt;think&gt;</code></td><td><code>&lt;think&gt;</code></td></tr>
+<tr><td>$a_1$</td><td>需要查询实时天气</td><td>我直接回答吧</td></tr>
+<tr><td>$a_2$</td><td><code>&lt;/think&gt;</code></td><td><code>&lt;/think&gt;</code></td></tr>
+<tr><td>$a_3$</td><td><code>&lt;tool_call&gt;search("北京天气")&lt;/tool_call&gt;</code></td><td>北京今天晴天，25°C</td></tr>
+<tr><td>...</td><td>（获取结果后给出准确回答）</td><td>（瞎编的，可能完全错误）</td></tr>
+<tr><td>$R(\tau)$</td><td><strong>+0.8</strong>（调用了工具，回答准确）</td><td><strong>-0.2</strong>（没调用工具，回答错误）</td></tr>
+</tbody></table>
+</div>
+<p><strong>梯度更新效果：</strong></p>
+<ul>
+<li><strong>轨迹 A</strong>（$R = +0.8$）：模型会<strong>增加</strong>"遇到实时信息问题 → 调用搜索工具"这一系列动作的概率</li>
+<li><strong>轨迹 B</strong>（$R = -0.2$）：模型会<strong>减少</strong>"遇到实时信息问题 → 直接瞎编回答"这一系列动作的概率</li>
+</ul>
+<p>经过成千上万次这样的更新，模型逐渐学会：<strong>遇到需要实时信息的问题，应该先调用工具，而不是直接编造答案。</strong></p>
+<hr />
+<h3 id="原始策略梯度的缺陷"><a class="header" href="#原始策略梯度的缺陷">原始策略梯度的缺陷</a></h3>
+<p>虽然直觉清晰，但原始策略梯度有两个严重问题：</p>
+<div class="table-wrapper"><table><thead><tr><th>问题</th><th>具体表现</th><th>后果</th></tr></thead><tbody>
+<tr><td><strong>高方差</strong></td><td>$R(\tau)$ 可能在不同轨迹间差异极大</td><td>梯度估计不稳定，训练收敛极慢</td></tr>
+<tr><td><strong>步长不可控</strong></td><td>没有约束单步更新的大小</td><td>一次"大跳步"就可能毁掉整个策略</td></tr>
+</tbody></table>
+</div>
+<p><strong>PPO、DPO、GRPO 各自用不同方式解决了这两个问题。</strong> 本节详细讲解 PPO，DPO 和 GRPO 将分别在 <a href="./04_dpo.html">18.4</a> 和 <a href="./05_grpo.html">18.5</a> 中介绍。</p>
+<hr />
+<h3 id="11-ppo-解决了什么问题"><a class="header" href="#11-ppo-解决了什么问题">1.1 PPO 解决了什么问题？</a></h3>
+<p>PPO [2] 是 OpenAI 于 2017 年提出的策略优化算法，是 InstructGPT [3] 和 ChatGPT 的核心训练算法。PPO 的设计目标是：</p>
+<blockquote>
+<p><strong>在保证训练稳定性的前提下，尽可能高效地利用已采样数据来更新策略。</strong></p>
+</blockquote>
+<p>PPO 通过两个关键机制实现这一目标：</p>
+<ol>
+<li><strong>重要性采样</strong>：允许用"旧策略"采集的数据来训练"当前策略"（数据复用）</li>
+<li><strong>Clip 裁剪</strong>：限制策略更新的步长，防止策略崩溃</li>
+</ol>
+<h3 id="12-重要性采样比率-rho_t离策训练的核心"><a class="header" href="#12-重要性采样比率-rho_t离策训练的核心">1.2 重要性采样比率 $\rho_t$：离策训练的核心</a></h3>
+<p>在策略梯度中，我们需要从当前策略 $\pi_\theta$ 中采样轨迹来计算梯度。但如果每次更新参数后都重新采样，效率极低。<strong>重要性采样</strong> 允许我们用旧策略 $\pi_{\theta_{old}}$ 的样本来估计新策略 $\pi_\theta$ 的梯度。</p>
+<p>核心是引入<strong>重要性采样比率</strong>：</p>
+<p>$$\rho_t = \frac{\pi_\theta(a_t | s_t)}{\pi_{\theta_{old}}(a_t | s_t)}$$</p>
+<p>逐项解读：</p>
+<ul>
+<li><strong>分子</strong> $\pi_\theta(a_t | s_t)$：当前策略在状态 $s_t$ 下选择动作 $a_t$ 的概率</li>
+<li><strong>分母</strong> $\pi_{\theta_{old}}(a_t | s_t)$：采样时的旧策略选择该动作的概率</li>
+<li>$\rho_t = 1$：当前策略与旧策略对这个动作的偏好完全一致</li>
+<li>$\rho_t &gt; 1$：当前策略比旧策略更倾向于这个动作（即"当前策略认为这个动作更好了"）</li>
+<li>$\rho_t &lt; 1$：当前策略比旧策略更不倾向于这个动作（"当前策略认为这个动作变差了"）</li>
+<li>$\rho_t = 2$：当前策略选择该动作的概率是旧策略的 2 倍</li>
+</ul>
+<p><strong>重要性采样的直觉</strong>：假设旧策略采样到某个动作的概率是 10%（$\pi_{old} = 0.1$），而当前策略认为该动作概率应该是 30%（$\pi_\theta = 0.3$），则 $\rho = 3$。这意味着如果用旧策略的数据来估计新策略的期望，每条这样的数据应该被赋予 3 倍权重——因为新策略"本应"更频繁地采到它。</p>
+<h3 id="13-优势函数-a_t判断动作的好坏"><a class="header" href="#13-优势函数-a_t判断动作的好坏">1.3 优势函数 $A_t$：判断动作的"好坏"</a></h3>
+<p>策略梯度中，用累积奖励 $R(\tau)$ 作为权重会导致高方差。<strong>优势函数（Advantage Function）</strong> 通过引入一个基准线来解决这个问题：</p>
+<p>$$A_t = Q(s_t, a_t) - V(s_t)$$</p>
+<ul>
+<li>$Q(s_t, a_t)$：在状态 $s_t$ 下执行动作 $a_t$ 后，能获得的期望累积奖励（<strong>动作价值</strong>）</li>
+<li>$V(s_t)$：在状态 $s_t$ 下，按当前策略执行所能获得的期望累积奖励（<strong>状态价值</strong>，即"基准线"）</li>
+<li>$A_t &gt; 0$：动作 $a_t$ 比"平均水平"好 → 应当<strong>强化</strong></li>
+<li>$A_t &lt; 0$：动作 $a_t$ 比"平均水平"差 → 应当<strong>抑制</strong></li>
+<li>$A_t = 0$：动作 $a_t$ 与平均水平持平 → 无需调整</li>
+</ul>
+<p><strong>为什么减去基准线能降低方差？</strong> 一个形象的比喻：假设你考试得了 85 分。如果全班平均 60 分，你会觉得"考得不错"（$A = +25$）；如果全班平均 90 分，你会觉得"发挥失常"（$A = -5$）。<strong>把绝对分数转为相对分数，消除了分数尺度的干扰</strong>，让信号更加稳定。</p>
+<h3 id="14-gae广义优势估计"><a class="header" href="#14-gae广义优势估计">1.4 GAE：广义优势估计</a></h3>
+<p>实际训练中，$Q(s_t, a_t)$ 和 $V(s_t)$ 都不是精确已知的，需要用一个 <strong>Critic 模型</strong> $V_\phi(s)$ 来估计。<strong>GAE（Generalized Advantage Estimation）</strong> [4] 是一种融合多步估计的方法，在偏差和方差之间取得平衡：</p>
+<p>$$A_t^{GAE} = \sum_{l=0}^{T-t} (\gamma \lambda)^l \delta_{t+l}$$</p>
+<p>其中 <strong>TD 误差（Temporal Difference Error）</strong> 定义为：</p>
+<p>$$\delta_t = r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)$$</p>
+<p>逐项解读 TD 误差：</p>
+<ul>
+<li>$r_t$：在时间步 $t$ 实际获得的即时奖励</li>
+<li>$\gamma V_\phi(s_{t+1})$：Critic 对下一状态的价值估计，乘以折扣因子 $\gamma$</li>
+<li>$V_\phi(s_t)$：Critic 对当前状态的价值估计</li>
+<li><strong>直觉</strong>：$\delta_t$ 衡量的是 "<strong>实际发生的</strong>"（$r_t + \gamma V_\phi(s_{t+1})$）与 "<strong>Critic 预期的</strong>"（$V_\phi(s_t)$）之间的差异。如果 $\delta_t &gt; 0$，说明实际结果超出预期（惊喜！）；$\delta_t &lt; 0$ 则说明实际结果不如预期（失望！）</li>
+</ul>
+<p>逐项解读 GAE：</p>
+<ul>
+<li>$(\gamma\lambda)^l$：<strong>指数衰减权重</strong>——越远的时间步，对当前优势的贡献越小</li>
+<li>$\lambda \in [0, 1]$：<strong>GAE 折衷参数</strong>，控制偏差-方差权衡：</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>$\lambda$ 值</th><th>GAE 退化为</th><th>偏差</th><th>方差</th><th>直觉</th></tr></thead><tbody>
+<tr><td>$\lambda = 0$</td><td>单步 TD：$A_t = \delta_t$</td><td>高（完全依赖 Critic 精度）</td><td>低</td><td>只看一步的"惊喜"</td></tr>
+<tr><td>$\lambda = 1$</td><td>蒙特卡洛：$A_t = \sum_l \gamma^l \delta_{t+l}$</td><td>低（用完整轨迹）</td><td>高</td><td>看完整轨迹的表现</td></tr>
+<tr><td>$\lambda = 0.95$</td><td><strong>推荐值</strong></td><td>适中</td><td>适中</td><td>兼顾近期和远期信息</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>📌 关键问题</strong>：GAE 需要 Critic 模型 $V_\phi(s)$ 来估计状态价值。对于大语言模型（如 7B 参数），这意味着<strong>需要额外加载一个同等规模的 Critic 模型</strong>——这是 PPO 在大模型训练中最大的资源瓶颈。</p>
+</blockquote>
+<h3 id="15-ppo-clip-机制策略更新的安全绳"><a class="header" href="#15-ppo-clip-机制策略更新的安全绳">1.5 PPO Clip 机制：策略更新的"安全绳"</a></h3>
+<p>有了优势 $A_t$ 和比率 $\rho_t$，PPO 的损失函数为：</p>
+<p>$$\mathcal{L}_{PPO}(\theta) = -\mathbb{E}_t \left[ \min\left( \rho_t A_t,\ \text{clip}(\rho_t, 1-\epsilon, 1+\epsilon) A_t \right) \right]$$</p>
+<p>这个公式看起来复杂，但核心思想很简单。让我们分两种情况理解：</p>
+<p><strong>情况 ①：$A_t &gt; 0$（好动作，应强化）</strong></p>
+<ul>
+<li>无 Clip 时：$\rho_t$ 越大（即越增加该动作概率），损失越小 → 梯度会推动策略不断增加该动作概率</li>
+<li>有 Clip 时：$\rho_t$ 超过 $1+\epsilon$ 后，$\text{clip}(\rho_t) \cdot A_t$ 不再增大 → $\min$ 取到裁剪值 → <strong>梯度变为零</strong></li>
+<li><strong>效果</strong>：即使动作很好，也不允许概率增加太多（防止"过度自信"）</li>
+</ul>
+<p><strong>情况 ②：$A_t &lt; 0$（差动作，应抑制）</strong></p>
+<ul>
+<li>无 Clip 时：$\rho_t$ 越小（即越降低该动作概率），损失越小 → 梯度会推动策略大幅降低该动作概率</li>
+<li>有 Clip 时：$\rho_t$ 低于 $1-\epsilon$ 后，<strong>梯度变为零</strong></li>
+<li><strong>效果</strong>：即使动作很差，也不允许概率降低太多（防止"矫枉过正"）</li>
+</ul>
+<p><img src="../svg/chapter_agentic_rl_03_ppo_clip.svg" alt="PPO Clip 机制图解" /></p>
+<p><strong>Clip 参数 $\epsilon$ 的含义</strong>：$\epsilon$（通常取 0.1–0.3）定义了"信任域"的大小——每次策略更新，每个动作的概率变化不得超过旧策略的 $(1 \pm \epsilon)$ 倍。$\epsilon$ 越小越保守，$\epsilon$ 越大越激进。</p>
+<h3 id="16-kl-散度惩罚防止策略跑偏的另一道保险"><a class="header" href="#16-kl-散度惩罚防止策略跑偏的另一道保险">1.6 KL 散度惩罚：防止策略"跑偏"的另一道保险</a></h3>
+<p>Clip 机制限制的是<strong>单个动作</strong>的概率变化幅度，但它无法约束策略<strong>整体分布</strong>的漂移。在 RLHF 场景中，如果模型为了追求高奖励而"忘记"了 SFT 阶段学到的通用语言能力（如语法、连贯性），就会出现<strong>语言退化</strong>或<strong>奖励黑客（reward hacking）</strong>——模型找到某种"讨巧"的输出模式来骗取高奖励，但人类读起来一塌糊涂。</p>
+<p>为此，PPO 在 RLHF 中通常会额外加入一个 <strong>KL 散度惩罚项</strong>，完整的优化目标变为：</p>
+<p>$$\mathcal{L}<em>{PPO-RLHF}(\theta) = -\mathbb{E}<em>t \left[ \min\left( \rho_t A_t,\ \text{clip}(\rho_t, 1-\epsilon, 1+\epsilon) A_t \right) \right] + \beta \cdot D</em>{KL}\left(\pi</em>\theta | \pi_{ref}\right)$$</p>
+<p>其中 KL 散度定义为：</p>
+<p>$$D_{KL}\left(\pi_\theta | \pi_{ref}\right) = \mathbb{E}<em>{y \sim \pi</em>\theta} \left[ \log \frac{\pi_\theta(y|x)}{\pi_{ref}(y|x)} \right]$$</p>
+<p>逐项解读：</p>
+<ul>
+<li>$\pi_{ref}$：<strong>参考策略（Reference Policy）</strong>——详见下方专门说明</li>
+<li>$D_{KL}(\pi_\theta | \pi_{ref})$：衡量当前策略 $\pi_\theta$ 相对于参考策略 $\pi_{ref}$ 的<strong>分布偏离程度</strong>。$D_{KL} = 0$ 表示两者完全一致；$D_{KL}$ 越大，偏离越严重</li>
+<li>$\beta$：<strong>KL 惩罚系数</strong>——控制"探索新策略"与"保持原有能力"之间的平衡</li>
+</ul>
+<blockquote>
+<p>关于 KL 散度的数学定义和直觉解释，请参阅 <a href="../appendix/kl_divergence.html">附录 E：KL 散度详解</a></p>
+</blockquote>
+<h4 id="什么是-reference-模型pi_ref"><a class="header" href="#什么是-reference-模型pi_ref">什么是 Reference 模型（$\pi_{ref}$）？</a></h4>
+<p>Reference 模型是 RLHF 和 GRPO 中一个非常重要的概念，初学者容易将它与"旧策略"（$\pi_{\theta_{old}}$）混淆。我们用一个表格来彻底厘清：</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th><strong>Reference 模型 $\pi_{ref}$</strong></th><th><strong>旧策略 $\pi_{\theta_{old}}$</strong></th></tr></thead><tbody>
+<tr><td><strong>是什么</strong></td><td>RL 训练<strong>开始前</strong>的 SFT 模型快照</td><td>当前 RL 迭代<strong>开始时</strong>的策略模型快照</td></tr>
+<tr><td><strong>何时创建</strong></td><td>RL 训练启动时，复制一份 SFT 模型</td><td>每次采样新数据前，复制当前 Policy 模型</td></tr>
+<tr><td><strong>是否更新</strong></td><td>❌ <strong>永远不更新</strong>（冻结参数）</td><td>✅ 每轮迭代更新一次（同步为当前策略）</td></tr>
+<tr><td><strong>存在目的</strong></td><td>充当"锚点"，防止策略偏离 SFT 太远</td><td>提供重要性采样的分母（数据复用）</td></tr>
+<tr><td><strong>作用范围</strong></td><td>整个 RL 训练过程</td><td>仅在当前迭代内有效</td></tr>
+<tr><td><strong>用在哪里</strong></td><td>KL 散度惩罚 $D_{KL}(\pi_\theta | \pi_{ref})$</td><td>重要性采样比率 $\rho_t = \pi_\theta / \pi_{\theta_{old}}$</td></tr>
+</tbody></table>
+</div>
+<p><strong>形象比喻</strong>：</p>
+<blockquote>
+<p>想象你在学开车（RL 训练）。驾校教练教会了你基本操作（SFT），现在你上路练习。</p>
+<ul>
+<li><strong>Reference 模型</strong> = 教练手册上的标准操作规范。无论你练了多久，手册永远不变。它的作用是：如果你的驾驶习惯偏离标准太远（比如开始"飙车"），就把你拉回来。</li>
+<li><strong>旧策略</strong> = 你上一次练车结束时的驾驶水平。每次练完车，你的水平都会提升一点。它的作用是：评估你这次练车相比上次有哪些变化。</li>
+</ul>
+</blockquote>
+<p><strong>为什么需要 Reference 模型？</strong></p>
+<p>在 RL 训练过程中，模型会不断迭代更新。如果没有 Reference 模型作为锚点，可能出现以下问题：</p>
+<ol>
+<li><strong>奖励黑客（Reward Hacking）</strong>：模型发现某种"讨巧"的输出模式可以骗取高奖励（如不断重复某个高奖励短语），但实际输出质量极差</li>
+<li><strong>语言退化（Language Degeneration）</strong>：模型为追求奖励而丧失了 SFT 阶段学到的语法能力、连贯性和通用知识</li>
+<li><strong>模式坍缩（Mode Collapse）</strong>：模型对所有输入都生成类似的"安全"回答，丧失多样性</li>
+</ol>
+<p>KL 散度 $D_{KL}(\pi_\theta | \pi_{ref})$ 就像一根"弹力绳"——当 $\pi_\theta$ 偏离 $\pi_{ref}$ 越远，惩罚越大，把策略拉回来。</p>
+<p><strong>训练过程中三个模型的时间线示意</strong>：</p>
+<pre><code>时间 →
+              RL 迭代 1        RL 迭代 2        RL 迭代 3
+              ─────────       ─────────       ─────────
+π_ref:     [SFT 模型] ════════════════════════════════════  （永远不变）
+
+π_θ_old:   [SFT 模型]──→[θ₁]──→[θ₁]──→[θ₂]──→[θ₂]──→[θ₃]  （每轮迭代开始时同步）
+                采样↓      更新↑    采样↓      更新↑    采样↓
+π_θ:       [SFT 模型]→→→[θ₁]  [θ₁]→→→[θ₂]  [θ₂]→→→[θ₃]    （持续训练更新）
+</code></pre>
+<ul>
+<li>第 1 行：$\pi_{ref}$ 始终是 SFT 模型，从头到尾不变</li>
+<li>第 2 行：$\pi_{\theta_{old}}$ 在每轮迭代开始时，从 $\pi_\theta$ 复制一份快照</li>
+<li>第 3 行：$\pi_\theta$ 是持续训练更新的 Policy 模型</li>
+</ul>
+<blockquote>
+<p><strong>📌 实现细节</strong>：Reference 模型需要单独占用显存。对于 7B 参数模型（bf16），Reference 模型约占 14GB 显存。为了节省显存，有些实现会使用 LoRA 适配器——此时 Reference 模型不需要单独加载，只需在推理时关闭 LoRA 适配器即可得到 $\pi_{ref}$ 的输出。</p>
+</blockquote>
+<p><strong>$\beta$ 的作用与调节</strong>：</p>
+<div class="table-wrapper"><table><thead><tr><th>$\beta$ 值</th><th>效果</th><th>适用场景</th></tr></thead><tbody>
+<tr><td>$\beta$ 过小（如 0.001）</td><td>KL 约束几乎无效，策略可大幅偏离</td><td>探索性强，但容易奖励黑客、语言退化</td></tr>
+<tr><td>$\beta$ 适中（如 0.01–0.1）</td><td>平衡探索与约束，推荐起始值</td><td>大多数 RLHF 场景</td></tr>
+<tr><td>$\beta$ 过大（如 1.0）</td><td>策略几乎无法偏离 SFT 模型</td><td>RL 训练形同虚设</td></tr>
+</tbody></table>
+</div>
+<p><strong>自适应 KL 控制</strong>：InstructGPT [3] 提出了一种动态调节 $\beta$ 的方法——设定一个目标 KL 值 $D_{target}$，如果实际 $D_{KL}$ 超过目标值，则增大 $\beta$（收紧约束）；反之则减小 $\beta$（放松约束）：</p>
+<p>$$\beta \leftarrow \begin{cases} \beta \times (1 + \alpha) &amp; \text{if } D_{KL} &gt; 1.5 \times D_{target} \ \beta \times (1 - \alpha) &amp; \text{if } D_{KL} &lt; 0.5 \times D_{target} \ \beta &amp; \text{otherwise} \end{cases}$$</p>
+<p>其中 $\alpha$ 是调节步长（通常取 0.1–0.2）。这种自适应机制让训练更加稳健——不需要手动精调 $\beta$。</p>
+<p><strong>Clip + KL 的协同作用</strong>：</p>
+<div class="table-wrapper"><table><thead><tr><th>约束机制</th><th>约束对象</th><th>约束粒度</th><th>直觉</th></tr></thead><tbody>
+<tr><td><strong>Clip</strong></td><td>单个动作的概率比 $\rho_t$</td><td><strong>局部</strong>（逐 token 级别）</td><td>"每一步不能走太远"</td></tr>
+<tr><td><strong>KL</strong></td><td>整体输出分布 $\pi_\theta$ vs $\pi_{ref}$</td><td><strong>全局</strong>（策略级别）</td><td>"总体路线不能偏离太远"</td></tr>
+</tbody></table>
+</div>
+<p>两者互补：Clip 防止单步更新过大，KL 防止累积漂移过大。在实践中，两者通常同时使用。</p>
+<h3 id="17-ppo-完整训练流程"><a class="header" href="#17-ppo-完整训练流程">1.7 PPO 完整训练流程</a></h3>
+<p><img src="../svg/chapter_agentic_rl_03_ppo_training_flow.svg" alt="PPO 完整训练迭代流程" /></p>
+<p>PPO 的训练需要同时维护以下模型：</p>
+<p><img src="../svg/chapter_agentic_rl_03_ppo_architecture.svg" alt="PPO 训练架构" /></p>
+<h3 id="18-ppo-核心代码实现"><a class="header" href="#18-ppo-核心代码实现">1.8 PPO 核心代码实现</a></h3>
+<p>下面用 PyTorch 代码完整实现 PPO 的核心组件，帮助从代码层面理解每个公式的含义。</p>
+<h4 id="181-gae-优势估计"><a class="header" href="#181-gae-优势估计">1.8.1 GAE 优势估计</a></h4>
+<pre><code class="language-python">import torch
+import torch.nn.functional as F
+
+def compute_gae(
+    rewards: torch.Tensor,       # [T] 每步即时奖励
+    values: torch.Tensor,        # [T+1] Critic 估计的状态价值（含终止状态）
+    gamma: float = 1.0,          # 折扣因子（语言模型任务通常取 1.0）
+    lam: float = 0.95,           # GAE λ 参数
+) -&gt; torch.Tensor:
+    """
+    计算 GAE（广义优势估计）
+
+    公式：A_t = Σ (γλ)^l · δ_{t+l}
+    其中 δ_t = r_t + γ·V(s_{t+1}) - V(s_t)
+
+    Args:
+        rewards:  每步获得的即时奖励，形状 [T]
+        values:   Critic 对每个状态的价值估计，形状 [T+1]
+                  （最后一个是终止状态的价值，通常为 0）
+        gamma:    折扣因子，控制未来奖励的衰减
+        lam:      GAE λ 参数，控制偏差-方差权衡
+                  λ=0 → 单步 TD（低方差高偏差）
+                  λ=1 → 蒙特卡洛（高方差低偏差）
+
+    Returns:
+        advantages: GAE 优势估计，形状 [T]
+    """
+    T = len(rewards)
+    advantages = torch.zeros(T)
+    gae = 0.0  # 从最后一步向前累积
+
+    for t in reversed(range(T)):
+        # TD 误差：δ_t = r_t + γ·V(s_{t+1}) - V(s_t)
+        # "实际发生的" - "Critic 预期的"
+        delta = rewards[t] + gamma * values[t + 1] - values[t]
+
+        # GAE 递推：A_t = δ_t + γλ·A_{t+1}
+        # 等价于 A_t = Σ (γλ)^l · δ_{t+l}
+        gae = delta + gamma * lam * gae
+        advantages[t] = gae
+
+    return advantages
+</code></pre>
+<h4 id="182-ppo-clip-损失"><a class="header" href="#182-ppo-clip-损失">1.8.2 PPO Clip 损失</a></h4>
+<pre><code class="language-python">def ppo_clip_loss(
+    log_probs: torch.Tensor,         # [B, T] 当前策略的 log π_θ(a_t|s_t)
+    old_log_probs: torch.Tensor,     # [B, T] 旧策略的 log π_θ_old(a_t|s_t)
+    advantages: torch.Tensor,         # [B, T] GAE 优势估计
+    clip_epsilon: float = 0.2,        # Clip 范围 ε
+) -&gt; tuple[torch.Tensor, dict]:
+    """
+    计算 PPO Clip 策略损失
+
+    公式：L = -E[min(ρ_t·A_t, clip(ρ_t, 1-ε, 1+ε)·A_t)]
+
+    Args:
+        log_probs:     当前策略对每个 token 的对数概率 [batch, seq_len]
+        old_log_probs: 旧策略对每个 token 的对数概率 [batch, seq_len]
+        advantages:    每个 token 的优势值 [batch, seq_len]
+        clip_epsilon:  裁剪范围，通常 0.1-0.3
+
+    Returns:
+        loss: 策略损失标量
+        metrics: 监控指标
+    """
+    # ── 计算重要性采样比率 ────────────────────────────────────────
+    # ρ_t = π_θ(a_t|s_t) / π_θ_old(a_t|s_t)
+    # 在 log 空间做除法 = 做减法，再 exp 回去
+    ratio = torch.exp(log_probs - old_log_probs)  # [B, T]
+
+    # ── 未裁剪的目标 ──────────────────────────────────────────────
+    # ρ_t · A_t
+    surr1 = ratio * advantages  # [B, T]
+
+    # ── 裁剪后的目标 ──────────────────────────────────────────────
+    # clip(ρ_t, 1-ε, 1+ε) · A_t
+    clipped_ratio = torch.clamp(ratio, 1.0 - clip_epsilon, 1.0 + clip_epsilon)
+    surr2 = clipped_ratio * advantages  # [B, T]
+
+    # ── PPO 损失 = -min(surr1, surr2) ────────────────────────────
+    # 取 min 确保：
+    #   A&gt;0 时：不让 ρ 超过 1+ε（防止过度强化）
+    #   A&lt;0 时：不让 ρ 低于 1-ε（防止过度抑制）
+    loss = -torch.min(surr1, surr2).mean()
+
+    # ── 监控指标 ──────────────────────────────────────────────────
+    with torch.no_grad():
+        # 裁剪比例：被裁剪的 token 占比（健康范围 0.1-0.3）
+        clip_fraction = ((ratio - 1.0).abs() &gt; clip_epsilon).float().mean().item()
+        # 近似 KL 散度（用于监控策略偏移程度）
+        approx_kl = (old_log_probs - log_probs).mean().item()
+
+    metrics = {
+        "policy_loss": loss.item(),
+        "clip_fraction": clip_fraction,       # &gt; 0.5 说明更新步长太大
+        "approx_kl": approx_kl,               # &gt; 0.02 可能需要减小学习率
+        "mean_ratio": ratio.mean().item(),     # 应接近 1.0
+    }
+
+    return loss, metrics
+</code></pre>
+<h4 id="183-critic价值函数损失"><a class="header" href="#183-critic价值函数损失">1.8.3 Critic（价值函数）损失</a></h4>
+<pre><code class="language-python">def critic_loss(
+    values: torch.Tensor,        # [B, T] Critic 预测的 V(s_t)
+    returns: torch.Tensor,       # [B, T] 实际回报 = advantages + old_values
+) -&gt; torch.Tensor:
+    """
+    计算 Critic 损失（均方误差）
+
+    Critic 的目标：让 V_ϕ(s_t) 尽可能接近实际回报
+
+    Args:
+        values:  Critic 对每个状态的价值预测 [batch, seq_len]
+        returns: 实际回报（GAE 优势 + 旧价值估计）[batch, seq_len]
+
+    Returns:
+        loss: Critic 损失标量
+    """
+    return F.mse_loss(values, returns)
+</code></pre>
+<h4 id="184-kl-散度惩罚"><a class="header" href="#184-kl-散度惩罚">1.8.4 KL 散度惩罚</a></h4>
+<pre><code class="language-python">def kl_penalty(
+    log_probs: torch.Tensor,     # [B, T] 当前策略的 log π_θ
+    ref_log_probs: torch.Tensor, # [B, T] 参考策略（SFT 模型）的 log π_ref
+) -&gt; torch.Tensor:
+    """
+    计算当前策略与参考策略之间的 KL 散度
+
+    公式：D_KL(π_θ ‖ π_ref) = E[log(π_θ/π_ref)]
+
+    Args:
+        log_probs:     当前策略的对数概率
+        ref_log_probs: 参考策略的对数概率（SFT 模型，冻结参数）
+
+    Returns:
+        kl: KL 散度标量
+    """
+    # KL = E[log π_θ - log π_ref]
+    kl = (log_probs - ref_log_probs).mean()
+    return kl
+</code></pre>
+<h4 id="185-ppo-完整训练步骤"><a class="header" href="#185-ppo-完整训练步骤">1.8.5 PPO 完整训练步骤</a></h4>
+<pre><code class="language-python">def ppo_training_step(
+    policy_model,          # 策略模型 π_θ（可训练）
+    critic_model,          # Critic 模型 V_ϕ（可训练）
+    ref_model,             # 参考模型 π_ref（冻结，不训练）
+    input_ids,             # 输入 token ids
+    response_ids,          # 生成的回答 token ids
+    old_log_probs,         # 旧策略的 log 概率
+    rewards,               # 奖励信号
+    old_values,            # 旧 Critic 的价值估计
+    clip_epsilon=0.2,      # PPO Clip ε
+    kl_coef=0.01,          # KL 惩罚系数 β
+    critic_coef=0.5,       # Critic 损失权重
+    gamma=1.0,             # 折扣因子
+    lam=0.95,              # GAE λ
+):
+    """
+    PPO 单步训练的完整流程
+
+    总损失 = 策略损失 + β·KL惩罚 + c·Critic损失
+    """
+    # ── Step 1: 计算当前策略的 log 概率 ──────────────────────────
+    # 前向传播，获取当前策略对每个 token 的对数概率
+    logits = policy_model(input_ids=input_ids, response_ids=response_ids)
+    log_probs = compute_token_log_probs(logits, response_ids)  # [B, T]
+
+    # ── Step 2: 计算 Critic 的价值估计 ───────────────────────────
+    values = critic_model(input_ids=input_ids, response_ids=response_ids)  # [B, T]
+
+    # ── Step 3: 计算 GAE 优势 ────────────────────────────────────
+    # 对 batch 中的每个样本分别计算 GAE
+    advantages_list = []
+    for b in range(rewards.shape[0]):
+        adv = compute_gae(rewards[b], old_values[b], gamma=gamma, lam=lam)
+        advantages_list.append(adv)
+    advantages = torch.stack(advantages_list)  # [B, T]
+
+    # 标准化优势（减小方差，稳定训练）
+    advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
+
+    # 实际回报 = 优势 + 旧价值估计（用于训练 Critic）
+    returns = advantages + old_values[:, :-1]
+
+    # ── Step 4: 计算 PPO Clip 策略损失 ───────────────────────────
+    policy_loss, policy_metrics = ppo_clip_loss(
+        log_probs, old_log_probs, advantages, clip_epsilon
+    )
+
+    # ── Step 5: 计算 KL 散度惩罚 ────────────────────────────────
+    with torch.no_grad():
+        ref_logits = ref_model(input_ids=input_ids, response_ids=response_ids)
+        ref_log_probs = compute_token_log_probs(ref_logits, response_ids)
+    kl = kl_penalty(log_probs, ref_log_probs)
+
+    # ── Step 6: 计算 Critic 损失 ────────────────────────────────
+    c_loss = critic_loss(values[:, :-1], returns)
+
+    # ── Step 7: 总损失 ──────────────────────────────────────────
+    # 策略损失（让模型做对的事）+ KL 惩罚（不要忘了语言能力）+ Critic 损失（学会评估好坏）
+    total_loss = policy_loss + kl_coef * kl + critic_coef * c_loss
+
+    return total_loss, {
+        **policy_metrics,
+        "kl_divergence": kl.item(),
+        "critic_loss": c_loss.item(),
+        "total_loss": total_loss.item(),
+    }
+</code></pre>
+<blockquote>
+<p><strong>📌 与 GRPO 代码的关键差异</strong>：</p>
+<ul>
+<li>PPO 需要额外维护一个 <strong>Critic 模型</strong>（<code>critic_model</code>），它与 Policy 模型同等规模</li>
+<li>优势估计使用 <strong>GAE 递推</strong>（依赖 Critic），而不是 GRPO 的组内标准化</li>
+<li>总损失包含三部分：策略损失 + KL 惩罚 + <strong>Critic 损失</strong>，而 GRPO 没有 Critic 损失</li>
+<li>这也解释了为什么 PPO 的显存需求是 ≈ 3× 模型大小（Policy + Critic + Reference）</li>
+</ul>
+</blockquote>
+<h3 id="19-ppo-的优缺点总结"><a class="header" href="#19-ppo-的优缺点总结">1.9 PPO 的优缺点总结</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>评价</th></tr></thead><tbody>
+<tr><td>✅ <strong>通用性</strong></td><td>几乎适用于所有 RL 场景，不限于语言模型</td></tr>
+<tr><td>✅ <strong>稳定性</strong></td><td>Clip 机制提供了可靠的训练稳定性保障</td></tr>
+<tr><td>✅ <strong>理论基础</strong></td><td>有成熟的理论支撑（信任域方法的简化）</td></tr>
+<tr><td>❌ <strong>显存需求</strong></td><td>需要 Critic 模型，显存占用 ≈ 3× 模型大小</td></tr>
+<tr><td>❌ <strong>训练复杂</strong></td><td>Critic 与 Policy 互相依赖，联合训练不稳定</td></tr>
+<tr><td>❌ <strong>超参数多</strong></td><td>GAE λ、Critic 学习率、clip ε、KL β 等需精心调节</td></tr>
+</tbody></table>
+</div>
+<hr />
+<hr />
+<p><em>PPO 是一个强大但资源消耗较大的算法——需要 Critic 模型、奖励模型和在线采样。下一节将介绍 DPO，它通过精妙的数学推导直接跳过了奖励模型和 Critic，将 RL 问题转化为简单的监督学习。</em></p>
+<hr />
+<h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
+<p>[1] WILLIAMS R J. Simple statistical gradient-following algorithms for connectionist reinforcement learning[J]. Machine Learning, 1992, 8(3): 229-256.</p>
+<p>[2] SCHULMAN J, WOLSKI F, DHARIWAL P, et al. Proximal policy optimization algorithms[R]. arXiv preprint arXiv:1707.06347, 2017.</p>
+<p>[3] OUYANG L, WU J, JIANG X, et al. Training language models to follow instructions with human feedback[C]//Advances in Neural Information Processing Systems (NeurIPS). 2022.</p>
+<p>[4] SCHULMAN J, MORITZ P, LEVINE S, et al. High-dimensional continuous control using generalized advantage estimation[C]//International Conference on Learning Representations (ICLR). 2016.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_agentic_rl/02_sft_lora.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_agentic_rl/04_dpo.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_agentic_rl/02_sft_lora.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_agentic_rl/04_dpo.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

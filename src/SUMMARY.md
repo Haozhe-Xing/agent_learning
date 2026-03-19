@@ -151,9 +151,10 @@
 - [第18章 Agentic-RL：智能体强化学习训练](./chapter_agentic_rl/README.md)
   - [18.1 什么是 Agentic-RL](./chapter_agentic_rl/01_agentic_rl_overview.md)
   - [18.2 SFT + LoRA 基础训练](./chapter_agentic_rl/02_sft_lora.md)
-  - [18.3 策略优化算法详解：PPO、DPO 与 GRPO](./chapter_agentic_rl/03_grpo.md)
-  - [18.4 奖励函数设计](./chapter_agentic_rl/04_reward_design.md)
-  - [18.5 实战：完整 SFT + GRPO 训练 Pipeline](./chapter_agentic_rl/05_practice_training.md)
+  - [18.3 PPO：近端策略优化](./chapter_agentic_rl/03_ppo.md)
+  - [18.4 DPO：直接偏好优化](./chapter_agentic_rl/04_dpo.md)
+  - [18.5 GRPO：组内相对策略优化与奖励函数设计](./chapter_agentic_rl/05_grpo.md)
+  - [18.6 实战：完整 SFT + GRPO 训练 Pipeline](./chapter_agentic_rl/06_practice_training.md)
 
 ---
 

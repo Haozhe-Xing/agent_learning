@@ -139,7 +139,7 @@ $$D_{KL}(\pi_\theta \| \pi_{SFT}) = \mathbb{E}_{x \sim \mathcal{D}} \left[ \sum_
 | **较小**（如 0.001–0.01） | 策略自由，允许大幅探索 | 训练后期、任务有明确客观评估标准 |
 | **自适应** | 动态调节，保持 KL 在目标范围 | PPO 中常用 |
 
-在 GRPO（Group Relative Policy Optimization）中，KL 惩罚的具体实现方式会有所不同，详见 [18.3 GRPO 强化学习优化](../chapter_agentic_rl/03_grpo.md)。
+在 GRPO（Group Relative Policy Optimization）中，KL 惩罚的具体实现方式会有所不同，详见 [18.5 GRPO：组内相对策略优化与奖励函数设计](../chapter_agentic_rl/05_grpo.md)。
 
 ---
 

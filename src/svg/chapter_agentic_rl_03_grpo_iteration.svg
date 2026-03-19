@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420" width="500" height="420">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 420" width="550" height="420">
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
     </marker>
   </defs>
-  <rect width="500" height="420" fill="#f8f9fa" rx="12"/>
+  <rect width="550" height="420" fill="#f8f9fa" rx="12"/>
   <text x="250" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">GRPO 单次训练迭代流程</text>
 
   <!-- Step 1 -->
@@ -54,6 +54,6 @@
   <text x="135" y="379" font-family="Arial, sans-serif" font-size="9" fill="#888">θ ← θ - α · ∇_θ L，然后 π_θ_old ← π_θ</text>
 
   <!-- Loop arrow -->
-  <path d="M 402 364 L 450 364 L 450 66 L 382 66" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow)"/>
-  <text x="468" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c" transform="rotate(90, 468, 220)">下一迭代</text>
+  <path d="M 402 364 L 465 364 L 465 66 L 382 66" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arrow)"/>
+  <text x="500" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c" transform="rotate(90, 500, 220)">下一迭代</text>
 </svg>

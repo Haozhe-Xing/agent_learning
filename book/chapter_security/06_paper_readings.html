@@ -22,20 +22,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
-        <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-ae938929.css">
-        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -45,10 +46,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f226d5d7.js";
+            window.path_to_searchindex_js = "../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-35ccb7c5.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -62,7 +63,7 @@
             </div>
         </div>
     </div>
-    <div id="mdbook-body-container">
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -91,12 +92,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -111,39 +112,39 @@
             }
         </script>
 
-        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="mdbook-page-wrapper" class="page-wrapper">
+        <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="mdbook-menu-bar-hover-placeholder"></div>
-                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
-                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
                         </label>
-                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
-                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
                         </button>
-                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
-                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
                         </button>
                     </div>
 
@@ -151,55 +152,58 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                            <i id="print-button" class="fa fa-print"></i>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="mdbook-search-wrapper" class="hidden">
-                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                                <i class="fa fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </form>
-                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
-                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
-                        <ul id="mdbook-searchresults">
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="mdbook-content" class="content">
+                <div id="content" class="content">
                     <main>
                         <h1 id="146-论文解读安全与可靠性前沿研究"><a class="header" href="#146-论文解读安全与可靠性前沿研究">14.6 论文解读：安全与可靠性前沿研究</a></h1>
 <blockquote>
-<p>📖 <em>“安全不是功能，而是基线。理解攻击才能更好地防御。”</em><br><em>本节深入解读 Prompt 注入攻防和幻觉检测缓解领域的核心论文。</em></p>
+<p>📖 <em>"安全不是功能，而是基线。理解攻击才能更好地防御。"</em><br />
+<em>本节深入解读 Prompt 注入攻防和幻觉检测缓解领域的核心论文。</em></p>
 </blockquote>
-<hr>
+<hr />
 <h2 id="第一部分prompt-注入攻防"><a class="header" href="#第一部分prompt-注入攻防">第一部分：Prompt 注入攻防</a></h2>
 <p>Prompt 注入被 OWASP 列为 LLM 应用的<strong>头号安全威胁</strong>（2023-2025 连续三年排名第一）。</p>
 <h3 id="间接-prompt-注入隐形的威胁"><a class="header" href="#间接-prompt-注入隐形的威胁">间接 Prompt 注入：隐形的威胁</a></h3>
-<p><strong>论文</strong>：<em>Not What You’ve Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection</em><br><strong>作者</strong>：Greshake et al.<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2302.12173">arXiv:2302.12173</a></p>
+<p><strong>论文</strong>：<em>Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection</em><br />
+<strong>作者</strong>：Greshake et al.<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2302.12173">arXiv:2302.12173</a></p>
 <h4 id="核心问题"><a class="header" href="#核心问题">核心问题</a></h4>
 <p>直接 Prompt 注入（用户直接在输入中插入恶意指令）已经被广泛研究。但更危险的是<strong>间接注入</strong>——攻击者不直接与 LLM 交互，而是在 LLM 可能读取的数据源中植入恶意指令。</p>
 <h4 id="攻击场景"><a class="header" href="#攻击场景">攻击场景</a></h4>
-<p><img src="../svg/chapter_security_06_injection_attack.svg" alt="间接 Prompt 注入攻击场景"></p>
+<p><img src="../svg/chapter_security_06_injection_attack.svg" alt="间接 Prompt 注入攻击场景" /></p>
 <h4 id="关键发现"><a class="header" href="#关键发现">关键发现</a></h4>
 <ol>
-<li><strong>间接注入极难防御</strong>：因为恶意内容在“数据“中，而 LLM 很难区分“指令“和“数据“</li>
+<li><strong>间接注入极难防御</strong>：因为恶意内容在"数据"中，而 LLM 很难区分"指令"和"数据"</li>
 <li><strong>攻击面广</strong>：任何 Agent 能读取的外部数据源都可能被注入</li>
 <li><strong>用户不知情</strong>：与直接注入不同，用户完全不知道恶意内容的存在</li>
 </ol>
@@ -207,12 +211,14 @@
 <p>如果你的 Agent 会读取外部数据（网页爬取、邮件读取、文档解析），务必：</p>
 <ul>
 <li>对所有外部数据进行消毒处理</li>
-<li>在系统提示中明确告知模型：“以下数据来自不可信来源”</li>
+<li>在系统提示中明确告知模型："以下数据来自不可信来源"</li>
 <li>实施输出过滤，防止敏感信息泄露</li>
 </ul>
-<hr>
+<hr />
 <h3 id="hackaprompt大规模攻击分析"><a class="header" href="#hackaprompt大规模攻击分析">HackAPrompt：大规模攻击分析</a></h3>
-<p><strong>论文</strong>：<em>Ignore This Title and HackAPrompt: Exposing Systemic Weaknesses of LLMs through a Global Scale Prompt Hacking Competition</em><br><strong>作者</strong>：Schulhoff et al.<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2311.16119">arXiv:2311.16119</a></p>
+<p><strong>论文</strong>：<em>Ignore This Title and HackAPrompt: Exposing Systemic Weaknesses of LLMs through a Global Scale Prompt Hacking Competition</em><br />
+<strong>作者</strong>：Schulhoff et al.<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2311.16119">arXiv:2311.16119</a></p>
 <h4 id="研究方法"><a class="header" href="#研究方法">研究方法</a></h4>
 <p>通过全球规模的 Prompt 黑客竞赛，收集了 <strong>600,000+ 次攻击尝试</strong>，系统分析了 LLM 的防御弱点。</p>
 <h4 id="发现的攻击类别"><a class="header" href="#发现的攻击类别">发现的攻击类别</a></h4>
@@ -233,23 +239,19 @@
 </code></pre>
 <h4 id="关键发现-1"><a class="header" href="#关键发现-1">关键发现</a></h4>
 <p><strong>没有任何单一防御策略能抵御所有攻击。</strong></p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>防御策略</th><th>被绕过的比例</th></tr>
-</thead>
-<tbody>
+<div class="table-wrapper"><table><thead><tr><th>防御策略</th><th>被绕过的比例</th></tr></thead><tbody>
 <tr><td>简单的系统提示</td><td>~90% 被绕过</td></tr>
 <tr><td>输入关键词过滤</td><td>~60% 被绕过</td></tr>
 <tr><td>多层 Prompt 防御</td><td>~30% 被绕过</td></tr>
 <tr><td>LLM 检测 + 多层防御</td><td>~15% 被绕过</td></tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
 <p><strong>结论：纵深防御（Defense in Depth）——多层防御叠加——是唯一可行的策略。</strong></p>
-<hr>
+<hr />
 <h3 id="struq--secalign模型层面的防御"><a class="header" href="#struq--secalign模型层面的防御">StruQ / SecAlign：模型层面的防御</a></h3>
-<p><strong>论文</strong>：StruQ + SecAlign<br><strong>作者</strong>：Chen et al., UC Berkeley &amp; Meta<br><strong>发表</strong>：2024-2025</p>
+<p><strong>论文</strong>：StruQ + SecAlign<br />
+<strong>作者</strong>：Chen et al., UC Berkeley &amp; Meta<br />
+<strong>发表</strong>：2024-2025</p>
 <h4 id="核心创新"><a class="header" href="#核心创新">核心创新</a></h4>
 <p>之前的防御都是在<strong>应用层</strong>（输入过滤、Prompt 设计），而 StruQ/SecAlign 是在<strong>模型层面</strong>进行防御：</p>
 <pre><code>传统方法（应用层防御）：
@@ -270,11 +272,13 @@ SecAlign 方法（对齐训练）：
 <li>但理解其原理有助于选择更安全的基础模型</li>
 <li>即使模型层面有防御，应用层的纵深防御仍然必要</li>
 </ul>
-<hr>
+<hr />
 <h3 id="spotlighting边界标记技术"><a class="header" href="#spotlighting边界标记技术">Spotlighting：边界标记技术</a></h3>
-<p><strong>论文</strong>：<em>Defending Against Indirect Prompt Injection Attacks With Spotlighting</em><br><strong>作者</strong>：Hines et al., Microsoft<br><strong>发表</strong>：2024</p>
+<p><strong>论文</strong>：<em>Defending Against Indirect Prompt Injection Attacks With Spotlighting</em><br />
+<strong>作者</strong>：Hines et al., Microsoft<br />
+<strong>发表</strong>：2024</p>
 <h4 id="方法原理"><a class="header" href="#方法原理">方法原理</a></h4>
-<p>使用特殊标记来“高亮“用户输入数据与系统指令的边界：</p>
+<p>使用特殊标记来"高亮"用户输入数据与系统指令的边界：</p>
 <pre><code>方法1：Datamarker
   在外部数据的每行前面加上特殊标记
   "^data: 这是来自外部的数据内容"
@@ -288,9 +292,11 @@ SecAlign 方法（对齐训练）：
   [外部数据以特殊编码呈现]
   &lt;&lt;&lt;DATA_END
 </code></pre>
-<hr>
+<hr />
 <h3 id="agentdojo动态环境中的-agent-安全评估"><a class="header" href="#agentdojo动态环境中的-agent-安全评估">AgentDojo：动态环境中的 Agent 安全评估</a></h3>
-<p><strong>论文</strong>：<em>AgentDojo: A Dynamic Environment to Evaluate Attacks and Defenses for LLM Agents</em><br><strong>作者</strong>：Debenedetti et al., ETH Zurich &amp; Invariant Labs<br><strong>发表</strong>：2024 | NeurIPS 2024 | <a href="https://arxiv.org/abs/2406.13352">arXiv:2406.13352</a></p>
+<p><strong>论文</strong>：<em>AgentDojo: A Dynamic Environment to Evaluate Attacks and Defenses for LLM Agents</em><br />
+<strong>作者</strong>：Debenedetti et al., ETH Zurich &amp; Invariant Labs<br />
+<strong>发表</strong>：2024 | NeurIPS 2024 | <a href="https://arxiv.org/abs/2406.13352">arXiv:2406.13352</a></p>
 <h4 id="核心问题-1"><a class="header" href="#核心问题-1">核心问题</a></h4>
 <p>之前的 Prompt 注入研究大多在<strong>静态场景</strong>中进行——预设固定的攻击模板和防御策略。但真实的 Agent 运行在<strong>动态环境</strong>中，攻击者的策略会不断演变。如何在逼真的动态环境中评估 Agent 的安全性？</p>
 <h4 id="方法原理-1"><a class="header" href="#方法原理-1">方法原理</a></h4>
@@ -316,15 +322,17 @@ SecAlign 方法（对齐训练）：
 </code></pre>
 <h4 id="关键发现-2"><a class="header" href="#关键发现-2">关键发现</a></h4>
 <ol>
-<li><strong>安全与功能性的矛盾</strong>：过度防御会导致 Agent 拒绝执行合法任务（“宁杀错不放过”）</li>
+<li><strong>安全与功能性的矛盾</strong>：过度防御会导致 Agent 拒绝执行合法任务（"宁杀错不放过"）</li>
 <li><strong>当前 LLM 的防御能力不足</strong>：即使是 GPT-4o 和 Claude 4，在面对精心设计的注入攻击时仍有 40-60% 的攻击成功率</li>
 <li><strong>没有银弹</strong>：单一防御手段无法有效应对所有类型的注入攻击</li>
 </ol>
 <h4 id="对-agent-开发的启示-2"><a class="header" href="#对-agent-开发的启示-2">对 Agent 开发的启示</a></h4>
 <p>AgentDojo 为 Agent 安全提供了标准化的评估工具——开发者可以用它来测试自己 Agent 的安全性，在部署前发现潜在的注入漏洞。</p>
-<hr>
+<hr />
 <h3 id="injecagent工具集成-agent-的注入基准"><a class="header" href="#injecagent工具集成-agent-的注入基准">InjecAgent：工具集成 Agent 的注入基准</a></h3>
-<p><strong>论文</strong>：<em>InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents</em><br><strong>作者</strong>：Zhan et al.<br><strong>发表</strong>：2024 | <a href="https://arxiv.org/abs/2403.02691">arXiv:2403.02691</a></p>
+<p><strong>论文</strong>：<em>InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents</em><br />
+<strong>作者</strong>：Zhan et al.<br />
+<strong>发表</strong>：2024 | <a href="https://arxiv.org/abs/2403.02691">arXiv:2403.02691</a></p>
 <h4 id="核心贡献"><a class="header" href="#核心贡献">核心贡献</a></h4>
 <p>InjecAgent 专注于<strong>工具调用场景</strong>下的间接注入——当 Agent 通过工具获取外部数据时，恶意内容如何影响后续的工具调用决策：</p>
 <pre><code>攻击场景：
@@ -348,11 +356,13 @@ SecAlign 方法（对齐训练）：
 <ul>
 <li>高风险工具（发送邮件、删除文件）应该需要用户确认</li>
 <li>从外部数据源获取的信息不应直接影响工具调用决策</li>
-<li>实施“最小权限原则“——Agent 只能访问完成任务所需的最少工具</li>
+<li>实施"最小权限原则"——Agent 只能访问完成任务所需的最少工具</li>
 </ul>
-<hr>
+<hr />
 <h3 id="agent-security-bench全面的-agent-安全基准"><a class="header" href="#agent-security-bench全面的-agent-安全基准">Agent Security Bench：全面的 Agent 安全基准</a></h3>
-<p><strong>论文</strong>：<em>Agent Security Bench (ASB): Formalizing and Benchmarking Attacks and Defenses in LLM-based Agents</em><br><strong>作者</strong>：Zhang et al.<br><strong>发表</strong>：2025 | ICLR 2025 | <a href="https://arxiv.org/abs/2410.02644">arXiv:2410.02644</a></p>
+<p><strong>论文</strong>：<em>Agent Security Bench (ASB): Formalizing and Benchmarking Attacks and Defenses in LLM-based Agents</em><br />
+<strong>作者</strong>：Zhang et al.<br />
+<strong>发表</strong>：2025 | ICLR 2025 | <a href="https://arxiv.org/abs/2410.02644">arXiv:2410.02644</a></p>
 <h4 id="核心贡献-1"><a class="header" href="#核心贡献-1">核心贡献</a></h4>
 <p>ASB 是截至 2025 年最全面的 Agent 安全评估基准，覆盖了 <strong>10 种攻击类型</strong>和 <strong>10 种防御策略</strong>：</p>
 <pre><code>攻击分类：
@@ -381,10 +391,12 @@ SecAlign 方法（对齐训练）：
 <li><strong>模型层防御效果最好但不可控</strong>：依赖模型提供商的安全对齐</li>
 <li><strong>Agent 特有的安全挑战</strong>：工具调用、多 Agent 通信、长会话记忆都引入了新的攻击面</li>
 </ol>
-<hr>
+<hr />
 <h2 id="第二部分幻觉检测与缓解"><a class="header" href="#第二部分幻觉检测与缓解">第二部分：幻觉检测与缓解</a></h2>
 <h3 id="factscore原子级事实验证"><a class="header" href="#factscore原子级事实验证">FActScore：原子级事实验证</a></h3>
-<p><strong>论文</strong>：<em>FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation</em><br><strong>作者</strong>：Min et al., University of Washington<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2305.14251">arXiv:2305.14251</a></p>
+<p><strong>论文</strong>：<em>FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation</em><br />
+<strong>作者</strong>：Min et al., University of Washington<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2305.14251">arXiv:2305.14251</a></p>
 <h4 id="核心问题-2"><a class="header" href="#核心问题-2">核心问题</a></h4>
 <p>如何精确地评估 LLM 生成的长文本中有多少事实是正确的？传统的评估方法（如 BLEU、ROUGE）只衡量文本相似度，无法识别事实性错误。</p>
 <h4 id="方法原理-2"><a class="header" href="#方法原理-2">方法原理</a></h4>
@@ -402,12 +414,14 @@ SecAlign 方法（对齐训练）：
   最终得分 = 有支持的原子事实数 / 总原子事实数
 </code></pre>
 <h4 id="对-agent-开发的启示-4"><a class="header" href="#对-agent-开发的启示-4">对 Agent 开发的启示</a></h4>
-<p>FActScore 已经成为评估 LLM 事实性的标准工具。在构建需要高事实性的 Agent（如医疗咨询、法律助手）时，可以借鉴其“原子事实拆解 + 逐个验证“的思路来实现自动事实核查。</p>
-<hr>
+<p>FActScore 已经成为评估 LLM 事实性的标准工具。在构建需要高事实性的 Agent（如医疗咨询、法律助手）时，可以借鉴其"原子事实拆解 + 逐个验证"的思路来实现自动事实核查。</p>
+<hr />
 <h3 id="selfcheckgpt零资源幻觉检测"><a class="header" href="#selfcheckgpt零资源幻觉检测">SelfCheckGPT：零资源幻觉检测</a></h3>
-<p><strong>论文</strong>：<em>SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models</em><br><strong>作者</strong>：Manakul et al.<br><strong>发表</strong>：2023</p>
+<p><strong>论文</strong>：<em>SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models</em><br />
+<strong>作者</strong>：Manakul et al.<br />
+<strong>发表</strong>：2023</p>
 <h4 id="核心洞察"><a class="header" href="#核心洞察">核心洞察</a></h4>
-<p><strong>如果模型真的“知道“某个事实，那么多次采样的回答应该是一致的；如果是编造的，每次回答都可能不同。</strong></p>
+<p><strong>如果模型真的"知道"某个事实，那么多次采样的回答应该是一致的；如果是编造的，每次回答都可能不同。</strong></p>
 <pre><code>问题："Python 是哪一年发布的？"
 
 采样1: "Python 于 1991 年发布" 
@@ -429,8 +443,8 @@ SecAlign 方法（对齐训练）：
 <li><strong>通用性</strong>：适用于任何 LLM</li>
 </ul>
 <h4 id="对-agent-开发的启示-5"><a class="header" href="#对-agent-开发的启示-5">对 Agent 开发的启示</a></h4>
-<p>这种方法可以直接集成到 Agent 中：对关键事实性声明进行多次采样，检查一致性，一致性低的标记为“可能不可靠“。这正是 14.2 节中“自我一致性检查“策略的学术来源。</p>
-<hr>
+<p>这种方法可以直接集成到 Agent 中：对关键事实性声明进行多次采样，检查一致性，一致性低的标记为"可能不可靠"。这正是 14.2 节中"自我一致性检查"策略的学术来源。</p>
+<hr />
 <h3 id="推理模型与幻觉缓解"><a class="header" href="#推理模型与幻觉缓解">推理模型与幻觉缓解</a></h3>
 <p><strong>技术发展</strong>：OpenAI o1/o3 &amp; DeepSeek-R1 (2024-2025)</p>
 <p>推理模型（Reasoning Models）为幻觉缓解带来了新的视角：</p>
@@ -455,9 +469,11 @@ SecAlign 方法（对齐训练）：
 <li><strong>但推理模型并非万能</strong>：在知识边界之外（训练数据未覆盖的内容），推理模型仍会幻觉</li>
 <li><strong>RAG + 推理模型是当前最可靠的组合</strong>：推理模型负责判断和验证，RAG 提供外部知识支撑</li>
 </ul>
-<hr>
+<hr />
 <h3 id="self-consistency多数投票推理"><a class="header" href="#self-consistency多数投票推理">Self-Consistency：多数投票推理</a></h3>
-<p><strong>论文</strong>：<em>Self-Consistency Improves Chain of Thought Reasoning in Language Models</em><br><strong>作者</strong>：Wang et al., Google Brain<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2203.11171">arXiv:2203.11171</a></p>
+<p><strong>论文</strong>：<em>Self-Consistency Improves Chain of Thought Reasoning in Language Models</em><br />
+<strong>作者</strong>：Wang et al., Google Brain<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2203.11171">arXiv:2203.11171</a></p>
 <h4 id="方法原理-3"><a class="header" href="#方法原理-3">方法原理</a></h4>
 <pre><code>问题 → 多次采样 CoT 推理路径
          ├── 路径1: ... → 答案 A
@@ -469,11 +485,13 @@ SecAlign 方法（对齐训练）：
     多数投票 → 答案 A（4/5 一致）
 </code></pre>
 <p>简单有效，尤其适合数学和逻辑推理任务。</p>
-<hr>
+<hr />
 <h3 id="cove验证链"><a class="header" href="#cove验证链">CoVe：验证链</a></h3>
-<p><strong>论文</strong>：<em>Chain-of-Verification Reduces Hallucination in Large Language Models</em><br><strong>作者</strong>：Dhuliawala et al., Meta<br><strong>发表</strong>：2023</p>
+<p><strong>论文</strong>：<em>Chain-of-Verification Reduces Hallucination in Large Language Models</em><br />
+<strong>作者</strong>：Dhuliawala et al., Meta<br />
+<strong>发表</strong>：2023</p>
 <h4 id="方法原理-4"><a class="header" href="#方法原理-4">方法原理</a></h4>
-<p>让模型在生成初始回答后，自动生成一系列“验证问题“：</p>
+<p>让模型在生成初始回答后，自动生成一系列"验证问题"：</p>
 <pre><code>初始回答："北京是中国的首都，人口约 2200 万，位于华北平原。"
     ↓
 生成验证问题：
@@ -485,10 +503,12 @@ SecAlign 方法（对齐训练）：
     ↓
 如果验证结果与初始回答矛盾，则修正初始回答
 </code></pre>
-<p>类似于记者“交叉验证“的工作方式。</p>
-<hr>
+<p>类似于记者"交叉验证"的工作方式。</p>
+<hr />
 <h3 id="幻觉综述"><a class="header" href="#幻觉综述">幻觉综述</a></h3>
-<p><strong>论文</strong>：<em>A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions</em><br><strong>作者</strong>：Huang et al.<br><strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2311.05232">arXiv:2311.05232</a></p>
+<p><strong>论文</strong>：<em>A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions</em><br />
+<strong>作者</strong>：Huang et al.<br />
+<strong>发表</strong>：2023 | <a href="https://arxiv.org/abs/2311.05232">arXiv:2311.05232</a></p>
 <p>这是目前最全面的 LLM 幻觉综述，系统梳理了：</p>
 <pre><code>幻觉分类：
 ├── 事实性幻觉（Factual Hallucination）
@@ -513,15 +533,10 @@ SecAlign 方法（对齐训练）：
 ├── 推理模型（o1/R1 的思考过程）← 2024-2025 新增
 └── 校准训练（让模型说"我不知道"）
 </code></pre>
-<hr>
+<hr />
 <h2 id="论文对比与发展脉络"><a class="header" href="#论文对比与发展脉络">论文对比与发展脉络</a></h2>
 <h3 id="攻防领域"><a class="header" href="#攻防领域">攻防领域</a></h3>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>论文</th><th>年份</th><th>方向</th><th>核心贡献</th></tr>
-</thead>
-<tbody>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>年份</th><th>方向</th><th>核心贡献</th></tr></thead><tbody>
 <tr><td>间接注入</td><td>2023</td><td>攻击</td><td>首次系统研究间接 Prompt 注入</td></tr>
 <tr><td>HackAPrompt</td><td>2023</td><td>攻击分析</td><td>大规模攻击数据分析</td></tr>
 <tr><td>StruQ/SecAlign</td><td>2024-25</td><td>模型层防御</td><td>训练模型区分指令和数据</td></tr>
@@ -529,33 +544,26 @@ SecAlign 方法（对齐训练）：
 <tr><td><strong>InjecAgent</strong></td><td><strong>2024</strong></td><td><strong>Agent 工具注入</strong></td><td><strong>工具调用场景的注入基准</strong></td></tr>
 <tr><td><strong>AgentDojo</strong></td><td><strong>2024</strong></td><td><strong>动态评估</strong></td><td><strong>自适应攻防评估框架</strong></td></tr>
 <tr><td><strong>ASB</strong></td><td><strong>2025</strong></td><td><strong>全面基准</strong></td><td><strong>10 种攻击 + 10 种防御的系统评估</strong></td></tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
 <h3 id="幻觉领域"><a class="header" href="#幻觉领域">幻觉领域</a></h3>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>论文</th><th>年份</th><th>方向</th><th>核心贡献</th></tr>
-</thead>
-<tbody>
+<div class="table-wrapper"><table><thead><tr><th>论文</th><th>年份</th><th>方向</th><th>核心贡献</th></tr></thead><tbody>
 <tr><td>FActScore</td><td>2023</td><td>检测</td><td>原子级事实精度评估</td></tr>
 <tr><td>SelfCheckGPT</td><td>2023</td><td>检测</td><td>零资源一致性检测</td></tr>
 <tr><td>Self-Consistency</td><td>2023</td><td>缓解</td><td>多数投票推理</td></tr>
 <tr><td>CoVe</td><td>2023</td><td>缓解</td><td>验证链机制</td></tr>
 <tr><td>幻觉综述</td><td>2023</td><td>综述</td><td>全面的分类和分析框架</td></tr>
 <tr><td><strong>推理模型</strong></td><td><strong>2024-25</strong></td><td><strong>缓解</strong></td><td><strong>o1/R1 内化推理显著降低幻觉</strong></td></tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
 <blockquote>
 <p>💡 <strong>前沿趋势（2025-2026）</strong>：</p>
 <ul>
-<li><strong>安全方面</strong>：Agent 安全从“Prompt 注入防御“扩展到更完整的安全体系——工具调用授权、多 Agent 通信安全、长期记忆投毒防御。AgentDojo 和 ASB 提供了标准化的评估框架，帮助开发者在部署前系统地测试 Agent 安全性</li>
-<li><strong>幻觉方面</strong>：推理模型（o1/o3/R1）通过“先想再说“大幅降低了幻觉率，但在知识边界外仍需要 RAG 辅助。<strong>“让模型说’我不知道’”（校准/calibration）</strong> 和 <strong>推理模型 + RAG 的组合</strong>是当前最有效的幻觉缓解方案</li>
+<li><strong>安全方面</strong>：Agent 安全从"Prompt 注入防御"扩展到更完整的安全体系——工具调用授权、多 Agent 通信安全、长期记忆投毒防御。AgentDojo 和 ASB 提供了标准化的评估框架，帮助开发者在部署前系统地测试 Agent 安全性</li>
+<li><strong>幻觉方面</strong>：推理模型（o1/o3/R1）通过"先想再说"大幅降低了幻觉率，但在知识边界外仍需要 RAG 辅助。<strong>"让模型说'我不知道'"（校准/calibration）</strong> 和 <strong>推理模型 + RAG 的组合</strong>是当前最有效的幻觉缓解方案</li>
 </ul>
 </blockquote>
-<hr>
+<hr />
 <p><em>返回：<a href="./README.html">第14章 安全与可靠性</a></em></p>
 
                     </main>
@@ -563,11 +571,11 @@ SecAlign 方法（对齐训练）：
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../chapter_security/05_alignment.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                                <i class="fa fa-angle-left"></i>
                             </a>
 
                             <a rel="next prefetch" href="../chapter_deployment/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                                <i class="fa fa-angle-right"></i>
                             </a>
 
                         <div style="clear: both"></div>
@@ -577,21 +585,32 @@ SecAlign 方法（对齐训练）：
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../chapter_security/05_alignment.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                        <i class="fa fa-angle-left"></i>
                     </a>
 
                     <a rel="next prefetch" href="../chapter_deployment/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
         </div>
 
-        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
-        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
-        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
-        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
-        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
@@ -600,13 +619,13 @@ SecAlign 方法（对齐训练）：
         </script>
 
 
-        <script src="../elasticlunr-ef4e11c1.min.js"></script>
-        <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard-1626706a.min.js"></script>
-        <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 

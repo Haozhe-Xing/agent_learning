@@ -22,20 +22,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
-        <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-ae938929.css">
-        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -45,10 +46,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f226d5d7.js";
+            window.path_to_searchindex_js = "../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-35ccb7c5.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -62,7 +63,7 @@
             </div>
         </div>
     </div>
-    <div id="mdbook-body-container">
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -91,12 +92,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -111,39 +112,39 @@
             }
         </script>
 
-        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="mdbook-page-wrapper" class="page-wrapper">
+        <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="mdbook-menu-bar-hover-placeholder"></div>
-                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
-                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
                         </label>
-                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
-                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
                         </button>
-                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
-                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
                         </button>
                     </div>
 
@@ -151,57 +152,57 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                            <i id="print-button" class="fa fa-print"></i>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="mdbook-search-wrapper" class="hidden">
-                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                                <i class="fa fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </form>
-                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
-                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
-                        <ul id="mdbook-searchresults">
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="mdbook-content" class="content">
+                <div id="content" class="content">
                     <main>
                         <h1 id="附录-ekl-散度kullback-leibler-divergence详解"><a class="header" href="#附录-ekl-散度kullback-leibler-divergence详解">附录 E：KL 散度（Kullback-Leibler Divergence）详解</a></h1>
 <blockquote>
-<p>本附录为零基础读者提供 KL 散度的完整科普。如果你已经熟悉信息论基础，可以直接跳到 <a href="#在-agentic-rl-中的应用">在 Agentic-RL 中的应用</a> 部分。</p>
+<p>本附录为零基础读者提供 KL 散度的完整科普。如果你已经熟悉信息论基础，可以直接跳到 <a href="#%E5%9C%A8-agentic-rl-%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8">在 Agentic-RL 中的应用</a> 部分。</p>
 </blockquote>
-<hr>
+<hr />
 <h2 id="直觉理解kl-散度在度量什么"><a class="header" href="#直觉理解kl-散度在度量什么">直觉理解：KL 散度在度量什么？</a></h2>
 <p>想象你是一名气象预报员。你建立了一个天气预测模型 $Q$，而真实天气的分布是 $P$。<strong>KL 散度 $D_{KL}(P | Q)$ 衡量的是：当你用模型 $Q$ 来近似真实分布 $P$ 时，平均会损失多少信息。</strong></p>
 <p>更通俗地说：</p>
 <blockquote>
-<p><strong>KL 散度度量两个概率分布之间的“距离“——但这是一种不对称的距离。</strong></p>
+<p><strong>KL 散度度量两个概率分布之间的"距离"——但这是一种不对称的距离。</strong></p>
 </blockquote>
 <p>几个关键直觉：</p>
 <ul>
-<li><strong>$D_{KL}(P | Q) = 0$</strong>：当且仅当 $P$ 和 $Q$ 完全相同时成立。两个分布越“像“，KL 散度越小。</li>
+<li><strong>$D_{KL}(P | Q) = 0$</strong>：当且仅当 $P$ 和 $Q$ 完全相同时成立。两个分布越"像"，KL 散度越小。</li>
 <li><strong>$D_{KL}(P | Q) \geq 0$</strong>：KL 散度永远非负（由 Gibbs 不等式保证）。</li>
-<li><strong>$D_{KL}(P | Q) \neq D_{KL}(Q | P)$</strong>：不对称性！从 $P$ 看 $Q$ 的“距离“和从 $Q$ 看 $P$ 的“距离“通常不同。这就是为什么 KL 散度不是严格意义上的“度量“（metric），而是一种“散度“（divergence）。</li>
+<li><strong>$D_{KL}(P | Q) \neq D_{KL}(Q | P)$</strong>：不对称性！从 $P$ 看 $Q$ 的"距离"和从 $Q$ 看 $P$ 的"距离"通常不同。这就是为什么 KL 散度不是严格意义上的"度量"（metric），而是一种"散度"（divergence）。</li>
 </ul>
-<hr>
+<hr />
 <h2 id="数学定义"><a class="header" href="#数学定义">数学定义</a></h2>
 <h3 id="离散情形"><a class="header" href="#离散情形">离散情形</a></h3>
 <p>对于两个离散概率分布 $P$ 和 $Q$（定义在同一事件空间 $\mathcal{X}$ 上）：</p>
@@ -214,34 +215,28 @@
 <p>$$D_{KL}(P | Q) = \sum_{x \in \mathcal{X}} P(x) \log \frac{P(x)}{Q(x)} = \sum_{x \in \mathcal{X}} P(x) \left[ \log P(x) - \log Q(x) \right]$$</p>
 <ul>
 <li>$P(x)$：真实分布中事件 $x$ 的概率（权重）</li>
-<li>$\log P(x) - \log Q(x)$：真实分布与近似分布在事件 $x$ 上的“信息差“</li>
+<li>$\log P(x) - \log Q(x)$：真实分布与近似分布在事件 $x$ 上的"信息差"</li>
 <li>整体是一个<strong>加权平均</strong>：用真实分布 $P$ 作为权重，对每个事件的信息差求期望</li>
 </ul>
-<hr>
+<hr />
 <h2 id="一个具体的例子"><a class="header" href="#一个具体的例子">一个具体的例子</a></h2>
 <p>假设有一个 6 面骰子，真实分布 $P$ 和两个模型分布 $Q_1$、$Q_2$ 如下：</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>面</th><th>$P$（真实）</th><th>$Q_1$（均匀模型）</th><th>$Q_2$（偏斜模型）</th></tr>
-</thead>
-<tbody>
+<div class="table-wrapper"><table><thead><tr><th>面</th><th>$P$（真实）</th><th>$Q_1$（均匀模型）</th><th>$Q_2$（偏斜模型）</th></tr></thead><tbody>
 <tr><td>1</td><td>1/6</td><td>1/6</td><td>1/2</td></tr>
 <tr><td>2</td><td>1/6</td><td>1/6</td><td>1/10</td></tr>
 <tr><td>3</td><td>1/6</td><td>1/6</td><td>1/10</td></tr>
 <tr><td>4</td><td>1/6</td><td>1/6</td><td>1/10</td></tr>
 <tr><td>5</td><td>1/6</td><td>1/6</td><td>1/10</td></tr>
 <tr><td>6</td><td>1/6</td><td>1/6</td><td>1/10</td></tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
 <p>计算结果：</p>
 <ul>
 <li>$D_{KL}(P | Q_1) = 0$（$Q_1$ 与 $P$ 完全一致，没有信息损失）</li>
 <li>$D_{KL}(P | Q_2) \approx 0.216$ bits（$Q_2$ 偏离了真实分布，产生了信息损失）</li>
 </ul>
-<p>这告诉我们：<strong>偏斜模型 $Q_2$ 比均匀模型 $Q_1$ 更“差“</strong>——用 $Q_2$ 来近似真实分布会损失更多信息。</p>
-<hr>
+<p>这告诉我们：<strong>偏斜模型 $Q_2$ 比均匀模型 $Q_1$ 更"差"</strong>——用 $Q_2$ 来近似真实分布会损失更多信息。</p>
+<hr />
 <h2 id="与信息论的关系"><a class="header" href="#与信息论的关系">与信息论的关系</a></h2>
 <p>KL 散度可以通过信息论中的两个基本概念来理解：</p>
 <h3 id="信息熵entropy"><a class="header" href="#信息熵entropy">信息熵（Entropy）</a></h3>
@@ -254,7 +249,7 @@
 <p>$$D_{KL}(P | Q) = H(P, Q) - H(P)$$</p>
 <p>即：<strong>KL 散度 = 交叉熵 − 信息熵 = 使用错误分布编码的额外代价</strong>。</p>
 <p>这就是 KL 散度又被称为**相对熵（Relative Entropy）**的原因。</p>
-<hr>
+<hr />
 <h2 id="不对称性的直觉"><a class="header" href="#不对称性的直觉">不对称性的直觉</a></h2>
 <p>KL 散度的不对称性在实践中有重要影响：</p>
 <ul>
@@ -264,11 +259,11 @@
 <p>用一个形象的比喻：</p>
 <blockquote>
 <ul>
-<li>前向 KL 像一个“谨慎的人“：宁可多覆盖，也不漏掉任何可能性</li>
-<li>反向 KL 像一个“专注的人“：宁可只关注最重要的部分，也不分散注意力</li>
+<li>前向 KL 像一个"谨慎的人"：宁可多覆盖，也不漏掉任何可能性</li>
+<li>反向 KL 像一个"专注的人"：宁可只关注最重要的部分，也不分散注意力</li>
 </ul>
 </blockquote>
-<hr>
+<hr />
 <h2 id="在-agentic-rl-中的应用"><a class="header" href="#在-agentic-rl-中的应用">在 Agentic-RL 中的应用</a></h2>
 <p>在 <a href="../chapter_agentic_rl/01_agentic_rl_overview.html">18.1 什么是 Agentic-RL</a> 中，RL 阶段的损失函数包含一个 KL 散度惩罚项：</p>
 <p>$$\mathcal{L}<em>{RL}(\theta) = -\mathbb{E}</em>{\tau \sim \pi_\theta} \left[ R(\tau) \right] + \beta \cdot D_{KL}(\pi_\theta | \pi_{SFT})$$</p>
@@ -279,44 +274,32 @@
 <li><strong>奖励黑客（Reward Hacking）</strong>：模型找到钻奖励函数漏洞的方式获得高分，但实际输出质量低下。例如，模型可能学会生成某种特定格式来欺骗奖励模型，而非真正解决问题。</li>
 <li><strong>语言退化（Language Degeneration）</strong>：模型的输出不再像自然语言，产生重复、无意义的 Token 序列。</li>
 </ol>
-<p>KL 散度惩罚项起到一个“安全绳“的作用：</p>
+<p>KL 散度惩罚项起到一个"安全绳"的作用：</p>
 <p>$$D_{KL}(\pi_\theta | \pi_{SFT}) = \mathbb{E}<em>{x \sim \mathcal{D}} \left[ \sum</em>{t} \pi_\theta(y_t \mid x, y_{&lt;t}) \log \frac{\pi_\theta(y_t \mid x, y_{&lt;t})}{\pi_{SFT}(y_t \mid x, y_{&lt;t})} \right]$$</p>
 <ul>
 <li>如果当前策略 $\pi_\theta$ 与 SFT 策略 $\pi_{SFT}$ 的输出分布相同，$D_{KL} = 0$，无额外惩罚</li>
-<li>如果当前策略偏离 SFT 策略过远，$D_{KL}$ 增大，损失函数中的惩罚项增加，将策略“拉回“安全范围</li>
+<li>如果当前策略偏离 SFT 策略过远，$D_{KL}$ 增大，损失函数中的惩罚项增加，将策略"拉回"安全范围</li>
 </ul>
 <h3 id="beta-的调节作用"><a class="header" href="#beta-的调节作用">$\beta$ 的调节作用</a></h3>
 <p>超参数 $\beta$ 控制 KL 约束的强度：</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>$\beta$ 取值</th><th>效果</th><th>适用场景</th></tr>
-</thead>
-<tbody>
+<div class="table-wrapper"><table><thead><tr><th>$\beta$ 取值</th><th>效果</th><th>适用场景</th></tr></thead><tbody>
 <tr><td><strong>较大</strong>（如 0.1–0.5）</td><td>策略保守，紧跟 SFT 模型</td><td>训练初期、任务安全性要求高</td></tr>
 <tr><td><strong>较小</strong>（如 0.001–0.01）</td><td>策略自由，允许大幅探索</td><td>训练后期、任务有明确客观评估标准</td></tr>
 <tr><td><strong>自适应</strong></td><td>动态调节，保持 KL 在目标范围</td><td>PPO 中常用</td></tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
-<p>在 GRPO（Group Relative Policy Optimization）中，KL 惩罚的具体实现方式会有所不同，详见 <a href="../chapter_agentic_rl/03_grpo.html">18.3 GRPO 强化学习优化</a>。</p>
-<hr>
+<p>在 GRPO（Group Relative Policy Optimization）中，KL 惩罚的具体实现方式会有所不同，详见 <a href="../chapter_agentic_rl/05_grpo.html">18.5 GRPO：组内相对策略优化与奖励函数设计</a>。</p>
+<hr />
 <h2 id="总结"><a class="header" href="#总结">总结</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>概念</th><th>一句话描述</th></tr>
-</thead>
-<tbody>
+<div class="table-wrapper"><table><thead><tr><th>概念</th><th>一句话描述</th></tr></thead><tbody>
 <tr><td><strong>KL 散度</strong></td><td>用分布 $Q$ 近似分布 $P$ 时的平均信息损失</td></tr>
 <tr><td><strong>非负性</strong></td><td>$D_{KL}(P | Q) \geq 0$，等号当且仅当 $P = Q$</td></tr>
 <tr><td><strong>不对称性</strong></td><td>$D_{KL}(P | Q) \neq D_{KL}(Q | P)$</td></tr>
 <tr><td><strong>与交叉熵的关系</strong></td><td>$D_{KL} = $ 交叉熵 $-$ 信息熵</td></tr>
 <tr><td><strong>在 RL 中的作用</strong></td><td>防止策略偏离参考模型太远，避免奖励黑客和语言退化</td></tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
-<hr>
+<hr />
 <h2 id="延伸阅读"><a class="header" href="#延伸阅读">延伸阅读</a></h2>
 <ul>
 <li>Kullback S, Leibler R A. On Information and Sufficiency[J]. The Annals of Mathematical Statistics, 1951, 22(1): 79-86.</li>
@@ -329,7 +312,7 @@
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../appendix/glossary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                                <i class="fa fa-angle-left"></i>
                             </a>
 
 
@@ -340,18 +323,29 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../appendix/glossary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                        <i class="fa fa-angle-left"></i>
                     </a>
 
             </nav>
 
         </div>
 
-        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
-        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
-        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
-        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
-        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
@@ -360,13 +354,13 @@
         </script>
 
 
-        <script src="../elasticlunr-ef4e11c1.min.js"></script>
-        <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard-1626706a.min.js"></script>
-        <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
