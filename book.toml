@@ -7,7 +7,7 @@ title = "从零开始学 Agent"
 build-dir = "book"
 
 [output.html]
-mathjax-support = true
+mathjax-support = false
 default-theme = "light"
 preferred-dark-theme = "navy"
 git-repository-url = ""
