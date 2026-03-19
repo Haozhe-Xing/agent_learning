@@ -13,34 +13,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-90186aa4.js";
+            window.path_to_searchindex_js = "../searchindex-cb1ef31c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-35ccb7c5.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -54,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -83,12 +84,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -103,39 +104,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -143,44 +144,43 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
-<h1 id="few-shot--zero-shot--chain-of-thought-提示策略"><a class="header" href="#few-shot--zero-shot--chain-of-thought-提示策略">Few-shot / Zero-shot / Chain-of-Thought 提示策略</a></h1>
+                        <h1 id="few-shot--zero-shot--chain-of-thought-提示策略"><a class="header" href="#few-shot--zero-shot--chain-of-thought-提示策略">Few-shot / Zero-shot / Chain-of-Thought 提示策略</a></h1>
 <p>掌握了基础的 Prompt Engineering 之后，我们来学习几种经过研究验证的提示策略。这些策略在面对复杂任务时，能显著提升 LLM 的表现。</p>
 <blockquote>
-<p>📄 <strong>学术背景</strong>：Few-shot 学习由 Brown 等人在 GPT-3 论文中系统化研究 [1]，证明了大模型仅通过几个示例就能适应新任务。Chain-of-Thought（思维链）由 Wei 等人提出 [2]，通过在 prompt 中加入"让我们一步步思考"就能大幅提升 LLM 的推理能力——在 GSM8K 数学推理基准上，CoT 将 PaLM 540B 的准确率从 17.9% 提升到 58.1%。</p>
+<p>📄 <strong>学术背景</strong>：Few-shot 学习由 Brown 等人在 GPT-3 论文中系统化研究 [1]，证明了大模型仅通过几个示例就能适应新任务。Chain-of-Thought（思维链）由 Wei 等人提出 [2]，通过在 prompt 中加入“让我们一步步思考“就能大幅提升 LLM 的推理能力——在 GSM8K 数学推理基准上，CoT 将 PaLM 540B 的准确率从 17.9% 提升到 58.1%。</p>
 </blockquote>
 <h2 id="zero-shot直接提问"><a class="header" href="#zero-shot直接提问">Zero-shot：直接提问</a></h2>
 <p><strong>Zero-shot（零样本）</strong> 是最简单的策略：直接告诉模型任务是什么，不提供任何示例。</p>
@@ -312,12 +312,12 @@ print(prompt)
 <li><strong>质量</strong>：示例本身必须正确</li>
 <li><strong>顺序</strong>：最后一个示例的风格影响最大</li>
 </ol>
-<h2 id="chain-of-thoughtcot让模型想出来"><a class="header" href="#chain-of-thoughtcot让模型想出来">Chain-of-Thought（CoT）：让模型"想出来"</a></h2>
+<h2 id="chain-of-thoughtcot让模型想出来"><a class="header" href="#chain-of-thoughtcot让模型想出来">Chain-of-Thought（CoT）：让模型“想出来“</a></h2>
 <p><strong>Chain-of-Thought（思维链）</strong> 是一种革命性的提示策略：通过让模型展示推理过程，显著提升其在复杂问题上的准确率。</p>
 <blockquote>
-<p>📄 <strong>论文出处</strong>：CoT 由 Google Brain 团队在论文 <em>"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"</em>（Wei et al., 2022）中首次提出。该论文发现，只要在 Few-shot 示例中加入推理步骤，模型在 GSM8K 数学推理数据集上的准确率就能从 17.7% 飙升到 58.1%——仅仅是改变了提示的格式，没有修改模型的任何参数。这个发现揭示了一个深刻的事实：<strong>大型语言模型已经具备了推理能力，我们需要的只是用正确的方式"激发"它。</strong></p>
+<p>📄 <strong>论文出处</strong>：CoT 由 Google Brain 团队在论文 <em>“Chain-of-Thought Prompting Elicits Reasoning in Large Language Models”</em>（Wei et al., 2022）中首次提出。该论文发现，只要在 Few-shot 示例中加入推理步骤，模型在 GSM8K 数学推理数据集上的准确率就能从 17.7% 飙升到 58.1%——仅仅是改变了提示的格式，没有修改模型的任何参数。这个发现揭示了一个深刻的事实：<strong>大型语言模型已经具备了推理能力，我们需要的只是用正确的方式“激发“它。</strong></p>
 </blockquote>
-<p><img src="../svg/chapter_llm_03_cot.svg" alt="思维链推理示意图" /></p>
+<p><img src="../svg/chapter_llm_03_cot.svg" alt="思维链推理示意图"></p>
 <pre><code class="language-python">def solve_with_cot(problem: str) -&gt; str:
     """使用思维链解决复杂问题"""
     
@@ -354,7 +354,7 @@ print(result)
 </code></pre>
 <p><strong>Zero-shot CoT 魔法咒语：</strong></p>
 <blockquote>
-<p>📄 <strong>论文出处</strong>：<em>"Large Language Models are Zero-Shot Reasoners"</em>（Kojima et al., 2022）发现了一个令人惊讶的事实——只需在 Prompt 末尾加上 <em>"Let's think step by step"</em>（"让我们一步步思考"）这句话，就能在不提供任何推理示例的情况下触发 CoT 推理。这意味着模型的推理能力是"内建"的，只需要一个简单的触发词就能激活。</p>
+<p>📄 <strong>论文出处</strong>：<em>“Large Language Models are Zero-Shot Reasoners”</em>（Kojima et al., 2022）发现了一个令人惊讶的事实——只需在 Prompt 末尾加上 <em>“Let’s think step by step”</em>（“让我们一步步思考”）这句话，就能在不提供任何推理示例的情况下触发 CoT 推理。这意味着模型的推理能力是“内建“的，只需要一个简单的触发词就能激活。</p>
 </blockquote>
 <pre><code class="language-python">def zero_shot_cot(question: str) -&gt; str:
     """零样本思维链：加上魔法咒语即可触发推理"""
@@ -394,7 +394,7 @@ print("\n最终答案：", result["answer"])
 <h2 id="高级策略tree-of-thoughttot"><a class="header" href="#高级策略tree-of-thoughttot">高级策略：Tree-of-Thought（ToT）</a></h2>
 <p><strong>Tree-of-Thought</strong> 是 CoT 的升级版：让模型探索多条推理路径，选择最优解。</p>
 <blockquote>
-<p>📄 <strong>论文出处</strong>：<em>"Tree of Thoughts: Deliberate Problem Solving with Large Language Models"</em>（Yao et al., 2023）。与 CoT 的"一条路走到底"不同，ToT 让模型在每一步都生成多个候选想法（Thought），然后用评估函数判断哪些想法更有前景，最终像搜索树一样找到最优的推理路径。论文在 24 点游戏上的实验尤其惊艳——标准 CoT 仅解出 4% 的题目，ToT 达到了 74%。</p>
+<p>📄 <strong>论文出处</strong>：<em>“Tree of Thoughts: Deliberate Problem Solving with Large Language Models”</em>（Yao et al., 2023）。与 CoT 的“一条路走到底“不同，ToT 让模型在每一步都生成多个候选想法（Thought），然后用评估函数判断哪些想法更有前景，最终像搜索树一样找到最优的推理路径。论文在 24 点游戏上的实验尤其惊艳——标准 CoT 仅解出 4% 的题目，ToT 达到了 74%。</p>
 </blockquote>
 <pre><code class="language-python">def tree_of_thought(problem: str, num_paths: int = 3) -&gt; str:
     """
@@ -455,7 +455,7 @@ print("\n评估与推荐：\n", result["evaluation"])
 <h2 id="react推理与行动交织"><a class="header" href="#react推理与行动交织">ReAct：推理与行动交织</a></h2>
 <p><strong>ReAct（Reasoning + Acting）</strong> 是 Agent 开发中最重要的提示策略之一（第6章会深入讲解）。</p>
 <blockquote>
-<p>📄 <strong>论文出处</strong>：<em>"ReAct: Synergizing Reasoning and Acting in Language Models"</em>（Yao et al., 2022）。ReAct 的核心洞察是：<strong>纯推理（CoT）和纯行动（工具调用）都不够好，将两者交织在一起才能获得最佳效果。</strong> 在 HotpotQA 多跳推理任务上，ReAct 比纯 CoT 提升了 6 个百分点；在 ALFWorld 交互式任务上，比纯行动模式提升了 34 个百分点。这篇论文直接奠定了现代 Agent 的基本架构。</p>
+<p>📄 <strong>论文出处</strong>：<em>“ReAct: Synergizing Reasoning and Acting in Language Models”</em>（Yao et al., 2022）。ReAct 的核心洞察是：<strong>纯推理（CoT）和纯行动（工具调用）都不够好，将两者交织在一起才能获得最佳效果。</strong> 在 HotpotQA 多跳推理任务上，ReAct 比纯 CoT 提升了 6 个百分点；在 ALFWorld 交互式任务上，比纯行动模式提升了 34 个百分点。这篇论文直接奠定了现代 Agent 的基本架构。</p>
 </blockquote>
 <pre><code class="language-python">react_prompt = """
 你是一个能够使用工具的 AI 助手。解决问题时，请严格按照以下格式：
@@ -486,7 +486,7 @@ print("\n评估与推荐：\n", result["evaluation"])
 # 这个模式将在第6章详细实现
 </code></pre>
 <h2 id="提示策略选择指南"><a class="header" href="#提示策略选择指南">提示策略选择指南</a></h2>
-<p><img src="../svg/chapter_llm_03_strategy_guide.svg" alt="\u63d0\u793a\u7b56\u7565\u9009\u62e9\u6307\u5357" /></p>
+<p><img src="../svg/chapter_llm_03_strategy_guide.svg" alt="&#92;u63d0&#92;u793a&#92;u7b56&#92;u7565&#92;u9009&#92;u62e9&#92;u6307&#92;u5357"></p>
 <h2 id="实战综合策略对比"><a class="header" href="#实战综合策略对比">实战：综合策略对比</a></h2>
 <pre><code class="language-python">import time
 
@@ -547,41 +547,53 @@ for strategy, data in results.items():
     print(f"耗时：{data['time']}")
     print(f"回答：{data['answer'][:200]}...")
 </code></pre>
-<hr />
+<hr>
 <h2 id="小结"><a class="header" href="#小结">小结</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>策略</th><th>适用场景</th><th>优点</th><th>缺点</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>策略</th><th>适用场景</th><th>优点</th><th>缺点</th></tr>
+</thead>
+<tbody>
 <tr><td>Zero-shot</td><td>常见标准任务</td><td>简单、快速、省 Token</td><td>复杂任务效果差</td></tr>
 <tr><td>Few-shot</td><td>需要特定格式/风格</td><td>稳定可控</td><td>消耗更多 Token</td></tr>
 <tr><td>CoT</td><td>推理、计算、多步骤</td><td>准确率高</td><td>慢、Token 多</td></tr>
 <tr><td>ToT</td><td>复杂决策问题</td><td>探索多方案</td><td>最慢、最贵</td></tr>
 <tr><td>ReAct</td><td>需要工具调用的 Agent</td><td>融合推理和行动</td><td>实现复杂</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<p>选择合适的策略是 Agent 开发的重要技能——不是"越复杂越好"，而是"恰到好处"。</p>
+<p>选择合适的策略是 Agent 开发的重要技能——不是“越复杂越好“，而是“恰到好处“。</p>
 <h3 id="-延伸阅读核心论文"><a class="header" href="#-延伸阅读核心论文">📖 延伸阅读：核心论文</a></h3>
 <p>本节涉及的提示策略都有扎实的学术研究基础。以下是最重要的论文，按发表时间排序：</p>
-<div class="table-wrapper"><table><thead><tr><th>论文</th><th>作者</th><th>年份</th><th>核心贡献</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>论文</th><th>作者</th><th>年份</th><th>核心贡献</th></tr>
+</thead>
+<tbody>
 <tr><td><em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</em></td><td>Wei et al. (Google Brain)</td><td>2022</td><td>首次提出 CoT，证明在示例中加入推理步骤可大幅提升数学和逻辑推理能力</td></tr>
-<tr><td><em>Large Language Models are Zero-Shot Reasoners</em></td><td>Kojima et al.</td><td>2022</td><td>发现 "Let's think step by step" 一句话就能激活 Zero-shot CoT</td></tr>
+<tr><td><em>Large Language Models are Zero-Shot Reasoners</em></td><td>Kojima et al.</td><td>2022</td><td>发现 “Let’s think step by step” 一句话就能激活 Zero-shot CoT</td></tr>
 <tr><td><em>Self-Consistency Improves Chain of Thought Reasoning</em></td><td>Wang et al. (Google Brain)</td><td>2023</td><td>提出自我一致性（Self-Consistency）：多次采样 CoT 路径，取多数投票结果，进一步提升推理准确率</td></tr>
 <tr><td><em>ReAct: Synergizing Reasoning and Acting in Language Models</em></td><td>Yao et al. (Princeton)</td><td>2022</td><td>将推理和行动交织，奠定了现代 Agent 的 ReAct 架构</td></tr>
 <tr><td><em>Tree of Thoughts: Deliberate Problem Solving with LLMs</em></td><td>Yao et al. (Princeton)</td><td>2023</td><td>CoT 的升级版，多路径探索 + 回溯搜索，在复杂推理任务上大幅超越 CoT</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <blockquote>
-<p>💡 <strong>前沿进展</strong>：2024-2025 年以来，推理模型成为 LLM 发展的核心方向。OpenAI 的 o1/o3/o4-mini 系列模型、Anthropic 的 Claude 4 Extended Thinking、DeepSeek-R2 等模型将 CoT 推理"内化"到了模型本身（而非依赖提示词），在数学、编程竞赛和科学推理中展现了惊人的能力。Google 的 Gemini 2.5 Pro 也引入了"Thinking Mode"。这表明 CoT 已从一种"提示技巧"演变为模型训练的核心范式——未来的 LLM 将越来越"会想"。对于 Agent 开发者而言，推理模型让 Agent 在复杂多步任务中的规划能力大幅提升。</p>
+<p>💡 <strong>前沿进展</strong>：2024-2025 年以来，推理模型成为 LLM 发展的核心方向。OpenAI 的 o1/o3/o4-mini 系列模型、Anthropic 的 Claude 4 Extended Thinking、DeepSeek-R2 等模型将 CoT 推理“内化“到了模型本身（而非依赖提示词），在数学、编程竞赛和科学推理中展现了惊人的能力。Google 的 Gemini 2.5 Pro 也引入了“Thinking Mode“。这表明 CoT 已从一种“提示技巧“演变为模型训练的核心范式——未来的 LLM 将越来越“会想“。对于 Agent 开发者而言，推理模型让 Agent 在复杂多步任务中的规划能力大幅提升。</p>
 </blockquote>
 <blockquote>
 <p>📖 <strong>更多论文解读</strong>：ReAct 的深度解读请见 <a href="../chapter_planning/06_paper_readings.html">6.6 论文解读：规划与推理前沿研究</a>，Self-Consistency 在幻觉缓解中的应用请见 <a href="../chapter_security/06_paper_readings.html">14.6 论文解读：安全与可靠性前沿研究</a>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
 <p>[1] BROWN T B, MANN B, RYDER N, et al. Language models are few-shot learners[C]//NeurIPS. 2020.</p>
 <p>[2] WEI J, WANG X, SCHUURMANS D, et al. Chain-of-thought prompting elicits reasoning in large language models[C]//NeurIPS. 2022.</p>
 <p>[3] KOJIMA T, GU S, REID M, et al. Large language models are zero-shot reasoners[C]//NeurIPS. 2022.</p>
 <p>[4] WANG X, WEI J, SCHUURMANS D, et al. Self-consistency improves chain of thought reasoning in language models[C]//ICLR. 2023.</p>
 <p>[5] YAO S, YU D, ZHAO J, et al. Tree of thoughts: Deliberate problem solving with large language models[C]//NeurIPS. 2023.</p>
-<hr />
+<hr>
 <p><em>下一节：<a href="./04_api_basics.html">2.4 模型 API 调用入门（OpenAI / 开源模型）</a></em></p>
 
                     </main>
@@ -589,11 +601,11 @@ for strategy, data in results.items():
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../chapter_llm/02_prompt_engineering.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../chapter_llm/04_api_basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -603,32 +615,21 @@ for strategy, data in results.items():
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../chapter_llm/02_prompt_engineering.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../chapter_llm/04_api_basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -637,13 +638,13 @@ for strategy, data in results.items():
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

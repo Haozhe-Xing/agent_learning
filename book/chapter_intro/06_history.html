@@ -13,34 +13,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-cb1ef31c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-35ccb7c5.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -54,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -83,12 +84,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -103,39 +104,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -143,66 +144,65 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
-<h1 id="智能体发展史从符号主义到大模型驱动"><a class="header" href="#智能体发展史从符号主义到大模型驱动">智能体发展史：从符号主义到大模型驱动</a></h1>
+                        <h1 id="智能体发展史从符号主义到大模型驱动"><a class="header" href="#智能体发展史从符号主义到大模型驱动">智能体发展史：从符号主义到大模型驱动</a></h1>
 <blockquote>
-<p>📖 <em>"不了解历史，就无法真正理解当下。Agent 的每一次跃迁，都站在前人的肩膀之上。"</em></p>
+<p>📖 <em>“不了解历史，就无法真正理解当下。Agent 的每一次跃迁，都站在前人的肩膀之上。”</em></p>
 </blockquote>
 <h2 id="为什么要了解发展史"><a class="header" href="#为什么要了解发展史">为什么要了解发展史？</a></h2>
-<p>"Agent"这个概念并非 LLM 时代的发明。从 1950 年代 AI 学科诞生之日起，<strong>如何构建能够自主行动的智能系统</strong>就是核心研究命题。了解这段历史，能让我们：</p>
+<p>“Agent“这个概念并非 LLM 时代的发明。从 1950 年代 AI 学科诞生之日起，<strong>如何构建能够自主行动的智能系统</strong>就是核心研究命题。了解这段历史，能让我们：</p>
 <ol>
 <li>理解当前 Agent 架构设计背后的<strong>学术渊源</strong></li>
-<li>避免"重新发明轮子"——很多经典方法仍在发挥作用</li>
+<li>避免“重新发明轮子“——很多经典方法仍在发挥作用</li>
 <li>预判未来 Agent 技术的<strong>演进方向</strong></li>
 </ol>
-<p><img src="../svg/chapter_intro_06_history_timeline.svg" alt="智能体发展史时间线" /></p>
+<p><img src="../svg/chapter_intro_06_history_timeline.svg" alt="智能体发展史时间线"></p>
 <h2 id="第一阶段符号主义智能体1950s1980s"><a class="header" href="#第一阶段符号主义智能体1950s1980s">第一阶段：符号主义智能体（1950s—1980s）</a></h2>
 <h3 id="图灵的预言"><a class="header" href="#图灵的预言">图灵的预言</a></h3>
-<p>1950 年，Alan Turing 发表了划时代的论文《Computing Machinery and Intelligence》[1]，提出了"机器能思考吗？"这个根本性问题，并设计了著名的"图灵测试"。这篇论文为整个 AI 领域奠定了哲学基础。</p>
+<p>1950 年，Alan Turing 发表了划时代的论文《Computing Machinery and Intelligence》[1]，提出了“机器能思考吗？“这个根本性问题，并设计了著名的“图灵测试”。这篇论文为整个 AI 领域奠定了哲学基础。</p>
 <h3 id="早期专家系统"><a class="header" href="#早期专家系统">早期专家系统</a></h3>
 <p>符号主义（Symbolism）认为智能的本质是<strong>符号操作</strong>：通过逻辑规则推理来模拟人类思维。这一时期的代表性系统包括：</p>
 <ul>
 <li>
-<p><strong>SHRDLU（1970）</strong>[2]：MIT 的 Terry Winograd 开发的自然语言理解系统，能在一个由积木组成的虚拟世界中理解并执行指令（如"把红色方块放在蓝色方块上面"）。它是最早的"能理解语言并执行动作"的系统——某种意义上，这就是最原始的 Agent。</p>
+<p><strong>SHRDLU（1970）</strong>[2]：MIT 的 Terry Winograd 开发的自然语言理解系统，能在一个由积木组成的虚拟世界中理解并执行指令（如“把红色方块放在蓝色方块上面“）。它是最早的“能理解语言并执行动作“的系统——某种意义上，这就是最原始的 Agent。</p>
 </li>
 <li>
 <p><strong>MYCIN（1976）</strong>[3]：斯坦福大学开发的医学诊断专家系统，使用约 600 条规则来诊断细菌感染并推荐抗生素。在临床测试中，MYCIN 的诊断准确率达到 69%，超过了当时大多数非专科医生。</p>
 </li>
 <li>
-<p><strong>STRIPS（1971）</strong>[4]：SRI International 开发的自动化规划系统，为机器人 Shakey 提供行动规划能力。STRIPS 提出的"前置条件-动作-效果"规划范式，至今仍是 AI 规划领域的基础框架。</p>
+<p><strong>STRIPS（1971）</strong>[4]：SRI International 开发的自动化规划系统，为机器人 Shakey 提供行动规划能力。STRIPS 提出的“前置条件-动作-效果“规划范式，至今仍是 AI 规划领域的基础框架。</p>
 </li>
 </ul>
 <pre><code># STRIPS 规划表示示例（伪代码）
@@ -220,25 +220,31 @@ Action: move_block(block, from, to)
 </code></pre>
 <h3 id="符号主义的局限"><a class="header" href="#符号主义的局限">符号主义的局限</a></h3>
 <p>符号主义 Agent 在<strong>封闭领域</strong>内表现出色，但面临根本性瓶颈：</p>
-<div class="table-wrapper"><table><thead><tr><th>问题</th><th>说明</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>问题</th><th>说明</th></tr>
+</thead>
+<tbody>
 <tr><td>知识获取瓶颈</td><td>规则需要人工手动编写，数量呈指数增长</td></tr>
 <tr><td>脆弱性</td><td>遇到规则未覆盖的情况就完全失效</td></tr>
-<tr><td>常识缺失</td><td>无法处理"不言自明"的常识知识</td></tr>
+<tr><td>常识缺失</td><td>无法处理“不言自明“的常识知识</td></tr>
 <tr><td>可扩展性差</td><td>规则库越大，规则之间的冲突越难管理</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <blockquote>
-<p>💡 <strong>与当代 Agent 的联系</strong>：符号主义的"规则+推理"思路并未消亡。在今天的 LLM Agent 中，<strong>系统提示词（System Prompt）</strong> 其实就是一种软性"规则"，而<strong>工具的参数约束</strong>则是硬性规则。区别在于 LLM 用统计学习取代了手工编码的逻辑推理。</p>
+<p>💡 <strong>与当代 Agent 的联系</strong>：符号主义的“规则+推理“思路并未消亡。在今天的 LLM Agent 中，<strong>系统提示词（System Prompt）</strong> 其实就是一种软性“规则“，而<strong>工具的参数约束</strong>则是硬性规则。区别在于 LLM 用统计学习取代了手工编码的逻辑推理。</p>
 </blockquote>
 <h2 id="第二阶段心智社会与分布式智能1980s1990s"><a class="header" href="#第二阶段心智社会与分布式智能1980s1990s">第二阶段：心智社会与分布式智能（1980s—1990s）</a></h2>
-<h3 id="明斯基的心智社会"><a class="header" href="#明斯基的心智社会">明斯基的"心智社会"</a></h3>
+<h3 id="明斯基的心智社会"><a class="header" href="#明斯基的心智社会">明斯基的“心智社会“</a></h3>
 <p>1986 年，MIT 人工智能实验室的创始人之一 Marvin Minsky 出版了《心智社会（The Society of Mind）》[5]。他提出了一个革命性的观点：</p>
 <blockquote>
-<p><strong>智能不是单一能力的体现，而是大量"不那么聪明"的小 Agent（Minsky 称之为 "agency"）协作的结果。</strong></p>
+<p><strong>智能不是单一能力的体现，而是大量“不那么聪明“的小 Agent（Minsky 称之为 “agency”）协作的结果。</strong></p>
 </blockquote>
 <p>这个理论的核心思想是：</p>
 <ul>
-<li>每个小 Agent 只负责一件简单的事（如"识别颜色"、"计算距离"）</li>
+<li>每个小 Agent 只负责一件简单的事（如“识别颜色“、“计算距离”）</li>
 <li>复杂的智能行为由这些小 Agent 的层级协作<strong>涌现</strong>出来</li>
 <li>不同的小 Agent 之间会竞争和合作</li>
 </ul>
@@ -281,9 +287,9 @@ class SocietyOfMind:
 <h3 id="bdi-架构"><a class="header" href="#bdi-架构">BDI 架构</a></h3>
 <p>1990 年代，Rao 和 Georgeff 提出了 <strong>BDI（Belief-Desire-Intention）架构</strong> [6]，成为理性 Agent 的标准理论框架：</p>
 <ul>
-<li><strong>Belief（信念）</strong>：Agent 对世界的认知（"我认为现在的交通状况很拥堵"）</li>
-<li><strong>Desire（愿望）</strong>：Agent 想要达成的目标（"我想在 30 分钟内到达公司"）</li>
-<li><strong>Intention（意图）</strong>：Agent 决定采取的行动计划（"我选择坐地铁而不是开车"）</li>
+<li><strong>Belief（信念）</strong>：Agent 对世界的认知（“我认为现在的交通状况很拥堵”）</li>
+<li><strong>Desire（愿望）</strong>：Agent 想要达成的目标（“我想在 30 分钟内到达公司”）</li>
+<li><strong>Intention（意图）</strong>：Agent 决定采取的行动计划（“我选择坐地铁而不是开车”）</li>
 </ul>
 <pre><code class="language-python">from dataclasses import dataclass, field
 
@@ -323,7 +329,7 @@ class BDIAgent:
 # - Intention → Agent 的规划结果（ReAct 中的 Thought 部分）
 </code></pre>
 <blockquote>
-<p>💡 <strong>BDI 与 ReAct 的联系</strong>：如果你对比 BDI 架构和 ReAct 框架 [7]，会发现惊人的相似性——ReAct 中的 Thought 对应 BDI 的 Belief + 推理过程，Action 对应 Intention 的执行，Observation 对应 Belief 的更新。ReAct 本质上是用 LLM 实现了 BDI 架构中的"审慎推理"过程。</p>
+<p>💡 <strong>BDI 与 ReAct 的联系</strong>：如果你对比 BDI 架构和 ReAct 框架 [7]，会发现惊人的相似性——ReAct 中的 Thought 对应 BDI 的 Belief + 推理过程，Action 对应 Intention 的执行，Observation 对应 Belief 的更新。ReAct 本质上是用 LLM 实现了 BDI 架构中的“审慎推理“过程。</p>
 </blockquote>
 <h2 id="第三阶段联结主义与深度学习1990s2020s"><a class="header" href="#第三阶段联结主义与深度学习1990s2020s">第三阶段：联结主义与深度学习（1990s—2020s）</a></h2>
 <h3 id="从统计学习到神经网络"><a class="header" href="#从统计学习到神经网络">从统计学习到神经网络</a></h3>
@@ -332,7 +338,7 @@ class BDIAgent:
 <ul>
 <li><strong>1997 年 Deep Blue</strong>：IBM 的国际象棋程序击败世界冠军卡斯帕罗夫，但本质仍是搜索+启发式算法</li>
 <li><strong>2012 年 AlexNet</strong> [8]：深度卷积神经网络在 ImageNet 竞赛中取得突破性成绩，开启深度学习革命</li>
-<li><strong>2016 年 AlphaGo</strong> [9]：DeepMind 的围棋程序击败李世石，将深度强化学习推向大众视野。AlphaGo 可以被视为一个复杂的"游戏 Agent"——它能感知棋盘状态、推理最优走法、并执行落子动作</li>
+<li><strong>2016 年 AlphaGo</strong> [9]：DeepMind 的围棋程序击败李世石，将深度强化学习推向大众视野。AlphaGo 可以被视为一个复杂的“游戏 Agent“——它能感知棋盘状态、推理最优走法、并执行落子动作</li>
 </ul>
 <h3 id="强化学习-agent"><a class="header" href="#强化学习-agent">强化学习 Agent</a></h3>
 <p>深度强化学习（Deep RL）为 Agent 领域带来了一套系统的数学框架。Agent 被建模为在环境中采取行动以最大化累计奖励的实体 [10]：</p>
@@ -380,26 +386,32 @@ class RLAgentLoop:
 <p>Transformer 架构使得模型规模可以高效地扩展到数千亿参数，为 LLM 时代的到来奠定了技术基础。</p>
 <h2 id="第四阶段llm-驱动的智能体2023至今"><a class="header" href="#第四阶段llm-驱动的智能体2023至今">第四阶段：LLM 驱动的智能体（2023—至今）</a></h2>
 <h3 id="从语言模型到通用智能体"><a class="header" href="#从语言模型到通用智能体">从语言模型到通用智能体</a></h3>
-<p>2022-2023 年，以 ChatGPT/GPT-4 为代表的大语言模型证明了一个关键假设：<strong>足够大的语言模型能够涌现出推理、规划、工具使用等高层认知能力</strong> [12]。这使得"Agent"的实现方式发生了根本性转变：</p>
-<div class="table-wrapper"><table><thead><tr><th>维度</th><th>传统 Agent</th><th>LLM 驱动的 Agent</th></tr></thead><tbody>
+<p>2022-2023 年，以 ChatGPT/GPT-4 为代表的大语言模型证明了一个关键假设：<strong>足够大的语言模型能够涌现出推理、规划、工具使用等高层认知能力</strong> [12]。这使得“Agent“的实现方式发生了根本性转变：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>传统 Agent</th><th>LLM 驱动的 Agent</th></tr>
+</thead>
+<tbody>
 <tr><td>决策引擎</td><td>规则/搜索/RL 策略网络</td><td>大语言模型</td></tr>
 <tr><td>知识来源</td><td>手动编码的知识库</td><td>预训练中习得的世界知识</td></tr>
 <tr><td>交互方式</td><td>结构化输入/输出</td><td>自然语言</td></tr>
 <tr><td>泛化能力</td><td>仅限训练域</td><td>跨领域泛化</td></tr>
 <tr><td>开发成本</td><td>需要大量领域工程</td><td>Prompt + Tool 即可构建</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <h3 id="标志性里程碑"><a class="header" href="#标志性里程碑">标志性里程碑</a></h3>
 <p><strong>2023 年：概念验证阶段</strong></p>
 <ul>
 <li><strong>ReAct</strong> [7]：将推理和行动统一到一个 LLM 交互循环中，成为 Agent 的基础范式</li>
 <li><strong>AutoGPT</strong>（2023.3）：第一个引起全球关注的自主 Agent 项目，证明 LLM 可以自主规划和执行复杂任务</li>
-<li><strong>Generative Agents</strong> [13]（2023.4）：Stanford 的"AI 小镇"实验，25 个 Agent 在虚拟小镇中自主生活、社交和记忆，展示了 Agent 的社会行为涌现</li>
+<li><strong>Generative Agents</strong> [13]（2023.4）：Stanford 的“AI 小镇“实验，25 个 Agent 在虚拟小镇中自主生活、社交和记忆，展示了 Agent 的社会行为涌现</li>
 <li><strong>Voyager</strong> [14]（2023.5）：NVIDIA 的 Minecraft Agent，能自主探索、学习技能并编写代码，展示了终身学习能力</li>
 </ul>
 <p><strong>2024 年：工程化阶段</strong></p>
 <ul>
-<li><strong>Devin</strong>（2024.3）：Cognition AI 推出的首个"AI 软件工程师"，在 SWE-bench 上取得突破</li>
+<li><strong>Devin</strong>（2024.3）：Cognition AI 推出的首个“AI 软件工程师“，在 SWE-bench 上取得突破</li>
 <li><strong>SWE-Agent</strong> [15]（2024.6）：Princeton 的开源代码 Agent，系统性地设计了 Agent-Computer Interface (ACI)</li>
 <li><strong>MCP 协议</strong>（2024.11）：Anthropic 发布 Model Context Protocol，标准化工具集成</li>
 <li><strong>A2A 协议</strong>（2024.4）：Google 发布 Agent-to-Agent Protocol，标准化 Agent 间通信</li>
@@ -409,40 +421,46 @@ class RLAgentLoop:
 <li><strong>Claude Code / Codex CLI</strong>：Agent 进入开发者日常工作流</li>
 <li><strong>OpenAI Agents SDK</strong>：官方 Agent 开发框架</li>
 <li><strong>DeepSWE</strong>：纯 RL 训练的开源代码 Agent，在 SWE-bench Verified 上达到 59% SOTA</li>
-<li><strong>Anthropic</strong> 发布 <em>Building Effective Agents</em> 指南 [16]，强调"简单组合优于复杂框架"</li>
+<li><strong>Anthropic</strong> 发布 <em>Building Effective Agents</em> 指南 [16]，强调“简单组合优于复杂框架“</li>
 <li><strong>OpenAI</strong> 发布 <em>A Practical Guide to Building Agents</em> [17]，提供完整的工程化最佳实践</li>
 </ul>
 <h3 id="当代-agent-的三大范式"><a class="header" href="#当代-agent-的三大范式">当代 Agent 的三大范式</a></h3>
 <p>经过几年的快速发展，LLM 驱动的 Agent 形成了三大主要范式：</p>
-<p><img src="../svg/chapter_intro_06_three_paradigms.svg" alt="当代 Agent 三大范式" /></p>
+<p><img src="../svg/chapter_intro_06_three_paradigms.svg" alt="当代 Agent 三大范式"></p>
 <h2 id="发展脉络总结"><a class="header" href="#发展脉络总结">发展脉络总结</a></h2>
 <p>整个智能体发展史可以用一条清晰的主线串联：</p>
 <blockquote>
-<p><strong>从"写规则"到"学规则"，再到"用语言替代规则"——Agent 的能力来源在不断抽象化和通用化。</strong></p>
+<p><strong>从“写规则“到“学规则“，再到“用语言替代规则“——Agent 的能力来源在不断抽象化和通用化。</strong></p>
 </blockquote>
-<div class="table-wrapper"><table><thead><tr><th>时期</th><th>范式</th><th>Agent 能力来源</th><th>代表</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>时期</th><th>范式</th><th>Agent 能力来源</th><th>代表</th></tr>
+</thead>
+<tbody>
 <tr><td>1950s-1980s</td><td>符号主义</td><td>人工编写的逻辑规则</td><td>MYCIN, SHRDLU, STRIPS</td></tr>
 <tr><td>1980s-1990s</td><td>分布式智能</td><td>多 Agent 协作涌现</td><td>BDI 架构, 心智社会</td></tr>
 <tr><td>1990s-2020s</td><td>联结主义</td><td>数据驱动的统计学习</td><td>AlphaGo, DQN</td></tr>
 <tr><td>2023-至今</td><td>LLM 驱动</td><td>预训练知识 + 自然语言推理</td><td>GPT-4 Agent, Claude Agent</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
 <ul>
 <li>Agent 的概念贯穿了 AI 70 余年的发展史，远比 LLM 时代更早</li>
-<li>符号主义奠定了"规则+推理"的基础，BDI 架构定义了理性 Agent 的理论框架</li>
+<li>符号主义奠定了“规则+推理“的基础，BDI 架构定义了理性 Agent 的理论框架</li>
 <li>深度学习和强化学习提供了数据驱动的学习能力</li>
-<li>LLM 的出现实现了"质变"：Agent 首次获得了<strong>跨领域的通用推理和规划能力</strong></li>
+<li>LLM 的出现实现了“质变“：Agent 首次获得了<strong>跨领域的通用推理和规划能力</strong></li>
 <li>理解历史有助于我们更好地设计和构建当代 Agent 系统</li>
 </ul>
 <h2 id="-思考练习"><a class="header" href="#-思考练习">🤔 思考练习</a></h2>
 <ol>
 <li>MYCIN 的 600 条规则和今天 Agent 的 System Prompt，本质区别在哪里？</li>
-<li>明斯基的"心智社会"理论如何启发了今天的多 Agent 框架设计？</li>
-<li>从 STRIPS 到 ReAct，Agent 的"规划"能力经历了怎样的演变？</li>
+<li>明斯基的“心智社会“理论如何启发了今天的多 Agent 框架设计？</li>
+<li>从 STRIPS 到 ReAct，Agent 的“规划“能力经历了怎样的演变？</li>
 <li>你认为下一个阶段的 Agent 会是什么样的？</li>
 </ol>
-<hr />
+<hr>
 <h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
 <p>[1] TURING A M. Computing machinery and intelligence[J]. Mind, 1950, 59(236): 433-460.</p>
 <p>[2] WINOGRAD T. Understanding Natural Language[M]. New York: Academic Press, 1972.</p>
@@ -456,7 +474,7 @@ class RLAgentLoop:
 <p>[10] SUTTON R S, BARTO A G. Reinforcement Learning: An Introduction[M]. 2nd ed. Cambridge: MIT Press, 2018.</p>
 <p>[11] VASWANI A, SHAZEER N, PARMAR N, et al. Attention is all you need[C]//NeurIPS. 2017: 5998-6008.</p>
 <p>[12] WEI J, TAY Y, BOMMASANI R, et al. Emergent abilities of large language models[J]. Transactions on Machine Learning Research, 2022.</p>
-<p>[13] PARK J S, O'BRIEN J C, CAI C J, et al. Generative agents: Interactive simulacra of human behavior[C]//UIST. 2023.</p>
+<p>[13] PARK J S, O’BRIEN J C, CAI C J, et al. Generative agents: Interactive simulacra of human behavior[C]//UIST. 2023.</p>
 <p>[14] WANG G, XIE Y, JIANG Y, et al. Voyager: An open-ended embodied agent with large language models[R]. arXiv preprint arXiv:2305.16291, 2023.</p>
 <p>[15] YANG J, JIMENEZ C E, WETTIG A, et al. SWE-agent: Agent-computer interfaces enable automated software engineering[R]. arXiv preprint arXiv:2405.15793, 2024.</p>
 <p>[16] ANTHROPIC. Building effective agents[EB/OL]. 2024. https://www.anthropic.com/engineering/building-effective-agents.</p>
@@ -467,11 +485,11 @@ class RLAgentLoop:
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../chapter_intro/05_use_cases.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../chapter_llm/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -481,32 +499,21 @@ class RLAgentLoop:
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../chapter_intro/05_use_cases.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../chapter_llm/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -515,13 +522,13 @@ class RLAgentLoop:
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

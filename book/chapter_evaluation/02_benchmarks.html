@@ -13,34 +13,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-90186aa4.js";
+            window.path_to_searchindex_js = "../searchindex-cb1ef31c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-35ccb7c5.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -54,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -83,12 +84,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -103,39 +104,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -143,73 +144,84 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
-<h1 id="基准测试与评估指标"><a class="header" href="#基准测试与评估指标">基准测试与评估指标</a></h1>
+                        <h1 id="基准测试与评估指标"><a class="header" href="#基准测试与评估指标">基准测试与评估指标</a></h1>
 <blockquote>
 <p><strong>本节目标</strong>：深入理解业界主流的 Agent 基准测试及其评估原理，掌握 BFCL、GAIA、AgentBench、WebArena、SWE-bench 等基准的底层算法，并学会设计自己的评估体系。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="为什么需要基准测试"><a class="header" href="#为什么需要基准测试">为什么需要基准测试？</a></h2>
-<p>想象你在面试两个候选人，如果不给同样的题目，怎么比较谁更优秀？基准测试就是给 Agent 出的"标准考题"——用统一的任务、数据和评分标准来衡量不同 Agent 的表现。</p>
-<p>但不同的基准测试评估的能力维度截然不同。下面这张"评估全景图"帮你快速定位：</p>
-<p><img src="../svg/chapter_evaluation_02_benchmarks_map.svg" alt="Agent 评估基准全景图" /></p>
-<hr />
+<p>想象你在面试两个候选人，如果不给同样的题目，怎么比较谁更优秀？基准测试就是给 Agent 出的“标准考题“——用统一的任务、数据和评分标准来衡量不同 Agent 的表现。</p>
+<p>但不同的基准测试评估的能力维度截然不同。下面这张“评估全景图“帮你快速定位：</p>
+<p><img src="../svg/chapter_evaluation_02_benchmarks_map.svg" alt="Agent 评估基准全景图"></p>
+<hr>
 <h2 id="agent-评估基准分类"><a class="header" href="#agent-评估基准分类">Agent 评估基准分类</a></h2>
 <p>Agent 评估基准可按能力维度分为以下几类 [1]：</p>
-<div class="table-wrapper"><table><thead><tr><th>类别</th><th>代表基准</th><th>评估能力</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>类别</th><th>代表基准</th><th>评估能力</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>工具调用</strong></td><td>BFCL, ToolBench, API-Bank</td><td>正确调用 API、处理参数、组合工具</td></tr>
 <tr><td><strong>通用推理</strong></td><td>GAIA, MMLU, GSM8K</td><td>多步推理、知识广度、数学能力</td></tr>
 <tr><td><strong>综合 Agent</strong></td><td>AgentBench</td><td>8 个领域的端到端任务完成</td></tr>
 <tr><td><strong>Web 操作</strong></td><td>WebArena, Mind2Web</td><td>在真实网站上完成指定任务</td></tr>
 <tr><td><strong>软件工程</strong></td><td>SWE-bench, HumanEval</td><td>代码生成、Bug 修复、项目级改动</td></tr>
 <tr><td><strong>多模态</strong></td><td>VisualWebArena, OSWorld</td><td>视觉理解 + 操作执行</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="1-bfcl--工具调用评估基准"><a class="header" href="#1-bfcl--工具调用评估基准">1. BFCL —— 工具调用评估基准</a></h2>
 <h3 id="概述"><a class="header" href="#概述">概述</a></h3>
 <p><strong>BFCL（Berkeley Function Calling Leaderboard）</strong>[2] 是由 UC Berkeley 发布的工具调用评估基准，它系统地评估 LLM 调用函数/API 的能力。这是目前最权威的工具调用基准测试之一。</p>
 <h3 id="四类测试场景"><a class="header" href="#四类测试场景">四类测试场景</a></h3>
 <p>BFCL 将工具调用分为四种递进的难度级别：</p>
-<div class="table-wrapper"><table><thead><tr><th>类型</th><th>说明</th><th>示例</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>类型</th><th>说明</th><th>示例</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Simple</strong></td><td>单函数、参数完整</td><td><code>get_weather(city="北京")</code></td></tr>
 <tr><td><strong>Multiple</strong></td><td>从多个候选函数中选择正确的</td><td>给定 10 个函数，选择并正确调用其中 1 个</td></tr>
 <tr><td><strong>Parallel</strong></td><td>一次调用多个函数</td><td>同时查天气和订机票</td></tr>
-<tr><td><strong>Irrelevance</strong></td><td>识别无关请求，拒绝调用</td><td>用户问"你好"时不应调用任何工具</td></tr>
-</tbody></table>
+<tr><td><strong>Irrelevance</strong></td><td>识别无关请求，拒绝调用</td><td>用户问“你好“时不应调用任何工具</td></tr>
+</tbody>
+</table>
 </div>
 <h3 id="ast-匹配算法为什么字符串匹配不够"><a class="header" href="#ast-匹配算法为什么字符串匹配不够">AST 匹配算法：为什么字符串匹配不够？</a></h3>
 <p>BFCL 的核心创新在于使用 <strong>AST（Abstract Syntax Tree）匹配</strong> 而非简单的字符串匹配来评估工具调用的正确性。</p>
@@ -311,7 +323,7 @@ print(ast_match(
     
     return False
 </code></pre>
-<hr />
+<hr>
 <h2 id="2-gaia--通用-ai-助手评估"><a class="header" href="#2-gaia--通用-ai-助手评估">2. GAIA —— 通用 AI 助手评估</a></h2>
 <h3 id="概述-1"><a class="header" href="#概述-1">概述</a></h3>
 <p><strong>GAIA（General AI Assistant Benchmark）</strong>[3] 由 Meta 发布，旨在评估 AI 助手处理现实世界任务的能力。它的独特之处在于：</p>
@@ -321,11 +333,17 @@ print(ast_match(
 <li><strong>三级难度体系</strong>：从简单到复杂，全面评估不同能力层次</li>
 </ul>
 <h3 id="三级难度"><a class="header" href="#三级难度">三级难度</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>级别</th><th>所需能力</th><th>示例</th></tr></thead><tbody>
-<tr><td><strong>Level 1</strong></td><td>1-2 个步骤，基础推理</td><td>"法国的首都是什么？"</td></tr>
-<tr><td><strong>Level 2</strong></td><td>3-5 个步骤，需要工具</td><td>"2024 年诺贝尔物理学奖得主的出生城市人口是多少？"</td></tr>
-<tr><td><strong>Level 3</strong></td><td>5+ 个步骤，多工具+推理</td><td>"找到某个 PDF 中第 3 页表格第 2 行数据，计算其与 CPI 的比率"</td></tr>
-</tbody></table>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>级别</th><th>所需能力</th><th>示例</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Level 1</strong></td><td>1-2 个步骤，基础推理</td><td>“法国的首都是什么？”</td></tr>
+<tr><td><strong>Level 2</strong></td><td>3-5 个步骤，需要工具</td><td>“2024 年诺贝尔物理学奖得主的出生城市人口是多少？”</td></tr>
+<tr><td><strong>Level 3</strong></td><td>5+ 个步骤，多工具+推理</td><td>“找到某个 PDF 中第 3 页表格第 2 行数据，计算其与 CPI 的比率”</td></tr>
+</tbody>
+</table>
 </div>
 <h3 id="准精确匹配算法quasi-exact-match"><a class="header" href="#准精确匹配算法quasi-exact-match">准精确匹配算法（Quasi-Exact Match）</a></h3>
 <p>GAIA 的评估采用<strong>准精确匹配</strong>算法——比严格的字符串匹配更宽松，但保持客观性：</p>
@@ -412,11 +430,16 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
 <li>从内容中提取关键信息</li>
 <li>结合信息完成推理</li>
 </ol>
-<hr />
+<hr>
 <h2 id="3-agentbench--综合-agent-评估"><a class="header" href="#3-agentbench--综合-agent-评估">3. AgentBench —— 综合 Agent 评估</a></h2>
 <h3 id="概述-2"><a class="header" href="#概述-2">概述</a></h3>
 <p><strong>AgentBench</strong> [4] 是清华大学发布的综合性 Agent 基准测试，涵盖 <strong>8 个不同领域</strong>的任务，全面评估 Agent 在多种环境中的表现：</p>
-<div class="table-wrapper"><table><thead><tr><th>领域</th><th>任务类型</th><th>评估重点</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>领域</th><th>任务类型</th><th>评估重点</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>OS</strong></td><td>操作系统命令执行</td><td>文件操作、进程管理</td></tr>
 <tr><td><strong>DB</strong></td><td>数据库查询</td><td>SQL 生成、数据分析</td></tr>
 <tr><td><strong>KG</strong></td><td>知识图谱推理</td><td>图遍历、关系推理</td></tr>
@@ -425,7 +448,8 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
 <tr><td><strong>HouseHold</strong></td><td>家庭环境操作</td><td>空间推理、物体交互</td></tr>
 <tr><td><strong>WebShop</strong></td><td>在线购物</td><td>搜索、筛选、决策</td></tr>
 <tr><td><strong>WebBrowse</strong></td><td>网页浏览</td><td>信息提取、导航</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <h3 id="agentbench-的评估框架"><a class="header" href="#agentbench-的评估框架">AgentBench 的评估框架</a></h3>
 <pre><code class="language-python">class AgentBenchEvaluator:
@@ -490,17 +514,23 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
         return results
 </code></pre>
 <h3 id="各领域顶尖模型表现截至-2025"><a class="header" href="#各领域顶尖模型表现截至-2025">各领域顶尖模型表现（截至 2025）</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>环境</th><th>GPT-4o</th><th>Claude-3.5</th><th>开源 SOTA</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>环境</th><th>GPT-4o</th><th>Claude-3.5</th><th>开源 SOTA</th></tr>
+</thead>
+<tbody>
 <tr><td>OS</td><td>~45%</td><td>~42%</td><td>~30% (CodeLlama)</td></tr>
 <tr><td>DB</td><td>~52%</td><td>~48%</td><td>~35%</td></tr>
 <tr><td>WebShop</td><td>~60%</td><td>~55%</td><td>~40%</td></tr>
 <tr><td><strong>综合</strong></td><td><strong>~42%</strong></td><td><strong>~38%</strong></td><td><strong>~28%</strong></td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <blockquote>
 <p><strong>关键洞察</strong>：即使是最强的闭源模型，在 AgentBench 上的综合表现也仅约 40%。这说明当前 LLM 的 Agent 能力仍有巨大的提升空间。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="4-webarena--web-操作评估"><a class="header" href="#4-webarena--web-操作评估">4. WebArena —— Web 操作评估</a></h2>
 <h3 id="概述-3"><a class="header" href="#概述-3">概述</a></h3>
 <p><strong>WebArena</strong> [5] 是 CMU 发布的 Web Agent 评估基准，在<strong>真实的 Web 应用环境</strong>中测试 Agent 完成任务的能力。它部署了 4 个完整的 Web 应用：</p>
@@ -558,7 +588,7 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
         
         return True  # 所有条件满足
 </code></pre>
-<hr />
+<hr>
 <h2 id="5-swe-bench--软件工程评估"><a class="header" href="#5-swe-bench--软件工程评估">5. SWE-bench —— 软件工程评估</a></h2>
 <h3 id="概述-4"><a class="header" href="#概述-4">概述</a></h3>
 <p><strong>SWE-bench</strong> [6] 是由 Princeton 发布的软件工程评估基准，测试 Agent 解决<strong>真实 GitHub Issue</strong> 的能力。每个测试用例都来自真实的开源项目（如 Django、Flask、scikit-learn），包含一个 Issue 描述和对应的测试用例。</p>
@@ -579,11 +609,17 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
    运行项目的单元测试，检查是否通过
 </code></pre>
 <h3 id="swe-bench-的变体"><a class="header" href="#swe-bench-的变体">SWE-bench 的变体</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>变体</th><th>测试量</th><th>说明</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>变体</th><th>测试量</th><th>说明</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>SWE-bench Full</strong></td><td>2294 个 Issue</td><td>完整集合</td></tr>
 <tr><td><strong>SWE-bench Lite</strong></td><td>300 个 Issue</td><td>精选子集，更可重复</td></tr>
 <tr><td><strong>SWE-bench Verified</strong></td><td>500 个 Issue</td><td>人工验证过的高质量子集</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <h3 id="评估指标"><a class="header" href="#评估指标">评估指标</a></h3>
 <p>SWE-bench 的核心指标是 <strong>Resolved Rate（解决率）</strong>：</p>
@@ -633,14 +669,20 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
     }
 </code></pre>
 <h3 id="当前-sota截至-2025"><a class="header" href="#当前-sota截至-2025">当前 SOTA（截至 2025）</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Agent</th><th>SWE-bench Verified</th><th>方法</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Agent</th><th>SWE-bench Verified</th><th>方法</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>DeepSWE</strong></td><td>59.0%</td><td>GRPO 强化学习训练</td></tr>
 <tr><td><strong>Amazon Q Developer</strong></td><td>55.2%</td><td>闭源商业产品</td></tr>
 <tr><td><strong>Claude-3.5 Sonnet</strong></td><td>~49%</td><td>直接推理</td></tr>
 <tr><td><strong>SWE-Agent</strong></td><td>~33%</td><td>开源框架</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="6-llm-as-judge-评估方法"><a class="header" href="#6-llm-as-judge-评估方法">6. LLM-as-Judge 评估方法</a></h2>
 <p>对于没有标准答案的开放式任务，<strong>LLM-as-Judge</strong> [7] 是最常用的评估方法——用一个强大的 LLM 来评判另一个 LLM 的输出。</p>
 <h3 id="三种评判模式"><a class="header" href="#三种评判模式">三种评判模式</a></h3>
@@ -764,14 +806,20 @@ print(quasi_exact_match("Beijing", "Shanghai"))    # False: 不同答案
     }
 </code></pre>
 <h3 id="llm-as-judge-的已知偏差-7"><a class="header" href="#llm-as-judge-的已知偏差-7">LLM-as-Judge 的已知偏差 [7]</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>偏差类型</th><th>描述</th><th>缓解方法</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>偏差类型</th><th>描述</th><th>缓解方法</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>位置偏差</strong></td><td>倾向于选择第一个（或最后一个）回答</td><td>交换位置做两次评估</td></tr>
-<tr><td><strong>冗长偏差</strong></td><td>倾向于选择更长的回答</td><td>在评分标准中明确"简洁不扣分"</td></tr>
+<tr><td><strong>冗长偏差</strong></td><td>倾向于选择更长的回答</td><td>在评分标准中明确“简洁不扣分“</td></tr>
 <tr><td><strong>自我偏好</strong></td><td>倾向于选择自己生成的回答</td><td>使用不同模型做 Judge</td></tr>
 <tr><td><strong>格式偏差</strong></td><td>倾向于选择格式更美观的回答</td><td>统一格式后再评估</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="设计自己的评估体系"><a class="header" href="#设计自己的评估体系">设计自己的评估体系</a></h2>
 <h3 id="完整的评估框架"><a class="header" href="#完整的评估框架">完整的评估框架</a></h3>
 <pre><code class="language-python">import json
@@ -883,13 +931,19 @@ class AgentBenchmarkRunner:
         return False
 </code></pre>
 <h3 id="推荐的评估组合策略"><a class="header" href="#推荐的评估组合策略">推荐的评估组合策略</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Agent 类型</th><th>推荐基准</th><th>自定义评估重点</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Agent 类型</th><th>推荐基准</th><th>自定义评估重点</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>通用助手</strong></td><td>GAIA + MMLU</td><td>知识准确率 + 多步推理</td></tr>
 <tr><td><strong>代码 Agent</strong></td><td>SWE-bench + HumanEval</td><td>测试通过率 + 代码质量</td></tr>
 <tr><td><strong>工具调用 Agent</strong></td><td>BFCL + ToolBench</td><td>AST 匹配准确率 + 参数正确性</td></tr>
 <tr><td><strong>Web Agent</strong></td><td>WebArena</td><td>任务完成率 + 操作效率</td></tr>
 <tr><td><strong>客服 Agent</strong></td><td>自定义</td><td>LLM-as-Judge + 人工抽检</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <blockquote>
 <p><strong>🏭 生产实践</strong></p>
@@ -900,7 +954,7 @@ class AgentBenchmarkRunner:
 <li><strong>Watch Metrics</strong>：线上重点监控 P95 延迟、工具调用成功率、用户评分分布这三个指标</li>
 </ul>
 </blockquote>
-<hr />
+<hr>
 <h2 id="回归测试确保改进不引入新问题"><a class="header" href="#回归测试确保改进不引入新问题">回归测试：确保改进不引入新问题</a></h2>
 <pre><code class="language-python">class RegressionTracker:
     """回归测试追踪器"""
@@ -964,20 +1018,26 @@ class AgentBenchmarkRunner:
         
         return warnings
 </code></pre>
-<hr />
+<hr>
 <h2 id="小结"><a class="header" href="#小结">小结</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>基准测试</th><th>核心能力</th><th>评估方法</th><th>当前 SOTA</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>基准测试</th><th>核心能力</th><th>评估方法</th><th>当前 SOTA</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>BFCL</strong></td><td>工具调用</td><td>AST 匹配算法</td><td>GPT-4o ~90%</td></tr>
 <tr><td><strong>GAIA</strong></td><td>通用推理</td><td>准精确匹配</td><td>GPT-4o ~75% (L1)</td></tr>
 <tr><td><strong>AgentBench</strong></td><td>综合 Agent</td><td>任务成功率</td><td>GPT-4o ~42%</td></tr>
 <tr><td><strong>WebArena</strong></td><td>Web 操作</td><td>状态检查</td><td>GPT-4o ~35%</td></tr>
 <tr><td><strong>SWE-bench</strong></td><td>软件工程</td><td>测试通过率</td><td>DeepSWE 59%</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <blockquote>
 <p><strong>下一节预告</strong>：掌握了评估方法后，我们来学习如何通过 Prompt 调优来提升 Agent 的表现。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
 <p>[1] LIU X, YU H, ZHANG H, et al. AgentBench: Evaluating LLMs as agents[C]//ICLR. 2024.</p>
 <p>[2] YAN F, MIAO H, ZHONG C, et al. Berkeley function calling leaderboard[EB/OL]. 2024. https://gorilla.cs.berkeley.edu/leaderboard.html.</p>
@@ -986,7 +1046,7 @@ class AgentBenchmarkRunner:
 <p>[5] ZHOU S, XU F F, ZHU H, et al. WebArena: A realistic web environment for building autonomous agents[C]//ICLR. 2024.</p>
 <p>[6] JIMENEZ C E, YANG J, WETTIG A, et al. SWE-bench: Can language models resolve real-world GitHub issues?[C]//ICLR. 2024.</p>
 <p>[7] ZHENG L, CHIANG W L, SHENG Y, et al. Judging LLM-as-a-judge with MT-bench and chatbot arena[C]//NeurIPS. 2023.</p>
-<hr />
+<hr>
 <p><a href="./03_prompt_tuning.html">下一节：Prompt 调优策略 →</a></p>
 
                     </main>
@@ -994,11 +1054,11 @@ class AgentBenchmarkRunner:
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../chapter_evaluation/01_evaluation_methods.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../chapter_evaluation/03_prompt_tuning.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -1008,32 +1068,21 @@ class AgentBenchmarkRunner:
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../chapter_evaluation/01_evaluation_methods.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../chapter_evaluation/03_prompt_tuning.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -1042,13 +1091,13 @@ class AgentBenchmarkRunner:
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

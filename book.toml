@@ -6,9 +6,8 @@ title = "从零开始学 Agent"
 [build]
 build-dir = "book"
 
-[preprocessor.katex]
-
 [output.html]
+mathjax-support = true
 default-theme = "light"
 preferred-dark-theme = "navy"
 git-repository-url = ""
