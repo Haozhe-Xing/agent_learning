@@ -38,7 +38,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-cb1ef31c.js";
+            window.path_to_searchindex_js = "../searchindex-87a9df8c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-35ccb7c5.js"></script>
@@ -179,220 +179,171 @@
                     <main>
                         <h1 id="agent-与传统程序的区别"><a class="header" href="#agent-与传统程序的区别">Agent 与传统程序的区别</a></h1>
 <blockquote>
-<p>📖 <em>“理解 Agent 最好的方式之一，就是搞清楚它和你以前写的程序有什么不同。”</em></p>
+<p>📖 <em>“人工智能的演进，本质上是软件工程范式的跃迁。理解 Agent 最好的方式，就是搞清楚它与传统代码在‘控制权’上的根本博弈。”</em></p>
 </blockquote>
-<h2 id="根本区别确定性-vs-自主性"><a class="header" href="#根本区别确定性-vs-自主性">根本区别：确定性 vs 自主性</a></h2>
-<p>传统程序和 Agent 之间最根本的区别在于<strong>决策方式</strong>：</p>
+<h2 id="1-核心范式的转移从软件-10到软件-20"><a class="header" href="#1-核心范式的转移从软件-10到软件-20">1. 核心范式的转移：从“软件 1.0”到“软件 2.0”</a></h2>
+<p>特斯拉前 AI 总监 Andrej Karpathy 曾提出过著名的“软件 2.0”理念。如果沿着这个思路往下推演，传统程序与 AI Agent 的根本差异在于<strong>系统状态机（State Machine）的驱动方式</strong>。</p>
+<ul>
+<li><strong>传统程序（Software 1.0）：确定性有向无环图（Static DAG）</strong>
+系统的每一种状态流转、每一个 <code>if-else</code> 分支、每一次异常捕获，都必须由人类程序员在编译前<strong>穷举并硬编码（Hard-coded）</strong>。它的本质是<strong>指令驱动（Instruction-driven）</strong>。</li>
+<li><strong>AI Agent（Software 2.0+）：动态概率路由（Dynamic Probabilistic Routing）</strong>
+人类不再定义执行路径，而是定义<strong>高维目标（Goal）<strong>与</strong>边界护栏（Guardrails）</strong>。Agent 依赖大模型的上下文理解和自回归推理能力，在运行时（Runtime）动态生成并修正执行路径。它的本质是<strong>意图驱动（Intent-driven）</strong>。</li>
+</ul>
 <p><img src="../svg/chapter_intro_04_vs_basic.svg" alt="传统程序vs Agent根本区别"></p>
-<h2 id="全方位对比"><a class="header" href="#全方位对比">全方位对比</a></h2>
-<p>让我们通过一个具体的任务来对比两者的差异——<strong>“分析一份 CSV 销售数据，找出销量最高的产品”</strong>：</p>
-<h3 id="传统程序的做法"><a class="header" href="#传统程序的做法">传统程序的做法</a></h3>
+<hr>
+<h2 id="2-源码级对比应对环境漂移的降维打击"><a class="header" href="#2-源码级对比应对环境漂移的降维打击">2. 源码级对比：应对“环境漂移”的降维打击</a></h2>
+<p>在算法工程中，我们经常遇到<strong>数据漂移（Data Drift）<strong>或</strong>模式变更（Schema Evolution）</strong>。让我们通过一个真实的数据分析场景来对比两者的脆弱性与反脆弱性。</p>
+<p><strong>任务：</strong> <em>“读取一份最新的广告投放报表（CSV），找出转化率（pCVR）最高且消耗大于 1000 的策略组。”</em></p>
+<h3 id="-传统程序的做法脆弱的玻璃管道"><a class="header" href="#-传统程序的做法脆弱的玻璃管道">❌ 传统程序的做法：脆弱的“玻璃管道”</a></h3>
 <pre><code class="language-python">"""
-传统程序方式：分析 CSV 销售数据
-特点：每一步都是程序员预先写好的
+传统架构：强耦合的 Pipeline
+特点：高度确定，但对任何环境变化（如上游表结构改变）毫无抵抗力
 """
 import pandas as pd
 
-def analyze_sales_traditional(file_path: str) -&gt; dict:
-    """
-    传统方式：程序员预先定义了所有步骤
-    - 步骤固定，不能根据数据特点调整
-    - 如果数据格式变了，程序就挂了
-    - 不能回答"为什么这个产品卖得好？"这类开放性问题
-    """
-    # 步骤1：读取数据（写死了 CSV 格式）
-    df = pd.read_csv(file_path)
-    
-    # 步骤2：数据清洗（写死了列名）
-    df = df.dropna(subset=["product_name", "sales_amount"])
-    
-    # 步骤3：按产品分组求和（写死了分析方式）
-    product_sales = df.groupby("product_name")["sales_amount"].sum()
-    
-    # 步骤4：找出最高的（写死了排序方式）
-    top_product = product_sales.idxmax()
-    top_sales = product_sales.max()
-    
-    # 步骤5：返回结果（写死了输出格式）
-    return {
-        "top_product": top_product,
-        "total_sales": top_sales
-    }
-
-# 问题：
-# ❌ 如果文件是 Excel 而不是 CSV？ → 挂了
-# ❌ 如果列名是 "商品名称" 而不是 "product_name"？ → 挂了
-# ❌ 用户想看趋势而不是总量？ → 做不到
-# ❌ 用户想知道"为什么"？ → 完全做不到
+def analyze_ads_report_traditional(file_path: str) -&gt; dict:
+    try:
+        # 1. 强依赖固定的文件格式和路径
+        df = pd.read_csv(file_path)
+        
+        # 2. 强依赖硬编码的列名（Schema 强耦合）
+        # 如果上游把 "cost" 改成了 "spend"，程序立刻崩溃 (KeyError)
+        valid_df = df[(df["cost"] &gt; 1000) &amp; (df["status"] == "active")]
+        
+        # 3. 强依赖固定的计算逻辑
+        top_strategy = valid_df.loc[valid_df["pCVR"].idxmax()]
+        
+        return {"strategy": top_strategy["strategy_id"], "cvr": top_strategy["pCVR"]}
+        
+    except KeyError as e:
+        # 发生预期外的错误，系统只能选择“优雅地死亡”，无法自救
+        return {"error": f"Missing expected column: {e}"}
 </code></pre>
-<h3 id="agent-的做法"><a class="header" href="#agent-的做法">Agent 的做法</a></h3>
+<h3 id="-agent-的做法具备自愈能力的动态执行"><a class="header" href="#-agent-的做法具备自愈能力的动态执行">✅ Agent 的做法：具备自愈能力的动态执行</a></h3>
 <pre><code class="language-python">"""
-Agent 方式：分析销售数据
-特点：理解目标后自主决定分析方式
+Agent 架构：动态生成与自我修正
+特点：理解语义，动态编写代码，遇到 Schema 变更能够自主修复
 """
 
-def analyze_sales_agent(user_request: str):
+def analyze_ads_report_agent(file_path: str, context: AgentContext):
     """
-    Agent 方式：根据用户需求自主分析
-    
-    用户可能说：
-    - "帮我分析这份销售数据"（模糊目标，Agent 自行决定分析什么）
-    - "哪个产品卖得最好？为什么？"（需要深入分析）
-    - "做一个销售趋势图"（需要数据可视化）
-    
-    Agent 的处理过程：
+    Agent 并不预设列名，而是通过 PTA (感知-思考-行动) 循环来解决问题
     """
+    # 🔄 [Loop 1]: 感知数据结构
+    # 🧠 Thought: 我需要先弄清楚这个 CSV 的表结构 (Schema) 是什么。
+    # 🦾 Action: execute_python("import pandas as pd; print(pd.read_csv('report.csv', nrows=0).columns)")
+    # 📊 Observation: Index(['strategy_id', 'spend_usd', 'conversion_rate', 'is_active'], dtype='object')
     
-    # 🧠 思考1: 需要先看看数据长什么样
-    # 🦾 行动1: read_file("sales_data.csv") → 读取前几行
-    # 👁️ 感知1: 看到了列名是中文"商品名称, 销售额, 日期..."
-    
-    # 🧠 思考2: 列名是中文的，我需要用正确的列名来分析
-    #           用户想知道"哪个卖得最好"，我应该按产品汇总
-    # 🦾 行动2: run_python("""
-    #     import pandas as pd
-    #     df = pd.read_csv('sales_data.csv')
-    #     top = df.groupby('商品名称')['销售额'].sum().sort_values(ascending=False)
-    #     print(top.head(10))
+    # 🔄 [Loop 2]: 语义对齐与代码生成
+    # 🧠 Thought: 上游表结构变了。"cost" 变成了 "spend_usd"，"pCVR" 变成了 "conversion_rate"。
+    #             我需要根据新的 Schema 编写分析代码，找出转化率最高且消耗大于1000的策略。
+    # 🦾 Action: execute_python("""
+    #     df = pd.read_csv('report.csv')
+    #     valid = df[(df['spend_usd'] &gt; 1000) &amp; (df['is_active'] == True)]
+    #     print(valid.loc[valid['conversion_rate'].idxmax()]['strategy_id'])
     # """)
-    # 👁️ 感知2: 得到了 Top 10 产品的销售排名
+    # 📊 Observation: Error: 'is_active' is of type string ('Y'/'N'), cannot compare to True.
     
-    # 🧠 思考3: 用户还问了"为什么"，我应该进一步分析
-    #           看看时间趋势、价格因素等
-    # 🦾 行动3: run_python("""
-    #     # 分析销售趋势和价格关联
-    #     ...生成分析代码...
-    # """)
+    # 🔄 [Loop 3]: 异常捕获与自我反思 (Self-Correction)
+    # 🧠 Thought: 代码报错了。'is_active' 是字符串类型，我应该用 == 'Y' 来过滤。我将重写代码。
+    # 🦾 Action: execute_python("... df['is_active'] == 'Y' ...")
+    # 📊 Observation: "STRATEGY_9527"
     
-    # 🧠 思考4: 数据分析完成，可以给出完整回答了
-    # ✅ 最终回答: 包含数据分析结果 + 原因解释 + 可视化图表
-    pass
+    # ✅ 任务完成，成功绕过 Schema 变更和数据类型异常
+    return "分析完成，转化率最高的目标策略组为 STRATEGY_9527。"
 </code></pre>
-<h2 id="六大维度对比"><a class="header" href="#六大维度对比">六大维度对比</a></h2>
+<hr>
+<h2 id="3-工业级六大维度对比剖析"><a class="header" href="#3-工业级六大维度对比剖析">3. 工业级六大维度对比剖析</a></h2>
 <p><img src="../svg/chapter_intro_04_vs_quadrant.svg" alt="传统程序vs Agent适用场景象限图"></p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>对比维度</th><th style="text-align: center">传统程序</th><th style="text-align: center">Agent</th></tr>
+<tr><th style="text-align: left">架构维度</th><th style="text-align: left">传统程序 (Software 1.0)</th><th style="text-align: left">智能体 (Agent / Software 2.0+)</th></tr>
 </thead>
 <tbody>
-<tr><td>执行方式</td><td style="text-align: center">按预设代码逐行执行</td><td style="text-align: center">根据目标自主决定步骤</td></tr>
-<tr><td>输入要求</td><td style="text-align: center">需要严格格式化的输入</td><td style="text-align: center">接受自然语言的模糊描述</td></tr>
-<tr><td>容错能力</td><td style="text-align: center">遇到异常通常直接报错</td><td style="text-align: center">能自主分析错误并调整</td></tr>
-<tr><td>确定性</td><td style="text-align: center">相同输入 → 相同输出</td><td style="text-align: center">相同输入可能有不同路径</td></tr>
-<tr><td>扩展性</td><td style="text-align: center">新功能需要写新代码</td><td style="text-align: center">给新工具即可拥有新能力</td></tr>
-<tr><td>适用场景</td><td style="text-align: center">规则明确、重复性高的任务</td><td style="text-align: center">复杂、模糊、需推理的任务</td></tr>
+<tr><td style="text-align: left"><strong>控制流 (Control Flow)</strong></td><td style="text-align: left">静态编译的控制图（DAG / DFA）</td><td style="text-align: left">基于 LLM 的动态概率寻路与规划</td></tr>
+<tr><td style="text-align: left"><strong>输入接口 (Interface)</strong></td><td style="text-align: left">强 Schema 约束（RESTful, Protobuf）</td><td style="text-align: left">模糊自然语言、多模态意图（Images, Audio）</td></tr>
+<tr><td style="text-align: left"><strong>异常处理 (Fault Tolerance)</strong></td><td style="text-align: left">显式的 <code>try-catch</code> 穷举设计</td><td style="text-align: left">动态的堆栈分析、自我反思（Reflexion）与重试</td></tr>
+<tr><td style="text-align: left"><strong>泛化能力 (Generalization)</strong></td><td style="text-align: left">零泛化：应对 $N$ 个场景需写 $N$ 套代码</td><td style="text-align: left">强泛化：提供通用工具，可应对无穷的未知场景</td></tr>
+<tr><td style="text-align: left"><strong>计算复杂度 (Complexity)</strong></td><td style="text-align: left">时间复杂度可精确度量（如 $O(N \log N)$）</td><td style="text-align: left">复杂度取决于 LLM 推理深度，具有不确定延迟</td></tr>
+<tr><td style="text-align: left"><strong>系统状态 (Determinism)</strong></td><td style="text-align: left">绝对的确定性：$f(x) \equiv y$</td><td style="text-align: left">随机过程：相同输入可能引发不同的探索轨迹</td></tr>
 </tbody>
 </table>
 </div>
-<h3 id="维度1执行方式"><a class="header" href="#维度1执行方式">维度1：执行方式</a></h3>
-<pre><code class="language-python"># 传统程序：流程是固定的
-def traditional_process_order(order):
-    validate(order)        # 永远先验证
-    check_inventory(order) # 永远再检查库存
-    process_payment(order) # 永远再处理支付
-    ship(order)            # 永远最后发货
-    # 顺序不会变，步骤不会变
+<hr>
+<h2 id="4-深度探讨容错机制的降维打击"><a class="header" href="#4-深度探讨容错机制的降维打击">4. 深度探讨：容错机制的降维打击</a></h2>
+<p>传统工程中的容错（Fault Tolerance）是极其僵化的。例如，当调用外部 API 遇到 <code>HTTP 429 Too Many Requests</code> 时，传统程序的极限就是执行<strong>指数退避重试（Exponential Backoff）</strong>。如果重试 3 次依然失败，程序就会抛出异常并熔断。</p>
+<p>但 Agent 的容错是<strong>基于语义理解的动态降级</strong>：</p>
+<pre><code class="language-text">🚨 异常发生: Agent 调用 Google Search API 失败 (Quota Exceeded)。
 
-# Agent：流程是动态的
-def agent_process_order(order_description: str):
-    # Agent 可能的决策：
-    # - 如果是 VIP 客户 → 先处理支付再检查库存（优先保证下单）
-    # - 如果库存不足 → 自动搜索替代商品并询问用户
-    # - 如果支付失败 → 尝试其他支付方式
-    # - 如果用户描述模糊 → 先提问确认再处理
-    pass
+🧠 传统程序的“大脑”: 
+"触发异常 -&gt; 重试 -&gt; 重试失败 -&gt; 抛出 RuntimeError -&gt; 任务死亡"
+
+🤖 Agent 的“大脑” (动态推理):
+"Thought: Google Search API 的额度用尽了。但我现在的目标是获取 2026 年的财报数据。
+除了 Google，我还可以怎么做？
+方案 A: 切换调用备用的 Bing Search 工具。
+方案 B: 使用 Web Browser 工具直接去指定的官网抓取。
+方案 C: 查看本地知识库是否已经有了缓存。
+我决定采取方案 A。"
+-&gt; 任务存活，动态绕过故障节点。
 </code></pre>
-<h3 id="维度2容错能力"><a class="header" href="#维度2容错能力">维度2：容错能力</a></h3>
-<p>这是 Agent 最令人兴奋的特性之一——<strong>遇到问题能自己想办法解决</strong>：</p>
-<pre><code class="language-python"># 传统程序的错误处理：人类预先定义的
-def traditional_fetch_data(url: str):
-    try:
-        response = requests.get(url)
-        return response.json()
-    except ConnectionError:
-        return "连接失败"       # 只能返回预设的错误信息
-    except JSONDecodeError:
-        return "数据格式错误"   # 无法自主解决问题
-
-# Agent 的错误处理：自主分析和解决
-"""
-Agent 遇到错误时的行为：
-
-🦾 行动: 访问 API_A 获取数据
-❌ 结果: 连接超时
-
-🧠 思考: API_A 超时了，可能是服务故障。
-         我可以：
-         1. 重试一次（可能是临时网络问题）
-         2. 尝试 API_B（备用数据源）
-         3. 从缓存获取旧数据
-         让我先重试一次...
-
-🦾 行动: 重试访问 API_A
-❌ 结果: 仍然超时
-
-🧠 思考: 确认 API_A 不可用，切换到备用方案 API_B
-
-🦾 行动: 访问 API_B 获取数据
-✅ 结果: 成功获取数据
-
-🤖 回复: "数据已获取。注意：主数据源暂时不可用，
-         本次数据来自备用源，可能有约1小时的延迟。"
-"""
-</code></pre>
-<h3 id="维度3确定性-vs-非确定性"><a class="header" href="#维度3确定性-vs-非确定性">维度3：确定性 vs 非确定性</a></h3>
-<pre><code class="language-python"># 传统程序：确定性 —— 可预测、可测试
-def add(a: int, b: int) -&gt; int:
-    return a + b
-# add(2, 3) 永远返回 5
-
-# Agent：非确定性 —— 灵活、但不完全可预测
-"""
-用户: "帮我写一个欢迎邮件"
-
-第一次运行：
-🤖 "亲爱的用户，欢迎加入我们的大家庭！..."
-
-第二次运行（相同的输入）：
-🤖 "Hi！很高兴你成为我们的一员！..."
-
-→ 结果不同，但都是合理的
-→ 这是 LLM 的特性：创造性带来了不确定性
-"""
-</code></pre>
-<h2 id="什么时候用传统程序什么时候用-agent"><a class="header" href="#什么时候用传统程序什么时候用-agent">什么时候用传统程序？什么时候用 Agent？</a></h2>
-<p><img src="../svg/chapter_intro_04_decision_tree.svg" alt="什么时候用传统程序什么时候用Agent"></p>
-<blockquote>
-<p>💡 <strong>最佳实践：Agent + 传统程序混合使用</strong></p>
-<p>实际项目中，最好的做法是让 <strong>Agent 负责决策和协调</strong>，让<strong>传统程序负责执行确定性操作</strong>。</p>
-<p>比如：Agent 决定“需要给用户发一封邮件”（决策），然后调用传统的邮件发送函数来执行（确定性操作）。</p>
-</blockquote>
-<h2 id="一张图总结"><a class="header" href="#一张图总结">一张图总结</a></h2>
-<p><img src="../svg/chapter_intro_04_vs_summary.svg" alt="一张图总结传统程序vs Agent"></p>
-<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>要点</th><th>说明</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>根本区别</strong></td><td>传统程序是确定性的，Agent 是自主性的</td></tr>
-<tr><td><strong>执行方式</strong></td><td>传统程序按代码执行，Agent 自主决定步骤</td></tr>
-<tr><td><strong>容错能力</strong></td><td>Agent 能自主分析错误并调整策略</td></tr>
-<tr><td><strong>适用场景</strong></td><td>复杂、模糊、需要推理的任务适合 Agent</td></tr>
-<tr><td><strong>最佳实践</strong></td><td>Agent（决策）+ 传统程序（执行）混合使用</td></tr>
-</tbody>
-</table>
-</div>
-<h2 id="-思考练习"><a class="header" href="#-思考练习">🤔 思考练习</a></h2>
+<hr>
+<h2 id="5-架构的妥协非确定性的双刃剑"><a class="header" href="#5-架构的妥协非确定性的双刃剑">5. 架构的妥协：非确定性的双刃剑</a></h2>
+<p>必须要澄清的是，Agent 并非万能的“银弹”。传统程序最大的优势在于其<strong>绝对的确定性（Determinism）<strong>和</strong>低延迟</strong>。</p>
+<p>在 Agent 架构中，大模型的输出本质上是对下一个 Token 的概率抽样（Stochastic Sampling）。这意味着：</p>
 <ol>
-<li>你目前工作中的哪些任务适合用 Agent 来完成？哪些适合用传统程序？</li>
-<li>Agent 的“非确定性“在什么场景下是优点？什么场景下是缺点？</li>
-<li>如果让你设计一个电商系统，哪些模块用 Agent，哪些用传统程序？</li>
+<li><strong>轨迹不可复现：</strong> 相同的输入，Agent 昨天可能一次成功，今天可能因为在“思考树”上选错了分支而陷入死循环。</li>
+<li><strong>高昂的延迟（Latency Tax）：</strong> 传统程序在毫秒级（ms）完成的 <code>if-else</code> 判断，Agent 可能需要消耗 2-5 秒来等待 LLM 的推理生成。</li>
+</ol>
+<blockquote>
+<p>💡 <strong>架构师箴言（Architect’s Rule of Thumb）：</strong>
+<strong>“Agent = 概率性的大脑 + 确定性的工具”</strong>
+永远不要让 LLM 去做精确的数学计算或直接修改底层数据库表。正确的做法是让 LLM（Agent）负责<strong>意图理解与规划调度</strong>，而将具体的业务逻辑封装为<strong>确定性的 API 工具</strong>供其调用。</p>
+</blockquote>
+<hr>
+<h2 id="6-业务选型指南什么时候用-agent"><a class="header" href="#6-业务选型指南什么时候用-agent">6. 业务选型指南：什么时候用 Agent？</a></h2>
+<p>在实际的业务落地中，不要为了追逐 AI 概念而强行使用 Agent。我们需要根据**认知复杂度（Cognitive Complexity）<strong>和</strong>执行频率（Execution Frequency）**来进行架构选型。</p>
+<p><img src="../svg/chapter_intro_04_decision_tree.svg" alt="什么时候用传统程序什么时候用Agent"></p>
+<ol>
+<li><strong>强规则、高并发、低延迟（坚守传统程序）：</strong>
+<ul>
+<li><em>场景：</em> 推荐系统的高并发召回层、广告计费引擎、双十一秒杀扣库存。</li>
+<li><em>理由：</em> 绝不能容忍毫秒级的延迟波动和任何非确定性的结果。</li>
+</ul>
+</li>
+<li><strong>重流程、需人工审核（使用传统流编排 + AI Copilot）：</strong>
+<ul>
+<li><em>场景：</em> 财务审批流、核心数据库迁移。</li>
+<li><em>理由：</em> 流程必须完全受控，AI 仅作为辅助提供建议（人类在环）。</li>
+</ul>
+</li>
+<li><strong>高动态、长尾需求、认知密集型（拥抱 Agent）：</strong>
+<ul>
+<li><em>场景：</em> 自动化数据探索与归因分析、代码 Bug 自动修复（SWE-agent）、海量非结构化文档的深度研判。</li>
+<li><em>理由：</em> 规则多如牛毛且时刻变化，人类程序员无法穷举所有 <code>if-else</code>。Agent 的泛化能力将极大降低研发边际成本。</li>
+</ul>
+</li>
 </ol>
 <hr>
-<p><em>了解了 Agent 的本质后，让我们在最后一节看看 Agent 在各行各业中的精彩应用。</em></p>
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<p>如果说<strong>传统程序是铺设好的“铁轨”</strong>，火车只能沿着固定的路线行驶，安全但缺乏灵活性；那么 <strong>Agent 就是装配了 GPS 的“越野车”</strong>，你只需设定终点坐标，它会自主感知地形、绕开路障，甚至在爆胎时自己寻找备胎，最终抵达目标。</p>
+<h2 id="-思考练习"><a class="header" href="#-思考练习">🤔 思考练习</a></h2>
+<ol>
+<li><strong>边界思考：</strong> 在自动驾驶系统中，刹车控制模块（Braking Control）和路线规划模块（Route Planning），哪个更适合用传统程序？哪个更适合引入 Agent 的思想？为什么？</li>
+<li><strong>重构挑战：</strong> 假设你维护着一个充满了几千个 <code>if-elif-else</code> 分支的客服工单路由系统。如果用 Agent 架构来重构它，你的系统架构图会发生怎样的变化？原来的那些 <code>if-else</code> 逻辑会被转移到哪里？</li>
+<li><strong>容错陷阱：</strong> Agent 的“自我修复”能力有时会弄巧成拙（例如反复修改代码导致偏离原意）。如何设计一种混合架构，既保留 Agent 的自主性，又能防止它在错误的方向上越走越远？</li>
+</ol>
+<hr>
+<h2 id="-推荐阅读与深度引言"><a class="header" href="#-推荐阅读与深度引言">📚 推荐阅读与深度引言</a></h2>
+<ul>
+<li><strong>Andrej Karpathy (2017). <em>“Software 2.0”</em>.</strong>
+<em>(这是一篇极其经典的博客，深刻预言了以神经网络为代表的随机系统将如何取代部分传统的硬编码逻辑，为 Agent 的爆发奠定了思想基础。)</em></li>
+<li><strong>Schick, T., et al. (2023). <em>“Toolformer: Language Models Can Teach Themselves to Use Tools”</em>.</strong>
+<em>(展现了模型如何跨越“非确定性”的文本生成，学会通过 API 接口与“确定性”的传统程序系统进行交互，是理解 Agent 工具调用本质的必读文献。)</em></li>
+<li><strong>Rich Sutton (2019). <em>“The Bitter Lesson”</em>.</strong>
+<em>(强化学习先驱的洞察。他指出在长期的 AI 演进中，试图将人类的先验知识（即传统程序的硬编码规则）强加给系统的做法最终都会失败，唯有利用算力和搜索（Agent 自主规划的核心）才是正途。)</em></li>
+</ul>
 
                     </main>
 
