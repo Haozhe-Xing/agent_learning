@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="dc" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3498db"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Text-to-SQL 数据连接流程</text>
+
+  <!-- 三阶段 -->
+  <rect x="30" y="60" width="235" height="130" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="147" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">① Schema Linking</text>
+  <text x="147" y="108" text-anchor="middle" font-size="10" fill="#555">"上月销售额最高的产品"</text>
+  <text x="147" y="128" text-anchor="middle" font-size="10" fill="#555">↓ 映射</text>
+  <text x="147" y="148" text-anchor="middle" font-size="10" fill="#3498db">销售额 → orders.amount</text>
+  <text x="147" y="166" text-anchor="middle" font-size="10" fill="#3498db">产品 → products.name</text>
+
+  <line x1="265" y1="125" x2="278" y2="125" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#dc)"/>
+
+  <rect x="280" y="60" width="235" height="130" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="397" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">② SQL 骨架生成</text>
+  <text x="397" y="108" text-anchor="middle" font-size="10" fill="#555">判断查询类型</text>
+  <text x="397" y="128" text-anchor="middle" font-size="10" fill="#e67e22">SELECT + JOIN + GROUP BY</text>
+  <text x="397" y="148" text-anchor="middle" font-size="10" fill="#e67e22">+ ORDER BY + LIMIT</text>
+  <text x="397" y="166" text-anchor="middle" font-size="10" fill="#555">确定整体结构</text>
+
+  <line x1="515" y1="125" x2="528" y2="125" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#dc)"/>
+
+  <rect x="530" y="60" width="240" height="130" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="650" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">③ 条件填充与执行</text>
+  <text x="650" y="108" text-anchor="middle" font-size="10" fill="#555">填入列名、条件值</text>
+  <text x="650" y="128" text-anchor="middle" font-size="10" fill="#27ae60">WHERE date >= '2024-02-01'</text>
+  <text x="650" y="148" text-anchor="middle" font-size="10" fill="#555">参数化查询防注入</text>
+  <text x="650" y="166" text-anchor="middle" font-size="10" fill="#27ae60">✅ 安全执行</text>
+
+  <!-- 安全挑战 -->
+  <text x="400" y="218" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">核心安全挑战与应对</text>
+
+  <rect x="30" y="235" width="235" height="120" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="147" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">SQL 注入风险</text>
+  <text x="147" y="280" text-anchor="middle" font-size="10" fill="#555">LLM 生成的 SQL 可能含恶意代码</text>
+  <text x="147" y="300" text-anchor="middle" font-size="10" fill="#27ae60">✅ 参数化查询</text>
+  <text x="147" y="318" text-anchor="middle" font-size="10" fill="#27ae60">✅ SQL 白名单过滤</text>
+  <text x="147" y="336" text-anchor="middle" font-size="10" fill="#27ae60">✅ 只读数据库连接</text>
+
+  <rect x="280" y="235" width="245" height="120" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="402" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">数据泄露风险</text>
+  <text x="402" y="280" text-anchor="middle" font-size="10" fill="#555">LLM 可能"编造" SQL 访问敏感表</text>
+  <text x="402" y="300" text-anchor="middle" font-size="10" fill="#27ae60">✅ 表级/列级权限控制</text>
+  <text x="402" y="318" text-anchor="middle" font-size="10" fill="#27ae60">✅ 查询结果脱敏</text>
+  <text x="402" y="336" text-anchor="middle" font-size="10" fill="#27ae60">✅ 操作审计日志</text>
+
+  <rect x="540" y="235" width="230" height="120" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="655" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">准确性挑战</text>
+  <text x="655" y="280" text-anchor="middle" font-size="10" fill="#555">复杂查询 LLM 可能生成错误 SQL</text>
+  <text x="655" y="300" text-anchor="middle" font-size="10" fill="#27ae60">✅ 多轮纠错循环</text>
+  <text x="655" y="318" text-anchor="middle" font-size="10" fill="#27ae60">✅ Schema 描述注入</text>
+  <text x="655" y="336" text-anchor="middle" font-size="10" fill="#27ae60">✅ Few-shot SQL 示例</text>
+</svg>

@@ -2,6 +2,8 @@
 
 高效的多 Agent 系统需要合理的角色分工。好的角色设计让每个 Agent 都能发挥最大价值。
 
+![专业化Agent角色分工架构](../svg/chapter_multi_agent_03_roles.svg)
+
 ## 专业化 Agent 设计
 
 ```python

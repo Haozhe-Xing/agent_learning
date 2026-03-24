@@ -2,6 +2,8 @@
 
 本节构建一个实用的搜索与计算 Agent，能够回答需要实时信息和数学推理的复杂问题。
 
+![搜索引擎+计算器 Agent 架构](../svg/chapter_tools_05_search_calc.svg)
+
 ## 项目目标
 
 构建一个 Agent，能够：

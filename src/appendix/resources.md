@@ -1,5 +1,7 @@
 # 附录 C：推荐学习资源与社区
 
+![Agent 开发学习资源地图](../svg/appendix_resources.svg)
+
 ---
 
 ## 📚 官方文档

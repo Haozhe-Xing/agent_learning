@@ -10,6 +10,8 @@
 3. **构建图**：用 `add_node` 添加节点，用 `add_edge` 和 `add_conditional_edges` 连接它们
 4. **编译运行**：调用 `compile()` 得到可执行的 Agent
 
+![Graph Agent执行流程](../svg/chapter_langgraph_03_graph_agent.svg)
+
 下面的代码中，我们使用 LangGraph 内置的 `MessagesState`（消息列表状态）、`ToolNode`（自动执行工具）和 `tools_condition`（判断是否需要调用工具），这些是 LangGraph 为常见 Agent 模式提供的快捷组件。
 
 ```python

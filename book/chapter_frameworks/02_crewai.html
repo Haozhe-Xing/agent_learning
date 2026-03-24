@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="crewai角色扮演型多-agent-框架"><a class="header" href="#crewai角色扮演型多-agent-框架">CrewAI：角色扮演型多 Agent 框架</a></h1>
 <p>CrewAI 是一个专为多 Agent 协作设计的框架，通过"角色扮演"让不同的 Agent 扮演不同的专业角色，共同完成复杂任务。自 2024 年推出以来，CrewAI 已发展为最受欢迎的多 Agent 框架之一，并在 2025 年引入了 <strong>Flows</strong> 等重要新特性。</p>
+<p><img src="../svg/chapter_frameworks_02_crewai.svg" alt="CrewAI 核心架构：Agent-Task-Crew" /></p>
 <h2 id="crewai-核心概念"><a class="header" href="#crewai-核心概念">CrewAI 核心概念</a></h2>
 <p>CrewAI 围绕三个核心抽象构建：<strong>Agent</strong>（角色）、<strong>Task</strong>（任务）和 <strong>Crew</strong>（团队）。每个 Agent 都有明确的角色定位和目标，通过自然语言描述来定义其行为模式：</p>
 <pre><code class="language-python"># pip install crewai crewai-tools

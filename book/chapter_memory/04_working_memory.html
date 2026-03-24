@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="工作记忆scratchpad-模式"><a class="header" href="#工作记忆scratchpad-模式">工作记忆：Scratchpad 模式</a></h1>
 <p>工作记忆是 Agent 在执行复杂任务时的"草稿纸"——记录推理步骤、中间结果，帮助 Agent 保持任务状态。</p>
+<p><img src="../svg/chapter_memory_04_working_memory.svg" alt="工作记忆 Scratchpad 模式" /></p>
 <h2 id="为什么需要工作记忆"><a class="header" href="#为什么需要工作记忆">为什么需要工作记忆？</a></h2>
 <pre><code class="language-python"># 没有工作记忆的 Agent 在处理复杂任务时会"忘记"中间步骤
 user_task = """

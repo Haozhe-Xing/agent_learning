@@ -2,6 +2,8 @@
 
 > **本节目标**：构建一个能处理文本、图像和语音的多模态 Agent。
 
+![多模态个人助理架构](../svg/chapter_multimodal_04_assistant.svg)
+
 ---
 
 ## 完整实现

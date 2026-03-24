@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 敏感数据保护流程</text>
+
+  <!-- 数据流 -->
+  <rect x="30" y="60" width="140" height="50" rx="8" fill="#e74c3c" opacity="0.9"/>
+  <text x="100" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">用户输入</text>
+  <text x="100" y="98" text-anchor="middle" font-size="10" fill="#ffcccc">含敏感信息</text>
+
+  <line x1="170" y1="85" x2="210" y2="85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a1)"/>
+
+  <rect x="212" y="55" width="160" height="60" rx="8" fill="white" stroke="#e74c3c" stroke-width="2"/>
+  <text x="292" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">PII 检测器</text>
+  <text x="292" y="96" text-anchor="middle" font-size="10" fill="#555">正则 + NER 模型</text>
+
+  <line x1="372" y1="85" x2="412" y2="85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a1)"/>
+
+  <rect x="414" y="55" width="160" height="60" rx="8" fill="white" stroke="#e67e22" stroke-width="2"/>
+  <text x="494" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">数据脱敏</text>
+  <text x="494" y="96" text-anchor="middle" font-size="10" fill="#555">替换 / 掩码 / 哈希</text>
+
+  <line x1="574" y1="85" x2="614" y2="85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a1)"/>
+
+  <rect x="616" y="60" width="155" height="50" rx="8" fill="#27ae60" opacity="0.9"/>
+  <text x="693" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">安全数据</text>
+  <text x="693" y="98" text-anchor="middle" font-size="10" fill="#e8f8e8">送入 LLM</text>
+
+  <!-- PII 类型 -->
+  <text x="400" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">需保护的敏感数据类型</text>
+
+  <rect x="30" y="160" width="175" height="80" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="117" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">个人身份信息</text>
+  <text x="117" y="203" text-anchor="middle" font-size="10" fill="#555">姓名、身份证号</text>
+  <text x="117" y="220" text-anchor="middle" font-size="10" fill="#555">手机号、邮箱地址</text>
+
+  <rect x="220" y="160" width="175" height="80" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="307" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">认证凭据</text>
+  <text x="307" y="203" text-anchor="middle" font-size="10" fill="#555">API Key、密码</text>
+  <text x="307" y="220" text-anchor="middle" font-size="10" fill="#555">Token、SSH 密钥</text>
+
+  <rect x="410" y="160" width="175" height="80" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="497" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">金融数据</text>
+  <text x="497" y="203" text-anchor="middle" font-size="10" fill="#555">银行卡号、CVV</text>
+  <text x="497" y="220" text-anchor="middle" font-size="10" fill="#555">交易记录、余额</text>
+
+  <rect x="600" y="160" width="175" height="80" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="687" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">业务机密</text>
+  <text x="687" y="203" text-anchor="middle" font-size="10" fill="#555">内部文档、代码</text>
+  <text x="687" y="220" text-anchor="middle" font-size="10" fill="#555">商业策略、客户数据</text>
+
+  <!-- 脱敏策略 -->
+  <text x="400" y="270" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">三种脱敏策略</text>
+
+  <rect x="50" y="285" width="220" height="75" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="160" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">替换法</text>
+  <text x="160" y="328" text-anchor="middle" font-size="10" fill="#555">张三 → [姓名_1]</text>
+  <text x="160" y="345" text-anchor="middle" font-size="9" fill="#888">可还原，适合需要回填场景</text>
+
+  <rect x="290" y="285" width="220" height="75" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="400" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">掩码法</text>
+  <text x="400" y="328" text-anchor="middle" font-size="10" fill="#555">138****5678</text>
+  <text x="400" y="345" text-anchor="middle" font-size="9" fill="#888">保留格式，适合展示场景</text>
+
+  <rect x="530" y="285" width="220" height="75" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="640" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">哈希法</text>
+  <text x="640" y="328" text-anchor="middle" font-size="10" fill="#555">sha256(data)[:8]</text>
+  <text x="640" y="345" text-anchor="middle" font-size="9" fill="#888">不可逆，适合审计/去重</text>
+</svg>

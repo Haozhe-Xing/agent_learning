@@ -4,6 +4,8 @@
 
 > 📄 **学术背景**：任务分解的思想在 AI 规划领域有悠久的历史（如层次任务网络 HTN），但将其与 LLM 结合是近年的研究热点。*"Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning"*（Wang et al., 2023）是该方向的代表性工作，它提出让 LLM 先制定计划（"Let's first understand the problem and devise a plan"），再逐步执行每个子任务，在 GSM8K 等数学推理基准上比标准 Zero-shot CoT 提升了 5-6 个百分点。
 
+![Plan-and-Execute 任务分解模式](../svg/chapter_planning_03_decomposition.svg)
+
 ## Plan-and-Execute 模式
 
 ```python

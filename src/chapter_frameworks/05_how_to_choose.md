@@ -2,6 +2,8 @@
 
 框架选择是 Agent 项目成功的关键决策之一。随着 2025 年 OpenAI Agents SDK 的发布和各框架的快速迭代，选择变得更加丰富。本节提供系统的决策框架。
 
+![Agent 框架选择决策指南](../svg/chapter_frameworks_05_choose.svg)
+
 ## 框架能力对比矩阵
 
 ```python

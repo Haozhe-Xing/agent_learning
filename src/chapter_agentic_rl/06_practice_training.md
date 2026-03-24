@@ -4,6 +4,8 @@
 
 本节将从零构建一个完整的 Agentic-RL 训练项目，验证前四节介绍的所有理论与方法。
 
+![Agentic-RL 完整训练 Pipeline](../svg/chapter_agentic_rl_06_pipeline.svg)
+
 > **实验目标**：训练一个能够使用计算器工具解决数学推理问题的 Agent 模型
 >
 > **基座模型**：`Qwen/Qwen2.5-1.5B-Instruct`（消费级 GPU 可训练）

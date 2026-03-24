@@ -2,6 +2,8 @@
 
 > 本附录为零基础读者提供 KL 散度的完整科普。如果你已经熟悉信息论基础，可以直接跳到 [在 Agentic-RL 中的应用](#在-agentic-rl-中的应用) 部分。
 
+![KL 散度直觉理解](../svg/appendix_kl_divergence.svg)
+
 ---
 
 ## 直觉理解：KL 散度在度量什么？

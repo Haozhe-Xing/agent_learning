@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="320" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">API Key 安全管理最佳实践</text>
+
+  <!-- 三层防护 -->
+  <!-- 层1：开发环境 -->
+  <rect x="20" y="55" width="245" height="150" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="142" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🔒 开发环境</text>
+  <text x="35" y="100" font-size="11" fill="#444">• .env 文件 + python-dotenv</text>
+  <text x="35" y="120" font-size="11" fill="#444">• .gitignore 排除 .env</text>
+  <text x="35" y="140" font-size="11" fill="#444">• 环境变量 os.environ</text>
+  <text x="35" y="160" font-size="11" fill="#444">• 永不硬编码密钥</text>
+  <rect x="35" y="172" width="215" height="22" rx="4" fill="#27ae60" opacity="0.2"/>
+  <text x="142" y="187" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">最低门槛 · 必须遵守</text>
+
+  <!-- 层2：团队协作 -->
+  <rect x="278" y="55" width="245" height="150" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">👥 团队协作</text>
+  <text x="293" y="100" font-size="11" fill="#444">• .env.example 模板文件</text>
+  <text x="293" y="120" font-size="11" fill="#444">• 密码管理器 (1Password)</text>
+  <text x="293" y="140" font-size="11" fill="#444">• Git pre-commit 扫描</text>
+  <text x="293" y="160" font-size="11" fill="#444">• 每人独立 API Key</text>
+  <rect x="293" y="172" width="215" height="22" rx="4" fill="#3498db" opacity="0.2"/>
+  <text x="400" y="187" text-anchor="middle" font-size="10" fill="#3498db" font-weight="bold">团队规范 · 强烈推荐</text>
+
+  <!-- 层3：生产部署 -->
+  <rect x="536" y="55" width="244" height="150" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="658" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">🏭 生产部署</text>
+  <text x="549" y="100" font-size="11" fill="#444">• AWS Secrets Manager</text>
+  <text x="549" y="120" font-size="11" fill="#444">• Azure Key Vault</text>
+  <text x="549" y="140" font-size="11" fill="#444">• HashiCorp Vault</text>
+  <text x="549" y="160" font-size="11" fill="#444">• Key 轮换策略</text>
+  <rect x="549" y="172" width="215" height="22" rx="4" fill="#e74c3c" opacity="0.2"/>
+  <text x="658" y="187" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">生产级 · 正式项目必备</text>
+
+  <!-- 泄露应急 -->
+  <rect x="20" y="220" width="760" height="85" rx="8" fill="#e67e22" opacity="0.10" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="400" y="242" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">⚠️ Key 泄露应急流程</text>
+  
+  <rect x="40" y="255" width="160" height="35" rx="6" fill="#e67e22" opacity="0.2"/>
+  <text x="120" y="277" text-anchor="middle" font-size="11" fill="#444">① 立即撤销旧 Key</text>
+  
+  <rect x="220" y="255" width="160" height="35" rx="6" fill="#e67e22" opacity="0.2"/>
+  <text x="300" y="277" text-anchor="middle" font-size="11" fill="#444">② 生成新 Key</text>
+  
+  <rect x="400" y="255" width="160" height="35" rx="6" fill="#e67e22" opacity="0.2"/>
+  <text x="480" y="277" text-anchor="middle" font-size="11" fill="#444">③ 更新所有服务</text>
+  
+  <rect x="580" y="255" width="180" height="35" rx="6" fill="#e67e22" opacity="0.2"/>
+  <text x="670" y="277" text-anchor="middle" font-size="11" fill="#444">④ 审计异常用量</text>
+</svg>

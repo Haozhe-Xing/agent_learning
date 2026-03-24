@@ -4,6 +4,8 @@
 
 这两种模式各有优劣，大多数实际项目会选择 Supervisor 模式，因为它更容易控制和调试。本节通过完整的代码示例对比两种方案。
 
+![Supervisor模式vs去中心化模式](../svg/chapter_multi_agent_04_supervisor.svg)
+
 ## Supervisor（中心化）模式
 
 Supervisor 模式的工作方式类似于项目管理：一个 Supervisor Agent 负责分析任务、分配子任务、监控进度、汇总结果。所有的决策都通过 Supervisor 来协调。

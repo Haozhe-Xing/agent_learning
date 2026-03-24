@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">视觉模型能力边界与图像生成技术</text>
+
+  <!-- 能力评估 -->
+  <text x="400" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">GPT-4o 视觉能力评估</text>
+
+  <rect x="30" y="75" width="120" height="60" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="90" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">场景描述</text>
+  <text x="90" y="116" text-anchor="middle" font-size="10" fill="#27ae60">⭐⭐⭐⭐⭐</text>
+  <text x="90" y="130" text-anchor="middle" font-size="8" fill="#888">最成熟</text>
+
+  <rect x="160" y="75" width="120" height="60" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="220" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">文字识别</text>
+  <text x="220" y="116" text-anchor="middle" font-size="10" fill="#27ae60">⭐⭐⭐⭐</text>
+  <text x="220" y="130" text-anchor="middle" font-size="8" fill="#888">手写体较弱</text>
+
+  <rect x="290" y="75" width="120" height="60" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="350" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">图表分析</text>
+  <text x="350" y="116" text-anchor="middle" font-size="10" fill="#e67e22">⭐⭐⭐⭐</text>
+  <text x="350" y="130" text-anchor="middle" font-size="8" fill="#888">密集数据弱</text>
+
+  <rect x="420" y="75" width="120" height="60" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="480" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">空间推理</text>
+  <text x="480" y="116" text-anchor="middle" font-size="10" fill="#e67e22">⭐⭐⭐</text>
+  <text x="480" y="130" text-anchor="middle" font-size="8" fill="#888">距离不准</text>
+
+  <rect x="550" y="75" width="120" height="60" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="610" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">计数能力</text>
+  <text x="610" y="116" text-anchor="middle" font-size="10" fill="#e74c3c">⭐⭐</text>
+  <text x="610" y="130" text-anchor="middle" font-size="8" fill="#888">>10易出错</text>
+
+  <rect x="680" y="75" width="95" height="60" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="727" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">专业领域</text>
+  <text x="727" y="116" text-anchor="middle" font-size="10" fill="#e74c3c">⭐⭐⭐</text>
+  <text x="727" y="130" text-anchor="middle" font-size="8" fill="#888">不替代专家</text>
+
+  <!-- 两大技术 -->
+  <rect x="30" y="155" width="365" height="200" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="212" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🔍 图像理解（GPT-4o Vision）</text>
+
+  <rect x="50" y="195" width="325" height="35" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="212" y="218" text-anchor="middle" font-size="10" fill="#555">输入：图像 URL / Base64 编码</text>
+
+  <rect x="50" y="240" width="325" height="35" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="212" y="263" text-anchor="middle" font-size="10" fill="#555">能力：场景描述、OCR、图表数据提取</text>
+
+  <rect x="50" y="285" width="325" height="35" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="212" y="308" text-anchor="middle" font-size="10" fill="#555">技巧：detail=low/high 控制精度和成本</text>
+
+  <rect x="50" y="330" width="325" height="18" rx="4" fill="#e8f4fd"/>
+  <text x="212" y="344" text-anchor="middle" font-size="9" fill="#3498db">Agent 场景：发票提取、截图转代码、图表分析</text>
+
+  <!-- 图像生成 -->
+  <rect x="405" y="155" width="365" height="200" rx="10" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="587" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#8e44ad">🎨 图像生成（DALL-E 3）</text>
+
+  <rect x="425" y="195" width="325" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
+  <text x="587" y="218" text-anchor="middle" font-size="10" fill="#555">输入：文本描述 → 自动增强 Prompt</text>
+
+  <rect x="425" y="240" width="325" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
+  <text x="587" y="263" text-anchor="middle" font-size="10" fill="#555">尺寸：1024x1024 / 1792x1024 / 1024x1792</text>
+
+  <rect x="425" y="285" width="325" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
+  <text x="587" y="308" text-anchor="middle" font-size="10" fill="#555">风格：vivid（鲜艳）/ natural（自然）</text>
+
+  <rect x="425" y="330" width="325" height="18" rx="4" fill="#f0e6f6"/>
+  <text x="587" y="344" text-anchor="middle" font-size="9" fill="#8e44ad">Agent 场景：PPT配图、产品原型、创意设计</text>
+</svg>

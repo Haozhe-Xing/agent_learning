@@ -2,6 +2,8 @@
 
 工作记忆是 Agent 在执行复杂任务时的"草稿纸"——记录推理步骤、中间结果，帮助 Agent 保持任务状态。
 
+![工作记忆 Scratchpad 模式](../svg/chapter_memory_04_working_memory.svg)
+
 ## 为什么需要工作记忆？
 
 ```python

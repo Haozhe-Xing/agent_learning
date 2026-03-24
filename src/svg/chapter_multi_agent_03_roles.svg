@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="800" height="400" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">专业化 Agent 角色分工架构</text>
+
+  <!-- 任务输入 -->
+  <rect x="30" y="160" width="100" height="50" rx="8" fill="#2c3e50"/>
+  <text x="80" y="182" text-anchor="middle" font-size="11" fill="white" font-weight="bold">📝 用户任务</text>
+  <text x="80" y="198" text-anchor="middle" font-size="10" fill="#bdc3c7">全栈项目开发</text>
+
+  <!-- 路由器 -->
+  <rect x="170" y="130" width="120" height="110" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="230" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">🎯 任务路由器</text>
+  <text x="230" y="178" text-anchor="middle" font-size="10" fill="#555">分析任务类型</text>
+  <text x="230" y="195" text-anchor="middle" font-size="10" fill="#555">匹配专业角色</text>
+  <text x="230" y="212" text-anchor="middle" font-size="10" fill="#555">分配子任务</text>
+
+  <line x1="130" y1="185" x2="170" y2="185" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arr3)"/>
+
+  <!-- 专业Agent们 -->
+  <rect x="340" y="50" width="160" height="55" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="420" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">🎨 前端 Agent</text>
+  <text x="420" y="90" text-anchor="middle" font-size="10" fill="#555">React/Vue 开发专家</text>
+
+  <rect x="340" y="120" width="160" height="55" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="420" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">⚙️ 后端 Agent</text>
+  <text x="420" y="160" text-anchor="middle" font-size="10" fill="#555">Python/Node.js 专家</text>
+
+  <rect x="340" y="190" width="160" height="55" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="420" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">🗄️ DBA Agent</text>
+  <text x="420" y="230" text-anchor="middle" font-size="10" fill="#555">SQL/NoSQL 数据库设计</text>
+
+  <rect x="340" y="260" width="160" height="55" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="420" y="282" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">🔒 安全 Agent</text>
+  <text x="420" y="300" text-anchor="middle" font-size="10" fill="#555">安全审计与渗透测试</text>
+
+  <!-- 路由器到Agent的连线 -->
+  <line x1="290" y1="165" x2="340" y2="77" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
+  <line x1="290" y1="180" x2="340" y2="147" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
+  <line x1="290" y1="195" x2="340" y2="217" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
+  <line x1="290" y1="210" x2="340" y2="287" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
+
+  <!-- 汇总Agent -->
+  <rect x="560" y="145" width="120" height="80" rx="10" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="2"/>
+  <text x="620" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">📊 汇总 Agent</text>
+  <text x="620" y="192" text-anchor="middle" font-size="10" fill="#555">整合各组件</text>
+  <text x="620" y="208" text-anchor="middle" font-size="10" fill="#555">质量检查</text>
+
+  <line x1="500" y1="77" x2="560" y2="170" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <line x1="500" y1="147" x2="560" y2="180" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <line x1="500" y1="217" x2="560" y2="190" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <line x1="500" y1="287" x2="560" y2="200" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr3)"/>
+
+  <!-- 输出 -->
+  <rect x="720" y="160" width="60" height="50" rx="8" fill="#2c3e50"/>
+  <text x="750" y="182" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🎯</text>
+  <text x="750" y="198" text-anchor="middle" font-size="10" fill="#bdc3c7">完整项目</text>
+  <line x1="680" y1="185" x2="720" y2="185" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arr3)"/>
+
+  <!-- 底部说明 -->
+  <text x="400" y="360" text-anchor="middle" font-size="11" fill="#7f8c8d">每个 Agent 只处理与其专业领域相关的工作，超出范围时请求其他 Agent 协助</text>
+  <text x="400" y="380" text-anchor="middle" font-size="11" fill="#95a5a6">角色定义通过 System Prompt 中的 role / goal / expertise 三要素实现</text>
+</svg>

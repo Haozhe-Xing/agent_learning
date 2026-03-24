@@ -2,6 +2,8 @@
 
 综合 LangChain 所有特性，构建一个完整的多功能客服 Agent 系统。
 
+![多功能客服 Agent 系统架构](../svg/chapter_langchain_05_customer_service.svg)
+
 ## 完整实现
 
 ```python

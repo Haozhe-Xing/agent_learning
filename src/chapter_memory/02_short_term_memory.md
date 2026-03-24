@@ -8,6 +8,8 @@
 
 本节介绍三种策略：全量保留、滑动窗口、摘要压缩，它们适用于不同长度的对话场景。
 
+![短期记忆三种策略对比](../svg/chapter_memory_02_three_strategies.svg)
+
 ## 基础对话历史管理
 
 我们先从最简单的开始：完整保留所有对话历史。这个 `ConversationHistory` 类封装了消息的添加、Token 统计和 API 调用。注意它使用 `tiktoken` 来精确计算每条消息的 Token 数——这对后面的窗口截断策略至关重要。

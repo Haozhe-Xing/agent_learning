@@ -1,5 +1,7 @@
 # 附录 B：Agent 开发常见问题 FAQ
 
+![Agent 开发 FAQ 问题分类](../svg/appendix_faq.svg)
+
 ---
 
 ## 基础问题

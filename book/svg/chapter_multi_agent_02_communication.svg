@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="800" height="450" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">多 Agent 三种通信模式</text>
+
+  <!-- 模式1：消息队列 -->
+  <rect x="20" y="50" width="240" height="350" rx="10" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="2"/>
+  <text x="140" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">📨 消息队列（异步）</text>
+
+  <rect x="45" y="90" width="80" height="35" rx="6" fill="#3498db"/>
+  <text x="85" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Agent A</text>
+  <rect x="165" y="90" width="80" height="35" rx="6" fill="#3498db"/>
+  <text x="205" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Agent B</text>
+
+  <rect x="80" y="155" width="130" height="30" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1.5"/>
+  <text x="145" y="175" text-anchor="middle" font-size="11" fill="#3498db" font-weight="bold">📮 消息频道</text>
+
+  <line x1="85" y1="125" x2="110" y2="155" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <line x1="180" y1="155" x2="205" y2="125" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+
+  <text x="140" y="210" text-anchor="middle" font-size="10" fill="#555">✅ 松耦合，异步通信</text>
+  <text x="140" y="226" text-anchor="middle" font-size="10" fill="#555">✅ 不需同时在线</text>
+  <text x="140" y="242" text-anchor="middle" font-size="10" fill="#555">⚠️ 实时性较低</text>
+  <text x="140" y="264" text-anchor="middle" font-size="10" fill="#7f8c8d">适用：微服务、日志处理</text>
+
+  <!-- 模式2：共享黑板 -->
+  <rect x="280" y="50" width="240" height="350" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">📋 共享黑板</text>
+
+  <rect x="305" y="90" width="70" height="35" rx="6" fill="#27ae60"/>
+  <text x="340" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Agent A</text>
+  <rect x="425" y="90" width="70" height="35" rx="6" fill="#27ae60"/>
+  <text x="460" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Agent B</text>
+
+  <rect x="310" y="155" width="170" height="40" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="395" y="172" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">🗂 共享数据空间</text>
+  <text x="395" y="187" text-anchor="middle" font-size="9" fill="#555">key-value 读写</text>
+
+  <line x1="340" y1="125" x2="360" y2="155" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="460" y1="125" x2="440" y2="155" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <text x="400" y="220" text-anchor="middle" font-size="10" fill="#555">✅ 数据共享方便</text>
+  <text x="400" y="236" text-anchor="middle" font-size="10" fill="#555">✅ 灵活读写</text>
+  <text x="400" y="252" text-anchor="middle" font-size="10" fill="#555">⚠️ 需要并发控制</text>
+  <text x="400" y="274" text-anchor="middle" font-size="10" fill="#7f8c8d">适用：协作编辑、知识汇聚</text>
+
+  <!-- 模式3：直接调用 -->
+  <rect x="540" y="50" width="240" height="350" rx="10" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2"/>
+  <text x="660" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">📞 直接调用</text>
+
+  <rect x="565" y="90" width="80" height="35" rx="6" fill="#8e44ad"/>
+  <text x="605" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Agent A</text>
+  <rect x="685" y="90" width="80" height="35" rx="6" fill="#8e44ad"/>
+  <text x="725" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Agent B</text>
+
+  <line x1="645" y1="107" x2="685" y2="107" stroke="#2c3e50" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="685" y1="115" x2="645" y2="115" stroke="#2c3e50" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <text x="665" y="145" text-anchor="middle" font-size="9" fill="#555">请求 →</text>
+  <text x="665" y="158" text-anchor="middle" font-size="9" fill="#555">← 响应</text>
+
+  <text x="660" y="220" text-anchor="middle" font-size="10" fill="#555">✅ 最简单直接</text>
+  <text x="660" y="236" text-anchor="middle" font-size="10" fill="#555">✅ 实时性高</text>
+  <text x="660" y="252" text-anchor="middle" font-size="10" fill="#555">⚠️ 强耦合，不灵活</text>
+  <text x="660" y="274" text-anchor="middle" font-size="10" fill="#7f8c8d">适用：简单链式任务</text>
+
+  <!-- 底部总结 -->
+  <rect x="100" y="410" width="600" height="26" rx="8" fill="#2c3e50" opacity="0.06"/>
+  <text x="400" y="428" text-anchor="middle" font-size="11" fill="#7f8c8d">💡 实际项目中常组合使用：消息队列做解耦 + 共享黑板做状态同步 + 直接调用做紧密协作</text>
+</svg>

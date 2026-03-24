@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -460,6 +459,7 @@
 <li><strong>人工审批</strong>：在外部获取用户确认</li>
 <li><strong>恢复执行</strong>：审批通过后，用 <code>app.invoke(None, config)</code> 从上次暂停的位置继续</li>
 </ol>
+<p><img src="../svg/chapter_langgraph_05_hitl.svg" alt="Human-in-the-Loop人机协作流程" /></p>
 <pre><code class="language-python">from langgraph.graph import StateGraph, END, START, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import ToolNode, tools_condition

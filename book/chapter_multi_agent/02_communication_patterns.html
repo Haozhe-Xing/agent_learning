@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -451,6 +450,7 @@
 <h1 id="多-agent-通信模式"><a class="header" href="#多-agent-通信模式">多 Agent 通信模式</a></h1>
 <p>多 Agent 系统中，Agent 间如何交换信息是核心设计决策。不同的通信模式适合不同的场景，选择错误会导致系统变得难以维护或性能低下。</p>
 <p>本节介绍三种最常见的通信模式，并用代码演示它们的实现方式。读完本节后，你应该能根据项目需求选择合适的模式。</p>
+<p><img src="../svg/chapter_multi_agent_02_communication.svg" alt="多Agent三种通信模式" /></p>
 <h2 id="三种通信模式"><a class="header" href="#三种通信模式">三种通信模式</a></h2>
 <h3 id="模式一消息队列异步通信"><a class="header" href="#模式一消息队列异步通信">模式一：消息队列（异步通信）</a></h3>
 <p>消息队列是松耦合的通信方式：发送方将消息放入"频道"，接收方从频道中取出消息。两个 Agent 不需要同时在线，也不需要知道对方的实现细节。这种模式在微服务架构中非常常见。</p>

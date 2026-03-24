@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="cs" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e67e22"/>
+    </marker>
+  </defs>
+  <rect width="800" height="350" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">多功能客服 Agent 系统架构</text>
+
+  <!-- 用户输入 -->
+  <rect x="300" y="52" width="200" height="35" rx="8" fill="#2980b9" opacity="0.25" stroke="#2980b9" stroke-width="2"/>
+  <text x="400" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#2980b9">👤 用户提问</text>
+
+  <line x1="400" y1="87" x2="400" y2="107" stroke="#e67e22" stroke-width="1.5" marker-end="url(#cs)"/>
+
+  <!-- 核心Agent -->
+  <rect x="200" y="110" width="400" height="50" rx="8" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="133" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">🤖 客服 Agent（LangChain AgentExecutor）</text>
+  <text x="400" y="150" text-anchor="middle" font-size="10" fill="#888">System Prompt + 对话历史 + 工具选择</text>
+
+  <!-- 向下分支 -->
+  <line x1="150" y1="140" x2="150" y2="185" stroke="#888" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="330" y1="160" x2="330" y2="185" stroke="#888" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="470" y1="160" x2="470" y2="185" stroke="#888" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="650" y1="140" x2="650" y2="185" stroke="#888" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- 四个工具模块 -->
+  <rect x="20" y="185" width="175" height="100" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="107" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">📋 订单查询</text>
+  <text x="32" y="228" font-size="11" fill="#444">• 订单状态查询</text>
+  <text x="32" y="246" font-size="11" fill="#444">• 物流追踪</text>
+  <text x="32" y="264" font-size="11" fill="#444">• 退款进度</text>
+
+  <rect x="210" y="185" width="175" height="100" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="297" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">📚 知识库 RAG</text>
+  <text x="222" y="228" font-size="11" fill="#444">• FAQ 向量检索</text>
+  <text x="222" y="246" font-size="11" fill="#444">• 产品手册搜索</text>
+  <text x="222" y="264" font-size="11" fill="#444">• 政策规则匹配</text>
+
+  <rect x="400" y="185" width="175" height="100" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="487" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">🔧 工单操作</text>
+  <text x="412" y="228" font-size="11" fill="#444">• 创建工单</text>
+  <text x="412" y="246" font-size="11" fill="#444">• 升级优先级</text>
+  <text x="412" y="264" font-size="11" fill="#444">• 转接人工</text>
+
+  <rect x="590" y="185" width="190" height="100" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="685" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">💬 对话管理</text>
+  <text x="602" y="228" font-size="11" fill="#444">• 多轮历史记忆</text>
+  <text x="602" y="246" font-size="11" fill="#444">• 用户画像关联</text>
+  <text x="602" y="264" font-size="11" fill="#444">• 情感分析分流</text>
+
+  <!-- LangChain 组件栈 -->
+  <rect x="20" y="300" width="760" height="38" rx="8" fill="#e67e22" opacity="0.10" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="100" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">ChatOpenAI</text>
+  <text x="240" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">@tool 装饰器</text>
+  <text x="400" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">ChatPromptTemplate</text>
+  <text x="560" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">ChatMessageHistory</text>
+  <text x="710" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">AgentExecutor</text>
+</svg>

@@ -15,6 +15,8 @@
 
 可观测性的三大支柱：**日志（Logs）**、**追踪（Traces）**、**指标（Metrics）**。
 
+![可观测性三大支柱](../svg/chapter_evaluation_05_observability.svg)
+
 ---
 
 ## 支柱一：结构化日志

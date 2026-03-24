@@ -5,6 +5,8 @@
 
 > ⏰ **时效性说明**：本节内容更新至 2026 年 3 月 20 日。由于该领域发展极为迅速，建议读者结合 [Awesome-RL-Reasoning-Recipes](https://github.com/yuezhao-zy/Awesome-RL-Reasoning-Recipes) 等开源项目获取最新动态。
 
+![Agentic-RL 前沿研究全景图](../svg/chapter_agentic_rl_07_research_landscape.svg)
+
 ---
 
 ## 7.1 概览：从 RLHF 到推理 RL 的范式转变

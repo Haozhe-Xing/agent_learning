@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -449,6 +448,7 @@
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="langgraph-核心概念节点边状态"><a class="header" href="#langgraph-核心概念节点边状态">LangGraph 核心概念：节点、边、状态</a></h1>
+<p><img src="../svg/chapter_langgraph_02_state_node_edge.svg" alt="LangGraph三大核心概念：State·Node·Edge" /></p>
 <h2 id="状态state"><a class="header" href="#状态state">状态（State）</a></h2>
 <p>State 是 LangGraph 的数据中心，所有节点都从 State 读取数据并写入数据。</p>
 <pre><code class="language-python">from typing import TypedDict, Annotated, Optional

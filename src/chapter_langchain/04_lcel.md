@@ -2,6 +2,8 @@
 
 LCEL（LangChain Expression Language）是 LangChain 的核心构建语言，用 `|` 符号将组件连接成处理管道，代码简洁且功能强大。
 
+![LCEL 管道架构：数据流与组合模式](../svg/chapter_langchain_04_lcel.svg)
+
 如果你用过 Unix 管道（`cat file.txt | grep "error" | wc -l`），LCEL 的思路完全相同：数据从左到右流过一系列处理组件，每个组件接收上一个的输出作为自己的输入。在 LLM 应用中，一个典型的管道是：`提示词模板 | LLM | 输出解析器`——模板填充变量生成完整提示，LLM 生成回复，解析器提取结构化结果。
 
 LCEL 的核心抽象是 **Runnable 协议**——所有组件都实现了统一的接口（`invoke`、`stream`、`batch` 等），因此任何组件都可以与其他组件自由组合。这种设计的好处是：你写好一条链之后，自动获得了流式输出、异步调用和批处理能力，不需要额外编码。

@@ -2,6 +2,8 @@
 
 AutoGPT（2023年3月）和 BabyAGI（2023年4月）是最早引起广泛关注的自主 Agent 项目。虽然它们在生产环境中的实用性有限，但其设计理念对整个 Agent 领域产生了深远影响。
 
+![AutoGPT vs BabyAGI 核心循环对比](../svg/chapter_frameworks_01_autogpt_babyagi.svg)
+
 ## AutoGPT：自主执行任务的先驱
 
 AutoGPT 的核心理念是：给定一个目标，Agent 自主规划并执行所有步骤。

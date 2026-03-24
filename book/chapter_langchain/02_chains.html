@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -452,6 +451,7 @@
 <p>Chain（链）是 LangChain 的核心概念——将多个处理步骤串联成可复用的流水线。你可以把 Chain 想象成一条装配线：原材料（用户输入）从一端进入，经过多个加工站（提示模板、LLM、解析器等），最终从另一端输出成品（结构化结果）。</p>
 <p>在 LangChain 中，Chain 使用 <strong>LCEL（LangChain Expression Language）</strong> 语法来构建。LCEL 的核心符号是 <code>|</code>（管道符），它的工作方式类似于 Unix 命令行中的管道——前一个组件的输出会自动成为下一个组件的输入。</p>
 <p>本节将通过四种常见的 Chain 模式，带你掌握 LCEL 的核心用法。</p>
+<p><img src="../svg/chapter_langchain_02_chain_patterns.svg" alt="LCEL四种Chain模式" /></p>
 <h2 id="lcel现代链式语法"><a class="header" href="#lcel现代链式语法">LCEL：现代链式语法</a></h2>
 <h3 id="基础准备"><a class="header" href="#基础准备">基础准备</a></h3>
 <p>首先导入必要的模块。LCEL 的核心构建块包括：<code>ChatPromptTemplate</code>（提示模板）、<code>ChatOpenAI</code>（LLM）、<code>StrOutputParser</code>（字符串解析器）以及各类 <code>Runnable</code> 组件。</p>

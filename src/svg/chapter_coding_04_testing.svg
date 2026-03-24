@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="td" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <rect width="800" height="340" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">AI 测试生成与 Bug 修复三层能力</text>
+
+  <!-- L1 -->
+  <rect x="30" y="60" width="240" height="250" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="150" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">L1 测试生成</text>
+
+  <rect x="50" y="100" width="200" height="35" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="150" y="122" text-anchor="middle" font-size="11" fill="#555">分析函数签名和逻辑</text>
+
+  <line x1="150" y1="135" x2="150" y2="150" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#td)"/>
+
+  <rect x="50" y="153" width="200" height="35" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="150" y="175" text-anchor="middle" font-size="11" fill="#555">生成单元测试用例</text>
+
+  <line x1="150" y1="188" x2="150" y2="203" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#td)"/>
+
+  <rect x="50" y="206" width="200" height="35" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="150" y="228" text-anchor="middle" font-size="11" fill="#555">覆盖边界条件和异常</text>
+
+  <rect x="50" y="260" width="200" height="36" rx="6" fill="#e8f8e8"/>
+  <text x="150" y="283" text-anchor="middle" font-size="10" fill="#27ae60">🎯 自动化程度：高</text>
+
+  <!-- L2 -->
+  <rect x="280" y="60" width="240" height="250" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">L2 Bug 诊断</text>
+
+  <rect x="300" y="100" width="200" height="35" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
+  <text x="400" y="122" text-anchor="middle" font-size="11" fill="#555">接收错误信息/堆栈</text>
+
+  <line x1="400" y1="135" x2="400" y2="150" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <rect x="300" y="153" width="200" height="35" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
+  <text x="400" y="175" text-anchor="middle" font-size="11" fill="#555">分析代码逻辑定位根因</text>
+
+  <line x1="400" y1="188" x2="400" y2="203" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <rect x="300" y="206" width="200" height="35" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
+  <text x="400" y="228" text-anchor="middle" font-size="11" fill="#555">输出诊断报告和建议</text>
+
+  <rect x="300" y="260" width="200" height="36" rx="6" fill="#fdf2e9"/>
+  <text x="400" y="283" text-anchor="middle" font-size="10" fill="#e67e22">🔍 需要上下文理解</text>
+
+  <!-- L3 -->
+  <rect x="530" y="60" width="240" height="250" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="650" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">L3 自动修复</text>
+
+  <rect x="550" y="100" width="200" height="35" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="650" y="122" text-anchor="middle" font-size="11" fill="#555">生成修复代码补丁</text>
+
+  <line x1="650" y1="135" x2="650" y2="150" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <rect x="550" y="153" width="200" height="35" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="650" y="175" text-anchor="middle" font-size="11" fill="#555">运行测试验证修复</text>
+
+  <line x1="650" y1="188" x2="650" y2="203" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <rect x="550" y="206" width="200" height="35" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="650" y="228" text-anchor="middle" font-size="11" fill="#555">确认通过 → 完成闭环</text>
+
+  <rect x="550" y="260" width="200" height="36" rx="6" fill="#fce4e4"/>
+  <text x="650" y="283" text-anchor="middle" font-size="10" fill="#e74c3c">🔄 修复→测试→确认 循环</text>
+</svg>

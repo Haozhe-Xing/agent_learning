@@ -3,6 +3,8 @@
 > 📖 *"The best way to predict the future is to invent it."*  
 > *"让 LLM 使用工具"是 Agent 研究中最活跃的方向之一。本节深入解读三篇奠基性论文。*
 
+![工具学习前沿论文三部曲](../svg/chapter_tools_06_papers.svg)
+
 ---
 
 ## Toolformer：让模型自学工具使用

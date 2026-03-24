@@ -2,6 +2,8 @@
 
 理解单 Agent 的瓶颈，才能知道何时需要引入多 Agent 架构。
 
+![单Agent三大局限vs多Agent解决方案](../svg/chapter_multi_agent_01_limits.svg)
+
 ## 三个核心限制
 
 ```python

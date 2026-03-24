@@ -10,6 +10,8 @@
 >
 > - **CRITIC**（*CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing*，Gou et al., 2023）：在自我批评的基础上引入**工具验证**——Agent 写完代码后运行单元测试，写完事实陈述后用搜索引擎核实。工具提供的客观反馈比纯自我批评更可靠。
 
+![三大反思框架对比：Reflexion / Self-Refine / CRITIC](../svg/chapter_planning_04_reflection.svg)
+
 ## 基础反思循环
 
 ```python

@@ -8,6 +8,8 @@ AutoGen 是微软开发的多 Agent 对话框架，其核心创新是：通过 *
 
 AutoGen 最突出的特性是**自动代码执行**：AI 生成代码后，可以在沙箱中直接执行代码并将结果反馈给 AI，形成"生成-执行-修正"的自动化循环。
 
+![AutoGen 0.4 事件驱动多Agent架构](../svg/chapter_frameworks_03_autogen.svg)
+
 ## AutoGen 0.4：全新事件驱动架构
 
 AutoGen 0.4 相比旧版做了完全重写，引入了以下核心概念：

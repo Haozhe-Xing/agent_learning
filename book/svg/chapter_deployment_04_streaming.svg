@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <marker id="arr-dp04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <filter id="sh-dp04">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="400" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="30" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">流式 SSE 响应 + 并发控制架构</text>
+
+  <!-- ===== 左侧：SSE 流式时序 ===== -->
+  <rect x="25" y="50" width="370" height="335" rx="10" fill="#3498db" opacity="0.04" stroke="#3498db" stroke-width="1.5"/>
+  <text x="210" y="72" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">📡 SSE 流式响应时序</text>
+
+  <!-- 客户端 -->
+  <rect x="50" y="90" width="80" height="30" rx="6" fill="#2c3e50" filter="url(#sh-dp04)"/>
+  <text x="90" y="109" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">👤 Client</text>
+
+  <!-- 服务端 -->
+  <rect x="200" y="90" width="80" height="30" rx="6" fill="#3498db" filter="url(#sh-dp04)"/>
+  <text x="240" y="109" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">🖥️ Server</text>
+
+  <!-- LLM -->
+  <rect x="340" y="90" width="40" height="30" rx="6" fill="#9b59b6" filter="url(#sh-dp04)"/>
+  <text x="360" y="109" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">LLM</text>
+
+  <!-- 时间线 -->
+  <line x1="90" y1="120" x2="90" y2="370" stroke="#2c3e50" stroke-width="1.5"/>
+  <line x1="240" y1="120" x2="240" y2="370" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="360" y1="120" x2="360" y2="370" stroke="#9b59b6" stroke-width="1.5"/>
+
+  <!-- 步骤1：POST 请求 -->
+  <line x1="90" y1="140" x2="236" y2="140" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr-dp04)"/>
+  <text x="163" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">POST /chat/stream</text>
+
+  <!-- 步骤2：调用 LLM -->
+  <line x1="240" y1="158" x2="356" y2="158" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-dp04)"/>
+  <text x="298" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#3498db">astream()</text>
+
+  <!-- 步骤3：流式 Token -->
+  <line x1="356" y1="180" x2="244" y2="180" stroke="#9b59b6" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-dp04)"/>
+  <text x="300" y="176" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#9b59b6">chunk: "你"</text>
+
+  <line x1="244" y1="185" x2="94" y2="185" stroke="#3498db" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-dp04)"/>
+  <text x="168" y="193" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#3498db">data: {"token":"你"}</text>
+
+  <line x1="356" y1="210" x2="244" y2="210" stroke="#9b59b6" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-dp04)"/>
+  <text x="300" y="206" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#9b59b6">chunk: "好"</text>
+
+  <line x1="244" y1="215" x2="94" y2="215" stroke="#3498db" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-dp04)"/>
+  <text x="168" y="223" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#3498db">data: {"token":"好"}</text>
+
+  <line x1="356" y1="240" x2="244" y2="240" stroke="#9b59b6" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-dp04)"/>
+  <text x="300" y="236" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#9b59b6">chunk: "！"</text>
+
+  <line x1="244" y1="245" x2="94" y2="245" stroke="#3498db" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-dp04)"/>
+  <text x="168" y="253" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#3498db">data: {"token":"！"}</text>
+
+  <!-- 步骤4：完成信号 -->
+  <line x1="356" y1="275" x2="244" y2="275" stroke="#9b59b6" stroke-width="1.5" marker-end="url(#arr-dp04)"/>
+  <text x="300" y="271" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#9b59b6">stream end</text>
+
+  <line x1="244" y1="290" x2="94" y2="290" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-dp04)"/>
+  <text x="168" y="286" text-anchor="middle" font-family="Courier New, monospace" font-size="7" fill="#27ae60">data: {"done":true}</text>
+
+  <!-- 优势说明 -->
+  <rect x="45" y="310" width="330" height="60" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="210" y="328" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#2980b9">💡 SSE（Server-Sent Events）优势</text>
+  <text x="210" y="344" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">• 逐 Token 推送，首字延迟 &lt;500ms</text>
+  <text x="210" y="360" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">• HTTP 长连接，无需 WebSocket 复杂度</text>
+
+  <!-- ===== 右侧：并发控制 ===== -->
+  <rect x="410" y="50" width="370" height="335" rx="10" fill="#e67e22" opacity="0.04" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="595" y="72" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">⚡ Semaphore 并发控制</text>
+
+  <!-- 请求队列 -->
+  <text x="595" y="96" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">多个并发请求进入</text>
+
+  <rect x="430" y="106" width="55" height="28" rx="5" fill="#e74c3c" filter="url(#sh-dp04)"/>
+  <text x="457" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Req 1</text>
+
+  <rect x="495" y="106" width="55" height="28" rx="5" fill="#e67e22" filter="url(#sh-dp04)"/>
+  <text x="522" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Req 2</text>
+
+  <rect x="560" y="106" width="55" height="28" rx="5" fill="#f39c12" filter="url(#sh-dp04)"/>
+  <text x="587" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Req 3</text>
+
+  <rect x="625" y="106" width="55" height="28" rx="5" fill="#3498db" filter="url(#sh-dp04)"/>
+  <text x="652" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Req 4</text>
+
+  <rect x="690" y="106" width="55" height="28" rx="5" fill="#9b59b6" filter="url(#sh-dp04)"/>
+  <text x="717" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Req 5</text>
+
+  <!-- 信号量闸门 -->
+  <rect x="430" y="150" width="335" height="40" rx="8" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="2"/>
+  <text x="597" y="170" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">🚦 Semaphore(3) — 最多 3 个并发</text>
+  <text x="597" y="184" text-anchor="middle" font-family="Courier New, monospace" font-size="8" fill="#e67e22">async with semaphore:</text>
+
+  <!-- 通过的请求（3个） -->
+  <rect x="440" y="206" width="90" height="55" rx="6" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="485" y="224" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">🟢 执行中</text>
+  <text x="485" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Req 1</text>
+  <text x="485" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">→ LLM 推理</text>
+
+  <rect x="545" y="206" width="90" height="55" rx="6" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="590" y="224" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">🟢 执行中</text>
+  <text x="590" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Req 2</text>
+  <text x="590" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">→ LLM 推理</text>
+
+  <rect x="650" y="206" width="90" height="55" rx="6" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="695" y="224" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">🟢 执行中</text>
+  <text x="695" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Req 3</text>
+  <text x="695" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">→ LLM 推理</text>
+
+  <!-- 等待中的请求 -->
+  <rect x="440" y="275" width="300" height="40" rx="6" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="1"/>
+  <text x="590" y="295" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">🔴 等待队列：Req 4, Req 5 等待信号量释放</text>
+  <text x="590" y="308" text-anchor="middle" font-family="Courier New, monospace" font-size="8" fill="#e74c3c">await semaphore.acquire()</text>
+
+  <!-- 并发控制优势 -->
+  <rect x="430" y="328" width="335" height="48" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
+  <text x="597" y="346" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">💡 为什么需要并发控制？</text>
+  <text x="597" y="362" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">LLM API 有速率限制，无限并发会导致 429 错误和高延迟</text>
+</svg>

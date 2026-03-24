@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">工具学习前沿论文三部曲</text>
+
+  <!-- Toolformer -->
+  <rect x="20" y="55" width="245" height="200" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="142" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">Toolformer (2023)</text>
+  <text x="142" y="96" text-anchor="middle" font-size="10" fill="#888">Meta AI · 自学工具使用</text>
+  <line x1="35" y1="104" x2="250" y2="104" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4"/>
+  <text x="35" y="122" font-size="11" fill="#444">核心思想：</text>
+  <text x="35" y="140" font-size="11" fill="#444">• LLM 自动标注训练数据</text>
+  <text x="35" y="158" font-size="11" fill="#444">• 在文本中插入 API 调用</text>
+  <text x="35" y="176" font-size="11" fill="#444">• 通过损失函数过滤</text>
+  <rect x="35" y="188" width="215" height="22" rx="4" fill="#e74c3c" opacity="0.15"/>
+  <text x="142" y="204" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">突破：无需人工标注</text>
+  <text x="35" y="228" font-size="11" fill="#444">支持工具：计算器、搜索、</text>
+  <text x="35" y="244" font-size="11" fill="#444">日历、翻译、QA</text>
+
+  <!-- ToolkenGPT -->
+  <rect x="278" y="55" width="245" height="200" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">ToolkenGPT (2023)</text>
+  <text x="400" y="96" text-anchor="middle" font-size="10" fill="#888">工具调用 = Token 生成</text>
+  <line x1="293" y1="104" x2="508" y2="104" stroke="#3498db" stroke-width="1" stroke-dasharray="4"/>
+  <text x="293" y="122" font-size="11" fill="#444">核心思想：</text>
+  <text x="293" y="140" font-size="11" fill="#444">• 每个工具 = 一个特殊 Token</text>
+  <text x="293" y="158" font-size="11" fill="#444">• 工具嵌入向量学习</text>
+  <text x="293" y="176" font-size="11" fill="#444">• 无缝融入生成流程</text>
+  <rect x="293" y="188" width="215" height="22" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="400" y="204" text-anchor="middle" font-size="10" fill="#3498db" font-weight="bold">突破：工具 = 词汇表扩展</text>
+  <text x="293" y="228" font-size="11" fill="#444">优势：支持并行调用</text>
+  <text x="293" y="244" font-size="11" fill="#444">新工具仅需 embedding 训练</text>
+
+  <!-- TALM -->
+  <rect x="536" y="55" width="244" height="200" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="658" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">TALM / ART (2023)</text>
+  <text x="658" y="96" text-anchor="middle" font-size="10" fill="#888">增强型工具推理</text>
+  <line x1="549" y1="104" x2="765" y2="104" stroke="#27ae60" stroke-width="1" stroke-dasharray="4"/>
+  <text x="549" y="122" font-size="11" fill="#444">核心思想：</text>
+  <text x="549" y="140" font-size="11" fill="#444">• Few-shot 工具示例</text>
+  <text x="549" y="158" font-size="11" fill="#444">• 自动任务分解</text>
+  <text x="549" y="176" font-size="11" fill="#444">• 工具调用链规划</text>
+  <rect x="549" y="188" width="215" height="22" rx="4" fill="#27ae60" opacity="0.15"/>
+  <text x="658" y="204" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">突破：无需微调即可使用</text>
+  <text x="549" y="228" font-size="11" fill="#444">优势：通用性强</text>
+  <text x="549" y="244" font-size="11" fill="#444">与 GPT-4 Function Calling 互补</text>
+
+  <!-- 发展脉络 -->
+  <rect x="20" y="270" width="760" height="95" rx="8" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="400" y="292" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">工具学习发展脉络</text>
+  
+  <rect x="40" y="305" width="200" height="45" rx="6" fill="#e74c3c" opacity="0.12"/>
+  <text x="140" y="323" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">阶段1：自监督学习</text>
+  <text x="140" y="340" text-anchor="middle" font-size="10" fill="#666">Toolformer 自动标注</text>
+
+  <text x="260" y="328" font-size="14" fill="#888">→</text>
+
+  <rect x="280" y="305" width="200" height="45" rx="6" fill="#3498db" opacity="0.12"/>
+  <text x="380" y="323" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">阶段2：原生集成</text>
+  <text x="380" y="340" text-anchor="middle" font-size="10" fill="#666">ToolkenGPT Token化</text>
+
+  <text x="500" y="328" font-size="14" fill="#888">→</text>
+
+  <rect x="520" y="305" width="240" height="45" rx="6" fill="#27ae60" opacity="0.12"/>
+  <text x="640" y="323" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">阶段3：标准化 (2024+)</text>
+  <text x="640" y="340" text-anchor="middle" font-size="10" fill="#666">Function Calling + MCP 协议</text>
+</svg>

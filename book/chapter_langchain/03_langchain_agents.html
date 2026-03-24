@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -456,6 +455,7 @@
 <li><strong>Agent 创建</strong>：不用再自己写执行循环，<code>create_openai_tools_agent</code> 一行搞定</li>
 <li><strong>执行管理</strong>：<code>AgentExecutor</code> 自动处理工具调用循环、超时控制、错误恢复</li>
 </ul>
+<p><img src="../svg/chapter_langchain_03_agent_architecture.svg" alt="LangChain Agent三层架构" /></p>
 <h2 id="langchain-工具定义"><a class="header" href="#langchain-工具定义">LangChain 工具定义</a></h2>
 <p>LangChain 提供了两种定义工具的方式：</p>
 <p><strong>方式一：<code>@tool</code> 装饰器</strong>——最简单直接。你只需要写一个普通的 Python 函数，加上 <code>@tool</code> 装饰器，LangChain 会自动从函数签名和 docstring 中提取参数信息、生成 Schema。这个 docstring 会成为工具的描述——所以一定要写清楚。</p>

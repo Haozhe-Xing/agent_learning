@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <marker id="arr-lg03" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-blue-lg03" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3498db"/>
+    </marker>
+    <marker id="arr-green-lg03" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arr-red-lg03" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <filter id="shadow-lg03">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="800" height="380" fill="#f8f9fa" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Graph Agent 执行流程</text>
+  <text x="400" y="50" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">START → Agent → 条件判断 → Tools ↺ Agent → END</text>
+
+  <!-- ===== 主流程 ===== -->
+
+  <!-- START 节点 -->
+  <circle cx="80" cy="160" r="28" fill="#2c3e50" filter="url(#shadow-lg03)"/>
+  <text x="80" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">▶</text>
+  <text x="80" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">START</text>
+
+  <!-- 箭头 START → Agent -->
+  <line x1="108" y1="160" x2="168" y2="160" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg03)"/>
+
+  <!-- Agent 节点 -->
+  <rect x="170" y="126" width="140" height="68" rx="10" fill="#3498db" filter="url(#shadow-lg03)"/>
+  <text x="240" y="152" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="white">🤖 Agent 节点</text>
+  <text x="240" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4e6f9">LLM 推理 + 决策</text>
+  <text x="240" y="184" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0d4f1">bind_tools(tools)</text>
+
+  <!-- 箭头 Agent → 条件判断 -->
+  <line x1="310" y1="160" x2="370" y2="160" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg03)"/>
+
+  <!-- 条件判断菱形 -->
+  <polygon points="425,120 480,160 425,200 370,160" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow-lg03)"/>
+  <text x="425" y="155" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="white">tools</text>
+  <text x="425" y="168" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">condition</text>
+
+  <!-- 条件分支 1：有工具调用 → Tools -->
+  <line x1="480" y1="160" x2="540" y2="160" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-green-lg03)"/>
+  <text x="510" y="150" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">有工具调用</text>
+
+  <!-- Tools 节点 -->
+  <rect x="542" y="126" width="140" height="68" rx="10" fill="#27ae60" filter="url(#shadow-lg03)"/>
+  <text x="612" y="152" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="white">🔧 Tools 节点</text>
+  <text x="612" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4f0e0">ToolNode(tools)</text>
+  <text x="612" y="184" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0e0c8">自动执行工具调用</text>
+
+  <!-- 循环箭头 Tools → Agent -->
+  <path d="M612,194 L612,240 Q612,260 540,260 Q350,260 310,194" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-blue-lg03)"/>
+  <text x="460" y="253" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#3498db">🔁 工具结果返回，继续推理</text>
+
+  <!-- 条件分支 2：无工具调用 → END -->
+  <line x1="425" y1="200" x2="425" y2="270" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-red-lg03)"/>
+  <text x="455" y="230" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">纯文本回复</text>
+
+  <!-- END 节点 -->
+  <circle cx="425" cy="298" r="28" fill="#e74c3c" filter="url(#shadow-lg03)"/>
+  <text x="425" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">⏹</text>
+  <text x="425" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">END</text>
+
+  <!-- ===== 右侧图例 ===== -->
+  <rect x="700" y="95" width="85" height="115" rx="6" fill="white" stroke="#ddd" stroke-width="1"/>
+  <text x="742" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#2c3e50">图例</text>
+
+  <circle cx="716" cy="130" r="5" fill="#2c3e50"/>
+  <text x="726" y="133" font-family="Arial, sans-serif" font-size="9" fill="#555">起止点</text>
+
+  <rect x="711" y="143" width="10" height="10" rx="2" fill="#3498db"/>
+  <text x="726" y="153" font-family="Arial, sans-serif" font-size="9" fill="#555">节点</text>
+
+  <polygon points="716,162 721,168 716,174 711,168" fill="#f39c12"/>
+  <text x="726" y="171" font-family="Arial, sans-serif" font-size="9" fill="#555">条件</text>
+
+  <line x1="711" y1="186" x2="723" y2="186" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="728" y="189" font-family="Arial, sans-serif" font-size="9" fill="#555">边</text>
+
+  <line x1="711" y1="198" x2="723" y2="198" stroke="#3498db" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="728" y="201" font-family="Arial, sans-serif" font-size="9" fill="#555">循环</text>
+
+  <!-- ===== 底部注释 ===== -->
+  <rect x="60" y="340" width="680" height="30" rx="6" fill="#3498db" opacity="0.06"/>
+  <text x="400" y="360" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">💡 tools_condition 检查 LLM 返回是否包含 tool_calls — 有则路由到 Tools，无则路由到 END</text>
+</svg>

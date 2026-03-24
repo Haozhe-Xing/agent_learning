@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="向量嵌入与向量数据库"><a class="header" href="#向量嵌入与向量数据库">向量嵌入与向量数据库</a></h1>
 <p>向量嵌入（Embedding）和向量数据库是 RAG 系统的核心技术。本节深入讲解如何高效地存储和检索向量。</p>
+<p><img src="../svg/chapter_rag_03_embedding.svg" alt="向量嵌入与检索流程" /></p>
 <h2 id="向量嵌入模型选择"><a class="header" href="#向量嵌入模型选择">向量嵌入模型选择</a></h2>
 <p>选择嵌入模型时需要权衡三个因素：<strong>性能</strong>（嵌入质量）、<strong>成本</strong>（API 价格或本地计算资源）和<strong>维度</strong>（向量大小，影响存储和检索速度）。</p>
 <p>OpenAI 目前提供三个嵌入模型。对于大多数场景，<code>text-embedding-3-small</code> 是性价比最优的选择——性能接近 <code>large</code> 模型，价格只有其 1/6。如果你的应用对隐私有严格要求，或者不想依赖外部 API，也可以使用本地开源模型，比如 <code>BAAI/bge-small-zh-v1.5</code>（针对中文优化），完全免费。</p>

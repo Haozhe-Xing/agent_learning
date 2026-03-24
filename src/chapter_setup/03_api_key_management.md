@@ -2,6 +2,8 @@
 
 API Key 是访问 LLM 服务的凭证，一旦泄露可能导致严重的费用损失。本节讲解如何安全地管理 API Key。
 
+![API Key 安全管理最佳实践](../svg/chapter_setup_03_api_key.svg)
+
 ## 绝对不要这样做
 
 ```python

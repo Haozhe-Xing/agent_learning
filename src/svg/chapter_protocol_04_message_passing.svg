@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="mp" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3498db"/>
+    </marker>
+  </defs>
+  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 间消息传递与状态共享架构</text>
+
+  <!-- 三种模式 -->
+  <!-- 模式1：直接消息 -->
+  <rect x="20" y="55" width="245" height="175" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="142" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">直接消息传递</text>
+  
+  <rect x="50" y="95" width="70" height="30" rx="5" fill="#3498db" opacity="0.3"/>
+  <text x="85" y="115" text-anchor="middle" font-size="11" fill="#2c3e50">Agent A</text>
+  <rect x="170" y="95" width="70" height="30" rx="5" fill="#3498db" opacity="0.3"/>
+  <text x="205" y="115" text-anchor="middle" font-size="11" fill="#2c3e50">Agent B</text>
+  <line x1="120" y1="110" x2="167" y2="110" stroke="#3498db" stroke-width="1.5" marker-end="url(#mp)"/>
+
+  <text x="35" y="148" font-size="11" fill="#444">• 点对点通信</text>
+  <text x="35" y="166" font-size="11" fill="#444">• 低延迟、高效率</text>
+  <text x="35" y="184" font-size="11" fill="#444">• 适合两两协作</text>
+  <text x="35" y="202" font-size="11" fill="#27ae60">✓ 简单直接</text>
+  <text x="35" y="220" font-size="11" fill="#e74c3c">✗ 扩展性差</text>
+
+  <!-- 模式2：消息总线 -->
+  <rect x="278" y="55" width="245" height="175" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">消息总线 / 事件驱动</text>
+  
+  <rect x="370" y="92" width="60" height="22" rx="4" fill="#e67e22" opacity="0.35"/>
+  <text x="400" y="108" text-anchor="middle" font-size="10" fill="#2c3e50">Event Bus</text>
+  <rect x="300" y="120" width="55" height="20" rx="4" fill="#e67e22" opacity="0.2"/>
+  <text x="327" y="135" text-anchor="middle" font-size="9" fill="#444">Agent 1</text>
+  <rect x="373" y="120" width="55" height="20" rx="4" fill="#e67e22" opacity="0.2"/>
+  <text x="400" y="135" text-anchor="middle" font-size="9" fill="#444">Agent 2</text>
+  <rect x="446" y="120" width="55" height="20" rx="4" fill="#e67e22" opacity="0.2"/>
+  <text x="473" y="135" text-anchor="middle" font-size="9" fill="#444">Agent 3</text>
+
+  <text x="293" y="156" font-size="11" fill="#444">• 发布/订阅模式</text>
+  <text x="293" y="174" font-size="11" fill="#444">• 解耦通信双方</text>
+  <text x="293" y="192" font-size="11" fill="#444">• 适合多 Agent 协作</text>
+  <text x="293" y="210" font-size="11" fill="#27ae60">✓ 高扩展性</text>
+  <text x="293" y="228" font-size="11" fill="#e74c3c">✗ 增加复杂度</text>
+
+  <!-- 模式3：共享状态 -->
+  <rect x="536" y="55" width="244" height="175" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="658" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#8e44ad">共享状态 (State Store)</text>
+  
+  <rect x="618" y="92" width="80" height="22" rx="4" fill="#8e44ad" opacity="0.3"/>
+  <text x="658" y="108" text-anchor="middle" font-size="10" fill="#2c3e50">Shared State</text>
+  <rect x="558" y="120" width="50" height="20" rx="4" fill="#8e44ad" opacity="0.2"/>
+  <text x="583" y="135" text-anchor="middle" font-size="9" fill="#444">读写</text>
+  <rect x="633" y="120" width="50" height="20" rx="4" fill="#8e44ad" opacity="0.2"/>
+  <text x="658" y="135" text-anchor="middle" font-size="9" fill="#444">读写</text>
+  <rect x="708" y="120" width="50" height="20" rx="4" fill="#8e44ad" opacity="0.2"/>
+  <text x="733" y="135" text-anchor="middle" font-size="9" fill="#444">读写</text>
+
+  <text x="549" y="156" font-size="11" fill="#444">• 类似黑板模式</text>
+  <text x="549" y="174" font-size="11" fill="#444">• 全局状态可见</text>
+  <text x="549" y="192" font-size="11" fill="#444">• LangGraph State 模式</text>
+  <text x="549" y="210" font-size="11" fill="#27ae60">✓ 状态一致性</text>
+  <text x="549" y="228" font-size="11" fill="#e74c3c">✗ 并发控制难</text>
+
+  <!-- MCP 集成要点 -->
+  <rect x="20" y="245" width="760" height="100" rx="8" fill="#2980b9" opacity="0.08" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="400" y="270" text-anchor="middle" font-size="14" font-weight="bold" fill="#2980b9">MCP 工具服务器集成要点</text>
+  
+  <text x="160" y="295" text-anchor="middle" font-size="12" fill="#444">🔧 Server 端</text>
+  <text x="160" y="315" text-anchor="middle" font-size="11" fill="#666">标准化工具定义</text>
+  <text x="160" y="332" text-anchor="middle" font-size="11" fill="#666">stdio/SSE 传输</text>
+
+  <text x="400" y="295" text-anchor="middle" font-size="12" fill="#444">🔌 Client 端</text>
+  <text x="400" y="315" text-anchor="middle" font-size="11" fill="#666">自动发现工具</text>
+  <text x="400" y="332" text-anchor="middle" font-size="11" fill="#666">Session 生命周期管理</text>
+
+  <text x="640" y="295" text-anchor="middle" font-size="12" fill="#444">🤖 Agent 端</text>
+  <text x="640" y="315" text-anchor="middle" font-size="11" fill="#666">BaseTool 适配器桥接</text>
+  <text x="640" y="332" text-anchor="middle" font-size="11" fill="#666">框架无关调用</text>
+</svg>

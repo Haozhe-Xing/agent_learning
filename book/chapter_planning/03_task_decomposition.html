@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -453,6 +452,7 @@
 <blockquote>
 <p>📄 <strong>学术背景</strong>：任务分解的思想在 AI 规划领域有悠久的历史（如层次任务网络 HTN），但将其与 LLM 结合是近年的研究热点。<em>"Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning"</em>（Wang et al., 2023）是该方向的代表性工作，它提出让 LLM 先制定计划（"Let's first understand the problem and devise a plan"），再逐步执行每个子任务，在 GSM8K 等数学推理基准上比标准 Zero-shot CoT 提升了 5-6 个百分点。</p>
 </blockquote>
+<p><img src="../svg/chapter_planning_03_decomposition.svg" alt="Plan-and-Execute 任务分解模式" /></p>
 <h2 id="plan-and-execute-模式"><a class="header" href="#plan-and-execute-模式">Plan-and-Execute 模式</a></h2>
 <pre><code class="language-python">from openai import OpenAI
 import json

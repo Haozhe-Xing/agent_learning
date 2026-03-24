@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="300" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 开发 FAQ 问题分类</text>
+
+  <!-- 四个分类 -->
+  <rect x="20" y="55" width="185" height="115" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="112" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">🌱 基础问题</text>
+  <text x="32" y="100" font-size="11" fill="#444">• Agent vs ChatGPT</text>
+  <text x="32" y="118" font-size="11" fill="#444">• OpenAI vs 开源</text>
+  <text x="32" y="136" font-size="11" fill="#444">• GPU 需求</text>
+  <text x="32" y="154" font-size="11" fill="#444">• 学习路径规划</text>
+
+  <rect x="215" y="55" width="185" height="115" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="307" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">🔧 技术问题</text>
+  <text x="227" y="100" font-size="11" fill="#444">• API 超时处理</text>
+  <text x="227" y="118" font-size="11" fill="#444">• Token 限制优化</text>
+  <text x="227" y="136" font-size="11" fill="#444">• 多轮对话管理</text>
+  <text x="227" y="154" font-size="11" fill="#444">• 工具调用失败</text>
+
+  <rect x="410" y="55" width="185" height="115" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="502" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">🏗 架构问题</text>
+  <text x="422" y="100" font-size="11" fill="#444">• 框架选型</text>
+  <text x="422" y="118" font-size="11" fill="#444">• 单 vs 多 Agent</text>
+  <text x="422" y="136" font-size="11" fill="#444">• RAG vs 微调</text>
+  <text x="422" y="154" font-size="11" fill="#444">• 部署策略</text>
+
+  <rect x="605" y="55" width="175" height="115" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="692" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">🚀 进阶问题</text>
+  <text x="617" y="100" font-size="11" fill="#444">• 生产级可靠性</text>
+  <text x="617" y="118" font-size="11" fill="#444">• 成本优化</text>
+  <text x="617" y="136" font-size="11" fill="#444">• 安全合规</text>
+  <text x="617" y="154" font-size="11" fill="#444">• 评估体系</text>
+
+  <!-- 常见错误 Top 5 -->
+  <rect x="20" y="185" width="760" height="100" rx="8" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="400" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">⚠️ 新手 Top 5 常见错误</text>
+  
+  <text x="100" y="238" text-anchor="middle" font-size="11" fill="#555">① 硬编码</text>
+  <text x="100" y="256" text-anchor="middle" font-size="11" fill="#555">API Key</text>
+
+  <text x="260" y="238" text-anchor="middle" font-size="11" fill="#555">② 忽略</text>
+  <text x="260" y="256" text-anchor="middle" font-size="11" fill="#555">错误处理</text>
+
+  <text x="400" y="238" text-anchor="middle" font-size="11" fill="#555">③ Prompt</text>
+  <text x="400" y="256" text-anchor="middle" font-size="11" fill="#555">过度复杂</text>
+
+  <text x="540" y="238" text-anchor="middle" font-size="11" fill="#555">④ 不限制</text>
+  <text x="540" y="256" text-anchor="middle" font-size="11" fill="#555">Agent 行为</text>
+
+  <text x="680" y="238" text-anchor="middle" font-size="11" fill="#555">⑤ 跳过</text>
+  <text x="680" y="256" text-anchor="middle" font-size="11" fill="#555">评估环节</text>
+</svg>

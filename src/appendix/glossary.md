@@ -2,6 +2,8 @@
 
 > 按字母顺序排列的 Agent 开发核心术语。
 
+![Agent 核心术语关系图](../svg/appendix_glossary.svg)
+
 ---
 
 | 术语 | 英文 | 定义 |

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/></marker>
+  </defs>
+  <rect width="800" height="400" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">混合检索 + 重排序 + 查询扩展 三大优化策略</text>
+
+  <!-- 用户查询 -->
+  <rect x="340" y="48" width="120" height="35" rx="8" fill="#2c3e50"/>
+  <text x="400" y="70" text-anchor="middle" font-size="11" fill="white" font-weight="bold">❓ 用户查询</text>
+
+  <!-- 策略1：混合检索 -->
+  <rect x="20" y="110" width="240" height="240" rx="10" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="2"/>
+  <text x="140" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">策略1：混合检索</text>
+
+  <rect x="35" y="145" width="100" height="45" rx="6" fill="#3498db" opacity="0.2" stroke="#3498db" stroke-width="1"/>
+  <text x="85" y="164" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">🧠 向量检索</text>
+  <text x="85" y="180" text-anchor="middle" font-size="8" fill="#555">语义相似度</text>
+
+  <rect x="145" y="145" width="100" height="45" rx="6" fill="#e67e22" opacity="0.2" stroke="#e67e22" stroke-width="1"/>
+  <text x="195" y="164" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">🔤 BM25</text>
+  <text x="195" y="180" text-anchor="middle" font-size="8" fill="#555">关键词匹配</text>
+
+  <text x="140" y="210" text-anchor="middle" font-size="10" fill="#555">权重融合（默认 0.7:0.3）</text>
+  <rect x="55" y="222" width="170" height="25" rx="4" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="140" y="239" text-anchor="middle" font-size="9" fill="#555">Reciprocal Rank Fusion</text>
+  <text x="140" y="262" text-anchor="middle" font-size="9" fill="#27ae60">✅ 语义+精确互补</text>
+  <text x="140" y="278" text-anchor="middle" font-size="9" fill="#27ae60">✅ 召回率大幅提升</text>
+
+  <line x1="370" y1="83" x2="140" y2="110" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#a3)"/>
+
+  <!-- 策略2：重排序 -->
+  <rect x="280" y="110" width="240" height="240" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">策略2：重排序</text>
+
+  <rect x="295" y="148" width="210" height="30" rx="5" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="400" y="168" text-anchor="middle" font-size="9" fill="#555">初步检索 Top-20 候选文档</text>
+  <text x="400" y="195" text-anchor="middle" font-size="16" fill="#27ae60">↓</text>
+  <rect x="295" y="205" width="210" height="40" rx="5" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="1"/>
+  <text x="400" y="222" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">🤖 LLM 精排</text>
+  <text x="400" y="237" text-anchor="middle" font-size="8" fill="#555">"query与doc相关度 1-10"</text>
+  <text x="400" y="258" text-anchor="middle" font-size="16" fill="#27ae60">↓</text>
+  <rect x="295" y="265" width="210" height="30" rx="5" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="400" y="285" text-anchor="middle" font-size="9" fill="#555">精排后 Top-5 高质量文档</text>
+  <text x="400" y="310" text-anchor="middle" font-size="9" fill="#27ae60">✅ 精确度显著提升</text>
+  <text x="400" y="326" text-anchor="middle" font-size="9" fill="#e74c3c">⚠️ 增加 LLM 调用成本</text>
+
+  <line x1="400" y1="83" x2="400" y2="110" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#a3)"/>
+
+  <!-- 策略3：查询扩展 -->
+  <rect x="540" y="110" width="240" height="240" rx="10" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2"/>
+  <text x="660" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">策略3：查询扩展</text>
+
+  <rect x="560" y="150" width="200" height="28" rx="4" fill="white" stroke="#8e44ad" stroke-width="1"/>
+  <text x="660" y="169" text-anchor="middle" font-size="9" fill="#555">原始查询："Error 404 怎么解决"</text>
+  <text x="660" y="195" text-anchor="middle" font-size="14" fill="#8e44ad">↓ LLM 改写</text>
+  <rect x="560" y="208" width="200" height="20" rx="3" fill="#8e44ad" opacity="0.1"/>
+  <text x="660" y="222" text-anchor="middle" font-size="8" fill="#555">"HTTP 404 Not Found 错误排查"</text>
+  <rect x="560" y="232" width="200" height="20" rx="3" fill="#8e44ad" opacity="0.1"/>
+  <text x="660" y="246" text-anchor="middle" font-size="8" fill="#555">"网页找不到 404 修复方法"</text>
+  <rect x="560" y="256" width="200" height="20" rx="3" fill="#8e44ad" opacity="0.1"/>
+  <text x="660" y="270" text-anchor="middle" font-size="8" fill="#555">"Web server 返回 404 解决方案"</text>
+  <text x="660" y="298" text-anchor="middle" font-size="9" fill="#27ae60">✅ 多角度提升召回率</text>
+  <text x="660" y="314" text-anchor="middle" font-size="9" fill="#e74c3c">⚠️ 增加检索次数</text>
+
+  <line x1="430" y1="83" x2="660" y2="110" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#a3)"/>
+
+  <!-- 底部 -->
+  <text x="400" y="380" text-anchor="middle" font-size="11" fill="#95a5a6">三种策略可叠加使用：查询扩展(召回) → 混合检索(互补) → 重排序(精排)</text>
+</svg>

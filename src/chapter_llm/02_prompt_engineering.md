@@ -2,6 +2,8 @@
 
 如果说 LLM 是一台功能强大的机器，那么 Prompt Engineering（提示词工程）就是操作这台机器的技术。好的 Prompt 能让模型发挥出惊人的能力，糟糕的 Prompt 则可能让同一个模型产生令人沮丧的输出。
 
+![Prompt Engineering 消息结构与角色分工](../svg/chapter_llm_02_prompt_eng.svg)
+
 ## 什么是 Prompt Engineering？
 
 Prompt Engineering 是指**通过精心设计输入文本（Prompt），引导 LLM 产生期望输出的技术**。

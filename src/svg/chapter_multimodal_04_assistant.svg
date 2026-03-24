@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="340" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">多模态个人助理架构</text>
+
+  <!-- 三种输入 -->
+  <rect x="30" y="60" width="180" height="50" rx="8" fill="#3498db" opacity="0.9"/>
+  <text x="120" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">📝 文本输入</text>
+  <text x="120" y="100" text-anchor="middle" font-size="9" fill="#d4e6f1">自然语言问答</text>
+
+  <rect x="230" y="60" width="180" height="50" rx="8" fill="#8e44ad" opacity="0.9"/>
+  <text x="320" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🖼 图像输入</text>
+  <text x="320" y="100" text-anchor="middle" font-size="9" fill="#d2b4de">照片/截图/文档</text>
+
+  <rect x="430" y="60" width="180" height="50" rx="8" fill="#27ae60" opacity="0.9"/>
+  <text x="520" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🎤 语音输入</text>
+  <text x="520" y="100" text-anchor="middle" font-size="9" fill="#d5f5e3">说话 → STT 转文字</text>
+
+  <!-- 统一接口 -->
+  <rect x="100" y="130" width="520" height="40" rx="8" fill="#2c3e50"/>
+  <text x="360" y="155" text-anchor="middle" font-size="13" fill="white" font-weight="bold">🔀 多模态路由器 — 统一输入归一化</text>
+
+  <!-- 核心 Agent -->
+  <rect x="200" y="190" width="400" height="50" rx="10" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">🧠 核心推理 Agent（GPT-4o 多模态）</text>
+  <text x="400" y="233" text-anchor="middle" font-size="10" fill="#555">统一处理文本+图像，调用工具完成任务</text>
+
+  <!-- 工具 -->
+  <rect x="30" y="260" width="140" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="100" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">VisionTool</text>
+  <text x="100" y="300" text-anchor="middle" font-size="9" fill="#555">图像分析、OCR</text>
+
+  <rect x="185" y="260" width="140" height="55" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="255" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e44ad">ImageGenTool</text>
+  <text x="255" y="300" text-anchor="middle" font-size="9" fill="#555">DALL-E 图像生成</text>
+
+  <rect x="340" y="260" width="140" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="410" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">VoiceTool</text>
+  <text x="410" y="300" text-anchor="middle" font-size="9" fill="#555">TTS 语音合成</text>
+
+  <rect x="495" y="260" width="140" height="55" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="565" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">SearchTool</text>
+  <text x="565" y="300" text-anchor="middle" font-size="9" fill="#555">联网搜索信息</text>
+
+  <rect x="650" y="260" width="120" height="55" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="710" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">CalcTool</text>
+  <text x="710" y="300" text-anchor="middle" font-size="9" fill="#555">数学计算</text>
+</svg>

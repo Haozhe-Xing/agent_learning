@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="a5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/></marker>
+  </defs>
+  <rect width="800" height="400" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">三种反思框架对比：Reflexion / Self-Refine / CRITIC</text>
+
+  <!-- Reflexion -->
+  <rect x="20" y="50" width="240" height="310" rx="10" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="2"/>
+  <text x="140" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">🔄 Reflexion</text>
+  <text x="140" y="92" text-anchor="middle" font-size="9" fill="#7f8c8d">语言强化学习</text>
+
+  <rect x="70" y="105" width="140" height="28" rx="5" fill="#3498db"/><text x="140" y="123" text-anchor="middle" font-size="10" fill="white">执行任务</text>
+  <text x="140" y="148" text-anchor="middle" font-size="14" fill="#3498db">↓</text>
+  <rect x="70" y="155" width="140" height="28" rx="5" fill="#e74c3c" opacity="0.8"/><text x="140" y="173" text-anchor="middle" font-size="10" fill="white">❌ 任务失败</text>
+  <text x="140" y="198" text-anchor="middle" font-size="14" fill="#3498db">↓</text>
+  <rect x="45" y="205" width="190" height="35" rx="5" fill="#3498db" opacity="0.2" stroke="#3498db" stroke-width="1"/>
+  <text x="140" y="220" text-anchor="middle" font-size="10" fill="#3498db" font-weight="bold">📝 写反思笔记</text>
+  <text x="140" y="234" text-anchor="middle" font-size="8" fill="#555">存入长期记忆</text>
+  <text x="140" y="258" text-anchor="middle" font-size="14" fill="#3498db">↓</text>
+  <rect x="45" y="265" width="190" height="28" rx="5" fill="#27ae60" opacity="0.2" stroke="#27ae60" stroke-width="1"/>
+  <text x="140" y="283" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">🔁 重试（含反思经验）</text>
+  <text x="140" y="310" text-anchor="middle" font-size="9" fill="#27ae60">HumanEval: 80% → 91%</text>
+  <text x="140" y="330" text-anchor="middle" font-size="9" fill="#555">✨ 不更新模型权重</text>
+  <text x="140" y="345" text-anchor="middle" font-size="9" fill="#555">✨ 经验可跨任务复用</text>
+
+  <!-- Self-Refine -->
+  <rect x="280" y="50" width="240" height="310" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">🔍 Self-Refine</text>
+  <text x="400" y="92" text-anchor="middle" font-size="9" fill="#7f8c8d">同一LLM自我迭代</text>
+
+  <rect x="330" y="105" width="140" height="28" rx="5" fill="#27ae60"/><text x="400" y="123" text-anchor="middle" font-size="10" fill="white">🖊 生成初稿</text>
+  <text x="400" y="148" text-anchor="middle" font-size="14" fill="#27ae60">↓</text>
+  <rect x="330" y="155" width="140" height="28" rx="5" fill="#e67e22"/><text x="400" y="173" text-anchor="middle" font-size="10" fill="white">🔎 自我批评</text>
+  <text x="400" y="198" text-anchor="middle" font-size="14" fill="#27ae60">↓</text>
+  <rect x="330" y="205" width="140" height="28" rx="5" fill="#27ae60" opacity="0.6"/><text x="400" y="223" text-anchor="middle" font-size="10" fill="white">✏️ 根据批评修改</text>
+  <text x="400" y="248" text-anchor="middle" font-size="14" fill="#27ae60">↓</text>
+  <rect x="310" y="255" width="180" height="28" rx="5" fill="#27ae60" opacity="0.2" stroke="#27ae60" stroke-width="1"/>
+  <text x="400" y="273" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">🔁 循环直到满意</text>
+  <text x="400" y="300" text-anchor="middle" font-size="9" fill="#27ae60">平均提升约 20%</text>
+  <text x="400" y="320" text-anchor="middle" font-size="9" fill="#555">✨ 最简洁的方案</text>
+  <text x="400" y="335" text-anchor="middle" font-size="9" fill="#555">✨ 同一模型双角色</text>
+
+  <!-- CRITIC -->
+  <rect x="540" y="50" width="240" height="310" rx="10" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2"/>
+  <text x="660" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">🔧 CRITIC</text>
+  <text x="660" y="92" text-anchor="middle" font-size="9" fill="#7f8c8d">工具辅助验证</text>
+
+  <rect x="590" y="105" width="140" height="28" rx="5" fill="#8e44ad"/><text x="660" y="123" text-anchor="middle" font-size="10" fill="white">🖊 生成输出</text>
+  <text x="660" y="148" text-anchor="middle" font-size="14" fill="#8e44ad">↓</text>
+  <rect x="590" y="155" width="140" height="28" rx="5" fill="#e67e22"/><text x="660" y="173" text-anchor="middle" font-size="10" fill="white">🔎 自我批评</text>
+  <text x="660" y="198" text-anchor="middle" font-size="14" fill="#8e44ad">↓</text>
+  <rect x="565" y="205" width="190" height="35" rx="5" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="1"/>
+  <text x="660" y="220" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">🛠 工具验证</text>
+  <text x="660" y="234" text-anchor="middle" font-size="8" fill="#555">运行测试 / 搜索核实</text>
+  <text x="660" y="258" text-anchor="middle" font-size="14" fill="#8e44ad">↓</text>
+  <rect x="565" y="265" width="190" height="28" rx="5" fill="#8e44ad" opacity="0.2" stroke="#8e44ad" stroke-width="1"/>
+  <text x="660" y="283" text-anchor="middle" font-size="10" fill="#8e44ad" font-weight="bold">🔁 根据工具反馈修正</text>
+  <text x="660" y="310" text-anchor="middle" font-size="9" fill="#27ae60">客观反馈更可靠</text>
+  <text x="660" y="330" text-anchor="middle" font-size="9" fill="#555">✨ 引入外部客观验证</text>
+  <text x="660" y="345" text-anchor="middle" font-size="9" fill="#555">✨ 适合代码/事实核查</text>
+
+  <!-- 底部 -->
+  <text x="400" y="385" text-anchor="middle" font-size="11" fill="#95a5a6">三种方案从"纯语言反思"到"工具辅助验证"逐步增强可靠性</text>
+</svg>

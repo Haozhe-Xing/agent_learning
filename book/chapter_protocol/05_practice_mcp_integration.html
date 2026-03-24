@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="实战基于-mcp-的完整工具集成"><a class="header" href="#实战基于-mcp-的完整工具集成">实战：基于 MCP 的完整工具集成</a></h1>
 <p>本节展示如何将自定义工具封装为 MCP 服务器，并在 LangChain Agent 中使用。</p>
+<p><img src="../svg/chapter_protocol_05_mcp_integration.svg" alt="MCP 工具集成架构" /></p>
 <p>MCP 的核心价值在于<strong>标准化和解耦</strong>：工具的实现（MCP Server）和工具的使用（MCP Client / Agent）完全分离。这意味着你可以用任何语言编写工具服务器，任何支持 MCP 协议的 Agent 框架都能直接使用这些工具，不需要为每个框架单独适配。</p>
 <p>下面的代码实现了三个关键组件：</p>
 <ol>

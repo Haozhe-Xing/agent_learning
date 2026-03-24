@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -451,6 +450,7 @@
 <h1 id="自定义工具的设计与实现"><a class="header" href="#自定义工具的设计与实现">自定义工具的设计与实现</a></h1>
 <p>好的工具设计是 Agent 成功的关键。如果说 LLM 是 Agent 的"大脑"，那么工具就是它的"手脚"——大脑再聪明，手脚笨拙也做不好事情。</p>
 <p>在实际开发中，很多 Agent 表现不佳的根本原因并非模型能力不足，而是工具设计存在问题：工具描述模糊导致模型选错工具、缺少输入验证导致工具崩溃、错误信息不清晰导致模型无法自我纠错。本节从实践角度，系统讲解如何设计出高质量、可靠的 Agent 工具。</p>
+<p><img src="../svg/chapter_tools_03_design.svg" alt="工具设计五维最佳实践" /></p>
 <h2 id="工具设计原则"><a class="header" href="#工具设计原则">工具设计原则</a></h2>
 <p><strong>单一职责</strong>：每个工具只做一件事，做好这一件事。</p>
 <p>这并不只是一个软件工程的教条——它对 Agent 的表现有直接影响。一个"大而全"的工具会让模型困惑："我到底应该传哪些参数？这个工具到底能做什么？" 而多个职责清晰的小工具，模型可以根据任务自由组合，灵活性反而更强。</p>

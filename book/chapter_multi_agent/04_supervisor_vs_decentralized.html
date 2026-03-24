@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -451,6 +450,7 @@
 <h1 id="supervisor-模式-vs-去中心化模式"><a class="header" href="#supervisor-模式-vs-去中心化模式">Supervisor 模式 vs. 去中心化模式</a></h1>
 <p>多 Agent 系统有一个根本性的架构决策：<strong>谁来协调？</strong> 是设置一个"项目经理"统一调度所有 Agent（Supervisor 模式），还是让 Agent 之间自由协商（去中心化模式）？</p>
 <p>这两种模式各有优劣，大多数实际项目会选择 Supervisor 模式，因为它更容易控制和调试。本节通过完整的代码示例对比两种方案。</p>
+<p><img src="../svg/chapter_multi_agent_04_supervisor.svg" alt="Supervisor模式vs去中心化模式" /></p>
 <h2 id="supervisor中心化模式"><a class="header" href="#supervisor中心化模式">Supervisor（中心化）模式</a></h2>
 <p>Supervisor 模式的工作方式类似于项目管理：一个 Supervisor Agent 负责分析任务、分配子任务、监控进度、汇总结果。所有的决策都通过 Supervisor 来协调。</p>
 <p>下面的示例构建了一个"内容创作团队"——Supervisor 协调研究员、写作员和审查员三个子 Agent：</p>

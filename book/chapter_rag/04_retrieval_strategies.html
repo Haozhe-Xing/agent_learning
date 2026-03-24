@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -460,6 +459,7 @@
 </li>
 </ol>
 <p>针对这些问题，业界发展出了三种主要的优化策略：<strong>混合检索</strong>（结合向量和关键词）、<strong>重排序</strong>（用 LLM 对初步结果二次排序）和<strong>查询扩展</strong>（将一个查询拓展为多个变体）。</p>
+<p><img src="../svg/chapter_rag_04_retrieval.svg" alt="三种检索优化策略对比" /></p>
 <h2 id="混合检索向量--关键词"><a class="header" href="#混合检索向量--关键词">混合检索：向量 + 关键词</a></h2>
 <p>混合检索的核心思想是"两条腿走路"：用向量检索捕捉语义相似性，用 BM25 关键词检索保证精确匹配，然后将两种检索的结果按权重融合。</p>
 <p>BM25 是一个经典的信息检索算法，基于词频（TF）和逆文档频率（IDF）来评估文档与查询的相关性。它对精确关键词匹配非常有效，但不理解同义词和语义关系。</p>

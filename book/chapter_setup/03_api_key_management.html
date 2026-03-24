@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="api-key-管理与安全最佳实践"><a class="header" href="#api-key-管理与安全最佳实践">API Key 管理与安全最佳实践</a></h1>
 <p>API Key 是访问 LLM 服务的凭证，一旦泄露可能导致严重的费用损失。本节讲解如何安全地管理 API Key。</p>
+<p><img src="../svg/chapter_setup_03_api_key.svg" alt="API Key 安全管理最佳实践" /></p>
 <h2 id="绝对不要这样做"><a class="header" href="#绝对不要这样做">绝对不要这样做</a></h2>
 <pre><code class="language-python"># ❌ 永远不要这样做！
 client = OpenAI(api_key="sk-proj-abc123xyz...")  # 硬编码在代码里

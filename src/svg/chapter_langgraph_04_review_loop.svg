@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <marker id="arr-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-grn-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arr-red-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arr-org-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e67e22"/>
+    </marker>
+    <filter id="sh-lg04">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
+
+  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">条件路由与循环控制 — 代码审查 Agent 示例</text>
+
+  <!-- ===== START ===== -->
+  <circle cx="80" cy="180" r="24" fill="#2c3e50" filter="url(#sh-lg04)"/>
+  <text x="80" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">▶</text>
+  <text x="80" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">START</text>
+
+  <line x1="104" y1="180" x2="150" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg04)"/>
+
+  <!-- ===== 分析节点 ===== -->
+  <rect x="152" y="148" width="140" height="64" rx="10" fill="#3498db" filter="url(#sh-lg04)"/>
+  <text x="222" y="172" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🔍 分析代码</text>
+  <text x="222" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4e6f9">analyze_code()</text>
+  <text x="222" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0d4f1">LLM 审查代码质量</text>
+
+  <line x1="292" y1="180" x2="340" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg04)"/>
+
+  <!-- ===== 条件判断 ===== -->
+  <polygon points="400,140 460,180 400,220 340,180" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#sh-lg04)"/>
+  <text x="400" y="175" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="white">审查</text>
+  <text x="400" y="188" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">结果？</text>
+
+  <!-- ===== 分支1：通过 → END ===== -->
+  <line x1="460" y1="180" x2="620" y2="180" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-grn-lg04)"/>
+  <text x="540" y="172" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#27ae60">✅ approved = True</text>
+
+  <circle cx="650" cy="180" r="24" fill="#27ae60" filter="url(#sh-lg04)"/>
+  <text x="650" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">✓</text>
+  <text x="650" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">END</text>
+  <text x="650" y="216" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">代码通过审查</text>
+
+  <!-- ===== 分支2：有问题 → 修复 ===== -->
+  <line x1="400" y1="220" x2="400" y2="272" stroke="#e67e22" stroke-width="2" marker-end="url(#arr-org-lg04)"/>
+  <text x="445" y="244" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e67e22">🔧 有问题</text>
+  <text x="445" y="258" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">且未超限</text>
+
+  <rect x="330" y="274" width="140" height="60" rx="10" fill="#9b59b6" filter="url(#sh-lg04)"/>
+  <text x="400" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🔧 修复代码</text>
+  <text x="400" y="316" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8d5f5">fix_code()</text>
+  <text x="400" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d5b8e8">LLM 修复发现的问题</text>
+
+  <!-- ===== 循环箭头 修复 → 分析 ===== -->
+  <path d="M330,304 Q200,304 200,242 L200,212" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-lg04)"/>
+  <text x="232" y="270" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#3498db">🔁 重新审查</text>
+
+  <!-- ===== 分支3：超限 → END ===== -->
+  <line x1="400" y1="140" x2="400" y2="90" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-red-lg04)"/>
+  <text x="455" y="110" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e74c3c">⚠️ 超过最大迭代</text>
+
+  <circle cx="400" cy="68" r="22" fill="#e74c3c" filter="url(#sh-lg04)"/>
+  <text x="400" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">⏹</text>
+  <text x="400" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">END</text>
+
+  <!-- ===== 底部说明 ===== -->
+  <rect x="50" y="362" width="700" height="46" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
+  <text x="400" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#2c3e50">条件路由关键点</text>
+  <text x="145" y="398" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">📌 条件函数返回字符串标识路由</text>
+  <text x="400" y="398" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">📌 循环通过条件边回到之前节点</text>
+  <text x="655" y="398" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">📌 必须设置 max_iterations 防死循环</text>
+
+  <!-- 迭代计数器标注 -->
+  <rect x="610" y="275" width="130" height="55" rx="6" fill="#f39c12" opacity="0.08" stroke="#f39c12" stroke-width="1"/>
+  <text x="675" y="292" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">迭代计数器</text>
+  <text x="675" y="308" text-anchor="middle" font-family="Courier New, monospace" font-size="9" fill="#e67e22">iteration += 1</text>
+  <text x="675" y="322" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">每轮审查自增</text>
+</svg>

@@ -16,6 +16,8 @@
 
 对于 Agent 服务，FastAPI 的异步支持和流式响应是关键优势。
 
+![Agent API服务分层架构](../svg/chapter_deployment_02_api_arch.svg)
+
 ---
 
 ## 基础 API 框架

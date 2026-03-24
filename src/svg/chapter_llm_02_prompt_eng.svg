@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="pa" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3498db"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Prompt Engineering：消息结构与角色分工</text>
+
+  <!-- 三角色消息 -->
+  <rect x="30" y="60" width="235" height="140" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="147" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">🎭 System 消息</text>
+  <text x="147" y="108" text-anchor="middle" font-size="11" fill="#555">设定 Agent 身份和行为规则</text>
+  <rect x="50" y="120" width="195" height="65" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="147" y="140" text-anchor="middle" font-size="10" fill="#c0392b" font-style="italic">"你是一位资深数据分析师，</text>
+  <text x="147" y="156" text-anchor="middle" font-size="10" fill="#c0392b" font-style="italic">擅长用通俗语言解释复杂概念。</text>
+  <text x="147" y="172" text-anchor="middle" font-size="10" fill="#c0392b" font-style="italic">请始终提供数据来源。"</text>
+
+  <rect x="283" y="60" width="235" height="140" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">👤 User 消息</text>
+  <text x="400" y="108" text-anchor="middle" font-size="11" fill="#555">用户的输入和问题</text>
+  <rect x="303" y="120" width="195" height="65" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="400" y="140" text-anchor="middle" font-size="10" fill="#2980b9" font-style="italic">"帮我分析过去三个月的</text>
+  <text x="400" y="156" text-anchor="middle" font-size="10" fill="#2980b9" font-style="italic">用户增长趋势，</text>
+  <text x="400" y="172" text-anchor="middle" font-size="10" fill="#2980b9" font-style="italic">找出关键转折点。"</text>
+
+  <rect x="536" y="60" width="235" height="140" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="653" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🤖 Assistant 消息</text>
+  <text x="653" y="108" text-anchor="middle" font-size="11" fill="#555">模型的回复（也用于Few-shot）</text>
+  <rect x="556" y="120" width="195" height="65" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="653" y="140" text-anchor="middle" font-size="10" fill="#27ae60" font-style="italic">"根据数据分析，</text>
+  <text x="653" y="156" text-anchor="middle" font-size="10" fill="#27ae60" font-style="italic">2月15日用户增长出现拐点，</text>
+  <text x="653" y="172" text-anchor="middle" font-size="10" fill="#27ae60" font-style="italic">主因是营销活动上线…"</text>
+
+  <!-- 消息流 -->
+  <line x1="265" y1="130" x2="281" y2="130" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#pa)"/>
+  <line x1="518" y1="130" x2="534" y2="130" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#pa)"/>
+
+  <!-- Prompt Engineering 技巧 -->
+  <text x="400" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">核心 Prompt 技巧</text>
+
+  <rect x="30" y="245" width="175" height="115" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="117" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">角色设定</text>
+  <text x="117" y="290" text-anchor="middle" font-size="10" fill="#555">定义专业身份</text>
+  <text x="117" y="307" text-anchor="middle" font-size="10" fill="#555">设定输出风格</text>
+  <text x="117" y="324" text-anchor="middle" font-size="10" fill="#555">限制回答范围</text>
+  <text x="117" y="348" text-anchor="middle" font-size="9" fill="#888">影响力：★★★★★</text>
+
+  <rect x="220" y="245" width="175" height="115" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="307" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">指令清晰度</text>
+  <text x="307" y="290" text-anchor="middle" font-size="10" fill="#555">明确任务目标</text>
+  <text x="307" y="307" text-anchor="middle" font-size="10" fill="#555">指定输出格式</text>
+  <text x="307" y="324" text-anchor="middle" font-size="10" fill="#555">给出约束条件</text>
+  <text x="307" y="348" text-anchor="middle" font-size="9" fill="#888">影响力：★★★★★</text>
+
+  <rect x="410" y="245" width="175" height="115" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="497" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">上下文注入</text>
+  <text x="497" y="290" text-anchor="middle" font-size="10" fill="#555">提供背景信息</text>
+  <text x="497" y="307" text-anchor="middle" font-size="10" fill="#555">Few-shot 示例</text>
+  <text x="497" y="324" text-anchor="middle" font-size="10" fill="#555">参考文档片段</text>
+  <text x="497" y="348" text-anchor="middle" font-size="9" fill="#888">影响力：★★★★</text>
+
+  <rect x="600" y="245" width="175" height="115" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="687" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">输出控制</text>
+  <text x="687" y="290" text-anchor="middle" font-size="10" fill="#555">JSON / Markdown</text>
+  <text x="687" y="307" text-anchor="middle" font-size="10" fill="#555">字数限制</text>
+  <text x="687" y="324" text-anchor="middle" font-size="10" fill="#555">语言/语气要求</text>
+  <text x="687" y="348" text-anchor="middle" font-size="9" fill="#888">影响力：★★★</text>
+</svg>

@@ -2,6 +2,8 @@
 
 本节展示如何将自定义工具封装为 MCP 服务器，并在 LangChain Agent 中使用。
 
+![MCP 工具集成架构](../svg/chapter_protocol_05_mcp_integration.svg)
+
 MCP 的核心价值在于**标准化和解耦**：工具的实现（MCP Server）和工具的使用（MCP Client / Agent）完全分离。这意味着你可以用任何语言编写工具服务器，任何支持 MCP 协议的 Agent 框架都能直接使用这些工具，不需要为每个框架单独适配。
 
 下面的代码实现了三个关键组件：

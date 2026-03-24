@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="ar5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2980b9"/>
+    </marker>
+  </defs>
+  <rect width="800" height="420" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 行为对齐与边界控制</text>
+
+  <!-- 对齐目标 -->
+  <rect x="250" y="55" width="300" height="45" rx="22" fill="#2c3e50"/>
+  <text x="400" y="83" text-anchor="middle" font-size="14" fill="white" font-weight="bold">Agent 行为 = 用户意图 + 安全约束</text>
+
+  <!-- 三层控制 -->
+  <rect x="30" y="120" width="235" height="280" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="147" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">🚫 行为边界</text>
+
+  <rect x="50" y="160" width="195" height="30" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="147" y="180" text-anchor="middle" font-size="10" fill="#e74c3c">❌ 禁止区：绝对不做</text>
+  <text x="147" y="205" text-anchor="middle" font-size="10" fill="#555">删除系统文件</text>
+  <text x="147" y="220" text-anchor="middle" font-size="10" fill="#555">访问其他用户数据</text>
+  <text x="147" y="235" text-anchor="middle" font-size="10" fill="#555">修改安全配置</text>
+
+  <rect x="50" y="255" width="195" height="30" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
+  <text x="147" y="275" text-anchor="middle" font-size="10" fill="#e67e22">⚠️ 审批区：需人类确认</text>
+  <text x="147" y="300" text-anchor="middle" font-size="10" fill="#555">发送邮件/消息</text>
+  <text x="147" y="315" text-anchor="middle" font-size="10" fill="#555">执行数据库写操作</text>
+  <text x="147" y="330" text-anchor="middle" font-size="10" fill="#555">部署代码到生产环境</text>
+
+  <rect x="50" y="345" width="195" height="30" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="147" y="365" text-anchor="middle" font-size="10" fill="#27ae60">✅ 自主区：自由执行</text>
+  <text x="147" y="385" text-anchor="middle" font-size="10" fill="#555">读取文件、搜索信息、计算…</text>
+
+  <!-- 兜底机制 -->
+  <rect x="283" y="120" width="235" height="280" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🔄 兜底机制</text>
+
+  <rect x="303" y="165" width="195" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="400" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">最大步数限制</text>
+  <text x="400" y="205" text-anchor="middle" font-size="10" fill="#555">max_steps=20 防止无限循环</text>
+
+  <rect x="303" y="232" width="195" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="400" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">超时保护</text>
+  <text x="400" y="272" text-anchor="middle" font-size="10" fill="#555">timeout=300s 单步超时终止</text>
+
+  <rect x="303" y="299" width="195" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="400" y="319" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">预算控制</text>
+  <text x="400" y="339" text-anchor="middle" font-size="10" fill="#555">max_cost=$5.0 费用上限</text>
+
+  <rect x="303" y="366" width="195" height="28" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
+  <text x="400" y="385" text-anchor="middle" font-size="10" fill="#2980b9">优雅降级 → 返回部分结果</text>
+
+  <!-- 意图确认 -->
+  <rect x="536" y="120" width="235" height="280" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="653" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🎯 意图对齐</text>
+
+  <rect x="556" y="165" width="195" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="653" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">澄清模糊指令</text>
+  <text x="653" y="205" text-anchor="middle" font-size="10" fill="#555">"删除文件" → 确认哪些文件？</text>
+
+  <rect x="556" y="232" width="195" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="653" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">可逆性检查</text>
+  <text x="653" y="272" text-anchor="middle" font-size="10" fill="#555">不可逆操作 → 二次确认</text>
+
+  <rect x="556" y="299" width="195" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="653" y="319" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">影响范围评估</text>
+  <text x="653" y="339" text-anchor="middle" font-size="10" fill="#555">操作影响 N 条数据 → 告知</text>
+
+  <rect x="556" y="366" width="195" height="28" rx="6" fill="#e8f8e8" stroke="#27ae60" stroke-width="1"/>
+  <text x="653" y="385" text-anchor="middle" font-size="10" fill="#27ae60">拒绝不道德/有害请求</text>
+</svg>

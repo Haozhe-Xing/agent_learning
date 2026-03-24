@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="lcellangchain-表达式语言"><a class="header" href="#lcellangchain-表达式语言">LCEL：LangChain 表达式语言</a></h1>
 <p>LCEL（LangChain Expression Language）是 LangChain 的核心构建语言，用 <code>|</code> 符号将组件连接成处理管道，代码简洁且功能强大。</p>
+<p><img src="../svg/chapter_langchain_04_lcel.svg" alt="LCEL 管道架构：数据流与组合模式" /></p>
 <p>如果你用过 Unix 管道（<code>cat file.txt | grep "error" | wc -l</code>），LCEL 的思路完全相同：数据从左到右流过一系列处理组件，每个组件接收上一个的输出作为自己的输入。在 LLM 应用中，一个典型的管道是：<code>提示词模板 | LLM | 输出解析器</code>——模板填充变量生成完整提示，LLM 生成回复，解析器提取结构化结果。</p>
 <p>LCEL 的核心抽象是 <strong>Runnable 协议</strong>——所有组件都实现了统一的接口（<code>invoke</code>、<code>stream</code>、<code>batch</code> 等），因此任何组件都可以与其他组件自由组合。这种设计的好处是：你写好一条链之后，自动获得了流式输出、异步调用和批处理能力，不需要额外编码。</p>
 <h2 id="lcel-核心概念"><a class="header" href="#lcel-核心概念">LCEL 核心概念</a></h2>

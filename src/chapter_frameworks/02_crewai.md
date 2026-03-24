@@ -2,6 +2,8 @@
 
 CrewAI 是一个专为多 Agent 协作设计的框架，通过"角色扮演"让不同的 Agent 扮演不同的专业角色，共同完成复杂任务。自 2024 年推出以来，CrewAI 已发展为最受欢迎的多 Agent 框架之一，并在 2025 年引入了 **Flows** 等重要新特性。
 
+![CrewAI 核心架构：Agent-Task-Crew](../svg/chapter_frameworks_02_crewai.svg)
+
 ## CrewAI 核心概念
 
 CrewAI 围绕三个核心抽象构建：**Agent**（角色）、**Task**（任务）和 **Crew**（团队）。每个 Agent 都有明确的角色定位和目标，通过自然语言描述来定义其行为模式：

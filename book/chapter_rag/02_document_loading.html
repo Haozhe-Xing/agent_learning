@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -452,6 +451,7 @@
 <p>RAG 的第一步是将文档加载进来，并合理地分割成 Chunk。这一步看似简单，实际上是整个 RAG 管道中最容易被低估的环节——<strong>文本分割的质量直接影响检索效果，进而决定最终回答的质量。</strong></p>
 <p>一个直觉的理解：如果你把一本书按每 500 字机械地切成块，很可能会在句子中间、甚至在一个概念的解释中间切断。当用户提问时，检索到的可能是一段残缺不全的文字，LLM 自然也就无法给出好的回答。</p>
 <p>本节首先介绍多种文档格式的加载方案，然后重点讲解智能分割策略。</p>
+<p><img src="../svg/chapter_rag_02_doc_pipeline.svg" alt="文档加载与智能分割流水线" /></p>
 <h2 id="文档加载"><a class="header" href="#文档加载">文档加载</a></h2>
 <p>文档加载的核心挑战是<strong>格式多样性</strong>——PDF、Word、Markdown、网页，每种格式的内部结构完全不同。下面我们为每种常见格式实现一个加载函数，然后用一个统一的 <code>DocumentLoader</code> 类将它们整合起来。</p>
 <p>这种"策略模式"的设计让系统具有良好的可扩展性——需要支持新格式时，只需添加一个新的加载函数并注册到 <code>LOADERS</code> 字典中。</p>

@@ -8,6 +8,8 @@
 
 Agent 应该只拥有完成任务所需的最小权限——就像公司不应该给每个员工发一把万能钥匙。
 
+![Agent 权限控制与沙箱隔离架构](../svg/chapter_security_03_permission.svg)
+
 ```python
 from enum import Flag, auto
 from dataclasses import dataclass

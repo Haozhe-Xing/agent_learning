@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -455,6 +454,7 @@
 </blockquote>
 <p>与 LangChain/LangGraph 的"节点-边"模型不同，AutoGen 把每个 Agent 看作一个"对话参与者"。Agent 之间通过自然语言交流——就像一个虚拟团队在开会讨论一样。这种设计让多 Agent 系统的构建变得非常直观。</p>
 <p>AutoGen 最突出的特性是<strong>自动代码执行</strong>：AI 生成代码后，可以在沙箱中直接执行代码并将结果反馈给 AI，形成"生成-执行-修正"的自动化循环。</p>
+<p><img src="../svg/chapter_frameworks_03_autogen.svg" alt="AutoGen 0.4 事件驱动多Agent架构" /></p>
 <h2 id="autogen-04全新事件驱动架构"><a class="header" href="#autogen-04全新事件驱动架构">AutoGen 0.4：全新事件驱动架构</a></h2>
 <p>AutoGen 0.4 相比旧版做了完全重写，引入了以下核心概念：</p>
 <ul>

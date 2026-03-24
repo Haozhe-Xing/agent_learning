@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440">
+  <defs>
+    <marker id="arr-lc02" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <filter id="sh-lc02">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="440" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">LCEL 四种 Chain 模式</text>
+
+  <!-- ===== 1. 基础链 ===== -->
+  <rect x="30" y="60" width="350" height="130" rx="10" fill="#3498db" opacity="0.06" stroke="#3498db" stroke-width="1.5"/>
+  <text x="205" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">① 基础链：Prompt → LLM → Parser</text>
+
+  <rect x="50" y="100" width="85" height="36" rx="6" fill="#3498db" filter="url(#sh-lc02)"/>
+  <text x="92" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">📝 Prompt</text>
+
+  <line x1="135" y1="118" x2="162" y2="118" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lc02)"/>
+  <text x="148" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">|</text>
+
+  <rect x="164" y="100" width="65" height="36" rx="6" fill="#2980b9" filter="url(#sh-lc02)"/>
+  <text x="196" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">🤖 LLM</text>
+
+  <line x1="229" y1="118" x2="256" y2="118" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lc02)"/>
+  <text x="242" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">|</text>
+
+  <rect x="258" y="100" width="100" height="36" rx="6" fill="#1abc9c" filter="url(#sh-lc02)"/>
+  <text x="308" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">📤 Parser</text>
+
+  <text x="205" y="160" text-anchor="middle" font-family="Courier New, monospace" font-size="9" fill="#555">prompt | llm | StrOutputParser()</text>
+  <text x="205" y="178" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">最基本模式：输入 → 格式化 → 推理 → 解析输出</text>
+
+  <!-- ===== 2. 顺序链 ===== -->
+  <rect x="420" y="60" width="350" height="130" rx="10" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="595" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">② 顺序链：多步串联</text>
+
+  <!-- 步骤1 -->
+  <rect x="438" y="95" width="75" height="36" rx="6" fill="#27ae60" filter="url(#sh-lc02)"/>
+  <text x="475" y="110" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">提取关键词</text>
+  <text x="475" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4f0e0">Chain 1</text>
+
+  <line x1="513" y1="113" x2="540" y2="113" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lc02)"/>
+
+  <!-- 合并 -->
+  <rect x="542" y="95" width="85" height="36" rx="6" fill="#f39c12" filter="url(#sh-lc02)"/>
+  <text x="584" y="110" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">🔀 合并输入</text>
+  <text x="584" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#fef0d4">Parallel</text>
+
+  <line x1="627" y1="113" x2="654" y2="113" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lc02)"/>
+
+  <!-- 步骤2 -->
+  <rect x="656" y="95" width="75" height="36" rx="6" fill="#27ae60" filter="url(#sh-lc02)"/>
+  <text x="693" y="110" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">生成摘要</text>
+  <text x="693" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4f0e0">Chain 2</text>
+
+  <!-- Passthrough 箭头 -->
+  <path d="M475,131 Q475,148 540,148 L584,148 Q620,148 620,131" fill="none" stroke="#f39c12" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="548" y="158" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#f39c12">Passthrough（原文）</text>
+
+  <text x="595" y="178" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">前一步结果 + 原始输入 → 下一步处理</text>
+
+  <!-- ===== 3. 并行链 ===== -->
+  <rect x="30" y="210" width="350" height="200" rx="10" fill="#9b59b6" opacity="0.06" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="205" y="232" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#8e44ad">③ 并行链：同时多路处理</text>
+
+  <!-- 输入 -->
+  <rect x="60" y="250" width="70" height="30" rx="6" fill="#8e44ad" filter="url(#sh-lc02)"/>
+  <text x="95" y="269" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">输入</text>
+
+  <!-- 三个并行分支 -->
+  <line x1="130" y1="258" x2="170" y2="258" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+  <line x1="130" y1="268" x2="170" y2="305" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+  <line x1="130" y1="275" x2="170" y2="345" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+
+  <rect x="172" y="245" width="85" height="26" rx="5" fill="#e74c3c" opacity="0.8"/>
+  <text x="214" y="262" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">💬 情感分析</text>
+
+  <rect x="172" y="290" width="85" height="26" rx="5" fill="#3498db" opacity="0.8"/>
+  <text x="214" y="307" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">📝 生成摘要</text>
+
+  <rect x="172" y="335" width="85" height="26" rx="5" fill="#27ae60" opacity="0.8"/>
+  <text x="214" y="352" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">🔑 提取关键词</text>
+
+  <!-- 汇聚 -->
+  <line x1="257" y1="258" x2="300" y2="305" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+  <line x1="257" y1="303" x2="300" y2="305" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+  <line x1="257" y1="348" x2="300" y2="305" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+
+  <rect x="302" y="290" width="58" height="30" rx="6" fill="#8e44ad" filter="url(#sh-lc02)"/>
+  <text x="331" y="309" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">{dict}</text>
+
+  <text x="205" y="390" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">RunnableParallel：多个链同时执行，结果汇聚为字典</text>
+
+  <!-- ===== 4. 条件链 ===== -->
+  <rect x="420" y="210" width="350" height="200" rx="10" fill="#e67e22" opacity="0.06" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="595" y="232" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">④ 条件链：动态路由分支</text>
+
+  <!-- 输入 -->
+  <rect x="435" y="260" width="70" height="30" rx="6" fill="#e67e22" filter="url(#sh-lc02)"/>
+  <text x="470" y="279" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">输入</text>
+
+  <line x1="505" y1="275" x2="535" y2="275" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lc02)"/>
+
+  <!-- 分类器 -->
+  <polygon points="575,250 610,275 575,300 540,275" fill="#f39c12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="575" y="272" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" font-weight="bold" fill="white">分类</text>
+  <text x="575" y="283" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" font-weight="bold" fill="white">器</text>
+
+  <!-- 分支 -->
+  <line x1="610" y1="265" x2="650" y2="255" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+  <line x1="610" y1="275" x2="650" y2="295" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+  <line x1="610" y1="285" x2="650" y2="335" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-lc02)"/>
+
+  <rect x="652" y="240" width="100" height="26" rx="5" fill="#e74c3c" opacity="0.8"/>
+  <text x="702" y="257" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">🔧 技术支持</text>
+
+  <rect x="652" y="280" width="100" height="26" rx="5" fill="#3498db" opacity="0.8"/>
+  <text x="702" y="297" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">💼 业务咨询</text>
+
+  <rect x="652" y="320" width="100" height="26" rx="5" fill="#27ae60" opacity="0.8"/>
+  <text x="702" y="337" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">😠 投诉处理</text>
+
+  <text x="595" y="374" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">RunnableBranch：根据条件选择不同处理分支</text>
+  <text x="595" y="392" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#999">⚡ 先分类一次再路由，避免重复调用 LLM</text>
+
+  <!-- 底部总结 -->
+  <rect x="30" y="418" width="740" height="16" rx="4" fill="#2c3e50" opacity="0.04"/>
+  <text x="400" y="430" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">💡 LCEL 核心符号 | 将组件串联：前一个输出自动成为下一个输入，类似 Unix 管道</text>
+</svg>

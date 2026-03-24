@@ -2,6 +2,8 @@
 
 > **本节目标**：学会识别和保护 Agent 交互中的敏感数据，防止数据泄露。
 
+![Agent 敏感数据保护流程](../svg/chapter_security_04_data_protection.svg)
+
 ---
 
 ## Agent 面临的数据风险

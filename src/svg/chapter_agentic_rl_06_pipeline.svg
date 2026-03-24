@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="tp" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e67e22"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">完整 Agentic-RL 训练 Pipeline</text>
+
+  <!-- 四阶段 -->
+  <rect x="30" y="60" width="170" height="110" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="115" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">① 数据准备</text>
+  <text x="115" y="108" text-anchor="middle" font-size="10" fill="#555">GSM8K 数据集</text>
+  <text x="115" y="126" text-anchor="middle" font-size="10" fill="#555">格式化为对话模板</text>
+  <text x="115" y="144" text-anchor="middle" font-size="10" fill="#555">工具调用格式注入</text>
+  <text x="115" y="162" text-anchor="middle" font-size="9" fill="#3498db">8,500 条数学题</text>
+
+  <line x1="200" y1="115" x2="218" y2="115" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#tp)"/>
+
+  <rect x="220" y="60" width="170" height="110" rx="10" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="305" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">② SFT 训练</text>
+  <text x="305" y="108" text-anchor="middle" font-size="10" fill="#555">Qwen2.5-1.5B-Instruct</text>
+  <text x="305" y="126" text-anchor="middle" font-size="10" fill="#555">LoRA r=64, α=128</text>
+  <text x="305" y="144" text-anchor="middle" font-size="10" fill="#555">学习工具调用格式</text>
+  <text x="305" y="162" text-anchor="middle" font-size="9" fill="#8e44ad">3 epochs, lr=2e-4</text>
+
+  <line x1="390" y1="115" x2="408" y2="115" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#tp)"/>
+
+  <rect x="410" y="60" width="170" height="110" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="495" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">③ GRPO 训练</text>
+  <text x="495" y="108" text-anchor="middle" font-size="10" fill="#555">Group Relative PO</text>
+  <text x="495" y="126" text-anchor="middle" font-size="10" fill="#555">格式奖励 + 正确性奖励</text>
+  <text x="495" y="144" text-anchor="middle" font-size="10" fill="#555">工具使用奖励</text>
+  <text x="495" y="162" text-anchor="middle" font-size="9" fill="#e74c3c">无需 Critic 模型</text>
+
+  <line x1="580" y1="115" x2="598" y2="115" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#tp)"/>
+
+  <rect x="600" y="60" width="170" height="110" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="685" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">④ 评估对比</text>
+  <text x="685" y="108" text-anchor="middle" font-size="10" fill="#555">GSM8K 准确率</text>
+  <text x="685" y="126" text-anchor="middle" font-size="10" fill="#555">工具调用成功率</text>
+  <text x="685" y="144" text-anchor="middle" font-size="10" fill="#555">推理质量对比</text>
+  <text x="685" y="162" text-anchor="middle" font-size="9" fill="#27ae60">Base vs SFT vs GRPO</text>
+
+  <!-- 奖励函数设计 -->
+  <text x="400" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">GRPO 多维奖励函数设计</text>
+
+  <rect x="30" y="218" width="175" height="140" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="117" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">正确性奖励</text>
+  <text x="117" y="262" text-anchor="middle" font-size="10" fill="#555">答案完全匹配 → +1.0</text>
+  <text x="117" y="280" text-anchor="middle" font-size="10" fill="#555">答案错误 → +0.0</text>
+  <text x="117" y="300" text-anchor="middle" font-size="10" fill="#555">数值容差 1e-5</text>
+  <rect x="40" y="318" width="155" height="25" rx="4" fill="#fce4e4"/>
+  <text x="117" y="336" text-anchor="middle" font-size="9" fill="#e74c3c">权重：核心信号</text>
+
+  <rect x="220" y="218" width="175" height="140" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="307" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">格式奖励</text>
+  <text x="307" y="262" text-anchor="middle" font-size="10" fill="#555">有 think 标签 → +0.2</text>
+  <text x="307" y="280" text-anchor="middle" font-size="10" fill="#555">有 answer 标签 → +0.1</text>
+  <text x="307" y="300" text-anchor="middle" font-size="10" fill="#555">XML 格式完整 → +0.1</text>
+  <rect x="230" y="318" width="155" height="25" rx="4" fill="#fdf2e9"/>
+  <text x="307" y="336" text-anchor="middle" font-size="9" fill="#e67e22">鼓励结构化推理</text>
+
+  <rect x="410" y="218" width="175" height="140" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="497" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">工具使用奖励</text>
+  <text x="497" y="262" text-anchor="middle" font-size="10" fill="#555">正确调用工具 → +0.3</text>
+  <text x="497" y="280" text-anchor="middle" font-size="10" fill="#555">参数格式正确 → +0.1</text>
+  <text x="497" y="300" text-anchor="middle" font-size="10" fill="#555">结果正确使用 → +0.1</text>
+  <rect x="420" y="318" width="155" height="25" rx="4" fill="#e8f4fd"/>
+  <text x="497" y="336" text-anchor="middle" font-size="9" fill="#3498db">鼓励学会用工具</text>
+
+  <rect x="600" y="218" width="170" height="140" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="685" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">KL 惩罚</text>
+  <text x="685" y="262" text-anchor="middle" font-size="10" fill="#555">β = 0.04（初始）</text>
+  <text x="685" y="280" text-anchor="middle" font-size="10" fill="#555">约束策略偏移</text>
+  <text x="685" y="300" text-anchor="middle" font-size="10" fill="#555">防止模式坍缩</text>
+  <rect x="610" y="318" width="150" height="25" rx="4" fill="#e8f8e8"/>
+  <text x="685" y="336" text-anchor="middle" font-size="9" fill="#27ae60">稳定训练</text>
+</svg>

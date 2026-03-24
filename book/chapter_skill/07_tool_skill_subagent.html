@@ -1,0 +1,768 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>9.7 Tool、Skill 与 Sub Agent：三层能力抽象 - 从零开始学 Agent</title>
+
+
+        <!-- Custom HTML head -->
+        <!-- ============================================
+           从零开始学 Agent - 自定义 HTML Head
+           ============================================ -->
+        
+        <!-- 阅读进度条 -->
+        <style>
+          #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #3783eb, #00d4ff);
+            z-index: 10000;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 8px rgba(55, 131, 235, 0.4);
+          }
+          
+          /* 回到顶部按钮 */
+          #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--links, #3783eb);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+            z-index: 999;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+          }
+          #back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #back-to-top:hover {
+            background: var(--links, #3783eb);
+            filter: brightness(1.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+          }
+        
+          /* 代码块语言标签 */
+          .content pre {
+            position: relative;
+          }
+          .code-lang-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.85);
+            background: rgba(0,0,0,0.25);
+            border-radius: 0 8px 0 6px;
+            pointer-events: none;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          }
+        
+          /* 信息提示框 (使用 blockquote + emoji 约定) */
+          .content blockquote.admonition-tip {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.06);
+          }
+          .content blockquote.admonition-warning {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.06);
+          }
+          .content blockquote.admonition-danger {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.06);
+          }
+          .content blockquote.admonition-info {
+            border-left-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.06);
+          }
+        
+          /* 暗色主题适配 */
+          .navy #reading-progress,
+          .coal #reading-progress,
+          .ayu #reading-progress {
+            background: linear-gradient(90deg, #5ba3f5, #00d4ff);
+          }
+          .navy .code-lang-tag,
+          .coal .code-lang-tag,
+          .ayu .code-lang-tag {
+            background: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+          }
+          .navy .content blockquote.admonition-tip,
+          .coal .content blockquote.admonition-tip,
+          .ayu .content blockquote.admonition-tip {
+            background: rgba(16, 185, 129, 0.08);
+          }
+          .navy .content blockquote.admonition-warning,
+          .coal .content blockquote.admonition-warning,
+          .ayu .content blockquote.admonition-warning {
+            background: rgba(245, 158, 11, 0.08);
+          }
+          .navy .content blockquote.admonition-danger,
+          .coal .content blockquote.admonition-danger,
+          .ayu .content blockquote.admonition-danger {
+            background: rgba(239, 68, 68, 0.08);
+          }
+          .navy .content blockquote.admonition-info,
+          .coal .content blockquote.admonition-info,
+          .ayu .content blockquote.admonition-info {
+            background: rgba(59, 130, 246, 0.08);
+          }
+        
+          /* 章节标题锚点链接 */
+          .content h2:hover .header-anchor,
+          .content h3:hover .header-anchor {
+            opacity: 1;
+          }
+          .header-anchor {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            margin-left: 0.3em;
+            color: var(--links);
+            text-decoration: none;
+            font-size: 0.85em;
+          }
+        
+          /* 估计阅读时间标签 */
+          .reading-time {
+            display: inline-block;
+            margin-top: 0.5em;
+            padding: 0.3em 0.8em;
+            font-size: 0.85rem;
+            color: #666;
+            background: rgba(0,0,0,0.04);
+            border-radius: 20px;
+            font-weight: 500;
+          }
+          .navy .reading-time,
+          .coal .reading-time,
+          .ayu .reading-time {
+            color: #aaa;
+            background: rgba(255,255,255,0.06);
+          }
+        </style>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // === 1. 阅读进度条 ===
+          var progressBar = document.createElement('div');
+          progressBar.id = 'reading-progress';
+          document.body.prepend(progressBar);
+        
+          function updateProgress() {
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+          }
+        
+          // === 2. 回到顶部按钮 ===
+          var backBtn = document.createElement('button');
+          backBtn.id = 'back-to-top';
+          backBtn.innerHTML = '&#8679;';
+          backBtn.title = '回到顶部';
+          document.body.appendChild(backBtn);
+        
+          function toggleBackToTop() {
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            if (scrollTop > 400) {
+              backBtn.classList.add('visible');
+            } else {
+              backBtn.classList.remove('visible');
+            }
+          }
+        
+          backBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        
+          // 合并 scroll 事件
+          var scrollTicking = false;
+          window.addEventListener('scroll', function() {
+            if (!scrollTicking) {
+              window.requestAnimationFrame(function() {
+                updateProgress();
+                toggleBackToTop();
+                scrollTicking = false;
+              });
+              scrollTicking = true;
+            }
+          });
+        
+          // 初始化
+          updateProgress();
+          toggleBackToTop();
+        
+          // === 3. 代码块语言标签 ===
+          var codeBlocks = document.querySelectorAll('.content pre code');
+          codeBlocks.forEach(function(code) {
+            var classes = code.className.split(/\s+/);
+            var lang = '';
+            classes.forEach(function(cls) {
+              if (cls.startsWith('language-')) {
+                lang = cls.replace('language-', '');
+              }
+            });
+            if (lang && lang !== 'text' && lang !== 'plaintext') {
+              var langMap = {
+                'python': 'Python', 'py': 'Python',
+                'javascript': 'JS', 'js': 'JS',
+                'typescript': 'TS', 'ts': 'TS',
+                'bash': 'Bash', 'sh': 'Shell', 'shell': 'Shell', 'zsh': 'Shell',
+                'json': 'JSON', 'yaml': 'YAML', 'yml': 'YAML',
+                'toml': 'TOML', 'sql': 'SQL',
+                'html': 'HTML', 'css': 'CSS',
+                'rust': 'Rust', 'go': 'Go', 'java': 'Java',
+                'dockerfile': 'Docker', 'docker': 'Docker',
+                'markdown': 'MD', 'md': 'MD',
+                'xml': 'XML', 'graphql': 'GraphQL',
+                'mermaid': 'Mermaid'
+              };
+              var displayLang = langMap[lang.toLowerCase()] || lang.toUpperCase();
+              var tag = document.createElement('span');
+              tag.className = 'code-lang-tag';
+              tag.textContent = displayLang;
+              code.parentElement.appendChild(tag);
+            }
+          });
+        
+          // === 4. 信息提示框自动分类 ===
+          var blockquotes = document.querySelectorAll('.content blockquote');
+          blockquotes.forEach(function(bq) {
+            var firstP = bq.querySelector('p');
+            if (!firstP) return;
+            var text = firstP.textContent || '';
+            if (text.match(/^[\s]*[💡🔑✨]/)) {
+              bq.classList.add('admonition-tip');
+            } else if (text.match(/^[\s]*[⚠️🔶]/)) {
+              bq.classList.add('admonition-warning');
+            } else if (text.match(/^[\s]*[🚨❌⛔]/)) {
+              bq.classList.add('admonition-danger');
+            } else if (text.match(/^[\s]*[📖ℹ️📝📌🔗]/)) {
+              bq.classList.add('admonition-info');
+            }
+          });
+        
+          // === 5. 估计阅读时间 ===
+          var content = document.querySelector('.content');
+          if (content) {
+            var text = content.textContent || '';
+            var charCount = text.replace(/\s/g, '').length;
+            var readingMinutes = Math.max(1, Math.ceil(charCount / 500)); // 中文约500字/分钟
+            var h1 = content.querySelector('h1');
+            if (h1 && readingMinutes > 2) {
+              var timeTag = document.createElement('span');
+              timeTag.className = 'reading-time';
+              timeTag.textContent = '预计阅读 ' + readingMinutes + ' 分钟';
+              h1.insertAdjacentElement('afterend', timeTag);
+            }
+          }
+        });
+        </script>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">从零开始学 Agent</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="toolskill-与-sub-agent三层能力抽象"><a class="header" href="#toolskill-与-sub-agent三层能力抽象">Tool、Skill 与 Sub Agent：三层能力抽象</a></h1>
+<blockquote>
+<p>🎯 <em>"Tool 是手，Skill 是技能，Sub Agent 是团队成员——理解三者的关系，是设计好 Agent 架构的关键。"</em></p>
+</blockquote>
+<p>在前面的章节中，我们分别学习了工具调用（第4章）、技能系统（第9章）和多 Agent 协作（第14章）。本节将它们放在一起，做一次<strong>统一的对比和梳理</strong>——帮你在实际开发中做出正确的架构选择。</p>
+<p><img src="../svg/chapter_skill_07_three_layers.svg" alt="Tool · Skill · Sub Agent 三层能力抽象" /></p>
+<h2 id="一个直觉类比"><a class="header" href="#一个直觉类比">一个直觉类比</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>概念</th><th>餐厅类比</th><th>软件类比</th></tr></thead><tbody>
+<tr><td><strong>Tool（工具）</strong></td><td>菜刀、炒锅、烤箱</td><td>一个 API 调用、一个函数</td></tr>
+<tr><td><strong>Skill（技能）</strong></td><td>"川菜烹饪"、"法式甜点制作"</td><td>一组工具 + 策略 + 知识的封装</td></tr>
+<tr><td><strong>Sub Agent（子智能体）</strong></td><td>一位专业厨师</td><td>一个有自己推理循环的独立 Agent</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><strong>工具</strong>是最小的执行单元——菜刀不会自己做菜</li>
+<li><strong>技能</strong>是工具的组合使用方法——知道什么时候用什么工具、怎么用</li>
+<li><strong>子智能体</strong>是拥有技能的独立决策者——厨师可以自主决定菜品的制作流程</li>
+</ul>
+<h2 id="三层能力模型"><a class="header" href="#三层能力模型">三层能力模型</a></h2>
+<pre><code class="language-python"># ──────────── Layer 1: Tool（工具）────────────
+# 最小执行单元：输入 → 执行 → 输出，无状态，无决策
+def search_web(query: str) -&gt; list[str]:
+    """搜索网页，返回结果列表"""
+    return search_engine.search(query)
+
+def read_file(path: str) -&gt; str:
+    """读取文件内容"""
+    return open(path).read()
+
+def execute_sql(query: str) -&gt; list[dict]:
+    """执行 SQL 查询"""
+    return database.execute(query)
+
+
+# ──────────── Layer 2: Skill（技能）────────────
+# 工具的组合 + 策略 + 知识封装
+class DataAnalysisSkill:
+    """数据分析技能：封装了多个工具 + 分析策略 + 领域知识"""
+    tools = [execute_sql, create_chart, calculate_statistics]
+    
+    system_prompt = """你是数据分析专家。分析数据时遵循以下策略：
+    1. 先了解数据结构和数据质量
+    2. 根据问题类型选择合适的分析方法
+    3. 用可视化辅助解释结论"""
+    
+    def execute(self, task: str) -&gt; str:
+        """执行一次数据分析（通常是单次 LLM 调用 + 工具组合）"""
+        return llm.chat(system=self.system_prompt, tools=self.tools,
+                       messages=[{"role": "user", "content": task}])
+
+
+# ──────────── Layer 3: Sub Agent（子智能体）────────────
+# 独立的推理循环：有自己的记忆、规划、决策能力
+class DataAnalystAgent:
+    """数据分析师 Agent：拥有技能库 + 独立记忆 + 自主规划"""
+    skills = [DataAnalysisSkill(), ReportWritingSkill(), DataCleaningSkill()]
+    memory = WorkingMemory()
+    
+    def run(self, objective: str) -&gt; str:
+        """自主执行多步任务，有完整的推理循环"""
+        plan = self.plan(objective)
+        for step in plan:
+            skill = self.select_skill(step)
+            result = skill.execute(step)
+            self.memory.store(step, result)
+            if self.should_replan(result):
+                plan = self.replan(objective, self.memory)
+        return self.synthesize(self.memory)
+</code></pre>
+<h2 id="核心区别五个维度的对比"><a class="header" href="#核心区别五个维度的对比">核心区别：五个维度的对比</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>Tool（工具）</th><th>Skill（技能）</th><th>Sub Agent（子智能体）</th></tr></thead><tbody>
+<tr><td><strong>抽象层次</strong></td><td>最低——单一操作</td><td>中层——操作组合</td><td>最高——自主实体</td></tr>
+<tr><td><strong>决策能力</strong></td><td>❌ 无决策，纯执行</td><td>⚠️ 有限决策（策略内）</td><td>✅ 完全自主决策</td></tr>
+<tr><td><strong>状态管理</strong></td><td>无状态</td><td>轻量状态</td><td>独立记忆 + 工作状态</td></tr>
+<tr><td><strong>推理循环</strong></td><td>无</td><td>通常单次</td><td>多步循环（Plan-Act-Observe）</td></tr>
+<tr><td><strong>可组合性</strong></td><td>被技能和 Agent 调用</td><td>被 Agent 调用</td><td>被上级 Agent 编排</td></tr>
+</tbody></table>
+</div>
+<h3 id="决策能力的递进"><a class="header" href="#决策能力的递进">决策能力的递进</a></h3>
+<pre><code>Tool:       input → output                （确定性映射）
+Skill:      input → [策略选择] → output     （有限的条件分支）
+Sub Agent:  objective → [规划→执行→反思→调整]* → output  （自主推理循环）
+</code></pre>
+<p>用一个实际例子来感受这种递进：</p>
+<pre><code class="language-python"># 任务：帮用户准备一份季度销售报告
+
+# ── 如果只用 Tool ──
+# Agent 需要自己做所有决策，逐一调用工具
+result1 = execute_sql("SELECT * FROM sales WHERE quarter = 'Q4'")
+result2 = calculate_statistics(result1)
+result3 = create_chart(result2, chart_type="bar")
+result4 = format_report(result2, result3)
+# Agent 本身承担了所有"怎么做"的决策
+
+# ── 如果用 Skill ──
+# Agent 只需指定"做什么"，Skill 内部处理"怎么做"
+report = data_analysis_skill.execute("生成 Q4 销售报告，包含趋势分析和图表")
+
+# ── 如果用 Sub Agent ──
+# 主 Agent 只需说"目标"，Sub Agent 自主完成一切
+report = data_analyst_agent.run(
+    "全面分析 Q4 销售数据，发现问题和机会，撰写管理层报告"
+)
+# Sub Agent 自己规划步骤、选择技能、处理异常、多次迭代
+</code></pre>
+<h2 id="何时使用什么决策框架"><a class="header" href="#何时使用什么决策框架">何时使用什么？决策框架</a></h2>
+<pre><code class="language-python">def choose_abstraction(task_requirements: dict) -&gt; str:
+    """选择合适的能力抽象层次"""
+    complexity = task_requirements.get("complexity")
+    autonomy = task_requirements.get("autonomy_needed")
+    steps = task_requirements.get("estimated_steps")
+    
+    if complexity == "simple" and steps &lt;= 1:
+        return "Tool"      # 搜索网页、读取文件、调用 API
+    
+    if complexity == "medium" or (steps &lt;= 5 and autonomy == "medium"):
+        return "Skill"     # 数据分析、代码审查、文档生成
+    
+    if complexity == "complex" or autonomy == "high" or steps &gt; 5:
+        return "Sub Agent"  # 自主研究、项目规划、跨系统协调
+    
+    return "Tool"
+</code></pre>
+<h3 id="实际场景的选型指南"><a class="header" href="#实际场景的选型指南">实际场景的选型指南</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>场景</th><th>推荐抽象</th><th>原因</th></tr></thead><tbody>
+<tr><td>调用天气 API</td><td><strong>Tool</strong></td><td>单一、确定性操作</td></tr>
+<tr><td>查询数据库并返回结果</td><td><strong>Tool</strong></td><td>输入输出明确</td></tr>
+<tr><td>分析一组数据并生成可视化</td><td><strong>Skill</strong></td><td>需要组合多个工具 + 分析策略</td></tr>
+<tr><td>将文档翻译成 3 种语言</td><td><strong>Skill</strong></td><td>固定流程，工具 + 领域知识</td></tr>
+<tr><td>自主完成代码审查并提 PR</td><td><strong>Sub Agent</strong></td><td>需要理解代码、做判断、多步操作</td></tr>
+<tr><td>管理整个数据分析项目</td><td><strong>Sub Agent</strong></td><td>需要编排多个子任务和子 Agent</td></tr>
+</tbody></table>
+</div>
+<h2 id="组合模式层次化架构"><a class="header" href="#组合模式层次化架构">组合模式：层次化架构</a></h2>
+<p>在真实的 Agent 系统中，三层抽象通常<strong>嵌套使用</strong>：</p>
+<pre><code>Orchestrator Agent（编排者）
+├── Research Sub Agent（研究子智能体）
+│   ├── Web Search Skill（网络搜索技能）
+│   │   ├── search_web()    [Tool]
+│   │   ├── fetch_page()    [Tool]
+│   │   └── extract_text()  [Tool]
+│   └── Summary Skill（总结技能）
+│       ├── chunk_text()    [Tool]
+│       └── summarize()     [Tool]
+│
+├── Coding Sub Agent（编程子智能体）
+│   ├── Code Analysis Skill（代码分析技能）
+│   │   ├── read_file()     [Tool]
+│   │   └── search_code()   [Tool]
+│   └── Code Edit Skill（代码编辑技能）
+│       ├── write_file()    [Tool]
+│       └── run_tests()     [Tool]
+│
+└── Report Sub Agent（报告子智能体）
+    └── Report Writing Skill
+        ├── create_chart()  [Tool]
+        └── render_pdf()    [Tool]
+</code></pre>
+<pre><code class="language-python">class ProductionAgent:
+    """层次化架构的代码实现"""
+    def __init__(self):
+        self.sub_agents = {
+            "researcher": ResearchAgent(skills=[WebSearchSkill(), SummarySkill()]),
+            "coder": CodingAgent(skills=[CodeAnalysisSkill(), CodeEditSkill()]),
+            "reporter": ReportAgent(skills=[ReportWritingSkill()]),
+        }
+    
+    def handle_task(self, task: str):
+        plan = self.plan(task)
+        for step in plan:
+            agent_name = self.route(step)
+            result = self.sub_agents[agent_name].run(step)
+            self.collect_result(step, result)
+        return self.synthesize_results()
+</code></pre>
+<h2 id="常见误区与最佳实践"><a class="header" href="#常见误区与最佳实践">常见误区与最佳实践</a></h2>
+<h3 id="-误区一所有事情都用-sub-agent"><a class="header" href="#-误区一所有事情都用-sub-agent">❌ 误区一：所有事情都用 Sub Agent</a></h3>
+<pre><code class="language-python"># 反模式：为一个简单搜索创建完整 Sub Agent
+class OverEngineeredSearchAgent:
+    """不要这样做！搜索网页只需要一个 Tool"""
+    def __init__(self):
+        self.memory = WorkingMemory()   # 不需要
+        self.planner = Planner()        # 不需要
+    def run(self, query):
+        plan = self.planner.plan(f"搜索: {query}")
+        # 就为了调用一个 search() 函数？太重了！
+</code></pre>
+<h3 id="-误区二把复杂逻辑硬塞进一个-tool"><a class="header" href="#-误区二把复杂逻辑硬塞进一个-tool">❌ 误区二：把复杂逻辑硬塞进一个 Tool</a></h3>
+<pre><code class="language-python"># 反模式：一个"工具"里包含了太多逻辑
+def analyze_and_report(data_path, output_format, language, chart_type, ...):
+    """这不是 Tool，应该是 Skill 或 Sub Agent！Tool 应该是单一职责的原子操作"""
+    data = load(data_path)
+    cleaned = clean_data(data)
+    analyzed = run_analysis(cleaned)
+    chart = create_chart(analyzed, chart_type)
+    report = write_report(analyzed, chart, language)
+    return export(report, output_format)
+</code></pre>
+<h3 id="-最佳实践渐进式升级"><a class="header" href="#-最佳实践渐进式升级">✅ 最佳实践：渐进式升级</a></h3>
+<pre><code class="language-python"># 阶段 1：先用 Tool 快速验证
+tools = [search_web, read_file, execute_sql]
+agent = SimpleReActAgent(tools=tools)
+# 当 Prompt 里充满"如果...就..."的条件逻辑时 → 升级到 Skill
+
+# 阶段 2：将反复出现的模式封装为 Skill
+data_skill = DataAnalysisSkill(tools=[execute_sql, calculate, create_chart])
+code_skill = CodeReviewSkill(tools=[read_file, search_code, lint])
+agent = SkillBasedAgent(skills=[data_skill, code_skill])
+# 当单个 Agent 的 Prompt 超过 4K tokens 时 → 考虑拆分为 Sub Agent
+
+# 阶段 3：将独立职能域拆分为 Sub Agent
+analyst = DataAnalystAgent(skills=[data_skill])
+reviewer = CodeReviewAgent(skills=[code_skill])
+orchestrator = OrchestratorAgent(sub_agents=[analyst, reviewer])
+</code></pre>
+<h2 id="与通信协议的关系"><a class="header" href="#与通信协议的关系">与通信协议的关系</a></h2>
+<p>三层抽象与我们在第15章学习的通信协议紧密相关：</p>
+<div class="table-wrapper"><table><thead><tr><th>抽象层</th><th>典型通信协议</th><th>说明</th></tr></thead><tbody>
+<tr><td><strong>Tool</strong></td><td><strong>MCP</strong>（Model Context Protocol）</td><td>MCP 定义了 Agent 与工具之间的标准接口</td></tr>
+<tr><td><strong>Skill</strong></td><td>框架内部接口</td><td>Skill 通常在同一进程内，不需要跨进程协议</td></tr>
+<tr><td><strong>Sub Agent</strong></td><td><strong>A2A</strong>（Agent-to-Agent）</td><td>Sub Agent 之间通过 A2A 协议通信和协调</td></tr>
+</tbody></table>
+</div>
+<pre><code class="language-python"># MCP 连接工具 → A2A 连接 Agent 的完整图景
+#
+# [Orchestrator Agent]
+#     │
+#     ├── A2A ──→ [Research Agent]
+#     │               ├── MCP ──→ [Web Search Server]
+#     │               └── MCP ──→ [Database Server]
+#     │
+#     └── A2A ──→ [Coding Agent]
+#                     ├── MCP ──→ [File System Server]
+#                     └── MCP ──→ [Git Server]
+</code></pre>
+<hr />
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>要点</th><th>说明</th></tr></thead><tbody>
+<tr><td><strong>三层递进</strong></td><td>Tool（原子操作） → Skill（策略封装） → Sub Agent（自主实体）</td></tr>
+<tr><td><strong>核心区别</strong></td><td>决策能力和自主性程度不同</td></tr>
+<tr><td><strong>选型原则</strong></td><td>从最简单的开始，按需升级——不要过度工程</td></tr>
+<tr><td><strong>组合模式</strong></td><td>三层嵌套使用是生产级 Agent 的常见架构</td></tr>
+<tr><td><strong>渐进演进</strong></td><td>Tool 先行验证 → Skill 封装复用 → Sub Agent 拆分自治</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>📖 <em>理解这三层抽象的关系，是从"能写一个 Agent"到"能设计一个 Agent 系统"的关键跨越。</em></p>
+</blockquote>
+<hr />
+<p><em>相关章节：<a href="../chapter_tools/README.html">第4章 工具调用</a> · <a href="./README.html">第9章 技能系统</a> · <a href="../chapter_multi_agent/README.html">第14章 多 Agent 协作</a> · <a href="../chapter_protocol/README.html">第15章 Agent 通信协议</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter_skill/06_paper_readings.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter_agentic_rl/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter_skill/06_paper_readings.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter_agentic_rl/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

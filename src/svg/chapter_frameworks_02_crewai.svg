@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#8e44ad"/>
+    </marker>
+  </defs>
+  <rect width="800" height="400" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">CrewAI 核心架构：Agent → Task → Crew</text>
+
+  <!-- Crew 外框 -->
+  <rect x="50" y="55" width="700" height="320" rx="12" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#8e44ad">🎭 Crew（团队）— 协调所有 Agent 完成目标</text>
+
+  <!-- Agent 1 -->
+  <rect x="80" y="95" width="180" height="120" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="170" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">🔍 研究员 Agent</text>
+  <text x="170" y="138" text-anchor="middle" font-size="10" fill="#555">role: "高级研究分析师"</text>
+  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#555">goal: "深度信息收集"</text>
+  <text x="170" y="172" text-anchor="middle" font-size="10" fill="#555">backstory: "10年研究经验…"</text>
+  <rect x="100" y="180" width="140" height="24" rx="6" fill="#e74c3c" opacity="0.15"/>
+  <text x="170" y="196" text-anchor="middle" font-size="10" fill="#e74c3c">🛠 搜索工具、文档解析</text>
+
+  <!-- Agent 2 -->
+  <rect x="310" y="95" width="180" height="120" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">✍️ 撰稿人 Agent</text>
+  <text x="400" y="138" text-anchor="middle" font-size="10" fill="#555">role: "资深技术作家"</text>
+  <text x="400" y="155" text-anchor="middle" font-size="10" fill="#555">goal: "撰写高质量内容"</text>
+  <text x="400" y="172" text-anchor="middle" font-size="10" fill="#555">backstory: "获奖技术博主…"</text>
+  <rect x="330" y="180" width="140" height="24" rx="6" fill="#3498db" opacity="0.15"/>
+  <text x="400" y="196" text-anchor="middle" font-size="10" fill="#3498db">🛠 文本生成、格式化</text>
+
+  <!-- Agent 3 -->
+  <rect x="540" y="95" width="180" height="120" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="630" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">📋 审核员 Agent</text>
+  <text x="630" y="138" text-anchor="middle" font-size="10" fill="#555">role: "质量审核专家"</text>
+  <text x="630" y="155" text-anchor="middle" font-size="10" fill="#555">goal: "确保内容准确"</text>
+  <text x="630" y="172" text-anchor="middle" font-size="10" fill="#555">backstory: "严谨的编辑…"</text>
+  <rect x="560" y="180" width="140" height="24" rx="6" fill="#27ae60" opacity="0.15"/>
+  <text x="630" y="196" text-anchor="middle" font-size="10" fill="#27ae60">🛠 事实核查、校对</text>
+
+  <!-- 箭头连接 -->
+  <line x1="260" y1="155" x2="308" y2="155" stroke="#8e44ad" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arw)"/>
+  <line x1="490" y1="155" x2="538" y2="155" stroke="#8e44ad" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arw)"/>
+
+  <!-- Task 区域 -->
+  <rect x="80" y="235" width="200" height="50" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="180" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">Task 1：收集行业趋势</text>
+  <text x="180" y="272" text-anchor="middle" font-size="10" fill="#777">assigned to → 研究员</text>
+
+  <rect x="300" y="235" width="200" height="50" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="400" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">Task 2：撰写分析报告</text>
+  <text x="400" y="272" text-anchor="middle" font-size="10" fill="#777">assigned to → 撰稿人</text>
+
+  <rect x="520" y="235" width="200" height="50" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="620" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">Task 3：审核事实准确性</text>
+  <text x="620" y="272" text-anchor="middle" font-size="10" fill="#777">assigned to → 审核员</text>
+
+  <!-- Process 模式 -->
+  <rect x="80" y="305" width="300" height="55" rx="8" fill="#f0e6f6" stroke="#8e44ad" stroke-width="1"/>
+  <text x="230" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">执行模式 Process</text>
+  <text x="230" y="345" text-anchor="middle" font-size="10" fill="#555">sequential（顺序）| hierarchical（层级管理）</text>
+
+  <rect x="400" y="305" width="320" height="55" rx="8" fill="#e8f8e8" stroke="#27ae60" stroke-width="1"/>
+  <text x="560" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">Flows（2025 新特性）</text>
+  <text x="560" y="345" text-anchor="middle" font-size="10" fill="#555">结构化工作流编排 + 条件路由 + 状态管理</text>
+</svg>

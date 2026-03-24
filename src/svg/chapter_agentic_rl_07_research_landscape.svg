@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="420" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agentic-RL 前沿研究全景图（2024—2026）</text>
+
+  <!-- 时间线轴 -->
+  <line x1="60" y1="65" x2="740" y2="65" stroke="#bdc3c8" stroke-width="2"/>
+  <circle cx="120" cy="65" r="5" fill="#e74c3c"/>
+  <text x="120" y="58" text-anchor="middle" font-size="10" fill="#666">2024.09</text>
+  <text x="120" y="82" text-anchor="middle" font-size="9" fill="#e74c3c" font-weight="bold">OpenAI o1</text>
+
+  <circle cx="260" cy="65" r="5" fill="#3498db"/>
+  <text x="260" y="58" text-anchor="middle" font-size="10" fill="#666">2025.01</text>
+  <text x="260" y="82" text-anchor="middle" font-size="9" fill="#3498db" font-weight="bold">DeepSeek-R1</text>
+
+  <circle cx="400" cy="65" r="5" fill="#27ae60"/>
+  <text x="400" y="58" text-anchor="middle" font-size="10" fill="#666">2025.03</text>
+  <text x="400" y="82" text-anchor="middle" font-size="9" fill="#27ae60" font-weight="bold">DAPO</text>
+
+  <circle cx="540" cy="65" r="5" fill="#8e44ad"/>
+  <text x="540" y="58" text-anchor="middle" font-size="10" fill="#666">2025.04</text>
+  <text x="540" y="82" text-anchor="middle" font-size="9" fill="#8e44ad" font-weight="bold">VAPO</text>
+
+  <circle cx="680" cy="65" r="5" fill="#e67e22"/>
+  <text x="680" y="58" text-anchor="middle" font-size="10" fill="#666">2025-26</text>
+  <text x="680" y="82" text-anchor="middle" font-size="9" fill="#e67e22" font-weight="bold">多模态RL</text>
+
+  <!-- 四大方向 -->
+  <!-- 方向1：纯RL训练 -->
+  <rect x="20" y="100" width="185" height="140" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="112" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">纯 RL 训练</text>
+  <text x="32" y="140" font-size="11" fill="#444">• DeepSeek-R1：纯 RL</text>
+  <text x="32" y="157" font-size="11" fill="#444">  激发自主推理</text>
+  <text x="32" y="177" font-size="11" fill="#444">• 零 SFT 冷启动</text>
+  <text x="32" y="197" font-size="11" fill="#444">• Aha Moment 涌现</text>
+  <text x="32" y="217" font-size="11" fill="#444">• GRPO 算法核心</text>
+
+  <!-- 方向2：训练稳定性 -->
+  <rect x="215" y="100" width="185" height="140" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="307" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">训练稳定性</text>
+  <text x="227" y="140" font-size="11" fill="#444">• DAPO：去除 KL 约束</text>
+  <text x="227" y="157" font-size="11" fill="#444">• 动态采样 (Clip-Higher)</text>
+  <text x="227" y="177" font-size="11" fill="#444">• VAPO：价值增强 PPO</text>
+  <text x="227" y="197" font-size="11" fill="#444">• Token-level 价值估计</text>
+  <text x="227" y="217" font-size="11" fill="#444">• AIME 60.4 分</text>
+
+  <!-- 方向3：蒸馏与压缩 -->
+  <rect x="410" y="100" width="185" height="140" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="502" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">蒸馏与压缩</text>
+  <text x="422" y="140" font-size="11" fill="#444">• Long2Short 蒸馏</text>
+  <text x="422" y="157" font-size="11" fill="#444">• Kimi k1.5 128K RL</text>
+  <text x="422" y="177" font-size="11" fill="#444">• 小模型推理 RL</text>
+  <text x="422" y="197" font-size="11" fill="#444">• QwQ-32B / R1-Distill</text>
+  <text x="422" y="217" font-size="11" fill="#444">• 开源生态繁荣</text>
+
+  <!-- 方向4：未来趋势 -->
+  <rect x="605" y="100" width="175" height="140" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="692" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">未来趋势</text>
+  <text x="617" y="140" font-size="11" fill="#444">• 多模态推理 RL</text>
+  <text x="617" y="157" font-size="11" fill="#444">• 视觉+代码+工具</text>
+  <text x="617" y="177" font-size="11" fill="#444">• 端到端 Agent RL</text>
+  <text x="617" y="197" font-size="11" fill="#444">• 自动课程学习</text>
+  <text x="617" y="217" font-size="11" fill="#444">• 安全对齐融合</text>
+
+  <!-- 核心洞察 -->
+  <rect x="20" y="255" width="760" height="55" rx="8" fill="#e67e22" opacity="0.10" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="400" y="275" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">核心范式转变</text>
+  <text x="400" y="297" text-anchor="middle" font-size="12" fill="#555">RLHF（对齐偏好） → 推理 RL（激发推理） → Agentic-RL（Agent 训练） → 通用 Agent 强化学习</text>
+
+  <!-- 关键数据卡片 -->
+  <rect x="20" y="325" width="245" height="80" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="142" y="348" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">DeepSeek-R1</text>
+  <text x="142" y="368" text-anchor="middle" font-size="11" fill="#666">纯 RL 训练 → 自主推理涌现</text>
+  <text x="142" y="388" text-anchor="middle" font-size="11" fill="#666">AIME 2024: 79.8 分 | Nature 封面</text>
+
+  <rect x="278" y="325" width="245" height="80" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="400" y="348" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">DAPO / VAPO</text>
+  <text x="400" y="368" text-anchor="middle" font-size="11" fill="#666">可复现大规模 RL 训练方案</text>
+  <text x="400" y="388" text-anchor="middle" font-size="11" fill="#666">Clip-Higher + Token-level Value</text>
+
+  <rect x="536" y="325" width="244" height="80" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="658" y="348" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">开源生态</text>
+  <text x="658" y="368" text-anchor="middle" font-size="11" fill="#666">OpenRLHF / veRL / TRL</text>
+  <text x="658" y="388" text-anchor="middle" font-size="11" fill="#666">让个人开发者也能复现 RL 训练</text>
+</svg>

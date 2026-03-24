@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="wm" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e67e22"/>
+    </marker>
+  </defs>
+  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">工作记忆：Scratchpad 模式</text>
+
+  <!-- 无工作记忆 vs 有工作记忆 -->
+  <!-- 左侧：无 -->
+  <rect x="20" y="55" width="370" height="140" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="205" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">❌ 无工作记忆</text>
+  <text x="35" y="100" font-size="11" fill="#444">步骤1：计算总收入 → 得到 ¥5.2M</text>
+  <text x="35" y="120" font-size="11" fill="#444">步骤2：分析产品线 → 忘了总收入</text>
+  <text x="35" y="140" font-size="11" fill="#888">步骤3：识别异常 → 忘了前面结果</text>
+  <text x="35" y="160" font-size="11" fill="#ccc">步骤4：写报告 → 数据混乱</text>
+  <rect x="35" y="170" width="340" height="18" rx="4" fill="#e74c3c" opacity="0.15"/>
+  <text x="205" y="183" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">中间结果丢失 → 最终输出不可靠</text>
+
+  <!-- 右侧：有 -->
+  <rect x="410" y="55" width="370" height="140" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="595" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">✅ 有工作记忆 (Scratchpad)</text>
+  <text x="425" y="100" font-size="11" fill="#444">步骤1：计算总收入 → 写入草稿纸</text>
+  <text x="425" y="120" font-size="11" fill="#444">步骤2：分析产品线 → 参考草稿纸</text>
+  <text x="425" y="140" font-size="11" fill="#444">步骤3：识别异常 → 读取历史结果</text>
+  <text x="425" y="160" font-size="11" fill="#444">步骤4：写报告 → 汇总所有中间结果</text>
+  <rect x="425" y="170" width="340" height="18" rx="4" fill="#27ae60" opacity="0.15"/>
+  <text x="595" y="183" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">全程可追溯 → 输出完整可靠</text>
+
+  <!-- Scratchpad 结构 -->
+  <text x="400" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Scratchpad 数据结构</text>
+  
+  <rect x="20" y="235" width="185" height="110" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="112" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">任务状态</text>
+  <text x="32" y="278" font-size="11" fill="#444">• current_step</text>
+  <text x="32" y="296" font-size="11" fill="#444">• completed_steps</text>
+  <text x="32" y="314" font-size="11" fill="#444">• remaining_tasks</text>
+  <text x="32" y="332" font-size="11" fill="#444">• error_log</text>
+
+  <rect x="215" y="235" width="185" height="110" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="307" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">中间结果</text>
+  <text x="227" y="278" font-size="11" fill="#444">• key-value 存储</text>
+  <text x="227" y="296" font-size="11" fill="#444">• 计算结果缓存</text>
+  <text x="227" y="314" font-size="11" fill="#444">• API 返回数据</text>
+  <text x="227" y="332" font-size="11" fill="#444">• 查询结果集</text>
+
+  <rect x="410" y="235" width="185" height="110" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="502" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">推理链</text>
+  <text x="422" y="278" font-size="11" fill="#444">• 决策日志</text>
+  <text x="422" y="296" font-size="11" fill="#444">• 假设与验证</text>
+  <text x="422" y="314" font-size="11" fill="#444">• 工具调用记录</text>
+  <text x="422" y="332" font-size="11" fill="#444">• 回溯标记</text>
+
+  <rect x="605" y="235" width="175" height="110" rx="8" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="2"/>
+  <text x="692" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">注意力提示</text>
+  <text x="617" y="278" font-size="11" fill="#444">• 关键发现标记</text>
+  <text x="617" y="296" font-size="11" fill="#444">• 待验证事项</text>
+  <text x="617" y="314" font-size="11" fill="#444">• 优先级排序</text>
+  <text x="617" y="332" font-size="11" fill="#444">• 时间约束</text>
+</svg>

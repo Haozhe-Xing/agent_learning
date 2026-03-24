@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <marker id="arr-ev05" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <filter id="sh-ev05">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="380" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="30" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">可观测性三大支柱</text>
+  <text x="400" y="48" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">Logs · Traces · Metrics — 让 Agent 的内部状态透明可见</text>
+
+  <!-- ===== Agent 核心 ===== -->
+  <rect x="300" y="65" width="200" height="65" rx="12" fill="#2c3e50" filter="url(#sh-ev05)"/>
+  <text x="400" y="90" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="white">🤖 Agent 系统</text>
+  <text x="400" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">推理 · 工具调用 · 决策</text>
+
+  <!-- 三条输出线 -->
+  <line x1="340" y1="130" x2="160" y2="170" stroke="#3498db" stroke-width="2" marker-end="url(#arr-ev05)"/>
+  <line x1="400" y1="130" x2="400" y2="170" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-ev05)"/>
+  <line x1="460" y1="130" x2="640" y2="170" stroke="#e67e22" stroke-width="2" marker-end="url(#arr-ev05)"/>
+
+  <!-- ===== 支柱1：日志 ===== -->
+  <rect x="30" y="172" width="240" height="170" rx="10" fill="#3498db" opacity="0.06" stroke="#3498db" stroke-width="2"/>
+  <text x="150" y="196" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">📝 Logs 日志</text>
+  <text x="150" y="214" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">"发生了什么"</text>
+
+  <rect x="50" y="228" width="200" height="20" rx="4" fill="#3498db" opacity="0.1"/>
+  <text x="150" y="242" text-anchor="middle" font-family="Courier New, monospace" font-size="8" fill="#2980b9">[INFO] 收到用户查询</text>
+  <rect x="50" y="252" width="200" height="20" rx="4" fill="#3498db" opacity="0.1"/>
+  <text x="150" y="266" text-anchor="middle" font-family="Courier New, monospace" font-size="8" fill="#2980b9">[INFO] 调用 search 工具</text>
+  <rect x="50" y="276" width="200" height="20" rx="4" fill="#e74c3c" opacity="0.1"/>
+  <text x="150" y="290" text-anchor="middle" font-family="Courier New, monospace" font-size="8" fill="#e74c3c">[ERROR] 工具超时 3.2s</text>
+  <rect x="50" y="300" width="200" height="20" rx="4" fill="#f39c12" opacity="0.1"/>
+  <text x="150" y="314" text-anchor="middle" font-family="Courier New, monospace" font-size="8" fill="#e67e22">[WARN] Token 用量 4500</text>
+
+  <text x="150" y="336" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#2980b9">结构化 JSON 格式</text>
+
+  <!-- ===== 支柱2：追踪 ===== -->
+  <rect x="285" y="172" width="230" height="170" rx="10" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="196" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">🔗 Traces 追踪</text>
+  <text x="400" y="214" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">"怎么执行的"</text>
+
+  <!-- Trace 瀑布图 -->
+  <rect x="305" y="228" width="190" height="16" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="400" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">agent_run ─────────── 5.2s</text>
+
+  <rect x="320" y="248" width="140" height="14" rx="3" fill="#3498db" opacity="0.8"/>
+  <text x="390" y="259" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">llm_call ──────── 2.1s</text>
+
+  <rect x="320" y="266" width="100" height="14" rx="3" fill="#9b59b6" opacity="0.8"/>
+  <text x="370" y="277" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">tool_search ── 1.8s</text>
+
+  <rect x="320" y="284" width="120" height="14" rx="3" fill="#3498db" opacity="0.8"/>
+  <text x="380" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">llm_call ──────  1.3s</text>
+
+  <rect x="305" y="304" width="190" height="16" rx="3" fill="#27ae60" opacity="0.3"/>
+  <text x="400" y="316" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#27ae60">parent_id → child spans</text>
+
+  <text x="400" y="336" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">端到端调用链 + 耗时分析</text>
+
+  <!-- ===== 支柱3：指标 ===== -->
+  <rect x="530" y="172" width="240" height="170" rx="10" fill="#e67e22" opacity="0.06" stroke="#e67e22" stroke-width="2"/>
+  <text x="650" y="196" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">📊 Metrics 指标</text>
+  <text x="650" y="214" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">"运行得怎么样"</text>
+
+  <!-- 指标列表 -->
+  <rect x="550" y="228" width="200" height="22" rx="4" fill="#e67e22" opacity="0.1"/>
+  <text x="560" y="243" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">⏱️ 平均响应时间：3.2s</text>
+
+  <rect x="550" y="254" width="200" height="22" rx="4" fill="#e67e22" opacity="0.1"/>
+  <text x="560" y="269" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">💰 Token 消耗：4500/次</text>
+
+  <rect x="550" y="280" width="200" height="22" rx="4" fill="#e67e22" opacity="0.1"/>
+  <text x="560" y="295" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">✅ 成功率：95.3%</text>
+
+  <rect x="550" y="306" width="200" height="22" rx="4" fill="#e67e22" opacity="0.1"/>
+  <text x="560" y="321" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">🔧 工具调用次数：2.1/次</text>
+
+  <text x="650" y="340" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">聚合统计 → 仪表盘告警</text>
+
+  <!-- 底部：汇聚到监控面板 -->
+  <line x1="150" y1="342" x2="340" y2="365" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-ev05)"/>
+  <line x1="400" y1="342" x2="400" y2="365" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-ev05)"/>
+  <line x1="650" y1="342" x2="460" y2="365" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-ev05)"/>
+
+  <rect x="340" y="358" width="120" height="16" rx="4" fill="#2c3e50"/>
+  <text x="400" y="370" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">📈 监控面板</text>
+</svg>

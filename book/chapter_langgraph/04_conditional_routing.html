@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -455,6 +454,7 @@
 <h3 id="循环的力量与风险"><a class="header" href="#循环的力量与风险">循环的力量与风险</a></h3>
 <p>条件路由最强大的用法是构造<strong>循环</strong>——让某个节点的输出可以回到之前的节点。比如"代码审查 → 修复 → 再审查 → 再修复"这样的迭代流程。但循环也带来了无限循环的风险：如果条件判断逻辑有 bug，Agent 可能永远在循环中出不来。因此，<strong>设置最大迭代次数是必须的安全措施。</strong></p>
 <p>下面我们用一个"代码审查 Agent"来演示条件路由和循环控制。这个 Agent 会分析代码、发现问题、修复代码，然后重新审查——直到代码通过审查或达到最大迭代次数。</p>
+<p><img src="../svg/chapter_langgraph_04_review_loop.svg" alt="条件路由与循环控制——代码审查Agent示例" /></p>
 <pre><code class="language-python">from langgraph.graph import StateGraph, END, START
 from typing import TypedDict, Optional, Literal
 from langchain_openai import ChatOpenAI

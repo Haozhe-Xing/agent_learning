@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="320" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">KL 散度直觉理解</text>
+
+  <!-- 核心概念 -->
+  <rect x="200" y="50" width="400" height="40" rx="8" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+  <text x="400" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">D_KL(P || Q) = 用 Q 近似 P 时损失的信息量</text>
+
+  <!-- 直觉类比 -->
+  <rect x="20" y="105" width="370" height="100" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="205" y="128" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🌤 气象预报类比</text>
+  <text x="35" y="150" font-size="11" fill="#444">P = 真实天气分布（晴60%、雨30%、雪10%）</text>
+  <text x="35" y="170" font-size="11" fill="#444">Q = 你的预测模型（晴80%、雨15%、雪5%）</text>
+  <text x="35" y="190" font-size="11" fill="#e74c3c" font-weight="bold">KL 散度 = 你的模型有多"不准"</text>
+
+  <rect x="410" y="105" width="370" height="100" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="595" y="128" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🧠 三个关键直觉</text>
+  <text x="425" y="150" font-size="11" fill="#444">• KL ≥ 0，P = Q 时为 0</text>
+  <text x="425" y="170" font-size="11" fill="#444">• 不对称：D(P||Q) ≠ D(Q||P)</text>
+  <text x="425" y="190" font-size="11" fill="#444">• 单位：bits（以2为底）或 nats（以e为底）</text>
+
+  <!-- 在 Agentic-RL 中的应用 -->
+  <text x="400" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">在 Agentic-RL 中的作用</text>
+
+  <rect x="20" y="242" width="245" height="65" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="142" y="262" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">PPO: KL 惩罚项</text>
+  <text x="32" y="282" font-size="11" fill="#444">防止策略偏离参考模型太远</text>
+  <text x="32" y="298" font-size="11" fill="#444">β · D_KL(π_θ || π_ref)</text>
+
+  <rect x="278" y="242" width="245" height="65" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="262" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">DPO: 隐式 KL 约束</text>
+  <text x="293" y="282" font-size="11" fill="#444">偏好对中的隐式正则化</text>
+  <text x="293" y="298" font-size="11" fill="#444">无需显式计算 KL</text>
+
+  <rect x="536" y="242" width="244" height="65" rx="8" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="2"/>
+  <text x="658" y="262" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">GRPO/DAPO: 去 KL 化</text>
+  <text x="549" y="282" font-size="11" fill="#444">移除 KL 约束，更激进探索</text>
+  <text x="549" y="298" font-size="11" fill="#444">用 Clip 机制替代稳定性</text>
+</svg>

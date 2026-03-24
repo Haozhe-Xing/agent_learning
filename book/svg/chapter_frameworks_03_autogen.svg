@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2980b9"/>
+    </marker>
+  </defs>
+  <rect width="800" height="420" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">AutoGen 0.4：事件驱动多Agent对话架构</text>
+
+  <!-- Runtime 大框 -->
+  <rect x="40" y="55" width="720" height="340" rx="12" fill="#2980b9" opacity="0.06" stroke="#2980b9" stroke-width="2"/>
+  <text x="400" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#2980b9">⚡ 异步运行时 (Async Runtime)</text>
+
+  <!-- Agent 1: Assistant -->
+  <rect x="70" y="95" width="200" height="100" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="170" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">🤖 AssistantAgent</text>
+  <text x="170" y="138" text-anchor="middle" font-size="10" fill="#555">LLM 驱动的对话代理</text>
+  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#555">支持工具调用</text>
+  <rect x="90" y="165" width="160" height="22" rx="5" fill="#e74c3c" opacity="0.15"/>
+  <text x="170" y="181" text-anchor="middle" font-size="10" fill="#e74c3c">on_message → 响应</text>
+
+  <!-- Agent 2: CodeExecutor -->
+  <rect x="300" y="95" width="200" height="100" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">💻 CodeExecutorAgent</text>
+  <text x="400" y="138" text-anchor="middle" font-size="10" fill="#555">沙箱代码执行</text>
+  <text x="400" y="155" text-anchor="middle" font-size="10" fill="#555">Docker / 本地隔离</text>
+  <rect x="320" y="165" width="160" height="22" rx="5" fill="#27ae60" opacity="0.15"/>
+  <text x="400" y="181" text-anchor="middle" font-size="10" fill="#27ae60">执行 → 返回结果</text>
+
+  <!-- Agent 3: UserProxy -->
+  <rect x="530" y="95" width="200" height="100" rx="10" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="630" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">👤 UserProxyAgent</text>
+  <text x="630" y="138" text-anchor="middle" font-size="10" fill="#555">代理人类参与</text>
+  <text x="630" y="155" text-anchor="middle" font-size="10" fill="#555">Human-in-the-Loop</text>
+  <rect x="550" y="165" width="160" height="22" rx="5" fill="#8e44ad" opacity="0.15"/>
+  <text x="630" y="181" text-anchor="middle" font-size="10" fill="#8e44ad">审批 → 确认/拒绝</text>
+
+  <!-- 消息传递 -->
+  <line x1="270" y1="145" x2="298" y2="145" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#ar)"/>
+  <line x1="500" y1="145" x2="528" y2="145" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#ar)"/>
+  <text x="285" y="135" text-anchor="middle" font-size="9" fill="#2980b9">消息</text>
+  <text x="515" y="135" text-anchor="middle" font-size="9" fill="#2980b9">消息</text>
+
+  <!-- Team 模式 -->
+  <rect x="70" y="215" width="320" height="80" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="230" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">🔄 RoundRobinGroupChat</text>
+  <text x="230" y="258" text-anchor="middle" font-size="10" fill="#555">Agent 按顺序轮流发言</text>
+  <text x="230" y="275" text-anchor="middle" font-size="10" fill="#555">适合：代码生成 → 执行 → 修正 循环</text>
+
+  <rect x="410" y="215" width="320" height="80" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="570" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">🎯 SelectorGroupChat</text>
+  <text x="570" y="258" text-anchor="middle" font-size="10" fill="#555">LLM 动态选择下一个发言者</text>
+  <text x="570" y="275" text-anchor="middle" font-size="10" fill="#555">适合：需要灵活协调的复杂讨论</text>
+
+  <!-- 终止条件 -->
+  <rect x="70" y="310" width="660" height="70" rx="10" fill="white" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="400" y="332" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">终止条件 Termination Conditions</text>
+  <text x="170" y="355" text-anchor="middle" font-size="10" fill="#555">🔢 MaxMessageTermination</text>
+  <text x="340" y="355" text-anchor="middle" font-size="10" fill="#555">📝 TextMentionTermination</text>
+  <text x="520" y="355" text-anchor="middle" font-size="10" fill="#555">✅ HandoffTermination</text>
+  <text x="670" y="355" text-anchor="middle" font-size="10" fill="#555">🔗 可组合 | / &amp;</text>
+</svg>

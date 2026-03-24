@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="cg" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3498db"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">结构化代码生成与质量控制流程</text>
+
+  <!-- 流程 -->
+  <rect x="30" y="60" width="140" height="50" rx="8" fill="#3498db" opacity="0.9"/>
+  <text x="100" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">需求描述</text>
+  <text x="100" y="98" text-anchor="middle" font-size="10" fill="#d4e6f1">自然语言</text>
+
+  <line x1="170" y1="85" x2="200" y2="85" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#cg)"/>
+
+  <rect x="202" y="55" width="170" height="60" rx="8" fill="white" stroke="#e67e22" stroke-width="2"/>
+  <text x="287" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">上下文构建</text>
+  <text x="287" y="98" text-anchor="middle" font-size="10" fill="#555">代码库检索 + 风格分析</text>
+
+  <line x1="372" y1="85" x2="402" y2="85" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#cg)"/>
+
+  <rect x="404" y="55" width="170" height="60" rx="8" fill="white" stroke="#8e44ad" stroke-width="2"/>
+  <text x="489" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">LLM 生成</text>
+  <text x="489" y="98" text-anchor="middle" font-size="10" fill="#555">Pydantic 结构化输出</text>
+
+  <line x1="574" y1="85" x2="604" y2="85" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#cg)"/>
+
+  <rect x="606" y="55" width="170" height="60" rx="8" fill="white" stroke="#27ae60" stroke-width="2"/>
+  <text x="691" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">质量验证</text>
+  <text x="691" y="98" text-anchor="middle" font-size="10" fill="#555">语法 + 测试 + 风格</text>
+
+  <!-- 代码生成四大挑战 -->
+  <text x="400" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">代码生成四大挑战与应对</text>
+
+  <rect x="30" y="163" width="175" height="90" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="117" y="186" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">语法正确性</text>
+  <text x="117" y="208" text-anchor="middle" font-size="10" fill="#555">一个括号不匹配就报错</text>
+  <text x="117" y="228" text-anchor="middle" font-size="10" fill="#27ae60">→ AST 语法验证</text>
+  <text x="117" y="243" text-anchor="middle" font-size="9" fill="#888">自动解析，0容忍</text>
+
+  <rect x="220" y="163" width="175" height="90" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="307" y="186" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">逻辑正确性</text>
+  <text x="307" y="208" text-anchor="middle" font-size="10" fill="#555">不能只是"看起来对"</text>
+  <text x="307" y="228" text-anchor="middle" font-size="10" fill="#27ae60">→ 自动生成测试</text>
+  <text x="307" y="243" text-anchor="middle" font-size="9" fill="#888">边界条件覆盖</text>
+
+  <rect x="410" y="163" width="175" height="90" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="497" y="186" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">风格一致性</text>
+  <text x="497" y="208" text-anchor="middle" font-size="10" fill="#555">与现有代码风格匹配</text>
+  <text x="497" y="228" text-anchor="middle" font-size="10" fill="#27ae60">→ 上下文示例注入</text>
+  <text x="497" y="243" text-anchor="middle" font-size="9" fill="#888">Few-shot 风格学习</text>
+
+  <rect x="600" y="163" width="175" height="90" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="687" y="186" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">边界处理</text>
+  <text x="687" y="208" text-anchor="middle" font-size="10" fill="#555">空值、异常、并发</text>
+  <text x="687" y="228" text-anchor="middle" font-size="10" fill="#27ae60">→ Prompt 约束</text>
+  <text x="687" y="243" text-anchor="middle" font-size="9" fill="#888">"考虑边界情况"</text>
+
+  <!-- 结构化输出 -->
+  <rect x="30" y="275" width="740" height="85" rx="10" fill="white" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="400" y="298" text-anchor="middle" font-size="13" font-weight="bold" fill="#2980b9">结构化代码生成（Pydantic Schema）</text>
+
+  <rect x="50" y="310" width="200" height="38" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
+  <text x="150" y="334" text-anchor="middle" font-size="10" fill="#555">code: str → 生成的代码</text>
+
+  <rect x="265" y="310" width="200" height="38" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
+  <text x="365" y="334" text-anchor="middle" font-size="10" fill="#555">explanation: str → 设计说明</text>
+
+  <rect x="480" y="310" width="270" height="38" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
+  <text x="615" y="334" text-anchor="middle" font-size="10" fill="#555">test_cases: list → 建议测试用例</text>
+</svg>

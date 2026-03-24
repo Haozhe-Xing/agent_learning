@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="rp" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <rect width="800" height="320" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">报告自动生成流水线</text>
+
+  <!-- 流程 -->
+  <rect x="30" y="65" width="120" height="50" rx="8" fill="#3498db" opacity="0.9"/>
+  <text x="90" y="88" text-anchor="middle" font-size="11" fill="white" font-weight="bold">分析结果</text>
+  <text x="90" y="104" text-anchor="middle" font-size="9" fill="#d4e6f1">数据 + 图表</text>
+
+  <line x1="150" y1="90" x2="180" y2="90" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#rp)"/>
+
+  <rect x="182" y="60" width="150" height="60" rx="8" fill="white" stroke="#8e44ad" stroke-width="2"/>
+  <text x="257" y="83" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">LLM 洞察</text>
+  <text x="257" y="103" text-anchor="middle" font-size="10" fill="#555">提炼关键发现</text>
+
+  <line x1="332" y1="90" x2="362" y2="90" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#rp)"/>
+
+  <rect x="364" y="60" width="150" height="60" rx="8" fill="white" stroke="#e67e22" stroke-width="2"/>
+  <text x="439" y="83" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">模板渲染</text>
+  <text x="439" y="103" text-anchor="middle" font-size="10" fill="#555">Markdown 结构化</text>
+
+  <line x1="514" y1="90" x2="544" y2="90" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#rp)"/>
+
+  <rect x="546" y="60" width="150" height="60" rx="8" fill="white" stroke="#27ae60" stroke-width="2"/>
+  <text x="621" y="83" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">质量审核</text>
+  <text x="621" y="103" text-anchor="middle" font-size="10" fill="#555">完整性 + 一致性</text>
+
+  <line x1="696" y1="90" x2="726" y2="90" stroke="#27ae60" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#rp)"/>
+
+  <rect x="728" y="65" width="50" height="50" rx="25" fill="#27ae60" opacity="0.9"/>
+  <text x="753" y="94" text-anchor="middle" font-size="12" fill="white" font-weight="bold">📄</text>
+
+  <!-- 报告结构 -->
+  <text x="400" y="152" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">自动生成报告结构</text>
+
+  <rect x="30" y="168" width="145" height="130" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="102" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">📋 摘要</text>
+  <text x="102" y="210" text-anchor="middle" font-size="10" fill="#555">核心发现</text>
+  <text x="102" y="228" text-anchor="middle" font-size="10" fill="#555">关键指标</text>
+  <text x="102" y="246" text-anchor="middle" font-size="10" fill="#555">结论概述</text>
+  <rect x="40" y="260" width="125" height="25" rx="4" fill="#e8f4fd"/>
+  <text x="102" y="278" text-anchor="middle" font-size="9" fill="#3498db">LLM 自动撰写</text>
+
+  <rect x="190" y="168" width="145" height="130" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="262" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">📊 数据详情</text>
+  <text x="262" y="210" text-anchor="middle" font-size="10" fill="#555">统计表格</text>
+  <text x="262" y="228" text-anchor="middle" font-size="10" fill="#555">趋势图表</text>
+  <text x="262" y="246" text-anchor="middle" font-size="10" fill="#555">对比分析</text>
+  <rect x="200" y="260" width="125" height="25" rx="4" fill="#f0e6f6"/>
+  <text x="262" y="278" text-anchor="middle" font-size="9" fill="#8e44ad">自动化生成</text>
+
+  <rect x="350" y="168" width="145" height="130" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="422" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">💡 洞察</text>
+  <text x="422" y="210" text-anchor="middle" font-size="10" fill="#555">异常分析</text>
+  <text x="422" y="228" text-anchor="middle" font-size="10" fill="#555">根因推测</text>
+  <text x="422" y="246" text-anchor="middle" font-size="10" fill="#555">影响评估</text>
+  <rect x="360" y="260" width="125" height="25" rx="4" fill="#fdf2e9"/>
+  <text x="422" y="278" text-anchor="middle" font-size="9" fill="#e67e22">LLM 深度分析</text>
+
+  <rect x="510" y="168" width="145" height="130" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="582" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">📝 建议</text>
+  <text x="582" y="210" text-anchor="middle" font-size="10" fill="#555">行动建议</text>
+  <text x="582" y="228" text-anchor="middle" font-size="10" fill="#555">优先级排序</text>
+  <text x="582" y="246" text-anchor="middle" font-size="10" fill="#555">预期效果</text>
+  <rect x="520" y="260" width="125" height="25" rx="4" fill="#e8f8e8"/>
+  <text x="582" y="278" text-anchor="middle" font-size="9" fill="#27ae60">LLM 策略建议</text>
+
+  <rect x="670" y="168" width="105" height="130" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="722" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">📎 附录</text>
+  <text x="722" y="210" text-anchor="middle" font-size="10" fill="#555">原始 SQL</text>
+  <text x="722" y="228" text-anchor="middle" font-size="10" fill="#555">数据来源</text>
+  <text x="722" y="246" text-anchor="middle" font-size="10" fill="#555">方法说明</text>
+  <rect x="680" y="260" width="85" height="25" rx="4" fill="#fce4e4"/>
+  <text x="722" y="278" text-anchor="middle" font-size="9" fill="#e74c3c">自动追溯</text>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="sc" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e67e22"/>
+    </marker>
+  </defs>
+  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">搜索引擎 + 计算器 Agent 架构</text>
+
+  <!-- 用户问题 -->
+  <rect x="250" y="50" width="300" height="35" rx="8" fill="#2980b9" opacity="0.25" stroke="#2980b9" stroke-width="2"/>
+  <text x="400" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">💬 "地球到月球多远？光飞一趟要多少秒？"</text>
+
+  <line x1="400" y1="85" x2="400" y2="110" stroke="#e67e22" stroke-width="1.5" marker-end="url(#sc)"/>
+
+  <!-- ReAct 循环 -->
+  <rect x="150" y="110" width="500" height="45" rx="8" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">🧠 ReAct 推理循环</text>
+  <text x="400" y="147" text-anchor="middle" font-size="10" fill="#888">Thought → Action → Observation → ... → Final Answer</text>
+
+  <!-- 步骤分解 -->
+  <rect x="20" y="170" width="185" height="110" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="112" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">Step 1: 搜索</text>
+  <text x="32" y="210" font-size="11" fill="#444">🔍 web_search(</text>
+  <text x="32" y="226" font-size="11" fill="#444">  "地球到月球距离")</text>
+  <text x="32" y="248" font-size="11" fill="#27ae60">→ 384,400 km</text>
+  <text x="32" y="266" font-size="10" fill="#888">来源：NASA 数据</text>
+
+  <rect x="215" y="170" width="185" height="110" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="307" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Step 2: 搜索</text>
+  <text x="227" y="210" font-size="11" fill="#444">🔍 web_search(</text>
+  <text x="227" y="226" font-size="11" fill="#444">  "光速 km/s")</text>
+  <text x="227" y="248" font-size="11" fill="#27ae60">→ 299,792 km/s</text>
+  <text x="227" y="266" font-size="10" fill="#888">物理常数确认</text>
+
+  <rect x="410" y="170" width="185" height="110" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="502" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">Step 3: 计算</text>
+  <text x="422" y="210" font-size="11" fill="#444">🧮 calculator(</text>
+  <text x="422" y="226" font-size="11" fill="#444">  384400 / 299792)</text>
+  <text x="422" y="248" font-size="11" fill="#27ae60">→ 1.282 秒</text>
+  <text x="422" y="266" font-size="10" fill="#888">精确到小数点</text>
+
+  <rect x="605" y="170" width="175" height="110" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="692" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">Step 4: 整合</text>
+  <text x="617" y="210" font-size="11" fill="#444">📝 生成回答</text>
+  <text x="617" y="230" font-size="11" fill="#444">引用数据来源</text>
+  <text x="617" y="250" font-size="11" fill="#444">展示推理过程</text>
+  <text x="617" y="266" font-size="10" fill="#888">可追溯可验证</text>
+
+  <!-- 工具栈 -->
+  <rect x="20" y="295" width="760" height="50" rx="8" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="400" y="315" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">工具组合的力量</text>
+  <text x="200" y="335" text-anchor="middle" font-size="11" fill="#555">🔍 搜索引擎：获取实时信息</text>
+  <text x="500" y="335" text-anchor="middle" font-size="11" fill="#555">🧮 计算器：精确数学推理</text>
+  <text x="700" y="335" text-anchor="middle" font-size="11" fill="#555">组合 > 单一</text>
+</svg>

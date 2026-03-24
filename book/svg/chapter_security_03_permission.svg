@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="440" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 权限控制与沙箱隔离架构</text>
+
+  <!-- 三层防线 -->
+  <!-- 外层：网络隔离 -->
+  <rect x="30" y="55" width="740" height="370" rx="12" fill="#e74c3c" opacity="0.06" stroke="#e74c3c" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">🛡 第一层：网络与环境隔离</text>
+  <text x="400" y="96" text-anchor="middle" font-size="10" fill="#777">Docker 容器 / 网络策略 / 资源配额限制</text>
+
+  <!-- 中层：权限系统 -->
+  <rect x="60" y="110" width="680" height="200" rx="10" fill="#e67e22" opacity="0.08" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="400" y="133" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">🔐 第二层：权限控制系统</text>
+
+  <!-- 权限类型 -->
+  <rect x="90" y="145" width="150" height="70" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="165" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">文件权限</text>
+  <text x="165" y="183" text-anchor="middle" font-size="10" fill="#555">READ_FILE</text>
+  <text x="165" y="198" text-anchor="middle" font-size="10" fill="#555">WRITE_FILE</text>
+
+  <rect x="260" y="145" width="150" height="70" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="335" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">执行权限</text>
+  <text x="335" y="183" text-anchor="middle" font-size="10" fill="#555">EXECUTE_CODE</text>
+  <text x="335" y="198" text-anchor="middle" font-size="10" fill="#555">RUN_SHELL</text>
+
+  <rect x="430" y="145" width="150" height="70" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="505" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">网络权限</text>
+  <text x="505" y="183" text-anchor="middle" font-size="10" fill="#555">HTTP_REQUEST</text>
+  <text x="505" y="198" text-anchor="middle" font-size="10" fill="#555">DATABASE_ACCESS</text>
+
+  <rect x="600" y="145" width="120" height="70" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="660" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">管理权限</text>
+  <text x="660" y="183" text-anchor="middle" font-size="10" fill="#555">ADMIN</text>
+  <text x="660" y="198" text-anchor="middle" font-size="10" fill="#555">GRANT_PERM</text>
+
+  <!-- 预设角色 -->
+  <rect x="90" y="230" width="190" height="65" rx="8" fill="#e8f8e8" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="185" y="250" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">👁 只读 Agent</text>
+  <text x="185" y="268" text-anchor="middle" font-size="10" fill="#555">READ_FILE | HTTP_REQUEST</text>
+  <text x="185" y="283" text-anchor="middle" font-size="9" fill="#888">信息检索、问答场景</text>
+
+  <rect x="300" y="230" width="190" height="65" rx="8" fill="#e8f4fd" stroke="#3498db" stroke-width="1.5"/>
+  <text x="395" y="250" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">✍️ 标准 Agent</text>
+  <text x="395" y="268" text-anchor="middle" font-size="10" fill="#555">读/写文件 + 网络请求</text>
+  <text x="395" y="283" text-anchor="middle" font-size="9" fill="#888">日常开发助手场景</text>
+
+  <rect x="510" y="230" width="210" height="65" rx="8" fill="#fdf2e9" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="615" y="250" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">⚡ 高权限 Agent</text>
+  <text x="615" y="268" text-anchor="middle" font-size="10" fill="#555">全部权限（需审批）</text>
+  <text x="615" y="283" text-anchor="middle" font-size="9" fill="#888">运维自动化场景</text>
+
+  <!-- 内层：操作审计 -->
+  <rect x="60" y="325" width="680" height="85" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="348" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">📋 第三层：操作审计与兜底保护</text>
+
+  <rect x="90" y="360" width="180" height="38" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="180" y="384" text-anchor="middle" font-size="10" fill="#555">🔍 所有操作记录日志</text>
+
+  <rect x="290" y="360" width="200" height="38" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="390" y="384" text-anchor="middle" font-size="10" fill="#555">⏱ 超时自动终止 + 重试限制</text>
+
+  <rect x="510" y="360" width="210" height="38" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="615" y="384" text-anchor="middle" font-size="10" fill="#555">🚨 敏感操作需人工确认</text>
+</svg>

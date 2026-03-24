@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -458,6 +457,7 @@
 <li><strong>构建图</strong>：用 <code>add_node</code> 添加节点，用 <code>add_edge</code> 和 <code>add_conditional_edges</code> 连接它们</li>
 <li><strong>编译运行</strong>：调用 <code>compile()</code> 得到可执行的 Agent</li>
 </ol>
+<p><img src="../svg/chapter_langgraph_03_graph_agent.svg" alt="Graph Agent执行流程" /></p>
 <p>下面的代码中，我们使用 LangGraph 内置的 <code>MessagesState</code>（消息列表状态）、<code>ToolNode</code>（自动执行工具）和 <code>tools_condition</code>（判断是否需要调用工具），这些是 LangGraph 为常见 Agent 模式提供的快捷组件。</p>
 <pre><code class="language-python"># first_graph_agent.py
 from langgraph.graph import StateGraph, END, START, MessagesState

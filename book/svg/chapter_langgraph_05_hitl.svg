@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <marker id="arr-lg05" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-grn-lg05" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arr-red-lg05" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <filter id="sh-lg05">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="400" fill="#f8f9fa" rx="12"/>
+
+  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Human-in-the-Loop 人机协作流程</text>
+  <text x="400" y="50" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">Agent 调用危险工具前自动暂停，等待人工审批后恢复执行</text>
+
+  <!-- ===== START ===== -->
+  <circle cx="70" cy="170" r="22" fill="#2c3e50" filter="url(#sh-lg05)"/>
+  <text x="70" y="167" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">▶</text>
+  <text x="70" y="179" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">START</text>
+
+  <line x1="92" y1="170" x2="130" y2="170" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg05)"/>
+
+  <!-- ===== Agent 节点 ===== -->
+  <rect x="132" y="140" width="120" height="60" rx="10" fill="#3498db" filter="url(#sh-lg05)"/>
+  <text x="192" y="164" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🤖 Agent</text>
+  <text x="192" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4e6f9">LLM 决策</text>
+  <text x="192" y="194" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0d4f1">bind_tools()</text>
+
+  <line x1="252" y1="170" x2="298" y2="170" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg05)"/>
+
+  <!-- ===== 安全检查菱形 ===== -->
+  <polygon points="355,130 410,170 355,210 300,170" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#sh-lg05)"/>
+  <text x="355" y="165" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">工具</text>
+  <text x="355" y="178" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">安全？</text>
+
+  <!-- ===== 安全工具分支 → 直接执行 ===== -->
+  <line x1="355" y1="130" x2="355" y2="82" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-grn-lg05)"/>
+  <text x="330" y="108" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">安全 ✅</text>
+
+  <rect x="295" y="42" width="120" height="40" rx="8" fill="#27ae60" filter="url(#sh-lg05)"/>
+  <text x="355" y="60" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">🔧 直接执行</text>
+  <text x="355" y="74" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d4f0e0">safe_tools</text>
+
+  <!-- 安全工具 → Agent（循环） -->
+  <path d="M295,62 Q180,62 180,128 L180,140" fill="none" stroke="#3498db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-lg05)"/>
+  <text x="226" y="78" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#3498db">继续推理</text>
+
+  <!-- ===== 无工具分支 → END ===== -->
+  <line x1="355" y1="210" x2="355" y2="260" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg05)"/>
+  <text x="328" y="240" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#7f8c8d">无工具</text>
+
+  <circle cx="355" cy="282" r="18" fill="#7f8c8d" filter="url(#sh-lg05)"/>
+  <text x="355" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">END</text>
+
+  <!-- ===== 危险工具分支 ===== -->
+  <line x1="410" y1="170" x2="460" y2="170" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-red-lg05)"/>
+  <text x="436" y="162" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">危险 ⚠️</text>
+
+  <!-- ===== 暂停 ===== -->
+  <rect x="462" y="140" width="100" height="60" rx="10" fill="#e74c3c" filter="url(#sh-lg05)"/>
+  <text x="512" y="164" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">⏸ 暂停</text>
+  <text x="512" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f5c6cb">interrupt_before</text>
+  <text x="512" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f5c6cb">保存 Checkpoint</text>
+
+  <line x1="562" y1="170" x2="600" y2="170" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-lg05)"/>
+
+  <!-- ===== 人工审批 ===== -->
+  <rect x="602" y="128" width="130" height="84" rx="10" fill="white" stroke="#e67e22" stroke-width="2" filter="url(#sh-lg05)"/>
+  <text x="667" y="150" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">👤 人工审批</text>
+  <text x="667" y="168" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">查看工具调用详情</text>
+  <text x="667" y="184" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">确认或拒绝操作</text>
+  <rect x="622" y="192" width="90" height="16" rx="4" fill="#e67e22" opacity="0.1"/>
+  <text x="667" y="204" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">等待用户输入</text>
+
+  <!-- 审批通过 → 执行 -->
+  <line x1="667" y1="212" x2="667" y2="258" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-grn-lg05)"/>
+  <text x="697" y="238" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">通过 ✅</text>
+
+  <rect x="607" y="260" width="120" height="44" rx="8" fill="#27ae60" filter="url(#sh-lg05)"/>
+  <text x="667" y="280" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">🔧 执行工具</text>
+  <text x="667" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d4f0e0">invoke(None, config)</text>
+
+  <!-- 执行 → Agent（循环恢复） -->
+  <path d="M607,282 Q560,310 460,330 Q250,360 192,200" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-lg05)"/>
+  <text x="370" y="348" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#3498db">🔁 从 Checkpoint 恢复，继续推理</text>
+
+  <!-- 审批拒绝 → 取消 -->
+  <line x1="732" y1="170" x2="760" y2="170" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-red-lg05)"/>
+  <text x="748" y="162" font-family="Arial, sans-serif" font-size="8" fill="#e74c3c">拒绝</text>
+
+  <circle cx="774" cy="170" r="14" fill="#e74c3c"/>
+  <text x="774" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">✗</text>
+
+  <!-- ===== 底部分类说明 ===== -->
+  <rect x="50" y="370" width="165" height="22" rx="4" fill="#27ae60" opacity="0.12"/>
+  <text x="132" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">🟢 安全工具：search, read</text>
+
+  <rect x="230" y="370" width="210" height="22" rx="4" fill="#e74c3c" opacity="0.12"/>
+  <text x="335" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">🔴 危险工具：send_email, delete_file</text>
+
+  <rect x="455" y="370" width="295" height="22" rx="4" fill="#3498db" opacity="0.12"/>
+  <text x="602" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#2980b9">💡 Checkpointer 保存状态 → 暂停 → 审批后从断点恢复</text>
+</svg>

@@ -14,6 +14,8 @@ LangGraph 通过 **Checkpointer**（检查点）机制实现这一能力。Check
 4. **人工审批**：在外部获取用户确认
 5. **恢复执行**：审批通过后，用 `app.invoke(None, config)` 从上次暂停的位置继续
 
+![Human-in-the-Loop人机协作流程](../svg/chapter_langgraph_05_hitl.svg)
+
 ```python
 from langgraph.graph import StateGraph, END, START, MessagesState
 from langgraph.checkpoint.memory import MemorySaver

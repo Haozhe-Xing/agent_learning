@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="ca1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3498db"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">上下文工程前沿技术突破</text>
+
+  <!-- 三大技术方向 -->
+  <!-- 方向1：百万级窗口 -->
+  <rect x="20" y="55" width="245" height="165" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="142" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">百万级上下文窗口</text>
+  <text x="35" y="100" font-size="11" fill="#444">4K → 128K → 1M → 10M tokens</text>
+  <line x1="35" y1="110" x2="250" y2="110" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4"/>
+  <text x="35" y="128" font-size="11" fill="#444">• Gemini 1.5: 1M tokens 原生</text>
+  <text x="35" y="146" font-size="11" fill="#444">• Claude: 200K 高效利用</text>
+  <text x="35" y="164" font-size="11" fill="#444">• Ring Attention 分布式</text>
+  <text x="35" y="182" font-size="11" fill="#444">• 从"能放"到"会用"</text>
+  <rect x="35" y="192" width="215" height="20" rx="4" fill="#e74c3c" opacity="0.15"/>
+  <text x="142" y="207" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">关键：注意力带宽 ≠ 窗口大小</text>
+
+  <!-- 方向2：注意力优化 -->
+  <rect x="278" y="55" width="245" height="165" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">注意力带宽优化</text>
+  <text x="293" y="100" font-size="11" fill="#444">Lost in the Middle → 精准定位</text>
+  <line x1="293" y1="110" x2="508" y2="110" stroke="#3498db" stroke-width="1" stroke-dasharray="4"/>
+  <text x="293" y="128" font-size="11" fill="#444">• 结构化标记 (XML/JSON)</text>
+  <text x="293" y="146" font-size="11" fill="#444">• 信息密度排列策略</text>
+  <text x="293" y="164" font-size="11" fill="#444">• 选择性注意力机制</text>
+  <text x="293" y="182" font-size="11" fill="#444">• 动态上下文压缩</text>
+  <rect x="293" y="192" width="215" height="20" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="400" y="207" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">关键：每个 token 的利用效率</text>
+
+  <!-- 方向3：Agent专用策略 -->
+  <rect x="536" y="55" width="244" height="165" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="658" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">Agent 专用策略</text>
+  <text x="549" y="100" font-size="11" fill="#444">多轮对话 → 上下文复用</text>
+  <line x1="549" y1="110" x2="765" y2="110" stroke="#27ae60" stroke-width="1" stroke-dasharray="4"/>
+  <text x="549" y="128" font-size="11" fill="#444">• Prompt Caching (降本)</text>
+  <text x="549" y="146" font-size="11" fill="#444">• 渐进式上下文构建</text>
+  <text x="549" y="164" font-size="11" fill="#444">• 记忆外挂 + 按需加载</text>
+  <text x="549" y="182" font-size="11" fill="#444">• 上下文蒸馏与摘要</text>
+  <rect x="549" y="192" width="215" height="20" rx="4" fill="#27ae60" opacity="0.15"/>
+  <text x="658" y="207" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">关键：用多少加载多少</text>
+
+  <!-- 底部整合 -->
+  <rect x="20" y="235" width="760" height="55" rx="8" fill="#8e44ad" opacity="0.10" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="400" y="257" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">开发者实践建议</text>
+  <text x="135" y="278" text-anchor="middle" font-size="11" fill="#555">短任务：精心构建 Prompt</text>
+  <text x="400" y="278" text-anchor="middle" font-size="11" fill="#555">中任务：结构化 + Caching</text>
+  <text x="660" y="278" text-anchor="middle" font-size="11" fill="#555">长任务：分段 + 记忆 + 压缩</text>
+
+  <!-- 数据对比卡 -->
+  <rect x="20" y="305" width="370" height="60" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="205" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Prompt Caching 效果</text>
+  <text x="205" y="350" text-anchor="middle" font-size="11" fill="#666">重复上下文成本降低 90%，延迟减少 85%</text>
+
+  <rect x="410" y="305" width="370" height="60" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="595" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">Lost-in-Middle 缓解</text>
+  <text x="595" y="350" text-anchor="middle" font-size="11" fill="#666">结构化标记 → 中间位置召回率提升 40%+</text>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="420" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">单 Agent 三大局限 vs 多 Agent 解决方案</text>
+
+  <!-- 左侧：单Agent局限 -->
+  <rect x="30" y="50" width="350" height="340" rx="10" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="2"/>
+  <text x="205" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">🚫 单 Agent 局限</text>
+
+  <!-- 局限1 -->
+  <rect x="50" y="90" width="310" height="75" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="60" y="112" font-size="12" font-weight="bold" fill="#c0392b">局限1：Context Window 限制</text>
+  <text x="60" y="130" font-size="11" fill="#555">• 无法在单次调用中处理全部数据</text>
+  <text x="60" y="148" font-size="11" fill="#555">• 分批处理难以保持上下文连贯性</text>
+
+  <!-- 局限2 -->
+  <rect x="50" y="175" width="310" height="75" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="60" y="197" font-size="12" font-weight="bold" fill="#c0392b">局限2：专业知识边界</text>
+  <text x="60" y="215" font-size="11" fill="#555">• 一个 Agent 很难同时精通多领域</text>
+  <text x="60" y="233" font-size="11" fill="#555">• 在所有领域都只有"平均"水平</text>
+
+  <!-- 局限3 -->
+  <rect x="50" y="260" width="310" height="75" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="60" y="282" font-size="12" font-weight="bold" fill="#c0392b">局限3：并行能力</text>
+  <text x="60" y="300" font-size="11" fill="#555">• 本质上串行执行，逐步完成</text>
+  <text x="60" y="318" font-size="11" fill="#555">• 5个任务串行：46秒 ⏱</text>
+
+  <!-- 右侧：多Agent解决方案 -->
+  <rect x="420" y="50" width="350" height="340" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="595" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">✅ 多 Agent 解决方案</text>
+
+  <!-- 方案1 -->
+  <rect x="440" y="90" width="310" height="75" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="450" y="112" font-size="12" font-weight="bold" fill="#1e8449">方案1：分而治之</text>
+  <text x="450" y="130" font-size="11" fill="#555">• 每个 Agent 处理一部分数据</text>
+  <text x="450" y="148" font-size="11" fill="#555">• 协调 Agent 汇总结果</text>
+
+  <!-- 方案2 -->
+  <rect x="440" y="175" width="310" height="75" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="450" y="197" font-size="12" font-weight="bold" fill="#1e8449">方案2：专业分工</text>
+  <text x="450" y="215" font-size="11" fill="#555">• 前端 Agent、后端 Agent、DBA Agent…</text>
+  <text x="450" y="233" font-size="11" fill="#555">• 每个 Agent 在自己领域达到"专家"水平</text>
+
+  <!-- 方案3 -->
+  <rect x="440" y="260" width="310" height="75" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="450" y="282" font-size="12" font-weight="bold" fill="#1e8449">方案3：并行执行</text>
+  <text x="450" y="300" font-size="11" fill="#555">• 多个 Agent 同时工作</text>
+  <text x="450" y="318" font-size="11" fill="#555">• 5个任务并行：12秒 🚀（节省74%）</text>
+
+  <!-- 中间箭头 -->
+  <text x="400" y="140" text-anchor="middle" font-size="20" fill="#2c3e50">→</text>
+  <text x="400" y="225" text-anchor="middle" font-size="20" fill="#2c3e50">→</text>
+  <text x="400" y="310" text-anchor="middle" font-size="20" fill="#2c3e50">→</text>
+
+  <!-- 底部总结 -->
+  <text x="400" y="405" text-anchor="middle" font-size="11" fill="#95a5a6">多 Agent 通过分治、专业化和并行化突破单 Agent 的能力瓶颈</text>
+</svg>

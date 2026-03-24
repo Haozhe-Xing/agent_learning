@@ -26,6 +26,8 @@
   - [3.3 Few-shot / Zero-shot / Chain-of-Thought 提示策略](./chapter_llm/03_prompting_strategies.md)
   - [3.4 模型 API 调用入门](./chapter_llm/04_api_basics.md)
   - [3.5 Token、Temperature 与模型参数详解](./chapter_llm/05_model_parameters.md)
+  - [3.6 基座模型前沿进展与选型指南](./chapter_llm/06_foundation_model_landscape.md)
+  - [3.7 基座模型架构详解](./chapter_llm/07_model_architecture.md)
 
 ---
 
@@ -68,6 +70,7 @@
   - [8.2 上下文窗口管理与注意力预算](./chapter_context_engineering/02_context_window.md)
   - [8.3 长时程任务的上下文策略](./chapter_context_engineering/03_long_horizon.md)
   - [8.4 实战：构建上下文管理器](./chapter_context_engineering/04_practice_context_builder.md)
+  - [8.5 上下文工程前沿进展](./chapter_context_engineering/05_latest_advances.md)
 
 - [第9章 Skill System](./chapter_skill/README.md)
   - [9.1 技能系统概述](./chapter_skill/01_skill_overview.md)
@@ -76,6 +79,7 @@
   - [9.4 技能发现与注册](./chapter_skill/04_skill_discovery.md)
   - [9.5 实战：构建可复用的技能系统](./chapter_skill/05_practice_skill_system.md)
   - [9.6 论文解读：技能系统前沿研究](./chapter_skill/06_paper_readings.md)
+  - [9.7 Tool、Skill 与 Sub Agent：三层能力抽象](./chapter_skill/07_tool_skill_subagent.md)
 
 - [第10章 Agentic-RL：智能体强化学习训练](./chapter_agentic_rl/README.md)
   - [10.1 什么是 Agentic-RL](./chapter_agentic_rl/01_agentic_rl_overview.md)

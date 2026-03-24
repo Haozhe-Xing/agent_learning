@@ -17,6 +17,8 @@
 - ✅ 灵活运用 Zero-shot、Few-shot、CoT 等提示策略
 - ✅ 熟练调用 OpenAI API 及常见开源模型接口
 - ✅ 理解 Token、Temperature 等参数对输出的影响
+- ✅ 了解主流模型的架构组件（MHA/GQA/MLA、RoPE、SwiGLU、MoE）及 2026 年新突破（混合注意力、Attention Residuals、MuonClip、Engram 内存）
+- ✅ 掌握基座模型的前沿进展与 Agent 开发的选型策略
 
 ## 本章结构
 
@@ -27,6 +29,8 @@
 | 3.3 提示策略 | Zero-shot、Few-shot、CoT、ToT | ⭐⭐⭐ |
 | 3.4 模型 API 调用入门 | OpenAI SDK、开源模型、流式调用 | ⭐⭐ |
 | 3.5 Token 与模型参数 | Token 计数、Temperature、Top-p 等 | ⭐⭐ |
+| 3.6 基座模型前沿进展 | 产业格局、模型生态（Kimi K2/K2.5、DeepSeek V4、Qwen3.5）、Agent 选型指南 | ⭐⭐⭐ |
+| 3.7 基座模型架构详解 | MHA→GQA→MLA、RoPE、SwiGLU、MoE，及 2026 新突破：混合注意力、Attention Residuals、MuonClip、Engram 内存 | ⭐⭐⭐⭐ |
 
 ## 核心概念速览
 

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Tool · Skill · Sub Agent：三层能力抽象</text>
+
+  <!-- 三层对比 -->
+  <!-- Tool -->
+  <rect x="20" y="55" width="245" height="200" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="142" y="80" text-anchor="middle" font-size="15" font-weight="bold" fill="#3498db">🔧 Tool（工具）</text>
+  <text x="142" y="100" text-anchor="middle" font-size="11" fill="#888">最小执行单元</text>
+  <line x1="35" y1="108" x2="250" y2="108" stroke="#3498db" stroke-width="1" stroke-dasharray="4"/>
+  <text x="35" y="128" font-size="11" fill="#444">粒度：单个 API / 函数</text>
+  <text x="35" y="148" font-size="11" fill="#444">决策：无（被动调用）</text>
+  <text x="35" y="168" font-size="11" fill="#444">状态：无状态</text>
+  <text x="35" y="188" font-size="11" fill="#444">类比：菜刀、炒锅</text>
+  <rect x="35" y="200" width="215" height="40" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="142" y="217" text-anchor="middle" font-size="10" fill="#3498db">典型场景</text>
+  <text x="142" y="233" text-anchor="middle" font-size="10" fill="#555">搜索、计算、API 调用</text>
+
+  <!-- Skill -->
+  <rect x="278" y="55" width="245" height="200" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="80" text-anchor="middle" font-size="15" font-weight="bold" fill="#e67e22">⚡ Skill（技能）</text>
+  <text x="400" y="100" text-anchor="middle" font-size="11" fill="#888">工具 + 策略 + 知识</text>
+  <line x1="293" y1="108" x2="508" y2="108" stroke="#e67e22" stroke-width="1" stroke-dasharray="4"/>
+  <text x="293" y="128" font-size="11" fill="#444">粒度：一组工具 + Prompt</text>
+  <text x="293" y="148" font-size="11" fill="#444">决策：有限（预定义流程）</text>
+  <text x="293" y="168" font-size="11" fill="#444">状态：轻量级</text>
+  <text x="293" y="188" font-size="11" fill="#444">类比：川菜烹饪技能</text>
+  <rect x="293" y="200" width="215" height="40" rx="4" fill="#e67e22" opacity="0.15"/>
+  <text x="400" y="217" text-anchor="middle" font-size="10" fill="#e67e22">典型场景</text>
+  <text x="400" y="233" text-anchor="middle" font-size="10" fill="#555">数据分析、代码审查、报告生成</text>
+
+  <!-- Sub Agent -->
+  <rect x="536" y="55" width="244" height="200" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="658" y="80" text-anchor="middle" font-size="15" font-weight="bold" fill="#8e44ad">🤖 Sub Agent</text>
+  <text x="658" y="100" text-anchor="middle" font-size="11" fill="#888">独立推理循环</text>
+  <line x1="549" y1="108" x2="765" y2="108" stroke="#8e44ad" stroke-width="1" stroke-dasharray="4"/>
+  <text x="549" y="128" font-size="11" fill="#444">粒度：完整 Agent 实例</text>
+  <text x="549" y="148" font-size="11" fill="#444">决策：自主（推理循环）</text>
+  <text x="549" y="168" font-size="11" fill="#444">状态：完整上下文</text>
+  <text x="549" y="188" font-size="11" fill="#444">类比：一位专业厨师</text>
+  <rect x="549" y="200" width="215" height="40" rx="4" fill="#8e44ad" opacity="0.15"/>
+  <text x="658" y="217" text-anchor="middle" font-size="10" fill="#8e44ad">典型场景</text>
+  <text x="658" y="233" text-anchor="middle" font-size="10" fill="#555">复杂研究、多步骤项目</text>
+
+  <!-- 决策指南 -->
+  <rect x="20" y="270" width="760" height="75" rx="8" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="400" y="292" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">架构选择指南</text>
+  <text x="142" y="315" text-anchor="middle" font-size="11" fill="#555">单一操作 → Tool</text>
+  <text x="142" y="333" text-anchor="middle" font-size="10" fill="#888">成本低、可控</text>
+  <text x="400" y="315" text-anchor="middle" font-size="11" fill="#555">领域任务 → Skill</text>
+  <text x="400" y="333" text-anchor="middle" font-size="10" fill="#888">复用性高、可组合</text>
+  <text x="658" y="315" text-anchor="middle" font-size="11" fill="#555">自主决策 → Sub Agent</text>
+  <text x="658" y="333" text-anchor="middle" font-size="10" fill="#888">灵活但成本高</text>
+</svg>

@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -453,6 +452,7 @@
 <p>为什么这很重要？LLM 本身是<strong>无状态</strong>的——每次调用都是一次全新的请求，模型并不"记得"上一次对话的内容。如果用户在第一轮说"我叫张伟"，第二轮问"我叫什么名字"，模型如果不回传之前的对话历史，就会一脸茫然。短期记忆解决的正是这个问题：<strong>通过在每次请求中附带之前的对话记录，让模型"看起来"拥有了记忆。</strong></p>
 <p>但这带来一个新问题：LLM 的上下文窗口是有限的（GPT-4o 约 128K Token）。随着对话越来越长，Token 消耗急剧增加，不仅费用高昂，还可能超出模型的处理上限。因此，我们需要<strong>对话历史管理策略</strong>来平衡"记忆完整性"和"资源效率"。</p>
 <p>本节介绍三种策略：全量保留、滑动窗口、摘要压缩，它们适用于不同长度的对话场景。</p>
+<p><img src="../svg/chapter_memory_02_three_strategies.svg" alt="短期记忆三种策略对比" /></p>
 <h2 id="基础对话历史管理"><a class="header" href="#基础对话历史管理">基础对话历史管理</a></h2>
 <p>我们先从最简单的开始：完整保留所有对话历史。这个 <code>ConversationHistory</code> 类封装了消息的添加、Token 统计和 API 调用。注意它使用 <code>tiktoken</code> 来精确计算每条消息的 Token 数——这对后面的窗口截断策略至关重要。</p>
 <pre><code class="language-python">from openai import OpenAI

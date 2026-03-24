@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <filter id="sh-mem02">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="380" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">短期记忆三种策略对比</text>
+  <text x="400" y="50" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">平衡记忆完整性与资源效率</text>
+
+  <!-- ===== 策略1：全量保留 ===== -->
+  <rect x="30" y="70" width="230" height="290" rx="10" fill="#3498db" opacity="0.06" stroke="#3498db" stroke-width="2"/>
+  <text x="145" y="94" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">📋 全量保留</text>
+  <text x="145" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">保留所有对话历史</text>
+
+  <!-- 消息列表可视化 -->
+  <rect x="55" y="125" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="145" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 消息 1（保留）</text>
+  <rect x="55" y="151" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="145" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 消息 2（保留）</text>
+  <rect x="55" y="177" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="145" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 消息 3（保留）</text>
+  <text x="145" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2980b9">. . .</text>
+  <rect x="55" y="222" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="145" y="237" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 消息 N（保留）</text>
+
+  <!-- 优缺点 -->
+  <rect x="45" y="258" width="190" height="90" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="140" y="276" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 信息完整，零丢失</text>
+  <text x="140" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 实现最简单</text>
+  <text x="140" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ Token 线性增长</text>
+  <text x="140" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 长对话成本高</text>
+  <text x="140" y="348" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">适合：&lt;10 轮短对话</text>
+
+  <!-- ===== 策略2：滑动窗口 ===== -->
+  <rect x="285" y="70" width="230" height="290" rx="10" fill="#e67e22" opacity="0.06" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="94" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">📏 滑动窗口</text>
+  <text x="400" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">只保留最近 N 轮</text>
+
+  <!-- 消息列表可视化（灰色=丢弃，橙色=保留） -->
+  <rect x="310" y="125" width="180" height="22" rx="4" fill="#bdc3c7" opacity="0.3"/>
+  <text x="400" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#999" text-decoration="line-through">💬 消息 1（丢弃）</text>
+  <rect x="310" y="151" width="180" height="22" rx="4" fill="#bdc3c7" opacity="0.3"/>
+  <text x="400" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#999" text-decoration="line-through">💬 消息 2（丢弃）</text>
+
+  <!-- 窗口线 -->
+  <line x1="300" y1="180" x2="500" y2="180" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="505" y="183" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#e67e22">窗口</text>
+
+  <rect x="310" y="187" width="180" height="22" rx="4" fill="#e67e22" opacity="0.15"/>
+  <text x="400" y="202" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e67e22">💬 消息 N-2（保留）</text>
+  <rect x="310" y="213" width="180" height="22" rx="4" fill="#e67e22" opacity="0.15"/>
+  <text x="400" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e67e22">💬 消息 N-1（保留）</text>
+  <rect x="310" y="239" width="180" height="22" rx="4" fill="#e67e22" opacity="0.2"/>
+  <text x="400" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e67e22">💬 消息 N（最新）</text>
+
+  <!-- 优缺点 -->
+  <rect x="300" y="272" width="190" height="76" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
+  <text x="395" y="290" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Token 消耗可控</text>
+  <text x="395" y="306" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 双重保障（轮数+Token）</text>
+  <text x="395" y="322" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 丢失早期信息</text>
+  <text x="395" y="338" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">适合：10~50 轮日常对话</text>
+
+  <!-- ===== 策略3：摘要压缩 ===== -->
+  <rect x="540" y="70" width="230" height="290" rx="10" fill="#9b59b6" opacity="0.06" stroke="#9b59b6" stroke-width="2"/>
+  <text x="655" y="94" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#8e44ad">🗜️ 摘要压缩</text>
+  <text x="655" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">LLM 压缩 + 保留近期</text>
+
+  <!-- 摘要块 -->
+  <rect x="565" y="125" width="180" height="50" rx="6" fill="#9b59b6" opacity="0.12" stroke="#8e44ad" stroke-width="1"/>
+  <text x="655" y="143" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#8e44ad">📝 历史摘要</text>
+  <text x="655" y="158" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#8e44ad">"用户讨论了AI模型选型，偏好</text>
+  <text x="655" y="169" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#8e44ad">开源方案，关注推理性能..."</text>
+
+  <!-- 近期消息 -->
+  <rect x="565" y="185" width="180" height="22" rx="4" fill="#9b59b6" opacity="0.12"/>
+  <text x="655" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8e44ad">💬 消息 N-1（保留）</text>
+  <rect x="565" y="211" width="180" height="22" rx="4" fill="#9b59b6" opacity="0.15"/>
+  <text x="655" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8e44ad">💬 消息 N（最新）</text>
+
+  <!-- 压缩过程示意 -->
+  <text x="655" y="250" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#8e44ad">⚡ 超阈值时自动触发压缩</text>
+
+  <!-- 优缺点 -->
+  <rect x="555" y="264" width="190" height="84" rx="6" fill="white" stroke="#9b59b6" stroke-width="1"/>
+  <text x="650" y="282" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 保留关键信息</text>
+  <text x="650" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Token 可控</text>
+  <text x="650" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 压缩有信息损耗</text>
+  <text x="650" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 额外 LLM 调用开销</text>
+  <text x="650" y="346" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">适合：50+ 轮长对话</text>
+</svg>

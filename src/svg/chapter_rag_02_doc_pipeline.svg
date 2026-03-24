@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/></marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">文档加载与分割处理流水线</text>
+
+  <!-- 输入文档 -->
+  <rect x="20" y="60" width="130" height="240" rx="10" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="2"/>
+  <text x="85" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">📁 多格式文档</text>
+  <rect x="35" y="100" width="100" height="25" rx="4" fill="#e74c3c" opacity="0.15"/><text x="85" y="117" text-anchor="middle" font-size="10" fill="#555">📄 PDF</text>
+  <rect x="35" y="130" width="100" height="25" rx="4" fill="#e74c3c" opacity="0.15"/><text x="85" y="147" text-anchor="middle" font-size="10" fill="#555">📝 Word</text>
+  <rect x="35" y="160" width="100" height="25" rx="4" fill="#e74c3c" opacity="0.15"/><text x="85" y="177" text-anchor="middle" font-size="10" fill="#555">📋 Markdown</text>
+  <rect x="35" y="190" width="100" height="25" rx="4" fill="#e74c3c" opacity="0.15"/><text x="85" y="207" text-anchor="middle" font-size="10" fill="#555">🌐 HTML</text>
+  <rect x="35" y="220" width="100" height="25" rx="4" fill="#e74c3c" opacity="0.15"/><text x="85" y="237" text-anchor="middle" font-size="10" fill="#555">📊 CSV</text>
+  <text x="85" y="275" text-anchor="middle" font-size="9" fill="#7f8c8d">策略模式加载</text>
+
+  <line x1="150" y1="180" x2="190" y2="180" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#a1)"/>
+
+  <!-- 统一加载器 -->
+  <rect x="195" y="120" width="130" height="120" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="260" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">🔄 DocumentLoader</text>
+  <text x="260" y="168" text-anchor="middle" font-size="10" fill="#555">格式检测</text>
+  <text x="260" y="185" text-anchor="middle" font-size="10" fill="#555">调用对应加载函数</text>
+  <text x="260" y="202" text-anchor="middle" font-size="10" fill="#555">文本提取</text>
+  <text x="260" y="222" text-anchor="middle" font-size="10" fill="#555">元数据保留</text>
+
+  <line x1="325" y1="180" x2="365" y2="180" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#a1)"/>
+
+  <!-- 智能分割 -->
+  <rect x="370" y="80" width="200" height="200" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
+  <text x="470" y="108" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">✂️ 智能文本分割</text>
+  <rect x="385" y="118" width="170" height="28" rx="4" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="470" y="137" text-anchor="middle" font-size="10" fill="#555">🔹 递归字符分割（默认）</text>
+  <rect x="385" y="152" width="170" height="28" rx="4" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="470" y="171" text-anchor="middle" font-size="10" fill="#555">🔹 Markdown 标题分割</text>
+  <rect x="385" y="186" width="170" height="28" rx="4" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="470" y="205" text-anchor="middle" font-size="10" fill="#555">🔹 语义分割（Embedding）</text>
+  <rect x="385" y="220" width="170" height="28" rx="4" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="470" y="239" text-anchor="middle" font-size="10" fill="#555">🔹 代码语法树分割</text>
+  <text x="470" y="268" text-anchor="middle" font-size="9" fill="#7f8c8d">chunk_size + overlap</text>
+
+  <line x1="570" y1="180" x2="610" y2="180" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#a1)"/>
+
+  <!-- 输出Chunks -->
+  <rect x="615" y="110" width="160" height="140" rx="10" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2"/>
+  <text x="695" y="138" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">📦 文本块 (Chunks)</text>
+  <rect x="630" y="148" width="130" height="22" rx="4" fill="#8e44ad" opacity="0.1"/><text x="695" y="164" text-anchor="middle" font-size="9" fill="#555">Chunk 1 + metadata</text>
+  <rect x="630" y="175" width="130" height="22" rx="4" fill="#8e44ad" opacity="0.1"/><text x="695" y="191" text-anchor="middle" font-size="9" fill="#555">Chunk 2 + metadata</text>
+  <rect x="630" y="202" width="130" height="22" rx="4" fill="#8e44ad" opacity="0.1"/><text x="695" y="218" text-anchor="middle" font-size="9" fill="#555">Chunk N + metadata</text>
+  <text x="695" y="240" text-anchor="middle" font-size="9" fill="#7f8c8d">→ 向量化 / 存储</text>
+
+  <!-- 底部关键提示 -->
+  <rect x="100" y="320" width="600" height="40" rx="8" fill="#2c3e50" opacity="0.05"/>
+  <text x="400" y="338" text-anchor="middle" font-size="11" fill="#e74c3c" font-weight="bold">⚠️ 分割质量直接影响检索效果 → 影响最终回答质量</text>
+  <text x="400" y="354" text-anchor="middle" font-size="10" fill="#7f8c8d">机械切割可能在概念中间截断，导致 LLM 无法给出好的回答</text>
+</svg>

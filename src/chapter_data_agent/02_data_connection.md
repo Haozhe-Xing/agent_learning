@@ -2,6 +2,8 @@
 
 > **本节目标**：实现安全的数据库连接和自然语言到 SQL 的转换，深入理解 Text-to-SQL 的原理与安全挑战。
 
+![Text-to-SQL 数据连接流程](../svg/chapter_data_02_connection.svg)
+
 ---
 
 ## Text-to-SQL 原理：从自然语言到结构化查询

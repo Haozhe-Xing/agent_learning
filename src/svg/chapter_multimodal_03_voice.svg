@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="va" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e67e22"/>
+    </marker>
+  </defs>
+  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">语音交互架构：STT → Agent → TTS</text>
+
+  <!-- 全链路延迟 -->
+  <rect x="30" y="55" width="740" height="100" rx="10" fill="#e67e22" opacity="0.08" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">全链路语音交互流程</text>
+
+  <!-- STT -->
+  <rect x="50" y="90" width="160" height="50" rx="8" fill="#3498db" opacity="0.9"/>
+  <text x="130" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🎙 STT 语音识别</text>
+  <text x="130" y="130" text-anchor="middle" font-size="9" fill="#d4e6f1">0.5-2s | Whisper</text>
+
+  <line x1="210" y1="115" x2="248" y2="115" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#va)"/>
+
+  <!-- Agent -->
+  <rect x="250" y="90" width="180" height="50" rx="8" fill="#8e44ad" opacity="0.9"/>
+  <text x="340" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🧠 Agent 推理</text>
+  <text x="340" y="130" text-anchor="middle" font-size="9" fill="#d2b4de">1-5s | LLM + Tools</text>
+
+  <line x1="430" y1="115" x2="468" y2="115" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#va)"/>
+
+  <!-- TTS -->
+  <rect x="470" y="90" width="160" height="50" rx="8" fill="#27ae60" opacity="0.9"/>
+  <text x="550" y="112" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🔊 TTS 语音合成</text>
+  <text x="550" y="130" text-anchor="middle" font-size="9" fill="#d5f5e3">0.3-1s | OpenAI TTS</text>
+
+  <line x1="630" y1="115" x2="668" y2="115" stroke="#e67e22" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#va)"/>
+
+  <rect x="670" y="95" width="80" height="40" rx="20" fill="#e67e22" opacity="0.9"/>
+  <text x="710" y="120" text-anchor="middle" font-size="10" fill="white" font-weight="bold">2-8s</text>
+
+  <!-- 两种架构模式 -->
+  <rect x="30" y="175" width="365" height="160" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="212" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">模式一：分步处理</text>
+  <text x="212" y="220" text-anchor="middle" font-size="11" fill="#555">STT → LLM → TTS 串行执行</text>
+
+  <rect x="50" y="233" width="325" height="35" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="212" y="255" text-anchor="middle" font-size="10" fill="#27ae60">✅ 实现简单，组件可独立替换</text>
+
+  <rect x="50" y="275" width="325" height="35" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
+  <text x="212" y="297" text-anchor="middle" font-size="10" fill="#e74c3c">❌ 延迟较高（2-8秒）</text>
+
+  <text x="212" y="325" text-anchor="middle" font-size="10" fill="#888">适合：非实时场景、语音助手 MVP</text>
+
+  <rect x="405" y="175" width="365" height="160" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="587" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">模式二：端到端实时</text>
+  <text x="587" y="220" text-anchor="middle" font-size="11" fill="#555">原生多模态模型，音频直入直出</text>
+
+  <rect x="425" y="233" width="325" height="35" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="587" y="255" text-anchor="middle" font-size="10" fill="#27ae60">✅ 超低延迟（&lt;1s），自然对话感</text>
+
+  <rect x="425" y="275" width="325" height="35" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="587" y="297" text-anchor="middle" font-size="10" fill="#e74c3c">❌ 依赖特定模型，灵活性低</text>
+
+  <text x="587" y="325" text-anchor="middle" font-size="10" fill="#888">适合：实时对话、电话客服、语音助理</text>
+</svg>

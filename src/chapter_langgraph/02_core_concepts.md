@@ -1,5 +1,7 @@
 # LangGraph 核心概念：节点、边、状态
 
+![LangGraph三大核心概念：State·Node·Edge](../svg/chapter_langgraph_02_state_node_edge.svg)
+
 ## 状态（State）
 
 State 是 LangGraph 的数据中心，所有节点都从 State 读取数据并写入数据。

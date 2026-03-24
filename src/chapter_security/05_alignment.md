@@ -2,6 +2,8 @@
 
 > **本节目标**：理解 Agent 对齐的重要性，学会设计行为边界和兜底机制。
 
+![Agent 行为对齐与边界控制](../svg/chapter_security_05_alignment.svg)
+
 ---
 
 ## 什么是对齐（Alignment）？

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="fi" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2980b9"/>
+    </marker>
+  </defs>
+  <rect width="800" height="350" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">完整 AI 编程助手组件集成架构</text>
+
+  <!-- 用户输入 -->
+  <rect x="300" y="55" width="200" height="40" rx="20" fill="#2c3e50"/>
+  <text x="400" y="80" text-anchor="middle" font-size="13" fill="white" font-weight="bold">用户需求输入</text>
+
+  <line x1="400" y1="95" x2="400" y2="118" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#fi)"/>
+
+  <!-- 核心 Agent -->
+  <rect x="250" y="120" width="300" height="50" rx="10" fill="#3498db" opacity="0.9"/>
+  <text x="400" y="145" text-anchor="middle" font-size="14" fill="white" font-weight="bold">🧠 Coding Agent（核心调度）</text>
+  <text x="400" y="162" text-anchor="middle" font-size="10" fill="#d4e6f1">ReAct 推理循环 + 工具选择</text>
+
+  <!-- 五大组件 -->
+  <line x1="150" y1="145" x2="248" y2="145" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3"/>
+  <line x1="552" y1="145" x2="620" y2="145" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3"/>
+  <line x1="300" y1="170" x2="300" y2="200" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#fi)"/>
+  <line x1="400" y1="170" x2="400" y2="200" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#fi)"/>
+  <line x1="500" y1="170" x2="500" y2="200" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#fi)"/>
+
+  <rect x="30" y="120" width="120" height="50" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="90" y="142" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">代码索引</text>
+  <text x="90" y="159" text-anchor="middle" font-size="9" fill="#555">AST + Embedding</text>
+
+  <rect x="622" y="120" width="150" height="50" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="697" y="142" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e44ad">语义搜索</text>
+  <text x="697" y="159" text-anchor="middle" font-size="9" fill="#555">向量检索相关代码</text>
+
+  <rect x="210" y="203" width="180" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="300" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">代码生成</text>
+  <text x="300" y="245" text-anchor="middle" font-size="9" fill="#555">结构化输出 + 风格匹配</text>
+
+  <rect x="310" y="203" width="180" height="55" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="400" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">测试生成</text>
+  <text x="400" y="245" text-anchor="middle" font-size="9" fill="#555">L1/L2/L3 三层测试</text>
+
+  <rect x="410" y="203" width="180" height="55" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="500" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">Bug 修复</text>
+  <text x="500" y="245" text-anchor="middle" font-size="9" fill="#555">诊断 → 修复 → 验证</text>
+
+  <!-- 输出 -->
+  <line x1="400" y1="258" x2="400" y2="282" stroke="#2980b9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#fi)"/>
+
+  <rect x="200" y="285" width="400" height="45" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="308" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">交互式输出</text>
+  <text x="400" y="325" text-anchor="middle" font-size="10" fill="#555">代码 + 解释 + 测试结果 + 修复建议</text>
+</svg>

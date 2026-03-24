@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="sk" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">可复用技能系统架构</text>
+
+  <!-- 技能定义层 -->
+  <text x="400" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#888">技能定义</text>
+  <rect x="20" y="70" width="245" height="95" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="142" y="93" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">📄 SKILL.md 定义</text>
+  <text x="32" y="113" font-size="11" fill="#444">• Prompt-based 技能</text>
+  <text x="32" y="131" font-size="11" fill="#444">• 自然语言描述能力</text>
+  <text x="32" y="149" font-size="11" fill="#444">• 零代码可定义</text>
+
+  <rect x="278" y="70" width="245" height="95" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="400" y="93" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">🐍 Python 实现</text>
+  <text x="290" y="113" font-size="11" fill="#444">• Code-based 技能</text>
+  <text x="290" y="131" font-size="11" fill="#444">• 复杂逻辑/API 调用</text>
+  <text x="290" y="149" font-size="11" fill="#444">• 类型安全 + 测试</text>
+
+  <rect x="536" y="70" width="244" height="95" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="658" y="93" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">🔌 MCP 工具包装</text>
+  <text x="548" y="113" font-size="11" fill="#444">• 标准协议集成</text>
+  <text x="548" y="131" font-size="11" fill="#444">• 跨框架复用</text>
+  <text x="548" y="149" font-size="11" fill="#444">• Server/Client 解耦</text>
+
+  <!-- 技能管理层 -->
+  <text x="400" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#888">技能管理</text>
+  <rect x="60" y="200" width="300" height="55" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="210" y="222" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">SkillRegistry 注册中心</text>
+  <text x="210" y="242" text-anchor="middle" font-size="11" fill="#444">加载 → 注册 → 发现 → 版本管理</text>
+
+  <rect x="440" y="200" width="300" height="55" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="590" y="222" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">SkillSelector 自动选择</text>
+  <text x="590" y="242" text-anchor="middle" font-size="11" fill="#444">语义匹配 → 评分排序 → 按需加载</text>
+
+  <line x1="360" y1="227" x2="438" y2="227" stroke="#27ae60" stroke-width="1.5" marker-end="url(#sk)"/>
+
+  <!-- 运行时 -->
+  <text x="400" y="280" text-anchor="middle" font-size="13" font-weight="bold" fill="#888">运行时</text>
+  <rect x="100" y="290" width="600" height="75" rx="8" fill="#2980b9" opacity="0.10" stroke="#2980b9" stroke-width="1.5"/>
+  
+  <rect x="120" y="305" width="130" height="45" rx="6" fill="#2980b9" opacity="0.15"/>
+  <text x="185" y="323" text-anchor="middle" font-size="11" font-weight="bold" fill="#2980b9">用户任务</text>
+  <text x="185" y="340" text-anchor="middle" font-size="10" fill="#666">"帮我分析数据"</text>
+
+  <text x="270" y="328" text-anchor="middle" font-size="14" fill="#2980b9">→</text>
+
+  <rect x="290" y="305" width="130" height="45" rx="6" fill="#27ae60" opacity="0.15"/>
+  <text x="355" y="323" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">技能匹配</text>
+  <text x="355" y="340" text-anchor="middle" font-size="10" fill="#666">data_analysis ✓</text>
+
+  <text x="440" y="328" text-anchor="middle" font-size="14" fill="#27ae60">→</text>
+
+  <rect x="460" y="305" width="130" height="45" rx="6" fill="#e67e22" opacity="0.15"/>
+  <text x="525" y="323" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">技能执行</text>
+  <text x="525" y="340" text-anchor="middle" font-size="10" fill="#666">注入 Prompt/代码</text>
+
+  <text x="610" y="328" text-anchor="middle" font-size="14" fill="#e67e22">→</text>
+
+  <rect x="630" y="305" width="55" height="45" rx="6" fill="#8e44ad" opacity="0.15"/>
+  <text x="657" y="332" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e44ad">输出</text>
+</svg>

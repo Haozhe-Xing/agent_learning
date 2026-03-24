@@ -2,6 +2,8 @@
 
 > **本节目标**：学习 Agent 间消息传递的实现方式，并通过 MCP 工具集成实战加深理解。
 
+![Agent 间消息传递与状态共享架构](../svg/chapter_protocol_04_message_passing.svg)
+
 ---
 
 ## 生产级 MCP 工具服务器

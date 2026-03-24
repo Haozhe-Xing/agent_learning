@@ -16,5 +16,10 @@ default-theme = "light"
 preferred-dark-theme = "navy"
 additional-css = ["theme/custom.css"]
 no-section-label = true
+git-repository-url = "https://github.com/Haozhe-Xing/agent_learning"
+git-repository-icon = "fa-github"
+
+[output.html.print]
+enable = false
 
 

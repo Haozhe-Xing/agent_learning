@@ -288,7 +288,6 @@
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
@@ -413,8 +412,8 @@
                     <h1 class="menu-title">从零开始学 Agent</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                        <a href="https://github.com/Haozhe-Xing/agent_learning" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -450,6 +449,7 @@
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 <h1 id="单-agent-的局限性"><a class="header" href="#单-agent-的局限性">单 Agent 的局限性</a></h1>
 <p>理解单 Agent 的瓶颈，才能知道何时需要引入多 Agent 架构。</p>
+<p><img src="../svg/chapter_multi_agent_01_limits.svg" alt="单Agent三大局限vs多Agent解决方案" /></p>
 <h2 id="三个核心限制"><a class="header" href="#三个核心限制">三个核心限制</a></h2>
 <pre><code class="language-python"># 限制1：Context Window 限制
 # 单 Agent 的上下文窗口有限（即使 128K Token 也会在复杂任务中耗尽）

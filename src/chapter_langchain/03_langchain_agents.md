@@ -8,6 +8,8 @@ LangChain 做的事情，本质上是把我们之前手写的那些"样板代码
 - **Agent 创建**：不用再自己写执行循环，`create_openai_tools_agent` 一行搞定
 - **执行管理**：`AgentExecutor` 自动处理工具调用循环、超时控制、错误恢复
 
+![LangChain Agent三层架构](../svg/chapter_langchain_03_agent_architecture.svg)
+
 ## LangChain 工具定义
 
 LangChain 提供了两种定义工具的方式：
