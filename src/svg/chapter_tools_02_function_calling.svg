@@ -36,18 +36,16 @@
   <text x="703" y="103" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">调用 Python 函数</text>
   <text x="703" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">get_weather("北京")</text>
   
-  <!-- Return arrow (curve) -->
-  <path d="M703 133 Q703 170 500 185 Q295 200 100 185 Q50 180 50 160 L50 133" 
+  <!-- Return arrow (curve) - from ④ Execute Tool directly to ⑤ LLM Re-reasoning -->
+  <path d="M703 133 Q703 200 500 215 Q400 222 295 230" 
         stroke="#27ae60" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#green-arr)"/>
-  <text x="400" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60" font-style="italic">工具结果反馈回 LLM（role: tool）</text>
+  <text x="500" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#27ae60" font-style="italic">工具结果反馈回 LLM（role: tool）</text>
   
   <!-- Second LLM call -->
   <rect x="218" y="230" width="155" height="70" rx="10" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="2"/>
   <text x="295" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9b59b6">⑤ LLM 再次推理</text>
   <text x="295" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">基于工具结果</text>
   <text x="295" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">生成最终回复</text>
-  
-  <path d="M100 185 Q100 240 215 265" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#green-arr)"/>
   
   <!-- Final output -->
   <path d="M376 265 L430 265" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
