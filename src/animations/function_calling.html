@@ -3,407 +3,1136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Function Calling — 让 LLM 拥有"双手"</title>
+<title>Function Calling — 交互式演示</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0f172a;
-    color: #e2e8f0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
-    padding-bottom: 40px;
-  }
+:root {
+  --bg: #060b18;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-bright: rgba(255,255,255,0.15);
+  --user-color: #38bdf8;
+  --user-bg: rgba(56,189,248,0.08);
+  --user-border: rgba(56,189,248,0.3);
+  --llm-color: #a78bfa;
+  --llm-bg: rgba(167,139,250,0.08);
+  --llm-border: rgba(167,139,250,0.3);
+  --tool-color: #34d399;
+  --tool-bg: rgba(52,211,153,0.08);
+  --tool-border: rgba(52,211,153,0.3);
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
 
-  h1 {
-    margin: 28px 0 6px;
-    font-size: 26px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 2px;
-  }
-  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 18px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .controls {
-    display: flex; gap: 10px; margin-bottom: 14px;
-  }
-  .btn {
-    padding: 7px 20px; border: none; border-radius: 8px;
-    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; }
-  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
-  .btn-secondary { background: #334155; color: #e2e8f0; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
 
-  /* ── 三栏布局：用户 | LLM | 工具 ── */
-  .arena {
-    width: 840px;
-    display: grid;
-    grid-template-columns: 200px 1fr 200px;
-    gap: 0;
-    position: relative;
-    min-height: 560px;
-  }
+/* ── 粒子画布背景 ── */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
 
-  .col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+/* ── 主容器 ── */
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
 
-  .col-header {
-    padding: 10px 0;
-    font-weight: 700;
-    font-size: 14px;
-    text-align: center;
-    width: 100%;
-    border-radius: 10px 10px 0 0;
-    margin-bottom: 4px;
-  }
-  .col-user .col-header { background: linear-gradient(135deg, #1e3a5f, #1e40af); color: #60a5fa; }
-  .col-llm .col-header  { background: linear-gradient(135deg, #3b0764, #6d28d9); color: #c084fc; }
-  .col-tool .col-header { background: linear-gradient(135deg, #14532d, #166534); color: #4ade80; }
+/* ── 标题区 ── */
+.hero {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(167,139,250,0.12);
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: 100px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: #a78bfa;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+.hero p {
+  color: var(--text-dim);
+  font-size: 14px;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
 
-  .col-body {
-    width: 100%;
-    flex: 1;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+/* ── 控制栏 ── */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn:hover::after { opacity: 0.06; }
+.btn:active { transform: scale(0.97); }
 
-  /* ── 消息气泡 ── */
-  .msg {
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 12px;
-    line-height: 1.6;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.4s ease;
-    position: relative;
-  }
-  .msg.show { opacity: 1; transform: translateY(0); }
+.btn-play {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+}
+.btn-play:hover { box-shadow: 0 6px 28px rgba(99,102,241,0.5); transform: translateY(-1px); }
+.btn-play:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-  .msg-user {
-    background: #1e3a5f;
-    border: 1px solid #3b82f6;
-    color: #bfdbfe;
-  }
-  .msg-llm {
-    background: #2e1065;
-    border: 1px solid #7c3aed;
-    color: #ddd6fe;
-  }
-  .msg-tool {
-    background: #052e16;
-    border: 1px solid #16a34a;
-    color: #bbf7d0;
-  }
-  .msg-json {
-    font-family: 'SF Mono', Menlo, monospace;
-    font-size: 11px;
-    background: #0f172a;
-    border: 1px solid #334155;
-    color: #a5b4fc;
-  }
-  .msg-final {
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
-    border: 1px solid #6366f1;
-    color: #e0e7ff;
-  }
+.btn-reset {
+  background: var(--surface);
+  border: 1px solid var(--border-bright);
+  color: var(--text-dim);
+}
+.btn-reset:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
 
-  .msg-label {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-    opacity: 0.7;
-  }
+.speed-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px;
+}
+.speed-wrap label { font-size: 12px; color: var(--text-muted); }
+.speed-wrap select {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+.speed-wrap select option { background: #1e293b; }
 
-  /* ── 飞行箭头 ── */
-  .fly-arrow {
-    position: absolute;
-    z-index: 20;
-    pointer-events: none;
-  }
+/* ── 步骤时间轴 ── */
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 28px;
+  position: relative;
+}
+.tl-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.tl-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border-bright);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.tl-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: all 0.4s;
+}
+.tl-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  max-width: 70px;
+  line-height: 1.3;
+  transition: color 0.3s;
+}
+.tl-line {
+  width: 60px;
+  height: 2px;
+  background: var(--border);
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.tl-line::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #6366f1, transparent);
+  transition: left 0.6s ease;
+}
+.tl-line.active::after { left: 100%; }
 
-  svg.arrows-svg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 15;
-  }
-  .fly-path {
-    fill: none;
-    stroke-width: 2;
-    stroke-dasharray: 6 4;
-    stroke-linecap: round;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .fly-path.show { opacity: 0.7; }
-  .fly-path.u2l { stroke: #60a5fa; }
-  .fly-path.l2t { stroke: #4ade80; }
-  .fly-path.t2l { stroke: #4ade80; }
-  .fly-path.l2u { stroke: #c084fc; }
+.tl-item.active .tl-dot {
+  border-color: #6366f1;
+  background: rgba(99,102,241,0.15);
+  color: #a5b4fc;
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.15), 0 0 20px rgba(99,102,241,0.3);
+}
+.tl-item.active .tl-dot::after { border-color: rgba(99,102,241,0.3); }
+.tl-item.active .tl-label { color: #a5b4fc; }
+.tl-item.done .tl-dot {
+  border-color: #22c55e;
+  background: rgba(34,197,94,0.12);
+  color: #4ade80;
+}
+.tl-item.done .tl-label { color: #4ade80; }
 
-  .fly-dot {
-    r: 5;
-    opacity: 0;
-  }
-  .fly-dot.u2l { fill: #60a5fa; }
-  .fly-dot.l2t { fill: #4ade80; }
-  .fly-dot.t2l { fill: #4ade80; }
-  .fly-dot.l2u { fill: #c084fc; }
+/* ── 三栏主舞台 ── */
+.stage {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 16px;
+  position: relative;
+  align-items: start;
+}
 
-  /* ── 步骤标签 ── */
-  .step-badge {
-    position: absolute;
-    top: -8px; left: -8px;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    z-index: 5;
-  }
-  .badge-1 { background: #3b82f6; color: white; }
-  .badge-2 { background: #8b5cf6; color: white; }
-  .badge-3 { background: #8b5cf6; color: white; }
-  .badge-4 { background: #22c55e; color: white; }
-  .badge-5 { background: #ec4899; color: white; }
+/* SVG 箭头层 */
+.arrows-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: visible;
+}
 
-  /* ── 步骤说明 ── */
-  .step-desc {
-    width: 840px;
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 12px 18px;
-    margin-top: 10px;
-    font-size: 13px;
-    line-height: 1.7;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: border-color 0.3s;
-  }
-  .step-desc .sd-num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .step-desc .sd-text { color: #cbd5e1; }
-  .step-desc .sd-text strong { color: #f1f5f9; }
+/* ── 列 ── */
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 500px;
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  position: relative;
+  overflow: hidden;
+}
+.col-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+}
+.col-header .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.col-user .col-header {
+  background: linear-gradient(135deg, rgba(14,30,60,0.9), rgba(15,35,70,0.9));
+  border-color: var(--user-border);
+  color: var(--user-color);
+}
+.col-user .col-header .icon { background: rgba(56,189,248,0.15); }
+
+.col-llm .col-header {
+  background: linear-gradient(135deg, rgba(30,15,60,0.9), rgba(40,20,80,0.9));
+  border-color: var(--llm-border);
+  color: var(--llm-color);
+}
+.col-llm .col-header .icon { background: rgba(167,139,250,0.15); }
+
+.col-tool .col-header {
+  background: linear-gradient(135deg, rgba(5,30,20,0.9), rgba(8,40,25,0.9));
+  border-color: var(--tool-border);
+  color: var(--tool-color);
+}
+.col-tool .col-header .icon { background: rgba(52,211,153,0.15); }
+
+.col-body {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  min-height: 460px;
+  position: relative;
+}
+.col-user .col-body { border-color: var(--user-border); background: rgba(56,189,248,0.02); }
+.col-llm .col-body  { border-color: var(--llm-border);  background: rgba(167,139,250,0.02); }
+.col-tool .col-body { border-color: var(--tool-border); background: rgba(52,211,153,0.02); }
+
+/* ── 消息卡片 ── */
+.msg {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  border: 1px solid transparent;
+  position: relative;
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1),
+              transform 0.45s cubic-bezier(0.4,0,0.2,1),
+              box-shadow 0.3s;
+  overflow: hidden;
+}
+.msg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  border-radius: 3px 0 0 3px;
+}
+.msg.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.msg.highlight {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.msg-user {
+  background: var(--user-bg);
+  border-color: var(--user-border);
+  color: #bae6fd;
+}
+.msg-user::before { background: var(--user-color); }
+
+.msg-llm {
+  background: var(--llm-bg);
+  border-color: var(--llm-border);
+  color: #ddd6fe;
+}
+.msg-llm::before { background: var(--llm-color); }
+
+.msg-tool {
+  background: var(--tool-bg);
+  border-color: var(--tool-border);
+  color: #a7f3d0;
+}
+.msg-tool::before { background: var(--tool-color); }
+
+.msg-code {
+  background: rgba(15,23,42,0.8);
+  border-color: rgba(255,255,255,0.08);
+  color: #a5b4fc;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace;
+  font-size: 11px;
+}
+.msg-code::before { background: #475569; }
+
+.msg-final {
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12));
+  border-color: rgba(139,92,246,0.4);
+  color: #e0e7ff;
+}
+.msg-final::before { background: linear-gradient(180deg, #6366f1, #8b5cf6); }
+
+.msg-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  opacity: 0.55;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-size: 10.5px;
+  line-height: 1.6;
+}
+
+/* 打字机光标 */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── 步骤说明条 ── */
+.step-info {
+  margin-top: 20px;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  min-height: 64px;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  overflow: hidden;
+}
+.step-info::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+  background: var(--border-bright);
+  transition: background 0.4s;
+}
+.step-info.s1::before { background: var(--user-color); }
+.step-info.s2::before { background: var(--llm-color); }
+.step-info.s3::before { background: var(--tool-color); }
+.step-info.s4::before { background: var(--llm-color); }
+.step-info.s5::before { background: #f472b6; }
+
+.si-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: all 0.4s;
+}
+.si-content { flex: 1; }
+.si-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--text);
+}
+.si-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── SVG 箭头动画 ── */
+@keyframes dashMove {
+  to { stroke-dashoffset: -20; }
+}
+@keyframes dotTravel {
+  0%   { offset-distance: 0%;   opacity: 1; }
+  90%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.arrow-path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.arrow-path.show {
+  opacity: 1;
+  stroke-dasharray: 6 4;
+  animation: dashMove 0.6s linear infinite;
+}
+.arrow-head {
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.arrow-head.show { opacity: 1; }
+
+.travel-dot {
+  r: 4;
+  opacity: 0;
+}
+
+/* ── 进度条 ── */
+.progress-bar {
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── 完成状态 ── */
+.done-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(6,11,24,0.85);
+  backdrop-filter: blur(4px);
+  border-radius: var(--radius);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 20;
+}
+.done-overlay.show { display: flex; }
+.done-icon {
+  font-size: 48px;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.done-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4ade80;
+}
+.done-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── 响应式 ── */
+@media (max-width: 768px) {
+  .stage { grid-template-columns: 1fr; }
+  .tl-line { width: 30px; }
+  .tl-label { display: none; }
+  .arrows-layer { display: none; }
+}
+
+/* ── 光晕效果 ── */
+.glow-user { filter: drop-shadow(0 0 8px rgba(56,189,248,0.4)); }
+.glow-llm  { filter: drop-shadow(0 0 8px rgba(167,139,250,0.4)); }
+.glow-tool { filter: drop-shadow(0 0 8px rgba(52,211,153,0.4)); }
+
+/* 脉冲动画 */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+.pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: pulse-ring 1s ease-out infinite;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
 
-<h1>🔧 Function Calling：5 步通信协议</h1>
-<p class="subtitle">模型不执行函数 — 它只输出调用指令，执行由代码完成</p>
+<canvas id="bgCanvas"></canvas>
 
-<div class="controls">
-  <button class="btn btn-primary" id="btnStart">▶ 开始演示</button>
-  <button class="btn btn-secondary" id="btnReset">↻ 重置</button>
-</div>
+<div class="app">
 
-<div class="arena" id="arena">
-  <svg class="arrows-svg" id="arrowsSvg" viewBox="0 0 840 560"></svg>
-
-  <div class="col col-user">
-    <div class="col-header">👤 用户 / 应用代码</div>
-    <div class="col-body" id="colUser"></div>
+  <!-- 标题 -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span>⚡</span>
+      <span>Interactive Demo</span>
+    </div>
+    <h1>Function Calling 完整通信协议</h1>
+    <p>模型不执行函数——它只输出结构化调用指令，执行由应用代码完成。<br>观看一次完整的「查天气 → 条件发邮件」两步工具调用全过程。</p>
   </div>
 
-  <div class="col col-llm">
-    <div class="col-header">🧠 LLM (GPT-4)</div>
-    <div class="col-body" id="colLlm"></div>
+  <!-- 进度条 -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
   </div>
 
-  <div class="col col-tool">
-    <div class="col-header">⚡ 工具执行引擎</div>
-    <div class="col-body" id="colTool"></div>
+  <!-- 步骤时间轴 -->
+  <div class="timeline" id="timeline">
+    <div class="tl-item" id="tl1">
+      <div class="tl-dot">1</div>
+      <div class="tl-label">定义工具<br>发送请求</div>
+    </div>
+    <div class="tl-line" id="tll1"></div>
+    <div class="tl-item" id="tl2">
+      <div class="tl-dot">2</div>
+      <div class="tl-label">LLM<br>决策</div>
+    </div>
+    <div class="tl-line" id="tll2"></div>
+    <div class="tl-item" id="tl3">
+      <div class="tl-dot">3</div>
+      <div class="tl-label">执行<br>工具</div>
+    </div>
+    <div class="tl-line" id="tll3"></div>
+    <div class="tl-item" id="tl4">
+      <div class="tl-dot">4</div>
+      <div class="tl-label">二次<br>决策</div>
+    </div>
+    <div class="tl-line" id="tll4"></div>
+    <div class="tl-item" id="tl5">
+      <div class="tl-dot">5</div>
+      <div class="tl-label">生成<br>回答</div>
+    </div>
   </div>
-</div>
 
-<div class="step-desc" id="stepDesc">
-  <div class="sd-num" style="background:#334155;color:#94a3b8;">?</div>
-  <div class="sd-text" style="color:#94a3b8;">点击"开始演示"，模拟 Agent 查天气 + 发邮件的完整通信过程</div>
-</div>
+  <!-- 控制栏 -->
+  <div class="controls">
+    <button class="btn btn-play" id="btnPlay">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2l9 5-9 5V2z"/></svg>
+      开始演示
+    </button>
+    <button class="btn btn-reset" id="btnReset">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7a6 6 0 1 0 1.5-4M1 3v4h4"/></svg>
+      重置
+    </button>
+    <div class="speed-wrap">
+      <label>速度</label>
+      <select id="speedSel">
+        <option value="1.5">慢速</option>
+        <option value="1" selected>正常</option>
+        <option value="0.5">快速</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 三栏舞台 -->
+  <div class="stage" id="stage">
+
+    <!-- SVG 箭头层 -->
+    <svg class="arrows-layer" id="arrowsSvg" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ah-user" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#38bdf8"/>
+        </marker>
+        <marker id="ah-llm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+        </marker>
+        <marker id="ah-tool" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+        </marker>
+      </defs>
+    </svg>
+
+    <!-- 用户列 -->
+    <div class="col col-user">
+      <div class="col-header">
+        <div class="icon">👤</div>
+        <span>用户 / 应用代码</span>
+      </div>
+      <div class="col-body" id="colUser"></div>
+    </div>
+
+    <!-- LLM 列 -->
+    <div class="col col-llm">
+      <div class="col-header">
+        <div class="icon">🧠</div>
+        <span>LLM (GPT-4o)</span>
+      </div>
+      <div class="col-body" id="colLlm"></div>
+    </div>
+
+    <!-- 工具列 -->
+    <div class="col col-tool">
+      <div class="col-header">
+        <div class="icon">⚡</div>
+        <span>工具执行引擎</span>
+      </div>
+      <div class="col-body" id="colTool"></div>
+    </div>
+
+  </div><!-- /stage -->
+
+  <!-- 步骤说明 -->
+  <div class="step-info" id="stepInfo">
+    <div class="si-num" style="background:rgba(100,116,139,0.15);color:#64748b;">?</div>
+    <div class="si-content">
+      <div class="si-title" style="color:#64748b;">准备就绪</div>
+      <div class="si-desc">点击「开始演示」，观看 Agent 自动完成「查天气 → 条件发邮件」的完整两步工具调用过程。</div>
+    </div>
+  </div>
+
+</div><!-- /app -->
 
 <script>
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+/* ════════════════════════════════════════
+   粒子背景
+════════════════════════════════════════ */
+(function initParticles() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
 
-const colUser = document.getElementById('colUser');
-const colLlm  = document.getElementById('colLlm');
-const colTool = document.getElementById('colTool');
-const stepDesc = document.getElementById('stepDesc');
-const arrowsSvg = document.getElementById('arrowsSvg');
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-let running = false;
+  const COLORS = ['rgba(56,189,248,', 'rgba(167,139,250,', 'rgba(52,211,153,', 'rgba(244,114,182,'];
 
-function addMsg(col, cls, label, html, badge) {
+  for (let i = 0; i < 55; i++) {
+    particles.push({
+      x: Math.random() * 1200,
+      y: Math.random() * 800,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.4 + 0.1,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ════════════════════════════════════════
+   工具函数
+════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const colUser = $('colUser'), colLlm = $('colLlm'), colTool = $('colTool');
+const arrowsSvg = $('arrowsSvg');
+const stepInfo  = $('stepInfo');
+const progressFill = $('progressFill');
+
+let speedMul = 1;
+$('speedSel').addEventListener('change', e => { speedMul = parseFloat(e.target.value); });
+
+function delay(ms) {
+  return new Promise(r => setTimeout(r, ms * speedMul));
+}
+
+/* 打字机效果 */
+function typeText(el, text, msPerChar = 18) {
+  return new Promise(resolve => {
+    let i = 0;
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    el.appendChild(cursor);
+    const iv = setInterval(() => {
+      if (i < text.length) {
+        cursor.insertAdjacentText('beforebegin', text[i++]);
+      } else {
+        clearInterval(iv);
+        cursor.remove();
+        resolve();
+      }
+    }, msPerChar * speedMul);
+  });
+}
+
+/* 添加消息卡片 */
+function addMsg(col, cls, labelIcon, labelText, badgeNum, badgeColor, content, useTyping = false) {
   const el = document.createElement('div');
   el.className = `msg ${cls}`;
-  let inner = '';
-  if (badge) inner += `<div class="step-badge badge-${badge}">${badge}</div>`;
-  if (label) inner += `<div class="msg-label">${label}</div>`;
-  inner += html;
-  el.innerHTML = inner;
+
+  let labelHtml = '';
+  if (labelText) {
+    labelHtml = `<div class="msg-label">
+      ${badgeNum ? `<span class="step-badge" style="background:${badgeColor};color:#fff;">${badgeNum}</span>` : ''}
+      ${labelIcon ? `<span>${labelIcon}</span>` : ''}
+      <span>${labelText}</span>
+    </div>`;
+  }
+
+  const contentEl = document.createElement('div');
+  el.innerHTML = labelHtml;
+  el.appendChild(contentEl);
   col.appendChild(el);
-  requestAnimationFrame(() => el.classList.add('show'));
-  return el;
+
+  requestAnimationFrame(() => {
+    el.classList.add('visible');
+    setTimeout(() => el.classList.add('highlight'), 100);
+    setTimeout(() => el.classList.remove('highlight'), 800);
+  });
+
+  if (useTyping && typeof content === 'string') {
+    return typeText(contentEl, content, 16).then(() => el);
+  } else {
+    if (typeof content === 'string') {
+      contentEl.innerHTML = content;
+    } else {
+      contentEl.appendChild(content);
+    }
+    return Promise.resolve(el);
+  }
 }
 
-function showStep(num, bg, color, text) {
-  stepDesc.innerHTML = `<div class="sd-num" style="background:${bg};color:${color};">${num}</div><div class="sd-text">${text}</div>`;
-  stepDesc.style.borderColor = color;
+/* 代码块 */
+function codeBlock(code) {
+  const pre = document.createElement('pre');
+  pre.textContent = code;
+  return pre;
 }
 
-function drawArrow(cls, x1, y1, x2, y2) {
-  const mid = (x1 + x2) / 2;
+/* 更新步骤说明 */
+const stepColors = {
+  1: { bg: 'rgba(56,189,248,0.15)',  color: '#38bdf8', cls: 's1' },
+  2: { bg: 'rgba(167,139,250,0.15)', color: '#a78bfa', cls: 's2' },
+  3: { bg: 'rgba(52,211,153,0.15)',  color: '#34d399', cls: 's3' },
+  4: { bg: 'rgba(167,139,250,0.15)', color: '#a78bfa', cls: 's4' },
+  5: { bg: 'rgba(244,114,182,0.15)', color: '#f472b6', cls: 's5' },
+};
+
+function setStep(num, title, desc) {
+  const sc = stepColors[num];
+  stepInfo.className = `step-info ${sc.cls}`;
+  stepInfo.innerHTML = `
+    <div class="si-num" style="background:${sc.bg};color:${sc.color};">${num}</div>
+    <div class="si-content">
+      <div class="si-title">${title}</div>
+      <div class="si-desc">${desc}</div>
+    </div>`;
+  progressFill.style.width = (num / 5 * 100) + '%';
+
+  // 更新时间轴
+  for (let i = 1; i <= 5; i++) {
+    const tl = $(`tl${i}`);
+    tl.classList.remove('active', 'done');
+    if (i < num) tl.classList.add('done');
+    if (i === num) tl.classList.add('active');
+    if (i < 5) {
+      const line = $(`tll${i}`);
+      line.classList.toggle('active', i < num);
+    }
+  }
+}
+
+/* ════════════════════════════════════════
+   SVG 箭头绘制
+════════════════════════════════════════ */
+function getColCenter(col) {
+  const stageRect = $('stage').getBoundingClientRect();
+  const colRect   = col.getBoundingClientRect();
+  return {
+    x: colRect.left - stageRect.left + colRect.width / 2,
+    top: colRect.top - stageRect.top,
+    bottom: colRect.bottom - stageRect.top,
+  };
+}
+
+function getMsgMidY(msgEl) {
+  const stageRect = $('stage').getBoundingClientRect();
+  const r = msgEl.getBoundingClientRect();
+  return r.top - stageRect.top + r.height / 2;
+}
+
+let arrowCount = 0;
+
+function drawArrow(x1, y1, x2, y2, colorClass, markerEnd) {
+  const id = 'ap' + (++arrowCount);
+  const svg = arrowsSvg;
+
+  // 曲线控制点
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const cx1 = x1 + dx * 0.4;
+  const cy1 = y1 + dy * 0.1 - 20;
+  const cx2 = x1 + dx * 0.6;
+  const cy2 = y2 - dy * 0.1 - 20;
+
+  const d = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
+
+  // 路径
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('class', `fly-path ${cls}`);
-  path.setAttribute('d', `M ${x1} ${y1} Q ${mid} ${(y1+y2)/2 - 20} ${x2} ${y2}`);
-  arrowsSvg.appendChild(path);
-  requestAnimationFrame(() => path.classList.add('show'));
+  path.setAttribute('id', id);
+  path.setAttribute('d', d);
+  path.setAttribute('class', `arrow-path ${colorClass}`);
+  path.setAttribute('stroke', colorClass === 'u2l' ? '#38bdf8' : colorClass === 'l2t' || colorClass === 't2l' ? '#34d399' : '#a78bfa');
+  path.setAttribute('marker-end', `url(#${markerEnd})`);
+  svg.appendChild(path);
 
   // 飞行点
   const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  dot.setAttribute('class', `fly-dot ${cls}`);
-  dot.setAttribute('r', '5');
-  const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
-  anim.setAttribute('dur', '0.8s');
-  anim.setAttribute('fill', 'freeze');
-  anim.setAttribute('begin', 'indefinite');
-  const mpath = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
-  mpath.setAttribute('href', '');
-  // Use path directly
-  anim.innerHTML = `<mpath href=""/>`;
-  // For simplicity, just animate opacity
-  dot.style.opacity = '0.8';
-  arrowsSvg.appendChild(dot);
+  dot.setAttribute('r', '4');
+  dot.setAttribute('fill', path.getAttribute('stroke'));
+  dot.setAttribute('opacity', '0');
+  svg.appendChild(dot);
 
-  return { path, dot };
+  // 触发显示
+  requestAnimationFrame(() => path.classList.add('show'));
+
+  // 飞行动画
+  return new Promise(resolve => {
+    const dur = 700 * speedMul;
+    const start = performance.now();
+    const pathLen = path.getTotalLength();
+
+    function animate(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+      const pt = path.getPointAtLength(ease * pathLen);
+      dot.setAttribute('cx', pt.x);
+      dot.setAttribute('cy', pt.y);
+      dot.setAttribute('opacity', t < 0.9 ? '0.9' : String(1 - (t - 0.9) / 0.1));
+      if (t < 1) requestAnimationFrame(animate);
+      else resolve();
+    }
+    dot.setAttribute('opacity', '0.9');
+    requestAnimationFrame(animate);
+  });
 }
 
-async function run() {
-  // ── 步骤 1: 定义工具 + 发送请求 ──
-  showStep('1', '#1e40af', '#60a5fa',
-    '<strong>定义工具 + 发送请求</strong>：应用代码将用户消息和工具定义（JSON Schema）一起发给 LLM');
+/* ════════════════════════════════════════
+   主演示流程
+════════════════════════════════════════ */
+let running = false;
 
-  addMsg(colUser, 'msg-user', '用户输入', '🗣️ "广州天气如何？如果下雨帮我发提醒邮件给小张"', '1');
+async function runDemo() {
+  running = true;
+  $('btnPlay').disabled = true;
+
+  /* ── 步骤 1：定义工具 + 发送请求 ── */
+  setStep(1, '定义工具 + 发送请求',
+    '应用代码将用户消息和工具定义（JSON Schema）打包，一起发送给 LLM。LLM 通过 <code>description</code> 字段理解每个工具的用途。');
+
+  const msgUserInput = await addMsg(colUser, 'msg-user', '🗣️', '用户输入', 1, '#38bdf8',
+    '"广州天气如何？如果下雨帮我发提醒邮件给小张"', true);
+  await delay(400);
+
+  const msgTools = await addMsg(colUser, 'msg-code', '📋', 'tools 定义', null, null,
+    codeBlock(`[\n  {\n    "name": "get_weather",\n    "description": "获取实时天气",\n    "strict": true,\n    "params": { "city": "string" }\n  },\n  {\n    "name": "send_email",\n    "description": "发送邮件（需用户确认）",\n    "strict": true,\n    "params": { "to": "str", "subject": "str" }\n  }\n]`));
   await delay(600);
 
-  addMsg(colUser, 'msg-json', 'tools 定义', `<pre style="margin:0;font-size:10px;">[
-  {
-    "name": "get_weather",
-    "params": { "city": "string" }
-  },
-  {
-    "name": "send_email",
-    "params": { "to": "str", "subject": "str" }
-  }
-]</pre>`);
-  await delay(1200);
+  // 箭头：用户 → LLM
+  const uc = getColCenter(colUser.closest('.col'));
+  const lc = getColCenter(colLlm.closest('.col'));
+  const y1 = getMsgMidY(msgUserInput);
+  await drawArrow(uc.x + 10, y1, lc.x - 10, y1 + 10, 'u2l', 'ah-user');
+  await delay(300);
 
-  // ── 步骤 2: LLM 分析决策 ──
-  showStep('2', '#6d28d9', '#c084fc',
-    '<strong>模型决策</strong>：LLM 分析用户意图 → 需要先查天气 → 输出结构化的函数调用 JSON（不是执行！）');
+  /* ── 步骤 2：LLM 决策 ── */
+  setStep(2, 'LLM 分析 → 输出调用指令',
+    'LLM 理解用户意图后，决定先查天气。它<strong>不执行函数</strong>，而是输出一段结构化 JSON 告诉应用代码"请帮我调用这个函数"。');
 
-  addMsg(colLlm, 'msg-llm', 'LLM 推理', '💭 用户需要查天气 + 条件发邮件<br>→ 先调用 get_weather', '2');
-  await delay(800);
+  const msgLlmReason = await addMsg(colLlm, 'msg-llm', '💭', 'LLM 推理', 2, '#a78bfa',
+    '用户需要查天气 + 条件发邮件<br>→ 先调用 <code style="background:rgba(167,139,250,0.2);padding:1px 5px;border-radius:4px;">get_weather</code>', true);
+  await delay(500);
 
-  addMsg(colLlm, 'msg-json', 'function_call 输出', `<pre style="margin:0;font-size:10px;">{
-  "name": "get_weather",
-  "arguments": {
-    "city": "广州"
-  }
-}</pre>`);
-  await delay(1200);
+  const msgFuncCall1 = await addMsg(colLlm, 'msg-code', '📤', 'tool_calls 输出', null, null,
+    codeBlock(`{\n  "name": "get_weather",\n  "arguments": {\n    "city": "广州"\n  }\n}`));
+  await delay(600);
 
-  // ── 步骤 3: 代码执行工具 ──
-  showStep('3', '#166534', '#4ade80',
-    '<strong>执行工具</strong>：应用代码解析 JSON → 调用真实的 get_weather() 函数 → 获取实际天气数据');
+  // 箭头：LLM → 工具
+  const tc = getColCenter(colTool.closest('.col'));
+  const y2 = getMsgMidY(msgFuncCall1);
+  await drawArrow(lc.x + 10, y2, tc.x - 10, y2, 'l2t', 'ah-tool');
+  await delay(300);
 
-  addMsg(colTool, 'msg-tool', '执行 get_weather("广州")', '🌧️ 调用天气 API...', '3');
-  await delay(800);
+  /* ── 步骤 3：执行工具 ── */
+  setStep(3, '应用代码执行工具函数',
+    '应用代码解析 JSON → 调用真实的 <code>get_weather("广州")</code> → 获取实际天气数据 → 将结果以 <code>role: "tool"</code> 消息返回给 LLM。');
 
-  addMsg(colTool, 'msg-json', '返回结果', `<pre style="margin:0;font-size:10px;">{
-  "city": "广州",
-  "temp": "25°C",
-  "condition": "小雨",
-  "humidity": "80%"
-}</pre>`);
-  await delay(1200);
+  const msgExec1 = await addMsg(colTool, 'msg-tool', '🌧️', '执行 get_weather("广州")', 3, '#34d399',
+    '调用天气 API...', true);
+  await delay(700);
 
-  // ── 步骤 4: 结果回传 → LLM 再次决策 ──
-  showStep('4', '#6d28d9', '#c084fc',
-    '<strong>二次决策</strong>：工具结果返回给 LLM → 发现是"小雨"→ 满足条件 → 再次输出 function_call 调用邮件工具');
+  const msgResult1 = await addMsg(colTool, 'msg-code', '✅', '返回结果', null, null,
+    codeBlock(`{\n  "city": "广州",\n  "temperature": "25°C",\n  "condition": "小雨",\n  "humidity": "80%"\n}`));
+  await delay(600);
 
-  addMsg(colLlm, 'msg-llm', 'LLM 分析结果', '💭 condition="小雨" → 满足发邮件条件！<br>→ 调用 send_email', '4');
-  await delay(800);
+  // 箭头：工具 → LLM（结果回传）
+  const y3 = getMsgMidY(msgResult1);
+  await drawArrow(tc.x - 10, y3, lc.x + 10, y3 + 15, 't2l', 'ah-llm');
+  await delay(300);
 
-  addMsg(colLlm, 'msg-json', 'function_call 输出', `<pre style="margin:0;font-size:10px;">{
-  "name": "send_email",
-  "arguments": {
-    "to": "xiaozhang@mail.com",
-    "subject": "广州下雨提醒",
-    "body": "广州今天小雨 25°C 请记得带伞"
-  }
-}</pre>`);
-  await delay(1000);
+  /* ── 步骤 4：LLM 二次决策 ── */
+  setStep(4, 'LLM 二次决策 → 调用邮件工具',
+    'LLM 收到天气结果，发现 condition="小雨"，满足发邮件条件。再次输出 tool_calls，这次调用 <code>send_email</code>。');
+
+  const msgLlmReason2 = await addMsg(colLlm, 'msg-llm', '💭', 'LLM 分析结果', 4, '#a78bfa',
+    'condition = "小雨" → 满足发邮件条件！<br>→ 调用 <code style="background:rgba(167,139,250,0.2);padding:1px 5px;border-radius:4px;">send_email</code>', true);
+  await delay(500);
+
+  const msgFuncCall2 = await addMsg(colLlm, 'msg-code', '📤', 'tool_calls 输出', null, null,
+    codeBlock(`{\n  "name": "send_email",\n  "arguments": {\n    "to": "xiaozhang@mail.com",\n    "subject": "广州下雨提醒",\n    "body": "广州今天小雨 25°C，记得带伞"\n  }\n}`));
+  await delay(600);
+
+  // 箭头：LLM → 工具（第二次）
+  const y4 = getMsgMidY(msgFuncCall2);
+  await drawArrow(lc.x + 10, y4, tc.x - 10, y4 + 20, 'l2t', 'ah-tool');
+  await delay(300);
 
   // 工具执行邮件
-  addMsg(colTool, 'msg-tool', '执行 send_email(...)', '📧 发送邮件中...', '4');
-  await delay(600);
-  addMsg(colTool, 'msg-json', '返回结果', `<pre style="margin:0;font-size:10px;">{ "status": "success", "msg_id": "MSG-12345" }</pre>`);
-  await delay(1000);
-
-  // ── 步骤 5: 最终回复 ──
-  showStep('5', '#9d174d', '#f472b6',
-    '<strong>生成回答</strong>：所有工具调用完成 → LLM 综合结果 → 输出自然语言回答给用户');
-
-  addMsg(colLlm, 'msg-final', '最终回复', '广州今天 <strong>25°C，小雨</strong>，湿度 80%。<br>已发送提醒邮件给小张 📧 ✅', '5');
+  await addMsg(colTool, 'msg-tool', '📧', '执行 send_email(...)', 4, '#34d399',
+    '发送邮件中...', true);
   await delay(600);
 
-  addMsg(colUser, 'msg-user', '用户收到回复 ✅', '🎉 完美！两步工具调用自动完成', '5');
+  const msgResult2 = await addMsg(colTool, 'msg-code', '✅', '返回结果', null, null,
+    codeBlock(`{\n  "status": "success",\n  "message_id": "MSG-12345"\n}`));
+  await delay(600);
+
+  // 箭头：工具 → LLM（第二次结果）
+  const y5 = getMsgMidY(msgResult2);
+  await drawArrow(tc.x - 10, y5, lc.x + 10, y5 + 15, 't2l', 'ah-llm');
+  await delay(400);
+
+  /* ── 步骤 5：生成最终回答 ── */
+  setStep(5, '生成自然语言回答',
+    '所有工具调用完成，LLM 综合所有工具结果，生成最终的自然语言回答返回给用户。整个过程对用户透明。');
+
+  const msgFinal = await addMsg(colLlm, 'msg-final', '✨', '最终回复', 5, '#f472b6',
+    '广州今天 <strong>25°C，小雨</strong>，湿度 80%。<br>已发送提醒邮件给小张 📧 ✅', true);
+  await delay(400);
+
+  // 箭头：LLM → 用户（最终回复）
+  const y6 = getMsgMidY(msgFinal);
+  await drawArrow(lc.x - 10, y6, uc.x + 10, y6 + 10, 'l2u', 'ah-user');
+  await delay(300);
+
+  await addMsg(colUser, 'msg-user', '🎉', '用户收到回复', 5, '#f472b6',
+    '完美！两步工具调用自动完成 ✅', true);
+
+  progressFill.style.width = '100%';
+
+  // 完成所有时间轴
+  for (let i = 1; i <= 5; i++) {
+    const tl = $(`tl${i}`);
+    tl.classList.remove('active');
+    tl.classList.add('done');
+  }
+
+  running = false;
+  $('btnPlay').disabled = false;
+  $('btnPlay').innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2l9 5-9 5V2z"/></svg> 再次演示`;
 }
 
-document.getElementById('btnStart').onclick = () => {
-  if (running) return;
-  reset();
-  running = true;
-  run().then(() => running = false);
-};
-
+/* ════════════════════════════════════════
+   重置
+════════════════════════════════════════ */
 function reset() {
   running = false;
   colUser.innerHTML = '';
-  colLlm.innerHTML = '';
+  colLlm.innerHTML  = '';
   colTool.innerHTML = '';
-  arrowsSvg.innerHTML = '';
-  stepDesc.innerHTML = '<div class="sd-num" style="background:#334155;color:#94a3b8;">?</div><div class="sd-text" style="color:#94a3b8;">点击"开始演示"，模拟完整的 Function Calling 通信过程</div>';
-  stepDesc.style.borderColor = '#334155';
+  arrowsSvg.querySelectorAll('path.arrow-path, circle.travel-dot').forEach(el => el.remove());
+  progressFill.style.width = '0%';
+  stepInfo.className = 'step-info';
+  stepInfo.innerHTML = `
+    <div class="si-num" style="background:rgba(100,116,139,0.15);color:#64748b;">?</div>
+    <div class="si-content">
+      <div class="si-title" style="color:#64748b;">准备就绪</div>
+      <div class="si-desc">点击「开始演示」，观看 Agent 自动完成「查天气 → 条件发邮件」的完整两步工具调用过程。</div>
+    </div>`;
+  for (let i = 1; i <= 5; i++) {
+    const tl = $(`tl${i}`);
+    tl.classList.remove('active', 'done');
+    if (i < 5) $(`tll${i}`).classList.remove('active');
+  }
+  $('btnPlay').disabled = false;
+  $('btnPlay').innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2l9 5-9 5V2z"/></svg> 开始演示`;
 }
 
-document.getElementById('btnReset').onclick = reset;
+$('btnPlay').addEventListener('click', () => {
+  if (running) return;
+  reset();
+  setTimeout(runDemo, 100);
+});
+$('btnReset').addEventListener('click', reset);
 </script>
 </body>
 </html>
