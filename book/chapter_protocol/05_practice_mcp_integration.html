@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>15.5 实战：基于 MCP 的工具集成 - 从零开始学 Agent</title>
+        <title>16.5 实战：基于 MCP 的工具集成 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -697,22 +697,6 @@ def cached_database_query(db_path: str, sql: str) -&gt; str:
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

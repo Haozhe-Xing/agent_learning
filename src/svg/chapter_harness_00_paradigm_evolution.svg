@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L9,3.5 z" fill="#7f8c8d"/>
+    </marker>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:0.18"/>
+      <stop offset="100%" style="stop-color:#3498db;stop-opacity:0.06"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e67e22;stop-opacity:0.18"/>
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:0.06"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#27ae60;stop-opacity:0.22"/>
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:0.08"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="760" height="320" fill="#f8f9fa" rx="14"/>
+  <text x="380" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">AI 工程三大范式演进</text>
+
+  <!-- ══════ Paradigm 1 ══════ -->
+  <rect x="20" y="50" width="210" height="210" rx="12" fill="url(#g1)" stroke="#3498db" stroke-width="2"/>
+  <!-- era badge -->
+  <rect x="40" y="62" width="90" height="20" rx="10" fill="#3498db" opacity="0.85"/>
+  <text x="85" y="76" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">2022 — 2024</text>
+  <text x="125" y="76" text-anchor="middle" font-size="18" fill="#3498db">✍️</text>
+  <text x="125" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">Prompt Engineering</text>
+  <text x="125" y="115" text-anchor="middle" font-size="11" fill="#2c3e50">提示工程</text>
+  <!-- divider -->
+  <line x1="35" y1="123" x2="215" y2="123" stroke="#3498db" stroke-width="0.8" opacity="0.3"/>
+  <!-- focus -->
+  <text x="40" y="141" font-size="10" font-weight="bold" fill="#3498db">核心关注点</text>
+  <text x="40" y="157" font-size="10" fill="#555">如何用自然语言问对问题</text>
+  <text x="40" y="172" font-size="10" fill="#555">让模型单次输出更好</text>
+  <!-- problem -->
+  <text x="40" y="192" font-size="10" font-weight="bold" fill="#e74c3c">典型痛点</text>
+  <text x="40" y="207" font-size="10" fill="#777">输出不稳定，依赖模型自律</text>
+  <text x="40" y="222" font-size="10" fill="#777">无法保证长任务可靠性</text>
+  <!-- tag -->
+  <rect x="40" y="238" width="150" height="18" rx="9" fill="#3498db" opacity="0.12"/>
+  <text x="115" y="251" text-anchor="middle" font-size="9" fill="#3498db">单点优化 · 输入驱动</text>
+
+  <!-- Arrow 1 -->
+  <path d="M 232 155 L 258 155" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="245" y="148" text-anchor="middle" font-size="8" fill="#999">包含</text>
+
+  <!-- ══════ Paradigm 2 ══════ -->
+  <rect x="260" y="50" width="210" height="210" rx="12" fill="url(#g2)" stroke="#e67e22" stroke-width="2"/>
+  <rect x="280" y="62" width="90" height="20" rx="10" fill="#e67e22" opacity="0.85"/>
+  <text x="325" y="76" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">2024 — 2025</text>
+  <text x="365" y="76" text-anchor="middle" font-size="18" fill="#e67e22">📦</text>
+  <text x="365" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">Context Engineering</text>
+  <text x="365" y="115" text-anchor="middle" font-size="11" fill="#2c3e50">上下文工程</text>
+  <line x1="275" y1="123" x2="455" y2="123" stroke="#e67e22" stroke-width="0.8" opacity="0.3"/>
+  <text x="280" y="141" font-size="10" font-weight="bold" fill="#e67e22">核心关注点</text>
+  <text x="280" y="157" font-size="10" fill="#555">向模型提供正确的信息</text>
+  <text x="280" y="172" font-size="10" fill="#555">管理上下文窗口与注意力</text>
+  <text x="280" y="192" font-size="10" font-weight="bold" fill="#e74c3c">典型痛点</text>
+  <text x="280" y="207" font-size="10" fill="#777">长任务上下文管理混乱</text>
+  <text x="280" y="222" font-size="10" fill="#777">信息质量难以量化评估</text>
+  <rect x="280" y="238" width="150" height="18" rx="9" fill="#e67e22" opacity="0.12"/>
+  <text x="355" y="251" text-anchor="middle" font-size="9" fill="#e67e22">信息优化 · 输入质量</text>
+
+  <!-- Arrow 2 -->
+  <path d="M 472 155 L 498 155" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="485" y="148" text-anchor="middle" font-size="8" fill="#999">包含</text>
+
+  <!-- ══════ Paradigm 3 ══════ -->
+  <rect x="500" y="50" width="240" height="210" rx="12" fill="url(#g3)" stroke="#27ae60" stroke-width="2.5"/>
+  <!-- "NEW" badge -->
+  <rect x="520" y="62" width="90" height="20" rx="10" fill="#27ae60" opacity="0.85"/>
+  <text x="565" y="76" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">2025 — 2026</text>
+  <rect x="676" y="57" width="50" height="20" rx="10" fill="#e74c3c"/>
+  <text x="701" y="71" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">🔥 NEW</text>
+  <text x="620" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">Harness Engineering</text>
+  <text x="620" y="115" text-anchor="middle" font-size="11" fill="#2c3e50">驾驭工程</text>
+  <line x1="515" y1="123" x2="725" y2="123" stroke="#27ae60" stroke-width="0.8" opacity="0.3"/>
+  <text x="520" y="141" font-size="10" font-weight="bold" fill="#27ae60">核心关注点</text>
+  <text x="520" y="157" font-size="10" fill="#555">让 Agent 系统可靠持续运行</text>
+  <text x="520" y="172" font-size="10" fill="#555">运行时约束 · 验证 · 反馈闭环</text>
+  <text x="520" y="192" font-size="10" font-weight="bold" fill="#27ae60">解决问题</text>
+  <text x="520" y="207" font-size="10" fill="#555">上下文焦虑 · 完成偏见</text>
+  <text x="520" y="222" font-size="10" fill="#555">死循环 · 污染效应 · 熵增</text>
+  <rect x="520" y="238" width="180" height="18" rx="9" fill="#27ae60" opacity="0.12"/>
+  <text x="610" y="251" text-anchor="middle" font-size="9" fill="#27ae60">系统可靠性 · 运行时控制</text>
+
+  <!-- Bottom: layered relationship -->
+  <rect x="20" y="275" width="720" height="36" rx="8" fill="#ecf0f1"/>
+  <text x="380" y="291" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">递进叠加关系（非替代）：</text>
+  <text x="380" y="306" text-anchor="middle" font-size="10" fill="#555">Harness Engineering ⊇ Context Engineering ⊇ Prompt Engineering</text>
+</svg>

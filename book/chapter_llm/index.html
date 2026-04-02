@@ -464,6 +464,7 @@
 <li>✅ 理解 Token、Temperature 等参数对输出的影响</li>
 <li>✅ 了解主流模型的架构组件（MHA/GQA/MLA、RoPE、SwiGLU、MoE）及 2026 年新突破（混合注意力、Attention Residuals、MuonClip、Engram 内存）</li>
 <li>✅ 掌握基座模型的前沿进展与 Agent 开发的选型策略</li>
+<li>✅ 理解 SFT 与 RL 训练数据准备的核心原则：数据量选择、质量评估、奖励函数设计</li>
 </ul>
 <h2 id="本章结构"><a class="header" href="#本章结构">本章结构</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>小节</th><th>内容</th><th>难度</th></tr></thead><tbody>
@@ -474,6 +475,7 @@
 <tr><td>3.5 Token 与模型参数</td><td>Token 计数、Temperature、Top-p 等</td><td>⭐⭐</td></tr>
 <tr><td>3.6 基座模型前沿进展</td><td>产业格局、模型生态（Kimi K2/K2.5、DeepSeek V4、Qwen3.5）、Agent 选型指南</td><td>⭐⭐⭐</td></tr>
 <tr><td>3.7 基座模型架构详解</td><td>MHA→GQA→MLA、RoPE、SwiGLU、MoE，及 2026 新突破：混合注意力、Attention Residuals、MuonClip、Engram 内存</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>3.8 SFT 与强化学习训练数据准备</td><td>数据量选择、质量评估、SFT 数据制作、RL 奖励函数设计、难度校准与课程学习</td><td>⭐⭐⭐</td></tr>
 </tbody></table>
 </div>
 <h2 id="核心概念速览"><a class="header" href="#核心概念速览">核心概念速览</a></h2>
@@ -528,22 +530,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

@@ -1036,11 +1036,14 @@ messages = pipeline.build(
 <tr><td>8.2</td><td>理解上下文窗口的约束和注意力分布</td><td>上下文腐蚀、Lost-in-the-Middle、注意力预算</td></tr>
 <tr><td>8.3</td><td>掌握长时程任务的三大策略</td><td>压缩整合、结构化笔记、子代理架构</td></tr>
 <tr><td>8.4</td><td>动手实现可复用的上下文管理基础设施</td><td>GSSC 流水线：Gather → Select → Summarize → Construct</td></tr>
+<tr><td>8.5</td><td>了解前沿技术突破和方法论演进</td><td>Anthropic 方法论、ACE 自演化、百万级窗口、KV-Cache 优化</td></tr>
 </tbody></table>
 </div>
 <blockquote>
 <p>💡 <strong>下一步</strong>：上下文工程是贯穿整本书的底层能力。在后续章节中，无论是工具调用（第4章）、记忆系统（第5章）、还是 RAG（第7章），你都会反复用到本章学到的上下文管理思维。建议将 GSSC 流水线的代码保存到自己的工具库中，后续章节的实战项目将直接复用。</p>
 </blockquote>
+<hr />
+<p><em>下一节：<a href="./05_latest_advances.html">8.5 上下文工程前沿进展</a></em></p>
 <hr />
 <h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
 <p>[1] ANTHROPIC. Building effective agents[EB/OL]. 2024. https://www.anthropic.com/engineering/building-effective-agents.</p>
@@ -1074,22 +1077,6 @@ messages = pipeline.build(
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

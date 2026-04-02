@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+
+  <rect width="760" height="400" fill="#f8f9fa" rx="14"/>
+  <text x="380" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">五大核心问题：Harness Engineering 要解决什么？</text>
+
+  <!-- Problem 1: Context Anxiety -->
+  <rect x="20" y="48" width="220" height="155" rx="12" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <rect x="20" y="48" width="220" height="36" rx="12" fill="#f39c12" opacity="0.85"/>
+  <rect x="20" y="72" width="220" height="12" rx="0" fill="#f39c12" opacity="0.85"/>
+  <text x="130" y="70" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">① 上下文焦虑</text>
+  <text x="130" y="105" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">Context Anxiety</text>
+  <line x1="35" y1="113" x2="225" y2="113" stroke="#f39c12" stroke-width="0.8" opacity="0.4"/>
+  <text x="35" y="128" font-size="9" fill="#555">• 利用率 &gt;40% 推理质量下滑</text>
+  <text x="35" y="143" font-size="9" fill="#555">• 模型悄悄跳过步骤不声明</text>
+  <text x="35" y="158" font-size="9" fill="#555">• 过早宣告"完成"</text>
+  <rect x="35" y="170" width="170" height="22" rx="8" fill="#f39c12" opacity="0.12"/>
+  <text x="120" y="185" text-anchor="middle" font-size="9" fill="#e67e22">Harness 解法：主动压缩 &amp; 监控利用率</text>
+
+  <!-- Problem 2: Completion Bias -->
+  <rect x="255" y="48" width="220" height="155" rx="12" fill="#fef5fb" stroke="#9b59b6" stroke-width="2"/>
+  <rect x="255" y="48" width="220" height="36" rx="12" fill="#9b59b6" opacity="0.85"/>
+  <rect x="255" y="72" width="220" height="12" rx="0" fill="#9b59b6" opacity="0.85"/>
+  <text x="365" y="70" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">② 完成偏见</text>
+  <text x="365" y="105" text-anchor="middle" font-size="10" font-weight="bold" fill="#9b59b6">Completion Bias</text>
+  <line x1="270" y1="113" x2="460" y2="113" stroke="#9b59b6" stroke-width="0.8" opacity="0.4"/>
+  <text x="270" y="128" font-size="9" fill="#555">• LLM 系统性乐观偏见</text>
+  <text x="270" y="143" font-size="9" fill="#555">• 未验证就声称任务完成</text>
+  <text x="270" y="158" font-size="9" fill="#555">• 删测试让测试通过（作弊）</text>
+  <rect x="270" y="170" width="190" height="22" rx="8" fill="#9b59b6" opacity="0.12"/>
+  <text x="365" y="185" text-anchor="middle" font-size="9" fill="#9b59b6">Harness 解法：强制验证门控</text>
+
+  <!-- Problem 3: Doom Loop -->
+  <rect x="490" y="48" width="250" height="155" rx="12" fill="#fef2f2" stroke="#e74c3c" stroke-width="2"/>
+  <rect x="490" y="48" width="250" height="36" rx="12" fill="#e74c3c" opacity="0.85"/>
+  <rect x="490" y="72" width="250" height="12" rx="0" fill="#e74c3c" opacity="0.85"/>
+  <text x="615" y="70" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">③ 死循环（Doom Loop）</text>
+  <text x="615" y="105" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">Infinite Loop</text>
+  <line x1="505" y1="113" x2="725" y2="113" stroke="#e74c3c" stroke-width="0.8" opacity="0.4"/>
+  <text x="505" y="128" font-size="9" fill="#555">• 同一思路反复尝试不切换</text>
+  <text x="505" y="143" font-size="9" fill="#555">• 生产案例：47 次循环/$23 费用</text>
+  <text x="505" y="158" font-size="9" fill="#555">• 无意义重试耗尽 token 预算</text>
+  <rect x="505" y="170" width="220" height="22" rx="8" fill="#e74c3c" opacity="0.1"/>
+  <text x="615" y="185" text-anchor="middle" font-size="9" fill="#e74c3c">Harness 解法：循环检测 + 策略切换</text>
+
+  <!-- Problem 4: Pollution Effect -->
+  <rect x="20" y="220" width="340" height="155" rx="12" fill="#eaf9f5" stroke="#1abc9c" stroke-width="2"/>
+  <rect x="20" y="220" width="340" height="36" rx="12" fill="#1abc9c" opacity="0.85"/>
+  <rect x="20" y="244" width="340" height="12" rx="0" fill="#1abc9c" opacity="0.85"/>
+  <text x="190" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">④ 污染效应（Multi-Agent Pollution）</text>
+  <text x="190" y="277" text-anchor="middle" font-size="10" font-weight="bold" fill="#1abc9c">Context Contamination</text>
+  <line x1="35" y1="285" x2="345" y2="285" stroke="#1abc9c" stroke-width="0.8" opacity="0.4"/>
+  <text x="35" y="300" font-size="9" fill="#555">• Agent A 的错误决策通过消息传递给 Agent B</text>
+  <text x="35" y="315" font-size="9" fill="#555">• 错误信息被当作"事实"继续扩散放大</text>
+  <text x="35" y="330" font-size="9" fill="#555">• 多 Agent 系统中错误级联，难以追溯根源</text>
+  <rect x="35" y="345" width="305" height="22" rx="8" fill="#1abc9c" opacity="0.1"/>
+  <text x="188" y="360" text-anchor="middle" font-size="9" fill="#1abc9c">Harness 解法：上下文隔离 + 消息总线验证</text>
+
+  <!-- Problem 5: System Entropy -->
+  <rect x="375" y="220" width="365" height="155" rx="12" fill="#eaf4fb" stroke="#2980b9" stroke-width="2"/>
+  <rect x="375" y="220" width="365" height="36" rx="12" fill="#2980b9" opacity="0.85"/>
+  <rect x="375" y="244" width="365" height="12" rx="0" fill="#2980b9" opacity="0.85"/>
+  <text x="558" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">⑤ 系统熵增（System Entropy）</text>
+  <text x="558" y="277" text-anchor="middle" font-size="10" font-weight="bold" fill="#2980b9">Technical Debt Accumulation</text>
+  <line x1="390" y1="285" x2="725" y2="285" stroke="#2980b9" stroke-width="0.8" opacity="0.4"/>
+  <text x="390" y="300" font-size="9" fill="#555">• AI 生成速度极快，坏模式迅速蔓延</text>
+  <text x="390" y="315" font-size="9" fill="#555">• 文档与代码逐渐脱节，知识腐化</text>
+  <text x="390" y="330" font-size="9" fill="#555">• 新 AI 学习旧"坏代码"，质量螺旋下降</text>
+  <rect x="390" y="345" width="330" height="22" rx="8" fill="#2980b9" opacity="0.1"/>
+  <text x="558" y="360" text-anchor="middle" font-size="9" fill="#2980b9">Harness 解法：熵治理 Agent（定期扫描 + 自动修复 PR）</text>
+
+  <!-- Bottom: key insight -->
+  <rect x="20" y="386" width="720" height="8" rx="4" fill="#ecf0f1"/>
+</svg>

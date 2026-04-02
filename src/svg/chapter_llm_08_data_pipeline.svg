@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" font-family="'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#eef1f8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="420" rx="16" fill="url(#gradBg)"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#2d3748">训练数据三阶段流水线</text>
+
+  <!-- Stage 1: Pre-training -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="75" width="250" height="280" rx="14" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="40" y="75" width="250" height="52" rx="14" fill="url(#grad1)"/>
+    <rect x="40" y="113" width="250" height="14" fill="url(#grad1)"/>
+    <text x="165" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="white">阶段 1：预训练</text>
+    
+    <!-- Data icon -->
+    <g transform="translate(85, 150)">
+      <rect width="160" height="36" rx="6" fill="#eef0ff" stroke="#667eea" stroke-width="1"/>
+      <text x="80" y="23" text-anchor="middle" font-size="12" font-weight="600" fill="#667eea">📚 海量无标注文本</text>
+    </g>
+    
+    <text x="165" y="215" text-anchor="middle" font-size="13" fill="#4a5568">网页、书籍、代码、论文</text>
+    
+    <!-- Stats -->
+    <g transform="translate(65, 240)">
+      <rect width="200" height="24" rx="4" fill="#f0f0ff"/>
+      <text x="100" y="17" text-anchor="middle" font-size="12" font-weight="600" fill="#667eea">数据量：1T—15T tokens</text>
+    </g>
+    <g transform="translate(65, 270)">
+      <rect width="200" height="24" rx="4" fill="#f0f0ff"/>
+      <text x="100" y="17" text-anchor="middle" font-size="12" font-weight="600" fill="#667eea">目标：语言能力 + 世界知识</text>
+    </g>
+    <g transform="translate(65, 300)">
+      <rect width="200" height="24" rx="4" fill="#f8f8ff"/>
+      <text x="100" y="17" text-anchor="middle" font-size="11" fill="#718096">质量要求：中等（量优先）</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1 -->
+  <g>
+    <line x1="295" y1="215" x2="325" y2="215" stroke="#a0aec0" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+    <defs><marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a0aec0"/></marker></defs>
+  </g>
+
+  <!-- Stage 2: SFT -->
+  <g filter="url(#shadow)">
+    <rect x="330" y="75" width="250" height="280" rx="14" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="330" y="75" width="250" height="52" rx="14" fill="url(#grad2)"/>
+    <rect x="330" y="113" width="250" height="14" fill="url(#grad2)"/>
+    <text x="455" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="white">阶段 2：SFT 微调</text>
+    
+    <g transform="translate(375, 150)">
+      <rect width="160" height="36" rx="6" fill="#fff0f5" stroke="#f5576c" stroke-width="1"/>
+      <text x="80" y="23" text-anchor="middle" font-size="12" font-weight="600" fill="#e53e6b">✍️ 指令-回答对</text>
+    </g>
+    
+    <text x="455" y="215" text-anchor="middle" font-size="13" fill="#4a5568">人工标注 / 强模型蒸馏</text>
+    
+    <g transform="translate(355, 240)">
+      <rect width="200" height="24" rx="4" fill="#fff0f5"/>
+      <text x="100" y="17" text-anchor="middle" font-size="12" font-weight="600" fill="#e53e6b">数据量：1K—100K 条</text>
+    </g>
+    <g transform="translate(355, 270)">
+      <rect width="200" height="24" rx="4" fill="#fff0f5"/>
+      <text x="100" y="17" text-anchor="middle" font-size="12" font-weight="600" fill="#e53e6b">目标：行为格式 + 任务能力</text>
+    </g>
+    <g transform="translate(355, 300)">
+      <rect width="200" height="24" rx="4" fill="#fff8fa"/>
+      <text x="100" y="17" text-anchor="middle" font-size="11" fill="#718096">质量要求：极高（质量优先）</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g>
+    <line x1="585" y1="215" x2="615" y2="215" stroke="#a0aec0" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  </g>
+
+  <!-- Stage 3: RL -->
+  <g filter="url(#shadow)">
+    <rect x="620" y="75" width="250" height="280" rx="14" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="620" y="75" width="250" height="52" rx="14" fill="url(#grad3)"/>
+    <rect x="620" y="113" width="250" height="14" fill="url(#grad3)"/>
+    <text x="745" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="white">阶段 3：RL 强化学习</text>
+    
+    <g transform="translate(665, 150)">
+      <rect width="160" height="36" rx="6" fill="#f0faff" stroke="#4facfe" stroke-width="1"/>
+      <text x="80" y="23" text-anchor="middle" font-size="12" font-weight="600" fill="#2b8fd6">🎯 问题 + 奖励信号</text>
+    </g>
+    
+    <text x="745" y="215" text-anchor="middle" font-size="13" fill="#4a5568">规则奖励 / 模型奖励</text>
+    
+    <g transform="translate(645, 240)">
+      <rect width="200" height="24" rx="4" fill="#f0faff"/>
+      <text x="100" y="17" text-anchor="middle" font-size="12" font-weight="600" fill="#2b8fd6">数据量：10K—1M 问题</text>
+    </g>
+    <g transform="translate(645, 270)">
+      <rect width="200" height="24" rx="4" fill="#f0faff"/>
+      <text x="100" y="17" text-anchor="middle" font-size="12" font-weight="600" fill="#2b8fd6">目标：超越模仿、涌现策略</text>
+    </g>
+    <g transform="translate(645, 300)">
+      <rect width="200" height="24" rx="4" fill="#f8fcff"/>
+      <text x="100" y="17" text-anchor="middle" font-size="11" fill="#718096">质量要求：问题质量 + 奖励设计</text>
+    </g>
+  </g>
+
+  <!-- Bottom annotation -->
+  <g transform="translate(100, 385)">
+    <rect width="700" height="28" rx="14" fill="#f0f4ff" stroke="#cbd5e0" stroke-width="0.5"/>
+    <text x="350" y="19" text-anchor="middle" font-size="12" font-weight="500" fill="#4a5568">💡 数据量差异 3—4 个数量级，但每个阶段都有最佳"甜点"——不是越多越好，是在对的量级做到最高质量</text>
+  </g>
+</svg>

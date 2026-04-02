@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>12.2 LangGraph 核心概念：节点、边、状态 - 从零开始学 Agent</title>
+        <title>13.2 LangGraph 核心概念：节点、边、状态 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -783,22 +783,6 @@ result = app.invoke(input_data, config=config)
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

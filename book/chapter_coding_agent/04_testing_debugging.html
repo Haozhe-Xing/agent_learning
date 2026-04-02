@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>19.4 测试生成与 Bug 修复 - 从零开始学 Agent</title>
+        <title>20.4 测试生成与 Bug 修复 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -689,22 +689,6 @@ async def fix_workflow(llm, code: str, test_code: str):
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

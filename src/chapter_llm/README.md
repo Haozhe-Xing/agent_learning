@@ -19,6 +19,7 @@
 - ✅ 理解 Token、Temperature 等参数对输出的影响
 - ✅ 了解主流模型的架构组件（MHA/GQA/MLA、RoPE、SwiGLU、MoE）及 2026 年新突破（混合注意力、Attention Residuals、MuonClip、Engram 内存）
 - ✅ 掌握基座模型的前沿进展与 Agent 开发的选型策略
+- ✅ 理解 SFT 与 RL 训练数据准备的核心原则：数据量选择、质量评估、奖励函数设计
 
 ## 本章结构
 
@@ -31,6 +32,7 @@
 | 3.5 Token 与模型参数 | Token 计数、Temperature、Top-p 等 | ⭐⭐ |
 | 3.6 基座模型前沿进展 | 产业格局、模型生态（Kimi K2/K2.5、DeepSeek V4、Qwen3.5）、Agent 选型指南 | ⭐⭐⭐ |
 | 3.7 基座模型架构详解 | MHA→GQA→MLA、RoPE、SwiGLU、MoE，及 2026 新突破：混合注意力、Attention Residuals、MuonClip、Engram 内存 | ⭐⭐⭐⭐ |
+| 3.8 SFT 与强化学习训练数据准备 | 数据量选择、质量评估、SFT 数据制作、RL 奖励函数设计、难度校准与课程学习 | ⭐⭐⭐ |
 
 ## 核心概念速览
 

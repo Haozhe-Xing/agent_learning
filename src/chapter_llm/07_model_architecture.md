@@ -709,4 +709,4 @@ class EngramMemory:
 
 ---
 
-*下一节：[3.6 基座模型前沿进展与选型指南](./06_foundation_model_landscape.md)*
+*下一节：[3.8 SFT 与强化学习训练数据准备](./08_training_data.md)*

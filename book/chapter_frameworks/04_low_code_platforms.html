@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>13.4 Dify / Coze 等低代码 Agent 平台 - 从零开始学 Agent</title>
+        <title>14.4 Dify / Coze 等低代码 Agent 平台 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -687,22 +687,6 @@ print(result)  # {"prioritized_tasks": [...], "reasoning": "..."}
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

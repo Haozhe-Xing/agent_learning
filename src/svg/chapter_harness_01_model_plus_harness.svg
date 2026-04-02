@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrowB" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L9,3.5 z" fill="#3498db"/>
+    </marker>
+    <marker id="arrowR" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L9,3.5 z" fill="#e74c3c"/>
+    </marker>
+    <linearGradient id="harnessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f4fd;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d5e8f8;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="modelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef9e7;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#fdebd0;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="720" height="380" fill="#f8f9fa" rx="14"/>
+  <text x="360" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent = Model（模型）+ Harness（驾驭系统）</text>
+
+  <!-- ── Outer Agent box ── -->
+  <rect x="30" y="48" width="660" height="270" rx="14" fill="none" stroke="#95a5a6" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="360" y="66" text-anchor="middle" font-size="12" fill="#7f8c8d">Agent 系统</text>
+
+  <!-- ── Model box ── -->
+  <rect x="60" y="80" width="200" height="210" rx="12" fill="url(#modelGrad)" stroke="#e67e22" stroke-width="2"/>
+  <text x="160" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">🧠 Model</text>
+  <text x="160" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">（智能引擎）</text>
+  <line x1="75" y1="132" x2="245" y2="132" stroke="#e67e22" stroke-width="0.8" opacity="0.4"/>
+
+  <!-- Model capabilities -->
+  <rect x="80" y="142" width="160" height="22" rx="6" fill="#e67e22" opacity="0.12"/>
+  <text x="160" y="157" text-anchor="middle" font-size="10" fill="#2c3e50">🔍 语言理解（Understanding）</text>
+  <rect x="80" y="170" width="160" height="22" rx="6" fill="#e67e22" opacity="0.12"/>
+  <text x="160" y="185" text-anchor="middle" font-size="10" fill="#2c3e50">💡 推理规划（Reasoning）</text>
+  <rect x="80" y="198" width="160" height="22" rx="6" fill="#e67e22" opacity="0.12"/>
+  <text x="160" y="213" text-anchor="middle" font-size="10" fill="#2c3e50">✍️ 内容生成（Generation）</text>
+
+  <!-- Model label -->
+  <text x="160" y="258" text-anchor="middle" font-size="9" fill="#999">GPT / Claude / Gemini / Llama</text>
+  <rect x="80" y="264" width="160" height="18" rx="9" fill="#e67e22" opacity="0.1"/>
+  <text x="160" y="277" text-anchor="middle" font-size="9" fill="#e67e22">提供"智力"</text>
+
+  <!-- ── Bidirectional arrows ── -->
+  <!-- Model → Harness (output) -->
+  <path d="M 262 150 L 318 150" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="290" y="144" text-anchor="middle" font-size="9" fill="#e74c3c">输出</text>
+  <!-- Harness → Model (feedback) -->
+  <path d="M 318 175 L 262 175" stroke="#3498db" stroke-width="2" marker-end="url(#arrowB)"/>
+  <text x="290" y="192" text-anchor="middle" font-size="9" fill="#3498db">反馈 / 约束</text>
+
+  <!-- ── Harness box ── -->
+  <rect x="322" y="80" width="338" height="210" rx="12" fill="url(#harnessGrad)" stroke="#3498db" stroke-width="2"/>
+  <text x="491" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🔧 Harness</text>
+  <text x="491" y="122" text-anchor="middle" font-size="10" fill="#7f8c8d">（驾驭控制系统）</text>
+  <line x1="337" y1="132" x2="645" y2="132" stroke="#3498db" stroke-width="0.8" opacity="0.4"/>
+
+  <!-- Harness pillars - 3 per row -->
+  <rect x="338" y="142" width="148" height="26" rx="7" fill="#3498db" opacity="0.14"/>
+  <text x="412" y="155" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">① 上下文架构</text>
+  <text x="412" y="163" text-anchor="middle" font-size="8" fill="#555">防止信息过载</text>
+
+  <rect x="496" y="142" width="148" height="26" rx="7" fill="#3498db" opacity="0.14"/>
+  <text x="570" y="155" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">② 架构约束</text>
+  <text x="570" y="163" text-anchor="middle" font-size="8" fill="#555">强制执行规则</text>
+
+  <rect x="338" y="176" width="148" height="26" rx="7" fill="#27ae60" opacity="0.14"/>
+  <text x="412" y="189" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">③ 自验证循环</text>
+  <text x="412" y="197" text-anchor="middle" font-size="8" fill="#555">防止静默失败</text>
+
+  <rect x="496" y="176" width="148" height="26" rx="7" fill="#27ae60" opacity="0.14"/>
+  <text x="570" y="189" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">④ 上下文隔离</text>
+  <text x="570" y="197" text-anchor="middle" font-size="8" fill="#555">防止污染扩散</text>
+
+  <rect x="338" y="210" width="148" height="26" rx="7" fill="#9b59b6" opacity="0.14"/>
+  <text x="412" y="223" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">⑤ 熵治理</text>
+  <text x="412" y="231" text-anchor="middle" font-size="8" fill="#555">对抗质量腐化</text>
+
+  <rect x="496" y="210" width="148" height="26" rx="7" fill="#9b59b6" opacity="0.14"/>
+  <text x="570" y="223" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">⑥ 可拆卸性</text>
+  <text x="570" y="231" text-anchor="middle" font-size="8" fill="#555">随模型迭代演化</text>
+
+  <!-- Harness label -->
+  <rect x="338" y="248" width="306" height="32" rx="8" fill="#3498db" opacity="0.08"/>
+  <text x="491" y="262" text-anchor="middle" font-size="9" fill="#3498db">提供：方向控制（约束）· 制动系统（验证）· 仪表盘（可观测性）</text>
+  <text x="491" y="275" text-anchor="middle" font-size="9" fill="#3498db">让 Agent 在边界内高效、可靠、持续工作</text>
+
+  <!-- Bottom analogy -->
+  <rect x="30" y="330" width="660" height="40" rx="10" fill="#eaf4fb" stroke="#aed6f1" stroke-width="1"/>
+  <text x="360" y="347" text-anchor="middle" font-size="11" fill="#2c3e50">🏎️  赛车类比：Model = 发动机（提供动力）  |  Harness = 方向盘 + 刹车 + 仪表盘（保证安全）</text>
+  <text x="360" y="363" text-anchor="middle" font-size="10" fill="#7f8c8d">再强大的发动机，没有驾驭系统，也无法安全驾驶</text>
+</svg>

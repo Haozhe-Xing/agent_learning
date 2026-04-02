@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>13.3 AutoGen：多 Agent 对话框架 - 从零开始学 Agent</title>
+        <title>14.3 AutoGen：多 Agent 对话框架 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -713,22 +713,6 @@ agent_with_tools = AssistantAgent(
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

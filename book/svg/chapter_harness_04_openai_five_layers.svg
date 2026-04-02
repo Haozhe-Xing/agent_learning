@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrD" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L9,3.5 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#f8f9fa" rx="14"/>
+  <text x="380" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OpenAI 百万行代码实验：五层 Harness 架构</text>
+  <text x="380" y="48" text-anchor="middle" font-size="11" fill="#7f8c8d">3 名工程师 · 5 个月 · 100 万行生产代码 · 0 行手写</text>
+
+  <!-- Layer 1 -->
+  <rect x="30" y="62" width="700" height="58" rx="10" fill="#e8f4fd" stroke="#3498db" stroke-width="2"/>
+  <rect x="30" y="62" width="700" height="58" rx="10" fill="none" stroke="#3498db" stroke-width="2"/>
+  <rect x="30" y="62" width="150" height="58" rx="10" fill="#3498db" opacity="0.85"/>
+  <text x="105" y="86" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">第一层</text>
+  <text x="105" y="102" text-anchor="middle" font-size="10" fill="#fff">结构化知识体系</text>
+  <text x="215" y="84" font-size="10" font-weight="bold" fill="#3498db">渐进式知识披露（Progressive Disclosure）</text>
+  <text x="215" y="100" font-size="9" fill="#555">AGENTS.md 只有目录，详细内容按需获取 · 文档园丁 Agent 维护一致性 · 代码仓库即唯一真相源</text>
+  <text x="690" y="84" text-anchor="end" font-size="9" fill="#3498db">📚 告诉 Agent</text>
+  <text x="690" y="98" text-anchor="end" font-size="9" fill="#3498db">"这是什么"</text>
+
+  <!-- Arrow -->
+  <path d="M 380 122 L 380 134" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrD)"/>
+
+  <!-- Layer 2 -->
+  <rect x="30" y="136" width="700" height="58" rx="10" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <rect x="30" y="136" width="150" height="58" rx="10" fill="#f39c12" opacity="0.85"/>
+  <text x="105" y="160" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">第二层</text>
+  <text x="105" y="176" text-anchor="middle" font-size="10" fill="#fff">强制架构约束</text>
+  <text x="215" y="158" font-size="10" font-weight="bold" fill="#e67e22">代码化的分层架构规则（Linter as Architecture Guard）</text>
+  <text x="215" y="174" font-size="9" fill="#555">自定义 AST Linter · CI 自动拦截违规 · Types→Config→Services→API 严格单向依赖</text>
+  <text x="690" y="158" text-anchor="end" font-size="9" fill="#e67e22">🚧 告诉 Agent</text>
+  <text x="690" y="172" text-anchor="end" font-size="9" fill="#e67e22">"不能做什么"</text>
+
+  <path d="M 380 196 L 380 208" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrD)"/>
+
+  <!-- Layer 3 -->
+  <rect x="30" y="210" width="700" height="58" rx="10" fill="#f0fdf4" stroke="#27ae60" stroke-width="2"/>
+  <rect x="30" y="210" width="150" height="58" rx="10" fill="#27ae60" opacity="0.85"/>
+  <text x="105" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">第三层</text>
+  <text x="105" y="250" text-anchor="middle" font-size="10" fill="#fff">运行时验证 &amp; 可观测</text>
+  <text x="215" y="232" font-size="10" font-weight="bold" fill="#27ae60">面向 AI 的可观测性（AI-Readable Observability）</text>
+  <text x="215" y="248" font-size="9" fill="#555">git worktree 隔离实例 · 机器可读日志格式 · 直接接入 Chrome DevTools / LogQL / PromQL</text>
+  <text x="690" y="232" text-anchor="end" font-size="9" fill="#27ae60">🔍 告诉 Agent</text>
+  <text x="690" y="246" text-anchor="end" font-size="9" fill="#27ae60">"如何验证"</text>
+
+  <path d="M 380 270 L 380 282" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrD)"/>
+
+  <!-- Layer 4 -->
+  <rect x="30" y="284" width="700" height="58" rx="10" fill="#fdf2fb" stroke="#9b59b6" stroke-width="2"/>
+  <rect x="30" y="284" width="150" height="58" rx="10" fill="#9b59b6" opacity="0.85"/>
+  <text x="105" y="308" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">第四层</text>
+  <text x="105" y="324" text-anchor="middle" font-size="10" fill="#fff">自修复闭环</text>
+  <text x="215" y="306" font-size="10" font-weight="bold" fill="#9b59b6">清洁 Agent（Cleanup Agent）持续运行</text>
+  <text x="215" y="322" font-size="9" fill="#555">扫描偏离"黄金标准"的代码 · 自动提交重构 PR · 高频偿还技术债</text>
+  <text x="690" y="306" text-anchor="end" font-size="9" fill="#9b59b6">🔧 维护</text>
+  <text x="690" y="320" text-anchor="end" font-size="9" fill="#9b59b6">代码库健康</text>
+
+  <path d="M 380 344 L 380 356" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrD)"/>
+
+  <!-- Layer 5 -->
+  <rect x="30" y="358" width="700" height="30" rx="10" fill="#fef2f2" stroke="#e74c3c" stroke-width="2"/>
+  <rect x="30" y="358" width="150" height="30" rx="10" fill="#e74c3c" opacity="0.85"/>
+  <text x="105" y="378" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">第五层  AI 互审（Ralph Wiggum 循环）</text>
+  <text x="215" y="378" font-size="9" fill="#555">Agent A 写代码 → Agent B 审代码 → 人类只介入架构级决策 · 日常审查完全自动化</text>
+  <text x="690" y="378" text-anchor="end" font-size="9" fill="#e74c3c">👥 互检提质</text>
+</svg>

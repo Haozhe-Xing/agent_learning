@@ -1,63 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440">
   <defs>
     <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
-    <marker id="ca1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#3498db"/>
-    </marker>
   </defs>
-  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
-  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">上下文工程前沿技术突破</text>
+  <rect width="800" height="440" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">上下文工程前沿技术全景（2025—2026）</text>
 
-  <!-- 三大技术方向 -->
+  <!-- 四大前沿方向 -->
   <!-- 方向1：百万级窗口 -->
-  <rect x="20" y="55" width="245" height="165" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
-  <text x="142" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">百万级上下文窗口</text>
-  <text x="35" y="100" font-size="11" fill="#444">4K → 128K → 1M → 10M tokens</text>
-  <line x1="35" y1="110" x2="250" y2="110" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4"/>
-  <text x="35" y="128" font-size="11" fill="#444">• Gemini 1.5: 1M tokens 原生</text>
-  <text x="35" y="146" font-size="11" fill="#444">• Claude: 200K 高效利用</text>
-  <text x="35" y="164" font-size="11" fill="#444">• Ring Attention 分布式</text>
-  <text x="35" y="182" font-size="11" fill="#444">• 从"能放"到"会用"</text>
-  <rect x="35" y="192" width="215" height="20" rx="4" fill="#e74c3c" opacity="0.15"/>
-  <text x="142" y="207" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">关键：注意力带宽 ≠ 窗口大小</text>
+  <rect x="15" y="52" width="185" height="175" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="107" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">百万级上下文窗口</text>
+  <text x="28" y="96" font-size="10.5" fill="#444">4K→128K→1M→10M tokens</text>
+  <line x1="28" y1="104" x2="190" y2="104" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4"/>
+  <text x="28" y="120" font-size="10.5" fill="#444">• Claude 4.6: 1M 标准定价</text>
+  <text x="28" y="136" font-size="10.5" fill="#444">• Gemini 3.1: 1M 多模态</text>
+  <text x="28" y="152" font-size="10.5" fill="#444">• GPT-5.4: 272K/1M 扩展</text>
+  <text x="28" y="168" font-size="10.5" fill="#444">• Llama 4 Scout: 10M</text>
+  <rect x="28" y="182" width="160" height="20" rx="4" fill="#e74c3c" opacity="0.15"/>
+  <text x="108" y="196" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#e74c3c">质量 ＞ 数量</text>
+  <text x="108" y="218" text-anchor="middle" font-size="9" fill="#888">窗口变大≠问题解决</text>
 
-  <!-- 方向2：注意力优化 -->
-  <rect x="278" y="55" width="245" height="165" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
-  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">注意力带宽优化</text>
-  <text x="293" y="100" font-size="11" fill="#444">Lost in the Middle → 精准定位</text>
-  <line x1="293" y1="110" x2="508" y2="110" stroke="#3498db" stroke-width="1" stroke-dasharray="4"/>
-  <text x="293" y="128" font-size="11" fill="#444">• 结构化标记 (XML/JSON)</text>
-  <text x="293" y="146" font-size="11" fill="#444">• 信息密度排列策略</text>
-  <text x="293" y="164" font-size="11" fill="#444">• 选择性注意力机制</text>
-  <text x="293" y="182" font-size="11" fill="#444">• 动态上下文压缩</text>
-  <rect x="293" y="192" width="215" height="20" rx="4" fill="#3498db" opacity="0.15"/>
-  <text x="400" y="207" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">关键：每个 token 的利用效率</text>
+  <!-- 方向2：Anthropic 方法论 -->
+  <rect x="210" y="52" width="185" height="175" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="302" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">Anthropic 方法论</text>
+  <text x="223" y="96" font-size="10.5" fill="#444">系统化的上下文工程指南</text>
+  <line x1="223" y1="104" x2="385" y2="104" stroke="#3498db" stroke-width="1" stroke-dasharray="4"/>
+  <text x="223" y="120" font-size="10.5" fill="#444">• JIT 即时上下文策略</text>
+  <text x="223" y="136" font-size="10.5" fill="#444">• 结构化提示设计原则</text>
+  <text x="223" y="152" font-size="10.5" fill="#444">• 工具定义最佳实践</text>
+  <text x="223" y="168" font-size="10.5" fill="#444">• 子代理架构模式</text>
+  <rect x="223" y="182" width="160" height="20" rx="4" fill="#3498db" opacity="0.15"/>
+  <text x="303" y="196" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#3498db">最小高信号 token 集</text>
+  <text x="303" y="218" text-anchor="middle" font-size="9" fill="#888">做最简单有效的事情</text>
 
-  <!-- 方向3：Agent专用策略 -->
-  <rect x="536" y="55" width="244" height="165" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
-  <text x="658" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">Agent 专用策略</text>
-  <text x="549" y="100" font-size="11" fill="#444">多轮对话 → 上下文复用</text>
-  <line x1="549" y1="110" x2="765" y2="110" stroke="#27ae60" stroke-width="1" stroke-dasharray="4"/>
-  <text x="549" y="128" font-size="11" fill="#444">• Prompt Caching (降本)</text>
-  <text x="549" y="146" font-size="11" fill="#444">• 渐进式上下文构建</text>
-  <text x="549" y="164" font-size="11" fill="#444">• 记忆外挂 + 按需加载</text>
-  <text x="549" y="182" font-size="11" fill="#444">• 上下文蒸馏与摘要</text>
-  <rect x="549" y="192" width="215" height="20" rx="4" fill="#27ae60" opacity="0.15"/>
-  <text x="658" y="207" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">关键：用多少加载多少</text>
+  <!-- 方向3：ACE 自演化 -->
+  <rect x="405" y="52" width="185" height="175" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="497" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">ACE 自演化框架</text>
+  <text x="418" y="96" font-size="10.5" fill="#444">上下文自我进化（ICLR 2026）</text>
+  <line x1="418" y1="104" x2="580" y2="104" stroke="#27ae60" stroke-width="1" stroke-dasharray="4"/>
+  <text x="418" y="120" font-size="10.5" fill="#444">• 演变的战术手册</text>
+  <text x="418" y="136" font-size="10.5" fill="#444">• 生成→反思→策展循环</text>
+  <text x="418" y="152" font-size="10.5" fill="#444">• 结构化增量更新</text>
+  <text x="418" y="168" font-size="10.5" fill="#444">• 自然反馈驱动改进</text>
+  <rect x="418" y="182" width="160" height="20" rx="4" fill="#27ae60" opacity="0.15"/>
+  <text x="498" y="196" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#27ae60">无需微调即可自我改进</text>
+  <text x="498" y="218" text-anchor="middle" font-size="9" fill="#888">Agent 任务 +10.6%</text>
 
-  <!-- 底部整合 -->
-  <rect x="20" y="235" width="760" height="55" rx="8" fill="#8e44ad" opacity="0.10" stroke="#8e44ad" stroke-width="1.5"/>
-  <text x="400" y="257" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">开发者实践建议</text>
-  <text x="135" y="278" text-anchor="middle" font-size="11" fill="#555">短任务：精心构建 Prompt</text>
-  <text x="400" y="278" text-anchor="middle" font-size="11" fill="#555">中任务：结构化 + Caching</text>
-  <text x="660" y="278" text-anchor="middle" font-size="11" fill="#555">长任务：分段 + 记忆 + 压缩</text>
+  <!-- 方向4：底层优化 -->
+  <rect x="600" y="52" width="185" height="175" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="692" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">KV-Cache &amp; Caching</text>
+  <text x="613" y="96" font-size="10.5" fill="#444">底层推理优化技术</text>
+  <line x1="613" y1="104" x2="775" y2="104" stroke="#e67e22" stroke-width="1" stroke-dasharray="4"/>
+  <text x="613" y="120" font-size="10.5" fill="#444">• MLA：KV 压缩至 5%</text>
+  <text x="613" y="136" font-size="10.5" fill="#444">• ChunkKV 语义块压缩</text>
+  <text x="613" y="152" font-size="10.5" fill="#444">• RocketKV 两阶段加速</text>
+  <text x="613" y="168" font-size="10.5" fill="#444">• Prompt Caching 降本</text>
+  <rect x="613" y="182" width="160" height="20" rx="4" fill="#e67e22" opacity="0.15"/>
+  <text x="693" y="196" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#e67e22">缓存命中省 50%~90%</text>
+  <text x="693" y="218" text-anchor="middle" font-size="9" fill="#888">更长更快更省</text>
 
-  <!-- 数据对比卡 -->
-  <rect x="20" y="305" width="370" height="60" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
-  <text x="205" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Prompt Caching 效果</text>
-  <text x="205" y="350" text-anchor="middle" font-size="11" fill="#666">重复上下文成本降低 90%，延迟减少 85%</text>
+  <!-- 生产级模式 -->
+  <rect x="15" y="240" width="770" height="58" rx="8" fill="#8e44ad" opacity="0.10" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="400" y="262" text-anchor="middle" font-size="13" font-weight="bold" fill="#8e44ad">三大生产级上下文管理模式</text>
+  <text x="145" y="284" text-anchor="middle" font-size="11" fill="#555">📐 分层上下文架构</text>
+  <text x="400" y="284" text-anchor="middle" font-size="11" fill="#555">🗜️ 上下文压缩 (Compaction)</text>
+  <text x="660" y="284" text-anchor="middle" font-size="11" fill="#555">🔧 动态工具上下文</text>
 
-  <rect x="410" y="305" width="370" height="60" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
-  <text x="595" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">Lost-in-Middle 缓解</text>
-  <text x="595" y="350" text-anchor="middle" font-size="11" fill="#666">结构化标记 → 中间位置召回率提升 40%+</text>
+  <!-- 前沿研究方向 -->
+  <rect x="15" y="312" width="770" height="58" rx="8" fill="#16a085" opacity="0.10" stroke="#16a085" stroke-width="1.5"/>
+  <text x="400" y="334" text-anchor="middle" font-size="13" font-weight="bold" fill="#16a085">前沿研究方向</text>
+  <text x="118" y="356" text-anchor="middle" font-size="11" fill="#555">🔍 检索增强上下文</text>
+  <text x="318" y="356" text-anchor="middle" font-size="11" fill="#555">📋 结构化上下文协议</text>
+  <text x="518" y="356" text-anchor="middle" font-size="11" fill="#555">🤝 多 Agent 上下文共享</text>
+  <text x="700" y="356" text-anchor="middle" font-size="11" fill="#555">📊 上下文质量评估</text>
+
+  <!-- 底部核心洞察 -->
+  <rect x="15" y="385" width="370" height="42" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="200" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">🎯 核心洞察</text>
+  <text x="200" y="420" text-anchor="middle" font-size="10" fill="#666">上下文质量 ＞ 上下文数量，小模型+好上下文 ≈ 大模型</text>
+
+  <rect x="400" y="385" width="385" height="42" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="592" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">📅 时间线</text>
+  <text x="592" y="420" text-anchor="middle" font-size="10" fill="#666">2025.6 Karpathy → 2025.9 Anthropic → 2025.10 ACE → 2026 标配化</text>
+
 </svg>

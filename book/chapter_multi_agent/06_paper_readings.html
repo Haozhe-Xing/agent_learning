@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>14.6 论文解读：多 Agent 系统前沿研究 - 从零开始学 Agent</title>
+        <title>15.6 论文解读：多 Agent 系统前沿研究 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -768,22 +768,6 @@ Swarm 的极简哲学：
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

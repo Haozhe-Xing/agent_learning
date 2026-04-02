@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="720" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrC" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L9,3.5 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arrCR" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L9,3.5 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="340" fill="#f8f9fa" rx="14"/>
+  <text x="360" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Plan → Build → Verify → Fix 自验证循环</text>
+  <text x="360" y="48" text-anchor="middle" font-size="11" fill="#7f8c8d">LangChain Terminal Bench 2.0 中贡献最大的单项改进（+7.1%）</text>
+
+  <!-- ── Phase 1: PLAN ── -->
+  <rect x="30" y="68" width="155" height="190" rx="12" fill="#e8f4fd" stroke="#3498db" stroke-width="2"/>
+  <rect x="30" y="68" width="155" height="34" rx="12" fill="#3498db"/>
+  <rect x="30" y="90" width="155" height="12" fill="#3498db"/>
+  <text x="108" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">① PLAN</text>
+  <text x="108" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">规划阶段</text>
+  <text x="108" y="126" text-anchor="middle" font-size="9" fill="#888">推理预算：HIGH 🔥</text>
+  <line x1="45" y1="134" x2="170" y2="134" stroke="#3498db" stroke-width="0.8" opacity="0.3"/>
+  <text x="45" y="150" font-size="9" fill="#555">• 分析任务要求</text>
+  <text x="45" y="165" font-size="9" fill="#555">• 列出需改的文件</text>
+  <text x="45" y="180" font-size="9" fill="#555">• 制定修改方案</text>
+  <text x="45" y="195" font-size="9" fill="#555">• 明确完成标准</text>
+  <rect x="45" y="210" width="125" height="38" rx="8" fill="#3498db" opacity="0.1"/>
+  <text x="108" y="224" text-anchor="middle" font-size="8" fill="#3498db">充分思考，</text>
+  <text x="108" y="237" text-anchor="middle" font-size="8" fill="#3498db">考虑边缘情况</text>
+
+  <!-- Arrow 1→2 -->
+  <path d="M 186 163 L 210 163" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arrC)"/>
+
+  <!-- ── Phase 2: BUILD ── -->
+  <rect x="213" y="68" width="155" height="190" rx="12" fill="#f0fdf4" stroke="#27ae60" stroke-width="2"/>
+  <rect x="213" y="68" width="155" height="34" rx="12" fill="#27ae60"/>
+  <rect x="213" y="90" width="155" height="12" fill="#27ae60"/>
+  <text x="291" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">② BUILD</text>
+  <text x="291" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">构建阶段</text>
+  <text x="291" y="126" text-anchor="middle" font-size="9" fill="#888">推理预算：LOW ⚡</text>
+  <line x1="228" y1="134" x2="353" y2="134" stroke="#27ae60" stroke-width="0.8" opacity="0.3"/>
+  <text x="228" y="150" font-size="9" fill="#555">• 按计划逐项实现</text>
+  <text x="228" y="165" font-size="9" fill="#555">• 修改代码文件</text>
+  <text x="228" y="180" font-size="9" fill="#555">• 记录每步变更</text>
+  <text x="228" y="195" font-size="9" fill="#555">• 循环检测监控中</text>
+  <rect x="228" y="210" width="125" height="38" rx="8" fill="#27ae60" opacity="0.1"/>
+  <text x="291" y="224" text-anchor="middle" font-size="8" fill="#27ae60">高效执行，</text>
+  <text x="291" y="237" text-anchor="middle" font-size="8" fill="#27ae60">无需深度推理</text>
+
+  <!-- Arrow 2→3 -->
+  <path d="M 369 163 L 393 163" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arrC)"/>
+
+  <!-- ── Phase 3: VERIFY ── -->
+  <rect x="396" y="68" width="155" height="190" rx="12" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <rect x="396" y="68" width="155" height="34" rx="12" fill="#f39c12"/>
+  <rect x="396" y="90" width="155" height="12" fill="#f39c12"/>
+  <text x="474" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">③ VERIFY ⚠️</text>
+  <text x="474" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">验证阶段（不可跳过！）</text>
+  <text x="474" y="126" text-anchor="middle" font-size="9" fill="#888">推理预算：HIGH 🔥</text>
+  <line x1="411" y1="134" x2="536" y2="134" stroke="#f39c12" stroke-width="0.8" opacity="0.3"/>
+  <text x="411" y="150" font-size="9" fill="#555">• 运行全部单元测试</text>
+  <text x="411" y="165" font-size="9" fill="#555">• Lint 检查无错误</text>
+  <text x="411" y="180" font-size="9" fill="#555">• 防作弊：测试未删除</text>
+  <text x="411" y="195" font-size="9" fill="#555">• 逐项核查原始需求</text>
+  <rect x="411" y="210" width="125" height="38" rx="8" fill="#f39c12" opacity="0.1"/>
+  <text x="474" y="224" text-anchor="middle" font-size="8" fill="#e67e22">只有全部通过</text>
+  <text x="474" y="237" text-anchor="middle" font-size="8" fill="#e67e22">才能声明完成</text>
+
+  <!-- Arrow 3→4 (pass) -->
+  <path d="M 552 163 L 576 163" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arrC)"/>
+  <text x="564" y="155" text-anchor="middle" font-size="8" fill="#27ae60">通过</text>
+
+  <!-- ── Phase 4: FIX ── -->
+  <rect x="579" y="68" width="115" height="190" rx="12" fill="#fef5f5" stroke="#e74c3c" stroke-width="2"/>
+  <rect x="579" y="68" width="115" height="34" rx="12" fill="#e74c3c"/>
+  <rect x="579" y="90" width="115" height="12" fill="#e74c3c"/>
+  <text x="637" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">④ FIX</text>
+  <text x="637" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">修复阶段</text>
+  <text x="637" y="126" text-anchor="middle" font-size="9" fill="#888">推理预算：HIGH 🔥</text>
+  <line x1="594" y1="134" x2="679" y2="134" stroke="#e74c3c" stroke-width="0.8" opacity="0.3"/>
+  <text x="594" y="150" font-size="9" fill="#555">• 分析失败原因</text>
+  <text x="594" y="165" font-size="9" fill="#555">• 修复代码问题</text>
+  <text x="594" y="180" font-size="9" fill="#555">• 禁止删测试作弊</text>
+  <rect x="594" y="196" width="85" height="52" rx="8" fill="#e74c3c" opacity="0.1"/>
+  <text x="637" y="210" text-anchor="middle" font-size="8" fill="#e74c3c">修复后回到</text>
+  <text x="637" y="223" text-anchor="middle" font-size="8" fill="#e74c3c">VERIFY 重验</text>
+
+  <!-- Arrow: FIX → VERIFY (loop back) -->
+  <path d="M 637 259 Q 637 290 474 290 Q 350 290 350 260" stroke="#e74c3c" stroke-width="1.8" fill="none" stroke-dasharray="5,3" marker-end="url(#arrCR)"/>
+  <text x="490" y="305" text-anchor="middle" font-size="9" fill="#e74c3c">验证未通过，返回修复</text>
+
+  <!-- Success arrow to right -->
+  <path d="M 474 260 Q 474 310 570 310" stroke="#27ae60" stroke-width="1.8" fill="none" marker-end="url(#arrC)"/>
+  <text x="580" y="325" text-anchor="middle" font-size="9" fill="#27ae60">✅ 任务完成</text>
+
+  <!-- Key insight box -->
+  <rect x="30" y="278" width="300" height="50" rx="10" fill="#d5f5e3" stroke="#27ae60" stroke-width="1"/>
+  <text x="180" y="296" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">💡 关键洞察</text>
+  <text x="180" y="312" text-anchor="middle" font-size="9" fill="#2c3e50">强制验证步骤本身，就使 LangChain</text>
+  <text x="180" y="324" text-anchor="middle" font-size="9" fill="#2c3e50">Terminal Bench 2.0 提升了 +7.1 个百分点</text>
+</svg>

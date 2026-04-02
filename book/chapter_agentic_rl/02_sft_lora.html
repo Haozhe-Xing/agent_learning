@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>10.2 SFT + LoRA 基础训练 - 从零开始学 Agent</title>
+        <title>11.2 SFT + LoRA 基础训练 - 从零开始学 Agent</title>
 
 
         <!-- Custom HTML head -->
@@ -1200,22 +1200,6 @@ def check_format_accuracy(model, tokenizer, eval_prompts: list[str], num_samples
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
