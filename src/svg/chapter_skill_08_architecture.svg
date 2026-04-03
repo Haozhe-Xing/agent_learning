@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" width="760" height="540" font-family="'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+
+  <!-- Background -->
+  <rect width="760" height="540" fill="#f8f9fa" rx="12"/>
+
+  <!-- Title -->
+  <text x="380" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1a2e">Superpowers 五层能力架构</text>
+  <text x="380" y="58" text-anchor="middle" font-size="12" fill="#666">obra/superpowers · Agent Skills for Claude Code</text>
+
+  <!-- Layer 1: Meta Layer -->
+  <rect x="30" y="76" width="700" height="72" rx="8" fill="#7c3aed" opacity="0.12"/>
+  <rect x="30" y="76" width="700" height="72" rx="8" fill="none" stroke="#7c3aed" stroke-width="2"/>
+  <text x="380" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="#7c3aed">元层（Meta Layer）</text>
+  <text x="380" y="118" text-anchor="middle" font-size="11" fill="#5b21b6">using-superpowers　·　writing-skills　·　self-improving-agent</text>
+  <text x="380" y="136" text-anchor="middle" font-size="10" fill="#5b21b6">规定所有 Skills 的发现与调用规则 · 编写新技能 · 持续自我进化</text>
+
+  <!-- Layer 2: Structure Layer -->
+  <rect x="30" y="160" width="700" height="72" rx="8" fill="#0369a1" opacity="0.10"/>
+  <rect x="30" y="160" width="700" height="72" rx="8" fill="none" stroke="#0369a1" stroke-width="2"/>
+  <text x="380" y="184" text-anchor="middle" font-size="13" font-weight="bold" fill="#0369a1">结构层（Structure）</text>
+  <text x="380" y="202" text-anchor="middle" font-size="11" fill="#075985">brainstorming　·　writing-plans</text>
+  <text x="380" y="220" text-anchor="middle" font-size="10" fill="#075985">动手前建立清晰问题认知与可执行计划 · 防止方向性错误</text>
+
+  <!-- Layer 3: Isolation Layer -->
+  <rect x="30" y="244" width="700" height="72" rx="8" fill="#065f46" opacity="0.10"/>
+  <rect x="30" y="244" width="700" height="72" rx="8" fill="none" stroke="#065f46" stroke-width="2"/>
+  <text x="380" y="268" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">隔离层（Isolation）</text>
+  <text x="380" y="286" text-anchor="middle" font-size="11" fill="#064e3b">using-git-worktrees</text>
+  <text x="380" y="304" text-anchor="middle" font-size="10" fill="#064e3b">为每次实现创建独立工作区 · 防止污染主分支 · 支持并行开发</text>
+
+  <!-- Layer 4: Execution Layer -->
+  <rect x="30" y="328" width="700" height="72" rx="8" fill="#92400e" opacity="0.10"/>
+  <rect x="30" y="328" width="700" height="72" rx="8" fill="none" stroke="#92400e" stroke-width="2"/>
+  <text x="380" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">执行层（Execution）</text>
+  <text x="380" y="370" text-anchor="middle" font-size="11" fill="#78350f">subagent-driven-development（优先）　·　executing-plans（备选）　·　dispatching-parallel-agents</text>
+  <text x="380" y="388" text-anchor="middle" font-size="10" fill="#78350f">测试为客观验收标准 · 双阶段审查保障质量 · 杜绝"假装完成"</text>
+
+  <!-- Layer 5: Quality Layer -->
+  <rect x="30" y="412" width="700" height="72" rx="8" fill="#991b1b" opacity="0.10"/>
+  <rect x="30" y="412" width="700" height="72" rx="8" fill="none" stroke="#991b1b" stroke-width="2"/>
+  <text x="380" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#991b1b">质量层（Quality）</text>
+  <text x="380" y="454" text-anchor="middle" font-size="11" fill="#7f1d1d">test-driven-development　·　systematic-debugging　·　verification-before-completion　·　code-review（双向）</text>
+  <text x="380" y="472" text-anchor="middle" font-size="10" fill="#7f1d1d">根因分析 + 技术严谨性 = 不可妥协的质量规范</text>
+
+  <!-- Layer 6: Completion Layer -->
+  <rect x="30" y="494" width="700" height="36" rx="8" fill="#374151" opacity="0.10"/>
+  <rect x="30" y="494" width="700" height="36" rx="8" fill="none" stroke="#374151" stroke-width="2"/>
+  <text x="380" y="511" text-anchor="middle" font-size="11" font-weight="bold" fill="#374151">收尾层（Completion）　·　finishing-a-development-branch　·　验证测试 → 4 选项收尾 → 清理 Worktree</text>
+
+  <!-- Self-improving arrow on right side -->
+  <line x1="742" y1="90" x2="742" y2="475" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,3" opacity="0.6"/>
+  <polygon points="742,480 738,470 746,470" fill="#7c3aed" opacity="0.6"/>
+  <text x="752" y="285" text-anchor="middle" font-size="9" fill="#7c3aed" transform="rotate(90,752,285)" opacity="0.8">self-improving-agent 贯穿全流程</text>
+
+</svg>

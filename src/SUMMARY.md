@@ -89,6 +89,7 @@
   - [10.5 实战：构建可复用的技能系统](./chapter_skill/05_practice_skill_system.md)
   - [10.6 论文解读：技能系统前沿研究](./chapter_skill/06_paper_readings.md)
   - [10.7 Tool、Skill 与 Sub Agent：三层能力抽象](./chapter_skill/07_tool_skill_subagent.md)
+  - [10.8 Skills圣经：Superpowers工程实践指南](./chapter_skill/08_superpowers_guide.md)
 
 - [第11章 Agentic-RL：智能体强化学习训练](./chapter_agentic_rl/README.md)
   - [11.1 什么是 Agentic-RL](./chapter_agentic_rl/01_agentic_rl_overview.md)
