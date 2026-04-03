@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" width="780" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="aSP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="aSPg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="aSPr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <rect width="780" height="400" fill="#f8f9fa" rx="14"/>
+  <text x="390" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">序列并行（SP）：TP+SP 组合的通信数据流</text>
+  <text x="390" y="44" text-anchor="middle" font-size="10" fill="#7f8c8d">SP 与 TP 协作，把 TP 的 AllReduce 拆成 AllGather + ReduceScatter，保持序列分片</text>
+
+  <!-- ══ 标准 TP（无 SP） ══ -->
+  <text x="240" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">标准 TP（无 SP）</text>
+
+  <rect x="16"  y="78" width="110" height="28" rx="6" fill="#9b59b6" opacity="0.5"/>
+  <text x="71"  y="96" text-anchor="middle" font-size="9" fill="#fff">输入 x [B, S, H]</text>
+
+  <path d="M 128 92 L 148 92" stroke="#e74c3c" stroke-width="2" marker-end="url(#aSPr)"/>
+  <text x="138" y="86" text-anchor="middle" font-size="7" fill="#e74c3c">AllGather</text>
+
+  <rect x="152" y="78" width="78" height="28" rx="6" fill="#3498db" opacity="0.52"/>
+  <text x="191" y="96" text-anchor="middle" font-size="9" fill="#fff">ColParallel</text>
+
+  <path d="M 232 92 L 250 92" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aSP)"/>
+
+  <rect x="254" y="78" width="78" height="28" rx="6" fill="#3498db" opacity="0.38"/>
+  <text x="293" y="96" text-anchor="middle" font-size="9" fill="#fff">RowParallel</text>
+
+  <path d="M 334 92 L 354 92" stroke="#e74c3c" stroke-width="2" marker-end="url(#aSPr)"/>
+  <text x="344" y="86" text-anchor="middle" font-size="7" fill="#e74c3c">AllReduce</text>
+
+  <rect x="358" y="78" width="110" height="28" rx="6" fill="#27ae60" opacity="0.5"/>
+  <text x="413" y="96" text-anchor="middle" font-size="9" fill="#fff">输出 [B, S, H]</text>
+
+  <!-- 问题标注 -->
+  <rect x="16" y="114" width="452" height="22" rx="5" fill="#fef5f5" stroke="#e74c3c" stroke-width="1"/>
+  <text x="242" y="129" text-anchor="middle" font-size="9" fill="#e74c3c">⚠ 问题：LayerNorm/Dropout 区域需存完整 [B, S, H] 激活值，序列越长显存越爆</text>
+
+  <!-- ══ SP + TP ══ -->
+  <line x1="10" y1="150" x2="770" y2="150" stroke="#ddd" stroke-width="1.5"/>
+  <text x="390" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">SP + TP（Megatron-LM v3 优化版）</text>
+  <text x="390" y="186" text-anchor="middle" font-size="9" fill="#7f8c8d">关键：RowParallel 后改用 ReduceScatter（而非 AllReduce），使序列始终保持分片</text>
+
+  <!-- SP区域 (输入) -->
+  <rect x="16"  y="198" width="96" height="50" rx="6" fill="#1abc9c" opacity="0.18" stroke="#1abc9c" stroke-width="1.5"/>
+  <text x="64"  y="216" text-anchor="middle" font-size="9" font-weight="bold" fill="#1abc9c">SP 区域</text>
+  <text x="64"  y="230" text-anchor="middle" font-size="9" fill="#2c3e50">x [B, S/tp, H]</text>
+  <text x="64"  y="242" text-anchor="middle" font-size="8" fill="#7f8c8d">序列已分片</text>
+
+  <!-- Comm: AllGather -->
+  <path d="M 114 223 L 132 223" stroke="#27ae60" stroke-width="2" marker-end="url(#aSPg)"/>
+  <text x="123" y="216" text-anchor="middle" font-size="7" fill="#27ae60">AllGather</text>
+  <text x="123" y="236" text-anchor="middle" font-size="7" fill="#27ae60">序列维度</text>
+
+  <!-- Col Parallel -->
+  <rect x="136" y="198" width="88" height="50" rx="6" fill="#3498db" opacity="0.18" stroke="#3498db" stroke-width="1.5"/>
+  <text x="180" y="216" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">Col Parallel</text>
+  <text x="180" y="230" text-anchor="middle" font-size="9" fill="#2c3e50">[B, S, H/tp]</text>
+  <text x="180" y="242" text-anchor="middle" font-size="8" fill="#7f8c8d">完整序列，局部H</text>
+
+  <path d="M 226 223 L 244 223" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aSP)"/>
+  <text x="235" y="217" text-anchor="middle" font-size="7" fill="#7f8c8d">本地</text>
+
+  <!-- Attn / LN -->
+  <rect x="248" y="198" width="88" height="50" rx="6" fill="#9b59b6" opacity="0.18" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="292" y="216" text-anchor="middle" font-size="9" font-weight="bold" fill="#9b59b6">Attn / LN</text>
+  <text x="292" y="230" text-anchor="middle" font-size="9" fill="#2c3e50">[B, S, H/tp]</text>
+  <text x="292" y="242" text-anchor="middle" font-size="8" fill="#7f8c8d">本地计算</text>
+
+  <path d="M 338 223 L 356 223" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aSP)"/>
+  <text x="347" y="217" text-anchor="middle" font-size="7" fill="#7f8c8d">本地</text>
+
+  <!-- Row Parallel -->
+  <rect x="360" y="198" width="88" height="50" rx="6" fill="#3498db" opacity="0.18" stroke="#3498db" stroke-width="1.5"/>
+  <text x="404" y="216" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">Row Parallel</text>
+  <text x="404" y="230" text-anchor="middle" font-size="9" fill="#2c3e50">[B, S, H/tp]</text>
+  <text x="404" y="242" text-anchor="middle" font-size="8" fill="#7f8c8d">局部输出</text>
+
+  <!-- Comm: ReduceScatter -->
+  <path d="M 450 223 L 468 223" stroke="#27ae60" stroke-width="2" marker-end="url(#aSPg)"/>
+  <text x="459" y="214" text-anchor="middle" font-size="7" fill="#27ae60">ReduceScatter</text>
+  <text x="459" y="225" text-anchor="middle" font-size="6" fill="#27ae60">（替代 AllReduce）</text>
+  <text x="459" y="236" text-anchor="middle" font-size="6" fill="#27ae60">聚合+序列切分</text>
+
+  <!-- SP区域 (输出) -->
+  <rect x="472" y="198" width="96" height="50" rx="6" fill="#1abc9c" opacity="0.18" stroke="#1abc9c" stroke-width="1.5"/>
+  <text x="520" y="216" text-anchor="middle" font-size="9" font-weight="bold" fill="#1abc9c">SP 区域</text>
+  <text x="520" y="230" text-anchor="middle" font-size="9" fill="#2c3e50">x [B, S/tp, H]</text>
+  <text x="520" y="242" text-anchor="middle" font-size="8" fill="#7f8c8d">序列再次分片</text>
+
+  <!-- 显存节省标注 -->
+  <rect x="580" y="198" width="186" height="50" rx="8" fill="#d5f5e3" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="673" y="216" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">显存节省</text>
+  <text x="673" y="231" text-anchor="middle" font-size="9" fill="#2c3e50">SP 区域激活值</text>
+  <text x="673" y="244" text-anchor="middle" font-size="9" fill="#e74c3c">减少 tp_size 倍 ✓</text>
+
+  <!-- ══ Ring Attention (CP) ══ -->
+  <line x1="10" y1="266" x2="770" y2="266" stroke="#ddd" stroke-width="1.5"/>
+  <text x="390" y="286" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">Ring Attention（Context Parallelism, CP）：支持超长序列（1M+ token）</text>
+
+  <!-- 序列拆分 -->
+  <rect x="16" y="298" width="90" height="30" rx="5" fill="#e67e22" opacity="0.42"/>
+  <text x="61" y="317" text-anchor="middle" font-size="9" fill="#fff">Q [B,S/cp,H]</text>
+
+  <!-- 4 GPU — 间距 90px，不重叠 -->
+  <!-- centers: 170,315  275,315  380,315  485,315 -->
+  <circle cx="170" cy="315" r="28" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="170" y="311" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 0</text>
+  <text x="170" y="324" text-anchor="middle" font-size="8" fill="#555">Q₀,K₀,V₀</text>
+
+  <circle cx="275" cy="315" r="28" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="275" y="311" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 1</text>
+  <text x="275" y="324" text-anchor="middle" font-size="8" fill="#555">Q₁,K₁,V₁</text>
+
+  <circle cx="380" cy="315" r="28" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="380" y="311" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 2</text>
+  <text x="380" y="324" text-anchor="middle" font-size="8" fill="#555">Q₂,K₂,V₂</text>
+
+  <circle cx="485" cy="315" r="28" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="485" y="311" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 3</text>
+  <text x="485" y="324" text-anchor="middle" font-size="8" fill="#555">Q₃,K₃,V₃</text>
+
+  <!-- KV Ring 传递箭头 (弧形, 在圆圈上方) -->
+  <path d="M 200 303 Q 237 290 243 298" stroke="#e74c3c" stroke-width="1.8" fill="none" marker-end="url(#aSPr)"/>
+  <path d="M 305 303 Q 342 290 348 298" stroke="#e74c3c" stroke-width="1.8" fill="none" marker-end="url(#aSPr)"/>
+  <path d="M 410 303 Q 447 290 453 298" stroke="#e74c3c" stroke-width="1.8" fill="none" marker-end="url(#aSPr)"/>
+  <text x="327" y="284" text-anchor="middle" font-size="8" fill="#e74c3c">K/V 沿 Ring 逐步传递</text>
+
+  <!-- 收益 -->
+  <rect x="530" y="298" width="236" height="68" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="648" y="316" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">Ring Attention 收益</text>
+  <text x="648" y="332" text-anchor="middle" font-size="9" fill="#555">注意力矩阵：O(S²) → O(S²/cp²)</text>
+  <text x="648" y="347" text-anchor="middle" font-size="9" fill="#555">通信量：O(S×H)，与层数无关</text>
+  <text x="648" y="362" text-anchor="middle" font-size="9" fill="#27ae60">支持 1M token 超长上下文训练</text>
+
+  <!-- bottom summary -->
+  <rect x="10" y="376" width="760" height="18" rx="6" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="390" y="389" text-anchor="middle" font-size="9" fill="#555">SP 与 TP 共用同一组 GPU（节点内 NVLink）；通信量与标准 TP 相同；激活值显存降低 tp_size 倍</text>
+</svg>

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 390" width="800" height="390">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+
+  <rect width="800" height="390" fill="#f8f9fa" rx="14"/>
+  <text x="400" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#2c3e50">结构化输出五种方案：从软约束到硬约束</text>
+  <text x="400" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">越靠右约束越强；旧版/小模型推荐方案二兜底；云端推荐方案三；本地推荐方案四</text>
+
+  <!-- 强度轴 -->
+  <line x1="20" y1="352" x2="778" y2="352" stroke="#bdc3c7" stroke-width="2"/>
+  <path d="M 773 349 L 779 352 L 773 355" fill="#bdc3c7"/>
+  <text x="20"  y="370" text-anchor="middle" font-size="9" fill="#e74c3c">❌ 软约束</text>
+  <text x="779" y="370" text-anchor="middle" font-size="9" fill="#27ae60">✅ 硬约束</text>
+  <text x="400" y="370" text-anchor="middle" font-size="9" fill="#7f8c8d">约束强度 →</text>
+
+  <!-- ══ 方案一：纯 Prompt ══ col x=10 w=128 -->
+  <rect x="10" y="62" width="128" height="272" rx="10" fill="#fef5f5" stroke="#e74c3c" stroke-width="2"/>
+  <rect x="10" y="62" width="128" height="34" rx="10" fill="#e74c3c" opacity="0.85"/>
+  <rect x="10" y="84"  width="128" height="12" fill="#e74c3c" opacity="0.85"/>
+  <text x="74"  y="83" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">方案一</text>
+  <text x="74"  y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#e74c3c">纯 Prompt</text>
+  <text x="74"  y="122" text-anchor="middle" font-size="8" fill="#7f8c8d">❌ 不推荐生产</text>
+  <line x1="22" y1="130" x2="126" y2="130" stroke="#e74c3c" stroke-width="0.5" opacity="0.4"/>
+  <text x="22"  y="146" font-size="8" fill="#555">靠模型自觉遵守</text>
+  <text x="22"  y="159" font-size="8" fill="#e74c3c">• Markdown 包裹</text>
+  <text x="22"  y="172" font-size="8" fill="#e74c3c">• 末尾多余文字</text>
+  <text x="22"  y="185" font-size="8" fill="#e74c3c">• 单引号/注释</text>
+  <text x="22"  y="198" font-size="8" fill="#e74c3c">• 类型/幻觉错误</text>
+  <text x="22"  y="211" font-size="8" fill="#e74c3c">• 截断未闭合</text>
+  <rect x="18" y="294" width="112" height="32" rx="7" fill="#e74c3c" opacity="0.08"/>
+  <text x="74"  y="308" text-anchor="middle" font-size="9" fill="#e74c3c" font-weight="bold">保证强度：0%</text>
+  <text x="74"  y="320" text-anchor="middle" font-size="8" fill="#7f8c8d">仅原型阶段</text>
+  <circle cx="74" cy="352" r="8" fill="#e74c3c" opacity="0.7"/>
+  <text x="74"  y="356" text-anchor="middle" font-size="8" fill="#fff">软</text>
+
+  <!-- ══ 方案二：jsonrepair ══ col x=148 w=138 -->
+  <rect x="148" y="62" width="138" height="272" rx="10" fill="#fdf2fb" stroke="#9b59b6" stroke-width="2"/>
+  <rect x="148" y="62" width="138" height="34" rx="10" fill="#9b59b6" opacity="0.85"/>
+  <rect x="148" y="84"  width="138" height="12" fill="#9b59b6" opacity="0.85"/>
+  <text x="217" y="83" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">方案二 🛠</text>
+  <text x="217" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#9b59b6">jsonrepair</text>
+  <text x="217" y="122" text-anchor="middle" font-size="8" fill="#7f8c8d">⚠ 格式修复兜底</text>
+  <line x1="160" y1="130" x2="274" y2="130" stroke="#9b59b6" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="146" font-size="8" fill="#555">pip install json-repair</text>
+  <text x="160" y="159" font-size="8" fill="#27ae60">✓ 修复单引号/注释</text>
+  <text x="160" y="172" font-size="8" fill="#27ae60">✓ 修复截断 JSON</text>
+  <text x="160" y="185" font-size="8" fill="#27ae60">✓ 修复 Markdown 块</text>
+  <text x="160" y="198" font-size="8" fill="#27ae60">✓ 修复末尾逗号</text>
+  <text x="160" y="211" font-size="8" fill="#e74c3c">✗ 不修复类型错误</text>
+  <text x="160" y="224" font-size="8" fill="#e74c3c">✗ 不修复幻觉字段</text>
+  <text x="160" y="237" font-size="8" fill="#555">需配合 Pydantic</text>
+  <rect x="156" y="270" width="122" height="44" rx="7" fill="#9b59b6" opacity="0.08"/>
+  <text x="217" y="285" text-anchor="middle" font-size="9" fill="#9b59b6" font-weight="bold">保证：格式合法</text>
+  <text x="217" y="298" text-anchor="middle" font-size="8" fill="#555">旧版 API / 小模型</text>
+  <text x="217" y="310" text-anchor="middle" font-size="8" fill="#555">无额外延迟</text>
+  <circle cx="217" cy="352" r="8" fill="#9b59b6" opacity="0.7"/>
+  <text x="217" y="356" text-anchor="middle" font-size="8" fill="#fff">修</text>
+
+  <!-- ══ 方案三：API 原生 ══ col x=296 w=148 -->
+  <rect x="296" y="62" width="148" height="272" rx="10" fill="#e8f8f5" stroke="#1abc9c" stroke-width="2.5"/>
+  <rect x="296" y="62" width="148" height="34" rx="10" fill="#1abc9c" opacity="0.9"/>
+  <rect x="296" y="84"  width="148" height="12" fill="#1abc9c" opacity="0.9"/>
+  <text x="370" y="83" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">方案三 ⭐ 首选</text>
+  <text x="370" y="107" text-anchor="middle" font-size="9" font-weight="bold" fill="#1abc9c">API 原生结构化输出</text>
+  <text x="370" y="122" text-anchor="middle" font-size="8" fill="#7f8c8d">✅ 云端模型推荐</text>
+  <line x1="308" y1="130" x2="432" y2="130" stroke="#1abc9c" stroke-width="0.5" opacity="0.4"/>
+  <text x="308" y="146" font-size="8" fill="#555">OpenAI .parse()</text>
+  <text x="308" y="159" font-size="8" fill="#555">Claude tool_choice</text>
+  <text x="308" y="172" font-size="8" fill="#555">Gemini response_schema</text>
+  <line x1="308" y1="182" x2="432" y2="182" stroke="#1abc9c" stroke-width="0.5" opacity="0.3"/>
+  <text x="308" y="196" font-size="8" fill="#27ae60">• 服务端约束解码</text>
+  <text x="308" y="209" font-size="8" fill="#27ae60">• Schema 序列化验证</text>
+  <text x="308" y="222" font-size="8" fill="#27ae60">• 100% 格式保证</text>
+  <rect x="304" y="264" width="132" height="44" rx="7" fill="#1abc9c" opacity="0.1"/>
+  <text x="370" y="279" text-anchor="middle" font-size="9" fill="#1abc9c" font-weight="bold">保证强度：99%+</text>
+  <text x="370" y="293" text-anchor="middle" font-size="8" fill="#555">GPT-4o / Claude / Gemini</text>
+  <text x="370" y="305" text-anchor="middle" font-size="8" fill="#555">延迟影响：&lt;5ms</text>
+  <circle cx="370" cy="352" r="8" fill="#1abc9c" opacity="0.85"/>
+  <text x="370" y="356" text-anchor="middle" font-size="8" fill="#fff">硬</text>
+
+  <!-- ══ 方案四：约束解码 ══ col x=454 w=148 -->
+  <rect x="454" y="62" width="148" height="272" rx="10" fill="#e8f4fd" stroke="#3498db" stroke-width="2.5"/>
+  <rect x="454" y="62" width="148" height="34" rx="10" fill="#3498db" opacity="0.85"/>
+  <rect x="454" y="84"  width="148" height="12" fill="#3498db" opacity="0.85"/>
+  <text x="528" y="83" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">方案四 ⭐ 本地</text>
+  <text x="528" y="107" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">约束解码</text>
+  <text x="528" y="122" text-anchor="middle" font-size="8" fill="#7f8c8d">✅ 本地/开源模型推荐</text>
+  <line x1="466" y1="130" x2="590" y2="130" stroke="#3498db" stroke-width="0.5" opacity="0.4"/>
+  <text x="466" y="146" font-size="8" fill="#555">Outlines（任意 HF 模型）</text>
+  <text x="466" y="159" font-size="8" fill="#555">vLLM guided_json</text>
+  <text x="466" y="172" font-size="8" fill="#555">LM-Format-Enforcer</text>
+  <line x1="466" y1="182" x2="590" y2="182" stroke="#3498db" stroke-width="0.5" opacity="0.3"/>
+  <text x="466" y="196" font-size="8" fill="#27ae60">• FSM + logit 掩码</text>
+  <text x="466" y="209" font-size="8" fill="#27ae60">• Token 级强制约束</text>
+  <text x="466" y="222" font-size="8" fill="#27ae60">• 无效 token 概率→0</text>
+  <rect x="462" y="264" width="132" height="44" rx="7" fill="#3498db" opacity="0.08"/>
+  <text x="528" y="279" text-anchor="middle" font-size="9" fill="#3498db" font-weight="bold">保证强度：100%</text>
+  <text x="528" y="293" text-anchor="middle" font-size="8" fill="#555">Llama / Qwen / DeepSeek</text>
+  <text x="528" y="305" text-anchor="middle" font-size="8" fill="#555">延迟：+10~30ms</text>
+  <circle cx="528" cy="352" r="8" fill="#3498db" opacity="0.85"/>
+  <text x="528" y="356" text-anchor="middle" font-size="8" fill="#fff">硬</text>
+
+  <!-- ══ 方案五：Pydantic + 重试 ══ col x=612 w=176 -->
+  <rect x="612" y="62" width="176" height="272" rx="10" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <rect x="612" y="62" width="176" height="34" rx="10" fill="#f39c12" opacity="0.85"/>
+  <rect x="612" y="84"  width="176" height="12" fill="#f39c12" opacity="0.85"/>
+  <text x="700" y="83" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">方案五 🛡 兜底验证</text>
+  <text x="700" y="107" text-anchor="middle" font-size="9" font-weight="bold" fill="#e67e22">Pydantic + 重试</text>
+  <text x="700" y="122" text-anchor="middle" font-size="8" fill="#7f8c8d">⚠ 与其他方案叠加使用</text>
+  <line x1="624" y1="130" x2="776" y2="130" stroke="#f39c12" stroke-width="0.5" opacity="0.4"/>
+  <text x="624" y="146" font-size="8" fill="#555">业务逻辑 Validator</text>
+  <text x="624" y="159" font-size="8" fill="#555">携带错误上下文重试</text>
+  <text x="624" y="172" font-size="8" fill="#555">extra="forbid" 防幻觉</text>
+  <line x1="624" y1="182" x2="776" y2="182" stroke="#f39c12" stroke-width="0.5" opacity="0.3"/>
+  <text x="624" y="196" font-size="8" fill="#27ae60">• 邮箱/手机号格式</text>
+  <text x="624" y="209" font-size="8" fill="#27ae60">• 数值范围 (ge/le)</text>
+  <text x="624" y="222" font-size="8" fill="#27ae60">• 枚举值 (Literal)</text>
+  <text x="624" y="235" font-size="8" fill="#27ae60">• 自定义业务规则</text>
+  <rect x="620" y="264" width="160" height="44" rx="7" fill="#f39c12" opacity="0.08"/>
+  <text x="700" y="279" text-anchor="middle" font-size="9" fill="#e67e22" font-weight="bold">最终保证：99%+</text>
+  <text x="700" y="293" text-anchor="middle" font-size="8" fill="#555">可能增加 1~2 次 LLM 调用</text>
+  <text x="700" y="305" text-anchor="middle" font-size="8" fill="#555">始终与方案三/四叠加使用</text>
+  <circle cx="700" cy="352" r="8" fill="#f39c12" opacity="0.85"/>
+  <text x="700" y="356" text-anchor="middle" font-size="8" fill="#fff">补</text>
+</svg>

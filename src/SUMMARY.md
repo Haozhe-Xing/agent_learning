@@ -79,6 +79,7 @@
   - [9.3 AGENTS.md / CLAUDE.md：Agent 宪法写作指南](./chapter_harness/03_agents_md.md)
   - [9.4 生产级案例：OpenAI、LangChain、Stripe](./chapter_harness/04_production_cases.md)
   - [9.5 实战：构建你的第一个 Harness 系统](./chapter_harness/05_practice_harness_builder.md)
+  - [9.6 结构化输出：保障 JSON 可靠性的工程实践](./chapter_harness/06_structured_output.md)
 
 - [第10章 Skill System](./chapter_skill/README.md)
   - [10.1 技能系统概述](./chapter_skill/01_skill_overview.md)
@@ -92,6 +93,7 @@
 - [第11章 Agentic-RL：智能体强化学习训练](./chapter_agentic_rl/README.md)
   - [11.1 什么是 Agentic-RL](./chapter_agentic_rl/01_agentic_rl_overview.md)
   - [11.2 SFT + LoRA 基础训练](./chapter_agentic_rl/02_sft_lora.md)
+  - [11.2b 分布式训练基础：DP / TP / PP / SP / ZeRO](./chapter_agentic_rl/02b_distributed_training.md)
   - [11.3 PPO：近端策略优化](./chapter_agentic_rl/03_ppo.md)
   - [11.4 DPO：直接偏好优化](./chapter_agentic_rl/04_dpo.md)
   - [11.5 GRPO/GSPO：组内相对策略优化与奖励函数设计](./chapter_agentic_rl/05_grpo.md)

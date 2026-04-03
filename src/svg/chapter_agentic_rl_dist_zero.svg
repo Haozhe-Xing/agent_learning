@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 420" width="780" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+
+  <rect width="780" height="420" fill="#f8f9fa" rx="14"/>
+  <text x="390" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">ZeRO：消除 DP 冗余的三阶段分片策略</text>
+  <text x="390" y="44" text-anchor="middle" font-size="10" fill="#7f8c8d">以 4 GPU、模型参数量 Φ 为例；单位：byte/param</text>
+
+  <!-- ── Column headers ── -->
+  <text x="90"  y="64" text-anchor="middle" font-size="10" fill="#7f8c8d">阶段</text>
+  <text x="246" y="64" text-anchor="middle" font-size="10" fill="#3498db">模型参数 (P)  2B/p</text>
+  <text x="426" y="64" text-anchor="middle" font-size="10" fill="#e67e22">梯度 (G)  4B/p</text>
+  <text x="596" y="64" text-anchor="middle" font-size="10" fill="#e74c3c">优化器状态 (OS)  8B/p</text>
+  <text x="726" y="64" text-anchor="middle" font-size="10" fill="#27ae60">每卡合计</text>
+
+  <!-- ═══ ZeRO-0 ═══ -->
+  <rect x="10" y="74" width="760" height="64" rx="8" fill="#ecf0f1" opacity="0.6"/>
+  <!-- stage label -->
+  <text x="90" y="98"  text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">ZeRO-0</text>
+  <text x="90" y="113" text-anchor="middle" font-size="9"  fill="#7f8c8d">标准 DDP</text>
+  <text x="90" y="126" text-anchor="middle" font-size="8"  fill="#e74c3c">完全冗余</text>
+
+  <!-- P: 4 blocks, w=42 each -->
+  <rect x="162" y="80" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="183" y="99"  text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="208" y="80" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="229" y="99"  text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="254" y="80" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="275" y="99"  text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="300" y="80" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="321" y="99"  text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <text x="231" y="124" text-anchor="middle" font-size="8" fill="#3498db">全量 (2B/p × 4 卡)</text>
+
+  <!-- G: 4 blocks -->
+  <rect x="348" y="80" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="369" y="99"  text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <rect x="394" y="80" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="415" y="99"  text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <rect x="440" y="80" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="461" y="99"  text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <rect x="486" y="80" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="507" y="99"  text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <text x="417" y="124" text-anchor="middle" font-size="8" fill="#e67e22">全量 (4B/p × 4 卡)</text>
+
+  <!-- OS: 4 blocks, w=50 -->
+  <rect x="534" y="80" width="50" height="30" rx="3" fill="#e74c3c" opacity="0.75"/><text x="559" y="99"  text-anchor="middle" font-size="9" fill="#fff">OS</text>
+  <rect x="588" y="80" width="50" height="30" rx="3" fill="#e74c3c" opacity="0.75"/><text x="613" y="99"  text-anchor="middle" font-size="9" fill="#fff">OS</text>
+  <rect x="642" y="80" width="50" height="30" rx="3" fill="#e74c3c" opacity="0.75"/><text x="667" y="99"  text-anchor="middle" font-size="9" fill="#fff">OS</text>
+  <rect x="696" y="80" width="50" height="30" rx="3" fill="#e74c3c" opacity="0.75"/><text x="721" y="99"  text-anchor="middle" font-size="9" fill="#fff">OS</text>
+  <text x="614" y="124" text-anchor="middle" font-size="8" fill="#e74c3c">全量 (8B/p × 4 卡)</text>
+
+  <!-- total -->
+  <text x="750" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">80</text>
+
+  <!-- ═══ ZeRO-1 ═══ -->
+  <rect x="10" y="152" width="760" height="64" rx="8" fill="#e8f8f5" opacity="0.7"/>
+  <text x="90" y="176" text-anchor="middle" font-size="12" font-weight="bold" fill="#1abc9c">ZeRO-1</text>
+  <text x="90" y="191" text-anchor="middle" font-size="9"  fill="#7f8c8d">优化器状态分片</text>
+  <text x="90" y="204" text-anchor="middle" font-size="8"  fill="#1abc9c">OS ÷ N</text>
+
+  <!-- P unchanged -->
+  <rect x="162" y="158" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="183" y="177" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="208" y="158" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="229" y="177" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="254" y="158" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="275" y="177" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="300" y="158" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="321" y="177" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <text x="231" y="202" text-anchor="middle" font-size="8" fill="#3498db">全量 (2B/p)</text>
+
+  <!-- G unchanged -->
+  <rect x="348" y="158" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="369" y="177" text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <rect x="394" y="158" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="415" y="177" text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <rect x="440" y="158" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="461" y="177" text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <rect x="486" y="158" width="42" height="30" rx="3" fill="#e67e22" opacity="0.75"/><text x="507" y="177" text-anchor="middle" font-size="9" fill="#fff">G</text>
+  <text x="417" y="202" text-anchor="middle" font-size="8" fill="#e67e22">全量 (4B/p)</text>
+
+  <!-- OS sharded: 1/4 width each = ~12px with gap -->
+  <rect x="534" y="158" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="588" y="158" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="642" y="158" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="696" y="158" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <!-- label below shards with plenty of room -->
+  <text x="614" y="202" text-anchor="middle" font-size="8" fill="#1abc9c">各持 1/4 片段 (2B/p)</text>
+
+  <text x="750" y="183" text-anchor="middle" font-size="13" font-weight="bold" fill="#1abc9c">38</text>
+  <text x="750" y="198" text-anchor="middle" font-size="8"  fill="#1abc9c">节省 52%</text>
+
+  <!-- ═══ ZeRO-2 ═══ -->
+  <rect x="10" y="230" width="760" height="64" rx="8" fill="#e8f4fd" opacity="0.7"/>
+  <text x="90" y="254" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">ZeRO-2</text>
+  <text x="90" y="269" text-anchor="middle" font-size="9"  fill="#7f8c8d">G + OS 分片</text>
+  <text x="90" y="282" text-anchor="middle" font-size="8"  fill="#3498db">G ÷ N，OS ÷ N</text>
+
+  <!-- P unchanged -->
+  <rect x="162" y="236" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="183" y="255" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="208" y="236" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="229" y="255" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="254" y="236" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="275" y="255" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <rect x="300" y="236" width="42" height="30" rx="3" fill="#3498db" opacity="0.75"/><text x="321" y="255" text-anchor="middle" font-size="9" fill="#fff">P</text>
+  <text x="231" y="280" text-anchor="middle" font-size="8" fill="#3498db">全量 (2B/p)</text>
+
+  <!-- G sharded -->
+  <rect x="348" y="236" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <rect x="394" y="236" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <rect x="440" y="236" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <rect x="486" y="236" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <text x="417" y="280" text-anchor="middle" font-size="8" fill="#3498db">各持 1/4 片段 (1B/p)</text>
+
+  <!-- OS sharded -->
+  <rect x="534" y="236" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="588" y="236" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="642" y="236" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="696" y="236" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <text x="614" y="280" text-anchor="middle" font-size="8" fill="#3498db">各持 1/4 片段 (2B/p)</text>
+
+  <text x="750" y="261" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">21</text>
+  <text x="750" y="276" text-anchor="middle" font-size="8"  fill="#3498db">节省 74%</text>
+
+  <!-- ═══ ZeRO-3 ═══ -->
+  <rect x="10" y="308" width="760" height="70" rx="8" fill="#d5f5e3" opacity="0.7"/>
+  <text x="90" y="334" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">ZeRO-3</text>
+  <text x="90" y="349" text-anchor="middle" font-size="9"  fill="#7f8c8d">P + G + OS 全量分片</text>
+  <text x="90" y="363" text-anchor="middle" font-size="8"  fill="#27ae60">P ÷ N，G ÷ N，OS ÷ N</text>
+
+  <!-- P sharded -->
+  <rect x="162" y="314" width="12" height="30" rx="2" fill="#3498db" opacity="0.75"/>
+  <rect x="208" y="314" width="12" height="30" rx="2" fill="#3498db" opacity="0.75"/>
+  <rect x="254" y="314" width="12" height="30" rx="2" fill="#3498db" opacity="0.75"/>
+  <rect x="300" y="314" width="12" height="30" rx="2" fill="#3498db" opacity="0.75"/>
+  <text x="231" y="358" text-anchor="middle" font-size="8" fill="#27ae60">各持 1/4 片段 (0.5B/p)</text>
+
+  <!-- G sharded -->
+  <rect x="348" y="314" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <rect x="394" y="314" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <rect x="440" y="314" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <rect x="486" y="314" width="12" height="30" rx="2" fill="#e67e22" opacity="0.75"/>
+  <text x="417" y="358" text-anchor="middle" font-size="8" fill="#27ae60">各持 1/4 片段 (1B/p)</text>
+
+  <!-- OS sharded -->
+  <rect x="534" y="314" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="588" y="314" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="642" y="314" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <rect x="696" y="314" width="14" height="30" rx="2" fill="#e74c3c" opacity="0.75"/>
+  <text x="614" y="358" text-anchor="middle" font-size="8" fill="#27ae60">各持 1/4 片段 (2B/p)</text>
+
+  <text x="750" y="336" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">20/N</text>
+  <text x="750" y="352" text-anchor="middle" font-size="9"  fill="#27ae60">节省 N 倍</text>
+  <text x="750" y="364" text-anchor="middle" font-size="8"  fill="#27ae60">≈ FSDP</text>
+
+  <!-- bottom note -->
+  <rect x="10" y="392" width="760" height="20" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
+  <text x="390" y="406" text-anchor="middle" font-size="9" fill="#3498db">PyTorch FSDP = ZeRO-3  ·  DeepSpeed ZeRO-3 可额外 CPU Offload（ZeRO-Infinity：把参数卸载到 CPU/NVMe）</text>
+</svg>

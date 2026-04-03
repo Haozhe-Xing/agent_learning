@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="760" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrDP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3498db"/>
+    </marker>
+    <marker id="arrRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arrGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="340" fill="#f8f9fa" rx="14"/>
+  <text x="380" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">数据并行（DP）：数据切分 + Ring-AllReduce 梯度聚合</text>
+
+  <!-- ══ Left: DP overview ══ -->
+  <!-- 训练数据 -->
+  <rect x="20" y="48" width="230" height="24" rx="6" fill="#95a5a6" opacity="0.3"/>
+  <text x="135" y="64" text-anchor="middle" font-size="11" fill="#2c3e50">全量训练数据（N 个 batch）</text>
+
+  <!-- 分配箭头 -->
+  <path d="M 90 73 L 60 106" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrGray)"/>
+  <path d="M 180 73 L 210 106" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrGray)"/>
+  <text x="40" y="95" font-size="9" fill="#3498db">Batch A</text>
+  <text x="192" y="95" font-size="9" fill="#3498db">Batch B</text>
+
+  <!-- GPU 0 -->
+  <rect x="16" y="108" width="108" height="84" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="70" y="128" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">GPU 0</text>
+  <rect x="26" y="134" width="88" height="18" rx="4" fill="#3498db" opacity="0.22"/>
+  <text x="70" y="147" text-anchor="middle" font-size="9" fill="#2c3e50">完整模型副本</text>
+  <text x="70" y="166" text-anchor="middle" font-size="9" fill="#7f8c8d">前向 + 反向</text>
+  <text x="70" y="182" text-anchor="middle" font-size="9" fill="#e74c3c">梯度 ∇L_A</text>
+
+  <!-- GPU 1 -->
+  <rect x="145" y="108" width="108" height="84" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="199" y="128" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">GPU 1</text>
+  <rect x="155" y="134" width="88" height="18" rx="4" fill="#3498db" opacity="0.22"/>
+  <text x="199" y="147" text-anchor="middle" font-size="9" fill="#2c3e50">完整模型副本</text>
+  <text x="199" y="166" text-anchor="middle" font-size="9" fill="#7f8c8d">前向 + 反向</text>
+  <text x="199" y="182" text-anchor="middle" font-size="9" fill="#e74c3c">梯度 ∇L_B</text>
+
+  <!-- AllReduce 双向箭头 -->
+  <path d="M 128 186 Q 134 210 196 210" stroke="#e74c3c" stroke-width="2" fill="none" marker-end="url(#arrRed)"/>
+  <path d="M 138 189 Q 132 212 70 212" stroke="#e74c3c" stroke-width="2" fill="none" marker-end="url(#arrRed)"/>
+  <rect x="78" y="216" width="112" height="20" rx="6" fill="#e74c3c" opacity="0.1" stroke="#e74c3c" stroke-width="1"/>
+  <text x="134" y="230" text-anchor="middle" font-size="9" fill="#e74c3c">AllReduce：平均梯度</text>
+
+  <!-- 参数更新 -->
+  <path d="M 70 238 L 70 256" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrGray)"/>
+  <path d="M 199 238 L 199 256" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrGray)"/>
+  <rect x="26" y="258" width="88" height="20" rx="4" fill="#27ae60" opacity="0.2"/>
+  <text x="70" y="272" text-anchor="middle" font-size="9" fill="#27ae60">✓ 参数更新</text>
+  <rect x="155" y="258" width="88" height="20" rx="4" fill="#27ae60" opacity="0.2"/>
+  <text x="199" y="272" text-anchor="middle" font-size="9" fill="#27ae60">✓ 参数更新</text>
+
+  <!-- 分割线 -->
+  <line x1="285" y1="42" x2="285" y2="320" stroke="#e0e0e0" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- ══ Right: Ring-AllReduce ══ -->
+  <text x="530" y="50" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">Ring-AllReduce 通信</text>
+  <text x="530" y="64" text-anchor="middle" font-size="9" fill="#7f8c8d">梯度沿环形逐步传递，N 轮后每卡均拥有完整平均梯度</text>
+
+  <!-- 4 GPU 圆 — 间距更大 -->
+  <!-- 中心 530,185；半径 90 -->
+  <!-- top: 530,95  right: 620,185  bottom: 530,275  left: 440,185 -->
+  <circle cx="530" cy="95" r="34" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="530" y="91" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">GPU 0</text>
+  <text x="530" y="105" text-anchor="middle" font-size="9" fill="#555">∇_0</text>
+
+  <circle cx="625" cy="185" r="34" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="625" y="181" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">GPU 1</text>
+  <text x="625" y="195" text-anchor="middle" font-size="9" fill="#555">∇_1</text>
+
+  <circle cx="530" cy="275" r="34" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="530" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">GPU 2</text>
+  <text x="530" y="285" text-anchor="middle" font-size="9" fill="#555">∇_2</text>
+
+  <circle cx="435" cy="185" r="34" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="2"/>
+  <text x="435" y="181" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">GPU 3</text>
+  <text x="435" y="195" text-anchor="middle" font-size="9" fill="#555">∇_3</text>
+
+  <!-- Ring 顺时针箭头 -->
+  <path d="M 558 80 Q 618 100 614 150" stroke="#3498db" stroke-width="2" fill="none" marker-end="url(#arrDP)"/>
+  <path d="M 626 220 Q 614 268 562 272" stroke="#3498db" stroke-width="2" fill="none" marker-end="url(#arrDP)"/>
+  <path d="M 498 272 Q 448 265 440 222" stroke="#3498db" stroke-width="2" fill="none" marker-end="url(#arrDP)"/>
+  <path d="M 435 148 Q 444 96 498 88" stroke="#3498db" stroke-width="2" fill="none" marker-end="url(#arrDP)"/>
+
+  <!-- 中心标签 -->
+  <text x="530" y="181" text-anchor="middle" font-size="9" fill="#3498db" font-weight="bold">顺时针</text>
+  <text x="530" y="193" text-anchor="middle" font-size="9" fill="#3498db">传递梯度片段</text>
+
+  <!-- 底部标注 — 在画布内 -->
+  <rect x="295" y="308" width="455" height="24" rx="7" fill="#d5f5e3" stroke="#27ae60" stroke-width="1"/>
+  <text x="522" y="319" text-anchor="middle" font-size="9" fill="#2c3e50">通信量 ≈ 2P（与 GPU 数量无关）</text>
+  <text x="522" y="328" text-anchor="middle" font-size="8" fill="#27ae60">✓ 理想线性扩展：1000 GPU 的通信量 ≈ 2 GPU</text>
+</svg>

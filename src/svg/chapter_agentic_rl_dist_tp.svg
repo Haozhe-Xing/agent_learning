@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 420" width="780" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="aTP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="aTPr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <rect width="780" height="420" fill="#f8f9fa" rx="14"/>
+  <text x="390" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">张量并行（TP）：权重矩阵切分示意</text>
+
+  <!-- ══ ① Column Parallel ══ -->
+  <text x="390" y="48" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">① 列并行（Column Parallel）：按列切分权重</text>
+
+  <!-- 输入 X -->
+  <rect x="16" y="58" width="62" height="76" rx="5" fill="#e67e22" opacity="0.55"/>
+  <text x="47" y="92" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">输入 X</text>
+  <text x="47" y="106" text-anchor="middle" font-size="8" fill="#fff">[B,s,H]</text>
+
+  <text x="88" y="100" text-anchor="middle" font-size="16" fill="#7f8c8d">×</text>
+
+  <!-- 完整权重 W -->
+  <rect x="100" y="58" width="120" height="76" rx="5" fill="#3498db" opacity="0.5"/>
+  <text x="160" y="90" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">W [H, 4H]</text>
+  <text x="160" y="104" text-anchor="middle" font-size="9" fill="#fff">完整权重</text>
+
+  <!-- 箭头 -->
+  <path d="M 224 96 L 248 96" stroke="#7f8c8d" stroke-width="2" marker-end="url(#aTP)"/>
+  <text x="236" y="88" text-anchor="middle" font-size="9" fill="#7f8c8d">TP=2</text>
+  <text x="236" y="110" text-anchor="middle" font-size="8" fill="#7f8c8d">列切分</text>
+
+  <!-- W₀ W₁ -->
+  <rect x="254" y="58" width="68" height="76" rx="5" fill="#3498db" opacity="0.75"/>
+  <text x="288" y="88" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">W₀</text>
+  <text x="288" y="103" text-anchor="middle" font-size="8" fill="#fff">[H,2H]</text>
+  <text x="288" y="117" text-anchor="middle" font-size="8" fill="#def">GPU 0</text>
+
+  <rect x="328" y="58" width="68" height="76" rx="5" fill="#3498db" opacity="0.5"/>
+  <text x="362" y="88" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">W₁</text>
+  <text x="362" y="103" text-anchor="middle" font-size="8" fill="#fff">[H,2H]</text>
+  <text x="362" y="117" text-anchor="middle" font-size="8" fill="#ddf">GPU 1</text>
+
+  <text x="408" y="100" text-anchor="middle" font-size="16" fill="#7f8c8d">=</text>
+
+  <!-- Y₀ Y₁ -->
+  <rect x="420" y="58" width="60" height="76" rx="5" fill="#27ae60" opacity="0.65"/>
+  <text x="450" y="88" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Y₀</text>
+  <text x="450" y="103" text-anchor="middle" font-size="8" fill="#fff">[B,s,2H]</text>
+  <text x="450" y="117" text-anchor="middle" font-size="8" fill="#dfd">GPU 0</text>
+
+  <rect x="486" y="58" width="60" height="76" rx="5" fill="#27ae60" opacity="0.45"/>
+  <text x="516" y="88" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Y₁</text>
+  <text x="516" y="103" text-anchor="middle" font-size="8" fill="#fff">[B,s,2H]</text>
+  <text x="516" y="117" text-anchor="middle" font-size="8" fill="#dfd">GPU 1</text>
+
+  <path d="M 550 96 L 574 96" stroke="#7f8c8d" stroke-width="2" marker-end="url(#aTP)"/>
+  <text x="562" y="88" text-anchor="middle" font-size="9" fill="#7f8c8d">Concat</text>
+
+  <!-- Final Y -->
+  <rect x="578" y="58" width="108" height="76" rx="5" fill="#27ae60" opacity="0.62"/>
+  <text x="632" y="86" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Y=[Y₀|Y₁]</text>
+  <text x="632" y="100" text-anchor="middle" font-size="8" fill="#fff">[B, s, 4H]</text>
+  <text x="632" y="114" text-anchor="middle" font-size="8" fill="#dfd">✓ 无需通信</text>
+
+  <!-- ══ ② Row Parallel ══ -->
+  <line x1="10" y1="152" x2="770" y2="152" stroke="#d0d0d0" stroke-width="1.5"/>
+  <text x="390" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#9b59b6">② 行并行（Row Parallel）：按行切分权重</text>
+
+  <!-- 输入 X₀ X₁（已分片） -->
+  <rect x="16" y="182" width="56" height="68" rx="5" fill="#9b59b6" opacity="0.65"/>
+  <text x="44" y="208" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">X₀</text>
+  <text x="44" y="222" text-anchor="middle" font-size="8" fill="#fff">[B,s,2H]</text>
+  <text x="44" y="235" text-anchor="middle" font-size="7" fill="#ecf">GPU 0</text>
+
+  <rect x="76" y="182" width="56" height="68" rx="5" fill="#9b59b6" opacity="0.45"/>
+  <text x="104" y="208" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">X₁</text>
+  <text x="104" y="222" text-anchor="middle" font-size="8" fill="#fff">[B,s,2H]</text>
+  <text x="104" y="235" text-anchor="middle" font-size="7" fill="#ecf">GPU 1</text>
+
+  <text x="148" y="218" text-anchor="middle" font-size="16" fill="#7f8c8d">×</text>
+
+  <!-- 权重 W（行切分）-->
+  <rect x="162" y="182" width="96" height="32" rx="5" fill="#3498db" opacity="0.72"/>
+  <text x="210" y="194" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">W₀ [2H,H]</text>
+  <text x="210" y="207" text-anchor="middle" font-size="8" fill="#ddf">GPU 0 上半行</text>
+
+  <rect x="162" y="218" width="96" height="32" rx="5" fill="#3498db" opacity="0.52"/>
+  <text x="210" y="230" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">W₁ [2H,H]</text>
+  <text x="210" y="244" text-anchor="middle" font-size="8" fill="#ddf">GPU 1 下半行</text>
+
+  <text x="272" y="218" text-anchor="middle" font-size="16" fill="#7f8c8d">=</text>
+
+  <!-- 局部结果 -->
+  <rect x="285" y="182" width="62" height="68" rx="5" fill="#27ae60" opacity="0.65"/>
+  <text x="316" y="208" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Y₀</text>
+  <text x="316" y="222" text-anchor="middle" font-size="8" fill="#fff">[B,s,H]</text>
+  <text x="316" y="235" text-anchor="middle" font-size="7" fill="#dfd">GPU 0</text>
+
+  <rect x="353" y="182" width="62" height="68" rx="5" fill="#27ae60" opacity="0.45"/>
+  <text x="384" y="208" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Y₁</text>
+  <text x="384" y="222" text-anchor="middle" font-size="8" fill="#fff">[B,s,H]</text>
+  <text x="384" y="235" text-anchor="middle" font-size="7" fill="#dfd">GPU 1</text>
+
+  <!-- AllReduce -->
+  <path d="M 420 218 L 444 218" stroke="#e74c3c" stroke-width="2" marker-end="url(#aTPr)"/>
+  <!-- label above arrow -->
+  <text x="432" y="210" text-anchor="middle" font-size="9" fill="#e74c3c">AllReduce</text>
+  <text x="432" y="232" text-anchor="middle" font-size="8" fill="#e74c3c">⚠ 需通信</text>
+
+  <!-- 最终输出 -->
+  <rect x="448" y="182" width="98" height="68" rx="5" fill="#27ae60" opacity="0.62"/>
+  <text x="497" y="207" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Y = Y₀ + Y₁</text>
+  <text x="497" y="221" text-anchor="middle" font-size="8" fill="#fff">[B, s, H]</text>
+  <text x="497" y="235" text-anchor="middle" font-size="8" fill="#dfd">每层 1 次 AllReduce</text>
+
+  <!-- ══ ③ MLP 数据流 ══ -->
+  <line x1="10" y1="268" x2="770" y2="268" stroke="#d0d0d0" stroke-width="1.5"/>
+  <text x="390" y="288" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">③ Transformer MLP 层完整 TP 数据流</text>
+
+  <!-- flow boxes — 均匀分布，避免溢出 -->
+  <rect x="16"  y="300" width="80" height="34" rx="6" fill="#9b59b6" opacity="0.55"/>
+  <text x="56"  y="315" text-anchor="middle" font-size="9" fill="#fff">输入 x</text>
+  <text x="56"  y="327" text-anchor="middle" font-size="8" fill="#ffe">[B,s,H]</text>
+
+  <path d="M 98 317 L 116 317" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aTP)"/>
+
+  <rect x="119" y="300" width="92" height="34" rx="6" fill="#3498db" opacity="0.62"/>
+  <text x="165" y="313" text-anchor="middle" font-size="9" fill="#fff">Col Parallel</text>
+  <text x="165" y="325" text-anchor="middle" font-size="8" fill="#ddf">W_up（无通信）</text>
+
+  <path d="M 213 317 L 231 317" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aTP)"/>
+
+  <rect x="234" y="300" width="84" height="34" rx="6" fill="#27ae60" opacity="0.6"/>
+  <text x="276" y="313" text-anchor="middle" font-size="9" fill="#fff">GeLU/SwiGLU</text>
+  <text x="276" y="325" text-anchor="middle" font-size="8" fill="#dfd">本地激活函数</text>
+
+  <path d="M 320 317 L 338 317" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aTP)"/>
+
+  <rect x="341" y="300" width="92" height="34" rx="6" fill="#9b59b6" opacity="0.62"/>
+  <text x="387" y="313" text-anchor="middle" font-size="9" fill="#fff">Row Parallel</text>
+  <text x="387" y="325" text-anchor="middle" font-size="8" fill="#ecf">W_down</text>
+
+  <path d="M 435 317 L 453 317" stroke="#e74c3c" stroke-width="2" marker-end="url(#aTPr)"/>
+  <!-- AllReduce label — 放在箭头下方 -->
+  <text x="444" y="310" text-anchor="middle" font-size="8" fill="#e74c3c">AllReduce</text>
+  <text x="444" y="330" text-anchor="middle" font-size="7" fill="#e74c3c">↑ 通信</text>
+
+  <rect x="456" y="300" width="80" height="34" rx="6" fill="#e67e22" opacity="0.55"/>
+  <text x="496" y="315" text-anchor="middle" font-size="9" fill="#fff">输出</text>
+  <text x="496" y="327" text-anchor="middle" font-size="8" fill="#fff">[B,s,H]</text>
+
+  <!-- 通信次数说明 -->
+  <rect x="550" y="300" width="216" height="34" rx="6" fill="#fef9e7" stroke="#f39c12" stroke-width="1"/>
+  <text x="658" y="313" text-anchor="middle" font-size="9" fill="#e67e22" font-weight="bold">通信次数（每层）</text>
+  <text x="658" y="326" text-anchor="middle" font-size="9" fill="#555">前向 1× AllReduce  ·  反向 1× AllReduce</text>
+
+  <!-- 底部 NVLink 提示 -->
+  <rect x="16" y="349" width="748" height="22" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
+  <text x="390" y="364" text-anchor="middle" font-size="9" fill="#3498db">⚠ TP 要求 GPU 间带宽极高，必须在同一节点内（NVLink），不适合跨节点使用（典型 TP=4~8）</text>
+</svg>

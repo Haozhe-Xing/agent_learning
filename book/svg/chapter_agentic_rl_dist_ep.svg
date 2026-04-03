@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="aEP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="aEPr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#9b59b6"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="360" fill="#f8f9fa" rx="14"/>
+  <text x="380" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">专家并行（EP）：MoE 路由 + AllToAll 动态分发</text>
+
+  <!-- ─── Left: Standard FFN vs MoE FFN ─── -->
+  <text x="175" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">标准 FFN vs MoE FFN</text>
+
+  <!-- Standard FFN -->
+  <rect x="20" y="62" width="150" height="100" rx="8" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="95" y="82" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">标准 FFN</text>
+  <rect x="35" y="90" width="120" height="28" rx="5" fill="#3498db" opacity="0.5"/>
+  <text x="95" y="108" text-anchor="middle" font-size="9" fill="#fff">唯一 FFN 层</text>
+  <text x="95" y="130" text-anchor="middle" font-size="8" fill="#555">每个 token 都经过</text>
+  <text x="95" y="143" text-anchor="middle" font-size="8" fill="#555">激活参数 = 全部参数</text>
+  <text x="95" y="156" text-anchor="middle" font-size="8" fill="#e74c3c">计算量大，参数无法扩展</text>
+
+  <!-- MoE FFN -->
+  <rect x="185" y="62" width="165" height="100" rx="8" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="267" y="82" text-anchor="middle" font-size="10" font-weight="bold" fill="#9b59b6">MoE FFN（8 专家，Top-2）</text>
+  <!-- 8 small expert boxes -->
+  <rect x="192" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.7"/>
+  <text x="202" y="103" text-anchor="middle" font-size="7" fill="#fff">E0</text>
+  <rect x="215" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.3"/>
+  <text x="225" y="103" text-anchor="middle" font-size="7" fill="#9b59b6">E1</text>
+  <rect x="238" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.7"/>
+  <text x="248" y="103" text-anchor="middle" font-size="7" fill="#fff">E2</text>
+  <rect x="261" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.3"/>
+  <text x="271" y="103" text-anchor="middle" font-size="7" fill="#9b59b6">E3</text>
+  <rect x="284" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.3"/>
+  <text x="294" y="103" text-anchor="middle" font-size="7" fill="#9b59b6">E4</text>
+  <rect x="307" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.3"/>
+  <text x="317" y="103" text-anchor="middle" font-size="7" fill="#9b59b6">E5</text>
+  <rect x="330" y="90" width="20" height="18" rx="3" fill="#9b59b6" opacity="0.3"/>
+  <text x="340" y="103" text-anchor="middle" font-size="7" fill="#9b59b6">E6</text>
+  <!-- highlight E0, E2 as selected -->
+  <text x="267" y="128" text-anchor="middle" font-size="8" fill="#555">每个 token 只激活 2 个专家</text>
+  <text x="267" y="141" text-anchor="middle" font-size="8" fill="#27ae60">激活参数 ≈ 总参数 × 2/8 = 25%</text>
+  <text x="267" y="154" text-anchor="middle" font-size="8" fill="#27ae60">总参数可无限扩展！</text>
+
+  <!-- DeepSeek V3 stats -->
+  <rect x="20" y="170" width="330" height="28" rx="6" fill="#9b59b6" opacity="0.08" stroke="#9b59b6" stroke-width="1"/>
+  <text x="185" y="182" text-anchor="middle" font-size="9" fill="#9b59b6" font-weight="bold">DeepSeek-V3：256 专家，每 token 激活 8 个</text>
+  <text x="185" y="193" text-anchor="middle" font-size="9" fill="#555">激活参数/总参数 ≈ 8/256 ≈ 3%  |  总参数 671B，激活约 37B</text>
+
+  <!-- ─── Right: EP routing flow ─── -->
+  <line x1="380" y1="42" x2="380" y2="310" stroke="#e0e0e0" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="570" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">EP 路由流程（4 GPU，每 GPU 2 专家）</text>
+
+  <!-- Tokens on each GPU -->
+  <rect x="390" y="62" width="70" height="100" rx="8" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1.5"/>
+  <text x="425" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 0</text>
+  <rect x="398" y="84" width="54" height="16" rx="3" fill="#3498db" opacity="0.5"/>
+  <text x="425" y="96" text-anchor="middle" font-size="8" fill="#fff">tokens t₀-t₃</text>
+  <!-- experts on GPU 0 -->
+  <rect x="398" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.7"/>
+  <text x="410" y="128" text-anchor="middle" font-size="7" fill="#fff">E0</text>
+  <rect x="426" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.7"/>
+  <text x="438" y="128" text-anchor="middle" font-size="7" fill="#fff">E1</text>
+  <text x="425" y="147" text-anchor="middle" font-size="7" fill="#9b59b6">持有 E0,E1</text>
+  <text x="425" y="158" text-anchor="middle" font-size="7" fill="#9b59b6">接收匹配 token</text>
+
+  <rect x="470" y="62" width="70" height="100" rx="8" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="505" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#27ae60">GPU 1</text>
+  <rect x="478" y="84" width="54" height="16" rx="3" fill="#27ae60" opacity="0.5"/>
+  <text x="505" y="96" text-anchor="middle" font-size="8" fill="#fff">tokens t₄-t₇</text>
+  <rect x="478" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.5"/>
+  <text x="490" y="128" text-anchor="middle" font-size="7" fill="#fff">E2</text>
+  <rect x="506" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.5"/>
+  <text x="518" y="128" text-anchor="middle" font-size="7" fill="#fff">E3</text>
+  <text x="505" y="147" text-anchor="middle" font-size="7" fill="#9b59b6">持有 E2,E3</text>
+
+  <rect x="550" y="62" width="70" height="100" rx="8" fill="#e67e22" opacity="0.1" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="585" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#e67e22">GPU 2</text>
+  <rect x="558" y="84" width="54" height="16" rx="3" fill="#e67e22" opacity="0.5"/>
+  <text x="585" y="96" text-anchor="middle" font-size="8" fill="#fff">tokens t₈-t₁₁</text>
+  <rect x="558" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.35"/>
+  <text x="570" y="128" text-anchor="middle" font-size="7" fill="#fff">E4</text>
+  <rect x="586" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.35"/>
+  <text x="598" y="128" text-anchor="middle" font-size="7" fill="#fff">E5</text>
+  <text x="585" y="147" text-anchor="middle" font-size="7" fill="#9b59b6">持有 E4,E5</text>
+
+  <rect x="630" y="62" width="70" height="100" rx="8" fill="#e74c3c" opacity="0.1" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="665" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#e74c3c">GPU 3</text>
+  <rect x="638" y="84" width="54" height="16" rx="3" fill="#e74c3c" opacity="0.5"/>
+  <text x="665" y="96" text-anchor="middle" font-size="8" fill="#fff">tokens t₁₂-t₁₅</text>
+  <rect x="638" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.2"/>
+  <text x="650" y="128" text-anchor="middle" font-size="7" fill="#9b59b6">E6</text>
+  <rect x="666" y="116" width="24" height="16" rx="3" fill="#9b59b6" opacity="0.2"/>
+  <text x="678" y="128" text-anchor="middle" font-size="7" fill="#9b59b6">E7</text>
+  <text x="665" y="147" text-anchor="middle" font-size="7" fill="#9b59b6">持有 E6,E7</text>
+
+  <!-- AllToAll arrows -->
+  <text x="570" y="182" text-anchor="middle" font-size="10" font-weight="bold" fill="#9b59b6">AllToAll：tokens → 对应专家 GPU</text>
+  <path d="M 425 163 Q 425 180 505 190" stroke="#9b59b6" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <path d="M 505 163 Q 505 180 425 190" stroke="#9b59b6" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <text x="465" y="195" text-anchor="middle" font-size="8" fill="#9b59b6">token 路由（动态！）</text>
+
+  <!-- Step labels at bottom -->
+  <rect x="390" y="210" width="340" height="80" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="560" y="228" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">EP 通信模式（4步）</text>
+  <text x="400" y="246" font-size="9" fill="#555">① Router 本地计算 → 决定每个 token 送给哪个专家</text>
+  <text x="400" y="260" font-size="9" fill="#555">② AllToAll → 将 token 发送到对应 GPU（动态路由）</text>
+  <text x="400" y="274" font-size="9" fill="#555">③ 各 GPU 独立计算本地专家 FFN</text>
+  <text x="400" y="288" font-size="9" fill="#555">④ AllToAll → 将结果发回原始 GPU，加权合并</text>
+
+  <!-- Bottom: 3D parallel -->
+  <rect x="10" y="310" width="760" height="40" rx="8" fill="#d5eaf4" stroke="#2980b9" stroke-width="1"/>
+  <text x="380" y="327" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">5D 并行 = TP（节点内）× PP（跨节点）× DP（ZeRO）× SP（长序列）× EP（MoE）</text>
+  <text x="380" y="343" text-anchor="middle" font-size="9" fill="#555">各维度正交，可独立叠加  |  典型 70B 集群：TP=8 × PP=8 × DP=8 = 512 GPU</text>
+</svg>

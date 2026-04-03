@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 400" width="700" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="aDT" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="aDTg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="aDTr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="400" fill="#f8f9fa" rx="14"/>
+  <text x="350" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">并行策略选型决策树</text>
+
+  <!-- Root question -->
+  <rect x="230" y="42" width="240" height="36" rx="10" fill="#2c3e50" opacity="0.85"/>
+  <text x="350" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">开始：我要训练一个 LLM</text>
+
+  <!-- Q1 -->
+  <path d="M 350 79 L 350 100" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aDT)"/>
+  <rect x="170" y="102" width="360" height="34" rx="8" fill="#e8f4fd" stroke="#3498db" stroke-width="1.5"/>
+  <text x="350" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">Q1：单层（MLP/Attention）放得下单卡吗？</text>
+  <text x="350" y="129" text-anchor="middle" font-size="9" fill="#555">（例：7B模型单层 ~1GB，H100 80GB 能放 ~80 层）</text>
+
+  <!-- Q1: No → TP -->
+  <path d="M 170 119 L 75 152" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#aDTr)"/>
+  <text x="110" y="138" text-anchor="middle" font-size="9" fill="#e74c3c">放不下</text>
+  <rect x="20" y="154" width="110" height="30" rx="8" fill="#e67e22" opacity="0.8"/>
+  <text x="75" y="167" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">加 TP</text>
+  <text x="75" y="179" text-anchor="middle" font-size="8" fill="#fff">（节点内 NVLink）</text>
+
+  <!-- Q1: Yes → Q2 -->
+  <path d="M 530 119 L 630 152" stroke="#27ae60" stroke-width="1.5" marker-end="url(#aDTg)"/>
+  <text x="592" y="138" text-anchor="middle" font-size="9" fill="#27ae60">放得下</text>
+  <text x="630" y="162" text-anchor="middle" font-size="9" fill="#555">（TP=1 即可）</text>
+
+  <!-- Q2 -->
+  <path d="M 350 137 L 350 168" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aDT)"/>
+  <rect x="175" y="170" width="350" height="34" rx="8" fill="#e8f4fd" stroke="#3498db" stroke-width="1.5"/>
+  <text x="350" y="184" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">Q2：模型层数多，需要跨多个节点吗？</text>
+  <text x="350" y="197" text-anchor="middle" font-size="9" fill="#555">（总层数 × 单层显存 &gt; 单节点 8×GPU 总显存）</text>
+
+  <!-- Q2: Yes → PP -->
+  <path d="M 175 187 L 75 222" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#aDTr)"/>
+  <text x="110" y="208" text-anchor="middle" font-size="9" fill="#e74c3c">是</text>
+  <rect x="20" y="224" width="110" height="30" rx="8" fill="#27ae60" opacity="0.8"/>
+  <text x="75" y="237" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">加 PP</text>
+  <text x="75" y="249" text-anchor="middle" font-size="8" fill="#fff">（跨节点 IB）</text>
+
+  <!-- Q2: No → skip PP -->
+  <path d="M 525 187 L 625 222" stroke="#27ae60" stroke-width="1.5" marker-end="url(#aDTg)"/>
+  <text x="592" y="208" text-anchor="middle" font-size="9" fill="#27ae60">否</text>
+  <text x="625" y="232" text-anchor="middle" font-size="9" fill="#555">（PP=1）</text>
+
+  <!-- Q3 -->
+  <path d="M 350 205 L 350 238" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aDT)"/>
+  <rect x="185" y="240" width="330" height="34" rx="8" fill="#e8f4fd" stroke="#3498db" stroke-width="1.5"/>
+  <text x="350" y="254" text-anchor="middle" font-size="10" font-weight="bold" fill="#3498db">Q3：序列长度超过 32K token 吗？</text>
+  <text x="350" y="267" text-anchor="middle" font-size="9" fill="#555">（注意力矩阵 S² 显存随序列长度平方增长）</text>
+
+  <!-- Q3: Yes → SP -->
+  <path d="M 185 257 L 75 292" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#aDTr)"/>
+  <text x="110" y="278" text-anchor="middle" font-size="9" fill="#e74c3c">是</text>
+  <rect x="20" y="294" width="110" height="30" rx="8" fill="#1abc9c" opacity="0.8"/>
+  <text x="75" y="307" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">加 SP/CP</text>
+  <text x="75" y="319" text-anchor="middle" font-size="8" fill="#fff">（配合 TP 使用）</text>
+
+  <!-- Q3: No -->
+  <path d="M 515 257 L 615 292" stroke="#27ae60" stroke-width="1.5" marker-end="url(#aDTg)"/>
+  <text x="577" y="278" text-anchor="middle" font-size="9" fill="#27ae60">否，无需 SP</text>
+
+  <!-- Q4: Remaining GPUs → DP -->
+  <path d="M 350 275 L 350 308" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aDT)"/>
+  <rect x="195" y="310" width="310" height="34" rx="8" fill="#d5f5e3" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="350" y="324" text-anchor="middle" font-size="10" font-weight="bold" fill="#27ae60">Q4：剩余 GPU 全部用于 DP（+ ZeRO）</text>
+  <text x="350" y="337" text-anchor="middle" font-size="9" fill="#555">DP = 总 GPU / (TP × PP)  |  配合 ZeRO-1/2/3 控制显存</text>
+
+  <!-- Q5: MoE -->
+  <path d="M 350 345 L 350 362" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#aDT)"/>
+  <rect x="195" y="364" width="310" height="26" rx="8" fill="#fdf2fb" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="350" y="376" text-anchor="middle" font-size="10" font-weight="bold" fill="#9b59b6">Q5：MoE 模型？→ 独立加 EP（不影响其他维度）</text>
+  <text x="350" y="388" text-anchor="middle" font-size="9" fill="#555">EP = 专家数 / (每 GPU 专家数)  |  专家均匀分配到各 GPU</text>
+</svg>

@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 460" width="780" height="460">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+
+  <rect width="780" height="460" fill="#f8f9fa" rx="14"/>
+  <text x="390" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">流水线并行（PP）：无 PP 顺序执行 vs 1F1B 调度</text>
+
+  <!-- ══ Section 1: No PP ══ -->
+  <text x="20" y="50" font-size="13" font-weight="bold" fill="#e74c3c">无 PP（顺序执行）— 4 个 micro-batch，4 层</text>
+  <text x="20" y="64" font-size="9" fill="#7f8c8d">每个 micro-batch 依次经过所有层，其余 GPU 全程等待</text>
+
+  <!-- GPU labels -->
+  <text x="116" y="85" text-anchor="end" font-size="9" fill="#7f8c8d">GPU</text>
+  <text x="116" y="108" text-anchor="end" font-size="9" fill="#2c3e50">L1</text>
+  <text x="116" y="132" text-anchor="end" font-size="9" fill="#2c3e50">L2</text>
+  <text x="116" y="156" text-anchor="end" font-size="9" fill="#2c3e50">L3</text>
+  <text x="116" y="180" text-anchor="end" font-size="9" fill="#2c3e50">L4</text>
+  <text x="350" y="85" text-anchor="middle" font-size="9" fill="#7f8c8d">→ 时间轴</text>
+
+  <!-- slot w=40 -->
+  <!-- m1 forward L1→L4 diagonal -->
+  <rect x="120" y="96"  width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/>
+  <text x="140" y="111" text-anchor="middle" font-size="8" fill="#fff">F m1</text>
+  <!-- L2~L4 idle at t=0 -->
+  <rect x="120" y="120" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.25"/>
+  <text x="140" y="135" text-anchor="middle" font-size="7" fill="#999">等待</text>
+  <rect x="120" y="144" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.25"/>
+  <text x="140" y="159" text-anchor="middle" font-size="7" fill="#999">等待</text>
+  <rect x="120" y="168" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.25"/>
+  <text x="140" y="183" text-anchor="middle" font-size="7" fill="#999">等待</text>
+
+  <rect x="162" y="120" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/>
+  <text x="182" y="135" text-anchor="middle" font-size="8" fill="#fff">F m1</text>
+  <rect x="204" y="144" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/>
+  <text x="224" y="159" text-anchor="middle" font-size="8" fill="#fff">F m1</text>
+  <rect x="246" y="168" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/>
+  <text x="266" y="183" text-anchor="middle" font-size="8" fill="#fff">F m1</text>
+
+  <!-- m1 backward L4→L1 -->
+  <rect x="288" y="168" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.75"/>
+  <text x="308" y="183" text-anchor="middle" font-size="8" fill="#fff">B m1</text>
+  <rect x="330" y="144" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.75"/>
+  <text x="350" y="159" text-anchor="middle" font-size="8" fill="#fff">B m1</text>
+  <rect x="372" y="120" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.75"/>
+  <text x="392" y="135" text-anchor="middle" font-size="8" fill="#fff">B m1</text>
+  <rect x="414" y="96"  width="40" height="22" rx="3" fill="#e74c3c" opacity="0.75"/>
+  <text x="434" y="111" text-anchor="middle" font-size="8" fill="#fff">B m1</text>
+
+  <!-- idle box -->
+  <rect x="460" y="96" width="300" height="94" rx="5" fill="#fef0f0" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="610" y="128" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">GPU 空闲等待时间</text>
+  <text x="610" y="144" text-anchor="middle" font-size="9" fill="#7f8c8d">多数层在等待前一层完成</text>
+  <text x="610" y="160" text-anchor="middle" font-size="9" fill="#e74c3c">利用率 ≈ 1/4（PP=4 时）</text>
+  <text x="610" y="176" text-anchor="middle" font-size="9" fill="#7f8c8d">m2、m3、m4 无法并行</text>
+
+  <!-- ══ Section 2: 1F1B ══ -->
+  <line x1="10" y1="210" x2="770" y2="210" stroke="#ddd" stroke-width="1.5"/>
+  <text x="20" y="232" font-size="13" font-weight="bold" fill="#27ae60">1F1B 调度（One Forward One Backward）— 同样 4 层 × 4 micro-batch</text>
+  <text x="20" y="248" font-size="9" fill="#7f8c8d">稳定阶段：每个 GPU 均为 1F+1B 交替，显存峰值低于 GPipe</text>
+
+  <!-- GPU labels -->
+  <text x="116" y="268" text-anchor="end" font-size="9" fill="#2c3e50">GPU 0 (L1)</text>
+  <text x="116" y="294" text-anchor="end" font-size="9" fill="#2c3e50">GPU 1 (L2)</text>
+  <text x="116" y="320" text-anchor="end" font-size="9" fill="#2c3e50">GPU 2 (L3)</text>
+  <text x="116" y="346" text-anchor="end" font-size="9" fill="#2c3e50">GPU 3 (L4)</text>
+
+  <!-- slot w=40, row h=22, row gap=26 -->
+  <!-- GPU 0 (y=256): F1 F2 F3 F4 B4 B3 B2 B1 -->
+  <rect x="120" y="256" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/><text x="140" y="271" text-anchor="middle" font-size="8" fill="#fff">F 1</text>
+  <rect x="162" y="256" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/><text x="182" y="271" text-anchor="middle" font-size="8" fill="#fff">F 2</text>
+  <rect x="204" y="256" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/><text x="224" y="271" text-anchor="middle" font-size="8" fill="#fff">F 3</text>
+  <rect x="246" y="256" width="40" height="22" rx="3" fill="#3498db" opacity="0.85"/><text x="266" y="271" text-anchor="middle" font-size="8" fill="#fff">F 4</text>
+  <rect x="288" y="256" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.8"/><text x="308" y="271" text-anchor="middle" font-size="8" fill="#fff">B 4</text>
+  <rect x="330" y="256" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.8"/><text x="350" y="271" text-anchor="middle" font-size="8" fill="#fff">B 3</text>
+  <rect x="372" y="256" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.8"/><text x="392" y="271" text-anchor="middle" font-size="8" fill="#fff">B 2</text>
+  <rect x="414" y="256" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.8"/><text x="434" y="271" text-anchor="middle" font-size="8" fill="#fff">B 1</text>
+
+  <!-- GPU 1 (y=282): bubble F1 F2 F3 F4 B4 B3 B2 B1 -->
+  <rect x="120" y="282" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.3"/><text x="140" y="297" text-anchor="middle" font-size="7" fill="#999">泡</text>
+  <rect x="162" y="282" width="40" height="22" rx="3" fill="#3498db" opacity="0.65"/><text x="182" y="297" text-anchor="middle" font-size="8" fill="#fff">F 1</text>
+  <rect x="204" y="282" width="40" height="22" rx="3" fill="#3498db" opacity="0.65"/><text x="224" y="297" text-anchor="middle" font-size="8" fill="#fff">F 2</text>
+  <rect x="246" y="282" width="40" height="22" rx="3" fill="#3498db" opacity="0.65"/><text x="266" y="297" text-anchor="middle" font-size="8" fill="#fff">F 3</text>
+  <rect x="288" y="282" width="40" height="22" rx="3" fill="#3498db" opacity="0.65"/><text x="308" y="297" text-anchor="middle" font-size="8" fill="#fff">F 4</text>
+  <rect x="330" y="282" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.65"/><text x="350" y="297" text-anchor="middle" font-size="8" fill="#fff">B 4</text>
+  <rect x="372" y="282" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.65"/><text x="392" y="297" text-anchor="middle" font-size="8" fill="#fff">B 3</text>
+  <rect x="414" y="282" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.65"/><text x="434" y="297" text-anchor="middle" font-size="8" fill="#fff">B 2</text>
+  <rect x="456" y="282" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.65"/><text x="476" y="297" text-anchor="middle" font-size="8" fill="#fff">B 1</text>
+
+  <!-- GPU 2 (y=308): 2 bubbles F1 F2 F3 F4 B4 B3 B2 B1 -->
+  <rect x="120" y="308" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.3"/><text x="140" y="323" text-anchor="middle" font-size="7" fill="#999">泡</text>
+  <rect x="162" y="308" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.3"/><text x="182" y="323" text-anchor="middle" font-size="7" fill="#999">泡</text>
+  <rect x="204" y="308" width="40" height="22" rx="3" fill="#3498db" opacity="0.5"/><text x="224" y="323" text-anchor="middle" font-size="8" fill="#fff">F 1</text>
+  <rect x="246" y="308" width="40" height="22" rx="3" fill="#3498db" opacity="0.5"/><text x="266" y="323" text-anchor="middle" font-size="8" fill="#fff">F 2</text>
+  <rect x="288" y="308" width="40" height="22" rx="3" fill="#3498db" opacity="0.5"/><text x="308" y="323" text-anchor="middle" font-size="8" fill="#fff">F 3</text>
+  <rect x="330" y="308" width="40" height="22" rx="3" fill="#3498db" opacity="0.5"/><text x="350" y="323" text-anchor="middle" font-size="8" fill="#fff">F 4</text>
+  <rect x="372" y="308" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.5"/><text x="392" y="323" text-anchor="middle" font-size="8" fill="#fff">B 4</text>
+  <rect x="414" y="308" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.5"/><text x="434" y="323" text-anchor="middle" font-size="8" fill="#fff">B 3</text>
+  <rect x="456" y="308" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.5"/><text x="476" y="323" text-anchor="middle" font-size="8" fill="#fff">B 2</text>
+  <rect x="498" y="308" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.5"/><text x="518" y="323" text-anchor="middle" font-size="8" fill="#fff">B 1</text>
+
+  <!-- GPU 3 (y=334): 3 bubbles F1 F2 F3 F4 B4 B3 B2 B1 -->
+  <rect x="120" y="334" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.3"/><text x="140" y="349" text-anchor="middle" font-size="7" fill="#999">泡</text>
+  <rect x="162" y="334" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.3"/><text x="182" y="349" text-anchor="middle" font-size="7" fill="#999">泡</text>
+  <rect x="204" y="334" width="40" height="22" rx="3" fill="#bdc3c7" opacity="0.3"/><text x="224" y="349" text-anchor="middle" font-size="7" fill="#999">泡</text>
+  <rect x="246" y="334" width="40" height="22" rx="3" fill="#3498db" opacity="0.38"/><text x="266" y="349" text-anchor="middle" font-size="8" fill="#fff">F 1</text>
+  <rect x="288" y="334" width="40" height="22" rx="3" fill="#3498db" opacity="0.38"/><text x="308" y="349" text-anchor="middle" font-size="8" fill="#fff">F 2</text>
+  <rect x="330" y="334" width="40" height="22" rx="3" fill="#3498db" opacity="0.38"/><text x="350" y="349" text-anchor="middle" font-size="8" fill="#fff">F 3</text>
+  <rect x="372" y="334" width="40" height="22" rx="3" fill="#3498db" opacity="0.38"/><text x="392" y="349" text-anchor="middle" font-size="8" fill="#fff">F 4</text>
+  <rect x="414" y="334" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.38"/><text x="434" y="349" text-anchor="middle" font-size="8" fill="#fff">B 4</text>
+  <rect x="456" y="334" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.38"/><text x="476" y="349" text-anchor="middle" font-size="8" fill="#fff">B 3</text>
+  <rect x="498" y="334" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.38"/><text x="518" y="349" text-anchor="middle" font-size="8" fill="#fff">B 2</text>
+  <rect x="540" y="334" width="40" height="22" rx="3" fill="#e74c3c" opacity="0.38"/><text x="560" y="349" text-anchor="middle" font-size="8" fill="#fff">B 1</text>
+
+  <!-- 气泡率公式 — 放在右侧剩余空间 -->
+  <rect x="598" y="256" width="168" height="100" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="682" y="274" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67e22">气泡率公式</text>
+  <text x="682" y="292" text-anchor="middle" font-size="10" fill="#2c3e50">bubble = (P−1) / (M+P−1)</text>
+  <text x="682" y="309" text-anchor="middle" font-size="9" fill="#555">P = PP stages = 4</text>
+  <text x="682" y="323" text-anchor="middle" font-size="9" fill="#555">M = micro batches = 4</text>
+  <text x="682" y="340" text-anchor="middle" font-size="9" fill="#e67e22">→ 3/(4+3) ≈ 42.9%</text>
+  <text x="682" y="352" text-anchor="middle" font-size="8" fill="#7f8c8d">M≫P 时趋近于 0</text>
+
+  <!-- 图例 -->
+  <rect x="20" y="374" width="18" height="14" rx="3" fill="#3498db" opacity="0.75"/>
+  <text x="42" y="385" font-size="9" fill="#2c3e50">前向（F）</text>
+  <rect x="130" y="374" width="18" height="14" rx="3" fill="#e74c3c" opacity="0.75"/>
+  <text x="152" y="385" font-size="9" fill="#2c3e50">反向（B）</text>
+  <rect x="240" y="374" width="18" height="14" rx="3" fill="#bdc3c7" opacity="0.35"/>
+  <text x="262" y="385" font-size="9" fill="#2c3e50">气泡（等待）</text>
+
+  <!-- 底部 key insight -->
+  <rect x="20" y="398" width="748" height="24" rx="7" fill="#d5f5e3" stroke="#27ae60" stroke-width="1"/>
+  <text x="394" y="411" text-anchor="middle" font-size="9" fill="#27ae60" font-weight="bold">1F1B 核心优势：稳定阶段显存峰值低——只需缓存 P 个 micro-batch 的激活（GPipe 需要 M 个）</text>
+  <text x="394" y="422" text-anchor="middle" font-size="8" fill="#555">气泡率相同，但显存效率更高；适合跨节点 InfiniBand 通信（PP=4~16）</text>
+</svg>

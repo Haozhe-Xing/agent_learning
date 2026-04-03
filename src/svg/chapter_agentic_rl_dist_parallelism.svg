@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="800" height="520">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <pattern id="stripe" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#fff" stroke-width="1.5" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="#f8f9fa" rx="14"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">LLM 分布式训练：五大并行策略切分维度</text>
+
+  <!-- ============================================
+       Row 1: DP — Batch dimension
+       ============================================ -->
+  <text x="20" y="66" font-size="12" font-weight="bold" fill="#3498db">① 数据并行（DP）</text>
+  <text x="20" y="80" font-size="9" fill="#7f8c8d">切分维度：Batch  |  每 GPU 持有完整模型，处理不同数据</text>
+
+  <!-- Batch blocks -->
+  <rect x="20" y="88" width="30" height="22" rx="3" fill="#3498db" opacity="0.7"/>
+  <text x="35" y="103" text-anchor="middle" font-size="8" fill="#fff">B₁</text>
+  <rect x="52" y="88" width="30" height="22" rx="3" fill="#3498db" opacity="0.5"/>
+  <text x="67" y="103" text-anchor="middle" font-size="8" fill="#fff">B₂</text>
+  <rect x="84" y="88" width="30" height="22" rx="3" fill="#3498db" opacity="0.3"/>
+  <text x="99" y="103" text-anchor="middle" font-size="8" fill="#3498db">B₃</text>
+  <rect x="116" y="88" width="30" height="22" rx="3" fill="#3498db" opacity="0.2"/>
+  <text x="131" y="103" text-anchor="middle" font-size="8" fill="#3498db">B₄</text>
+  <text x="160" y="103" font-size="9" fill="#555">→ 4 GPU 各处理一批，完整模型副本</text>
+
+  <!-- GPU boxes for DP -->
+  <rect x="320" y="88" width="60" height="28" rx="5" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="350" y="100" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 0</text>
+  <text x="350" y="111" text-anchor="middle" font-size="8" fill="#555">完整模型+B₁</text>
+
+  <rect x="390" y="88" width="60" height="28" rx="5" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="420" y="100" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 1</text>
+  <text x="420" y="111" text-anchor="middle" font-size="8" fill="#555">完整模型+B₂</text>
+
+  <rect x="460" y="88" width="60" height="28" rx="5" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="490" y="100" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 2</text>
+  <text x="490" y="111" text-anchor="middle" font-size="8" fill="#555">完整模型+B₃</text>
+
+  <rect x="530" y="88" width="60" height="28" rx="5" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="560" y="100" text-anchor="middle" font-size="9" font-weight="bold" fill="#3498db">GPU 3</text>
+  <text x="560" y="111" text-anchor="middle" font-size="8" fill="#555">完整模型+B₄</text>
+
+  <!-- AllReduce arrow -->
+  <path d="M 350 117 Q 455 135 560 117" stroke="#3498db" stroke-width="1.5" fill="none" stroke-dasharray="4,2"/>
+  <text x="455" y="134" text-anchor="middle" font-size="8" fill="#3498db">AllReduce（梯度聚合）</text>
+
+  <!-- Tag -->
+  <rect x="705" y="88" width="80" height="28" rx="6" fill="#3498db" opacity="0.1"/>
+  <text x="745" y="100" text-anchor="middle" font-size="9" fill="#3498db">解决：吞吐量</text>
+  <text x="745" y="112" text-anchor="middle" font-size="8" fill="#3498db">通信：AllReduce</text>
+
+  <!-- ============================================
+       Row 2: TP — Weight matrix
+       ============================================ -->
+  <line x1="0" y1="148" x2="800" y2="148" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="20" y="166" font-size="12" font-weight="bold" fill="#e67e22">② 张量并行（TP）</text>
+  <text x="20" y="180" font-size="9" fill="#7f8c8d">切分维度：权重矩阵内部  |  每 GPU 持有部分权重，协同计算矩阵乘</text>
+
+  <!-- Weight matrix visualization -->
+  <text x="20" y="198" font-size="9" fill="#555">权重 W [H, 4H]：</text>
+  <!-- Full matrix -->
+  <rect x="20" y="202" width="80" height="32" rx="3" fill="#e67e22" opacity="0.5"/>
+  <text x="60" y="222" text-anchor="middle" font-size="9" fill="#fff">W [H × 4H]</text>
+  <text x="110" y="222" font-size="11" fill="#7f8c8d">→</text>
+  <!-- Split matrix -->
+  <rect x="125" y="202" width="38" height="32" rx="3" fill="#e67e22" opacity="0.7"/>
+  <text x="144" y="216" text-anchor="middle" font-size="8" fill="#fff">W₀</text>
+  <text x="144" y="228" text-anchor="middle" font-size="7" fill="#fff">[H,2H]</text>
+  <rect x="165" y="202" width="38" height="32" rx="3" fill="#e67e22" opacity="0.5"/>
+  <text x="184" y="216" text-anchor="middle" font-size="8" fill="#fff">W₁</text>
+  <text x="184" y="228" text-anchor="middle" font-size="7" fill="#fff">[H,2H]</text>
+  <text x="215" y="222" font-size="9" fill="#555">按列切分，TP=2</text>
+
+  <!-- GPU computation -->
+  <rect x="320" y="198" width="80" height="36" rx="5" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="360" y="210" text-anchor="middle" font-size="9" font-weight="bold" fill="#e67e22">GPU 0</text>
+  <text x="360" y="222" text-anchor="middle" font-size="8" fill="#555">x × W₀ = Y₀</text>
+  <text x="360" y="231" text-anchor="middle" font-size="7" fill="#999">[B,s,2H]</text>
+
+  <rect x="415" y="198" width="80" height="36" rx="5" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="455" y="210" text-anchor="middle" font-size="9" font-weight="bold" fill="#e67e22">GPU 1</text>
+  <text x="455" y="222" text-anchor="middle" font-size="8" fill="#555">x × W₁ = Y₁</text>
+  <text x="455" y="231" text-anchor="middle" font-size="7" fill="#999">[B,s,2H]</text>
+
+  <text x="510" y="217" font-size="11" fill="#7f8c8d">→</text>
+  <rect x="525" y="202" width="80" height="32" rx="3" fill="#e67e22" opacity="0.4"/>
+  <text x="565" y="216" text-anchor="middle" font-size="8" fill="#fff">Y = [Y₀|Y₁]</text>
+  <text x="565" y="228" text-anchor="middle" font-size="7" fill="#fff">Concat [B,s,4H]</text>
+
+  <!-- Tag -->
+  <rect x="705" y="198" width="80" height="36" rx="6" fill="#e67e22" opacity="0.1"/>
+  <text x="745" y="210" text-anchor="middle" font-size="9" fill="#e67e22">解决：单层过大</text>
+  <text x="745" y="222" text-anchor="middle" font-size="8" fill="#e67e22">需：NVLink</text>
+  <text x="745" y="232" text-anchor="middle" font-size="8" fill="#e67e22">通信：AllReduce</text>
+
+  <!-- ============================================
+       Row 3: PP — Model layers
+       ============================================ -->
+  <line x1="0" y1="252" x2="800" y2="252" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="20" y="268" font-size="12" font-weight="bold" fill="#27ae60">③ 流水线并行（PP）</text>
+  <text x="20" y="282" font-size="9" fill="#7f8c8d">切分维度：模型层（深度）  |  每 GPU 负责部分层，micro-batch 流水线执行</text>
+
+  <!-- Layer stacks -->
+  <text x="20" y="300" font-size="9" fill="#555">32 层模型，PP=4：</text>
+  <rect x="20" y="304" width="55" height="28" rx="5" fill="#27ae60" opacity="0.7"/>
+  <text x="47" y="315" text-anchor="middle" font-size="8" fill="#fff">GPU 0</text>
+  <text x="47" y="326" text-anchor="middle" font-size="7" fill="#fff">L1~L8</text>
+
+  <path d="M 78 318 L 94 318" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="97" y="304" width="55" height="28" rx="5" fill="#27ae60" opacity="0.5"/>
+  <text x="124" y="315" text-anchor="middle" font-size="8" fill="#fff">GPU 1</text>
+  <text x="124" y="326" text-anchor="middle" font-size="7" fill="#fff">L9~L16</text>
+
+  <path d="M 155 318 L 171 318" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="174" y="304" width="55" height="28" rx="5" fill="#27ae60" opacity="0.35"/>
+  <text x="201" y="315" text-anchor="middle" font-size="8" fill="#fff">GPU 2</text>
+  <text x="201" y="326" text-anchor="middle" font-size="7" fill="#fff">L17~L24</text>
+
+  <path d="M 232 318 L 248 318" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="251" y="304" width="55" height="28" rx="5" fill="#27ae60" opacity="0.2"/>
+  <text x="278" y="315" text-anchor="middle" font-size="8" fill="#27ae60">GPU 3</text>
+  <text x="278" y="326" text-anchor="middle" font-size="7" fill="#27ae60">L25~L32</text>
+
+  <!-- Pipeline timeline -->
+  <text x="325" y="300" font-size="9" fill="#555">1F1B 调度（4个micro-batch）：</text>
+  <rect x="325" y="304" width="28" height="10" rx="2" fill="#27ae60" opacity="0.8"/>
+  <text x="339" y="312" text-anchor="middle" font-size="7" fill="#fff">F1</text>
+  <rect x="355" y="304" width="28" height="10" rx="2" fill="#27ae60" opacity="0.8"/>
+  <text x="369" y="312" text-anchor="middle" font-size="7" fill="#fff">F2</text>
+  <rect x="385" y="304" width="28" height="10" rx="2" fill="#e74c3c" opacity="0.7"/>
+  <text x="399" y="312" text-anchor="middle" font-size="7" fill="#fff">B2</text>
+  <rect x="415" y="304" width="28" height="10" rx="2" fill="#e74c3c" opacity="0.7"/>
+  <text x="429" y="312" text-anchor="middle" font-size="7" fill="#fff">B1</text>
+  <text x="460" y="312" font-size="8" fill="#e74c3c">← 气泡 Bubble</text>
+
+  <!-- Tag -->
+  <rect x="705" y="304" width="80" height="36" rx="6" fill="#27ae60" opacity="0.1"/>
+  <text x="745" y="316" text-anchor="middle" font-size="9" fill="#27ae60">解决：层数多</text>
+  <text x="745" y="328" text-anchor="middle" font-size="8" fill="#27ae60">需：InfiniBand</text>
+  <text x="745" y="338" text-anchor="middle" font-size="8" fill="#27ae60">缺点：气泡</text>
+
+  <!-- ============================================
+       Row 4: ZeRO — Optimizer state sharding
+       ============================================ -->
+  <line x1="0" y1="352" x2="800" y2="352" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="20" y="370" font-size="12" font-weight="bold" fill="#9b59b6">④ ZeRO（消除优化器冗余）</text>
+  <text x="20" y="384" font-size="9" fill="#7f8c8d">切分维度：参数/梯度/优化器状态  |  配合 DP，消除 GPU 间冗余存储</text>
+
+  <!-- ZeRO stages comparison -->
+  <text x="20" y="402" font-size="9" fill="#555">7B 模型，4 GPU 各自存储量（GB）：</text>
+
+  <!-- ZeRO-0 -->
+  <rect x="20" y="408" width="100" height="18" rx="3" fill="#9b59b6" opacity="0.7"/>
+  <text x="70" y="420" text-anchor="middle" font-size="8" fill="#fff">ZeRO-0: 每卡≈112GB（全量）</text>
+
+  <!-- ZeRO-1 -->
+  <rect x="130" y="408" width="70" height="18" rx="3" fill="#9b59b6" opacity="0.55"/>
+  <text x="165" y="420" text-anchor="middle" font-size="8" fill="#fff">ZeRO-1: ≈44GB</text>
+  <text x="165" y="430" text-anchor="middle" font-size="7" fill="#9b59b6">优化器状态分片</text>
+
+  <!-- ZeRO-2 -->
+  <rect x="210" y="408" width="56" height="18" rx="3" fill="#9b59b6" opacity="0.4"/>
+  <text x="238" y="420" text-anchor="middle" font-size="8" fill="#9b59b6">ZeRO-2: ≈29GB</text>
+  <text x="238" y="430" text-anchor="middle" font-size="7" fill="#9b59b6">+梯度分片</text>
+
+  <!-- ZeRO-3 -->
+  <rect x="276" y="408" width="40" height="18" rx="3" fill="#9b59b6" opacity="0.25"/>
+  <text x="296" y="420" text-anchor="middle" font-size="8" fill="#9b59b6">ZeRO-3: ≈14GB</text>
+  <text x="296" y="430" text-anchor="middle" font-size="7" fill="#9b59b6">+参数分片</text>
+
+  <!-- FSDP note -->
+  <rect x="325" y="408" width="160" height="28" rx="6" fill="#9b59b6" opacity="0.08" stroke="#9b59b6" stroke-width="1"/>
+  <text x="405" y="419" text-anchor="middle" font-size="9" fill="#9b59b6" font-weight="bold">PyTorch FSDP = ZeRO-3</text>
+  <text x="405" y="430" text-anchor="middle" font-size="8" fill="#555">model = FSDP(model, sharding_strategy=FULL_SHARD)</text>
+
+  <!-- Tag -->
+  <rect x="705" y="408" width="80" height="28" rx="6" fill="#9b59b6" opacity="0.1"/>
+  <text x="745" y="420" text-anchor="middle" font-size="9" fill="#9b59b6">解决：DP 冗余</text>
+  <text x="745" y="432" text-anchor="middle" font-size="8" fill="#9b59b6">配合 DP 使用</text>
+
+  <!-- ============================================
+       Row 5: Combined 3D + EP
+       ============================================ -->
+  <line x1="0" y1="450" x2="800" y2="450" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="20" y="468" font-size="12" font-weight="bold" fill="#2c3e50">⑤ 3D 并行组合（TP × PP × DP）</text>
+  <text x="20" y="482" font-size="9" fill="#7f8c8d">生产训练的标准配置  |  示例：70B 模型，512 卡 A100</text>
+
+  <!-- 3D parallel box -->
+  <rect x="20" y="488" width="680" height="22" rx="5" fill="#2c3e50" opacity="0.06" stroke="#2c3e50" stroke-width="1.5"/>
+
+  <!-- TP group -->
+  <rect x="25" y="491" width="130" height="16" rx="4" fill="#e67e22" opacity="0.5"/>
+  <text x="90" y="503" text-anchor="middle" font-size="9" fill="#fff">TP = 8（节点内 NVLink）</text>
+
+  <text x="162" y="503" font-size="11" fill="#7f8c8d">×</text>
+
+  <!-- PP group -->
+  <rect x="172" y="491" width="130" height="16" rx="4" fill="#27ae60" opacity="0.5"/>
+  <text x="237" y="503" text-anchor="middle" font-size="9" fill="#fff">PP = 8（跨节点 IB）</text>
+
+  <text x="309" y="503" font-size="11" fill="#7f8c8d">×</text>
+
+  <!-- DP group -->
+  <rect x="319" y="491" width="130" height="16" rx="4" fill="#3498db" opacity="0.5"/>
+  <text x="384" y="503" text-anchor="middle" font-size="9" fill="#fff">DP = 8（ZeRO-1）</text>
+
+  <text x="456" y="503" font-size="11" fill="#7f8c8d">=</text>
+
+  <!-- Total -->
+  <rect x="466" y="491" width="80" height="16" rx="4" fill="#e74c3c" opacity="0.7"/>
+  <text x="506" y="503" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">512 GPU</text>
+
+  <!-- EP note -->
+  <text x="560" y="503" font-size="9" fill="#555">+ EP=8（MoE 专家并行，独立维度）</text>
+
+  <!-- Bottom legend -->
+  <text x="705" y="492" font-size="9" fill="#2c3e50" font-weight="bold">5D 并行：</text>
+  <text x="705" y="505" font-size="8" fill="#2c3e50">TP×PP×DP×SP×EP</text>
+</svg>
