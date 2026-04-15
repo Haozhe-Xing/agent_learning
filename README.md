@@ -1,10 +1,8 @@
 <div align="center">
 
-# 🤖 从零开始学 Agent 
-### Learn Agent Development from Scratch
+# 🤖 从零开始学 Agent
 
-**一本系统、全面、实战导向的 AI Agent 开发教程**  
-*A systematic, comprehensive, and practice-oriented AI Agent development guide*
+**一本系统、全面、实战导向的 AI Agent 开发教程**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Stars](https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=social)](https://github.com/Haozhe-Xing/agent_learning)
@@ -12,6 +10,8 @@
 [![mdBook](https://img.shields.io/badge/built%20with-mdBook-blue)](https://rust-lang.github.io/mdBook/)
 
 [📖 中文版](https://Haozhe-Xing.github.io/agent_learning/zh/) · [📖 English](https://Haozhe-Xing.github.io/agent_learning/en/) · [🐛 提交问题](https://github.com/Haozhe-Xing/agent_learning/issues) · [💬 参与讨论](https://github.com/Haozhe-Xing/agent_learning/discussions)
+
+**[🇺🇸 English README](README_EN.md)**
 
 </div>
 
