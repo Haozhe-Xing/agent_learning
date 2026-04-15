@@ -65,7 +65,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **感知-思考-行动循环（第 1 章）**
 
-<img src="src/svg/chapter_intro_03_loop.svg" width="420" alt="感知-思考-行动循环">
+<img src="src/zh/svg/chapter_intro_03_loop.svg" width="420" alt="感知-思考-行动循环">
 
 <sub>Agent 的核心运行机制：感知环境 → LLM 推理决策 → 执行行动 → 循环直到目标达成</sub>
 
@@ -74,7 +74,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **ReAct 推理框架（第 6 章）**
 
-<img src="src/svg/chapter_planning_02_react_loop.svg" width="420" alt="ReAct 推理框架">
+<img src="src/zh/svg/chapter_planning_02_react_loop.svg" width="420" alt="ReAct 推理框架">
 
 <sub>Thought → Action → Observation 交替循环，让 Agent 边思考边行动</sub>
 
@@ -90,7 +90,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **Function Calling 完整流程（第 4 章）**
 
-<img src="src/svg/chapter_tools_02_function_calling.svg" width="480" alt="Function Calling 流程">
+<img src="src/zh/svg/chapter_tools_02_function_calling.svg" width="480" alt="Function Calling 流程">
 
 <sub>从用户输入到工具调用再到最终回复的 6 步完整流程，附消息结构示意</sub>
 
@@ -99,7 +99,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **RAG 检索增强生成（第 7 章）**
 
-<img src="src/svg/chapter_rag_01_rag_flow.svg" width="480" alt="RAG 工作原理">
+<img src="src/zh/svg/chapter_rag_01_rag_flow.svg" width="480" alt="RAG 工作原理">
 
 <sub>离线建库 + 在线检索双阶段架构，让 LLM 回答有据可查</sub>
 
@@ -115,7 +115,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **记忆系统三层架构（第 5 章）**
 
-<img src="src/svg/chapter_memory_01_memory_types.svg" width="480" alt="记忆系统三层架构">
+<img src="src/zh/svg/chapter_memory_01_memory_types.svg" width="480" alt="记忆系统三层架构">
 
 <sub>工作记忆 → 短期记忆 → 长期记忆，重要信息向下沉淀、语义检索向上提取</sub>
 
@@ -124,7 +124,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **提示工程 vs 上下文工程（第 8 章）**
 
-<img src="src/svg/chapter_context_01_comparison.svg" width="480" alt="提示工程 vs 上下文工程">
+<img src="src/zh/svg/chapter_context_01_comparison.svg" width="480" alt="提示工程 vs 上下文工程">
 
 <sub>从"如何说"到"让 LLM 看到什么"——Agent 时代的范式升级</sub>
 
@@ -140,7 +140,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **多 Agent 三种通信模式（第 14 章）**
 
-<img src="src/svg/chapter_multi_agent_02_communication.svg" width="480" alt="多 Agent 通信模式">
+<img src="src/zh/svg/chapter_multi_agent_02_communication.svg" width="480" alt="多 Agent 通信模式">
 
 <sub>消息队列（异步解耦）/ 共享黑板（数据共享）/ 直接调用（实时协作）</sub>
 
@@ -149,7 +149,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **MCP / A2A / ANP 三协议对比（第 15 章）**
 
-<img src="src/svg/chapter_protocol_03_three_protocols.svg" width="480" alt="三协议对比">
+<img src="src/zh/svg/chapter_protocol_03_three_protocols.svg" width="480" alt="三协议对比">
 
 <sub>三层协议栈各司其职：ANP 组网发现 → A2A 任务协作 → MCP 工具调用</sub>
 
@@ -165,7 +165,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **GRPO 训练架构（第 10 章）**
 
-<img src="src/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="420" alt="GRPO 训练架构">
+<img src="src/zh/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="420" alt="GRPO 训练架构">
 
 <sub>无需 Critic 模型，通过组内标准化计算优势值，显存仅需 1.5× 模型大小</sub>
 
@@ -174,7 +174,7 @@ AI Agent 正在重塑软件开发的边界。从 GitHub Copilot 到 Devin，从 
 
 **LangGraph 三大核心概念（第 12 章）**
 
-<img src="src/svg/chapter_langgraph_02_state_node_edge.svg" width="480" alt="LangGraph 核心概念">
+<img src="src/zh/svg/chapter_langgraph_02_state_node_edge.svg" width="480" alt="LangGraph 核心概念">
 
 <sub>State（共享状态）· Node（处理单元）· Edge（执行流控制）</sub>
 
