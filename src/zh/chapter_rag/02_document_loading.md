@@ -1,4 +1,4 @@
-# 文档加载与文本分割
+# 7.2 文档加载与文本分割
 
 RAG 的第一步是将文档加载进来，并合理地分割成 Chunk。这一步看似简单，实际上是整个 RAG 管道中最容易被低估的环节——**文本分割的质量直接影响检索效果，进而决定最终回答的质量。**
 
@@ -258,7 +258,7 @@ class TextSplitter:
         
         return split_recursive(text)
     
-    def split_by_tokens(self, text: str, model: str = "gpt-4o") -> list[str]:
+    def split_by_tokens(self, text: str, model: str = "gpt-4.1") -> list[str]:
         """按 Token 数量分割（更精确的控制）"""
         import tiktoken
         

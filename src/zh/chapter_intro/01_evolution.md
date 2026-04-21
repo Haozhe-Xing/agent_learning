@@ -1,4 +1,4 @@
-# 从聊天机器人到智能体的演进
+# 1.1 从聊天机器人到智能 Agent：进化之路
 
 > 📖 *"要理解 Agent 是什么，最好的方式是看看它是从哪里来的。"*
 
@@ -149,7 +149,7 @@ def llm_chatbot(user_input: str) -> str:
     - 知识有截止日期
     """
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {"role": "system", "content": "你是一个有用的助手。"},
             {"role": "user", "content": user_input}
@@ -253,7 +253,7 @@ def agent(user_input: str) -> str:
     
     # 第一步：让 LLM 理解用户需求并决定是否需要调用工具
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {"role": "system", "content": "你是一个能干的 AI 助手，可以查天气和订机票。"},
             {"role": "user", "content": user_input}
@@ -283,7 +283,7 @@ def agent(user_input: str) -> str:
         
         # 第四步：将工具结果交给 LLM，生成最终回复
         final_response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {"role": "system", "content": "你是一个能干的 AI 助手。"},
                 {"role": "user", "content": user_input},

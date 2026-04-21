@@ -1,4 +1,4 @@
-# Few-shot / Zero-shot / Chain-of-Thought 提示策略
+# 3.3 Few-shot / Zero-shot / Chain-of-Thought 提示策略
 
 掌握了基础的 Prompt Engineering 之后，我们来学习几种经过研究验证的提示策略。这些策略在面对复杂任务时，能显著提升 LLM 的表现。
 
@@ -16,7 +16,7 @@ client = OpenAI()
 def zero_shot_classify(text: str) -> str:
     """零样本情感分类"""
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "system",
@@ -78,7 +78,7 @@ def few_shot_classify(text: str) -> str:
     few_shot_prompt += f"评论：{text}\n情感："
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": few_shot_prompt}]
     )
     return response.choices[0].message.content.strip()
@@ -156,7 +156,7 @@ def solve_with_cot(problem: str) -> str:
     """使用思维链解决复杂问题"""
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "system",
@@ -197,7 +197,7 @@ def zero_shot_cot(question: str) -> str:
     
     # 第一步：触发推理
     response1 = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "user",
@@ -210,7 +210,7 @@ def zero_shot_cot(question: str) -> str:
     
     # 第二步：基于推理给出最终答案
     response2 = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {"role": "user", "content": f"{question}\n\n让我们一步步思考："},
             {"role": "assistant", "content": reasoning},
@@ -249,7 +249,7 @@ def tree_of_thought(problem: str, num_paths: int = 3) -> str:
 """
     
     paths_response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": paths_prompt}]
     )
     
@@ -271,7 +271,7 @@ def tree_of_thought(problem: str, num_paths: int = 3) -> str:
 """
     
     eval_response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": eval_prompt}]
     )
     
@@ -371,7 +371,7 @@ def benchmark_strategies(question: str) -> dict:
     for name, config in strategies.items():
         start = time.time()
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             **config
         )
         elapsed = time.time() - start

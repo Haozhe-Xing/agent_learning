@@ -1,4 +1,4 @@
-# 实战：基于 MCP 的完整工具集成
+# 17.5 实战：基于 MCP 的完整工具集成
 
 本节展示如何将自定义工具封装为 MCP 服务器，并在 LangChain Agent 中使用。
 
@@ -120,7 +120,7 @@ async def build_mcp_agent():
     print(f"已加载 {len(tools)} 个 MCP 工具：{[t.name for t in tools]}")
     
     # 构建 Agent
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4.1", temperature=0)
     
     prompt = ChatPromptTemplate.from_messages([
         ("system", """你是一个功能强大的 Agent，通过 MCP 协议使用标准化工具。

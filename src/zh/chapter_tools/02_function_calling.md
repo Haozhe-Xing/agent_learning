@@ -1,4 +1,4 @@
-# Function Calling 机制详解
+# 4.2 Function Calling 机制详解
 
 Function Calling 是 OpenAI 于 2023 年 6 月推出的重要特性，让模型能够输出结构化的函数调用指令。2024 年 8 月，OpenAI 进一步推出了 **Structured Outputs**（结构化输出），通过 `strict: true` 参数确保模型生成的参数 100% 符合 JSON Schema，大幅提升了生产环境的可靠性。理解其完整机制，是构建可靠 Agent 的基础。
 
@@ -155,7 +155,7 @@ def run_agent(user_message: str) -> str:
     while True:
         # 调用 LLM
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=messages,
             tools=tools,
             tool_choice="auto"
@@ -246,7 +246,7 @@ run_agent("查询北京天气，如果气温低于10度，发邮件给 boss@comp
 
 # 1. "auto"（默认）：LLM 自己决定
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4.1",
     messages=messages,
     tools=tools,
     tool_choice="auto"
@@ -254,7 +254,7 @@ response = client.chat.completions.create(
 
 # 2. "none"：禁止使用工具，直接回答
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4.1",
     messages=messages,
     tools=tools,
     tool_choice="none"
@@ -262,7 +262,7 @@ response = client.chat.completions.create(
 
 # 3. "required"：强制必须使用工具
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4.1",
     messages=messages,
     tools=tools,
     tool_choice="required"
@@ -270,7 +270,7 @@ response = client.chat.completions.create(
 
 # 4. 指定使用某个工具
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4.1",
     messages=messages,
     tools=tools,
     tool_choice={"type": "function", "function": {"name": "get_weather"}}
@@ -292,7 +292,7 @@ def run_parallel_tools(user_message: str) -> str:
     messages = [{"role": "user", "content": user_message}]
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=messages,
         tools=tools,
         tool_choice="auto",
@@ -329,7 +329,7 @@ def run_parallel_tools(user_message: str) -> str:
         
         # 获取最终回复
         final_response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=messages
         )
         return final_response.choices[0].message.content
@@ -342,7 +342,7 @@ print(result)
 
 # 禁用并行调用（工具之间有顺序依赖时使用）
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4.1",
     messages=messages,
     tools=tools,
     parallel_tool_calls=False  # 强制串行调用，适合有依赖关系的工具链

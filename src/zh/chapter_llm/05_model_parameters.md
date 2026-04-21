@@ -1,4 +1,4 @@
-# Token、Temperature 与模型参数详解
+# 3.5 Token、Temperature 与模型参数
 
 模型参数是影响 LLM 输出质量、成本和稳定性的关键因素。在 2026 年模型能力极速迭代的今天（如 Claude 4.6、Gemini 3.1 Pro、DeepSeek-R1 等），理解这些底层参数，能让你更精准地控制 Agent 的行为与成本。
 

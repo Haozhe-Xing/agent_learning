@@ -1,4 +1,4 @@
-# 长期记忆：向量数据库与检索
+# 5.3 长期记忆：向量数据库与检索
 
 长期记忆让 Agent 能够"记住"跨越多次会话的信息——你今天告诉它你是 Python 开发者、偏好简洁风格，下周再来对话时它依然记得。
 
@@ -286,7 +286,7 @@ class MemoryExtractor:
 只返回 JSON，不要其他内容。"""
         
         response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"}
         )

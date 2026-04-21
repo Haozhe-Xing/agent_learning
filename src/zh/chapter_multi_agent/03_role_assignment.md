@@ -1,4 +1,4 @@
-# 角色分工与任务分配
+# 16.3 角色分工与任务分配
 
 高效的多 Agent 系统需要合理的角色分工。好的角色设计让每个 Agent 都能发挥最大价值。
 
@@ -44,7 +44,7 @@ class SpecializedAgent:
             messages.append({"role": "user", "content": task})
         
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=messages,
             max_tokens=800
         )
@@ -169,7 +169,7 @@ class DynamicTaskAllocator:
         ])
         
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{
                 "role": "user",
                 "content": f"""根据任务描述，选择最合适的 Agent。

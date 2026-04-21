@@ -1,4 +1,4 @@
-# 可观测性：日志、追踪与监控
+# 18.5 可观测性：日志、追踪与监控
 
 > **本节目标**：学会为 Agent 构建完善的可观测性体系，做到"出了问题能发现、发现了能定位"。
 
@@ -107,7 +107,7 @@ class AgentLogger:
 logger = AgentLogger("customer_service", log_file="agent.log")
 
 logger.log_llm_call(
-    model="gpt-4o",
+    model="gpt-4.1",
     prompt="用户问：我的订单到哪了？",
     response="让我帮您查询一下订单状态...",
     tokens={"input": 150, "output": 80},
@@ -348,7 +348,7 @@ os.environ["LANGCHAIN_PROJECT"] = "my-agent-project"
 # 之后所有 LangChain 调用都会自动被追踪
 from langchain_openai import ChatOpenAI
 
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4.1")
 response = llm.invoke("你好")
 # 这次调用的详细信息（输入、输出、延迟、Token）
 # 会自动出现在 LangSmith 的 Web 界面上

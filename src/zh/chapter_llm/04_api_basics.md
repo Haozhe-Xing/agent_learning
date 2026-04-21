@@ -1,4 +1,4 @@
-# 模型 API 调用入门（OpenAI / 开源模型）
+# 3.4 模型 API 调用入门
 
 理论学够了，动手写代码！本节将带你完成第一次真正的模型 API 调用，并掌握流式输出、错误处理等生产环境必备技能。
 
@@ -38,7 +38,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def simple_chat(message: str) -> str:
     """最基本的单轮对话"""
     response = client.chat.completions.create(
-        model="gpt-4o-mini",  # 便宜又快的入门模型
+        model="gpt-4.1-mini",  # 便宜又快的入门模型
         messages=[
             {"role": "user", "content": message}
         ]
@@ -58,7 +58,7 @@ print(answer)
 class ChatSession:
     """管理多轮对话历史的简单封装"""
     
-    def __init__(self, system_prompt: str = None, model: str = "gpt-4o-mini"):
+    def __init__(self, system_prompt: str = None, model: str = "gpt-4.1-mini"):
         self.model = model
         self.messages = []
         
@@ -135,7 +135,7 @@ def stream_chat(message: str, system: str = None) -> str:
     
     # stream=True 开启流式模式
     stream = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=messages,
         stream=True
     )
@@ -168,7 +168,7 @@ async_client = AsyncOpenAI()
 async def async_stream_chat(message: str) -> str:
     """异步流式输出"""
     stream = await async_client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": message}],
         stream=True
     )
@@ -205,7 +205,7 @@ def robust_chat(
     for attempt in range(max_retries):
         try:
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4.1-mini",
                 messages=[{"role": "user", "content": message}],
                 timeout=30  # 30秒超时
             )
@@ -392,7 +392,7 @@ class UnifiedLLMClient:
 # 使用 OpenAI
 openai_llm = UnifiedLLMClient(LLMConfig(
     provider=ModelProvider.OPENAI,
-    model="gpt-4o-mini",
+    model="gpt-4.1-mini",
     temperature=0.7
 ))
 

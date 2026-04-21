@@ -1,4 +1,4 @@
-# 基座模型架构详解
+# 3.7 基础模型架构深度解析
 
 > 🏗️ *"了解模型的工作原理让你做出更好的判断，而了解模型的架构演进，能让你理解整个行业在朝哪里走。"*
 
@@ -56,6 +56,347 @@ class TransformerDecoderLayer:
 ```
 
 接下来，我们逐个拆解每个组件的技术演进。
+
+## Tokenizer：文本进入模型之前发生了什么
+
+在讲 Transformer 内部之前，有一个常被忽视但至关重要的前置步骤：**Tokenizer**。
+
+LLM 不直接处理字符或单词，而是处理 **Token**——文本被切割成的基本单元，每个 Token 对应词表中的一个整数 ID。
+
+### BPE：字节对编码
+
+现代 LLM 普遍使用 **BPE（Byte Pair Encoding）** 或其变体（如 SentencePiece、tiktoken）。算法思路：
+
+```
+初始词表 = 所有单个字符
+重复执行：
+  1. 统计语料中所有相邻 Token 对的频次
+  2. 合并频次最高的那对 → 形成新 Token
+  3. 直到词表大小达到目标（如 32000、128256）
+```
+
+**直觉示例**（简化）：
+
+```
+原始文本：  "unbelievable"
+初始切分：  [u, n, b, e, l, i, e, v, a, b, l, e]
+第1次合并：  "ab" 高频 → [u, n, b, e, l, i, e, v, ab, l, e]
+第2次合并：  "le" 高频 → [u, n, b, e, l, i, e, v, ab, le]
+...
+最终结果：  ["un", "believ", "able"]   ← 3 个 Token
+```
+
+```python
+import tiktoken  # OpenAI 的 BPE 实现
+
+enc = tiktoken.get_encoding("cl100k_base")  # GPT-4 使用的分词器
+
+# 一句话的 Token 化
+text = "Hello, 你好！Agent development is fascinating."
+tokens = enc.encode(text)
+print(f"Token 数量: {len(tokens)}")          # 约 15 个 Token
+print(f"Token IDs: {tokens[:8]}...")          # [9906, 11, 220, ...]
+
+# Token 还原
+decoded = enc.decode(tokens)
+print(f"还原文本: {decoded}")               # 完全一致
+
+# 不同语言的 Token 效率差异
+print(enc.encode("Hello"))          # [15339] → 1 个 Token
+print(enc.encode("你好"))           # [57668, 53901] → 2 个 Token  ← 中文效率较低
+print(enc.encode("مرحبا"))          # 阿拉伯文 → 更多 Token
+```
+
+### 词表大小的权衡
+
+| 词表大小 | 代表模型 | Token 效率（中文）| 内存开销 |
+|---------|---------|-----------------|---------|
+| 32,000  | Llama 2 | 低（中文 3-4 字/Token）| 低 |
+| 65,536  | Qwen 2  | 中（约 2 字/Token）| 中 |
+| 128,256 | Llama 3/4 | 中高 | 较高 |
+| 150,000+ | DeepSeek V3 | 高（接近 1 字/Token）| 高 |
+
+> 💡 **为什么词表大小重要？** 更大的词表意味着中文等非英语语言能用更少的 Token 表达相同内容，直接降低推理成本。DeepSeek 和 Qwen 系列专门为中文扩充了词表。
+
+### Token 经过 Embedding 层
+
+Token ID → 词嵌入向量（Embedding），这是模型的第一层：
+
+```python
+class TokenEmbedding:
+    """将 Token ID 转为稠密向量"""
+    def __init__(self, vocab_size=128256, d_model=4096):
+        # Embedding 矩阵：形状 [vocab_size × d_model]
+        # 每个 Token 对应一行 → 一个 4096 维向量
+        self.embed = nn.Embedding(vocab_size, d_model)
+    
+    def forward(self, token_ids):
+        # 输入: [batch_size, seq_len] 的整数 ID
+        # 输出: [batch_size, seq_len, d_model] 的浮点向量
+        return self.embed(token_ids)
+
+# 示例
+token_ids = torch.tensor([[9906, 11, 220, 57668]])  # "Hello, 你..."
+embeddings = embedding(token_ids)
+# shape: [1, 4, 4096] → 每个 Token 变成一个 4096 维向量
+```
+
+Embedding 矩阵本身就是模型参数的重要组成部分。对于词表 128K、维度 4096 的模型，Embedding 层就有 **128K × 4096 ≈ 5 亿参数**。
+
+---
+
+## Scaled Dot-Product Attention：注意力的核心计算
+
+在讲注意力变体之前，我们先把**最核心的计算**讲透。
+
+### Q、K、V 从哪来？
+
+输入序列的每个 Token 向量 $x$，通过三个**独立的线性投影**得到 Q、K、V：
+
+$$Q = xW_Q, \quad K = xW_K, \quad V = xW_V$$
+
+直觉上：
+- **Q（Query）**："我想找什么信息？" 
+- **K（Key）**："我能提供什么信息的'标签'？"
+- **V（Value）**："我实际携带的信息内容"
+
+```python
+class SelfAttention:
+    """最简单的自注意力实现"""
+    def __init__(self, d_model=512, d_k=64):
+        # 三个投影矩阵（可学习参数）
+        self.W_Q = nn.Linear(d_model, d_k, bias=False)
+        self.W_K = nn.Linear(d_model, d_k, bias=False)
+        self.W_V = nn.Linear(d_model, d_k, bias=False)
+    
+    def forward(self, x):
+        # x shape: [batch, seq_len, d_model]
+        Q = self.W_Q(x)  # [batch, seq_len, d_k]
+        K = self.W_K(x)  # [batch, seq_len, d_k]
+        V = self.W_V(x)  # [batch, seq_len, d_k]
+        return scaled_dot_product(Q, K, V)
+```
+
+### Scaled Dot-Product Attention 完整推导
+
+$$\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^T}{\sqrt{d_k}}\right) V$$
+
+**逐步拆解：**
+
+```
+步骤 1: QKᵀ → 相似度矩阵
+  Q:  [seq_len, d_k]   → 每行是一个 Token 的"查询向量"
+  Kᵀ: [d_k, seq_len]  → 每列是一个 Token 的"键向量"
+  QKᵀ: [seq_len, seq_len] → 矩阵 (i,j) 项 = Token_i 和 Token_j 的点积相似度
+
+步骤 2: ÷ √d_k → 缩放（防止点积过大）
+  为什么要缩放？
+  - d_k 维度下，随机初始化的点积方差是 d_k
+  - 不缩放时，softmax 输入过大 → 梯度消失（softmax 饱和区）
+  - ÷ √d_k 将方差归一化为 1
+
+步骤 3: softmax → 注意力权重（概率分布）
+  每行变成 0-1 之间的权重，和为 1
+  "Token_i 应该把多少注意力分配给 Token_j"
+
+步骤 4: × V → 加权求和
+  用注意力权重对 V 做加权平均
+  输出: [seq_len, d_k] → 每个 Token 的新表示（融合了它关注的信息）
+```
+
+```python
+import math
+
+def scaled_dot_product_attention(Q, K, V, mask=None):
+    """
+    Q, K, V: [batch, heads, seq_len, d_k]
+    mask:    [batch, 1, seq_len, seq_len]（因果掩码）
+    """
+    d_k = Q.size(-1)
+    
+    # 步骤 1+2: 计算缩放后的相似度
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
+    # shape: [batch, heads, seq_len, seq_len]
+    
+    # 步骤 3: 因果掩码（把未来位置设为 -∞，softmax 后变 0）
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+    
+    # 步骤 4: softmax 得到注意力权重
+    attn_weights = torch.softmax(scores, dim=-1)
+    # shape: [batch, heads, seq_len, seq_len]
+    
+    # 步骤 5: 加权求和 V
+    output = torch.matmul(attn_weights, V)
+    # shape: [batch, heads, seq_len, d_k]
+    
+    return output, attn_weights
+
+# 一个具体的例子：
+# seq_len=4 ("I love AI deeply"), d_k=64, n_heads=8
+Q = torch.randn(1, 8, 4, 64)
+K = torch.randn(1, 8, 4, 64)
+V = torch.randn(1, 8, 4, 64)
+
+# 创建因果掩码（下三角矩阵）
+mask = torch.tril(torch.ones(4, 4))
+output, weights = scaled_dot_product_attention(Q, K, V, mask)
+# weights[0, 0] 大致是这样：
+# "I"     → [1.00, 0.00, 0.00, 0.00]  只看自己
+# "love"  → [0.55, 0.45, 0.00, 0.00]  看"I"和自己
+# "AI"    → [0.30, 0.35, 0.35, 0.00]  看前两个词
+# "deeply"→ [0.20, 0.25, 0.30, 0.25]  看所有词
+```
+
+### 为什么需要"多头"？
+
+单头注意力只能关注一种"关系"（如主谓关系）。多头并行计算，每个头可以学习不同的关系模式：
+
+```python
+class MultiHeadAttentionFull:
+    """多头注意力的完整实现"""
+    def __init__(self, d_model=512, n_heads=8):
+        self.n_heads = n_heads
+        self.d_k = d_model // n_heads  # 每头维度 = 64
+        
+        # 所有头共用一个大矩阵，实际上等价于 n_heads 个独立的 W_Q/W_K/W_V
+        self.W_Q = nn.Linear(d_model, d_model)
+        self.W_K = nn.Linear(d_model, d_model)
+        self.W_V = nn.Linear(d_model, d_model)
+        self.W_O = nn.Linear(d_model, d_model)  # 输出投影
+    
+    def forward(self, x, mask=None):
+        batch, seq, d = x.shape
+        
+        # 1. 投影并拆分为多头
+        Q = self.W_Q(x).view(batch, seq, self.n_heads, self.d_k).transpose(1, 2)
+        K = self.W_K(x).view(batch, seq, self.n_heads, self.d_k).transpose(1, 2)
+        V = self.W_V(x).view(batch, seq, self.n_heads, self.d_k).transpose(1, 2)
+        # 形状: [batch, n_heads, seq, d_k]
+        
+        # 2. 每头独立计算注意力
+        attn_out, _ = scaled_dot_product_attention(Q, K, V, mask)
+        # 形状: [batch, n_heads, seq, d_k]
+        
+        # 3. 拼接所有头的输出
+        concat = attn_out.transpose(1, 2).contiguous().view(batch, seq, d)
+        # 形状: [batch, seq, d_model]
+        
+        # 4. 最终线性投影
+        return self.W_O(concat)
+```
+
+> 🎯 **直觉理解**：  
+> - 头1 可能学到：**语法依存关系**（主语 → 动词）
+> - 头2 可能学到：**共指关系**（"它" → 指代哪个名词）
+> - 头3 可能学到：**局部位置关系**（相邻词的搭配）
+> - 头8 可能学到：**长距离语义关联**
+
+---
+
+## KV Cache：推理加速的关键
+
+**KV Cache 是 LLM 推理效率最重要的机制**，但它也是显存的最大消耗者之一。
+
+### 为什么需要 KV Cache？
+
+自回归生成时，每生成一个新 Token，都需要重新计算**整个序列**的注意力。如果不缓存：
+
+```
+生成 "我 爱 吃 苹果 和"：
+
+第1步 生成"我"：   计算长度1的注意力  → 1次计算
+第2步 生成"爱"：   计算长度2的注意力  → 4次计算（1+2+3+...）  
+第3步 生成"吃"：   计算长度3的注意力  → ...
+第N步 生成第N词：  计算长度N的注意力  → O(N²) 总计算量！
+```
+
+**有了 KV Cache**，只需计算新 Token 的 Q，历史 Token 的 K 和 V 已经缓存好了：
+
+```python
+class KVCacheAttention:
+    """带 KV Cache 的推理注意力"""
+    
+    def __init__(self):
+        self.k_cache = []  # 存储历史 Key
+        self.v_cache = []  # 存储历史 Value
+    
+    def forward(self, x_new, is_prefill=False):
+        """
+        prefill 阶段：处理完整 prompt（一次性）
+        decode 阶段：每次只处理 1 个新 Token
+        """
+        # 计算当前 Token（或 prefill 时整个序列）的 Q/K/V
+        Q_new = self.W_Q(x_new)  # [batch, new_len, d_k]
+        K_new = self.W_K(x_new)
+        V_new = self.W_V(x_new)
+        
+        if is_prefill:
+            # Prefill：首次处理完整 prompt，初始化 cache
+            self.k_cache = K_new
+            self.v_cache = V_new
+        else:
+            # Decode：拼接到已有 cache
+            self.k_cache = torch.cat([self.k_cache, K_new], dim=1)  # ← 只追加！
+            self.v_cache = torch.cat([self.v_cache, V_new], dim=1)
+        
+        # 用新 Q 对全部 cached K/V 做注意力
+        output = scaled_dot_product_attention(
+            Q_new, self.k_cache, self.v_cache
+        )
+        return output
+```
+
+### KV Cache 的显存计算
+
+```python
+# KV Cache 显存公式（每 1K Token）：
+# 
+# 显存 = 2 × n_layers × n_kv_heads × head_dim × dtype_bytes × seq_len
+#        ↑      ↑            ↑           ↑           ↑
+#       K+V   层数      KV头数      每头维度     数据类型
+
+def kv_cache_memory_gb(n_layers, n_kv_heads, head_dim, 
+                        seq_len, dtype_bytes=2):
+    total_bytes = 2 * n_layers * n_kv_heads * head_dim * seq_len * dtype_bytes
+    return total_bytes / (1024 ** 3)
+
+# 几个模型的 KV Cache 对比（每 1K Token，bfloat16）：
+#
+# Llama 2-70B (MHA): 80层, 64头, 128维
+print(kv_cache_memory_gb(80, 64, 128, 1024))  # ≈ 2.5 GB/1K Token ← 巨大！
+
+# Llama 3-70B (GQA): 80层, 8头, 128维  
+print(kv_cache_memory_gb(80, 8, 128, 1024))   # ≈ 0.32 GB/1K Token ← 8倍优化
+
+# DeepSeek-V2 (MLA): 仅缓存 512 维潜在向量
+# 等效 KV Cache ≈ 0.04 GB/1K Token ← 约 70倍优化
+```
+
+### Prefill vs Decode：推理的两个阶段
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Prefill 阶段（处理 Prompt）                              │
+│  ──────────────────────────                             │
+│  输入: "请写一首关于秋天的诗："（批量并行计算）           │
+│  输出: KV Cache 初始化完毕，生成第1个 Token              │
+│  特点: 计算密集型，GPU 利用率高                          │
+├─────────────────────────────────────────────────────────┤
+│  Decode 阶段（逐 Token 生成）                             │
+│  ──────────────────────────                             │
+│  每步: 只计算 1 个新 Token 的 Q，用 cache 的 K/V         │
+│  输出: 逐字生成 "秋 风 轻 抚 梧 桐 叶 ..."               │
+│  特点: 内存带宽密集型，受 KV Cache 读取速度限制           │
+└─────────────────────────────────────────────────────────┘
+```
+
+> 💡 **对 Agent 开发的启示**：  
+> - KV Cache 是按 **Token 数量** 线性增长的，长对话 = 高显存  
+> - 这就是为什么许多 Agent 框架需要做**上下文截断/压缩**（见第8章）  
+> - 服务商按 **Input Token** 收费，也部分因为 prefill 阶段的 KV Cache 计算成本
+
+---
 
 ## 注意力机制的演进：MHA → GQA → MLA
 
@@ -212,48 +553,199 @@ RMSNorm 的优势：
 
 > 📊 **行业共识**：在 53 个被分析的 Transformer 模型中，**77.4%** 采用了 RMSNorm。2023 年后发布的主流模型几乎 100% 使用 Pre-Norm + RMSNorm。
 
-## 位置编码的演进：绝对编码 → RoPE
+## 位置编码的演进：绝对编码 → 相对编码 → RoPE
 
-Transformer 架构本身对 Token 的顺序是"无感"的——它不知道"苹果"在"吃"的前面还是后面。位置编码就是告诉模型"Token 在序列中的位置"。
+Transformer 架构本身对 Token 的顺序是"无感"的——注意力机制只看 Q 和 K 的点积，不知道"苹果"在"吃"的前面还是后面。位置编码就是告诉模型"Token 在序列中的位置"。
 
-### RoPE：旋转位置编码
+### 三代位置编码的演进
 
-2024—2026 年的事实标准是 **RoPE（Rotary Position Embeddings）**，由 Su 等人在 2021 年提出：
+```
+第一代：绝对位置编码（Sinusoidal）
+├── 原始 Transformer 使用
+├── 为每个位置 m 生成固定的正弦波向量
+└── 局限：无法学习相对位置关系，外推到长序列时效果差
+
+第二代：可学习绝对位置编码（Learned Absolute）
+├── BERT、GPT-2 使用
+├── 直接把位置 ID 当做 Embedding 学习
+└── 局限：最大序列长度被训练长度限制，无法外推
+
+第三代：相对位置编码（ALiBi、RoPE）
+├── 不编码绝对位置，而是编码 Token 之间的相对距离
+├── RoPE（2021）：绝大多数现代 LLM 使用
+└── 优势：外推能力强，适合超长上下文
+```
+
+### 第一代：Sinusoidal 编码（原始 Transformer）
+
+为位置 $m$，维度 $i$，原始论文定义：
+
+$$PE(m, 2i) = \sin\!\left(\frac{m}{10000^{2i/d}}\right), \quad PE(m, 2i+1) = \cos\!\left(\frac{m}{10000^{2i/d}}\right)$$
 
 ```python
-# RoPE 的核心思想：用旋转矩阵编码位置信息
-# 
-# 关键洞察：两个向量的点积（注意力分数）
-# 在旋转后只依赖于它们的"相对位置差"
-#
-# 数学表达（简化版）：
-# q_m · k_n = f(q, k, m-n)  
-#             ↑ 只依赖相对位置 m-n
+def sinusoidal_encoding(max_len, d_model):
+    """原始 Transformer 的正弦位置编码"""
+    pe = torch.zeros(max_len, d_model)
+    position = torch.arange(0, max_len).unsqueeze(1).float()
+    
+    # 频率：从低频（长波长）到高频（短波长）
+    div_term = 10000 ** (torch.arange(0, d_model, 2).float() / d_model)
+    
+    pe[:, 0::2] = torch.sin(position / div_term)   # 偶数维：sin
+    pe[:, 1::2] = torch.cos(position / div_term)   # 奇数维：cos
+    
+    return pe  # [max_len, d_model]
 
-def apply_rope(x, position_ids, dim):
-    """对 Q 和 K 应用旋转位置编码"""
-    # 生成频率
-    freqs = 1.0 / (10000 ** (torch.arange(0, dim, 2) / dim))
-    # 计算角度 = 位置 × 频率
-    angles = position_ids.unsqueeze(-1) * freqs
+# 直觉：
+# 低维（第0,1维）：波长很长，变化慢 → 区分"大致位置"（前、中、后）
+# 高维（最后几维）：波长很短，变化快 → 区分相邻位置
+```
+
+**为什么用正弦/余弦？** 任意相对偏移 $k$ 对应的位置向量 $PE(m+k)$ 可以用 $PE(m)$ 的线性变换表示——这就是"位置差可以被感知"的几何基础。
+
+### 第二代：ALiBi（2021，推理时外推的先驱）
+
+ALiBi 不给 Token 加位置向量，而是直接在注意力分数上**减去一个随距离增大的惩罚项**：
+
+$$\text{Attention}_{ij} = \frac{q_i \cdot k_j}{\sqrt{d_k}} - m \cdot |i - j|$$
+
+```python
+# ALiBi 的核心：在注意力分数上加"距离惩罚"
+def alibi_bias(seq_len, n_heads):
+    """为每个注意力头生成 ALiBi 偏置矩阵"""
+    # 不同头的惩罚斜率 m 不同（几何级数）
+    slopes = 2 ** (-8 * torch.arange(1, n_heads+1) / n_heads)
     
-    # 将向量拆成对，每对做二维旋转
-    cos = torch.cos(angles)
-    sin = torch.sin(angles)
+    # 构建距离矩阵：[i-j] 对每对 Token
+    positions = torch.arange(seq_len)
+    distance = positions.unsqueeze(0) - positions.unsqueeze(1)  # [seq, seq]
     
-    x1, x2 = x[..., ::2], x[..., 1::2]
+    # 每个头用自己的斜率缩放距离
+    bias = slopes.unsqueeze(-1).unsqueeze(-1) * distance.abs()
+    return -bias  # 加到 attention scores 上（负数，越远惩罚越大）
+```
+
+ALiBi 的优点是**外推能力**：它在短序列上训练，推理时能泛化到更长序列。但相比 RoPE，它缺乏对精确相对位置的编码，在超长上下文上仍有精度损失。
+
+### 第三代：RoPE 旋转位置编码——完整推导
+
+**RoPE（Rotary Position Embeddings）** 由 Su 等人提出（2021），2023 年后成为事实标准。
+
+#### 核心思想：用旋转编码相对位置
+
+如果能设计一个函数 $f$，使得：
+
+$$\langle f(q, m),\, f(k, n) \rangle = g(q, k, m-n)$$
+
+即**两个向量的内积（注意力分数）只依赖于它们的相对位置差 $m-n$**，那么模型就自然具备了相对位置感知能力。
+
+#### 二维情形的推导（直觉基础）
+
+考虑二维向量 $q = (q_1, q_2)$，给位置 $m$ 加一个旋转角 $m\theta$：
+
+$$f(q, m) = \begin{pmatrix} \cos(m\theta) & -\sin(m\theta) \\ \sin(m\theta) & \cos(m\theta) \end{pmatrix} \begin{pmatrix} q_1 \\ q_2 \end{pmatrix}$$
+
+计算两个旋转后向量的内积：
+
+$$\langle f(q, m), f(k, n) \rangle = q_1 k_1 \cos\big((m-n)\theta\big) + q_2 k_2 \cos\big((m-n)\theta\big) + \ldots$$
+
+最终只含 $(m-n)\theta$，**完美满足相对位置条件** ✅
+
+#### 推广到高维（实际实现）
+
+对于 $d_k$ 维向量（$d_k$ 为偶数），将维度两两分组，每组做一次二维旋转，旋转角度按不同频率设置：
+
+$$\theta_i = \frac{1}{10000^{2i/d_k}}, \quad i = 0, 1, \ldots, \frac{d_k}{2}-1$$
+
+完整的 RoPE 变换（对 $d_k=8$ 的向量，分 4 组）：
+
+$$\begin{pmatrix} q_0 \\ q_1 \\ q_2 \\ q_3 \\ q_4 \\ q_5 \\ q_6 \\ q_7 \end{pmatrix} \xrightarrow{\text{RoPE}(m)} \begin{pmatrix} q_0 \cos(m\theta_0) - q_1 \sin(m\theta_0) \\ q_0 \sin(m\theta_0) + q_1 \cos(m\theta_0) \\ q_2 \cos(m\theta_1) - q_3 \sin(m\theta_1) \\ q_2 \sin(m\theta_1) + q_3 \cos(m\theta_1) \\ q_4 \cos(m\theta_2) - q_5 \sin(m\theta_2) \\ q_4 \sin(m\theta_2) + q_5 \cos(m\theta_2) \\ q_6 \cos(m\theta_3) - q_7 \sin(m\theta_3) \\ q_6 \sin(m\theta_3) + q_7 \cos(m\theta_3) \end{pmatrix}$$
+
+```python
+import torch
+
+def precompute_rope_freqs(d_k: int, max_seq_len: int, base: float = 10000.0):
+    """预计算 RoPE 的 cos/sin 频率矩阵"""
+    # 每组的旋转频率（从低频到高频）
+    # θ_i = 1 / 10000^(2i/d_k)，i = 0, 1, ..., d_k/2-1
+    theta = 1.0 / (base ** (torch.arange(0, d_k, 2).float() / d_k))
+    # shape: [d_k/2]，例如 d_k=128 → 64 个频率
+    
+    # 每个位置对应的角度 = 位置 × 频率
+    positions = torch.arange(max_seq_len).float()       # [max_seq_len]
+    freqs = torch.outer(positions, theta)               # [max_seq_len, d_k/2]
+    # freqs[m, i] = m * θ_i
+    
+    # 预计算 cos 和 sin
+    cos = torch.cos(freqs)   # [max_seq_len, d_k/2]
+    sin = torch.sin(freqs)   # [max_seq_len, d_k/2]
+    return cos, sin
+
+
+def apply_rope(x: torch.Tensor, cos: torch.Tensor, sin: torch.Tensor):
+    """
+    将 RoPE 应用到 Q 或 K
+    x:   [batch, n_heads, seq_len, d_k]
+    cos: [seq_len, d_k/2]
+    sin: [seq_len, d_k/2]
+    """
+    # 将 d_k 维度拆成两半：[x1, x2] = [前半, 后半]
+    x1 = x[..., :x.shape[-1] // 2]   # 偶数维
+    x2 = x[..., x.shape[-1] // 2:]   # 奇数维
+    
+    # 广播 cos/sin 到 batch 和 heads 维度
+    cos = cos[:x.shape[2], :].unsqueeze(0).unsqueeze(0)  # [1, 1, seq, d_k/2]
+    sin = sin[:x.shape[2], :].unsqueeze(0).unsqueeze(0)
+    
+    # 旋转变换：(x1, x2) → (x1·cos - x2·sin, x1·sin + x2·cos)
     rotated = torch.cat([
-        x1 * cos - x2 * sin,  # 旋转变换
+        x1 * cos - x2 * sin,
         x1 * sin + x2 * cos,
     ], dim=-1)
     return rotated
+
+
+# 在注意力计算中使用 RoPE
+class RoPEAttention:
+    def __init__(self, d_model=4096, n_heads=32):
+        self.n_heads = n_heads
+        self.d_k = d_model // n_heads
+        self.W_Q = nn.Linear(d_model, d_model, bias=False)
+        self.W_K = nn.Linear(d_model, d_model, bias=False)
+        self.W_V = nn.Linear(d_model, d_model, bias=False)
+        
+        # 预计算频率（只算一次）
+        self.cos, self.sin = precompute_rope_freqs(
+            self.d_k, max_seq_len=131072  # 128K 上下文
+        )
+    
+    def forward(self, x):
+        B, S, D = x.shape
+        Q = self.W_Q(x).view(B, S, self.n_heads, self.d_k).transpose(1, 2)
+        K = self.W_K(x).view(B, S, self.n_heads, self.d_k).transpose(1, 2)
+        V = self.W_V(x).view(B, S, self.n_heads, self.d_k).transpose(1, 2)
+        
+        # ← 关键：只对 Q 和 K 应用 RoPE（不对 V 应用）
+        Q = apply_rope(Q, self.cos, self.sin)
+        K = apply_rope(K, self.cos, self.sin)
+        
+        # 之后正常计算注意力
+        return scaled_dot_product_attention(Q, K, V)
 ```
 
-**RoPE 的优势**：
-1. **相对位置感知**：注意力分数自然编码了 Token 之间的相对距离
-2. **无需学习参数**：纯数学变换，不增加模型参数量
-3. **可外推**：通过调整频率基数（base），可以扩展到训练时未见过的更长序列
-4. **与 FlashAttention 兼容**：易于集成到高效注意力内核中
+#### 为什么 RoPE 能外推？
+
+```
+频率与波长的关系：
+  低频维度（i=0）：θ ≈ 1/10000，波长 ≈ 62831 → 区分很远的位置
+  中频维度（i=32）：θ ≈ 0.01，波长 ≈ 628 → 区分中等距离
+  高频维度（i=63）：θ ≈ 1.0，波长 ≈ 6 → 区分相邻位置
+
+训练长度 8192 时，高频维度旋转了 ~1365 圈，低频维度旋转了 ~0.13 圈
+外推到 131072 时，低频维度旋转了 ~2 圈 → 模型见过类似的模式
+```
+
+**高频维度处理相邻关系**（已充分训练），**低频维度编码大局位置**（圈数少，需要外推辅助）。
 
 ### 上下文扩展：YaRN 与 NTK-aware 缩放
 
@@ -274,6 +766,15 @@ def ntk_scaled_rope(dim, max_position, base=10000, scaling_factor=16):
 # 结合了 NTK 缩放 + 注意力分数温度修正
 # Llama 4 Scout 用 YaRN 实现了 10M token 上下文！
 ```
+
+### 三代位置编码对比总结
+
+| 方法 | 来源 | 位置信息 | 外推能力 | 训练参数 | 代表模型 |
+|------|------|---------|---------|---------|---------|
+| Sinusoidal | 2017 原版 | 绝对位置 | 有限 | ❌ 无 | 原始 Transformer |
+| Learned Abs | BERT/GPT | 绝对位置 | ❌ 无 | ✅ 有 | BERT, GPT-2 |
+| ALiBi | PaLM, MPT | 相对距离惩罚 | ✅ 较好 | ❌ 无 | MPT-7B |
+| **RoPE** | **LLaMA+** | **相对位置（旋转）** | **✅ 很好** | **❌ 无** | **Llama/Qwen/DeepSeek 全系** |
 
 > 📊 **行业共识**：在被分析的 53 个模型中，**69.8%** 采用了 RoPE。2022 年后的 Decoder-Only LLM 中，RoPE 是绝对的主流选择。
 
@@ -693,7 +1194,7 @@ class EngramMemory:
 ## 本节小结
 
 | 架构组件 | 演进方向 | 现代共识 | 前沿突破（2026） |
-|---------|---------|---------|---------|
+|---------|---------|---------|---------| 
 | **整体架构** | Encoder-Decoder → Decoder-Only | Decoder-Only | MoE 成为大模型标配 |
 | **注意力机制** | MHA → GQA → MLA | GQA / MLA | **混合注意力**：Gated DeltaNet / Kimi Linear（延迟降 5~6x） |
 | **归一化** | Post-Norm → Pre-Norm + RMSNorm | Pre-Norm + RMSNorm | 收敛完成，几乎无争议 |
@@ -703,9 +1204,10 @@ class EngramMemory:
 | **MoE** | 密集 → 稀疏混合专家 | Top-K 路由 + 共享专家 | 万亿参数级开源 MoE（Kimi K2） |
 | **优化器** | SGD → Adam → AdamW | AdamW | **MuonClip**（训练效率翻倍） |
 | **知识存储** | 全部编码在参数中 | 参数化存储 | **Engram 内存**（知识-推理分离） |
+| **KV Cache** | 全量存储 | GQA 减少 8x | **TurboQuant**（2026.04，6x 内存压缩，无精度损失）🆕 |
 | **推理加速** | 标准注意力 → FlashAttention | FA-2/3 | 分块 + IO 优化接近硬件极限 |
 
-> 📖 *理解这些架构组件不是为了让你去训练模型——而是为了在模型选型、推理优化、成本估算时有底层判断力。当有人说"这个模型用了 Gated DeltaNet 混合注意力"时，你就知道它在长文本场景下的推理延迟会非常低；当有人说"用了 Engram 内存"时，你就知道它可以在更小的 GPU 上处理知识密集型任务。2026 年，架构创新重新回到了竞争的前沿。*
+> 📖 *理解这些架构组件不是为了让你去训练模型——而是为了在模型选型、推理优化、成本估算时有底层判断力。当有人说"这个模型用了 Gated DeltaNet 混合注意力"时，你就知道它在长文本场景下的推理延迟会非常低；当有人说"用了 Engram 内存"时，你就知道它可以在更小的 GPU 上处理知识密集型任务；当有人说"用了 TurboQuant"时，你就知道部署成本会大幅下降。2026 年，架构创新重新回到了竞争的前沿。*
 
 ---
 

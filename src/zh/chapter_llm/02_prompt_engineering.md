@@ -1,4 +1,4 @@
-# Prompt Engineering：与模型对话的艺术
+# 3.2 提示词工程
 
 > 🧠 *"在使用传统语言编程时，你是独裁者，计算机绝对服从；而在使用自然语言对大模型编程时，你是心理学大师，你需要通过暗示、约束和引导，在概率的混沌中收敛出确定性。"*
 
@@ -24,7 +24,7 @@ from openai import OpenAI
 client = OpenAI()
 
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4.1",
     messages=[
         {
             "role": "system",      # 系统指令：定义模型的角色和行为
@@ -110,7 +110,7 @@ def extract_task_info(user_input: str) -> dict:
     """从用户自然语言中提取任务信息"""
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         response_format={"type": "json_object"},  # 强制 JSON 输出
         messages=[
             {
@@ -155,7 +155,7 @@ print(result)
 # 让模型扮演不同专家来分析同一问题
 def analyze_from_perspective(topic: str, role: str) -> str:
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "system",
@@ -224,7 +224,7 @@ def generate_product_description(product_info: dict) -> str:
 """
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
@@ -253,7 +253,7 @@ class PromptTester:
     def test_prompt(self, 
                     system_prompt: str, 
                     test_cases: list, 
-                    model: str = "gpt-4o-mini") -> dict:
+                    model: str = "gpt-4.1-mini") -> dict:
         """测试一个 Prompt 在多个测试用例上的表现"""
         
         results = []

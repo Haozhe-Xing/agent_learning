@@ -1,4 +1,4 @@
-# 实战：多模态个人助理
+# 23.4 实战：多模态个人助手
 
 > **本节目标**：构建一个能处理文本、图像和语音的多模态 Agent。
 
@@ -31,7 +31,7 @@ class MultimodalAssistant:
     
     def __init__(self):
         self.client = OpenAI()
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
+        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0.7)
         self.vision = VisionTool()
         self.image_gen = ImageGenerator()
         self.stt = SpeechToText()
@@ -213,8 +213,8 @@ if __name__ == "__main__":
 
 | 功能 | 实现方式 |
 |------|---------|
-| 文本对话 | GPT-4o + 对话历史 |
-| 图像分析 | GPT-4o Vision API |
+| 文本对话 | GPT-4.1 + 对话历史 |
+| 图像分析 | GPT-4.1 Vision API |
 | 图像生成 | DALL-E 3 |
 | 语音识别 | Whisper |
 | 语音合成 | TTS-1 |

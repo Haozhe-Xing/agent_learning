@@ -1,4 +1,4 @@
-# 单 Agent 的局限性
+# 16.1 单 Agent 的局限性
 
 理解单 Agent 的瓶颈，才能知道何时需要引入多 Agent 架构。
 
@@ -62,7 +62,7 @@ def single_agent_approach(tasks: list[str]) -> list[str]:
     for task in tasks:
         # 每次调用需要等待
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{"role": "user", "content": task}],
             max_tokens=100
         )
@@ -73,7 +73,7 @@ def multi_agent_approach(tasks: list[str]) -> list[str]:
     """多 Agent：并行处理（每个任务一个独立 Agent）"""
     def process_task(task: str) -> str:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{"role": "user", "content": task}],
             max_tokens=100
         )

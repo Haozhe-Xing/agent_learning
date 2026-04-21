@@ -1,6 +1,36 @@
-# 第18章 部署与生产化
+# 第20章 部署与生产化
 
 > 代码在本地跑通只是第一步。让 Agent 在生产环境稳定服务用户，才是真正的考验。
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 掌握 Agent 应用的部署架构设计原则
+- ✅ 用 FastAPI 将 Agent 封装为 REST API 服务
+- ✅ 实现 Docker 容器化和基本云部署流程
+- ✅ 处理流式响应和高并发场景
+- ✅ 完成一个生产级 Agent 服务的完整部署
+
+## ⏱️ 预计学习时间
+
+约 **120-150 分钟**（含实战）
+
+## 💡 前置知识
+
+- 完成第18章（评估与优化）和第19章（安全与可靠性）
+- 了解 REST API 和 HTTP 协议
+- 有 Linux 基础命令行操作经验
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第21章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
 
 ---
 
@@ -38,11 +68,11 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第16章 评估与优化](../chapter_evaluation/README.md)、[第17章 安全与可靠性](../chapter_security/README.md)
+> **前置知识**：[第18章 评估与优化](../chapter_evaluation/README.md)、[第17章 安全与可靠性](../chapter_security/README.md)
 >
 > **后续推荐**：
 > - 👉 [第19章 AI 编程助手](../chapter_coding_agent/README.md) — 综合项目实战
-> - 👉 [第20章 数据分析 Agent](../chapter_data_agent/README.md) — 综合项目实战
+> - 👉 [第22章 数据分析 Agent](../chapter_data_agent/README.md) — 综合项目实战
 
 ---
 

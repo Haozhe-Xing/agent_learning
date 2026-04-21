@@ -1,4 +1,4 @@
-# Agent 应用的部署架构
+# 20.1 Agent 应用的部署架构
 
 > **本节目标**：理解 Agent 从开发环境到生产环境需要哪些架构变化，掌握 Agent 特有的部署挑战与解决方案。
 
@@ -280,7 +280,7 @@ class AgentConfig(BaseSettings):
     
     # API 配置
     openai_api_key: str
-    openai_model: str = "gpt-4o"
+    openai_model: str = "gpt-4.1"
     
     # 服务配置
     host: str = "0.0.0.0"

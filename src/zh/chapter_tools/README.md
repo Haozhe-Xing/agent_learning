@@ -4,6 +4,37 @@
 
 ---
 
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 理解为什么 Agent 必须具备工具调用能力
+- ✅ 掌握 OpenAI Function Calling / Anthropic Tool Use 的完整机制
+- ✅ 能够设计并实现自定义工具，编写有效的工具描述
+- ✅ 实战构建一个集成搜索引擎和计算器的 Agent
+- ✅ 了解工具学习领域的前沿研究进展
+
+## ⏱️ 预计学习时间
+
+约 **90-120 分钟**（含实战）
+
+## 💡 前置知识
+
+- 完成第3章（LLM 基础）
+- 熟悉 Python 函数和字典操作
+- 了解 JSON 格式
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第5章 记忆系统](../chapter_memory/README.md)
+> - 👉 [第12章 LangChain](../chapter_langchain/README.md)
+
+---
+
 ## 本章概览
 
 工具调用（Tool Use / Function Calling）是 Agent 区别于普通聊天机器人的关键能力。通过工具，Agent 可以搜索网络、执行代码、操作数据库、调用外部 API……几乎可以做任何事情。本章深入探讨 Function Calling 机制，教你设计和实现高质量的 Agent 工具。

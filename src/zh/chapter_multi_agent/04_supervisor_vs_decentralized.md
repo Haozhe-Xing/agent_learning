@@ -1,4 +1,4 @@
-# Supervisor 模式 vs. 去中心化模式
+# 16.4 Supervisor 模式 vs 去中心化模式
 
 多 Agent 系统有一个根本性的架构决策：**谁来协调？** 是设置一个"项目经理"统一调度所有 Agent（Supervisor 模式），还是让 Agent 之间自由协商（去中心化模式）？
 
@@ -20,7 +20,7 @@ from langchain_core.tools import tool
 from typing import TypedDict, Annotated, Literal
 import operator
 
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4.1")
 
 # ============================
 # 定义各子 Agent 的工具
@@ -32,7 +32,7 @@ def do_research(topic: str) -> str:
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": f"研究{topic}，给出3个核心观点"}],
         max_tokens=200
     )
@@ -44,7 +44,7 @@ def write_content(outline: str) -> str:
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": f"根据大纲写300字文章：{outline}"}],
         max_tokens=400
     )
@@ -56,7 +56,7 @@ def review_content(content: str) -> str:
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": f"评审以下内容（评分+建议）：{content[:200]}"}],
         max_tokens=150
     )

@@ -1,4 +1,4 @@
-# 实战：构建可复用的技能系统
+# 10.5 实战：构建可复用的技能系统
 
 本节将前面学习的概念付诸实践——构建一个完整的 Agent 技能系统。这个系统支持技能的定义、加载、发现和调用。
 
@@ -273,7 +273,7 @@ from skill_manager import SkillManager
 class SkillAgent:
     """技能驱动的 Agent"""
     
-    def __init__(self, skill_manager: SkillManager, model: str = "gpt-4o"):
+    def __init__(self, skill_manager: SkillManager, model: str = "gpt-4.1"):
         self.skill_manager = skill_manager
         self.client = OpenAI()
         self.model = model

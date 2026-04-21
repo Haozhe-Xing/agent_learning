@@ -1,4 +1,4 @@
-# 9.1 什么是 Harness Engineering？
+# 9.1 什么是 Harness 工程？
 
 > 🏇 *"harness engineering is the idea that anytime you find an agent makes a mistake, you take the time to engineer a solution such that the agent will not make that mistake again in the future."*  
 > —— Mitchell Hashimoto，HashiCorp 联合创始人，2025 年 11 月

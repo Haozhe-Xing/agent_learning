@@ -1,4 +1,4 @@
-# A2A（Agent-to-Agent）协议
+# 17.2 A2A（Agent-to-Agent）协议
 
 A2A（Agent-to-Agent）是 Google 于 2025 年 4 月在 Google Cloud Next 大会上推出的开放协议，专门设计用于不同 Agent 之间的互操作性。该协议发布时即获得超过 50 家技术合作伙伴的支持。
 
@@ -170,7 +170,7 @@ async def send_task(task: A2ATask) -> A2ATaskResult:
     client = OpenAI()
     
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": user_message}]
     )
     

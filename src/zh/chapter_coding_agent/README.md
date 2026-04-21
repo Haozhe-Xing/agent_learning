@@ -1,6 +1,34 @@
-# 第19章 项目实战：AI 编程助手
+# 第21章 项目实战：AI 编程助手
 
 > 从零构建一个能理解代码、生成代码、写测试和修 Bug 的 AI 编程助手。
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 综合运用工具调用、RAG、规划等核心能力
+- ✅ 设计和实现一个完整的 AI 编程助手架构
+- ✅ 实现代码理解、生成、测试、调试的全流程
+- ✅ 交付一个可实际使用的 AI 编程辅助工具
+
+## ⏱️ 预计学习时间
+
+约 **180-240 分钟**（综合实战项目）
+
+## 💡 前置知识
+
+- 完成第一至五部分所有章节
+- 熟悉 Python 项目开发流程（虚拟环境、包管理）
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第22章 项目实战：数据分析 Agent](../chapter_data_agent/README.md)
 
 ---
 
@@ -28,12 +56,12 @@
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第7章 RAG](../chapter_rag/README.md)、[第12章 LangGraph](../chapter_langgraph/README.md)
+> **核心前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第7章 RAG](../chapter_rag/README.md)、[第13章 LangGraph](../chapter_langgraph/README.md)
 > 推荐但非必须：[第16-18章 生产化篇](../chapter_evaluation/README.md)
 >
 > **同系列项目**：
-> - 📊 [第20章 数据分析 Agent](../chapter_data_agent/README.md)
-> - 🎨 [第21章 多模态 Agent](../chapter_multimodal/README.md)
+> - 📊 [第22章 数据分析 Agent](../chapter_data_agent/README.md)
+> - 🎨 [第23章 多模态 Agent](../chapter_multimodal/README.md)
 
 ---
 

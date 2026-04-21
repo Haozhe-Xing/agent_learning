@@ -1,4 +1,4 @@
-# AutoGPT 与 BabyAGI 的启示
+# 14.1 AutoGPT 与 BabyAGI 的启示
 
 AutoGPT（2023年3月）和 BabyAGI（2023年4月）是最早引起广泛关注的自主 Agent 项目。虽然它们在生产环境中的实用性有限，但其设计理念对整个 Agent 领域产生了深远影响。
 
@@ -28,7 +28,7 @@ class AutoGPTLoop:
         
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {
                     "role": "system",
@@ -151,7 +151,7 @@ class BabyAGI:
     def execute_task(self, task: str) -> str:
         """执行单个任务"""
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[
                 {
                     "role": "system",
@@ -169,7 +169,7 @@ class BabyAGI:
     def create_new_tasks(self, task: str, result: str) -> list:
         """基于任务结果创建新的子任务"""
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[
                 {
                     "role": "user",

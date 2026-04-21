@@ -1,4 +1,4 @@
-# 实战：多功能客服 Agent
+# 12.5 实战：多功能客服 Agent
 
 综合 LangChain 所有特性，构建一个完整的多功能客服 Agent 系统。
 
@@ -141,7 +141,7 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.3)
+llm = ChatOpenAI(model="gpt-4.1", temperature=0.3)
 agent = create_openai_tools_agent(llm, tools, prompt)
 
 agent_executor = AgentExecutor(
@@ -214,4 +214,4 @@ if __name__ == "__main__":
 
 ---
 
-*下一章：[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)*
+*下一章：[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)*

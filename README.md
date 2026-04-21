@@ -17,24 +17,59 @@
 
 ---
 
-## 📖 Read Online (Recommended)
+## 🗺️ Learning Roadmap
 
-| Language | Link |
-|----------|------|
-| 🇨🇳 简体中文 | **[https://Haozhe-Xing.github.io/agent_learning/zh/](https://Haozhe-Xing.github.io/agent_learning/zh/)** |
-| 🇺🇸 English | **[https://Haozhe-Xing.github.io/agent_learning/en/](https://Haozhe-Xing.github.io/agent_learning/en/)** |
+<div align="center">
+
+<img src="https://zhiyan-ai-agent-with-1258344702.cos.ap-guangzhou.tencentcos.cn/copilot/6a2657f5-5ac6-4b25-a91c-f7f1f9e31034/image-019d96dcf57a7e618a7cb49b8a74c0fb-019d96dc-fa0b-7839-ad40-3ce30bfeba5b.png" width="800" alt="Agent Learning Roadmap - Nano Banana Style">
+
+<br>
+
+> 🍌 **From Basic Concepts → Agent Architecture → Tool Calling → Memory Management → Multi-Agent → Reinforcement Learning → Production Deploy → Goal Achieved!**
+>
+> Follow the banana guide 🍌 step by step, and you'll master AI Agent development from zero to hero!
+
+</div>
 
 ---
 
-## 📌 Why This Book?
+## 📖 Read Online (Recommended)
 
-AI Agents are reshaping the boundaries of software development. From GitHub Copilot to Devin, from AutoGPT to Claude, **engineers who can build Agents are becoming the most sought-after technical talent**.
 
-However, existing learning resources are either too fragmented or remain at a theoretical level, lacking a complete path from beginner to production.
+| Language      | Link                                                                                                     |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| 🇨🇳 简体中文 | **[https://Haozhe-Xing.github.io/agent_learning/zh/](https://Haozhe-Xing.github.io/agent_learning/zh/)** |
+| 🇺🇸 English  | **[https://Haozhe-Xing.github.io/agent_learning/en/](https://Haozhe-Xing.github.io/agent_learning/en/)** |
 
-This book has one goal: **to enable you to actually build usable AI Agent systems**.
+---
 
-> 📚 This book is built as an online e-book, supporting full-text search, dark mode, KaTeX math formula rendering, and can be read directly in the browser.
+## 🚀 Auto-Tracking Frontier: Daily arXiv Paper Updates
+
+<div align="center">
+
+🤖 **This repository automatically searches arXiv for the latest AI Agent-related papers every day and updates the content accordingly — ensuring you always stay at the cutting edge of research!**
+
+</div>
+
+- 📡 **Daily Automated Search**: A scheduled pipeline scans arXiv daily for new papers on Agent architectures, tool use, memory systems, multi-agent collaboration, reinforcement learning for agents, and more.
+- 📝 **Auto-Updated Content**: Relevant findings are automatically integrated into the corresponding chapters, keeping the book's frontier sections fresh and up-to-date.
+- 🔔 **Never Miss a Breakthrough**: No need to manually track dozens of research feeds — this repo does it for you, so you can focus on learning and building.
+
+> 💡 This means the content you read here is **not static** — it evolves continuously with the latest advances in the AI Agent field.
+
+---
+
+## 🔭 Frontier Research Directions
+
+> This book not only covers foundational knowledge, but also tracks the **cutting-edge research frontiers** across each domain. Here are the key directions we follow:
+
+span
+
+<div align="center">
+
+> 💡 Entries marked with 🔥 are **2025–2026 hottest research topics** — all covered in depth in this book!
+
+</div>
 
 ---
 
@@ -63,49 +98,11 @@ This book has one goal: **to enable you to actually build usable AI Agent system
 <tr>
 <td width="50%" align="center">
 
-**Perceive-Think-Act Cycle (Chapter 1)**
-
-<img src="src/en/svg/chapter_intro_03_loop.svg" width="420" alt="Perceive-Think-Act Cycle">
-
-<sub>Agent's core mechanism: Perceive environment → LLM reasoning & decision → Execute action → Loop until goal achieved</sub>
-
-</td>
-<td width="50%" align="center">
-
-**ReAct Reasoning Framework (Chapter 6)**
-
-<img src="src/en/svg/chapter_planning_02_react_loop.svg" width="420" alt="ReAct Reasoning Framework">
-
-<sub>Thought → Action → Observation alternating cycle, enabling Agents to think while acting</sub>
-
-</td>
-</tr>
-</table>
-
 ### 🛠️ Tool Calling & RAG
 
 <table>
 <tr>
 <td width="50%" align="center">
-
-**Function Calling Complete Flow (Chapter 4)**
-
-<img src="src/en/svg/chapter_tools_02_function_calling.svg" width="480" alt="Function Calling Flow">
-
-<sub>Complete 6-step flow from user input to tool invocation to final response, with message structure illustration</sub>
-
-</td>
-<td width="50%" align="center">
-
-**RAG - Retrieval Augmented Generation (Chapter 7)**
-
-<img src="src/en/svg/chapter_rag_01_rag_flow.svg" width="480" alt="RAG Workflow">
-
-<sub>Offline indexing + Online retrieval dual-phase architecture, making LLM answers evidence-based</sub>
-
-</td>
-</tr>
-</table>
 
 ### 💾 Memory System & Context Engineering
 
@@ -113,74 +110,17 @@ This book has one goal: **to enable you to actually build usable AI Agent system
 <tr>
 <td width="50%" align="center">
 
-**Three-Layer Memory Architecture (Chapter 5)**
-
-<img src="src/en/svg/chapter_memory_01_memory_types.svg" width="480" alt="Three-Layer Memory Architecture">
-
-<sub>Working memory → Short-term memory → Long-term memory, important info sinks down, semantic retrieval pulls up</sub>
-
-</td>
-<td width="50%" align="center">
-
-**Prompt Engineering vs Context Engineering (Chapter 8)**
-
-<img src="src/en/svg/chapter_context_01_comparison.svg" width="480" alt="Prompt Engineering vs Context Engineering">
-
-<sub>From "how to say" to "what to let LLM see" — the paradigm shift of the Agent era</sub>
-
-</td>
-</tr>
-</table>
-
 ### 🤝 Multi-Agent & Communication Protocols
 
 <table>
 <tr>
 <td width="50%" align="center">
 
-**Three Multi-Agent Communication Patterns (Chapter 14)**
-
-<img src="src/en/svg/chapter_multi_agent_02_communication.svg" width="480" alt="Multi-Agent Communication Patterns">
-
-<sub>Message Queue (async decoupling) / Shared Blackboard (data sharing) / Direct Call (real-time collaboration)</sub>
-
-</td>
-<td width="50%" align="center">
-
-**MCP / A2A / ANP Protocol Comparison (Chapter 15)**
-
-<img src="src/en/svg/chapter_protocol_03_three_protocols.svg" width="480" alt="Three Protocol Comparison">
-
-<sub>Three-layer protocol stack: ANP for discovery → A2A for task collaboration → MCP for tool invocation</sub>
-
-</td>
-</tr>
-</table>
-
 ### 🧪 Reinforcement Learning & Frameworks
 
 <table>
 <tr>
 <td width="50%" align="center">
-
-**GRPO Training Architecture (Chapter 10)**
-
-<img src="src/en/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="420" alt="GRPO Training Architecture">
-
-<sub>No Critic model needed, computes advantage via intra-group normalization, memory only 1.5× model size</sub>
-
-</td>
-<td width="50%" align="center">
-
-**LangGraph Three Core Concepts (Chapter 12)**
-
-<img src="src/en/svg/chapter_langgraph_02_state_node_edge.svg" width="480" alt="LangGraph Core Concepts">
-
-<sub>State (shared state) · Node (processing unit) · Edge (execution flow control)</sub>
-
-</td>
-</tr>
-</table>
 
 <div align="center">
 
@@ -194,13 +134,14 @@ This book has one goal: **to enable you to actually build usable AI Agent system
 
 This book includes **5 interactive HTML animations** to help you intuitively understand the dynamic processes of core concepts:
 
-| Animation | Chapter | Description |
-|-----------|---------|-------------|
-| 🔄 **Perceive-Think-Act Cycle** | Chapter 1 | Dynamic demonstration of Agent's core loop |
-| 💡 **ReAct Reasoning Process** | Chapter 6 | Shows the alternating Thought → Action → Observation process |
-| 🔧 **Function Calling** | Chapter 4 | Complete tool invocation flow animation |
-| 📚 **RAG Retrieval Flow** | Chapter 7 | From document chunking to vector retrieval to answer generation |
-| 🎯 **GRPO Sampling Process** | Chapter 10 | Visualization of intra-group multi-output sampling and reward normalization |
+
+| Animation                      | Chapter    | Description                                                                 |
+| ------------------------------ | ---------- | --------------------------------------------------------------------------- |
+| 🔄**Perceive-Think-Act Cycle** | Chapter 1  | Dynamic demonstration of Agent's core loop                                  |
+| 💡**ReAct Reasoning Process**  | Chapter 6  | Shows the alternating Thought → Action → Observation process              |
+| 🔧**Function Calling**         | Chapter 4  | Complete tool invocation flow animation                                     |
+| 📚**RAG Retrieval Flow**       | Chapter 7  | From document chunking to vector retrieval to answer generation             |
+| 🎯**GRPO Sampling Process**    | Chapter 10 | Visualization of intra-group multi-output sampling and reward normalization |
 
 > 💡 Interactive animations are only available in the [online e-book](https://Haozhe-Xing.github.io/agent_learning). Local builds can also preview them.
 
@@ -240,11 +181,13 @@ cd agent_learning
 ```
 
 After starting, visit:
+
 - 🌐 **Language Selection Home**: `http://localhost:3000` (auto-redirects based on browser language)
 - 🇨🇳 **Chinese Version**: `http://localhost:3000/zh/`
 - 🇺🇸 **English Version**: `http://localhost:3000/en/`
 
 > 💡 File watching dependency installation:
+>
 > ```bash
 > # macOS
 > brew install fswatch
@@ -274,49 +217,6 @@ export OPENAI_API_KEY="your-key-here"
 <table>
 <tr>
 <td width="50%">
-
-**🧠 Agent Core Architecture**
-- Perceive → Think → Act cycle
-- ReAct reasoning framework
-- Task decomposition & planning
-- Reflection & self-correction
-
-**🛠️ Tools & Skills**
-- Function Calling mechanism
-- Custom tool design
-- Skill system construction
-- Tool description best practices
-
-**🧪 Reinforcement Learning Training**
-- SFT + LoRA basic training
-- PPO / DPO / GRPO algorithm deep-dive
-- Complete training pipeline hands-on
-- 2025–2026 latest research advances
-
-</td>
-<td width="50%">
-
-**💾 Memory, Knowledge & Context**
-- Short-term / Long-term / Working memory
-- Vector databases (Chroma / FAISS)
-- RAG - Retrieval Augmented Generation
-- Context engineering & attention budget
-
-**🤝 Multi-Agent Collaboration & Communication**
-- MCP / A2A / ANP three-protocol stack
-- Supervisor vs decentralized patterns
-- CrewAI / AutoGen frameworks
-- LangGraph stateful Agents
-
-**🛡️ Production Full Pipeline**
-- Evaluation benchmarks (GAIA / SWE-bench)
-- Security defense & sandbox isolation
-- Containerized deployment & streaming response
-- Observability & cost optimization
-
-</td>
-</tr>
-</table>
 
 ---
 

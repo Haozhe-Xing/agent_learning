@@ -1,4 +1,4 @@
-# Tool、Skill 与 Sub Agent：三层能力抽象
+# 10.7 Tool、Skill 与 Sub-Agent：三层能力抽象
 
 > 🎯 *"Tool 是手，Skill 是技能，Sub Agent 是团队成员——理解三者的关系，是设计好 Agent 架构的关键。"*
 

@@ -2,6 +2,38 @@
 
 > 📖 *"提示工程让你学会如何跟 LLM 说话，上下文工程让你学会如何帮 LLM 看见全世界。"*
 
+> 📌 **与第9章的关系**：本章聚焦**上下文的内容和策略**（窗口管理、信息密度、注意力预算）；第9章 Harness 工程则关注**工程规范和执行结构**（Agents.md、六大工程支柱）。两章是互补而非重复，建议连续阅读。
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 理解从 Prompt Engineering 到 Context Engineering 的范式转变
+- ✅ 掌握上下文窗口管理和注意力预算分配技巧
+- ✅ 设计适合长时程任务的上下文保留策略
+- ✅ 构建一个实用的上下文管理器工具库
+- ✅ 了解 2025—2026 年上下文工程的最新进展
+
+## ⏱️ 预计学习时间
+
+约 **75-90 分钟**
+
+## 💡 前置知识
+
+- 完成第3章（LLM 基础）、第5章（记忆系统）和第7章（RAG）
+- 理解 Token 计算和 Embedding 的基本原理
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第9章 Harness 工程](../chapter_harness/README.md)
+> - 👉 [第11章 Agentic-RL](../chapter_agentic_rl/README.md)
+
 ---
 
 ## 本章概览
@@ -57,8 +89,8 @@
 > **前置知识**：[第3章 LLM 基础](../chapter_llm/README.md)、[第4-7章 核心能力](../chapter_tools/README.md)
 >
 > **后续推荐**：
-> - 👉 [第11章 LangChain](../chapter_langchain/README.md) — 用框架实现上下文管理策略
-> - 👉 [第16章 评估与优化](../chapter_evaluation/README.md) — 评估上下文策略的效果
+> - 👉 [第12章 LangChain](../chapter_langchain/README.md) — 用框架实现上下文管理策略
+> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md) — 评估上下文策略的效果
 
 ---
 

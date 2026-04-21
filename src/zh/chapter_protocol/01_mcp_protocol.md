@@ -1,4 +1,4 @@
-# MCP（Model Context Protocol）详解
+# 17.1 MCP（Model Context Protocol）详解
 
 MCP（Model Context Protocol）是 Anthropic 于 2024 年 11 月推出的开放协议，旨在标准化 LLM 与外部工具、数据源之间的连接方式。经过一年多的发展，MCP 已成为 Agent 工具接口的事实标准，被 Claude Desktop、Cursor、Windsurf、OpenAI Agents SDK 等主流产品广泛支持。
 
@@ -308,9 +308,9 @@ if __name__ == "__main__":
                                   + Streamable HTTP
 ```
 
-### 3. MCP 生态系统现状（2025-2026）
+### 3. MCP 生态系统现状（截至 2026 年 4 月）
 
-截至 2026 年初，MCP 已被广泛采纳：
+**🎉 里程碑**：截至 2026 年 3 月，MCP 累计安装量突破 **9700 万次**，成为 AI Agent 连接外部工具、API 和数据源的**事实行业标准**。在 NVIDIA GTC 2026 上，Jensen Huang 将 MCP 称为"AI 从实验性基础设施升级为全球产业核心运营层"的关键协议。
 
 | 客户端 | MCP 支持状态 |
 |--------|-------------|
@@ -320,8 +320,13 @@ if __name__ == "__main__":
 | OpenAI Agents SDK | ✅ 原生支持 |
 | VS Code (Copilot) | ✅ 支持 |
 | Dify | ✅ 插件支持 |
+| **Google Gemini 工具** | ✅ 2026 年 Q1 加入 |
+| **微软 Copilot** | ✅ 多模型编排层采用 MCP |
+| **Slack AI** | ✅ 2026 年 4 月集成 |
 
-社区 MCP Server 已超过数千个，覆盖数据库、云服务、开发工具等各类场景。
+社区 MCP Server 已超过 **数万个**，覆盖数据库、云服务、开发工具、浏览器、操作系统等各类场景。**所有主要 AI 提供商已发布 MCP 兼容工具**，生态格局已定。
+
+> 💡 **2026 年 4 月新动态**：Anthropic 调整订阅政策（4 月 4 日生效），Claude Pro/Max 订阅不再覆盖第三方 Agent 工具通过 MCP 路由的调用，第三方 MCP 服务需转为按量付费（API Key）。这推动了 MCP 生态向更规范的商业模式演进。
 
 ### 4. Elicitation：向用户请求信息
 

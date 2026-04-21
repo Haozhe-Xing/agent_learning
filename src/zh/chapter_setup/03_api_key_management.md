@@ -1,4 +1,4 @@
-# API Key 管理与安全最佳实践
+# 2.3 API Key 管理与安全最佳实践
 
 API Key 是访问 LLM 服务的凭证，一旦泄露可能导致严重的费用损失。本节讲解如何安全地管理 API Key。
 
@@ -54,7 +54,7 @@ class Config:
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
     
     # 模型配置
-    DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "gpt-4o-mini")
+    DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "gpt-4.1-mini")
     MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "2000"))
     TEMPERATURE: float = float(os.getenv("TEMPERATURE", "0.7"))
     
@@ -123,7 +123,7 @@ class Settings(BaseSettings):
     dashscope_api_key: Optional[str] = None
     
     # 模型配置
-    default_model: str = "gpt-4o-mini"
+    default_model: str = "gpt-4.1-mini"
     max_tokens: int = 2000
     temperature: float = 0.7
     

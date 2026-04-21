@@ -84,7 +84,7 @@ from typing import Optional
 import tiktoken
 
 
-def count_tokens(text: str, model: str = "gpt-4o") -> int:
+def count_tokens(text: str, model: str = "gpt-4.1") -> int:
     """统计 token 数量"""
     try:
         enc = tiktoken.encoding_for_model(model)
@@ -753,7 +753,7 @@ class HarnessAgent:
     使用 Harness 系统的编程 Agent
     """
     
-    def __init__(self, workspace: str, api_key: str = None, model: str = "gpt-4o"):
+    def __init__(self, workspace: str, api_key: str = None, model: str = "gpt-4.1"):
         self.workspace = workspace
         self.model = model
         self.client = OpenAI(api_key=api_key)
@@ -957,7 +957,7 @@ def main():
     agent = HarnessAgent(
         workspace=workspace,
         api_key=api_key,
-        model="gpt-4o",
+        model="gpt-4.1",
     )
     
     # 执行任务

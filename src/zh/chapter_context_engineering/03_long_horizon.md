@@ -1,4 +1,4 @@
-# 长时程任务的上下文策略
+# 8.3 长时程任务的上下文策略
 
 > 📖 *"短对话靠 prompt 技巧，长任务靠上下文策略——当 Agent 需要工作几小时甚至几天时，上下文管理就是生死线。"*
 
@@ -123,7 +123,7 @@ class CompactionStrategy:
     def _generate_summary(self, messages: list[dict]) -> str:
         """用 LLM 生成结构化摘要"""
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{
                 "role": "user",
                 "content": f"""请将以下 Agent 交互历史压缩为结构化摘要：
@@ -171,7 +171,7 @@ class CompactionStrategy:
 |--------|---------|------|
 | 触发时机 | 上下文达到窗口 40%~60% 时触发 | 留出充足空间，避免紧急压缩丢失信息 |
 | 保留轮次 | 最近 5~10 轮不压缩 | 近期对话通常与当前任务高度相关 |
-| 摘要模型 | 使用小模型（gpt-4o-mini） | 成本低、速度快，摘要质量已足够 |
+| 摘要模型 | 使用小模型（gpt-4.1-mini） | 成本低、速度快，摘要质量已足够 |
 | 摘要格式 | 结构化列表而非自然语言 | 信息密度更高，LLM 更容易提取关键点 |
 
 ### 策略二：结构化笔记（Structured Notes）
@@ -327,7 +327,7 @@ class OrchestratorAgent:
     4. 单个子 Agent 失败不会污染其他 Agent 的上下文
     """
     
-    def __init__(self, model: str = "gpt-4o"):
+    def __init__(self, model: str = "gpt-4.1"):
         self.model = model
         self.sub_agents: dict[str, Callable] = {}
         self.results: list[SubAgentResult] = []

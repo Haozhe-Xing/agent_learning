@@ -100,6 +100,8 @@
   - [11.5 GRPO/GSPO：组内相对策略优化与奖励函数设计](./chapter_agentic_rl/05_grpo.md)
   - [11.6 实战：完整 SFT + GRPO 训练 Pipeline](./chapter_agentic_rl/06_practice_training.md)
   - [11.7 最新研究进展（2025—2026）](./chapter_agentic_rl/07_latest_research.md)
+  - [11.8 专为 Agent 的微调：让模型真正会用工具](./chapter_agentic_rl/08_agent_finetuning.md)
+  - [11.9 Agentic 数据飞轮：让 Agent 自我进化](./chapter_agentic_rl/09_data_flywheel.md)
 
 ---
 

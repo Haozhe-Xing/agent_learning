@@ -1,4 +1,4 @@
-# Agent 如何"思考"？
+# 6.1 Agent 是如何「思考」的？
 
 Agent 的"思考"本质上是**在上下文中组织信息、推导结论、制定计划的过程**。理解这个过程，是设计高效 Agent 的前提。
 
@@ -14,7 +14,7 @@ client = OpenAI()
 # 不引导推理：直接给答案（可能错误）
 def direct_answer(question: str) -> str:
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": question}]
     )
     return response.choices[0].message.content
@@ -41,7 +41,7 @@ def structured_thinking(question: str) -> str:
 """
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": question}
@@ -80,7 +80,7 @@ class OODAAgent:
 3. 可能的障碍
 """
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[{"role": "user", "content": prompt}]
         )
         observation = response.choices[0].message.content
@@ -99,7 +99,7 @@ class OODAAgent:
 3. 主要的风险和挑战是什么？
 """
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[{"role": "user", "content": prompt}]
         )
         orientation = response.choices[0].message.content
@@ -118,7 +118,7 @@ class OODAAgent:
 3. 执行步骤（按优先级排序）
 """
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[{"role": "user", "content": prompt}]
         )
         decision = response.choices[0].message.content
@@ -128,7 +128,7 @@ class OODAAgent:
     def act(self, plan: str, user_input: str) -> str:
         """行动：执行计划并生成最终响应"""
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {
                     "role": "system",
@@ -157,7 +157,7 @@ def metacognitive_reasoning(problem: str) -> dict:
     """元认知推理：Agent 能评估自己的置信度和局限性"""
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "system",

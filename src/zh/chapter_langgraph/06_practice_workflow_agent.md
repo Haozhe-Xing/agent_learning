@@ -1,4 +1,4 @@
-# 实战：工作流自动化 Agent
+# 13.6 实战：工作流自动化 Agent
 
 本节综合运用前面学到的 LangGraph 知识——状态管理、条件路由、循环控制，构建一个完整的工作流自动化 Agent。
 
@@ -30,7 +30,7 @@ from langchain_core.messages import HumanMessage
 from typing import TypedDict, Optional, List
 import json
 
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4.1")
 
 class ContentState(TypedDict):
     topic: str

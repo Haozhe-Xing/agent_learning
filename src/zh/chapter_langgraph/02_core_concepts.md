@@ -1,4 +1,4 @@
-# LangGraph 核心概念：节点、边、状态
+# 13.2 LangGraph 核心概念：节点、边与状态
 
 ![LangGraph三大核心概念：State·Node·Edge](../svg/chapter_langgraph_02_state_node_edge.svg)
 
@@ -132,7 +132,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langgraph.graph import StateGraph, END, START, MessagesState
 
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4.1")
 
 # 节点就是普通的 Python 函数
 def agent_node(state: MessagesState) -> dict:

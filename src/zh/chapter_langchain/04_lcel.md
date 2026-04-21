@@ -1,4 +1,4 @@
-# LCEL：LangChain 表达式语言
+# 12.4 LCEL：LangChain 表达式语言
 
 LCEL（LangChain Expression Language）是 LangChain 的核心构建语言，用 `|` 符号将组件连接成处理管道，代码简洁且功能强大。
 
@@ -28,7 +28,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatOpenAI(model="gpt-4.1-mini")
 
 # ============================
 # LCEL 的 Runnable 协议
@@ -175,7 +175,7 @@ print(result)
 在生产环境中，LLM API 调用可能因为网络抖动、速率限制等原因偶尔失败。LCEL 内置了两种恢复机制：
 
 - **`with_retry`**：自动重试失败的调用，支持指数退避（每次重试间隔递增），避免在 API 限流时雪崩
-- **`with_fallbacks`**：当主链失败后，自动切换到备用链——比如主模型用 GPT-4o，备用模型用 GPT-3.5-turbo，保证服务可用性
+- **`with_fallbacks`**：当主链失败后，自动切换到备用链——比如主模型用 GPT-4.1，备用模型用 gpt-4.1-mini，保证服务可用性
 
 ```python
 from langchain_core.runnables import RunnableRetry
@@ -194,7 +194,7 @@ resilient_chain = (
 # 添加 fallback（备用链）
 fallback_chain = (
     ChatPromptTemplate.from_messages([("human", "{input}")])
-    | ChatOpenAI(model="gpt-4o-mini")  # 备用模型
+    | ChatOpenAI(model="gpt-4.1-mini")  # 备用模型
     | StrOutputParser()
 )
 

@@ -1,4 +1,4 @@
-# 实战：部署一个生产级 Agent 服务
+# 20.5 实战：部署一个生产级 Agent 服务
 
 > **本节目标**：综合运用本章所学知识，完成一个 Agent 服务从开发到部署的完整流程。
 
@@ -33,7 +33,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     openai_api_key: str
-    model_name: str = "gpt-4o"
+    model_name: str = "gpt-4.1"
     redis_url: str = "redis://localhost:6379"
     api_keys: str = ""  # 逗号分隔的有效 API Key
     max_concurrent: int = 50

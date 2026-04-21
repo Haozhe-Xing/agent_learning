@@ -1,4 +1,4 @@
-# 关键库安装：LangChain、OpenAI SDK 等
+# 2.2 关键库安装
 
 本节介绍 Agent 开发生态中最重要的库，并说明它们的用途和安装方式。
 
@@ -53,7 +53,7 @@ from openai import OpenAI
 
 client = OpenAI()
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-4.1-mini",
     messages=[{"role": "user", "content": "Hello!"}]
 )
 print(response.choices[0].message.content)
@@ -73,7 +73,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 
 # 基础模型调用
-llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatOpenAI(model="gpt-4.1-mini")
 response = llm.invoke([HumanMessage(content="你好！")])
 print(response.content)
 
@@ -223,7 +223,7 @@ def robust_api_call(messages: list) -> str:
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=messages
     )
     return response.choices[0].message.content

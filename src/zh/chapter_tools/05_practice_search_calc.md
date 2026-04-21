@@ -1,4 +1,4 @@
-# 实战：搜索引擎 + 计算器 Agent
+# 4.5 实战：搜索引擎 + 计算器 Agent
 
 本节构建一个实用的搜索与计算 Agent，能够回答需要实时信息和数学推理的复杂问题。
 
@@ -361,7 +361,7 @@ class SearchCalcAgent:
         while self.step_count < MAX_STEPS:
             # 调用 LLM
             response = client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4.1",
                 messages=self.messages,
                 tools=TOOLS,
                 tool_choice="auto",

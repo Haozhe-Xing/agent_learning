@@ -4,6 +4,36 @@
 
 ---
 
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 理解 Agent 的思考与推理过程
+- ✅ 掌握 ReAct 框架（Reasoning + Acting）的工作原理
+- ✅ 实现任务分解策略，将复杂问题拆分为可执行子任务
+- ✅ 构建自我反思与错误纠正机制
+- ✅ 完成一个自动化研究助手 Agent 的实战项目
+
+## ⏱️ 预计学习时间
+
+约 **90-120 分钟**（含实战）
+
+## 💡 前置知识
+
+- 完成第4章（工具调用）和第5章（记忆系统）
+- 了解递归和循环控制流
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第8章 上下文工程](../chapter_context_engineering/README.md)
+> - 👉 [第13章 LangGraph](../chapter_langgraph/README.md)
+
+---
+
 ## 本章概览
 
 本章深入探讨 Agent 的"大脑"——规划与推理系统。如果说工具调用赋予了 Agent "双手"，记忆系统赋予了它"回忆"，那么规划与推理就是赋予它"思考力"。从 ReAct 框架到任务分解，再到自我反思机制，本章帮你构建能够处理复杂、多步骤问题的 Agent。
@@ -44,8 +74,8 @@
 >
 > **后续推荐**：
 > - 👉 [第7章 RAG](../chapter_rag/README.md) — 给 Agent 接入外部知识
-> - 👉 [第11章 LangChain](../chapter_langchain/README.md) — 用框架高效实现 ReAct Agent
-> - 👉 [第12章 LangGraph](../chapter_langgraph/README.md) — 用图结构实现复杂推理流程
+> - 👉 [第12章 LangChain](../chapter_langchain/README.md) — 用框架高效实现 ReAct Agent
+> - 👉 [第13章 LangGraph](../chapter_langgraph/README.md) — 用图结构实现复杂推理流程
 
 ---
 

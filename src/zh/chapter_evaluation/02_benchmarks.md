@@ -1,4 +1,4 @@
-# 基准测试与评估指标
+# 18.2 基准测试与评估指标
 
 > **本节目标**：深入理解业界主流的 Agent 基准测试及其评估原理，掌握 BFCL、GAIA、AgentBench、WebArena、SWE-bench 等基准的底层算法，并学会设计自己的评估体系。
 
@@ -353,7 +353,7 @@ class AgentBenchEvaluator:
 
 ### 各领域顶尖模型表现（截至 2025）
 
-| 环境 | GPT-4o | Claude-3.5 | 开源 SOTA |
+| 环境 | GPT-4.1 | Claude-3.5 | 开源 SOTA |
 |------|--------|------------|----------|
 | OS | ~45% | ~42% | ~30% (CodeLlama) |
 | DB | ~52% | ~48% | ~35% |
@@ -537,7 +537,7 @@ def swe_bench_evaluate(
 class LLMJudge:
     """LLM-as-Judge 评估器"""
     
-    def __init__(self, judge_model: str = "gpt-4o"):
+    def __init__(self, judge_model: str = "gpt-4.1"):
         from langchain_openai import ChatOpenAI
         self.judge = ChatOpenAI(model=judge_model, temperature=0)
     
@@ -873,10 +873,10 @@ class RegressionTracker:
 
 | 基准测试 | 核心能力 | 评估方法 | 当前 SOTA |
 |---------|---------|---------|----------|
-| **BFCL** | 工具调用 | AST 匹配算法 | GPT-4o ~90% |
-| **GAIA** | 通用推理 | 准精确匹配 | GPT-4o ~75% (L1) |
-| **AgentBench** | 综合 Agent | 任务成功率 | GPT-4o ~42% |
-| **WebArena** | Web 操作 | 状态检查 | GPT-4o ~35% |
+| **BFCL** | 工具调用 | AST 匹配算法 | GPT-4.1 ~90% |
+| **GAIA** | 通用推理 | 准精确匹配 | GPT-4.1 ~75% (L1) |
+| **AgentBench** | 综合 Agent | 任务成功率 | GPT-4.1 ~42% |
+| **WebArena** | Web 操作 | 状态检查 | GPT-4.1 ~35% |
 | **SWE-bench** | 软件工程 | 测试通过率 | DeepSWE 59% |
 
 > **下一节预告**：掌握了评估方法后，我们来学习如何通过 Prompt 调优来提升 Agent 的表现。

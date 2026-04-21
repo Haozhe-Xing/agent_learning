@@ -1,4 +1,4 @@
-# ReAct：推理 + 行动框架
+# 6.2 ReAct：推理 + 行动框架
 
 ReAct（Reasoning + Acting）是 Agent 开发中最重要的框架之一，来自 2022 年普林斯顿大学和 Google Brain 的论文《ReAct: Synergizing Reasoning and Acting in Language Models》（Yao et al.）。它将 LLM 的推理能力与工具使用结合起来，创造出更可靠、更透明的 Agent 行为。
 
@@ -116,7 +116,7 @@ class ReActAgent:
         for step in range(max_steps):
             # 调用 LLM
             response = client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4.1",
                 messages=messages,
                 stop=["观察："],  # 在"观察："前停止，等待工具执行
                 max_tokens=500

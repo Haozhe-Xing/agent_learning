@@ -1,4 +1,4 @@
-# 第一个 Agent：Hello Agent！
+# 2.4 第一个 Agent：Hello Agent！
 
 终于到了激动人心的时刻——让我们构建第一个真正的 Agent！它能使用工具、进行推理，并完成实际任务。
 
@@ -229,7 +229,7 @@ class HelloAgent:
     具备工具使用、多轮对话、推理能力。
     """
     
-    def __init__(self, model: str = "gpt-4o-mini"):
+    def __init__(self, model: str = "gpt-4.1-mini"):
         self.model = model
         self.messages = [
             {

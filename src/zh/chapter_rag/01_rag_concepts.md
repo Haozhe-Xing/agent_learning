@@ -1,4 +1,4 @@
-# RAG 的概念与工作原理
+# 7.1 RAG 的概念与工作原理
 
 RAG（Retrieval-Augmented Generation）是一种将**信息检索**与**语言生成**结合的技术架构。它让 LLM 能够基于外部知识库回答问题，而不是仅依赖训练时学到的知识。
 
@@ -134,7 +134,7 @@ def answer_with_context(question: str, context_chunks: list[str]) -> str:
 """
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": prompt}]
     )
     
@@ -157,7 +157,7 @@ def compare_approaches(question: str, has_relevant_docs: bool = True):
     
     # 方式1：直接问 LLM（可能幻觉）
     direct_response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{"role": "user", "content": question}]
     )
     

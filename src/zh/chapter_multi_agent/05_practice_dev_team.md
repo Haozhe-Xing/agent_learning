@@ -1,4 +1,4 @@
-# 实战：多 Agent 软件开发团队
+# 16.5 实战：多 Agent 软件开发团队
 
 综合本章所有知识，构建一个完整的多 Agent 软件开发系统，模拟真实的开发团队协作。
 
@@ -33,7 +33,7 @@ from rich.panel import Panel
 from rich.markdown import Markdown
 import json
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.3)
+llm = ChatOpenAI(model="gpt-4.1", temperature=0.3)
 console = Console()
 
 class DevState(TypedDict):

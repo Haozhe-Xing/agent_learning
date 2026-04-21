@@ -1,4 +1,4 @@
-# 工作记忆：Scratchpad 模式
+# 5.4 工作记忆：草稿本模式
 
 工作记忆是 Agent 在执行复杂任务时的"草稿纸"——记录推理步骤、中间结果，帮助 Agent 保持任务状态。
 
@@ -212,7 +212,7 @@ class ScratchpadAgent:
             messages[0]["content"] = self._build_system_prompt()
             
             response = client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4.1",
                 messages=messages,
                 tools=tools,
                 tool_choice="auto"

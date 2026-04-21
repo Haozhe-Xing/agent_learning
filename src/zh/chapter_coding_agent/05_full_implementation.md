@@ -1,4 +1,4 @@
-# 完整项目实现
+# 21.5 完整项目实现
 
 > **本节目标**：将前面几节的组件整合，构建一个可交互的 AI 编程助手。
 
@@ -31,7 +31,7 @@ class AICodeAssistant:
     
     def __init__(self, project_path: str):
         self.project_path = project_path
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
+        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0)
         self.embeddings = OpenAIEmbeddings()
         
         # 初始化各组件

@@ -1,6 +1,6 @@
-# 图像理解与生成
+# 23.2 图像理解与生成
 
-> **本节目标**：掌握用 GPT-4o 分析图像和用 DALL-E 生成图像的技术，深入理解视觉模型的能力边界与 Prompt 技巧。
+> **本节目标**：掌握用 GPT-4.1 分析图像和用 DALL-E 生成图像的技术，深入理解视觉模型的能力边界与 Prompt 技巧。
 
 ![视觉模型能力边界与图像生成技术](../svg/chapter_multimodal_02_image.svg)
 
@@ -26,13 +26,13 @@
 
 ### 多轮视觉对话
 
-GPT-4o 支持在对话历史中保留图像上下文，实现多轮视觉对话。这在实际 Agent 中非常有用——用户可以先上传一张图，然后通过多轮追问逐步深入分析：
+GPT-4.1 支持在对话历史中保留图像上下文，实现多轮视觉对话。这在实际 Agent 中非常有用——用户可以先上传一张图，然后通过多轮追问逐步深入分析：
 
 ```python
 class MultiTurnVisionChat:
     """多轮视觉对话管理器"""
     
-    def __init__(self, model: str = "gpt-4o"):
+    def __init__(self, model: str = "gpt-4.1"):
         self.client = OpenAI()
         self.model = model
         self.messages: list[dict] = []
@@ -135,7 +135,7 @@ import httpx
 class VisionTool:
     """图像分析工具"""
     
-    def __init__(self, model: str = "gpt-4o"):
+    def __init__(self, model: str = "gpt-4.1"):
         self.client = OpenAI()
         self.model = model
     
@@ -307,8 +307,8 @@ print(code)
 
 | 功能 | API | 说明 |
 |------|-----|------|
-| 图像分析 | GPT-4o Vision | 理解图片内容、提取文字 |
-| 图片比较 | GPT-4o Vision | 多图输入，分析异同 |
+| 图像分析 | GPT-4.1 Vision | 理解图片内容、提取文字 |
+| 图片比较 | GPT-4.1 Vision | 多图输入，分析异同 |
 | 图像生成 | DALL-E 3 | 根据文字描述生成图片 |
 | 图像编辑 | DALL-E 2 | 修改已有图片 |
 

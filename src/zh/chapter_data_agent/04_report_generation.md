@@ -1,4 +1,4 @@
-# 报告生成与导出
+# 22.4 报告生成与导出
 
 > **本节目标**：将分析结果自动整合为结构化的 Markdown 报告。
 
@@ -280,7 +280,7 @@ async def generate_sales_report():
     """生成销售分析报告的完整流程"""
     from langchain_openai import ChatOpenAI
     
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4.1", temperature=0)
     
     # 模拟数据
     data = [

@@ -1,4 +1,4 @@
-# 完整项目实现
+# 22.5 完整项目实现
 
 > **本节目标**：整合所有组件，构建一个完整的智能数据分析 Agent，并深入分析架构决策与生产化考量。
 
@@ -97,7 +97,7 @@ class SmartDataAnalyst:
     """智能数据分析 Agent"""
     
     def __init__(self, db_path: str):
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
+        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0)
         self.db = SafeDatabaseConnector(db_path)
         self.text2sql = TextToSQL(self.llm, self.db)
         self.analyzer = DataAnalyzer()

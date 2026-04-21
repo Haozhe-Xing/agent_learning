@@ -1,4 +1,4 @@
-# 上下文工程前沿进展
+# 8.5 上下文工程前沿进展
 
 > 🔬 *"上下文窗口的扩大不是终点，如何高效利用每一个 token 的'注意力带宽'才是真正的挑战。"*
 
@@ -909,7 +909,7 @@ class ContextQualityMetrics:
 | 上下文压缩 | 工具结果清除 + 结构化摘要 | 长时程任务不再受窗口限制 |
 | 动态工具上下文 | 按需加载工具定义 | 工具多的 Agent 可节省大量上下文空间 |
 
-> ⏰ *注：上下文管理技术发展迅速，本节数据截至 2026 年 3 月。建议关注 [Anthropic Engineering Blog](https://www.anthropic.com/engineering)、[LangChain Blog](https://blog.langchain.com/) 以及各模型厂商的 API 更新日志获取最新信息。*
+> ⏰ *注：上下文管理技术发展迅速，本节数据截至 **2026 年 4 月 21 日**。2026 年 4 月最新亮点：Google TurboQuant 将 KV Cache 内存需求降低 6 倍，GLM-5.1 支持单会话 6000+ 工具调用，超长上下文 Agent 成本大幅下降。建议关注 [Anthropic Engineering Blog](https://www.anthropic.com/engineering)、[LangChain Blog](https://blog.langchain.com/) 以及各模型厂商的 API 更新日志获取最新信息。*
 
 ## 参考文献
 

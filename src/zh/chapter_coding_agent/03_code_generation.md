@@ -1,4 +1,4 @@
-# 代码生成与修改能力
+# 21.3 代码生成与修改能力
 
 > **本节目标**：实现 Agent 的代码生成和修改功能，确保生成的代码质量可控。
 
@@ -73,7 +73,7 @@ class CodeGenerator:
 
 # 使用示例
 async def demo():
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4.1", temperature=0)
     generator = CodeGenerator(llm)
     
     result = await generator.generate(

@@ -1,4 +1,4 @@
-# 实战：智能文档问答 Agent
+# 7.5 实战：智能文档问答 Agent
 
 综合本章知识，构建一个可以回答关于任意文档集合问题的智能问答系统。
 
@@ -223,7 +223,7 @@ class DocumentQAAgent:
         ]
         
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=messages,
             max_tokens=800
         )

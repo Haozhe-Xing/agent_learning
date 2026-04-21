@@ -1,4 +1,4 @@
-# Human-in-the-Loop：人机协作
+# 13.5 Human-in-the-Loop：人机协作
 
 在生产环境中，让 Agent 完全自主运行是有风险的——删除文件、发送邮件、执行支付等操作一旦出错就无法撤回。**Human-in-the-Loop（人机协作）** 机制允许在 Agent 执行危险操作前暂停，等待人类确认后再继续。
 
@@ -52,7 +52,7 @@ tools = [send_email, delete_file, safe_search]
 # 节点定义
 # ============================
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatOpenAI(model="gpt-4.1", temperature=0)
 llm_with_tools = llm.bind_tools(tools)
 
 def agent_node(state: MessagesState) -> dict:

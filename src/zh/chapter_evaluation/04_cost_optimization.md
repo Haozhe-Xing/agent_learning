@@ -1,4 +1,4 @@
-# 成本控制与性能优化
+# 18.4 成本控制与性能优化
 
 > **本节目标**：学会在保证 Agent 质量的前提下，有效控制 API 调用成本和提升响应速度。
 
@@ -16,7 +16,7 @@
 | 向量数据库 | 嵌入计算 + 检索查询 | 10-20% |
 | 基础设施 | 服务器、存储、网络 | 10-20% |
 
-一个简单的计算：如果你的 Agent 每次对话平均消耗 5000 个 Token（含输入和输出），使用 GPT-4o，成本约为 $0.02。每天处理 10000 次对话，月费用约 $6000。
+一个简单的计算：如果你的 Agent 每次对话平均消耗 5000 个 Token（含输入和输出），使用 GPT-4.1，成本约为 $0.02。每天处理 10000 次对话，月费用约 $6000。
 
 ---
 
@@ -33,11 +33,11 @@ class SmartRouter:
     def __init__(self):
         # 快速便宜的模型处理简单任务
         self.fast_model = ChatOpenAI(
-            model="gpt-4o-mini", temperature=0
+            model="gpt-4.1-mini", temperature=0
         )
         # 强大模型处理复杂任务
         self.power_model = ChatOpenAI(
-            model="gpt-4o", temperature=0
+            model="gpt-4.1", temperature=0
         )
     
     def classify_complexity(self, question: str) -> str:
@@ -253,8 +253,8 @@ class CostTracker:
     
     # 各模型的价格（每百万 Token，2026-03 数据，请以官方最新定价为准）
     PRICING = {
-        "gpt-4o":      {"input": 2.50, "output": 10.00},
-        "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+        "gpt-4.1":      {"input": 2.50, "output": 10.00},
+        "gpt-4.1-mini": {"input": 0.15, "output": 0.60},
         "gpt-5":       {"input": 10.00, "output": 30.00},
     }
     

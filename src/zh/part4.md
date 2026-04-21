@@ -6,9 +6,9 @@
 
 | 章节 | 内容 | 核心收获 |
 |------|------|---------|
-| **第14章** 多 Agent 协作 | 通信模式、角色分工、Supervisor 架构 | 掌握多 Agent 协作设计 |
-| **第15章** Agent 通信协议 | MCP、A2A、ANP 协议 | 理解 Agent 间通信标准 |
+| **第16章** 多 Agent 协作 | 通信模式、角色分工、Supervisor 架构 | 掌握多 Agent 协作设计 |
+| **第17章** Agent 通信协议 | MCP、A2A、ANP 协议 | 理解 Agent 间通信标准 |
 
 ---
 
-*开始学习：[第14章 多 Agent 协作](./chapter_multi_agent/README.md)*
+*开始学习：[第16章 多 Agent 协作](./chapter_multi_agent/README.md)*

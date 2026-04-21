@@ -12,6 +12,8 @@ build-en/
 .codebuddy/
 .workbuddy/
 
+nano_skill/
+
 # Python
 __pycache__/
 *.py[cod]

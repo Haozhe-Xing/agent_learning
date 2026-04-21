@@ -1,4 +1,4 @@
-# 基座模型前沿进展与选型指南
+# 3.6 前沿基础模型全景与选型指南
 
 > 🌍 *"模型在快速迭代，今天的 SOTA 可能是明天的基线——但理解演进趋势，能让你在变化中做出更好的选择。"*
 
@@ -66,33 +66,43 @@ class MixtureOfExperts:
 | **Kimi K2.5** | 48B | 3B | Kimi Linear 混合注意力 + Attention Residuals |
 | **DeepSeek V4** | 671B | ~37B | Engram 内存 + mHC 超连接 + DSA 2.0 |
 | **DeepSeek-V3.2** | 685B | ~37B | DSA 稀疏注意力，Agent 能力增强 |
+| **GLM-5.1** 🆕 | 754B | ~45B | 华为昇腾训练，MIT 协议，6000+ 工具调用/会话 |
 | **Qwen3.5-Plus** | 397B | 17B | Gated DeltaNet 混合注意力，原生多模态 |
+| **Qwen 3.6-Plus** 🆕 | 35B | 3B | 激活仅 3B，单卡 RTX 4090 可运行，MCPMark 37% |
+| **Gemma 4-26B** 🆕 | 26B | 3.8B | Apache 2.0，原生视频/音频，256K 上下文 |
+| **Gemma 4-31B** 🆕 | 31B | 31B（密集）| Apache 2.0，Arena Elo 1452，全球第三 |
 | **MiniMax M2.5** | 229B | ~? | Lightning Attention，200K~1M 上下文 |
 | **Llama 4 Maverick** | 400B | 17B | 128 专家，原生多模态 MoE |
 | **Llama 4 Scout** | 109B | 17B | 16 专家，10M token 上下文窗口 |
 | **Qwen 3 MoE** | 235B | ~22B | 快慢思考混合推理 |
 
-> 💡 **对 Agent 的影响**：MoE 让"大模型能力 + 小模型成本"成为现实。2026 年 Q1 最大的变化是 **Kimi K2 以万亿参数开源**，将 MoE 规模推向新高度；同时 Kimi K2.5 用仅 48B 总参/3B 激活的极致效率路线证明了"小而强"的可行性。DeepSeek V4 的 Engram 内存架构将静态知识卸载到 CPU，释放 GPU 用于推理计算。Qwen3.5-Plus 采用 Gated DeltaNet 线性注意力，推理延迟大幅降低。
+> 💡 **对 Agent 的影响**：MoE 让"大模型能力 + 小模型成本"成为现实。**2026 年 4 月的最大亮点**：Gemma 4 以 Apache 2.0 协议提供原生音视频多模态；Qwen 3.6-Plus 用 3B 激活参数在消费级 GPU 上实现 73% SWE-bench；**GLM-5.1 支持单会话 6000+ 次工具调用**，是目前已知工具调用循环最长的开源模型（适合超长期 Agent 任务）。
 
 ### 趋势三：开源生态的全面崛起
 
 2025—2026 年，开源模型已不仅是"追赶"闭源，而是在多个领域**形成分庭抗礼**甚至**局部超越**的态势：
 
-**第一梯队（与 GPT-5 竞争）**：
+**第一梯队（与 GPT-5 / Claude 4.6 竞争）**：
 - **Kimi K2**（Moonshot AI，2025.07）：1T 总参/32B 激活 MoE，MuonClip 优化器训练效率翻倍，开源 Agent 能力 SOTA
 - **Qwen3.5-Plus**（阿里，2026.02）：397B MoE 原生多模态，Gated DeltaNet 混合注意力，Agent 能力、编程、推理全面领先
-- **DeepSeek V4**（DeepSeek，2026.03）：671B MoE，Engram 内存架构，1M+ 上下文，编程能力超越 Claude Opus
+- **DeepSeek V4**（DeepSeek，2026.03）：671B MoE，Engram 内存架构，1M+ 上下文，SWE-bench 83.7%
+- **GLM-5.1**（智谱 AI，2026.04）🆕：754B MoE，MIT 协议，华为昇腾芯片训练；SWE-bench Pro **58.4%（全球第一）**，支持 **6000+ 次工具调用/会话**
 - **DeepSeek-V3.2**（DeepSeek，2025.12）：融合推理，Agent 能力增强
-- **Llama 4 Maverick**（Meta，2025.04）：400B MoE 多模态，在文本生成上超越 GPT-4o
+- **Llama 4 Maverick**（Meta，2025.04）：400B MoE 多模态，在文本生成上超越 GPT-4.1
 
-**第二梯队（轻量高效）**：
+**第二梯队（轻量高效，单卡可跑）**：
+- **Qwen 3.6-Plus**（阿里，2026.04）🆕：35B 总参 / 仅 3B 激活，单卡 RTX 4090 运行，MCPMark 37%，SWE-bench 73.4%
+- **Gemma 4-31B**（Google，2026.04）🆕：密集型，Arena Elo 1452（全球第三），Apache 2.0，原生视频/音频多模态
+- **Gemma 4-26B MoE**（Google，2026.04）🆕：3.8B 激活参数，256K 上下文，Apache 2.0
 - **Kimi K2.5**（Moonshot AI，2026.03）：48B 总参/3B 激活，Kimi Linear + Attention Residuals，极致效率
 - **MiniMax M2.5**（MiniMax，2026.03）：229B MoE，Lightning Attention，Agent 实战表现强劲
 - **Llama 4 Scout**（Meta，17B 激活/109B 总参）：10M 上下文窗口，单卡 H100 可运行
 - **Phi-4**（微软，14B）：小尺寸模型的天花板，推理能力超越许多 70B 模型
 - **Phi-4-multimodal**（微软，5.6B）：统一架构处理语音+视觉+文本
-- **Gemma 3**（Google，1B~27B）：端侧部署的优选
+- **Gemma 4-2B/4B**（Google，2026.04）🆕：手机/边缘设备，原生音视频，Apache 2.0
 - **Qwen 3 全系列**（阿里，0.6B~235B）：从手机到服务器全覆盖
+
+> 📊 **2026 年 4 月重要里程碑**：斯坦福 HAI 发布《2026 年人工智能指数报告》，Chatbot Arena 评分显示中美差距已缩至 2.7%（39分）；国产模型首次在 SWE-bench Pro 上登顶全球。
 
 **开源 vs 闭源的选择矩阵**：
 
@@ -187,7 +197,7 @@ slm_benchmarks = {
 
 ```python
 def select_model(requirements: dict) -> str:
-    """Agent 模型选型决策函数（2026 年 3 月版）"""
+    """Agent 模型选型决策函数（2026 年 4 月版）"""
     
     budget = requirements.get("monthly_budget_usd", 100)
     task_type = requirements.get("task_type", "general")
@@ -229,7 +239,7 @@ def select_model(requirements: dict) -> str:
 |-----------|---------|------|
 | 编程助手 | Claude Opus 4.6 / GPT-5.3-Codex | 长时间编程稳定，Agent 编程能力最强 |
 | 数据分析 | GPT-5 / Gemini 2.5 Pro | 多模态理解 + 函数调用稳定 |
-| 客服对话 | GPT-4o-mini / Qwen 3-8B | 成本敏感，响应速度要求高 |
+| 客服对话 | gpt-4.1-mini / Qwen 3-8B | 成本敏感，响应速度要求高 |
 | 深度研究 | Claude Opus 4.6 / GPT-5 | 1M+ 上下文 + 深度推理 |
 | 文档处理 | Gemini 2.5 Pro / Claude Opus 4.6 | 2M/1M 超长文档输入，PDF 布局理解 |
 | 本地隐私 | Qwen3.5-Plus / DeepSeek-V3.2 (自部署) | 数据不出本地，Agent 能力完整 |
@@ -260,6 +270,12 @@ def select_model(requirements: dict) -> str:
 2026.03  Kimi K2.5 (48B-A3B) ── Attention Residuals + Agent 群组
 2026.03  DeepSeek V4 (671B MoE) ── Engram 内存架构，1M+ 上下文
 2026.03  MiniMax M2.5 (229B MoE) ── Lightning Attention，Agent 实战 SOTA
+━━━━━━━━━━━━━━━━━━━━━━━━ 2026 年 4 月 ━━━━━━━━━━━━━━━━━━━━━━━━
+2026.04  Gemma 4 (2B/4B/26B/31B) ── 谷歌开源，原生视频/音频，Apache 2.0
+2026.04  Qwen 3.6-Plus (35B-A3B) ── 单卡 RTX 4090 可跑，MCPMark 37%
+2026.04  GLM-5.1 (754B MoE) ── 智谱 MIT 协议，支持 6000+ 次工具调用
+2026.04  DeepSeek V3.1 ── 专家模式更新，华为昇腾芯片原生支持
+2026.04  GPT-6 (代号"Spud") ── OpenAI Symphony 架构，AGI"最后一公里"
 ```
 
 ## 展望：基座模型的下一步
@@ -290,7 +306,7 @@ def select_model(requirements: dict) -> str:
 | 多模态原生 | 文本→视觉+语音+视频全模态 | Agent 能"看"能"听"能"画"，交互方式更自然 |
 | 小模型进步 | 3.8B 参数可在手机运行，14B 超越 GPT-4 | Agent 可在端侧运行，零延迟、完全隐私 |
 
-> ⏰ *注：模型技术发展极快，本节数据截至 2026 年 3 月 24 日。DeepSeek V4 已正式发布，Kimi K2.5 在 GTC 2026 上亮相。行业格局仍在快速演变。建议定期关注各厂商的发布动态和权威基准评测（如 LMArena、Open LLM Leaderboard、Chatbot Arena）获取最新信息。*
+> ⏰ *注：模型技术发展极快，本节数据截至 **2026 年 4 月 21 日**。2026 年 4 月，Gemma 4（谷歌，Apache 2.0 开源，原生视频/音频多模态）、Qwen 3.6-Plus（单卡可跑，MCPMark 37%）、GLM-5.1（智谱，MIT，6000+ 次工具调用）、GPT-6（代号"Spud"，Symphony 架构）相继发布，开源模型在多项基准上首次全面追平闭源。行业格局仍在快速演变。建议定期关注各厂商的发布动态和权威基准评测（如 LMArena、Open LLM Leaderboard、Chatbot Arena）获取最新信息。*
 
 ---
 

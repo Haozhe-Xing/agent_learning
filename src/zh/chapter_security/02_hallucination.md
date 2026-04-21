@@ -1,4 +1,4 @@
-# 幻觉问题与事实性保障
+# 19.2 幻觉问题与事实性保障
 
 > **本节目标**：理解 LLM 幻觉的成因，掌握减少幻觉、提高事实性的实用技术。
 
@@ -247,7 +247,7 @@ def create_reasoning_agent(task_type: str):
         system_note = "请在回答前仔细推理验证每个事实性声明。"
     else:
         # 常规模型：更快更便宜，适合低风险场景
-        model = "gpt-4o"
+        model = "gpt-4.1"
         system_note = "请确保回答的准确性，不确定时请说明。"
     
     return {"model": model, "system_note": system_note}
@@ -416,7 +416,7 @@ def get_structured_answer(question: str) -> StructuredAnswer:
     """获取结构化的、带置信度标注的回答"""
     
     response = client.beta.chat.completions.parse(
-        model="gpt-4o-2024-08-06",
+        model="gpt-4.1",
         messages=[
             {"role": "system", "content": (
                 "你是一个严谨的助手。对于每个事实性声明，"
@@ -445,7 +445,7 @@ class CrossVerificationSystem:
         """
         from openai import OpenAI
         self.client = OpenAI()
-        self.models = models  # 如 ["gpt-4o", "claude-3-opus", "deepseek-chat"]
+        self.models = models  # 如 ["gpt-4.1", "claude-3-opus", "deepseek-chat"]
     
     async def cross_verify(self, question: str) -> dict:
         """多模型交叉验证"""
@@ -473,7 +473,7 @@ class CrossVerificationSystem:
         )
         
         synthesis = self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {"role": "system", "content": (
                     "你是一个事实核查仲裁者。以下是多个 AI 模型对同一问题的回答。\n"

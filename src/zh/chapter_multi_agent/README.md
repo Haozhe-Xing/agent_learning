@@ -1,6 +1,34 @@
-# 第14章 多 Agent 协作
+# 第16章 多 Agent 协作
 
 > 👥 *"一个 Agent 能做的事有限，多个 Agent 协作才能完成复杂任务。"*
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 理解单 Agent 的局限性以及多 Agent 的优势
+- ✅ 掌握 Supervisor、去中心化等多 Agent 通信模式
+- ✅ 实现基于 LangGraph 的多 Agent 协调系统
+- ✅ 构建一个多 Agent 软件开发团队作为综合实战
+
+## ⏱️ 预计学习时间
+
+约 **120-150 分钟**（含实战）
+
+## 💡 前置知识
+
+- 完成第13章（LangGraph）
+- 了解进程/线程的基本概念
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第17章 Agent 通信协议](../chapter_protocol/README.md)
 
 ---
 
@@ -40,7 +68,7 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第12章 LangGraph](../chapter_langgraph/README.md)
+> **前置知识**：[第13章 LangGraph](../chapter_langgraph/README.md)
 >
 > **后续推荐**：
 > - 👉 [第15章 通信协议](../chapter_protocol/README.md) — MCP/A2A 等 Agent 间通信标准

@@ -1,4 +1,4 @@
-# 9.4 生产级案例：OpenAI、LangChain、Stripe
+# 9.4 生产案例：OpenAI、LangChain、Stripe
 
 > 📊 *"理论解释不了实践。让我们看看那些真实交付了百万行代码、成百上千个 PR 的工程团队是怎么做的。"*
 

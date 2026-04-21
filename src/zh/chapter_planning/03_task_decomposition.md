@@ -1,4 +1,4 @@
-# 任务分解：将复杂问题拆解为子任务
+# 6.3 任务分解：将复杂问题拆解为子任务
 
 复杂任务往往超出单个 LLM 调用的能力范围。任务分解是将大问题拆成可管理的小问题，然后逐步解决。
 
@@ -31,7 +31,7 @@ class PlanAndExecuteAgent:
             [{"step": 1, "task": "...", "tool": "...", "depends_on": []}]
         """
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {
                     "role": "system",
@@ -71,7 +71,7 @@ class PlanAndExecuteAgent:
         if tool_name and tool_name in self.tools:
             # 让 LLM 决定工具参数
             param_response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4.1-mini",
                 messages=[
                     {
                         "role": "user",
@@ -91,7 +91,7 @@ class PlanAndExecuteAgent:
         else:
             # 直接用 LLM 处理
             response = client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4.1",
                 messages=[
                     {
                         "role": "system",
@@ -122,7 +122,7 @@ class PlanAndExecuteAgent:
         
         # 3. 汇总结果
         summary_response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {
                     "role": "user",
@@ -183,7 +183,7 @@ def hierarchical_decompose(task: str, depth: int = 2) -> dict:
     """
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "system",

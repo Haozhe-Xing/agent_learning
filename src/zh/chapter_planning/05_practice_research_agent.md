@@ -1,4 +1,4 @@
-# 实战：自动化研究助手 Agent
+# 6.5 实战：自动化研究助手 Agent
 
 综合本章所学的规划、推理和反思能力，构建一个能够自主进行研究的 Agent。
 
@@ -77,7 +77,7 @@ class ResearchAssistant:
         # ===== 阶段1：规划研究 =====
         print("📋 阶段1：制定研究计划...")
         plan_response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {
                     "role": "user",
@@ -121,7 +121,7 @@ class ResearchAssistant:
         print("\n🧠 阶段3：分析综合...")
         
         analysis_response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {
                     "role": "user",
@@ -147,7 +147,7 @@ class ResearchAssistant:
         print("\n✅ 阶段4：质量检查...")
         
         review_response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[
                 {
                     "role": "user",

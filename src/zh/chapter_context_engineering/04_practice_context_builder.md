@@ -1,4 +1,4 @@
-# 实战：构建上下文管理器
+# 8.4 实战：构建上下文管理器
 
 > 📖 *"Talk is cheap, show me the code." — 让我们用代码实现一个完整的上下文管理系统。*
 
@@ -349,7 +349,7 @@ class SummarizeStage:
 要求：控制在 300 字以内。"""
         
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=600,
         )

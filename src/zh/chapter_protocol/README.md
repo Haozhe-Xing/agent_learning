@@ -1,6 +1,34 @@
-# 第15章 Agent 通信协议
+# 第17章 Agent 通信协议
 
 > 🔌 *"Agent 之间需要标准化的通信方式，就像人类需要共同语言一样。"*
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 深入理解 MCP（Model Context Protocol）的设计与使用
+- ✅ 了解 A2A（Agent-to-Agent）和 ANP（Agent Network Protocol）协议
+- ✅ 掌握 Agent 间消息传递和状态共享的实现方式
+- ✅ 完成基于 MCP 的工具集成实战项目
+
+## ⏱️ 预计学习时间
+
+约 **90-120 分钟**（含实战）
+
+## 💡 前置知识
+
+- 完成第4章（工具调用）和第16章（多 Agent 协作）
+- 了解 HTTP 协议和 JSON-RPC 的基本概念
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md)
 
 ---
 
@@ -42,7 +70,7 @@
 > **前置知识**：[第14章 多 Agent 协作](../chapter_multi_agent/README.md)、[第4章 工具调用](../chapter_tools/README.md)
 >
 > **后续推荐**：
-> - 👉 [第16章 评估与优化](../chapter_evaluation/README.md) — 进入生产化篇
+> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md) — 进入生产化篇
 > - 👉 [第18章 部署与生产化](../chapter_deployment/README.md) — 部署基于 MCP 的 Agent 服务
 
 ---

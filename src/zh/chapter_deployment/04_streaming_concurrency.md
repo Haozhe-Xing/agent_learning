@@ -1,4 +1,4 @@
-# 流式响应与并发处理
+# 20.4 流式响应与并发处理
 
 > **本节目标**：掌握 Agent 服务的流式输出和高并发处理技术。
 
@@ -21,7 +21,7 @@ import asyncio
 async def stream_agent_response(question: str):
     """流式获取 Agent 回复"""
     
-    llm = ChatOpenAI(model="gpt-4o", streaming=True)
+    llm = ChatOpenAI(model="gpt-4.1", streaming=True)
     
     # 方式 1：使用 astream（推荐）
     full_response = ""
@@ -49,7 +49,7 @@ async def chat_stream(question: str):
     """流式 Agent 对话"""
     
     async def generate():
-        llm = ChatOpenAI(model="gpt-4o", streaming=True)
+        llm = ChatOpenAI(model="gpt-4.1", streaming=True)
         
         # 发送思考状态
         yield f"data: {json.dumps({'type': 'thinking'})}\n\n"
@@ -83,7 +83,7 @@ class AsyncAgentService:
     
     def __init__(self, max_concurrent: int = 50):
         self.semaphore = asyncio.Semaphore(max_concurrent)
-        self.llm = ChatOpenAI(model="gpt-4o")
+        self.llm = ChatOpenAI(model="gpt-4.1")
     
     async def handle_request(self, question: str) -> str:
         """处理单个请求（带并发控制）"""
@@ -197,7 +197,7 @@ class LLMConnectionPool:
         response = await self.client.post(
             "https://api.openai.com/v1/chat/completions",
             json={
-                "model": "gpt-4o",
+                "model": "gpt-4.1",
                 "messages": messages
             },
             headers={

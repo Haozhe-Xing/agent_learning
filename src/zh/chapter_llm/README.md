@@ -4,6 +4,43 @@
 
 ---
 
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 理解大语言模型（LLM）的工作原理和 Transformer 架构
+- ✅ 掌握 Prompt Engineering 的核心技巧和最佳实践
+- ✅ 熟练使用 Few-shot / Zero-shot / Chain-of-Thought 提示策略
+- ✅ 能够通过 OpenAI / Anthropic API 调用最新主流模型
+- ✅ 理解 Token、Temperature 等模型参数对输出质量的影响
+- ✅ 了解 2025—2026 年前沿基础模型的格局与选型依据
+- ✅ 掌握 Tokenizer / BPE 的工作原理和词表大小的影响
+- ✅ 深入理解 Scaled Dot-Product Attention 的完整推导和 Q/K/V 机制
+- ✅ 理解 KV Cache 的原理、显存计算和 Prefill vs Decode 两阶段
+- ✅ 掌握位置编码的演进：Sinusoidal → ALiBi → RoPE（含完整数学推导）
+- ✅ 理解 RoPE 旋转矩阵的数学本质，以及 YaRN/NTK 长上下文扩展方法
+
+## ⏱️ 预计学习时间
+
+约 **120-150 分钟**（含实战练习）
+
+## 💡 前置知识
+
+- 完成第1章（Agent 基础概念）
+- Python 基础语法（条件判断、函数、类）
+- 了解 HTTP API 调用的基本概念
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第4章 工具调用](../chapter_tools/README.md)
+> - 👉 [第5章 记忆系统](../chapter_memory/README.md)
+
+---
+
 ## 本章概览
 
 本章从直觉层面解释大语言模型的工作原理，然后系统讲解如何通过 Prompt Engineering 与模型高效对话，介绍常见的提示策略，并手把手带你完成第一次 API 调用。最后，我们深入探讨 Token、Temperature 等关键参数，帮助你真正"驾驭"语言模型。

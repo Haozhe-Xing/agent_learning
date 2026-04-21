@@ -1,4 +1,4 @@
-# 多 Agent 通信模式
+# 16.2 多 Agent 通信模式
 
 多 Agent 系统中，Agent 间如何交换信息是核心设计决策。不同的通信模式适合不同的场景，选择错误会导致系统变得难以维护或性能低下。
 
@@ -116,7 +116,7 @@ def researcher(state: TeamState) -> dict:
     client = OpenAI()
     
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": f"请研究：{state['task']}，给出3个要点"}],
         max_tokens=200
     )
@@ -131,7 +131,7 @@ def writer(state: TeamState) -> dict:
     
     context = "\n".join(state.get("research_notes", []))
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": f"基于研究：{context}，写200字文章"}],
         max_tokens=300
     )
@@ -197,7 +197,7 @@ def translate_agent(text: str) -> str:
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": f"翻译为英文：{text}"}],
         max_tokens=100
     )

@@ -1,7 +1,37 @@
-# 第9章 Harness Engineering：驾驭 Agent 的系统工程
+# 第9章 Harness 工程
 
 > 🔧 *"不要只关注让 AI 写更好的代码，要关注如何构建一个能让 AI 持续可靠地工作的系统。"*  
 > —— Mitchell Hashimoto，HashiCorp 联合创始人
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 理解 Harness 工程的定义和六大工程支柱
+- ✅ 掌握 AGENTS.md / CLAUDE.md 的编写规范
+- ✅ 学习 OpenAI、LangChain、Stripe 的生产 Harness 案例
+- ✅ 构建你的第一个完整 Harness 系统
+- ✅ 实现结构化输出与可靠 JSON 生成
+
+## ⏱️ 预计学习时间
+
+约 **90-120 分钟**（含实战）
+
+## 💡 前置知识
+
+- 完成第4~8章（工具、记忆、规划、RAG、上下文）
+- 有一定的 Agent 开发经验
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第10章 技能系统](../chapter_skill/README.md)
+> - 👉 [第15章 Claude Code](../chapter_claude_code/README.md)
 
 ---
 

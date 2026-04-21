@@ -1,4 +1,4 @@
-# 9.6 结构化输出：保障 JSON 可靠性的工程实践
+# 9.6 结构化输出：工程可靠 JSON
 
 > 🔩 *"Agent 输出一个无法解析的 JSON，下游整个流水线就崩了。这不是模型问题——这是你的 Harness 没做好。"*
 
@@ -353,7 +353,7 @@ class ExtractionResult(BaseModel):
 
 # ── 调用 API，使用 parse() 方法直接得到 Pydantic 对象 ──
 response = client.beta.chat.completions.parse(
-    model="gpt-4o-2024-08-06",   # 支持 Structured Outputs 的版本
+    model="gpt-4.1",   # 支持 Structured Outputs 的版本
     messages=[
         {"role": "system", "content": "你是一个信息提取助手，从文本中提取人员信息。"},
         {"role": "user", "content": "张三，男，28岁，邮箱 zhangsan@example.com。李四，35岁。"},
@@ -677,7 +677,7 @@ def extract_with_retry(
     text: str,
     schema_class: type[BaseModel],
     max_retries: int = 3,
-    model: str = "gpt-4o-mini",
+    model: str = "gpt-4.1-mini",
 ) -> BaseModel:
     """
     带重试的结构化提取
@@ -818,7 +818,7 @@ class StructuredOutputHarness(Generic[T]):
         self,
         schema_class: Type[T],
         backend: OutputBackend = OutputBackend.OPENAI,
-        model: str = "gpt-4o",
+        model: str = "gpt-4.1",
         max_retries: int = 3,
         retry_delay: float = 0.5,
     ):
@@ -977,7 +977,7 @@ class SentimentAnalysis(BaseModel):
 harness = StructuredOutputHarness(
     SentimentAnalysis,
     backend=OutputBackend.OPENAI,
-    model="gpt-4o-mini",
+    model="gpt-4.1-mini",
     max_retries=3,
 )
 

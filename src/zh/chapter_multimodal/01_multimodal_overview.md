@@ -1,4 +1,4 @@
-# 多模态能力概述
+# 23.1 多模态能力全景
 
 > **本节目标**：了解多模态大模型的能力边界和典型应用场景。
 
@@ -17,7 +17,7 @@
 | 语音 | 语音指令 | 语音回复 |
 | 视频 | 视频片段 | 视频描述、关键帧分析 |
 
-GPT-4o 是典型的多模态模型——它能同时理解文本和图像输入。
+GPT-4.1 是典型的多模态模型——它能同时理解文本和图像输入。
 
 ---
 
@@ -54,7 +54,7 @@ MULTIMODAL_USE_CASES = {
 
 | 模型 | 文本理解 | 图像理解 | 图像生成 | 语音 |
 |------|---------|---------|---------|------|
-| GPT-4o | ✅ | ✅ | ✅（DALL-E） | ✅ |
+| GPT-4.1 | ✅ | ✅ | ✅（DALL-E） | ✅ |
 | Claude 4 | ✅ | ✅ | ❌ | ❌ |
 | Gemini 2.5 Pro | ✅ | ✅ | ✅ | ✅ |
 | 通义千问 | ✅ | ✅ | ✅ | ✅ |
@@ -79,7 +79,7 @@ def analyze_image(image_path: str, question: str) -> str:
         image_data = base64.b64encode(f.read()).decode()
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[
             {
                 "role": "user",
@@ -178,14 +178,14 @@ class ModalityRouter:
     
     async def _handle_text(self, data: dict) -> str:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # 纯文本用便宜模型
+            model="gpt-4.1-mini",  # 纯文本用便宜模型
             messages=[{"role": "user", "content": data["content"]}]
         )
         return response.choices[0].message.content
     
     async def _handle_image(self, data: dict) -> str:
         response = client.chat.completions.create(
-            model="gpt-4o",  # 图像理解需要多模态模型
+            model="gpt-4.1",  # 图像理解需要多模态模型
             messages=[{
                 "role": "user",
                 "content": [
@@ -217,7 +217,7 @@ from langchain_core.tools import tool
 def analyze_image_tool(image_url: str, question: str = "描述图片内容") -> str:
     """分析图片内容。传入图片URL和问题，返回分析结果。"""
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{
             "role": "user",
             "content": [
@@ -335,7 +335,7 @@ def analyze_with_detail_control(
     image_b64 = optimize_image_for_api(image_path)
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1",
         messages=[{
             "role": "user",
             "content": [
@@ -361,7 +361,7 @@ def analyze_with_detail_control(
 | 概念 | 说明 |
 |------|------|
 | 多模态 | 同时处理文本、图像、语音等多种信息 |
-| 主流模型 | GPT-4o、Claude 4、Gemini 2.5 Pro |
+| 主流模型 | GPT-4.1、Claude 4、Gemini 2.5 Pro |
 | 典型场景 | 图像分析、语音交互、文档处理、创意设计 |
 | 核心流程 | 输入编码 → 跨模态融合 → 推理 → 多模态输出 |
 | 关键挑战 | 模态理解偏差、Token 消耗、延迟控制 |

@@ -1,4 +1,4 @@
-# 数据连接与查询
+# 22.2 数据连接与查询
 
 > **本节目标**：实现安全的数据库连接和自然语言到 SQL 的转换，深入理解 Text-to-SQL 的原理与安全挑战。
 
@@ -296,7 +296,7 @@ class TextToSQL:
 ```python
 async def demo():
     db = SafeDatabaseConnector("sales.db")
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4.1", temperature=0)
     t2s = TextToSQL(llm, db)
     
     questions = [

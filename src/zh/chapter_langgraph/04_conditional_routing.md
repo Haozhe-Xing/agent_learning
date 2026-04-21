@@ -1,4 +1,4 @@
-# 条件路由与循环控制
+# 13.4 条件路由与循环控制
 
 LangGraph 的强大之处在于灵活的条件路由和循环控制——这让它能够表达比简单的"调用工具"更复杂的工作流。
 
@@ -21,7 +21,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 import json
 
-llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatOpenAI(model="gpt-4.1-mini")
 
 # ============================
 # 带循环的代码审查 Agent

@@ -862,7 +862,7 @@ harness.register_component(
     name="loop_detector",
     component=LoopDetector(max_same_attempts=3),
     rationale="GPT-4o 在复杂 bug 修复时容易陷入相同思路的死循环",
-    added_for_model="gpt-4o",
+    added_for_model="gpt-4.1",
     review_trigger="model_update",
 )
 

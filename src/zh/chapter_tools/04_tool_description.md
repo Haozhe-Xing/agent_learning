@@ -1,4 +1,4 @@
-# 工具描述的编写技巧
+# 4.4 工具描述的编写技巧
 
 工具描述（Tool Description）是告诉 LLM"这个工具是什么、什么时候用、怎么用"的关键信息。描述质量直接决定 LLM 能否正确地选择和调用工具。
 
@@ -295,7 +295,7 @@ def test_tool_description_quality(tool_schema: dict, test_cases: list) -> None:
     
     for case in test_cases:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[{"role": "user", "content": case["input"]}],
             tools=[tool_schema],
             tool_choice="auto"

@@ -1,6 +1,34 @@
-# 第13章 其他主流框架概览
+# 第14章 主流 Agent 框架总览
 
 > 🧭 *"框架只是工具，理解原理才是根本。本章快速浏览主流 Agent 框架，帮你做出明智的技术选择。"*
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 了解 AutoGPT 和 BabyAGI 的设计理念与局限
+- ✅ 掌握 CrewAI 角色扮演多智能体框架的使用
+- ✅ 理解 AutoGen 多智能体对话框架的架构
+- ✅ 知道 Dify / Coze 等低代码平台的适用场景
+- ✅ 能够根据项目需求做出合理的框架选型决策
+
+## ⏱️ 预计学习时间
+
+约 **90-120 分钟**
+
+## 💡 前置知识
+
+- 完成第12章（LangChain）和第13章（LangGraph）
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第16章 多 Agent 协作](../chapter_multi_agent/README.md)
 
 ---
 
@@ -39,11 +67,11 @@ Agent 框架生态发展迅速，除了 LangChain/LangGraph 外，还有 AutoGPT
 
 ## 🔗 学习路径
 
-> **前置知识**：[第11章 LangChain](../chapter_langchain/README.md)、[第12章 LangGraph](../chapter_langgraph/README.md)
+> **前置知识**：[第12章 LangChain](../chapter_langchain/README.md)、[第13章 LangGraph](../chapter_langgraph/README.md)
 >
 > **后续推荐**：
 > - 👉 [第14章 多 Agent 协作](../chapter_multi_agent/README.md) — 深入多 Agent 架构设计
-> - 👉 [第16章 评估与优化](../chapter_evaluation/README.md) — 评估不同框架的实际表现
+> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md) — 评估不同框架的实际表现
 
 ---
 

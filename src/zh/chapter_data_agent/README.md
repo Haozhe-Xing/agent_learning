@@ -1,6 +1,36 @@
-# 第20章 项目实战：智能数据分析 Agent
+# 第22章 项目实战：智能数据分析 Agent
 
 > 用自然语言做数据分析——从 "帮我分析上月销售" 到完整的分析报告。
+
+---
+
+
+## 🎓 学习目标
+
+完成本章学习后，你将能够：
+
+- ✅ 设计智能数据分析 Agent 的完整架构
+- ✅ 实现 Text-to-SQL 和多种数据库连接方式
+- ✅ 构建自动化数据分析和可视化能力
+- ✅ 生成结构化数据分析报告
+- ✅ 交付一个端到端可用的数据分析 Agent
+
+## ⏱️ 预计学习时间
+
+约 **180-240 分钟**（综合实战项目）
+
+## 💡 前置知识
+
+- 完成第一至五部分所有章节
+- 了解 SQL 基础语法
+- pip install pandas matplotlib sqlalchemy
+
+---
+
+## 🔗 学习路径
+
+> **后续推荐**：
+> - 👉 [第23章 项目实战：多模态 Agent](../chapter_multimodal/README.md)
 
 ---
 
@@ -28,12 +58,12 @@
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第6章 规划与推理](../chapter_planning/README.md)、[第12章 LangGraph](../chapter_langgraph/README.md)
+> **核心前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第6章 规划与推理](../chapter_planning/README.md)、[第13章 LangGraph](../chapter_langgraph/README.md)
 > 推荐但非必须：[第16-18章 生产化篇](../chapter_evaluation/README.md)
 >
 > **同系列项目**：
 > - 🔨 [第19章 AI 编程助手](../chapter_coding_agent/README.md)
-> - 🎨 [第21章 多模态 Agent](../chapter_multimodal/README.md)
+> - 🎨 [第23章 多模态 Agent](../chapter_multimodal/README.md)
 
 ---
 

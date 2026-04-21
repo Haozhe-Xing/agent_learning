@@ -1,4 +1,4 @@
-# LangChain 架构全景
+# 12.1 LangChain 架构总览
 
 LangChain 是一个模块化的 LLM 应用开发框架，核心设计思想是**通过标准化接口组合各类组件**，让开发者专注于业务逻辑。
 
@@ -107,7 +107,7 @@ from langchain_core.output_parsers import StrOutputParser
 # 1. 基础模型调用
 # ============================
 
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.7)
 
 # 直接调用
 response = llm.invoke([HumanMessage(content="你好！")])

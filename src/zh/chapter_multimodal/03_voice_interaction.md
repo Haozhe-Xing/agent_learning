@@ -1,4 +1,4 @@
-# 语音交互集成
+# 23.3 语音交互集成
 
 > **本节目标**：为 Agent 集成语音识别（STT）和语音合成（TTS）能力，理解实时语音处理架构与多语言支持策略。
 
@@ -371,7 +371,7 @@ class VoiceSentimentAnalyzer:
 转录文本：{transcript.text}"""
         
         response = self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[{"role": "user", "content": analysis_prompt}],
             response_format={"type": "json_object"}
         )

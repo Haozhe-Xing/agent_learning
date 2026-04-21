@@ -1,4 +1,4 @@
-# 如何评估 Agent 的表现？
+# 18.1 如何评估 Agent 的表现？
 
 > **本节目标**：理解 Agent 评估的基本思路，掌握常用的评估维度和方法。
 
@@ -301,7 +301,7 @@ from langchain_openai import ChatOpenAI
 class LLMJudge:
     """用 LLM 作为评审"""
     
-    def __init__(self, model: str = "gpt-4o"):
+    def __init__(self, model: str = "gpt-4.1"):
         self.llm = ChatOpenAI(model=model, temperature=0)
     
     def evaluate(

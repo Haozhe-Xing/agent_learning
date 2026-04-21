@@ -1,4 +1,4 @@
-# 实战：带记忆的个人助理 Agent
+# 5.5 实战：带记忆的个人助手 Agent
 
 综合前四节的知识，构建一个真正有"记忆"的个人助理——它能记住你的偏好、持续跨会话学习。
 
@@ -145,7 +145,7 @@ class PersonalAssistant:
         
         try:
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4.1-mini",
                 messages=[{"role": "user", "content": prompt}],
                 response_format={"type": "json_object"},
                 max_tokens=300
@@ -202,7 +202,7 @@ class PersonalAssistant:
         
         # 3. 调用 LLM
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=messages,
             max_tokens=800
         )

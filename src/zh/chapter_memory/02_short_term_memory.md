@@ -1,10 +1,10 @@
-# 短期记忆：对话历史管理
+# 5.2 短期记忆：对话历史管理
 
 短期记忆是最基础的记忆形式——维护对话历史，让 Agent 知道"刚才我们说了什么"。
 
 为什么这很重要？LLM 本身是**无状态**的——每次调用都是一次全新的请求，模型并不"记得"上一次对话的内容。如果用户在第一轮说"我叫张伟"，第二轮问"我叫什么名字"，模型如果不回传之前的对话历史，就会一脸茫然。短期记忆解决的正是这个问题：**通过在每次请求中附带之前的对话记录，让模型"看起来"拥有了记忆。**
 
-但这带来一个新问题：LLM 的上下文窗口是有限的（GPT-4o 约 128K Token）。随着对话越来越长，Token 消耗急剧增加，不仅费用高昂，还可能超出模型的处理上限。因此，我们需要**对话历史管理策略**来平衡"记忆完整性"和"资源效率"。
+但这带来一个新问题：LLM 的上下文窗口是有限的（GPT-4.1 约 128K Token）。随着对话越来越长，Token 消耗急剧增加，不仅费用高昂，还可能超出模型的处理上限。因此，我们需要**对话历史管理策略**来平衡"记忆完整性"和"资源效率"。
 
 本节介绍三种策略：全量保留、滑动窗口、摘要压缩，它们适用于不同长度的对话场景。
 
@@ -31,7 +31,7 @@ class Message:
 class ConversationHistory:
     """对话历史管理器"""
     
-    def __init__(self, system_prompt: str = None, model: str = "gpt-4o"):
+    def __init__(self, system_prompt: str = None, model: str = "gpt-4.1"):
         self.model = model
         self.encoding = tiktoken.encoding_for_model(model)
         self.messages: list[Message] = []
@@ -101,7 +101,7 @@ class SlidingWindowMemory:
         system_prompt: str = None,
         max_turns: int = 10,       # 最大保留轮数
         max_tokens: int = 8000,    # 最大 Token 数
-        model: str = "gpt-4o-mini"
+        model: str = "gpt-4.1-mini"
     ):
         self.model = model
         self.max_turns = max_turns
@@ -173,7 +173,7 @@ for i in range(8):  # 模拟长对话
 
 **摘要压缩**是一种更智能的方案：当对话历史超过阈值时，用 LLM 将旧对话压缩成一段简洁的摘要，然后只保留"摘要 + 最近的消息"。这样既控制了 Token 总量，又保留了早期对话中的关键信息（比如用户偏好、项目背景、已做的决策）。
 
-这个方案的代价是：每次压缩需要额外调用一次 LLM（可以用 `gpt-4o-mini` 这样的轻量模型来降低成本），而且压缩过程中不可避免地会丢失一些细节。在实践中，摘要压缩特别适合那些对话很长但信息密度不均匀的场景——比如技术支持对话，前半段可能是大量的排查尝试，真正有价值的是结论和决策。
+这个方案的代价是：每次压缩需要额外调用一次 LLM（可以用 `gpt-4.1-mini` 这样的轻量模型来降低成本），而且压缩过程中不可避免地会丢失一些细节。在实践中，摘要压缩特别适合那些对话很长但信息密度不均匀的场景——比如技术支持对话，前半段可能是大量的排查尝试，真正有价值的是结论和决策。
 
 ```python
 class SummaryMemory:
@@ -186,8 +186,8 @@ class SummaryMemory:
         self,
         system_prompt: str = None,
         max_tokens_before_summary: int = 3000,
-        model: str = "gpt-4o-mini",
-        summary_model: str = "gpt-4o-mini"
+        model: str = "gpt-4.1-mini",
+        summary_model: str = "gpt-4.1-mini"
     ):
         self.model = model
         self.summary_model = summary_model

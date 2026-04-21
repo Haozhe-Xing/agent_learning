@@ -1,4 +1,4 @@
-# AutoGen：微软的多 Agent 对话框架
+# 14.3 AutoGen：多智能体对话框架
 
 AutoGen 是微软开发的多 Agent 对话框架，其核心创新是：通过 **Agent 之间的对话** 来完成任务，而非传统的调用链。
 
@@ -26,7 +26,7 @@ from autogen_agentchat.conditions import TextMentionTermination
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 import asyncio
 
-model_client = OpenAIChatCompletionClient(model="gpt-4o-mini")
+model_client = OpenAIChatCompletionClient(model="gpt-4.1-mini")
 
 # ============================
 # 基础：创建单个 Agent
