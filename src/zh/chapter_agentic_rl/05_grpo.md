@@ -638,6 +638,399 @@ result = reward_fn(
 print(result)
 ```
 
+### 5.3b 风格与人格奖励——让 Agent 更像人
+
+> 📖 *前面四个维度（准确率/格式/效率/安全）适合**可验证任务**（数学、代码、工具调用）——有唯一正确答案可以对比。但角色扮演、对话 Agent、创意写作等场景的目标是**让输出"感觉更好"**，没有标准答案。这需要一套专门的奖励设计体系。*
+
+#### 可验证任务 vs 不可验证任务
+
+| 任务类型 | 示例 | 奖励信号来源 | 推荐方法 |
+|---------|------|------------|---------|
+| **可验证任务** | 数学解题、代码执行、工具调用 | 规则/程序自动判定（RLVR） | 确定性规则奖励 |
+| **不可验证任务** | 角色扮演、写笑话、情感对话、创意写作 | 人类偏好 / LLM-as-Judge | RLHF 奖励模型 + 规则辅助 |
+
+> ⚠️ **关键区别**：不可验证任务中，**RLVR（基于可验证奖励的 RL）不适用**，因为没有 ground truth。此时正确选择是：训练一个偏好奖励模型（来自人类标注的 preference data），或使用一个足够强的 LLM 作为评分器（LLM-as-Judge）。
+
+---
+
+#### 维度五：风格一致性奖励（Style Consistency Reward）
+
+风格一致性衡量模型的输出是否持续符合目标角色的语言风格（语气、词汇、句式、情感基调）。
+
+```python
+import re, math
+from typing import Optional
+
+def style_consistency_reward(
+    completion: str,
+    persona: dict,
+    llm_judge_fn: Optional[callable] = None,
+) -> float:
+    """
+    风格一致性奖励：评估输出是否符合角色的语言风格
+
+    Args:
+        completion:    模型的完整输出
+        persona:       角色定义字典，包含 style_keywords / forbidden_words / tone
+        llm_judge_fn:  可选的 LLM 评分函数，接受 (prompt, completion) 返回 [0,1]
+
+    Returns:
+        奖励值 ∈ [0, 1]，由规则分 (0.5) + LLM 分 (0.5) 合成
+    """
+    rule_score = 0.0
+    text = completion.lower()
+
+    # ── 1. 风格关键词命中率（正向信号）────────────────────────────────────
+    # 例如：幽默风格角色应包含 ["哈哈", "笑", "开玩笑", "其实吧"]
+    style_kws = persona.get("style_keywords", [])
+    if style_kws:
+        hit_count = sum(1 for kw in style_kws if kw.lower() in text)
+        rule_score += 0.3 * min(hit_count / max(len(style_kws) * 0.3, 1), 1.0)
+        # 解释：期望命中至少 30% 的风格词汇，超出不额外加分
+
+    # ── 2. 禁用词惩罚（负向信号）──────────────────────────────────────────
+    # 例如：可爱角色禁用 ["我认为", "综上所述", "根据数据"] 等书面语
+    forbidden = persona.get("forbidden_words", [])
+    for word in forbidden:
+        if word.lower() in text:
+            rule_score -= 0.1  # 每命中一个禁用词扣 0.1，最多扣满
+
+    # ── 3. 语气模式检测 ────────────────────────────────────────────────────
+    tone = persona.get("tone", "neutral")
+    if tone == "playful":
+        # 活泼语气：检测感叹号、语气词、颜文字
+        playful_signals = [r'！', r'哈{2,}', r'～', r'呀|呢|嘛|哦', r'[（(][^)）]*[)）]']
+        hits = sum(1 for p in playful_signals if re.search(p, completion))
+        rule_score += 0.2 * (hits / len(playful_signals))
+    elif tone == "formal":
+        # 正式语气：检测书面标点和完整句子结构
+        formal_signals = [r'。$', r'，.*，', r'首先|其次|最后|综上']
+        hits = sum(1 for p in formal_signals if re.search(p, completion))
+        rule_score += 0.2 * (hits / len(formal_signals))
+
+    rule_score = max(0.0, min(0.5, rule_score))  # 规则分上限 0.5
+
+    # ── 4. LLM-as-Judge（可选，更精准但更慢）──────────────────────────────
+    llm_score = 0.5  # 无 LLM 时给中性分
+    if llm_judge_fn:
+        judge_prompt = f"""你是一个风格一致性评估专家。
+角色设定：{persona.get('description', '未提供')}
+模型输出：{completion[:500]}
+
+请评估输出是否符合角色风格，给出 0.0（完全不符合）到 1.0（完全符合）的分数。
+只回答一个数字，不要任何解释。"""
+        try:
+            raw = llm_judge_fn(judge_prompt)
+            llm_score = max(0.0, min(1.0, float(raw.strip())))
+        except (ValueError, TypeError):
+            llm_score = 0.5  # 解析失败时给中性分
+
+    # 规则分与 LLM 分各占 50%
+    return rule_score + llm_score * 0.5
+```
+
+---
+
+#### 维度六：幽默感奖励（Humor Reward）
+
+幽默是最难用规则量化的能力之一。好笑话有一个通用结构——**预期建立（Setup）→ 意外转折（Punchline）**，而且转折要让人感到「意料之外，情理之中」。
+
+```
+笑话效果曲线：
+
+   高 │
+      │         ★ 好笑话
+期望  │       ╱  
+违背  │      ╱    
+程度  │   ╱
+      │ ╱
+   低 │________________________
+      低               高
+              理解难度
+
+规律：笑话不能太显而易见（没有惊喜），也不能太难懂（完全无法理解）。
+      最佳区间是「中等难度的意外」——这就是奖励函数要捕捉的核心信号。
+```
+
+```python
+def humor_reward(
+    completion: str,
+    context: str = "",
+    llm_judge_fn: Optional[callable] = None,
+) -> float:
+    """
+    幽默感奖励：多维度评估输出的幽默质量
+
+    四个子维度（各 0.25）：
+    1. 结构完整性：是否有铺垫 + 转折结构
+    2. 关联性：笑话是否与当前对话上下文相关
+    3. 不冒犯性：不包含针对特定群体的歧视性笑话
+    4. LLM 综合评分：笑话是否真的让人觉得好笑
+    """
+    score = 0.0
+
+    # ── 1. 结构完整性（规则检测）──────────────────────────────────────────
+    # 好笑话通常有明确的铺垫段 + 出人意料的结尾
+    # 信号：存在转折词、短句结尾（punch line 通常很短）
+    structure_signals = [
+        r'(结果|没想到|谁知道|但是|然而|可是|不过).*[。！？]',  # 转折词
+        r'[。！？]\s*[^\n。！？]{2,15}[。！？]\s*$',           # 末尾有短句（punch line）
+    ]
+    structure_hits = sum(1 for p in structure_signals if re.search(p, completion))
+    score += 0.25 * (structure_hits / len(structure_signals))
+
+    # ── 2. 关联性（上下文匹配）────────────────────────────────────────────
+    if context:
+        # 提取上下文关键词，检查笑话是否呼应当前话题
+        context_words = set(re.findall(r'[\u4e00-\u9fa5]{2,4}|[a-zA-Z]{3,}', context))
+        joke_words    = set(re.findall(r'[\u4e00-\u9fa5]{2,4}|[a-zA-Z]{3,}', completion))
+        overlap = len(context_words & joke_words)
+        relevance = min(overlap / max(len(context_words) * 0.2, 1), 1.0)
+        score += 0.25 * relevance
+    else:
+        score += 0.125  # 无上下文时给半分
+
+    # ── 3. 不冒犯性检测 ────────────────────────────────────────────────────
+    # 检测针对特定群体的歧视性词汇（完整名单应从外部配置加载）
+    offensive_patterns = [
+        r'(残疾|智障|傻|白痴)\s*(人|者)',     # 针对残障人士
+        r'(女人|女的)\s*(就是|都是|果然)',     # 性别歧视
+        r'(地域)\s*(歧视|黑)',                 # 地域歧视
+    ]
+    is_offensive = any(re.search(p, completion) for p in offensive_patterns)
+    score += 0.25 * (0.0 if is_offensive else 1.0)
+
+    # ── 4. LLM 综合评分 ─────────────────────────────────────────────────────
+    llm_score = 0.5
+    if llm_judge_fn:
+        judge_prompt = f"""你是一个幽默感评估专家，请评估下面这段文字是否幽默。
+评估标准：
+- 是否有出人意料但合理的转折？（最重要）
+- 是否让人会心一笑，而非尴尬沉默？
+- 是否简洁，没有过度解释（解释笑话会毁掉笑话）？
+
+输出文字：{completion[:300]}
+上下文（如有）：{context[:200] if context else '无'}
+
+给出 0.0（完全不好笑/尴尬）到 1.0（非常好笑）的分数，只回答数字。"""
+        try:
+            raw = llm_judge_fn(judge_prompt)
+            llm_score = max(0.0, min(1.0, float(raw.strip())))
+        except (ValueError, TypeError):
+            llm_score = 0.5
+    score += 0.25 * llm_score
+
+    return max(0.0, min(1.0, score))
+```
+
+> 💡 **工程实践**：LLM-as-Judge 评分笑话质量时，建议用 **多个评分 LLM 取平均**，或让同一个 LLM 多次采样后取众数——因为「好不好笑」本身有个体差异，单次评分方差很大。
+
+---
+
+#### 维度七：人格一致性奖励（Persona Consistency Reward）
+
+角色扮演 Agent 的最大失效模式之一是**人格漂移（Persona Drift）**——对话几轮后，模型慢慢「忘记」自己的角色，开始变回普通 AI 的回答风格。人格一致性奖励通过检测跨对话的人格稳定性来防止这一问题。
+
+```python
+def persona_consistency_reward(
+    completions: list[str],  # 一段对话中的多条输出（时间序列）
+    persona: dict,
+    embedding_fn: Optional[callable] = None,
+) -> float:
+    """
+    人格一致性奖励：检测角色在多轮对话中的稳定性
+
+    方法：
+    1. 基于规则：检查每轮输出是否包含人格标志性词汇
+    2. 基于嵌入：计算各轮输出的嵌入向量，衡量风格漂移距离
+
+    Args:
+        completions:   多轮对话的输出列表（按时间顺序）
+        persona:       角色定义，包含 signature_phrases（标志性短语）
+        embedding_fn:  可选，将文本转为嵌入向量的函数
+
+    Returns:
+        一致性分数 ∈ [0, 1]
+    """
+    if not completions:
+        return 0.5
+
+    # ── 1. 标志性短语稳定性 ────────────────────────────────────────────────
+    # 人格通常有一些标志性的口头禅或表达方式
+    # 例如：「侦探角色」总说「有意思的案子」；「厨师角色」总提到食材
+    sig_phrases = persona.get("signature_phrases", [])
+    if sig_phrases:
+        # 计算每轮输出命中标志性短语的比例
+        per_turn_hits = [
+            any(phrase in c for phrase in sig_phrases)
+            for c in completions
+        ]
+        phrase_consistency = sum(per_turn_hits) / len(per_turn_hits)
+    else:
+        phrase_consistency = 0.5  # 无标志短语时给中性分
+
+    # ── 2. 风格嵌入漂移检测（需要 embedding_fn）──────────────────────────
+    # 思路：若模型的输出风格稳定，各轮嵌入向量之间应高度相似
+    # 若存在漂移，后期输出会与早期输出差距越来越大
+    embedding_consistency = 0.5  # 默认中性
+    if embedding_fn and len(completions) >= 3:
+        try:
+            embeddings = [embedding_fn(c) for c in completions]
+            # 计算相邻轮次之间的余弦相似度，检测是否逐渐漂移
+            sims = []
+            for i in range(1, len(embeddings)):
+                cos_sim = _cosine_similarity(embeddings[0], embeddings[i])
+                # 与「第一轮」对比而非相邻轮次——因为漂移是累积的
+                sims.append(cos_sim)
+            # 相似度越高（越接近 1.0），人格越稳定
+            embedding_consistency = sum(sims) / len(sims)
+        except Exception:
+            embedding_consistency = 0.5
+
+    # ── 3. 「我是 AI」拒绝检测 ────────────────────────────────────────────
+    # 最严重的人格漂移：模型突然说「我是一个 AI，我没有情感」
+    # 这直接破坏了角色扮演的沉浸感
+    ai_disclosure_penalty = 0.0
+    ai_patterns = [
+        r'我是.{0,5}(AI|人工智能|语言模型)',
+        r'作为.{0,5}AI',
+        r'我没有(真实的?)?(情感|感情|意识|自我)',
+    ]
+    for c in completions:
+        if any(re.search(p, c) for p in ai_patterns):
+            ai_disclosure_penalty += 0.3  # 每次出现扣 0.3，鼓励角色保持一致
+    ai_disclosure_penalty = min(ai_disclosure_penalty, 1.0)
+
+    base_score = 0.5 * phrase_consistency + 0.5 * embedding_consistency
+    return max(0.0, base_score - ai_disclosure_penalty)
+
+
+def _cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
+    """计算两个向量的余弦相似度"""
+    dot = sum(a * b for a, b in zip(vec_a, vec_b))
+    norm_a = math.sqrt(sum(a * a for a in vec_a))
+    norm_b = math.sqrt(sum(b * b for b in vec_b))
+    return dot / (norm_a * norm_b + 1e-8)
+```
+
+---
+
+#### 角色扮演 Agent 的完整奖励配置
+
+将上述维度合并为角色扮演专用的奖励函数：
+
+```python
+@dataclass
+class RoleplayRewardConfig:
+    """角色扮演 Agent 的奖励权重配置"""
+    # 与任务型 Agent 不同：准确率权重为 0（无标准答案），风格类权重占主导
+    style_weight:     float = 0.35  # 风格一致性：最核心，占最大权重
+    humor_weight:     float = 0.25  # 幽默感（若角色需要幽默）
+    persona_weight:   float = 0.25  # 人格一致性（防止漂移）
+    safety_weight:    float = 0.15  # 安全奖励（防止不当内容）
+
+    # 可根据角色类型调整：
+    #   严肃侦探角色：style=0.40, humor=0.10, persona=0.35, safety=0.15
+    #   搞笑综艺角色：style=0.25, humor=0.45, persona=0.20, safety=0.10
+    #   心理咨询角色：style=0.30, humor=0.05, persona=0.50, safety=0.15
+
+
+class RoleplayRewardFunction:
+    """
+    角色扮演 Agent 综合奖励函数
+
+    关键设计决策：
+    1. 不使用「准确率奖励」——角色扮演无标准答案
+    2. 「人格一致性」基于多轮对话评估，需要传入历史输出
+    3. 强烈建议使用 LLM-as-Judge 作为风格和幽默的评分组件
+    4. 奖励信号噪声大，建议使用更大的 GRPO 组数（G=16 而非 G=8）
+    """
+
+    def __init__(
+        self,
+        persona: dict,
+        config: RoleplayRewardConfig = RoleplayRewardConfig(),
+        llm_judge_fn: Optional[callable] = None,
+        embedding_fn: Optional[callable]  = None,
+    ):
+        self.persona       = persona
+        self.config        = config
+        self.llm_judge_fn  = llm_judge_fn
+        self.embedding_fn  = embedding_fn
+
+    def __call__(
+        self,
+        completion: str,
+        context:    str = "",
+        history:    list[str] = None,  # 当前角色在对话中的历史输出
+    ) -> dict[str, float]:
+
+        history = history or []
+        all_completions = history + [completion]
+
+        scores = {
+            "style":   style_consistency_reward(
+                           completion, self.persona, self.llm_judge_fn),
+            "humor":   humor_reward(
+                           completion, context, self.llm_judge_fn),
+            "persona": persona_consistency_reward(
+                           all_completions, self.persona, self.embedding_fn),
+            "safety":  safety_reward(completion),
+        }
+        scores["total"] = (
+            scores["style"]   * self.config.style_weight   +
+            scores["humor"]   * self.config.humor_weight   +
+            scores["persona"] * self.config.persona_weight +
+            scores["safety"]  * self.config.safety_weight
+        )
+        return scores
+
+
+# ── 使用示例：训练一个幽默侦探角色 ──────────────────────────────────────────
+detective_persona = {
+    "description":        "你是一个腹黑幽默的私家侦探，说话风格犀利、带刺，常用反讽和冷笑话。",
+    "tone":               "playful",
+    "style_keywords":     ["有意思", "案子", "线索", "嫌疑人", "证据", "废话"],
+    "forbidden_words":    ["作为AI", "我认为", "综上所述", "请问有什么可以帮您"],
+    "signature_phrases":  ["有意思的案子", "别废话", "证据说话"],
+}
+
+reward_fn = RoleplayRewardFunction(
+    persona=detective_persona,
+    config=RoleplayRewardConfig(
+        style_weight=0.40,
+        humor_weight=0.20,
+        persona_weight=0.25,
+        safety_weight=0.15,
+    ),
+    llm_judge_fn=None,   # 生产中替换为实际的 LLM 调用函数
+)
+
+result = reward_fn(
+    completion="嫌疑人昨晚说自己在家睡觉。有意思——他的邻居可不这么说。"
+               "看来有人的记忆力需要「修理」一下。",
+    context="上一条消息：请问嫌疑人有不在场证明吗？",
+    history=["好，案子我接了。别废话，直接说案情。"],
+)
+print(result)
+# 预期：{'style': 0.75, 'humor': 0.70, 'persona': 0.80, 'safety': 1.0, 'total': 0.79}
+```
+
+---
+
+#### 主观奖励设计的四个关键坑
+
+| 问题 | 现象 | 原因 | 解决方案 |
+|------|------|------|---------|
+| **奖励过于宽松** | 模型什么都能拿到高分，不再学习 | 奖励方差为 0，GRPO 组内无差异 | 提高评分标准严格度，确保组内奖励有差异 |
+| **LLM-Judge 被攻击** | 模型学会输出「让 Judge 打高分」的特定套路 | Judge 奖励本身被优化目标所利用 | 混合使用规则奖励（50%）+ LLM 奖励（50%） |
+| **人格漂移惩罚过强** | 模型变得死板、重复，每轮都说相同的话 | 惩罚让模型不敢有任何风格变化 | 适当放宽，允许同一人格有多种表达方式 |
+| **幽默奖励造成强迫症** | 模型不管什么情境都要硬插笑话 | 未加情境合适性判断 | 在 `humor_reward` 中加入「场合合适性」前置检查 |
+
+> 📌 **实践建议**：角色扮演 RL 训练初期，建议先用 SFT 在高质量角色扮演数据上做冷启动（让模型基本进入角色），再用 RL 精调风格——**跳过 SFT 直接做角色扮演 RL 通常效果很差**，因为初始策略的输出质量太低，奖励方差过大导致训练不稳定。
+
+---
+
 ### 5.4 奖励黑客的防御机制
 
 **奖励黑客（Reward Hacking）** [7] 是指模型学会了"钻奖励函数的空子"——在不真正完成任务的情况下获得高奖励。这是 RL 训练中最常见也最危险的失效模式。
