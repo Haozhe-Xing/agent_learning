@@ -63,8 +63,6 @@
 
 > This book not only covers foundational knowledge, but also tracks the **cutting-edge research frontiers** across each domain. Here are the key directions we follow:
 
-span
-
 <div align="center">
 
 > 💡 Entries marked with 🔥 are **2025–2026 hottest research topics** — all covered in depth in this book!
@@ -98,11 +96,49 @@ span
 <tr>
 <td width="50%" align="center">
 
+**Perceive-Think-Act Loop (Chapter 1)**
+
+<img src="src/en/svg/chapter_intro_03_loop.svg" width="420" alt="Perceive-Think-Act Loop">
+
+<sub>Agent's core mechanism: Perceive environment → LLM reasoning → Execute action → Loop until goal achieved</sub>
+
+</td>
+<td width="50%" align="center">
+
+**ReAct Reasoning Framework (Chapter 6)**
+
+<img src="src/en/svg/chapter_planning_02_react_loop.svg" width="420" alt="ReAct Reasoning Framework">
+
+<sub>Thought → Action → Observation alternating loop, enabling Agents to think while acting</sub>
+
+</td>
+</tr>
+</table>
+
 ### 🛠️ Tool Calling & RAG
 
 <table>
 <tr>
 <td width="50%" align="center">
+
+**Function Calling Complete Flow (Chapter 4)**
+
+<img src="src/en/svg/chapter_tools_02_function_calling.svg" width="480" alt="Function Calling Flow">
+
+<sub>6-step complete flow from user input to tool invocation to final response, with message structure illustration</sub>
+
+</td>
+<td width="50%" align="center">
+
+**RAG Retrieval-Augmented Generation (Chapter 7)**
+
+<img src="src/en/svg/chapter_rag_01_rag_flow.svg" width="480" alt="RAG Workflow">
+
+<sub>Offline indexing + Online retrieval dual-phase architecture, making LLM answers evidence-based</sub>
+
+</td>
+</tr>
+</table>
 
 ### 💾 Memory System & Context Engineering
 
@@ -110,17 +146,74 @@ span
 <tr>
 <td width="50%" align="center">
 
+**Three-Layer Memory Architecture (Chapter 5)**
+
+<img src="src/en/svg/chapter_memory_01_memory_types.svg" width="480" alt="Three-Layer Memory Architecture">
+
+<sub>Working memory → Short-term memory → Long-term memory, with important info sinking down and semantic retrieval pulling up</sub>
+
+</td>
+<td width="50%" align="center">
+
+**Prompt Engineering vs Context Engineering (Chapter 8)**
+
+<img src="src/en/svg/chapter_context_01_comparison.svg" width="480" alt="Prompt Engineering vs Context Engineering">
+
+<sub>From "how to say it" to "what the LLM sees" — the paradigm shift of the Agent era</sub>
+
+</td>
+</tr>
+</table>
+
 ### 🤝 Multi-Agent & Communication Protocols
 
 <table>
 <tr>
 <td width="50%" align="center">
 
+**Three Multi-Agent Communication Patterns (Chapter 14)**
+
+<img src="src/en/svg/chapter_multi_agent_02_communication.svg" width="480" alt="Multi-Agent Communication Patterns">
+
+<sub>Message Queue (async decoupling) / Shared Blackboard (data sharing) / Direct Call (real-time collaboration)</sub>
+
+</td>
+<td width="50%" align="center">
+
+**MCP / A2A / ANP Protocol Comparison (Chapter 15)**
+
+<img src="src/en/svg/chapter_protocol_03_three_protocols.svg" width="480" alt="Three Protocol Comparison">
+
+<sub>Three-layer protocol stack: ANP for discovery → A2A for task collaboration → MCP for tool invocation</sub>
+
+</td>
+</tr>
+</table>
+
 ### 🧪 Reinforcement Learning & Frameworks
 
 <table>
 <tr>
 <td width="50%" align="center">
+
+**GRPO Training Architecture (Chapter 10)**
+
+<img src="src/en/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="420" alt="GRPO Training Architecture">
+
+<sub>No Critic model needed, computes advantage via intra-group normalization, only 1.5× model size in VRAM</sub>
+
+</td>
+<td width="50%" align="center">
+
+**LangGraph Three Core Concepts (Chapter 12)**
+
+<img src="src/en/svg/chapter_langgraph_02_state_node_edge.svg" width="480" alt="LangGraph Core Concepts">
+
+<sub>State (shared state) · Node (processing unit) · Edge (execution flow control)</sub>
+
+</td>
+</tr>
+</table>
 
 <div align="center">
 
@@ -217,6 +310,49 @@ export OPENAI_API_KEY="your-key-here"
 <table>
 <tr>
 <td width="50%">
+
+**🧠 Agent Core Architecture**
+- Perceive → Think → Act Loop
+- ReAct Reasoning Framework
+- Task Decomposition & Planning
+- Reflection & Self-Correction
+
+**🛠️ Tools & Skills**
+- Function Calling Mechanism
+- Custom Tool Design
+- Skill System Construction
+- Tool Description Best Practices
+
+**🧪 Reinforcement Learning Training**
+- SFT + LoRA Basic Training
+- PPO / DPO / GRPO Algorithm Deep-Dive
+- Complete Training Pipeline Hands-on
+- 2025–2026 Latest Research Advances
+
+</td>
+<td width="50%">
+
+**💾 Memory, Knowledge & Context**
+- Short-term / Long-term / Working Memory
+- Vector Databases (Chroma / FAISS)
+- RAG Retrieval-Augmented Generation
+- Context Engineering & Attention Budget
+
+**🤝 Multi-Agent Collaboration & Communication**
+- MCP / A2A / ANP Protocol Stack
+- Supervisor vs Decentralized Patterns
+- CrewAI / AutoGen Frameworks
+- LangGraph Stateful Agents
+
+**🛡️ Production Full Pipeline**
+- Evaluation Benchmarks (GAIA / SWE-bench)
+- Security Defense & Sandbox Isolation
+- Containerized Deployment & Streaming
+- Observability & Cost Optimization
+
+</td>
+</tr>
+</table>
 
 ---
 
