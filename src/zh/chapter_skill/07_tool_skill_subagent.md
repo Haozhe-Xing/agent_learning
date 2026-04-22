@@ -151,30 +151,7 @@ def choose_abstraction(task_requirements: dict) -> str:
 
 在真实的 Agent 系统中，三层抽象通常**嵌套使用**：
 
-```
-Orchestrator Agent（编排者）
-├── Research Sub Agent（研究子智能体）
-│   ├── Web Search Skill（网络搜索技能）
-│   │   ├── search_web()    [Tool]
-│   │   ├── fetch_page()    [Tool]
-│   │   └── extract_text()  [Tool]
-│   └── Summary Skill（总结技能）
-│       ├── chunk_text()    [Tool]
-│       └── summarize()     [Tool]
-│
-├── Coding Sub Agent（编程子智能体）
-│   ├── Code Analysis Skill（代码分析技能）
-│   │   ├── read_file()     [Tool]
-│   │   └── search_code()   [Tool]
-│   └── Code Edit Skill（代码编辑技能）
-│       ├── write_file()    [Tool]
-│       └── run_tests()     [Tool]
-│
-└── Report Sub Agent（报告子智能体）
-    └── Report Writing Skill
-        ├── create_chart()  [Tool]
-        └── render_pdf()    [Tool]
-```
+![Tool / Skill / Sub Agent 三层嵌套架构](../svg/chapter_skill_07_hierarchy_tree.svg)
 
 ```python
 class ProductionAgent:

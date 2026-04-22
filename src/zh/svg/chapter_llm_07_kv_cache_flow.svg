@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440">
+  <defs>
+    <marker id="arr-kv" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-kv-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+    <marker id="arr-kv-r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="440" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">KV Cache：Prefill vs Decode 两阶段</text>
+  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">用显存换计算——历史 K/V 只算一次，后续直接复用</text>
+
+  <!-- ===== Prefill 阶段 ===== -->
+  <rect x="20" y="62" width="370" height="200" rx="8" fill="#3498db" opacity="0.05" stroke="#3498db" stroke-width="2"/>
+  <text x="205" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#3498db">① Prefill 阶段（处理 Prompt）</text>
+  <text x="205" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">输入: "写一首诗"（4 个 Token，并行处理）</text>
+
+  <!-- 4个 Token 并行 -->
+  <rect x="35" y="108" width="55" height="28" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="62" y="126" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">写</text>
+  <rect x="95" y="108" width="55" height="28" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="122" y="126" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">一</text>
+  <rect x="155" y="108" width="55" height="28" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="182" y="126" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">首</text>
+  <rect x="215" y="108" width="55" height="28" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="242" y="126" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">诗</text>
+
+  <!-- 并行箭头 -->
+  <line x1="62" y1="136" x2="62" y2="155" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-kv)"/>
+  <line x1="122" y1="136" x2="122" y2="155" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-kv)"/>
+  <line x1="182" y1="136" x2="182" y2="155" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-kv)"/>
+  <line x1="242" y1="136" x2="242" y2="155" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-kv)"/>
+  <text x="155" y="152" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#3498db">并行计算 Q/K/V</text>
+
+  <!-- KV Cache 存储 -->
+  <rect x="35" y="162" width="290" height="36" rx="5" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1"/>
+  <text x="180" y="176" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#3498db">💾 KV Cache 初始化</text>
+  <text x="180" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3498db">[K_写, K_一, K_首, K_诗]  [V_写, V_一, V_首, V_诗]</text>
+
+  <!-- 4×4 注意力矩阵 -->
+  <text x="35" y="218" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">4×4 注意力矩阵（因果掩码）：</text>
+  <rect x="35" y="222" width="20" height="20" rx="2" fill="#3498db" opacity="0.8"/>
+  <rect x="57" y="222" width="20" height="20" rx="2" fill="#ecf0f1"/>
+  <rect x="79" y="222" width="20" height="20" rx="2" fill="#ecf0f1"/>
+  <rect x="101" y="222" width="20" height="20" rx="2" fill="#ecf0f1"/>
+  <rect x="35" y="244" width="20" height="20" rx="2" fill="#3498db" opacity="0.5"/>
+  <rect x="57" y="244" width="20" height="20" rx="2" fill="#3498db" opacity="0.5"/>
+  <rect x="79" y="244" width="20" height="20" rx="2" fill="#ecf0f1"/>
+  <rect x="101" y="244" width="20" height="20" rx="2" fill="#ecf0f1"/>
+  <rect x="35" y="222" width="88" height="44" rx="2" fill="none" stroke="#3498db" stroke-width="1"/>
+  <text x="160" y="238" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">← 完整的 N×N 矩阵</text>
+  <text x="160" y="254" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">← 计算密集型，GPU 利用率高</text>
+
+  <!-- 输出预测 -->
+  <line x1="205" y1="262" x2="205" y2="278" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-kv)"/>
+  <rect x="155" y="278" width="100" height="24" rx="4" fill="#3498db" opacity="0.8"/>
+  <text x="205" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">预测第1个词 →</text>
+
+  <!-- ===== Decode 阶段 ===== -->
+  <rect x="410" y="62" width="370" height="200" rx="8" fill="#27ae60" opacity="0.05" stroke="#27ae60" stroke-width="2"/>
+  <text x="595" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">② Decode 阶段（逐 Token 生成）</text>
+  <text x="595" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">每步只处理 1 个新 Token</text>
+
+  <!-- 新 Token -->
+  <rect x="560" y="108" width="70" height="28" rx="4" fill="#27ae60" opacity="0.8"/>
+  <text x="595" y="126" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">新 Token: "春"</text>
+
+  <line x1="595" y1="136" x2="595" y2="155" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-kv-g)"/>
+  <text x="595" y="152" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">只算 1 个 Q/K/V</text>
+
+  <!-- KV Cache 追加 -->
+  <rect x="425" y="162" width="340" height="36" rx="5" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1"/>
+  <text x="595" y="176" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">💾 KV Cache 追加 K_春, V_春</text>
+  <text x="595" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27ae60">[K_写, K_一, K_首, K_诗, K_春]  [V_写, V_一, V_首, V_诗, V_春]</text>
+
+  <!-- 1×5 注意力 -->
+  <text x="425" y="218" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">1×5 注意力（只算新 Token 那一行）：</text>
+  <rect x="425" y="222" width="20" height="20" rx="2" fill="#27ae60" opacity="0.6"/>
+  <rect x="447" y="222" width="20" height="20" rx="2" fill="#27ae60" opacity="0.6"/>
+  <rect x="469" y="222" width="20" height="20" rx="2" fill="#27ae60" opacity="0.6"/>
+  <rect x="491" y="222" width="20" height="20" rx="2" fill="#27ae60" opacity="0.6"/>
+  <rect x="513" y="222" width="20" height="20" rx="2" fill="#27ae60" opacity="0.9"/>
+  <rect x="425" y="222" width="110" height="20" rx="2" fill="none" stroke="#27ae60" stroke-width="1"/>
+  <text x="560" y="236" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">← 1×N（不是 N×N！）</text>
+  <text x="560" y="254" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">← 内存带宽密集型</text>
+
+  <!-- 输出预测 -->
+  <line x1="595" y1="262" x2="595" y2="278" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-kv-g)"/>
+  <rect x="545" y="278" width="100" height="24" rx="4" fill="#27ae60" opacity="0.8"/>
+  <text x="595" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">预测下一个词 →</text>
+
+  <!-- 阶段转换箭头 -->
+  <line x1="390" y1="185" x2="408" y2="185" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr-kv-r)"/>
+  <text x="399" y="178" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#e74c3c">切换</text>
+
+  <!-- ===== 对比表格 ===== -->
+  <rect x="20" y="278" width="370" height="145" rx="8" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="205" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">无 KV Cache vs 有 KV Cache</text>
+
+  <!-- 表头 -->
+  <rect x="25" y="305" width="360" height="22" rx="3" fill="#ecf0f1"/>
+  <text x="115" y="320" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">指标</text>
+  <text x="240" y="320" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#e74c3c">无 KV Cache</text>
+  <text x="355" y="320" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">有 KV Cache</text>
+
+  <line x1="25" y1="327" x2="385" y2="327" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="115" y="342" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">每步 K/V 投影</text>
+  <text x="240" y="342" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">对所有 Token 重算</text>
+  <text x="355" y="342" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">只算 1 个新 Token</text>
+
+  <line x1="25" y1="349" x2="385" y2="349" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="115" y="364" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">注意力矩阵大小</text>
+  <text x="240" y="364" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">N × N（完整）</text>
+  <text x="355" y="364" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">1 × N（一行）</text>
+
+  <line x1="25" y1="371" x2="385" y2="371" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="115" y="386" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">生成 N Token 总计算</text>
+  <text x="240" y="386" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">O(N²) 重复计算</text>
+  <text x="355" y="386" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">O(N) 投影计算</text>
+
+  <line x1="25" y1="393" x2="385" y2="393" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="115" y="408" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">代价</text>
+  <text x="240" y="408" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">无额外显存</text>
+  <text x="355" y="408" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">需存储历史 K/V</text>
+
+  <!-- 右侧显存公式 -->
+  <rect x="410" y="278" width="370" height="145" rx="8" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="595" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">KV Cache 显存公式</text>
+  <text x="595" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">显存 = 2 × n_layers × n_kv_heads × head_dim × seq_len × 2B</text>
+  <text x="595" y="334" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">（K+V 各一份 × 每层独立 × bfloat16）</text>
+
+  <rect x="420" y="342" width="350" height="72" rx="5" fill="#ecf0f1"/>
+  <text x="430" y="358" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#2c3e50">Llama 2-70B (MHA, 80层, 64头, 128维):</text>
+  <text x="430" y="372" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">  ≈ 2.5 GB / 1K Token  ← 8K 对话需 20 GB！</text>
+  <text x="430" y="388" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#2c3e50">Llama 3-70B (GQA, 80层, 8头, 128维):</text>
+  <text x="430" y="402" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">  ≈ 0.32 GB / 1K Token  ← 减少 8 倍！</text>
+</svg>

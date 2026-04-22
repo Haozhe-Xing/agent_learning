@@ -1,0 +1,41 @@
+<svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="720" height="480" fill="#F0F3F7" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="360" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A2340">Superpowers Skills 五层架构</text>
+
+  <!-- 层：元层 -->
+  <rect x="30" y="50" width="660" height="66" rx="8" fill="#2C3E6B"/>
+  <text x="110" y="72" font-size="15" fill="white" font-weight="bold">🌐 元层（Meta Layer）</text>
+  <text x="110" y="92" font-size="12" fill="#BDC8E8">using-superpowers · writing-skills · self-improving-agent</text>
+  <text x="110" y="108" font-size="12" fill="#8DA0C4">规定调用规则 · 编写新 Skill · 持续自我进化</text>
+
+  <!-- 层：结构层 -->
+  <rect x="50" y="130" width="620" height="66" rx="8" fill="#1A6B9A"/>
+  <text x="120" y="152" font-size="15" fill="white" font-weight="bold">🗺️ 结构层（Structure）</text>
+  <text x="120" y="172" font-size="12" fill="#AED6F1">brainstorming → writing-plans</text>
+  <text x="120" y="188" font-size="12" fill="#7FB3D3">动手前建立清晰问题认知和可执行计划，输出 plan.md</text>
+
+  <!-- 层：隔离层 -->
+  <rect x="70" y="210" width="580" height="66" rx="8" fill="#1A7A52"/>
+  <text x="130" y="232" font-size="15" fill="white" font-weight="bold">🌿 隔离层（Isolation）</text>
+  <text x="130" y="252" font-size="12" fill="#A9DFBF">using-git-worktrees</text>
+  <text x="130" y="268" font-size="12" fill="#82C59B">为每次实现创建独立工作区，防止污染主分支</text>
+
+  <!-- 层：执行层 -->
+  <rect x="90" y="290" width="540" height="80" rx="8" fill="#B7770D"/>
+  <text x="145" y="312" font-size="15" fill="white" font-weight="bold">⚙️ 执行层（Execution）</text>
+  <text x="145" y="332" font-size="12" fill="#FAD7A0">subagent-driven-development（优先）· executing-plans（备选）</text>
+  <text x="145" y="350" font-size="12" fill="#FAD7A0">dispatching-parallel-agents（并行调查）</text>
+  <text x="145" y="366" font-size="12" fill="#F0B27A">以测试为客观验收标准，双阶段审查保障质量</text>
+
+  <!-- 层：质量层 -->
+  <rect x="110" y="384" width="500" height="66" rx="8" fill="#633974"/>
+  <text x="155" y="406" font-size="15" fill="white" font-weight="bold">🔬 质量层（Quality）</text>
+  <text x="155" y="426" font-size="12" fill="#E8DAEF">TDD · systematic-debugging · verification · code-review（双向）</text>
+  <text x="155" y="442" font-size="12" fill="#C39BD3">根因分析 + 技术严谨性 = 不可妥协的质量规范</text>
+
+  <!-- 右侧"self-improving-agent 贯穿全流程"指示 -->
+  <rect x="668" y="50" width="42" height="400" rx="6" fill="#E74C3C" opacity="0.85"/>
+  <text transform="rotate(-90, 689, 250)" x="689" y="250" text-anchor="middle" font-size="12" fill="white" font-weight="bold">⬆ self-improving-agent 贯穿全流程</text>
+</svg>

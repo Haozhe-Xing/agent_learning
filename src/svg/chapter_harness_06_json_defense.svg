@@ -1,0 +1,66 @@
+<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arrd" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="#4A90D9"/>
+    </marker>
+    <marker id="arrfail" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="#E74C3C"/>
+    </marker>
+  </defs>
+
+  <rect width="680" height="420" fill="#F8FAFC" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="340" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1A2340">JSON 解析四层防线（推荐叠加顺序）</text>
+
+  <!-- 输入 -->
+  <rect x="255" y="50" width="170" height="36" rx="6" fill="#2C3E6B"/>
+  <text x="340" y="73" text-anchor="middle" font-size="13" fill="white" font-weight="bold">模型输出原始文本</text>
+
+  <!-- 箭头1 -->
+  <line x1="340" y1="86" x2="340" y2="107" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrd)"/>
+
+  <!-- 层1 -->
+  <rect x="185" y="107" width="310" height="52" rx="8" fill="#EBF5FB" stroke="#3498DB" stroke-width="2"/>
+  <text x="340" y="128" text-anchor="middle" font-size="13" font-weight="bold" fill="#1A5276">① jsonrepair.repair_json()</text>
+  <text x="340" y="147" text-anchor="middle" font-size="12" fill="#5D6D7E">修复格式错误（截断、多余逗号、引号不匹配等）</text>
+
+  <!-- 箭头2 -->
+  <line x1="340" y1="159" x2="340" y2="180" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrd)"/>
+
+  <!-- 层2 -->
+  <rect x="185" y="180" width="310" height="52" rx="8" fill="#E9F7EF" stroke="#27AE60" stroke-width="2"/>
+  <text x="340" y="201" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E8449">② json.loads()</text>
+  <text x="340" y="220" text-anchor="middle" font-size="12" fill="#5D6D7E">将修复后的 JSON 字符串转为 Python 对象</text>
+
+  <!-- 箭头3 -->
+  <line x1="340" y1="232" x2="340" y2="253" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrd)"/>
+
+  <!-- 层3 -->
+  <rect x="185" y="253" width="310" height="52" rx="8" fill="#FEF9E7" stroke="#F39C12" stroke-width="2"/>
+  <text x="340" y="274" text-anchor="middle" font-size="13" font-weight="bold" fill="#7D6608">③ Pydantic.model_validate()</text>
+  <text x="340" y="293" text-anchor="middle" font-size="12" fill="#5D6D7E">类型验证 + 业务规则（字段值域、逻辑一致性）</text>
+
+  <!-- 失败路径 -->
+  <line x1="185" y1="279" x2="90" y2="279" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="90" y="266" text-anchor="middle" font-size="11" fill="#E74C3C">验证失败</text>
+  <line x1="90" y1="279" x2="90" y2="340" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="90" y1="340" x2="185" y2="340" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrfail)"/>
+  <text x="90" y="330" text-anchor="middle" font-size="11" fill="#E74C3C">携带错误</text>
+  <text x="90" y="342" text-anchor="middle" font-size="11" fill="#E74C3C">上下文重试</text>
+
+  <!-- 箭头4 -->
+  <line x1="340" y1="305" x2="340" y2="326" stroke="#4A90D9" stroke-width="2" marker-end="url(#arrd)"/>
+
+  <!-- 层4 -->
+  <rect x="185" y="326" width="310" height="52" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="2"/>
+  <text x="340" y="347" text-anchor="middle" font-size="13" font-weight="bold" fill="#922B21">④ 携带错误上下文重试</text>
+  <text x="340" y="366" text-anchor="middle" font-size="12" fill="#5D6D7E">将上次输出 + 具体错误信息反馈给模型，最多 2~3 次</text>
+
+  <!-- 箭头5 -->
+  <line x1="340" y1="378" x2="340" y2="395" stroke="#27AE60" stroke-width="2" marker-end="url(#arrd)"/>
+
+  <!-- 输出 -->
+  <rect x="240" y="395" width="200" height="20" rx="5" fill="#27AE60"/>
+  <text x="340" y="410" text-anchor="middle" font-size="12" fill="white" font-weight="bold">✅ 结构化对象（类型安全）</text>
+</svg>

@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <marker id="arr-moe" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-moe-r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arr-moe-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">MoE 架构：路由机制与路由坍塌</text>
+  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">稀疏激活：每个 Token 只激活少数专家，大幅提升参数效率</text>
+
+  <!-- ===== 左侧：理想路由 ===== -->
+  <rect x="20" y="62" width="360" height="230" rx="8" fill="#27ae60" opacity="0.04" stroke="#27ae60" stroke-width="2"/>
+  <text x="200" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">✅ 理想路由（负载均衡）</text>
+
+  <!-- Token -->
+  <rect x="35" y="95" width="55" height="24" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="62" y="111" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">Token₁</text>
+  <rect x="35" y="125" width="55" height="24" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="62" y="141" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">Token₂</text>
+  <rect x="35" y="155" width="55" height="24" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="62" y="171" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">Token₃</text>
+
+  <!-- 路由器 -->
+  <rect x="110" y="120" width="60" height="44" rx="6" fill="#f39c12" opacity="0.8"/>
+  <text x="140" y="140" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">路由器</text>
+  <text x="140" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Linear</text>
+
+  <line x1="90" y1="107" x2="110" y2="130" stroke="#9b59b6" stroke-width="1.2"/>
+  <line x1="90" y1="137" x2="110" y2="142" stroke="#9b59b6" stroke-width="1.2"/>
+  <line x1="90" y1="167" x2="110" y2="155" stroke="#9b59b6" stroke-width="1.2"/>
+
+  <!-- 专家（均匀分布） -->
+  <rect x="195" y="90" width="45" height="20" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="217" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家1</text>
+  <rect x="195" y="115" width="45" height="20" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="217" y="129" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家2</text>
+  <rect x="195" y="140" width="45" height="20" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="217" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家3</text>
+  <rect x="195" y="165" width="45" height="20" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="217" y="179" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家4</text>
+  <rect x="195" y="190" width="45" height="20" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="217" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家5</text>
+  <rect x="195" y="215" width="45" height="20" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="217" y="229" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家6</text>
+
+  <!-- 均匀路由线 -->
+  <line x1="170" y1="130" x2="195" y2="100" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-moe-g)"/>
+  <line x1="170" y1="135" x2="195" y2="150" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-moe-g)"/>
+  <line x1="170" y1="140" x2="195" y2="175" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-moe-g)"/>
+  <line x1="170" y1="145" x2="195" y2="200" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arr-moe-g)"/>
+  <line x1="170" y1="148" x2="195" y2="225" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arr-moe-g)"/>
+
+  <!-- 负载均衡说明 -->
+  <rect x="255" y="90" width="115" height="150" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
+  <text x="312" y="108" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">每个专家负载均衡</text>
+  <rect x="262" y="115" width="95" height="12" rx="2" fill="#27ae60" opacity="0.7"/>
+  <text x="309" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家1: ████ 33%</text>
+  <rect x="262" y="131" width="95" height="12" rx="2" fill="#27ae60" opacity="0.7"/>
+  <text x="309" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家2: ████ 33%</text>
+  <rect x="262" y="147" width="95" height="12" rx="2" fill="#27ae60" opacity="0.7"/>
+  <text x="309" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家3: ████ 34%</text>
+  <rect x="262" y="163" width="95" height="12" rx="2" fill="#27ae60" opacity="0.5"/>
+  <text x="309" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家4: ███  均匀</text>
+  <rect x="262" y="179" width="95" height="12" rx="2" fill="#27ae60" opacity="0.5"/>
+  <text x="309" y="189" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家5: ███  均匀</text>
+  <rect x="262" y="195" width="95" height="12" rx="2" fill="#27ae60" opacity="0.5"/>
+  <text x="309" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家6: ███  均匀</text>
+  <text x="312" y="228" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#27ae60">所有专家充分训练</text>
+
+  <rect x="30" y="250" width="340" height="32" rx="5" fill="#27ae60" opacity="0.1"/>
+  <text x="200" y="264" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 每个专家都能学到不同的"专业知识"，参数利用率高</text>
+  <text x="200" y="278" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">模型总参数大，但每次推理只激活少数专家 → 计算量小</text>
+
+  <!-- ===== 右侧：路由坍塌 ===== -->
+  <rect x="400" y="62" width="380" height="230" rx="8" fill="#e74c3c" opacity="0.04" stroke="#e74c3c" stroke-width="2"/>
+  <text x="590" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">❌ 路由坍塌（训练中容易出现）</text>
+
+  <!-- Token -->
+  <rect x="415" y="95" width="55" height="24" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="442" y="111" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">Token₁</text>
+  <rect x="415" y="125" width="55" height="24" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="442" y="141" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">Token₂</text>
+  <rect x="415" y="155" width="55" height="24" rx="4" fill="#9b59b6" opacity="0.8"/>
+  <text x="442" y="171" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">Token₃</text>
+
+  <!-- 路由器 -->
+  <rect x="490" y="120" width="60" height="44" rx="6" fill="#f39c12" opacity="0.8"/>
+  <text x="520" y="140" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="white">路由器</text>
+  <text x="520" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Linear</text>
+
+  <line x1="470" y1="107" x2="490" y2="130" stroke="#9b59b6" stroke-width="1.2"/>
+  <line x1="470" y1="137" x2="490" y2="142" stroke="#9b59b6" stroke-width="1.2"/>
+  <line x1="470" y1="167" x2="490" y2="155" stroke="#9b59b6" stroke-width="1.2"/>
+
+  <!-- 专家（坍塌） -->
+  <rect x="575" y="90" width="45" height="20" rx="3" fill="#e74c3c" opacity="0.9"/>
+  <text x="597" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家1 ★</text>
+  <rect x="575" y="115" width="45" height="20" rx="3" fill="#e74c3c" opacity="0.7"/>
+  <text x="597" y="129" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">专家2 ★</text>
+  <rect x="575" y="140" width="45" height="20" rx="3" fill="#bdc3c7" opacity="0.4"/>
+  <text x="597" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#999">专家3</text>
+  <rect x="575" y="165" width="45" height="20" rx="3" fill="#bdc3c7" opacity="0.4"/>
+  <text x="597" y="179" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#999">专家4</text>
+  <rect x="575" y="190" width="45" height="20" rx="3" fill="#bdc3c7" opacity="0.4"/>
+  <text x="597" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#999">专家5</text>
+  <rect x="575" y="215" width="45" height="20" rx="3" fill="#bdc3c7" opacity="0.4"/>
+  <text x="597" y="229" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#999">专家6</text>
+
+  <!-- 坍塌路由线（全部指向1,2） -->
+  <line x1="550" y1="130" x2="575" y2="100" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-moe-r)"/>
+  <line x1="550" y1="135" x2="575" y2="105" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-moe-r)"/>
+  <line x1="550" y1="140" x2="575" y2="120" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-moe-r)"/>
+  <line x1="550" y1="145" x2="575" y2="125" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr-moe-r)"/>
+
+  <!-- 负载不均说明 -->
+  <rect x="635" y="90" width="130" height="150" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="700" y="108" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#e74c3c">负载严重不均</text>
+  <rect x="642" y="115" width="116" height="12" rx="2" fill="#e74c3c" opacity="0.9"/>
+  <text x="700" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家1: ████████ 50%</text>
+  <rect x="642" y="131" width="80" height="12" rx="2" fill="#e74c3c" opacity="0.7"/>
+  <text x="700" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">专家2: █████  40%</text>
+  <rect x="642" y="147" width="12" height="12" rx="2" fill="#bdc3c7" opacity="0.5"/>
+  <text x="700" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#999">专家3: █  5%</text>
+  <rect x="642" y="163" width="8" height="12" rx="2" fill="#bdc3c7" opacity="0.5"/>
+  <text x="700" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#999">专家4: ▌  3%</text>
+  <rect x="642" y="179" width="4" height="12" rx="2" fill="#bdc3c7" opacity="0.5"/>
+  <text x="700" y="189" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#999">专家5: ▏  1%</text>
+  <rect x="642" y="195" width="2" height="12" rx="2" fill="#bdc3c7" opacity="0.5"/>
+  <text x="700" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#999">专家6: ▏  1%</text>
+  <text x="700" y="228" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#e74c3c">大量参数浪费！</text>
+
+  <rect x="410" y="250" width="360" height="32" rx="5" fill="#e74c3c" opacity="0.08"/>
+  <text x="590" y="264" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 正反馈循环：强专家被选更多 → 更新更多 → 更强 → 被选更多</text>
+  <text x="590" y="278" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">最终少数专家垄断所有 Token，其余专家几乎从不被激活</text>
+
+  <!-- ===== 底部：解决方案 ===== -->
+  <rect x="20" y="308" width="760" height="100" rx="8" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="400" y="326" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">各家模型的负载均衡解决方案</text>
+
+  <rect x="30" y="334" width="170" height="64" rx="5" fill="#e74c3c" opacity="0.06" stroke="#e74c3c" stroke-width="1"/>
+  <text x="115" y="350" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#e74c3c">辅助损失（Mixtral/Llama 4）</text>
+  <text x="115" y="366" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">在训练损失中加入</text>
+  <text x="115" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">负载均衡惩罚项</text>
+  <text x="115" y="394" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#e74c3c">缺点：可能影响主任务</text>
+
+  <rect x="215" y="334" width="170" height="64" rx="5" fill="#3498db" opacity="0.06" stroke="#3498db" stroke-width="1"/>
+  <text x="300" y="350" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#3498db">偏差项（DeepSeek-V3）</text>
+  <text x="300" y="366" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">为每个专家维护偏差</text>
+  <text x="300" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">动态调整路由概率</text>
+  <text x="300" y="394" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#3498db">无需辅助损失</text>
+
+  <rect x="400" y="334" width="170" height="64" rx="5" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="1"/>
+  <text x="485" y="350" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">共享专家（DeepSeek/Qwen）</text>
+  <text x="485" y="366" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">固定激活 1~2 个共享专家</text>
+  <text x="485" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">提供稳定的通用知识</text>
+  <text x="485" y="394" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#27ae60">减少路由压力</text>
+
+  <rect x="585" y="334" width="185" height="64" rx="5" fill="#f39c12" opacity="0.06" stroke="#f39c12" stroke-width="1"/>
+  <text x="677" y="350" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#f39c12">优化器稳定（Kimi K2）</text>
+  <text x="677" y="366" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">MuonClip 优化器</text>
+  <text x="677" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">从训练稳定性角度</text>
+  <text x="677" y="394" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#f39c12">缓解路由坍塌</text>
+</svg>

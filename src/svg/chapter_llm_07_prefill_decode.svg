@@ -1,0 +1,94 @@
+<svg viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="#5D6D7E"/>
+    </marker>
+  </defs>
+
+  <rect width="780" height="420" fill="#F0F3F7" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="390" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1A2340">LLM 推理的两个阶段：Prefill vs Decode</text>
+
+  <!-- 整体框 -->
+  <rect x="30" y="55" width="720" height="330" rx="10" fill="white" stroke="#D5D8DC" stroke-width="1.5"/>
+
+  <!-- === 左侧：Prefill 阶段 === -->
+  <rect x="40" y="65" width="340" height="310" rx="8" fill="#EBF5FB" stroke="#2471A3" stroke-width="2"/>
+  <!-- 标题栏 -->
+  <rect x="40" y="65" width="340" height="40" rx="8" fill="#2471A3"/>
+  <rect x="40" y="93" width="340" height="12" fill="#2471A3"/>
+  <text x="210" y="90" text-anchor="middle" font-size="15" font-weight="bold" fill="white">⚡ Prefill 阶段</text>
+  <text x="210" y="115" text-anchor="middle" font-size="12" fill="#1A5276">处理用户输入的完整 Prompt</text>
+
+  <!-- 输入示例 -->
+  <rect x="58" y="130" width="304" height="34" rx="6" fill="#D6EAF8"/>
+  <text x="210" y="147" text-anchor="middle" font-size="12" fill="#1A5276">📥 输入："请写一首关于秋天的诗："（10 个 Token）</text>
+  <text x="210" y="159" text-anchor="middle" font-size="11" fill="#5D6D7E">所有 Token 同时已知，可并行处理</text>
+
+  <!-- 步骤 -->
+  <text x="68" y="185" font-size="12" fill="#1A5276">1. 对全部 Token 并行计算 Q / K / V</text>
+  <text x="68" y="203" font-size="12" fill="#1A5276">2. 做 10×10 的完整注意力矩阵运算</text>
+  <text x="68" y="221" font-size="12" fill="#1A5276">3. 把所有 Token 的 K / V 写入 KV Cache</text>
+  <text x="68" y="239" font-size="12" fill="#1A5276">4. 取最后位置的输出，预测第 1 个 Token</text>
+
+  <!-- 特征标签 -->
+  <rect x="58" y="252" width="148" height="28" rx="6" fill="#2471A3"/>
+  <text x="132" y="271" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🔥 计算密集型</text>
+  <rect x="214" y="252" width="148" height="28" rx="6" fill="#21618C"/>
+  <text x="288" y="271" text-anchor="middle" font-size="12" fill="white" font-weight="bold">GPU 算力利用率高</text>
+
+  <!-- 耗时说明 -->
+  <rect x="58" y="290" width="304" height="28" rx="6" fill="#D6EAF8"/>
+  <text x="210" y="309" text-anchor="middle" font-size="12" fill="#1A5276">⏱️ 耗时主要取决于 Prompt 长度</text>
+
+  <!-- 瓶颈 -->
+  <rect x="58" y="326" width="304" height="38" rx="6" fill="#AED6F1"/>
+  <text x="210" y="341" text-anchor="middle" font-size="12" fill="#1A5276" font-weight="bold">瓶颈：大量矩阵乘法</text>
+  <text x="210" y="357" text-anchor="middle" font-size="11" fill="#5D6D7E">需要强大的 GPU 算力</text>
+
+  <!-- === 右侧：Decode 阶段 === -->
+  <rect x="400" y="65" width="340" height="310" rx="8" fill="#FEF9E7" stroke="#E67E22" stroke-width="2"/>
+  <!-- 标题栏 -->
+  <rect x="400" y="65" width="340" height="40" rx="8" fill="#E67E22"/>
+  <rect x="400" y="93" width="340" height="12" fill="#E67E22"/>
+  <text x="570" y="90" text-anchor="middle" font-size="15" font-weight="bold" fill="white">🔁 Decode 阶段</text>
+  <text x="570" y="115" text-anchor="middle" font-size="12" fill="#7D6608">逐 Token 自回归生成</text>
+
+  <!-- 输入示例 -->
+  <rect x="418" y="130" width="304" height="34" rx="6" fill="#FDEBD0"/>
+  <text x="570" y="147" text-anchor="middle" font-size="12" fill="#6E2F00">📤 每步只有 1 个新 Token</text>
+  <text x="570" y="159" text-anchor="middle" font-size="11" fill="#5D6D7E">必须等上一步输出才能进行下一步</text>
+
+  <!-- 步骤 -->
+  <text x="418" y="185" font-size="12" fill="#7D6608">1. 只对新 Token 计算 Q / K / V（1 次）</text>
+  <text x="418" y="203" font-size="12" fill="#7D6608">2. 将新 K / V 追加到已有 KV Cache</text>
+  <text x="418" y="221" font-size="12" fill="#7D6608">3. 用新 Q 对所有缓存 K / V 做 1×N 注意力</text>
+  <text x="418" y="239" font-size="12" fill="#7D6608">4. 输出下一个 Token，循环重复</text>
+
+  <!-- 特征标签 -->
+  <rect x="418" y="252" width="148" height="28" rx="6" fill="#E67E22"/>
+  <text x="492" y="271" text-anchor="middle" font-size="12" fill="white" font-weight="bold">📦 内存带宽密集型</text>
+  <rect x="574" y="252" width="148" height="28" rx="6" fill="#D35400"/>
+  <text x="648" y="271" text-anchor="middle" font-size="12" fill="white" font-weight="bold">GPU 算力利用率低</text>
+
+  <!-- 耗时说明 -->
+  <rect x="418" y="290" width="304" height="28" rx="6" fill="#FDEBD0"/>
+  <text x="570" y="309" text-anchor="middle" font-size="12" fill="#7D6608">⏱️ 每步耗时主要取决于 KV Cache 读取</text>
+
+  <!-- 瓶颈 -->
+  <rect x="418" y="326" width="304" height="38" rx="6" fill="#FAD7A0"/>
+  <text x="570" y="341" text-anchor="middle" font-size="12" fill="#7D6608" font-weight="bold">⚠️ 瓶颈：显存带宽（不是算力！）</text>
+  <text x="570" y="357" text-anchor="middle" font-size="11" fill="#5D6D7E">每步需从显存读取整个 KV Cache</text>
+
+  <!-- 中间分隔和关联说明 -->
+  <text x="390" y="180" text-anchor="middle" font-size="24" fill="#BDC3C7">→</text>
+  <text x="390" y="200" text-anchor="middle" font-size="10" fill="#95A5A6">顺序</text>
+  <text x="390" y="212" text-anchor="middle" font-size="10" fill="#95A5A6">执行</text>
+
+  <!-- 底部对比标注 -->
+  <rect x="40" y="395" width="340" height="18" rx="4" fill="#D6EAF8"/>
+  <text x="210" y="408" text-anchor="middle" font-size="11" fill="#1A5276">吞吐量高 · 延迟低 · 可高度并行</text>
+  <rect x="400" y="395" width="340" height="18" rx="4" fill="#FAD7A0"/>
+  <text x="570" y="408" text-anchor="middle" font-size="11" fill="#7D6608">吞吐量低 · 受内存带宽约束 · 难以加速</text>
+</svg>

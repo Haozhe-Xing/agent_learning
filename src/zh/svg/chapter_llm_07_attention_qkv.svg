@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <marker id="arr-qkv" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-qkv-r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arr-qkv-b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3498db"/>
+    </marker>
+    <marker id="arr-qkv-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="400" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Scaled Dot-Product Attention 计算流程</text>
+  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">每个 Token 通过三个线性投影得到 Q、K、V，再计算注意力</text>
+
+  <!-- ===== 输入 Token ===== -->
+  <rect x="20" y="65" width="120" height="240" rx="8" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1.5"/>
+  <text x="80" y="85" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#2c3e50">输入序列</text>
+  <text x="80" y="100" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">x ∈ ℝ^d_model</text>
+
+  <rect x="30" y="110" width="100" height="28" rx="4" fill="#9b59b6" opacity="0.7"/>
+  <text x="80" y="128" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">Token₁: "我"</text>
+  <rect x="30" y="143" width="100" height="28" rx="4" fill="#9b59b6" opacity="0.7"/>
+  <text x="80" y="161" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">Token₂: "爱"</text>
+  <rect x="30" y="176" width="100" height="28" rx="4" fill="#9b59b6" opacity="0.7"/>
+  <text x="80" y="194" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">Token₃: "AI"</text>
+  <rect x="30" y="209" width="100" height="28" rx="4" fill="#9b59b6" opacity="0.5"/>
+  <text x="80" y="227" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">Token₄: "！"</text>
+
+  <!-- 三个投影矩阵 -->
+  <line x1="140" y1="185" x2="175" y2="140" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr-qkv-r)"/>
+  <line x1="140" y1="185" x2="175" y2="185" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-qkv-b)"/>
+  <line x1="140" y1="185" x2="175" y2="230" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-qkv-g)"/>
+
+  <!-- W_Q -->
+  <rect x="178" y="110" width="70" height="50" rx="6" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="213" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">W_Q</text>
+  <text x="213" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c">d×d_k</text>
+
+  <!-- W_K -->
+  <rect x="178" y="160" width="70" height="50" rx="6" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="213" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3498db">W_K</text>
+  <text x="213" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3498db">d×d_k</text>
+
+  <!-- W_V -->
+  <rect x="178" y="210" width="70" height="50" rx="6" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="213" y="233" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">W_V</text>
+  <text x="213" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27ae60">d×d_k</text>
+
+  <!-- Q K V 矩阵 -->
+  <line x1="248" y1="135" x2="278" y2="135" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr-qkv-r)"/>
+  <line x1="248" y1="185" x2="278" y2="185" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-qkv-b)"/>
+  <line x1="248" y1="235" x2="278" y2="235" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-qkv-g)"/>
+
+  <rect x="280" y="108" width="55" height="54" rx="5" fill="#e74c3c" opacity="0.8"/>
+  <text x="307" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Q</text>
+  <text x="307" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ffd" >[N×d_k]</text>
+  <text x="307" y="95" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e74c3c">查询：我想找什么？</text>
+
+  <rect x="280" y="158" width="55" height="54" rx="5" fill="#3498db" opacity="0.8"/>
+  <text x="307" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">K</text>
+  <text x="307" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ddf">[N×d_k]</text>
+  <text x="307" y="148" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#3498db">键：我能提供什么？</text>
+
+  <rect x="280" y="208" width="55" height="54" rx="5" fill="#27ae60" opacity="0.8"/>
+  <text x="307" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">V</text>
+  <text x="307" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dfd">[N×d_k]</text>
+  <text x="307" y="272" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#27ae60">值：我携带的内容</text>
+
+  <!-- 步骤1: QK^T -->
+  <line x1="335" y1="135" x2="370" y2="175" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-qkv)"/>
+  <line x1="335" y1="185" x2="370" y2="180" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-qkv)"/>
+
+  <rect x="373" y="148" width="80" height="50" rx="6" fill="#f39c12" opacity="0.15" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="413" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#f39c12">QKᵀ/√d_k</text>
+  <text x="413" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f39c12">[N×N]</text>
+  <text x="413" y="135" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#f39c12">① 相似度矩阵</text>
+
+  <!-- 步骤2: softmax -->
+  <line x1="453" y1="173" x2="488" y2="173" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-qkv)"/>
+
+  <rect x="490" y="148" width="75" height="50" rx="6" fill="#8e44ad" opacity="0.15" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="527" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#8e44ad">softmax</text>
+  <text x="527" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8e44ad">[N×N]</text>
+  <text x="527" y="135" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#8e44ad">② 注意力权重</text>
+
+  <!-- 步骤3: ×V -->
+  <line x1="565" y1="173" x2="600" y2="173" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-qkv)"/>
+  <line x1="335" y1="235" x2="610" y2="210" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr-qkv-g)"/>
+
+  <rect x="603" y="148" width="75" height="50" rx="6" fill="#2c3e50" opacity="0.12" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="640" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2c3e50">× V</text>
+  <text x="640" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2c3e50">[N×d_k]</text>
+  <text x="640" y="135" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#2c3e50">③ 加权求和</text>
+
+  <!-- 输出 -->
+  <line x1="678" y1="173" x2="713" y2="173" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-qkv)"/>
+  <rect x="715" y="148" width="70" height="50" rx="6" fill="#1abc9c" opacity="0.8"/>
+  <text x="750" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">输出</text>
+  <text x="750" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dff">[N×d_k]</text>
+
+  <!-- 注意力矩阵可视化 -->
+  <rect x="20" y="320" width="760" height="68" rx="8" fill="#f39c12" opacity="0.06" stroke="#f39c12" stroke-width="1"/>
+  <text x="30" y="340" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#f39c12">注意力权重矩阵示意（因果掩码后）：</text>
+
+  <!-- 矩阵格子 -->
+  <text x="120" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#777">"我"</text>
+  <text x="150" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#777">"爱"</text>
+  <text x="180" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#777">"AI"</text>
+  <text x="210" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#777">"！"</text>
+
+  <text x="95" y="368" font-family="Arial, sans-serif" font-size="8" fill="#777">"我"→</text>
+  <rect x="108" y="358" width="24" height="16" rx="2" fill="#e74c3c" opacity="0.9"/>
+  <text x="120" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">1.0</text>
+  <rect x="138" y="358" width="24" height="16" rx="2" fill="#ecf0f1"/>
+  <text x="150" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#bdc3c7">0</text>
+  <rect x="168" y="358" width="24" height="16" rx="2" fill="#ecf0f1"/>
+  <text x="180" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#bdc3c7">0</text>
+  <rect x="198" y="358" width="24" height="16" rx="2" fill="#ecf0f1"/>
+  <text x="210" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#bdc3c7">0</text>
+
+  <text x="95" y="386" font-family="Arial, sans-serif" font-size="8" fill="#777">"爱"→</text>
+  <rect x="108" y="376" width="24" height="16" rx="2" fill="#e74c3c" opacity="0.5"/>
+  <text x="120" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">.55</text>
+  <rect x="138" y="376" width="24" height="16" rx="2" fill="#e74c3c" opacity="0.45"/>
+  <text x="150" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">.45</text>
+  <rect x="168" y="376" width="24" height="16" rx="2" fill="#ecf0f1"/>
+  <text x="180" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#bdc3c7">0</text>
+  <rect x="198" y="376" width="24" height="16" rx="2" fill="#ecf0f1"/>
+  <text x="210" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#bdc3c7">0</text>
+
+  <text x="240" y="368" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">← "我" 只能看自己（因果掩码）</text>
+  <text x="240" y="386" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">← "爱" 能看 "我" 和自己，权重之和 = 1</text>
+
+  <!-- 公式 -->
+  <text x="500" y="345" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Attention(Q,K,V) = softmax(</text>
+  <text x="680" y="345" font-family="Arial, sans-serif" font-size="12" fill="#e74c3c">QKᵀ</text>
+  <text x="700" y="345" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">/√d_k) · </text>
+  <text x="750" y="345" font-family="Arial, sans-serif" font-size="12" fill="#27ae60">V</text>
+  <text x="500" y="375" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">缩放因子 √d_k 防止点积过大导致 softmax 梯度消失</text>
+</svg>

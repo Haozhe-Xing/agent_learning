@@ -1,0 +1,82 @@
+<svg viewBox="0 0 780 480" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4A90D9"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#27AE60"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#E67E22"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#00000022"/>
+    </filter>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="780" height="480" fill="#F8FAFC" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="390" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#1A2340">Agentic 数据飞轮</text>
+  <text x="390" y="58" text-anchor="middle" font-size="13" fill="#7F8C8D">Agent 线上运行 → 数据收集 → 训练强化 → 再次部署，自我强化循环</text>
+
+  <!-- 大背景弧形提示飞轮感 -->
+  <ellipse cx="390" cy="280" rx="300" ry="180" fill="none" stroke="#E8EDF3" stroke-width="2" stroke-dasharray="8,6"/>
+
+  <!-- === 四个核心模块 === -->
+  <!-- Agent 线上服务（左） -->
+  <rect x="40" y="220" width="130" height="90" rx="10" fill="#2C3E6B" filter="url(#shadow)"/>
+  <text x="105" y="254" text-anchor="middle" font-size="14" fill="white" font-weight="bold">🤖 Agent</text>
+  <text x="105" y="272" text-anchor="middle" font-size="13" fill="#BDC8E8">线上服务</text>
+  <text x="105" y="291" text-anchor="middle" font-size="11" fill="#8DA0C4">产生轨迹数据</text>
+
+  <!-- 收集层（右上） -->
+  <rect x="580" y="130" width="140" height="80" rx="10" fill="#27AE60" filter="url(#shadow)"/>
+  <text x="650" y="161" text-anchor="middle" font-size="14" fill="white" font-weight="bold">📥 收集层</text>
+  <text x="650" y="179" text-anchor="middle" font-size="12" fill="#D4EFDF">Collection</text>
+  <text x="650" y="197" text-anchor="middle" font-size="11" fill="#D4EFDF">记录完整轨迹</text>
+
+  <!-- 评估/过滤层（右下） -->
+  <rect x="580" y="270" width="140" height="90" rx="10" fill="#8E44AD" filter="url(#shadow)"/>
+  <text x="650" y="303" text-anchor="middle" font-size="14" fill="white" font-weight="bold">🔍 过滤·评估</text>
+  <text x="650" y="321" text-anchor="middle" font-size="12" fill="#E8DAEF">Filter + Eval</text>
+  <text x="650" y="339" text-anchor="middle" font-size="11" fill="#E8DAEF">质量分 &gt; 0.7</text>
+
+  <!-- 训练层（下中） -->
+  <rect x="300" y="380" width="140" height="80" rx="10" fill="#E67E22" filter="url(#shadow)"/>
+  <text x="370" y="411" text-anchor="middle" font-size="14" fill="white" font-weight="bold">🎓 训练层</text>
+  <text x="370" y="429" text-anchor="middle" font-size="12" fill="#FAD7A0">Training</text>
+  <text x="370" y="447" text-anchor="middle" font-size="11" fill="#FAD7A0">微调更强模型</text>
+
+  <!-- === 连接箭头 === -->
+  <!-- Agent → 收集层：轨迹日志 -->
+  <line x1="170" y1="240" x2="575" y2="180" stroke="#27AE60" stroke-width="2.5" marker-end="url(#arrow-green)" stroke-dasharray="0"/>
+  <rect x="280" y="183" width="130" height="22" rx="4" fill="#E9F7EF"/>
+  <text x="345" y="198" text-anchor="middle" font-size="12" fill="#1E8449">📤 轨迹日志</text>
+
+  <!-- 收集层 → 过滤层：高质量轨迹 -->
+  <line x1="650" y1="210" x2="650" y2="265" stroke="#4A90D9" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="655" y="226" width="88" height="22" rx="4" fill="#EBF5FB"/>
+  <text x="699" y="241" text-anchor="middle" font-size="11" fill="#2471A3">高质量轨迹</text>
+
+  <!-- 过滤层 → 训练层：过滤后数据 -->
+  <line x1="600" y1="360" x2="445" y2="420" stroke="#4A90D9" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="485" y="368" width="100" height="22" rx="4" fill="#EBF5FB"/>
+  <text x="535" y="383" text-anchor="middle" font-size="11" fill="#2471A3">过滤后数据</text>
+
+  <!-- 训练层 → Agent：新版本部署 -->
+  <line x1="300" y1="420" x2="175" y2="300" stroke="#E67E22" stroke-width="2.5" marker-end="url(#arrow-orange)"/>
+  <rect x="168" y="340" width="120" height="22" rx="4" fill="#FEF9E7"/>
+  <text x="228" y="355" text-anchor="middle" font-size="12" fill="#D35400">🚀 新版本部署</text>
+
+  <!-- 评估层标注 -->
+  <text x="650" y="388" text-anchor="middle" font-size="11" fill="#7D3C98">自动验证 + 奖励打分</text>
+
+  <!-- 循环图示箭头（中心圆弧） -->
+  <path d="M 380 270 A 150 100 0 0 1 390 270" fill="none" stroke="#BDC3C7" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- 底部说明 -->
+  <rect x="40" y="455" width="700" height="18" rx="4" fill="#EBF5FB"/>
+  <text x="390" y="468" text-anchor="middle" font-size="11" fill="#5D6D7E">每一圈飞轮转动，模型能力提升一个台阶；更强的模型产生更高质量的轨迹，形成正向复利</text>
+</svg>

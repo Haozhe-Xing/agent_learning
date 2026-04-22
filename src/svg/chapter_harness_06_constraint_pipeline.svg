@@ -1,0 +1,69 @@
+<svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="#4A90D9"/>
+    </marker>
+  </defs>
+  <rect width="760" height="240" fill="#F8FAFC" rx="10"/>
+
+  <!-- 标题 -->
+  <text x="380" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="#1A2340">结构化输出约束策略演进（推荐从左到右叠加使用）</text>
+
+  <!-- 方案1：软约束 -->
+  <rect x="20" y="45" width="145" height="90" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="1.5"/>
+  <rect x="20" y="45" width="145" height="30" rx="8" fill="#E74C3C"/>
+  <rect x="20" y="63" width="145" height="12" fill="#E74C3C"/>
+  <text x="92" y="66" text-anchor="middle" font-size="12" fill="white" font-weight="bold">❌ 软约束（不推荐）</text>
+  <text x="92" y="91" text-anchor="middle" font-size="11" fill="#C0392B">Prompt 说</text>
+  <text x="92" y="107" text-anchor="middle" font-size="11" fill="#C0392B">"请输出JSON"</text>
+  <text x="92" y="123" text-anchor="middle" font-size="11" fill="#E74C3C">无强制力，经常失败</text>
+
+  <!-- 箭头 -->
+  <line x1="165" y1="90" x2="190" y2="90" stroke="#4A90D9" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="178" y="83" text-anchor="middle" font-size="10" fill="#95A5A6">容错</text>
+
+  <!-- 方案2：jsonrepair -->
+  <rect x="195" y="45" width="145" height="90" rx="8" fill="#FEF9E7" stroke="#F39C12" stroke-width="1.5"/>
+  <rect x="195" y="45" width="145" height="30" rx="8" fill="#F39C12"/>
+  <rect x="195" y="63" width="145" height="12" fill="#F39C12"/>
+  <text x="267" y="66" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🔧 后处理修复</text>
+  <text x="267" y="91" text-anchor="middle" font-size="11" fill="#7D6608">jsonrepair</text>
+  <text x="267" y="107" text-anchor="middle" font-size="11" fill="#7D6608">修复格式错误、截断</text>
+  <text x="267" y="123" text-anchor="middle" font-size="11" fill="#E67E22">容错兜底，非强制</text>
+
+  <!-- 箭头 -->
+  <line x1="340" y1="90" x2="365" y2="90" stroke="#4A90D9" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="353" y="83" text-anchor="middle" font-size="10" fill="#95A5A6">推荐</text>
+
+  <!-- 方案3：API 结构化输出 -->
+  <rect x="370" y="45" width="165" height="90" rx="8" fill="#E9F7EF" stroke="#27AE60" stroke-width="2"/>
+  <rect x="370" y="45" width="165" height="30" rx="8" fill="#27AE60"/>
+  <rect x="370" y="63" width="165" height="12" fill="#27AE60"/>
+  <text x="452" y="66" text-anchor="middle" font-size="12" fill="white" font-weight="bold">✅ API 结构化输出</text>
+  <text x="452" y="91" text-anchor="middle" font-size="11" fill="#1A7A3C">OpenAI / Anthropic / Google</text>
+  <text x="452" y="107" text-anchor="middle" font-size="11" fill="#1E8449">服务端强制生成合法 JSON</text>
+  <text x="452" y="123" text-anchor="middle" font-size="12" fill="#27AE60" font-weight="bold">云端 API 首选方案</text>
+
+  <!-- 箭头 -->
+  <line x1="535" y1="90" x2="560" y2="90" stroke="#4A90D9" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="548" y="83" text-anchor="middle" font-size="10" fill="#95A5A6">最强</text>
+
+  <!-- 方案4：约束解码 -->
+  <rect x="565" y="45" width="170" height="90" rx="8" fill="#EBF5FB" stroke="#2471A3" stroke-width="2.5"/>
+  <rect x="565" y="45" width="170" height="30" rx="8" fill="#2471A3"/>
+  <rect x="565" y="63" width="170" height="12" fill="#2471A3"/>
+  <text x="650" y="66" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🔒 约束解码（本地模型）</text>
+  <text x="650" y="91" text-anchor="middle" font-size="11" fill="#1A5276">Outlines / vLLM</text>
+  <text x="650" y="107" text-anchor="middle" font-size="11" fill="#1A5276">Token 级强制合法</text>
+  <text x="650" y="123" text-anchor="middle" font-size="12" fill="#2471A3" font-weight="bold">本地部署最强方案</text>
+
+  <!-- 推荐叠加顺序说明 -->
+  <rect x="20" y="150" width="715" height="72" rx="8" fill="#EBF5FB" stroke="#85C1E9" stroke-width="1"/>
+  <text x="377" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#1A5276">📋 推荐叠加顺序（三层防线）</text>
+  <text x="50" y="193" font-size="12" fill="#2471A3">① jsonrepair.repair_json()</text>
+  <text x="50" y="193" font-size="12" fill="#5D6D7E">                              → 修复格式错误</text>
+  <text x="50" y="209" font-size="12" fill="#2471A3">② json.loads() + Pydantic.model_validate()</text>
+  <text x="50" y="209" font-size="12" fill="#5D6D7E">                                                     → 类型验证和业务规则</text>
+  <text x="50" y="225" font-size="12" fill="#2471A3">③ 携带错误上下文智能重试</text>
+  <text x="50" y="225" font-size="12" fill="#5D6D7E">                               → 最多 2~3 次，超限则报错</text>
+</svg>

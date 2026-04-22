@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <marker id="arr-fa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-fa-r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arr-fa-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">FlashAttention：IO-Aware 分块计算</text>
+  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">核心：不实例化 N×N 矩阵，分块计算 + 在线 softmax，内存从 O(N²) 降到 O(N)</text>
+
+  <!-- ===== 左侧：标准注意力 ===== -->
+  <rect x="20" y="62" width="360" height="230" rx="8" fill="#e74c3c" opacity="0.04" stroke="#e74c3c" stroke-width="2"/>
+  <text x="200" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">标准注意力：O(N²) 内存</text>
+
+  <!-- GPU 内存层次 -->
+  <rect x="35" y="95" width="150" height="185" rx="6" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="110" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">GPU HBM（慢，大）</text>
+
+  <rect x="42" y="118" width="136" height="30" rx="4" fill="#e74c3c" opacity="0.7"/>
+  <text x="110" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Q [N × d_k]</text>
+  <rect x="42" y="152" width="136" height="30" rx="4" fill="#3498db" opacity="0.7"/>
+  <text x="110" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">K [N × d_k]</text>
+  <rect x="42" y="186" width="136" height="30" rx="4" fill="#27ae60" opacity="0.7"/>
+  <text x="110" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">V [N × d_k]</text>
+  <rect x="42" y="220" width="136" height="30" rx="4" fill="#f39c12" opacity="0.7"/>
+  <text x="110" y="239" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">S = QKᵀ [N × N] ⚠️</text>
+  <text x="110" y="256" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#e74c3c">N=1M → 4TB 内存！</text>
+
+  <!-- 数据流 -->
+  <line x1="185" y1="133" x2="210" y2="133" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr-fa-r)"/>
+  <line x1="185" y1="167" x2="210" y2="155" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-fa)"/>
+  <text x="220" y="130" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">① 读 Q, K</text>
+  <text x="220" y="145" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">到 SRAM</text>
+
+  <rect x="210" y="155" width="80" height="30" rx="4" fill="#f39c12" opacity="0.8"/>
+  <text x="250" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">QKᵀ 计算</text>
+
+  <line x1="250" y1="185" x2="250" y2="200" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arr-fa)"/>
+  <text x="260" y="196" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">② 写回 HBM</text>
+  <rect x="210" y="202" width="80" height="22" rx="4" fill="#f39c12" opacity="0.5"/>
+  <text x="250" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">S [N×N]</text>
+
+  <line x1="250" y1="224" x2="250" y2="238" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arr-fa)"/>
+  <text x="260" y="234" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">③ 再读回</text>
+  <rect x="210" y="240" width="80" height="22" rx="4" fill="#8e44ad" opacity="0.7"/>
+  <text x="250" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">softmax</text>
+
+  <text x="200" y="280" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ N×N 矩阵必须完整存在 HBM 中</text>
+  <text x="200" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">大量 HBM 读写是性能瓶颈</text>
+
+  <!-- ===== 右侧：FlashAttention ===== -->
+  <rect x="400" y="62" width="380" height="230" rx="8" fill="#27ae60" opacity="0.04" stroke="#27ae60" stroke-width="2"/>
+  <text x="590" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">FlashAttention：O(N) 内存</text>
+
+  <!-- HBM -->
+  <rect x="415" y="95" width="130" height="185" rx="6" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="480" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">GPU HBM（慢，大）</text>
+  <rect x="422" y="118" width="116" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
+  <text x="480" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q [N × d_k]</text>
+  <rect x="422" y="144" width="116" height="22" rx="3" fill="#3498db" opacity="0.7"/>
+  <text x="480" y="159" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K [N × d_k]</text>
+  <rect x="422" y="170" width="116" height="22" rx="3" fill="#27ae60" opacity="0.7"/>
+  <text x="480" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V [N × d_k]</text>
+  <rect x="422" y="196" width="116" height="22" rx="3" fill="#1abc9c" opacity="0.7"/>
+  <text x="480" y="211" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Output [N × d_k]</text>
+  <text x="480" y="240" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#27ae60">无 N×N 矩阵！</text>
+  <text x="480" y="254" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#27ae60">内存 O(N)</text>
+  <text x="480" y="268" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#27ae60">✅</text>
+
+  <!-- SRAM -->
+  <rect x="560" y="95" width="110" height="185" rx="6" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="1.5"/>
+  <text x="615" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#3498db">GPU SRAM（快，小）</text>
+
+  <!-- 分块 -->
+  <rect x="567" y="118" width="96" height="18" rx="3" fill="#e74c3c" opacity="0.8"/>
+  <text x="615" y="131" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q_block [B × d_k]</text>
+  <rect x="567" y="140" width="96" height="18" rx="3" fill="#3498db" opacity="0.8"/>
+  <text x="615" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K_block [B × d_k]</text>
+  <rect x="567" y="162" width="96" height="18" rx="3" fill="#27ae60" opacity="0.8"/>
+  <text x="615" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V_block [B × d_k]</text>
+
+  <!-- 在线 softmax 状态 -->
+  <rect x="567" y="186" width="96" height="36" rx="3" fill="#f39c12" opacity="0.7"/>
+  <text x="615" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="white">在线 softmax 状态</text>
+  <text x="615" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">m（当前最大值）</text>
+  <text x="615" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">d（当前指数和）</text>
+
+  <text x="615" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#3498db">每次只加载一小块</text>
+  <text x="615" y="266" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#3498db">在 SRAM 中完成计算</text>
+  <text x="615" y="280" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#3498db">不写回 HBM ✅</text>
+
+  <!-- 数据流箭头 -->
+  <line x1="545" y1="130" x2="565" y2="127" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr-fa-r)"/>
+  <line x1="545" y1="155" x2="565" y2="149" stroke="#3498db" stroke-width="1.5" marker-end="url(#arr-fa)"/>
+  <line x1="545" y1="180" x2="565" y2="171" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-fa-g)"/>
+  <text x="553" y="120" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="7" fill="#555">分块</text>
+  <text x="553" y="130" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="7" fill="#555">加载</text>
+
+  <!-- ===== 底部：在线 softmax 原理 + 版本对比 ===== -->
+  <rect x="20" y="308" width="760" height="100" rx="8" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="400" y="326" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">在线 softmax 原理 + FlashAttention 三代演进</text>
+
+  <!-- 在线 softmax -->
+  <rect x="30" y="334" width="340" height="64" rx="5" fill="#f39c12" opacity="0.06" stroke="#f39c12" stroke-width="1"/>
+  <text x="200" y="350" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#f39c12">在线 softmax：无需存储所有分数</text>
+  <text x="200" y="366" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">维护两个状态：m（当前最大值）、d（当前指数和）</text>
+  <text x="200" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">每来一个新分数 s_new：更新 m = max(m, s_new)</text>
+  <text x="200" y="394" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">修正旧的 d：d = d × exp(m_old - m_new) + exp(s_new - m_new)</text>
+
+  <!-- 版本对比 -->
+  <rect x="385" y="334" width="385" height="64" rx="5" fill="#3498db" opacity="0.04" stroke="#3498db" stroke-width="1"/>
+  <text x="577" y="350" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#3498db">FlashAttention 三代演进</text>
+  <text x="395" y="366" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">v1 (2022)：IO-aware 分块，O(N²)→O(N) 内存，速度 2~4x</text>
+  <text x="395" y="380" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">v2 (2023)：更好并行化，速度再提升 2x，支持 GQA</text>
+  <text x="395" y="394" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#3498db">v3 (2024)：利用 Tensor Core 异步执行，接近硬件理论峰值</text>
+</svg>

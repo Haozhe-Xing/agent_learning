@@ -1,0 +1,141 @@
+<svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="720" height="400" fill="#F0F3F7" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="360" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A2340">Tool / Skill / Sub Agent 三层嵌套架构</text>
+
+  <!-- ============ 顶层：Orchestrator ============ -->
+  <rect x="240" y="45" width="240" height="44" rx="8" fill="#2C3E6B"/>
+  <text x="360" y="66" text-anchor="middle" font-size="13" fill="white" font-weight="bold">🎯 Orchestrator Agent</text>
+  <text x="360" y="82" text-anchor="middle" font-size="11" fill="#BDC8E8">编排者 · 接收目标，分配给子 Agent</text>
+
+  <!-- 竖线分叉 -->
+  <line x1="290" y1="89" x2="160" y2="115" stroke="#2C3E6B" stroke-width="2"/>
+  <line x1="360" y1="89" x2="360" y2="115" stroke="#2C3E6B" stroke-width="2"/>
+  <line x1="430" y1="89" x2="560" y2="115" stroke="#2C3E6B" stroke-width="2"/>
+
+  <!-- ============ 中层：三个 Sub Agent ============ -->
+  <!-- Research Sub Agent -->
+  <rect x="60" y="115" width="200" height="40" rx="7" fill="#1A6B9A"/>
+  <text x="160" y="134" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🔍 Research Sub Agent</text>
+  <text x="160" y="149" text-anchor="middle" font-size="11" fill="#AED6F1">研究子智能体</text>
+
+  <!-- 竖线到 Skills -->
+  <line x1="120" y1="155" x2="92" y2="178" stroke="#1A6B9A" stroke-width="1.5"/>
+  <line x1="200" y1="155" x2="228" y2="178" stroke="#1A6B9A" stroke-width="1.5"/>
+
+  <!-- Coding Sub Agent -->
+  <rect x="260" y="115" width="200" height="40" rx="7" fill="#1A7A52"/>
+  <text x="360" y="134" text-anchor="middle" font-size="12" fill="white" font-weight="bold">💻 Coding Sub Agent</text>
+  <text x="360" y="149" text-anchor="middle" font-size="11" fill="#A9DFBF">编程子智能体</text>
+
+  <line x1="310" y1="155" x2="292" y2="178" stroke="#1A7A52" stroke-width="1.5"/>
+  <line x1="410" y1="155" x2="428" y2="178" stroke="#1A7A52" stroke-width="1.5"/>
+
+  <!-- Report Sub Agent -->
+  <rect x="460" y="115" width="200" height="40" rx="7" fill="#7B241C"/>
+  <text x="560" y="134" text-anchor="middle" font-size="12" fill="white" font-weight="bold">📋 Report Sub Agent</text>
+  <text x="560" y="149" text-anchor="middle" font-size="11" fill="#F1948A">报告子智能体</text>
+
+  <line x1="520" y1="155" x2="510" y2="178" stroke="#7B241C" stroke-width="1.5"/>
+  <line x1="600" y1="155" x2="610" y2="178" stroke="#7B241C" stroke-width="1.5"/>
+
+  <!-- ============ Skill 层 ============ -->
+  <!-- Research Skills -->
+  <rect x="35" y="178" width="120" height="36" rx="6" fill="#21618C"/>
+  <text x="95" y="196" text-anchor="middle" font-size="11" fill="white">Web Search Skill</text>
+  <text x="95" y="209" text-anchor="middle" font-size="10" fill="#AED6F1">网络搜索技能</text>
+
+  <rect x="165" y="178" width="100" height="36" rx="6" fill="#21618C"/>
+  <text x="215" y="196" text-anchor="middle" font-size="11" fill="white">Summary Skill</text>
+  <text x="215" y="209" text-anchor="middle" font-size="10" fill="#AED6F1">总结技能</text>
+
+  <!-- Coding Skills -->
+  <rect x="270" y="178" width="110" height="36" rx="6" fill="#1A7A52"/>
+  <text x="325" y="196" text-anchor="middle" font-size="11" fill="white">Code Analysis</text>
+  <text x="325" y="209" text-anchor="middle" font-size="10" fill="#A9DFBF">代码分析技能</text>
+
+  <rect x="390" y="178" width="100" height="36" rx="6" fill="#1A7A52"/>
+  <text x="440" y="196" text-anchor="middle" font-size="11" fill="white">Code Edit Skill</text>
+  <text x="440" y="209" text-anchor="middle" font-size="10" fill="#A9DFBF">代码编辑技能</text>
+
+  <!-- Report Skill -->
+  <rect x="490" y="178" width="140" height="36" rx="6" fill="#7B241C"/>
+  <text x="560" y="196" text-anchor="middle" font-size="11" fill="white">Report Writing Skill</text>
+  <text x="560" y="209" text-anchor="middle" font-size="10" fill="#F1948A">报告撰写技能</text>
+
+  <!-- ============ Tools 层 ============ -->
+  <!-- Search Tools -->
+  <line x1="75" y1="214" x2="58" y2="238" stroke="#21618C" stroke-width="1"/>
+  <line x1="110" y1="214" x2="128" y2="238" stroke="#21618C" stroke-width="1"/>
+
+  <rect x="28" y="238" width="64" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="60" y="250" text-anchor="middle" font-size="10" fill="white">search_web</text>
+  <text x="60" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <rect x="97" y="238" width="64" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="129" y="250" text-anchor="middle" font-size="10" fill="white">fetch_page</text>
+  <text x="129" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <!-- Summary Tools -->
+  <line x1="200" y1="214" x2="186" y2="238" stroke="#21618C" stroke-width="1"/>
+  <line x1="230" y1="214" x2="246" y2="238" stroke="#21618C" stroke-width="1"/>
+
+  <rect x="163" y="238" width="56" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="191" y="250" text-anchor="middle" font-size="10" fill="white">chunk_text</text>
+  <text x="191" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <rect x="226" y="238" width="60" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="256" y="250" text-anchor="middle" font-size="10" fill="white">summarize</text>
+  <text x="256" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <!-- Code Tools -->
+  <line x1="310" y1="214" x2="298" y2="238" stroke="#1A7A52" stroke-width="1"/>
+  <line x1="340" y1="214" x2="354" y2="238" stroke="#1A7A52" stroke-width="1"/>
+  <line x1="420" y1="214" x2="408" y2="238" stroke="#1A7A52" stroke-width="1"/>
+  <line x1="460" y1="214" x2="472" y2="238" stroke="#1A7A52" stroke-width="1"/>
+
+  <rect x="272" y="238" width="58" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="301" y="250" text-anchor="middle" font-size="10" fill="white">read_file</text>
+  <text x="301" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <rect x="338" y="238" width="62" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="369" y="250" text-anchor="middle" font-size="10" fill="white">search_code</text>
+  <text x="369" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <rect x="383" y="238" width="58" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="412" y="250" text-anchor="middle" font-size="10" fill="white">write_file</text>
+  <text x="412" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <rect x="449" y="238" width="58" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="478" y="250" text-anchor="middle" font-size="10" fill="white">run_tests</text>
+  <text x="478" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <!-- Report Tools -->
+  <line x1="535" y1="214" x2="520" y2="238" stroke="#7B241C" stroke-width="1"/>
+  <line x1="585" y1="214" x2="600" y2="238" stroke="#7B241C" stroke-width="1"/>
+
+  <rect x="496" y="238" width="60" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="526" y="250" text-anchor="middle" font-size="10" fill="white">create_chart</text>
+  <text x="526" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <rect x="568" y="238" width="62" height="28" rx="4" fill="#5D6D7E"/>
+  <text x="599" y="250" text-anchor="middle" font-size="10" fill="white">render_pdf</text>
+  <text x="599" y="261" text-anchor="middle" font-size="9" fill="#BDC3C7">[Tool]</text>
+
+  <!-- 图例 -->
+  <rect x="30" y="290" width="660" height="98" rx="8" fill="white" stroke="#D5D8DC" stroke-width="1"/>
+  <text x="360" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#1A2340">三层抽象对比</text>
+
+  <rect x="50" y="320" width="12" height="12" fill="#2C3E6B" rx="2"/>
+  <text x="68" y="331" font-size="12" fill="#2C3E6B" font-weight="bold">Sub Agent</text>
+  <text x="68" y="331" font-size="12" fill="#5D6D7E">             → 自主推理循环，objective → [规划→执行→反思→调整]* → output</text>
+
+  <rect x="50" y="345" width="12" height="12" fill="#1A6B9A" rx="2"/>
+  <text x="68" y="356" font-size="12" fill="#1A6B9A" font-weight="bold">Skill</text>
+  <text x="68" y="356" font-size="12" fill="#5D6D7E">         → 策略 + 工具组合，input → [策略选择] → output</text>
+
+  <rect x="50" y="370" width="12" height="12" fill="#5D6D7E" rx="2"/>
+  <text x="68" y="381" font-size="12" fill="#5D6D7E" font-weight="bold">Tool</text>
+  <text x="68" y="381" font-size="12" fill="#5D6D7E">          → 单一确定性操作，input → output</text>
+</svg>

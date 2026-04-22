@@ -1,0 +1,36 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="680" height="300" fill="#F8FAFC" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1A2340">结构化输出三层防御架构</text>
+
+  <!-- 层1：最外层 -->
+  <rect x="30" y="45" width="620" height="220" rx="10" fill="#EBF5FB" stroke="#2471A3" stroke-width="2"/>
+  <rect x="30" y="45" width="620" height="38" rx="10" fill="#2471A3"/>
+  <rect x="30" y="71" width="620" height="12" fill="#2471A3"/>
+  <text x="340" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="white">第一层：硬约束</text>
+  <text x="340" y="96" text-anchor="middle" font-size="12" fill="#1A5276">API Structured Outputs（云端）或 约束解码 Outlines / vLLM（本地）</text>
+  <text x="340" y="113" text-anchor="middle" font-size="12" fill="#5D6D7E">→ 保证 JSON 格式 100% 合法，类型与 Schema 完全匹配，从物理层杜绝格式错误</text>
+
+  <!-- 层2：中层 -->
+  <rect x="60" y="125" width="560" height="90" rx="8" fill="#E9F7EF" stroke="#27AE60" stroke-width="2"/>
+  <rect x="60" y="125" width="560" height="34" rx="8" fill="#27AE60"/>
+  <rect x="60" y="147" width="560" height="12" fill="#27AE60"/>
+  <text x="340" y="147" text-anchor="middle" font-size="14" font-weight="bold" fill="white">第二层：业务验证</text>
+  <text x="340" y="172" text-anchor="middle" font-size="12" fill="#1E8449">Pydantic Validator（自定义校验逻辑）</text>
+  <text x="340" y="190" text-anchor="middle" font-size="12" fill="#5D6D7E">→ 保证值域合理、字段间逻辑一致、无幻觉字段（extra="forbid"）</text>
+
+  <!-- 层3：最内层 -->
+  <rect x="90" y="225" width="500" height="28" rx="6" fill="#FEF9E7" stroke="#F39C12" stroke-width="2"/>
+  <text x="340" y="237" text-anchor="middle" font-size="12" font-weight="bold" fill="#7D6608">第三层：智能重试</text>
+  <text x="340" y="250" text-anchor="middle" font-size="12" fill="#5D6D7E">当第二层失败时，携带具体错误信息让模型修正，最多 2~3 次</text>
+
+  <!-- 右侧标注 -->
+  <text x="638" y="140" text-anchor="middle" font-size="11" fill="#2471A3">最外</text>
+  <text x="638" y="154" text-anchor="middle" font-size="11" fill="#2471A3">层</text>
+  <text x="638" y="185" text-anchor="middle" font-size="11" fill="#27AE60">中层</text>
+  <text x="638" y="245" text-anchor="middle" font-size="11" fill="#F39C12">内层</text>
+
+  <!-- 底部说明 -->
+  <text x="340" y="285" text-anchor="middle" font-size="12" fill="#5D6D7E">三层叠加：旧版小模型用 jsonrepair → Pydantic；云端 API 用 Structured Outputs → Pydantic；本地模型用约束解码 → Pydantic</text>
+</svg>
