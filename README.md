@@ -1,45 +1,32 @@
 <div align="center">
 
+<img src="readme_img.png" width="900" alt="Agent Learning Roadmap">
+
+<br>
+
 # 🤖 Learn Agent Development from Scratch
 
 **A systematic, comprehensive, and practice-oriented AI Agent development guide**
+
+**Daily auto-tracking of arXiv frontier papers — content stays cutting-edge, always.**
+
+<br>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Stars](https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=social)](https://github.com/Haozhe-Xing/agent_learning)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Haozhe-Xing/agent_learning/pulls)
 [![mdBook](https://img.shields.io/badge/built%20with-mdBook-blue)](https://rust-lang.github.io/mdBook/)
-
-[📖 English](https://Haozhe-Xing.github.io/agent_learning/en/) · [📖 中文版](https://Haozhe-Xing.github.io/agent_learning/zh/) · [🐛 Report Issues](https://github.com/Haozhe-Xing/agent_learning/issues) · [💬 Discussions](https://github.com/Haozhe-Xing/agent_learning/discussions)
-
-**[🇨🇳 中文版 README](README_ZH.md)**
-
-</div>
-
----
-
-## 🗺️ Learning Roadmap
-
-<div align="center">
-
-<img src="https://zhiyan-ai-agent-with-1258344702.cos.ap-guangzhou.tencentcos.cn/copilot/6a2657f5-5ac6-4b25-a91c-f7f1f9e31034/image-019d96dcf57a7e618a7cb49b8a74c0fb-019d96dc-fa0b-7839-ad40-3ce30bfeba5b.png" width="800" alt="Agent Learning Roadmap - Nano Banana Style">
+[![Daily arXiv](https://img.shields.io/badge/Daily-arXiv%20Update-red?logo=arxiv)](https://arxiv.org)
 
 <br>
 
-> 🍌 **From Basic Concepts → Agent Architecture → Tool Calling → Memory Management → Multi-Agent → Reinforcement Learning → Production Deploy → Goal Achieved!**
->
-> Follow the banana guide 🍌 step by step, and you'll master AI Agent development from zero to hero!
+[<img src="https://img.shields.io/badge/📖_Read_Online_(中文)-4CAF50?style=for-the-badge" alt="Read Online Chinese">](https://Haozhe-Xing.github.io/agent_learning/zh/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_Read_Online_(English)-2196F3?style=for-the-badge" alt="Read Online English">](https://Haozhe-Xing.github.io/agent_learning/en/)
+
+<br>
+
+[🐛 Report Issues](https://github.com/Haozhe-Xing/agent_learning/issues) · [💬 Discussions](https://github.com/Haozhe-Xing/agent_learning/discussions) · [🇨🇳 中文版 README](README_ZH.md)
 
 </div>
-
----
-
-## 📖 Read Online (Recommended)
-
-
-| Language      | Link                                                                                                     |
-| ------------- | -------------------------------------------------------------------------------------------------------- |
-| 🇨🇳 简体中文 | **[https://Haozhe-Xing.github.io/agent_learning/zh/](https://Haozhe-Xing.github.io/agent_learning/zh/)** |
-| 🇺🇸 English  | **[https://Haozhe-Xing.github.io/agent_learning/en/](https://Haozhe-Xing.github.io/agent_learning/en/)** |
 
 ---
 
@@ -56,18 +43,6 @@
 - 🔔 **Never Miss a Breakthrough**: No need to manually track dozens of research feeds — this repo does it for you, so you can focus on learning and building.
 
 > 💡 This means the content you read here is **not static** — it evolves continuously with the latest advances in the AI Agent field.
-
----
-
-## 🔭 Frontier Research Directions
-
-> This book not only covers foundational knowledge, but also tracks the **cutting-edge research frontiers** across each domain. Here are the key directions we follow:
-
-<div align="center">
-
-> 💡 Entries marked with 🔥 are **2025–2026 hottest research topics** — all covered in depth in this book!
-
-</div>
 
 ---
 
@@ -227,81 +202,15 @@
 
 This book includes **5 interactive HTML animations** to help you intuitively understand the dynamic processes of core concepts:
 
-
 | Animation                      | Chapter    | Description                                                                 |
 | ------------------------------ | ---------- | --------------------------------------------------------------------------- |
-| 🔄**Perceive-Think-Act Cycle** | Chapter 1  | Dynamic demonstration of Agent's core loop                                  |
-| 💡**ReAct Reasoning Process**  | Chapter 6  | Shows the alternating Thought → Action → Observation process              |
-| 🔧**Function Calling**         | Chapter 4  | Complete tool invocation flow animation                                     |
-| 📚**RAG Retrieval Flow**       | Chapter 7  | From document chunking to vector retrieval to answer generation             |
-| 🎯**GRPO Sampling Process**    | Chapter 10 | Visualization of intra-group multi-output sampling and reward normalization |
+| 🔄 **Perceive-Think-Act Cycle** | Chapter 1  | Dynamic demonstration of Agent's core loop                                  |
+| 💡 **ReAct Reasoning Process**  | Chapter 6  | Shows the alternating Thought → Action → Observation process              |
+| 🔧 **Function Calling**         | Chapter 4  | Complete tool invocation flow animation                                     |
+| 📚 **RAG Retrieval Flow**       | Chapter 7  | From document chunking to vector retrieval to answer generation             |
+| 🎯 **GRPO Sampling Process**    | Chapter 10 | Visualization of intra-group multi-output sampling and reward normalization |
 
 > 💡 Interactive animations are only available in the [online e-book](https://Haozhe-Xing.github.io/agent_learning). Local builds can also preview them.
-
----
-
-## 🚀 Quick Start
-
-### Local Build
-
-**Install Dependencies:**
-
-```bash
-# Install mdBook (choose one)
-cargo install mdbook
-# Or macOS: brew install mdbook
-
-# Install mdbook-katex plugin (for math formula rendering)
-cargo install mdbook-katex
-
-# Clone the repository
-git clone https://github.com/Haozhe-Xing/agent_learning.git
-cd agent_learning
-```
-
-**One-click Local Preview (Recommended):**
-
-```bash
-# Build both Chinese and English versions and start unified server (default port 3000)
-./serve.sh
-
-# Specify custom port
-./serve.sh 8080
-
-# Enable file watching, auto-rebuild on source file changes (requires fswatch or inotifywait)
-./serve.sh --watch
-./serve.sh 8080 --watch
-```
-
-After starting, visit:
-
-- 🌐 **Language Selection Home**: `http://localhost:3000` (auto-redirects based on browser language)
-- 🇨🇳 **Chinese Version**: `http://localhost:3000/zh/`
-- 🇺🇸 **English Version**: `http://localhost:3000/en/`
-
-> 💡 File watching dependency installation:
->
-> ```bash
-> # macOS
-> brew install fswatch
->
-> # Ubuntu / Debian
-> sudo apt-get install inotify-tools
-> ```
-
-### Environment Setup (For Code Practice)
-
-```bash
-# Python 3.11+
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install core dependencies
-pip install langchain langchain-openai langgraph openai anthropic
-
-# Configure API Key
-export OPENAI_API_KEY="your-key-here"
-```
 
 ---
 
@@ -356,6 +265,48 @@ export OPENAI_API_KEY="your-key-here"
 
 ---
 
+## 🚀 Quick Start
+
+### Local Build
+
+```bash
+# Install mdBook (choose one)
+cargo install mdbook
+# Or macOS: brew install mdbook
+
+# Install mdbook-katex plugin (for math formula rendering)
+cargo install mdbook-katex
+
+# Clone the repository
+git clone https://github.com/Haozhe-Xing/agent_learning.git
+cd agent_learning
+
+# Build both Chinese and English versions and start unified server (default port 3000)
+./serve.sh
+```
+
+After starting, visit:
+
+- 🌐 **Language Selection Home**: `http://localhost:3000`
+- 🇨🇳 **Chinese Version**: `http://localhost:3000/zh/`
+- 🇺🇸 **English Version**: `http://localhost:3000/en/`
+
+### Environment Setup (For Code Practice)
+
+```bash
+# Python 3.11+
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install core dependencies
+pip install langchain langchain-openai langgraph openai anthropic
+
+# Configure API Key
+export OPENAI_API_KEY="your-key-here"
+```
+
+---
+
 ## 📊 Technology Stack
 
 ![Python](https://img.shields.io/badge/Python_3.11+-3776AB?style=flat&logo=python&logoColor=white)
@@ -385,18 +336,16 @@ All forms of contribution are welcome!
 
 ```bash
 # Fork and clone
-git clone https://github.com/YOUR_USERNAME/agent_learning.git  # Replace with your username
+git clone https://github.com/YOUR_USERNAME/agent_learning.git
 
 # Create a feature branch
 git checkout -b feature/improve-chapter-4
 
-# Local preview (unified Chinese & English service)
+# Local preview
 ./serve.sh
 
-# Commit changes
+# Commit and push
 git commit -m "feat: improve Chapter 4 tool calling code examples"
-
-# Push and create PR
 git push origin feature/improve-chapter-4
 ```
 
@@ -406,29 +355,6 @@ git push origin feature/improve-chapter-4
 - Chapter overview goes in `README.md`, sections are numbered as `01_xxx.md`, `02_xxx.md`
 - Chinese SVG illustrations go in `src/zh/svg/`, English versions in `src/en/svg/`, naming format: `chapter_xxx_description.svg`
 - Chinese interactive animations go in `src/zh/animations/`, English versions in `src/en/animations/`
-
-### English Translation Contributions
-
-The English version is being continuously translated. Translation contributions are welcome!
-
-**Steps to translate a chapter:**
-
-1. Find the corresponding `.md` file under `src/en/` (content shows placeholder `🚧 Translation in progress`)
-2. Translate the Chinese version from `src/zh/` and replace the placeholder content
-3. If the chapter references SVG images, create corresponding English SVGs in `src/en/svg/` (replace Chinese text with English)
-4. If the chapter references interactive animations, create corresponding English HTML in `src/en/animations/`
-5. Preview locally with `./serve.sh`, visit `http://localhost:3000/en/` to check the English version
-6. Submit PR with title format: `translate: Translate Chapter X - [Chapter Name]`
-
-**Placeholder template format (English file content before translation):**
-
-```markdown
-# [Chapter Title]
-
-> 🚧 **Translation in progress.**
-> This chapter is not yet available in English.
-> Please check back later, or switch to the [Chinese version](../../zh/...) for the full content.
-```
 
 ---
 
