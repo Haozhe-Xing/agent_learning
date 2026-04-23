@@ -1,60 +1,58 @@
-<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
   <defs>
     <marker id="arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
       <polygon points="0 0, 9 3.5, 0 7" fill="#4A90D9"/>
     </marker>
   </defs>
 
-  <rect width="760" height="400" fill="#F8FAFC" rx="12"/>
+  <rect width="760" height="460" fill="#F8FAFC" rx="12"/>
 
   <!-- 标题 -->
   <text x="380" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A2340">位置编码三代演进</text>
   <text x="380" y="54" text-anchor="middle" font-size="12" fill="#7F8C8D">绝大多数现代 LLM 使用第三代 RoPE，支持超长上下文外推</text>
 
   <!-- 竖向时间轴 -->
-  <line x1="120" y1="80" x2="120" y2="350" stroke="#BDC3C7" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="120" y="370" text-anchor="middle" font-size="11" fill="#95A5A6">时间 →</text>
+  <line x1="120" y1="80" x2="120" y2="410" stroke="#BDC3C7" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="120" y="430" text-anchor="middle" font-size="11" fill="#95A5A6">时间 →</text>
 
   <!-- === 第一代 === -->
-  <circle cx="120" cy="110" r="16" fill="#E74C3C"/>
-  <text x="120" y="115" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+  <circle cx="120" cy="115" r="16" fill="#E74C3C"/>
+  <text x="120" y="120" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
 
-  <rect x="150" y="78" width="570" height="80" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="1.5"/>
-  <rect x="150" y="78" width="570" height="34" rx="8" fill="#E74C3C"/>
-  <rect x="150" y="100" width="570" height="12" fill="#E74C3C"/>
-  <text x="180" y="100" font-size="13" font-weight="bold" fill="white">第一代：Sinusoidal 绝对位置编码</text>
-  <text x="250" y="100" font-size="11" fill="#FADBD8">  原始 Transformer（2017）使用</text>
-  <text x="165" y="128" font-size="12" fill="#922B21">✦ 为每个位置 m 生成固定正弦波向量，不可学习</text>
-  <text x="165" y="146" font-size="12" fill="#922B21">✦ 优点：实现简单，无需训练</text>
-  <text x="165" y="146" font-size="12" fill="#C0392B">                                              ⚠ 局限：无法学习相对位置关系，长序列外推效果差</text>
+  <rect x="150" y="83" width="570" height="90" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="1.5"/>
+  <rect x="150" y="83" width="570" height="34" rx="8" fill="#E74C3C"/>
+  <rect x="150" y="105" width="570" height="12" fill="#E74C3C"/>
+  <text x="180" y="105" font-size="13" font-weight="bold" fill="white">第一代：Sinusoidal 绝对位置编码</text>
+  <text x="500" y="105" font-size="11" fill="#FADBD8">原始 Transformer（2017）使用</text>
+  <text x="165" y="133" font-size="12" fill="#922B21">✦ 为每个位置 m 生成固定正弦波向量，不可学习</text>
+  <text x="165" y="151" font-size="12" fill="#C0392B">⚠ 局限：无法学习相对位置关系，长序列外推效果差</text>
 
   <!-- === 第二代 === -->
-  <circle cx="120" cy="215" r="16" fill="#E67E22"/>
-  <text x="120" y="220" text-anchor="middle" font-size="11" fill="white" font-weight="bold">2</text>
+  <circle cx="120" cy="225" r="16" fill="#E67E22"/>
+  <text x="120" y="230" text-anchor="middle" font-size="11" fill="white" font-weight="bold">2</text>
 
-  <rect x="150" y="183" width="570" height="80" rx="8" fill="#FEF9E7" stroke="#E67E22" stroke-width="1.5"/>
-  <rect x="150" y="183" width="570" height="34" rx="8" fill="#E67E22"/>
-  <rect x="150" y="205" width="570" height="12" fill="#E67E22"/>
-  <text x="180" y="205" font-size="13" font-weight="bold" fill="white">第二代：Learned Absolute（可学习绝对位置编码）</text>
-  <text x="250" y="205" font-size="11" fill="#FAD7A0">  BERT、GPT-2 使用</text>
-  <text x="165" y="233" font-size="12" fill="#7D6608">✦ 把位置 ID 当作 Embedding 直接学习，更灵活</text>
-  <text x="165" y="251" font-size="12" fill="#7D6608">✦ 优点：适配具体任务的位置模式</text>
-  <text x="165" y="251" font-size="12" fill="#D35400">                                              ⚠ 局限：最大长度被训练长度限制，无法外推到更长序列</text>
+  <rect x="150" y="193" width="570" height="90" rx="8" fill="#FEF9E7" stroke="#E67E22" stroke-width="1.5"/>
+  <rect x="150" y="193" width="570" height="34" rx="8" fill="#E67E22"/>
+  <rect x="150" y="215" width="570" height="12" fill="#E67E22"/>
+  <text x="180" y="215" font-size="13" font-weight="bold" fill="white">第二代：Learned Absolute（可学习绝对位置编码）</text>
+  <text x="560" y="215" font-size="11" fill="#FAD7A0">BERT、GPT-2 使用</text>
+  <text x="165" y="243" font-size="12" fill="#7D6608">✦ 把位置 ID 当作 Embedding 直接学习，更灵活</text>
+  <text x="165" y="261" font-size="12" fill="#D35400">⚠ 局限：最大长度被训练长度限制，无法外推到更长序列</text>
 
   <!-- === 第三代 === -->
-  <circle cx="120" cy="320" r="16" fill="#27AE60"/>
-  <text x="120" y="325" text-anchor="middle" font-size="11" fill="white" font-weight="bold">3</text>
+  <circle cx="120" cy="340" r="16" fill="#27AE60"/>
+  <text x="120" y="345" text-anchor="middle" font-size="11" fill="white" font-weight="bold">3</text>
 
-  <rect x="150" y="285" width="570" height="90" rx="8" fill="#E9F7EF" stroke="#27AE60" stroke-width="2"/>
-  <rect x="150" y="285" width="570" height="34" rx="8" fill="#27AE60"/>
-  <rect x="150" y="307" width="570" height="12" fill="#27AE60"/>
-  <text x="180" y="307" font-size="13" font-weight="bold" fill="white">第三代：相对位置编码（RoPE / ALiBi）</text>
-  <text x="270" y="307" font-size="11" fill="#D4EFDF">  ✅ 绝大多数现代 LLM 使用（LLaMA / Qwen / DeepSeek）</text>
-  <text x="165" y="337" font-size="12" fill="#1E8449">✦ 不编码绝对位置，而是编码 Token 之间的相对距离</text>
-  <text x="165" y="355" font-size="12" fill="#1E8449">✦ RoPE（2021）：旋转矩阵实现，外推能力强，适合超长上下文（1M+ Token）</text>
-  <text x="165" y="373" font-size="12" fill="#27AE60" font-weight="bold">✦ 优势：训练长度之外的序列仍可泛化，是 LLM 长上下文能力的关键基础</text>
+  <rect x="150" y="305" width="570" height="105" rx="8" fill="#E9F7EF" stroke="#27AE60" stroke-width="2"/>
+  <rect x="150" y="305" width="570" height="34" rx="8" fill="#27AE60"/>
+  <rect x="150" y="327" width="570" height="12" fill="#27AE60"/>
+  <text x="180" y="327" font-size="13" font-weight="bold" fill="white">第三代：相对位置编码（RoPE / ALiBi）</text>
+  <text x="530" y="327" font-size="11" fill="#D4EFDF">LLaMA / Qwen / DeepSeek</text>
+  <text x="165" y="357" font-size="12" fill="#1E8449">✦ 不编码绝对位置，而是编码 Token 之间的相对距离</text>
+  <text x="165" y="375" font-size="12" fill="#1E8449">✦ RoPE（2021）：旋转矩阵实现，外推能力强，适合超长上下文（1M+ Token）</text>
+  <text x="165" y="393" font-size="12" fill="#27AE60" font-weight="bold">✦ 优势：训练长度之外的序列仍可泛化，是 LLM 长上下文能力的关键基础</text>
 
   <!-- 右侧当前主流标注 -->
-  <rect x="640" y="289" width="78" height="26" rx="5" fill="#27AE60"/>
-  <text x="679" y="306" text-anchor="middle" font-size="12" fill="white" font-weight="bold">当前主流</text>
+  <rect x="640" y="309" width="78" height="26" rx="5" fill="#27AE60"/>
+  <text x="679" y="326" text-anchor="middle" font-size="12" fill="white" font-weight="bold">当前主流</text>
 </svg>
