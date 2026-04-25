@@ -307,3 +307,20 @@ def select_model(requirements: dict) -> str:
 ---
 
 *下一节：[3.7 基座模型架构详解](./07_model_architecture.md)*
+
+---
+
+## 📰 最新论文速递
+
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 4 月 25 日**
+
+### [DeepSeek V4 发布：1.6T MoE 全开源，1M 上下文，昇腾首发](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro)
+
+**发表**：2026 年 4 月 24 日 | [HuggingFace](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro) | [技术解读](https://www.ai-insight.org/reports/deepseek-v4-2026)
+
+**核心贡献**：DeepSeek 于 4 月 24 日发布 V4 系列（V4-Pro：1.6T 总参数/49B 激活；V4-Flash：284B/13B），采用 MIT 协议全开源。三大架构创新：① **CSA + HCA 混合注意力**——单 token 推理 FLOPs 降至 V3.2 的 27%，KV Cache 降至 10%；② **流形约束超连接（mHC）**——抑制深层 Transformer 的梯度弥散，稳定超大规模 MoE 训练；③ **Muon 优化器**——替代 AdamW，在 32T+ tokens 规模下收敛更快。V4-Pro 在 Codeforces 评分达 3206（开源最高），SWE-Verified 80.6%，LiveCodeBench 93.5%。首次在华为昇腾 950 上原生部署并兼容 Anthropic API。
+
+**与本章关系**：是 2026 年 4 月「MoE 效率革命」趋势的最新里程碑，1.6T 参数全开源刷新了开源模型的能力上限，CSA 注意力机制对本章 3.7 节「KV Cache 优化」内容有直接参考价值。
+
+---
+
