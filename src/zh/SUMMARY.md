@@ -59,6 +59,7 @@
   - [6.4 检索策略与重排序](./chapter_rag/04_retrieval_strategies.md)
   - [6.5 实战：智能文档问答 Agent](./chapter_rag/05_practice_qa_agent.md)
   - [6.6 论文解读：RAG 前沿进展](./chapter_rag/06_paper_readings.md)
+  - [6.7 进阶 RAG：GraphRAG 与 Agentic RAG 工程实战](./chapter_rag/07_advanced_rag.md)
 
 - [第7章 上下文工程](./chapter_context_engineering/README.md)
   - [7.1 从提示工程到上下文工程](./chapter_context_engineering/01_context_vs_prompt.md)
