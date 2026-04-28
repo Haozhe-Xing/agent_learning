@@ -288,7 +288,150 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // === 6. 中英文切换按钮 ===
+  // === 6. 右侧页内目录（TOC）===
+  (function buildTOC() {
+    var content = document.querySelector('.content main') || document.querySelector('.content');
+    if (!content) return;
+
+    // 收集 h2 / h3 标题
+    var headings = content.querySelectorAll('h2, h3');
+    if (headings.length < 2) return; // 标题太少不显示
+
+    // 创建 TOC 容器
+    var toc = document.createElement('nav');
+    toc.id = 'page-toc';
+    toc.setAttribute('aria-label', '页内目录');
+
+    var isZhPage = document.documentElement.lang === 'zh' || document.documentElement.lang === 'zh-CN';
+
+    // 标题行（包含折叠按钮）
+    var titleEl = document.createElement('div');
+    titleEl.className = 'toc-title';
+    var titleText = isZhPage ? '本节目录' : 'On This Page';
+    titleEl.innerHTML =
+      '<span class="toc-title-text"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>' + titleText + '</span>' +
+      '<button class="toc-collapse-btn" type="button" aria-label="' + (isZhPage ? '收起目录' : 'Collapse TOC') + '" title="' + (isZhPage ? '收起目录' : 'Collapse TOC') + '">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>' +
+      '</button>';
+    toc.appendChild(titleEl);
+
+    // 折叠态的打开按钮（悬浮在右上角）
+    var openBtn = document.createElement('button');
+    openBtn.id = 'page-toc-open';
+    openBtn.type = 'button';
+    openBtn.setAttribute('aria-label', isZhPage ? '展开目录' : 'Open TOC');
+    openBtn.title = isZhPage ? '展开目录' : 'Open TOC';
+    openBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>';
+
+    var ul = document.createElement('ul');
+
+    headings.forEach(function(h) {
+      // 确保标题有 id（mdBook 通常会自动生成）
+      if (!h.id) return;
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.replace(/\s*#\s*$/, '').trim(); // 去掉末尾的锚点符号
+      a.className = h.tagName === 'H2' ? 'toc-h2' : 'toc-h3';
+      a.dataset.target = h.id;
+
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.getElementById(this.dataset.target);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+
+    toc.appendChild(ul);
+    document.body.appendChild(toc);
+    document.body.appendChild(openBtn);
+
+    // === 折叠/展开逻辑 ===
+    var TOC_COLLAPSED_KEY = 'page-toc-collapsed';
+    function applyCollapsed(collapsed) {
+      if (collapsed) {
+        toc.classList.add('toc-collapsed');
+        openBtn.classList.add('toc-open-visible');
+        document.body.classList.add('page-toc-collapsed');
+      } else {
+        toc.classList.remove('toc-collapsed');
+        openBtn.classList.remove('toc-open-visible');
+        document.body.classList.remove('page-toc-collapsed');
+      }
+    }
+    // 读取持久化状态
+    var savedCollapsed = false;
+    try { savedCollapsed = localStorage.getItem(TOC_COLLAPSED_KEY) === '1'; } catch (e) {}
+    applyCollapsed(savedCollapsed);
+
+    var collapseBtn = titleEl.querySelector('.toc-collapse-btn');
+    if (collapseBtn) {
+      collapseBtn.addEventListener('click', function() {
+        applyCollapsed(true);
+        try { localStorage.setItem(TOC_COLLAPSED_KEY, '1'); } catch (e) {}
+      });
+    }
+    openBtn.addEventListener('click', function() {
+      applyCollapsed(false);
+      try { localStorage.setItem(TOC_COLLAPSED_KEY, '0'); } catch (e) {}
+    });
+
+    // 延迟显示（等页面渲染完）
+    requestAnimationFrame(function() {
+      toc.classList.add('toc-visible');
+    });
+
+    // 高亮当前可见标题（IntersectionObserver）
+    var tocLinks = toc.querySelectorAll('a[data-target]');
+    var activeId = null;
+
+    function setActive(id) {
+      if (id === activeId) return;
+      activeId = id;
+      tocLinks.forEach(function(a) {
+        if (a.dataset.target === id) {
+          a.classList.add('toc-active');
+        } else {
+          a.classList.remove('toc-active');
+        }
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        // 找到最靠近顶部且可见的标题
+        var visible = [];
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) visible.push(entry.target.id);
+        });
+        if (visible.length > 0) setActive(visible[0]);
+      }, {
+        rootMargin: '-60px 0px -70% 0px',
+        threshold: 0
+      });
+
+      headings.forEach(function(h) {
+        if (h.id) observer.observe(h);
+      });
+    } else {
+      // 降级：scroll 事件
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.scrollY + 80;
+        var current = null;
+        headings.forEach(function(h) {
+          if (h.id && h.offsetTop <= scrollTop) current = h.id;
+        });
+        if (current) setActive(current);
+      }, { passive: true });
+    }
+  })();
+
+  // === 7. 中英文切换按钮 ===
   // 通过替换 URL 路径中的语言段（/zh/ ↔ /en/）实现切换，
   // 本地开发（serve.sh）和部署环境（GitHub Pages）使用完全相同的逻辑。
   var rightButtons = document.querySelector('.right-buttons');

@@ -26,11 +26,12 @@
 
 ---
 
-## 🔗 学习路径
+## 🎓 学习路径（认知指南）
+> 每一位开发者都在思考：如何让 Agent 从"对话者"进化为"思考者"？本章的核心在于掌握 **思考框架 (CoT)**。
 
-> **后续推荐**：
-> - 👉 [第8章 上下文工程](../chapter_context_engineering/README.md)
-> - 👉 [第13章 LangGraph](../chapter_langgraph/README.md)
+- **思考逻辑图**：通过 [6.1 小节](./01_how_agents_think.md) 建立 ReAct 心理模型。
+- **实战练习**：在 [6.2 ReAct 框架](./02_react_framework.md) 中动手补全 ReAct 循环。
+- **进阶设计**：通过 [6.3 任务分解](./03_task_decomposition.md) 掌握分治法。
 
 ---
 

@@ -4,7 +4,7 @@
 
 /* ---------- 字体与排版 ---------- */
 :root {
-  --content-max-width: 900px;
+  --content-max-width: 1000px;
   --sidebar-width: 300px;
 }
 
@@ -12,6 +12,53 @@
   font-size: 1.6rem;
   line-height: 1.9;
   letter-spacing: 0.015em;
+}
+
+/* ---------- 内容区左对齐（取消默认居中，让正文靠近 sidebar） ---------- */
+/* mdBook 默认：.content main 居中。这里改为靠左，只保留少量内边距 */
+.content main {
+  margin-left: 49px;
+  margin-right: auto;
+  max-width: var(--content-max-width);
+  transition: margin 0.25s ease, max-width 0.25s ease;
+}
+
+/* 当屏幕足够宽时，为右侧 TOC 预留空间，避免正文与 TOC 重叠 */
+@media (min-width: 1400px) {
+  .content main {
+    margin-right: 340px;
+  }
+
+  /* 右侧 TOC 收起时：正文向右扩展（不再为 TOC 预留空间） */
+  body.page-toc-collapsed .content main {
+    margin-right: auto;
+    max-width: calc(var(--content-max-width) + 200px);
+  }
+}
+
+/* 左侧 sidebar 收起时：正文整体向左靠拢（mdBook 自身会移除左边距，
+   这里额外让正文在可视区域内重新居中，避免大片空白） */
+html.sidebar-hidden .content main,
+html:not(.sidebar-visible) .content main {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1400px) {
+  html.sidebar-hidden .content main,
+  html:not(.sidebar-visible) .content main {
+    /* 左侧折叠但右侧 TOC 仍展开：正文居中，但保留 TOC 空间 */
+    margin-left: auto;
+    margin-right: 340px;
+  }
+
+  html.sidebar-hidden body.page-toc-collapsed .content main,
+  html:not(.sidebar-visible) body.page-toc-collapsed .content main {
+    /* 两侧都折叠：正文在全宽页面中居中，并允许略宽一些 */
+    margin-left: auto;
+    margin-right: auto;
+    max-width: calc(var(--content-max-width) + 260px);
+  }
 }
 
 /* 中文优化：段落间距 */
@@ -471,6 +518,206 @@
   background: rgba(128, 128, 128, 0.5);
 }
 
+/* ---------- 右侧页内目录（TOC） ---------- */
+#page-toc {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding: 16px 18px 20px 18px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  z-index: 100;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+#page-toc.toc-visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+#page-toc .toc-title {
+  font-size: 1.0rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--links, #3783eb);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(var(--links-rgb, 55, 131, 235), 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+#page-toc .toc-title-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 折叠按钮 */
+#page-toc .toc-collapse-btn {
+  background: transparent;
+  border: none;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--fg);
+  opacity: 0.55;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+#page-toc .toc-collapse-btn:hover {
+  opacity: 1;
+  color: var(--links, #3783eb);
+  background: rgba(var(--links-rgb, 55, 131, 235), 0.1);
+}
+
+/* 折叠态：隐藏 TOC 本体 */
+#page-toc.toc-collapsed {
+  opacity: 0 !important;
+  transform: translateX(20px) !important;
+  pointer-events: none !important;
+}
+
+/* 展开按钮（悬浮在右上角） */
+#page-toc-open {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--links-rgb, 55, 131, 235), 0.25);
+  background: var(--bg, #fff);
+  color: var(--links, #3783eb);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+#page-toc-open.toc-open-visible {
+  display: flex;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#page-toc-open:hover {
+  background: rgba(var(--links-rgb, 55, 131, 235), 0.1);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.navy #page-toc-open,
+.coal #page-toc-open,
+.ayu #page-toc-open {
+  background: var(--sidebar-bg, #1f2937);
+  color: #5ba3f5;
+  border-color: rgba(91, 163, 245, 0.3);
+}
+
+#page-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: none;
+}
+
+#page-toc ul li {
+  padding: 0;
+  margin: 0;
+  counter-increment: none;
+}
+
+#page-toc ul li::before {
+  display: none !important;
+  content: none !important;
+}
+
+#page-toc a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 5px;
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: none;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#page-toc a:hover {
+  opacity: 1;
+  background: rgba(var(--links-rgb, 55, 131, 235), 0.08);
+  color: var(--links, #3783eb);
+  border-bottom: none;
+}
+
+#page-toc a.toc-active {
+  opacity: 1;
+  color: var(--links, #3783eb);
+  font-weight: 600;
+  background: rgba(var(--links-rgb, 55, 131, 235), 0.1);
+}
+
+#page-toc .toc-h2 {
+  padding-left: 0;
+  font-size: 1.1rem;
+}
+
+#page-toc .toc-h3 {
+  padding-left: 18px;
+  font-size: 1.0rem;
+}
+
+/* 暗色主题适配 */
+.navy #page-toc a,
+.coal #page-toc a,
+.ayu #page-toc a {
+  color: var(--fg);
+}
+
+.navy #page-toc a.toc-active,
+.coal #page-toc a.toc-active,
+.ayu #page-toc a.toc-active {
+  color: #5ba3f5;
+  background: rgba(91, 163, 245, 0.12);
+}
+
+.navy #page-toc a:hover,
+.coal #page-toc a:hover,
+.ayu #page-toc a:hover {
+  color: #5ba3f5;
+  background: rgba(91, 163, 245, 0.08);
+}
+
+/* 滚动条 */
+#page-toc::-webkit-scrollbar {
+  width: 3px;
+}
+#page-toc::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.25);
+  border-radius: 2px;
+}
+
 /* ---------- 打印优化 ---------- */
 @media print {
   .sidebar,
@@ -481,6 +728,22 @@
 
   .content {
     max-width: 100% !important;
+  }
+
+  #page-toc {
+    display: none !important;
+  }
+
+  #page-toc-open {
+    display: none !important;
+  }
+}
+
+/* TOC 在小屏隐藏（小于 1400px 不显示，避免与正文挤占） */
+@media (max-width: 1400px) {
+  #page-toc,
+  #page-toc-open {
+    display: none !important;
   }
 }
 
@@ -551,5 +814,11 @@
     width: 36px;
     height: 36px;
     font-size: 1rem;
+  }
+
+  /* 移动端正文也无需额外左边距 */
+  .content main {
+    margin-left: 16px;
+    margin-right: 16px;
   }
 }

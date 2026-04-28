@@ -1,58 +1,41 @@
 # 6.1 Agent 是如何「思考」的？
 
+> 🎯 **本节学习目标**：建立 Agent 推理的心理模型，理解 OODA 循环在 AI 决策中的应用。
+
 Agent 的"思考"本质上是**在上下文中组织信息、推导结论、制定计划的过程**。理解这个过程，是设计高效 Agent 的前提。
 
 ## 思考的本质：上下文中的推理
 
-LLM 没有独立的"思考空间"——它的所有推理都发生在 Context Window 中。通过精心设计 Prompt，我们可以引导模型产生更高质量的推理。
+### 心理模型：为什么直接询问通常无效？
+如果把 LLM 比作一个阅读速度极快的"阅读者"，直接提问就像是让它在还没看完题目的情况下给出结论。LLM 只有在输出每一个 Token 时，才在“思考”。因此，引导推理的关键是**强制要求模型在输出最终答案前，先把思维过程展示出来（CoT 策略）**。
+
+### 实践练习：重构推理过程
+对比以下两种代码，思考为什么右侧的结构化推理更稳定？
 
 ```python
-from openai import OpenAI
-
-client = OpenAI()
-
-# 不引导推理：直接给答案（可能错误）
-def direct_answer(question: str) -> str:
-    response = client.chat.completions.create(
-        model="gpt-4.1",
-        messages=[{"role": "user", "content": question}]
-    )
-    return response.choices[0].message.content
-
-# 引导推理：分步思考（更准确）
+# 练习：尝试在 structured_thinking 中加入一个“检查是否有逻辑漏洞”的环节
 def structured_thinking(question: str) -> str:
-    system_prompt = """解决问题时，请严格按照以下框架：
+    system_prompt = """请使用结构化分析：
+    1. 【问题拆解】...
+    2. 【推理步骤】...
+    3. 【自我验证】... # 在这里尝试增加检查是否存在逻辑跳跃的检查逻辑
+    """
+    # ...
+```
 
-【问题分析】
-- 问题的核心是什么？
-- 有哪些已知条件？
-- 有哪些不确定因素？
+---
 
-【推理过程】
-1. 第一步...
-2. 第二步...
-...
+## 认知框架：OODA 循环
 
-【结论】
-最终答案是...
+Agent 的决策可以用 OODA（观察、定位、决策、行动）循环来理解。
 
-【验证】
-验证答案是否合理...
-"""
-    
-    response = client.chat.completions.create(
-        model="gpt-4.1",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": question}
-        ]
-    )
-    return response.choices[0].message.content
+{visualizer_call: ooda_loop_viz}
 
-# 对比测试
-question = "一个水桶装满水重10公斤，装半桶水重6公斤，空桶重多少公斤？"
-print("直接回答：", direct_answer(question))
-print("\n结构化思考：", structured_thinking(question))
+```python
+# 练习：OODAAgent 中的 act 阶段，如果 Agent 发现之前的 plan 执行失败，应该如何返回到 orient 阶段？
+# 请修改下面的 process 方法，加入简单的重试机制
+def process(self, user_input: str) -> str:
+    # 你的逻辑...
 ```
 
 ## 认知框架：OODA 循环
