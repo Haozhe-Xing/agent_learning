@@ -43,6 +43,7 @@
   - [4.4 工作记忆：Scratchpad 模式](./chapter_memory/04_working_memory.md)
   - [4.5 实战：带记忆的个人助理 Agent](./chapter_memory/05_practice_memory_agent.md)
   - [4.6 论文解读：记忆系统前沿进展](./chapter_memory/06_paper_readings.md)
+  - [4.7 实战：MemGPT/Letta 记忆架构工程实践](./chapter_memory/06b_memgpt_practice.md)
 
 - [第5章 规划与推理（Planning & Reasoning）](./chapter_planning/README.md)
   - [5.1 Agent 如何"思考"？](./chapter_planning/01_how_agents_think.md)
@@ -50,7 +51,8 @@
   - [5.3 任务分解：将复杂问题拆解为子任务](./chapter_planning/03_task_decomposition.md)
   - [5.4 反思与自我纠错机制](./chapter_planning/04_reflection.md)
   - [5.5 实战：自动化研究助手 Agent](./chapter_planning/05_practice_research_agent.md)
-  - [5.6 论文解读：规划与推理前沿研究](./chapter_planning/06_paper_readings.md)
+  - [5.6 Plan-and-Execute 与 Test-time Compute Scaling](./chapter_planning/07_plan_and_execute.md)
+  - [5.7 论文解读：规划与推理前沿研究](./chapter_planning/06_paper_readings.md)
 
 - [第6章 检索增强生成（RAG）](./chapter_rag/README.md)
   - [6.1 RAG 的概念与工作原理](./chapter_rag/01_rag_concepts.md)
@@ -108,6 +110,9 @@
   - [11.3 使用 LangChain 构建 Agent](./chapter_langchain/03_langchain_agents.md)
   - [11.4 LCEL：LangChain 表达式语言](./chapter_langchain/04_lcel.md)
   - [11.5 实战：多功能客服 Agent](./chapter_langchain/05_practice_customer_service.md)
+  - [11.6 LangSmith 集成与可观测性](./chapter_langchain/06_langsmith_integration.md)
+  - [11.7 LangChain 生态 2026](./chapter_langchain/07_langchain_ecosystem_2026.md)
+  - [11.8 LangChain 生产化模式](./chapter_langchain/08_production_patterns.md)
 
 - [第12章 LangGraph：构建有状态的 Agent](./chapter_langgraph/README.md)
   - [12.1 为什么需要图结构？](./chapter_langgraph/01_why_graph.md)
@@ -160,6 +165,9 @@
   - [17.3 Prompt 调优策略](./chapter_evaluation/03_prompt_tuning.md)
   - [17.4 成本控制与性能优化](./chapter_evaluation/04_cost_optimization.md)
   - [17.5 可观测性：日志、追踪与监控](./chapter_evaluation/05_observability.md)
+  - [17.6 Agent 专项评估框架](./chapter_evaluation/06_agent_evaluation.md)
+  - [17.7 A/B 测试与回归测试自动化](./chapter_evaluation/07_ab_testing.md)
+  - [17.8 模型路由评估](./chapter_evaluation/08_model_routing.md)
 
 - [第18章 安全与可靠性](./chapter_security/README.md)
   - [18.1 Prompt 注入攻击与防御](./chapter_security/01_prompt_injection.md)
@@ -168,6 +176,8 @@
   - [18.4 敏感数据保护](./chapter_security/04_data_protection.md)
   - [18.5 Agent 行为的可控性与对齐](./chapter_security/05_alignment.md)
   - [18.6 论文解读：安全与可靠性前沿研究](./chapter_security/06_paper_readings.md)
+  - [18.7 Guardrails 运行时防护](./chapter_security/07_guardrails_runtime.md)
+  - [18.8 红队测试方法论](./chapter_security/08_red_teaming.md)
 
 - [第19章 部署与生产化](./chapter_deployment/README.md)
   - [19.1 Agent 应用的部署架构](./chapter_deployment/01_deployment_architecture.md)
@@ -175,6 +185,9 @@
   - [19.3 容器化与云部署](./chapter_deployment/03_containerization.md)
   - [19.4 流式响应与并发处理](./chapter_deployment/04_streaming_concurrency.md)
   - [19.5 实战：部署一个生产级 Agent 服务](./chapter_deployment/05_practice_production_agent.md)
+  - [19.6 模型推理服务化](./chapter_deployment/06_model_serving.md)
+  - [19.7 Kubernetes 编排与 Serverless GPU](./chapter_deployment/07_k8s_serverless.md)
+  - [19.8 长任务队列与成本治理](./chapter_deployment/08_task_queue_cost.md)
 
 ---
 
@@ -199,6 +212,8 @@
   - [22.2 图像理解与生成](./chapter_multimodal/02_image_understanding.md)
   - [22.3 语音交互集成](./chapter_multimodal/03_voice_interaction.md)
   - [22.4 实战：多模态个人助理](./chapter_multimodal/04_practice_multimodal_assistant.md)
+  - [22.5 Computer Use 与 GUI Agent](./chapter_multimodal/05_computer_use_agent.md)
+  - [22.6 视频理解与多模态 RAG](./chapter_multimodal/06_video_and_multimodal_rag.md)
 
 ---
 

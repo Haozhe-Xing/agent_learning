@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 380" width="460" height="380" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="460" height="380" rx="12" fill="#f8fafc"/>
+  <text x="230" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Prompt 自动优化循环（APO）</text>
+
+  <!-- 初始 prompt -->
+  <rect x="130" y="46" width="200" height="40" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="230" y="71" text-anchor="middle" font-size="12" fill="#3730a3">初始 Prompt（草稿）</text>
+  <line x1="230" y1="86" x2="230" y2="104" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 运行 -->
+  <rect x="100" y="106" width="260" height="40" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="230" y="121" text-anchor="middle" font-size="12" fill="#1d4ed8">在任务数据集上运行</text>
+  <text x="230" y="138" text-anchor="middle" font-size="11" fill="#3b82f6">→ 得到输出</text>
+  <line x1="230" y1="146" x2="230" y2="164" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 评估 -->
+  <rect x="100" y="166" width="260" height="40" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="230" y="181" text-anchor="middle" font-size="12" fill="#15803d">评估输出质量</text>
+  <text x="230" y="198" text-anchor="middle" font-size="11" fill="#22c55e">打分函数 / LLM-as-Judge</text>
+  <line x1="230" y1="206" x2="230" y2="224" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- LLM 分析 -->
+  <rect x="100" y="226" width="260" height="40" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="230" y="241" text-anchor="middle" font-size="12" fill="#a16207">LLM 分析"哪里差、如何改"</text>
+  <text x="230" y="258" text-anchor="middle" font-size="11" fill="#eab308">→ 生成改进版 Prompt</text>
+  <line x1="230" y1="266" x2="230" y2="284" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 收敛判断 -->
+  <rect x="100" y="286" width="260" height="40" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="230" y="311" text-anchor="middle" font-size="12" fill="#7e22ce">重复，直到得分收敛</text>
+
+  <!-- 回环箭头 -->
+  <path d="M 360 306 Q 420 306 420 186 Q 420 66 360 66" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="432" y="190" text-anchor="middle" font-size="10" fill="#6366f1" transform="rotate(90,432,190)">迭代优化</text>
+
+  <!-- 说明 -->
+  <rect x="24" y="340" width="412" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="230" y="360" text-anchor="middle" font-size="11" fill="#3730a3">💡 "梯度"= 自然语言改进建议，"参数更新"= 重写 Prompt 文字</text>
+</svg>

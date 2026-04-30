@@ -1,4 +1,4 @@
-# 附录 E：KL 散度（Kullback-Leibler Divergence）详解
+# 附录 E：KL 散度详解
 
 > 本附录为零基础读者提供 KL 散度的完整科普。如果你已经熟悉信息论基础，可以直接跳到 [在 Agentic-RL 中的应用](#在-agentic-rl-中的应用) 部分。
 
@@ -111,7 +111,7 @@ KL 散度的不对称性在实践中有重要影响：
 
 ## 在 Agentic-RL 中的应用
 
-在 [18.1 什么是 Agentic-RL](../chapter_agentic_rl/01_agentic_rl_overview.md) 中，RL 阶段的损失函数包含一个 KL 散度惩罚项：
+在 [10.1 什么是 Agentic-RL](../chapter_agentic_rl/01_agentic_rl_overview.md) 中，RL 阶段的损失函数包含一个 KL 散度惩罚项：
 
 $$\mathcal{L}_{RL}(\theta) = -\mathbb{E}_{\tau \sim \pi_\theta} \left[ R(\tau) \right] + \beta \cdot D_{KL}(\pi_\theta \| \pi_{SFT})$$
 
@@ -141,7 +141,7 @@ $$D_{KL}(\pi_\theta \| \pi_{SFT}) = \mathbb{E}_{x \sim \mathcal{D}} \left[ \sum_
 | **较小**（如 0.001–0.01） | 策略自由，允许大幅探索 | 训练后期、任务有明确客观评估标准 |
 | **自适应** | 动态调节，保持 KL 在目标范围 | PPO 中常用 |
 
-在 GRPO（Group Relative Policy Optimization）中，KL 惩罚的具体实现方式会有所不同，详见 [18.5 GRPO：组内相对策略优化与奖励函数设计](../chapter_agentic_rl/05_grpo.md)。
+在 GRPO（Group Relative Policy Optimization）中，KL 惩罚的具体实现方式会有所不同，详见 [10.5 GRPO/GSPO：组内相对策略优化与奖励函数设计](../chapter_agentic_rl/05_grpo.md)。
 
 ---
 

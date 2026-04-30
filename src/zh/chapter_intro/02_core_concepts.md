@@ -168,7 +168,7 @@ def agent_adaptive_strategy(current_user_state, candidate_actions, memory_db):
 
 | 核心组件 | 工程隐喻 | 架构职责与技术栈体现 |
 | :--- | :--- | :--- |
-| **LLM Engine** | CPU / 算术逻辑单元 | 负责复杂语义的理解、常识推理和自然语言生成。依赖于大参数量基座模型（如 GPT-4, Gemini Pro, Llama 3）。 |
+| **LLM Engine** | CPU / 算术逻辑单元 | 负责复杂语义的理解、常识推理和自然语言生成。依赖于大参数量基座模型（如 GPT-4o, Claude, Gemini, Qwen 等）。 |
 | **Planning** | 操作系统调度器 | 负责宏大目标的拆解（Sub-goal Decomposition），管理任务流的时序与并发执行。涉及 ReAct 框架或复杂状态机编排。 |
 | **Memory** | 内存与硬盘系统 | 维持 Agent 的上下文连贯性与长期进化。**短期记忆**依赖大模型的 Context Window；**长期记忆**依赖 Vector DB（如 Milvus）进行 RAG 检索。 |
 | **Tools/Action** | 外设接口（I/O） | 赋予虚拟大脑干预物理/数字现实的能力。涉及 OpenAPI Schema 自动解析、沙盒代码执行环境（Python Sandbox）。 |

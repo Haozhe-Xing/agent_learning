@@ -1,4 +1,4 @@
-# 第20章 部署与生产化
+# 第19章 部署与生产化
 
 > 代码在本地跑通只是第一步。让 Agent 在生产环境稳定服务用户，才是真正的考验。
 
@@ -30,7 +30,7 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第21章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
+> - 👉 [第20章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
 
 ---
 
@@ -68,12 +68,12 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第18章 评估与优化](../chapter_evaluation/README.md)、[第17章 安全与可靠性](../chapter_security/README.md)
+> **前置知识**：[第17章 Agent 的评估与优化](../chapter_evaluation/README.md)、[第18章 安全与可靠性](../chapter_security/README.md)
 >
 > **后续推荐**：
-> - 👉 [第19章 AI 编程助手](../chapter_coding_agent/README.md) — 综合项目实战
-> - 👉 [第22章 数据分析 Agent](../chapter_data_agent/README.md) — 综合项目实战
+> - 👉 [第20章 项目实战：AI 编程助手](../chapter_coding_agent/README.md) — 综合项目实战
+> - 👉 [第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md) — 综合项目实战
 
 ---
 
-*下一节：[18.1 Agent 应用的部署架构](./01_deployment_architecture.md)*
+*下一节：[19.1 Agent 应用的部署架构](./01_deployment_architecture.md)*

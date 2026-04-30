@@ -1,4 +1,4 @@
-# 9.5 实战：构建你的第一个 Harness 系统
+# 8.5 实战：构建你的第一个 Harness 系统
 
 > 🛠️ *"学习 Harness Engineering 最好的方式，就是亲手为你现有的 Agent 搭建一套，然后看着它在一周内将失败率降低 50%。"*
 
@@ -1065,4 +1065,4 @@ class HarnessObservabilityDashboard:
 
 ---
 
-*下一章：[第10章 Skill System](../chapter_skill/README.md)*
+*下一章：[第9章 Skill System](../chapter_skill/README.md)*

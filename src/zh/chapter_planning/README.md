@@ -1,4 +1,4 @@
-# 第6章 规划与推理（Planning & Reasoning）
+# 第5章 规划与推理（Planning & Reasoning）
 
 > 🧠 *"真正智能的 Agent 不只是执行命令，而是能够独立规划、推理并完成复杂任务。"*
 
@@ -21,17 +21,20 @@
 
 ## 💡 前置知识
 
-- 完成第4章（工具调用）和第5章（记忆系统）
+- 已完成第3章（工具调用）和第4章（记忆系统）
 - 了解递归和循环控制流
+- 对 LLM 的 API 调用有基本经验
 
 ---
 
-## 🎓 学习路径（认知指南）
-> 每一位开发者都在思考：如何让 Agent 从"对话者"进化为"思考者"？本章的核心在于掌握 **思考框架 (CoT)**。
+## 🔗 学习路径
 
-- **思考逻辑图**：通过 [6.1 小节](./01_how_agents_think.md) 建立 ReAct 心理模型。
-- **实战练习**：在 [6.2 ReAct 框架](./02_react_framework.md) 中动手补全 ReAct 循环。
-- **进阶设计**：通过 [6.3 任务分解](./03_task_decomposition.md) 掌握分治法。
+> **前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第4章 记忆系统（Memory）](../chapter_memory/README.md)
+>
+> **后续推荐**：
+> - 👉 [第6章 检索增强生成（RAG）](../chapter_rag/README.md) — 给 Agent 接入外部知识
+> - 👉 [第11章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架高效实现 ReAct Agent
+> - 👉 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 用图结构实现复杂推理流程
 
 ---
 
@@ -39,45 +42,16 @@
 
 本章深入探讨 Agent 的"大脑"——规划与推理系统。如果说工具调用赋予了 Agent "双手"，记忆系统赋予了它"回忆"，那么规划与推理就是赋予它"思考力"。从 ReAct 框架到任务分解，再到自我反思机制，本章帮你构建能够处理复杂、多步骤问题的 Agent。
 
-## 本章目标
-
-学完本章，你将能够：
-
-- ✅ 理解 Agent 推理的核心机制（ReAct、OODA、Plan-and-Execute）
-- ✅ 从零实现一个 ReAct Agent，理解"思考-行动-观察"循环
-- ✅ 掌握任务分解策略，将复杂问题拆解为可执行的子任务
-- ✅ 实现反思与自我纠错机制，让 Agent 从错误中学习
-- ✅ 构建一个综合运用规划推理的研究助手 Agent
-
 ## 本章结构
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 6.1 Agent 如何"思考"？ | 推理机制与认知框架 | ⭐⭐ |
-| 6.2 ReAct 框架 | 推理+行动的经典实现 | ⭐⭐⭐ |
-| 6.3 任务分解 | 复杂问题拆解策略 | ⭐⭐⭐ |
-| 6.4 反思与自我纠错 | 让 Agent 自我改进 | ⭐⭐⭐ |
-| 6.5 实战：研究助手 Agent | 综合应用 | ⭐⭐⭐⭐ |
-
-## ⏱️ 预计学习时间
-
-约 **90-120 分钟**（含实战练习）
-
-## 💡 前置知识
-
-- 已完成第 4 章（工具调用）和第 5 章（记忆系统）
-- 了解 Python 的函数定义和字典操作
-- 对 LLM 的 API 调用有基本经验
-
-## 🔗 学习路径
-
-> **前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第5章 记忆系统](../chapter_memory/README.md)
->
-> **后续推荐**：
-> - 👉 [第7章 RAG](../chapter_rag/README.md) — 给 Agent 接入外部知识
-> - 👉 [第12章 LangChain](../chapter_langchain/README.md) — 用框架高效实现 ReAct Agent
-> - 👉 [第13章 LangGraph](../chapter_langgraph/README.md) — 用图结构实现复杂推理流程
+| 5.1 Agent 如何"思考"？ | 推理机制与认知框架 | ⭐⭐ |
+| 5.2 ReAct 框架 | 推理+行动的经典实现 | ⭐⭐⭐ |
+| 5.3 任务分解 | 复杂问题拆解策略 | ⭐⭐⭐ |
+| 5.4 反思与自我纠错 | 让 Agent 自我改进 | ⭐⭐⭐ |
+| 5.5 实战：研究助手 Agent | 综合应用 | ⭐⭐⭐⭐ |
 
 ---
 
-*下一节：[6.1 Agent 如何"思考"？](./01_how_agents_think.md)*
+*下一节：[5.1 Agent 如何"思考"？](./01_how_agents_think.md)*

@@ -1,4 +1,4 @@
-# 第18章 Agent 评估与优化
+# 第17章 Agent 的评估与优化
 
 > 如何知道你的 Agent 是"好"还是"不好"？评估和优化是从"能用"到"好用"的关键。
 
@@ -29,7 +29,7 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第19章 安全与可靠性](../chapter_security/README.md)
+> - 👉 [第18章 安全与可靠性](../chapter_security/README.md)
 
 ---
 
@@ -66,12 +66,12 @@ Agent 开发不是"写完代码就完了"——你需要衡量它的表现，找
 
 ## 🔗 学习路径
 
-> **前置知识**：[第11-15章 框架实战 & 多 Agent](../chapter_langchain/README.md)
+> **前置知识**：[第11章 LangChain 深入实战](../chapter_langchain/README.md)
 >
 > **后续推荐**：
-> - 👉 [第17章 安全与可靠性](../chapter_security/README.md) — 安全也是"质量"的一部分
-> - 👉 [第18章 部署与生产化](../chapter_deployment/README.md) — 评估指标驱动的生产优化
+> - 👉 [第18章 安全与可靠性](../chapter_security/README.md) — 安全也是"质量"的一部分
+> - 👉 [第19章 部署与生产化](../chapter_deployment/README.md) — 评估指标驱动的生产优化
 
 ---
 
-*下一节：[16.1 如何评估 Agent 的表现？](./01_evaluation_methods.md)*
+*下一节：[17.1 如何评估 Agent 的表现？](./01_evaluation_methods.md)*

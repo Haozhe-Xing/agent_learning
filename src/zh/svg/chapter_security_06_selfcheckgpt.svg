@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="500" height="280" rx="12" fill="#f8fafc"/>
+  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">SelfCheckGPT：采样一致性检测幻觉</text>
+
+  <!-- 真实知识 -->
+  <rect x="16" y="46" width="225" height="150" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="123" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">✅ 真实知识</text>
+  <text x="123" y="80" text-anchor="middle" font-size="11" fill="#22c55e">"Python 是哪一年发布的？"</text>
+  <rect x="28" y="90" width="201" height="22" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="128" y="106" text-anchor="middle" font-size="10" fill="#166534">采样1: "Python 于 1991 年发布"</text>
+  <rect x="28" y="116" width="201" height="22" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="128" y="132" text-anchor="middle" font-size="10" fill="#166534">采样2: "Python 于 1991 年首次发布"</text>
+  <rect x="28" y="142" width="201" height="22" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="128" y="158" text-anchor="middle" font-size="10" fill="#166534">采样3: "Python 在 1991 年发布"</text>
+  <rect x="28" y="172" width="201" height="18" rx="4" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="128" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="#14532d">高度一致 → 大概率真实知识</text>
+
+  <!-- 幻觉 -->
+  <rect x="259" y="46" width="225" height="150" rx="10" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+  <text x="371" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#be123c">❌ 幻觉</text>
+  <text x="371" y="80" text-anchor="middle" font-size="11" fill="#f43f5e">"张三 2023 年发表了什么论文？"</text>
+  <rect x="271" y="90" width="201" height="22" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
+  <text x="371" y="106" text-anchor="middle" font-size="10" fill="#9f1239">采样1: "《AI 在医疗中的应用》"</text>
+  <rect x="271" y="116" width="201" height="22" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
+  <text x="371" y="132" text-anchor="middle" font-size="10" fill="#9f1239">采样2: "《深度学习新进展》"</text>
+  <rect x="271" y="142" width="201" height="22" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
+  <text x="371" y="158" text-anchor="middle" font-size="10" fill="#9f1239">采样3: "《自然语言处理综述》"</text>
+  <rect x="271" y="172" width="201" height="18" rx="4" fill="#fca5a5" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="371" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="#7f1d1d">高度不一致 → 大概率幻觉</text>
+
+  <!-- 核心原理 -->
+  <rect x="16" y="208" width="468" height="60" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="250" y="226" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">核心洞察</text>
+  <text x="250" y="244" text-anchor="middle" font-size="11" fill="#4338ca">模型真正"知道"的事实 → 多次采样结果一致</text>
+  <text x="250" y="260" text-anchor="middle" font-size="11" fill="#4338ca">模型"编造"的内容 → 每次回答都可能不同</text>
+</svg>

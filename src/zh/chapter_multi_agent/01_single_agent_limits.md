@@ -1,6 +1,8 @@
-# 16.1 单 Agent 的局限性
+# 15.1 单 Agent 的局限性
 
-理解单 Agent 的瓶颈，才能知道何时需要引入多 Agent 架构。
+> **本节目标**：理解单 Agent 在复杂任务场景下的三大核心限制，掌握何时应该引入多 Agent 架构的判断方法。
+
+---
 
 ![单Agent三大局限vs多Agent解决方案](../svg/chapter_multi_agent_01_limits.svg)
 
@@ -144,6 +146,137 @@ print(should_use_multi_agent({
 
 ---
 
+## 多 Agent 不是银弹
+
+> ⚠️ **重要**：多 Agent 架构引入了新的复杂性，不是所有场景都适合。
+
+### 多 Agent 的代价
+
+```python
+"""
+多 Agent 系统的隐性成本分析
+帮助团队理性决策，而非盲目追求多 Agent
+"""
+
+@dataclass
+class MultiAgentCost:
+    """多 Agent 系统的成本分析"""
+    # 通信开销
+    communication_rounds: int  # Agent 之间的通信轮次
+    tokens_per_round: int      # 每轮通信消耗的 Token 数
+    token_cost_per_1k: float   # 每 1K Token 的成本
+
+    # 协调开销
+    coordination_latency_ms: float  # 协调决策的额外延迟
+
+    # 质量风险
+    information_loss_rate: float    # 通信中的信息丢失率（0-1）
+    conflict_probability: float    # Agent 意见冲突的概率（0-1）
+
+    @property
+    def communication_cost(self) -> float:
+        """通信成本估算"""
+        total_tokens = self.communication_rounds * self.tokens_per_round
+        return total_tokens / 1000 * self.token_cost_per_1k
+
+    @property
+    def quality_risk(self) -> float:
+        """质量风险评分（0-1，越低越好）"""
+        return self.information_loss_rate * 0.5 + self.conflict_probability * 0.5
+
+    def is_worthwhile(self, single_agent_time_s: float,
+                      multi_agent_time_s: float,
+                      single_agent_quality: float,
+                      multi_agent_quality: float) -> dict:
+        """判断多 Agent 是否值得"""
+        time_saving = single_agent_time_s - multi_agent_time_s
+        time_saving_pct = time_saving / single_agent_time_s * 100
+        quality_gain = multi_agent_quality - single_agent_quality
+
+        worthwhile = (
+            time_saving_pct > 30  # 时间节省 > 30%
+            or quality_gain > 0.15  # 质量提升 > 15%
+        ) and self.quality_risk < 0.3  # 质量风险可控
+
+        return {
+            "time_saving_pct": round(time_saving_pct, 1),
+            "quality_gain": round(quality_gain, 3),
+            "communication_cost_usd": round(self.communication_cost, 4),
+            "quality_risk": round(self.quality_risk, 3),
+            "recommendation": "多 Agent" if worthwhile else "单 Agent",
+            "reason": (
+                f"节省 {time_saving_pct:.0f}% 时间，"
+                f"质量{'提升' if quality_gain > 0 else '下降'} {abs(quality_gain)*100:.1f}%，"
+                f"通信成本 ${self.communication_cost:.4f}"
+            ),
+        }
+```
+
+### 单 Agent vs 多 Agent 决策矩阵
+
+| 维度 | 单 Agent 更优 | 多 Agent 更优 |
+|------|-------------|-------------|
+| **任务复杂度** | 简单任务（< 3 步） | 复杂任务（> 5 步，可分解） |
+| **专业领域** | 单一领域 | 3+ 个不同专业领域 |
+| **延迟要求** | 无特殊要求 | 需要并行加速 |
+| **准确性要求** | 普通要求 | 需要多重验证（医疗/法律/金融） |
+| **成本敏感** | 预算有限 | 预算充足（通信开销可承受） |
+| **调试复杂度** | 简单直接 | 需要追踪多个 Agent 的交互 |
+| **上下文需求** | 单次上下文够用 | 超出 Context Window |
+
+### 渐进式引入策略
+
+```python
+"""
+从单 Agent 到多 Agent 的渐进式迁移
+不要一次性跳到最复杂的多 Agent 架构
+"""
+
+class AgentEvolution:
+    """Agent 架构渐进式演进路径"""
+
+    @staticmethod
+    def stage_1_single_enhanced():
+        """阶段1：增强型单 Agent
+        在单 Agent 中通过 Prompt Engineering 模拟多角色"""
+        system_prompt = """你是一个多功能助手，可以切换以下角色：
+
+        📋 产品分析师：分析需求、编写用户故事
+        🏗️ 架构师：设计系统架构、选择技术栈
+        💻 开发者：编写代码实现
+        🧪 测试工程师：设计测试用例
+
+        当用户提出任务时，按照角色依次处理，每个角色输出后明确标注。
+        """
+        # 优点：最简单，无需协调
+        # 缺点：上下文占用大，角色切换不够专业
+
+    @staticmethod
+    def stage_2_sequential_pipeline():
+        """阶段2：串行流水线
+        多个 Agent 依次处理，前一个的输出是后一个的输入"""
+        # 优点：每个 Agent 专注一个环节，质量提升
+        # 缺点：无法并行，延迟是各环节之和
+
+    @staticmethod
+    def stage_3_parallel_with_supervisor():
+        """阶段3：并行 + Supervisor
+        Supervisor 分发任务给并行 Agent，汇总结果"""
+        # 优点：可并行加速，Supervisor 保证一致性
+        # 缺点：Supervisor 成为瓶颈
+
+    @staticmethod
+    def stage_4_collaborative():
+        """阶段4：协作式多 Agent
+        Agent 之间可以自由通信、协商和协作"""
+        # 优点：最灵活，适合复杂任务
+        # 缺点：通信开销大，调试困难
+```
+
+> 💡 **实践建议**：从阶段 1 开始，当单 Agent 的局限性明显影响效果时再升级到阶段 2，以此类推。每升级一个阶段，复杂度大约增加 2-3 倍。
+
+---
+
 ## 小结
 
 使用多 Agent 的场景：
@@ -152,8 +285,16 @@ print(should_use_multi_agent({
 - 任务超出单个 Context Window
 - 需要相互验证（提升准确性）
 
-> 📖 **想深入了解多 Agent 系统的学术前沿？** 请阅读 [14.6 论文解读：多 Agent 系统前沿研究](./06_paper_readings.md)，涵盖 MetaGPT、ChatDev、AutoGen、AgentVerse 等核心论文的深度解读。
+多 Agent 的代价：
+- 通信开销（Token 成本、延迟）
+- 协调复杂性（冲突解决、一致性保证）
+- 调试困难（分布式问题定位）
+- 信息丢失（Agent 间传递的上下文截断）
+
+> 📖 **想深入了解多 Agent 系统的学术前沿？** 请阅读 [15.6 论文解读：多 Agent 系统前沿研究](./06_paper_readings.md)，涵盖 MetaGPT、ChatDev、AutoGen、AgentVerse 等核心论文的深度解读。
+
+> 💡 **延伸阅读**：关于多 Agent 系统的专项评估方法（Agent-as-Judge、τ-bench、SWE-bench），详见 [17.6 Agent 专项评估框架](../chapter_evaluation/06_agent_evaluation.md)。
 
 ---
 
-*下一节：[14.2 多 Agent 通信模式](./02_communication_patterns.md)*
+*下一节：[15.2 多 Agent 通信模式](./02_communication_patterns.md)*

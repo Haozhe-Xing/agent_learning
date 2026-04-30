@@ -1,4 +1,4 @@
-# 18.2 基准测试与评估指标
+# 17.2 基准测试与评估指标
 
 > **本节目标**：深入理解业界主流的 Agent 基准测试及其评估原理，掌握 BFCL、GAIA、AgentBench、WebArena、SWE-bench 等基准的底层算法，并学会设计自己的评估体系。
 
@@ -901,4 +901,4 @@ class RegressionTracker:
 
 ---
 
-[下一节：Prompt 调优策略 →](./03_prompt_tuning.md)
+[17.3 Prompt 调优策略](./03_prompt_tuning.md)

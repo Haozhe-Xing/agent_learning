@@ -1,4 +1,4 @@
-# 8.5 上下文工程前沿进展
+# 7.5 上下文工程前沿进展
 
 > 🔬 *"上下文窗口的扩大不是终点，如何高效利用每一个 token 的'注意力带宽'才是真正的挑战。"*
 
@@ -32,7 +32,7 @@
 
 **2. 定价策略分化**：Anthropic（Claude 4.6）对 1M token 实行标准定价，无额外费用；而 OpenAI（GPT-5.4）超过 272K 后会收取显著溢价。这种定价策略直接影响 Agent 的架构选型。
 
-但窗口变大 ≠ 问题解决。我们在 8.2 节讨论过的 **Lost-in-the-Middle** 问题并没有消失——事实上，当窗口从 128K 膨胀到 1M 时，这个问题反而更严重了。
+但窗口变大 ≠ 问题解决。我们在 7.2 节讨论过的 **Lost-in-the-Middle** 问题并没有消失——事实上，当窗口从 128K 膨胀到 1M 时，这个问题反而更严重了。
 
 ### 实测：大窗口的真实能力
 
@@ -96,7 +96,7 @@ results = {
 
 ### 核心理念：上下文是有限的珍贵资源
 
-Anthropic 的核心观点是：**找到最大化期望结果可能性的最小高信号 token 集**。这与我们在 8.1 节讨论的"质量优先"原则一脉相承，但 Anthropic 从工程实践角度给出了更具操作性的框架。
+Anthropic 的核心观点是：**找到最大化期望结果可能性的最小高信号 token 集**。这与我们在 7.1 节讨论的"质量优先"原则一脉相承，但 Anthropic 从工程实践角度给出了更具操作性的框架。
 
 ```python
 # Anthropic 上下文工程的核心原则（伪代码表达）
@@ -896,6 +896,8 @@ class ContextQualityMetrics:
 
 ---
 
+> 💡 **延伸阅读**：关于分层记忆架构（Core/Working/Archive 三层）的工程实践，详见 [4.7 实战：MemGPT/Letta 记忆架构工程实践](../chapter_memory/06b_memgpt_practice.md)。
+
 ## 本节小结
 
 | 进展方向 | 核心突破 | 对 Agent 开发的实际影响 |
@@ -929,4 +931,4 @@ class ContextQualityMetrics:
 
 ---
 
-*下一章：[第9章 Skill System](../chapter_skill/README.md)*
+*下一章：[第8章 Harness Engineering：驾驭 Agent 的系统工程](../chapter_harness/README.md)*

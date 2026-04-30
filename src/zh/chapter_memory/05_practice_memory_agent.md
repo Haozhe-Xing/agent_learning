@@ -1,4 +1,4 @@
-# 5.5 实战：带记忆的个人助手 Agent
+# 4.5 实战：带记忆的个人助理 Agent
 
 综合前四节的知识，构建一个真正有"记忆"的个人助理——它能记住你的偏好、持续跨会话学习。
 
@@ -353,4 +353,4 @@ def fibonacci(n: int) -> list[int]:
 
 ---
 
-*下一章：[第6章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)*
+*下一章：[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)*

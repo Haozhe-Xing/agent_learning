@@ -1,4 +1,4 @@
-# 15.4 高级用法：MCP、Hooks 与 Skills
+# 14.4 高级用法：MCP、Hooks 与 Skills
 
 > 🔧 *"工具不是障碍，工具是杠杆。真正厉害的工程师，不是自己跑得快，而是把 Agent 配得好。"*
 
@@ -687,6 +687,6 @@ Claude Code 将**长期记忆**和**会话状态**分开管理，避免压缩时
 
 ---
 
-*上一节：[15.3 源码解密：System Prompt 与权限工程](./03_source_code_analysis.md)*
+*上一节：[14.3 源码解密：System Prompt 与权限工程](./03_source_code_analysis.md)*
 
-*下一节：[15.5 生产实践：在团队中用好 Claude Code](./05_best_practices.md)*
+*下一节：[14.5 生产实践：在团队中用好 Claude Code](./05_best_practices.md)*

@@ -1,4 +1,4 @@
-# 9.6 结构化输出：工程可靠 JSON
+# 8.6 结构化输出：保障 JSON 可靠性的工程实践
 
 > 🔩 *"Agent 输出一个无法解析的 JSON，下游整个流水线就崩了。这不是模型问题——这是你的 Harness 没做好。"*
 
@@ -1103,5 +1103,5 @@ detail = harness_detail.extract(f"{text}\n\n已确认类别：{basic.category}")
 
 ---
 
-*上一节：[9.5 实战：构建你的第一个 Harness 系统](./05_practice_harness_builder.md)*  
-*下一章：[第10章 Skill System](../chapter_skill/README.md)*
+*上一节：[8.5 实战：构建你的第一个 Harness 系统](./05_practice_harness_builder.md)*  
+*下一章：[第9章 Skill System](../chapter_skill/README.md)*

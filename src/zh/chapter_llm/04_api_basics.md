@@ -1,4 +1,4 @@
-# 3.4 模型 API 调用入门
+# 2.4 模型 API 调用入门
 
 理论学够了，动手写代码！本节将带你完成第一次真正的模型 API 调用，并掌握流式输出、错误处理等生产环境必备技能。
 
@@ -426,4 +426,4 @@ print(result)
 
 ---
 
-*下一节：[3.5 Token、Temperature 与模型参数详解](./05_model_parameters.md)*
+*下一节：[2.5 Token、Temperature 与模型参数详解](./05_model_parameters.md)*

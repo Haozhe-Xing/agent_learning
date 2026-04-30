@@ -1,4 +1,4 @@
-# 3.6 前沿基础模型全景与选型指南
+# 2.6 基座模型前沿进展与选型指南
 
 > 🌍 *"模型在快速迭代，今天的 SOTA 可能是明天的基线——但理解演进趋势，能让你在变化中做出更好的选择。"*
 
@@ -306,21 +306,28 @@ def select_model(requirements: dict) -> str:
 
 ---
 
-*下一节：[3.7 基座模型架构详解](./07_model_architecture.md)*
+*下一节：[2.7 基座模型架构详解](./07_model_architecture.md)*
 
 ---
 
-## 📰 最新论文速递
+## 参考文献
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 4 月 25 日**
+[1] OPENAI. GPT-4 technical report[R]. arXiv preprint arXiv:2303.08774, 2023.
 
-### [DeepSeek V4 发布：1.6T MoE 全开源，1M 上下文，昇腾首发](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro)
+[2] GUO D, YANG D, ZHANG H, et al. DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning[R]. arXiv preprint arXiv:2501.12948, 2025.
 
-**发表**：2026 年 4 月 24 日 | [HuggingFace](https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro) | [技术解读](https://www.ai-insight.org/reports/deepseek-v4-2026)
+[3] TEAM G, RIVIERE M, PATHAK S, et al. Gemma 2: Improving open language models at a practical size[R]. arXiv preprint arXiv:2408.00118, 2024.
 
-**核心贡献**：DeepSeek 于 4 月 24 日发布 V4 系列（V4-Pro：1.6T 总参数/49B 激活；V4-Flash：284B/13B），采用 MIT 协议全开源。三大架构创新：① **CSA + HCA 混合注意力**——单 token 推理 FLOPs 降至 V3.2 的 27%，KV Cache 降至 10%；② **流形约束超连接（mHC）**——抑制深层 Transformer 的梯度弥散，稳定超大规模 MoE 训练；③ **Muon 优化器**——替代 AdamW，在 32T+ tokens 规模下收敛更快。V4-Pro 在 Codeforces 评分达 3206（开源最高），SWE-Verified 80.6%，LiveCodeBench 93.5%。首次在华为昇腾 950 上原生部署并兼容 Anthropic API。
+[4] META AI. The Llama 4 herd: The beginning of a new era of natively multimodal AI[R]. 2025.
 
-**与本章关系**：是 2026 年 4 月「MoE 效率革命」趋势的最新里程碑，1.6T 参数全开源刷新了开源模型的能力上限，CSA 注意力机制对本章 3.7 节「KV Cache 优化」内容有直接参考价值。
+[5] QWEN TEAM. Qwen3 technical report[R]. arXiv preprint arXiv:2505.09388, 2025.
 
----
+[6] ANTHROPIC. Claude's character[EB/OL]. 2024. https://www.anthropic.com/research/claude-character.
 
+[7] HOFFMANN J, BORGEAUD S, MENSCH A, et al. Training compute-optimal large language models[R]. arXiv preprint arXiv:2203.15556, 2022. (Chinchilla 定律)
+
+[8] SHAZEER N. Fast transformer decoding: One write-head is all you need[R]. arXiv preprint arXiv:1911.02150, 2019. (GQA/MQA 基础)
+
+[9] ABDIN M, JACOBS S A, AWAN A A, et al. Phi-4 technical report[R]. arXiv preprint arXiv:2412.08905, 2024.
+
+[10] MOONSHOT AI. Kimi K2: Open agentic intelligence[EB/OL]. 2025. https://huggingface.co/moonshotai/Kimi-K2-Instruct.

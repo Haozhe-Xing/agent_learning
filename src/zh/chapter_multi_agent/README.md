@@ -1,4 +1,4 @@
-# 第16章 多 Agent 协作
+# 第15章 多 Agent 协作
 
 > 👥 *"一个 Agent 能做的事有限，多个 Agent 协作才能完成复杂任务。"*
 
@@ -28,7 +28,7 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第17章 Agent 通信协议](../chapter_protocol/README.md)
+> - 👉 [第16章 Agent 通信协议](../chapter_protocol/README.md)
 
 ---
 
@@ -68,12 +68,12 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第13章 LangGraph](../chapter_langgraph/README.md)
+> **前置知识**：[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
 >
 > **后续推荐**：
-> - 👉 [第15章 通信协议](../chapter_protocol/README.md) — MCP/A2A 等 Agent 间通信标准
-> - 👉 [第17章 安全与可靠性](../chapter_security/README.md) — 多 Agent 系统的安全挑战
+> - 👉 [第16章 Agent 通信协议](../chapter_protocol/README.md) — MCP/A2A 等 Agent 间通信标准
+> - 👉 [第18章 安全与可靠性](../chapter_security/README.md) — 多 Agent 系统的安全挑战
 
 ---
 
-*下一节：[14.1 单 Agent 的局限性](./01_single_agent_limits.md)*
+*下一节：[15.1 单 Agent 的局限性](./01_single_agent_limits.md)*

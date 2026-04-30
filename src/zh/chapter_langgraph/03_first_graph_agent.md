@@ -1,4 +1,4 @@
-# 13.3 构建第一个图 Agent
+# 12.3 构建你的第一个 Graph Agent
 
 本节手把手构建一个完整的 LangGraph Agent，包括工具调用和循环推理。
 

@@ -1,4 +1,4 @@
-# 21.3 代码生成与修改能力
+# 20.3 代码生成与修改能力
 
 > **本节目标**：实现 Agent 的代码生成和修改功能，确保生成的代码质量可控。
 
@@ -256,4 +256,4 @@ class CodeValidator:
 
 ---
 
-[下一节：19.4 测试生成与 Bug 修复 →](./04_testing_debugging.md)
+[20.4 测试生成与 Bug 修复](./04_testing_debugging.md)

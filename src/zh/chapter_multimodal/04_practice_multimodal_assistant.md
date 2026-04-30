@@ -1,4 +1,4 @@
-# 23.4 实战：多模态个人助手
+# 22.4 实战：多模态个人助理
 
 > **本节目标**：构建一个能处理文本、图像和语音的多模态 Agent。
 
@@ -226,4 +226,4 @@ if __name__ == "__main__":
 
 ---
 
-[附录 A：常用 Prompt 模板大全 →](../appendix/prompt_templates.md)
+[附录 A：常用 Prompt 模板大全](../appendix/prompt_templates.md)

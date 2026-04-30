@@ -1,4 +1,4 @@
-# 第3章 大语言模型基础
+# 第2章 大语言模型基础
 
 > 工欲善其事，必先利其器。在开始构建 Agent 之前，我们需要深入理解它的"大脑"——大语言模型（LLM）。
 
@@ -9,17 +9,14 @@
 
 完成本章学习后，你将能够：
 
-- ✅ 理解大语言模型（LLM）的工作原理和 Transformer 架构
-- ✅ 掌握 Prompt Engineering 的核心技巧和最佳实践
-- ✅ 熟练使用 Few-shot / Zero-shot / Chain-of-Thought 提示策略
-- ✅ 能够通过 OpenAI / Anthropic API 调用最新主流模型
-- ✅ 理解 Token、Temperature 等模型参数对输出质量的影响
-- ✅ 了解 2025—2026 年前沿基础模型的格局与选型依据
-- ✅ 掌握 Tokenizer / BPE 的工作原理和词表大小的影响
-- ✅ 深入理解 Scaled Dot-Product Attention 的完整推导和 Q/K/V 机制
-- ✅ 理解 KV Cache 的原理、显存计算和 Prefill vs Decode 两阶段
-- ✅ 掌握位置编码的演进：Sinusoidal → ALiBi → RoPE（含完整数学推导）
-- ✅ 理解 RoPE 旋转矩阵的数学本质，以及 YaRN/NTK 长上下文扩展方法
+- ✅ 用直觉理解 LLM 的工作机制（不需要数学推导）
+- ✅ 掌握 Prompt Engineering 的核心原则和技巧
+- ✅ 灵活运用 Zero-shot、Few-shot、CoT 等提示策略
+- ✅ 熟练调用 OpenAI API 及常见开源模型接口
+- ✅ 理解 Token、Temperature 等参数对输出的影响
+- ✅ 了解主流模型的架构组件（MHA/GQA/MLA、RoPE、SwiGLU、MoE）及前沿突破
+- ✅ 掌握基座模型的前沿进展与 Agent 开发的选型策略
+- ✅ 理解 SFT 与 RL 训练数据准备的核心原则：数据量选择、质量评估、奖励函数设计
 
 ## ⏱️ 预计学习时间
 
@@ -35,9 +32,11 @@
 
 ## 🔗 学习路径
 
+> **前置知识**：[第1章 什么是 Agent？](../chapter_intro/README.md)、[附录 F：开发环境搭建](../chapter_setup/README.md)
+>
 > **后续推荐**：
-> - 👉 [第4章 工具调用](../chapter_tools/README.md)
-> - 👉 [第5章 记忆系统](../chapter_memory/README.md)
+> - 👉 [第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md) — Agent 的核心能力
+> - 👉 [第7章 上下文工程](../chapter_context_engineering/README.md) — 从 Prompt 工程升级到系统化的上下文管理
 
 ---
 
@@ -45,31 +44,18 @@
 
 本章从直觉层面解释大语言模型的工作原理，然后系统讲解如何通过 Prompt Engineering 与模型高效对话，介绍常见的提示策略，并手把手带你完成第一次 API 调用。最后，我们深入探讨 Token、Temperature 等关键参数，帮助你真正"驾驭"语言模型。
 
-## 本章目标
-
-学完本章，你将能够：
-
-- ✅ 用直觉理解 LLM 的工作机制（不需要数学推导）
-- ✅ 掌握 Prompt Engineering 的核心原则和技巧
-- ✅ 灵活运用 Zero-shot、Few-shot、CoT 等提示策略
-- ✅ 熟练调用 OpenAI API 及常见开源模型接口
-- ✅ 理解 Token、Temperature 等参数对输出的影响
-- ✅ 了解主流模型的架构组件（MHA/GQA/MLA、RoPE、SwiGLU、MoE）及 2026 年新突破（混合注意力、Attention Residuals、MuonClip、Engram 内存）
-- ✅ 掌握基座模型的前沿进展与 Agent 开发的选型策略
-- ✅ 理解 SFT 与 RL 训练数据准备的核心原则：数据量选择、质量评估、奖励函数设计
-
 ## 本章结构
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 3.1 LLM 是如何工作的？ | 直觉理解 Transformer、预训练与涌现能力 | ⭐⭐ |
-| 3.2 Prompt Engineering | 系统消息、角色扮演、结构化输出 | ⭐⭐ |
-| 3.3 提示策略 | Zero-shot、Few-shot、CoT、ToT | ⭐⭐⭐ |
-| 3.4 模型 API 调用入门 | OpenAI SDK、开源模型、流式调用 | ⭐⭐ |
-| 3.5 Token 与模型参数 | Token 计数、Temperature、Top-p 等 | ⭐⭐ |
-| 3.6 基座模型前沿进展 | 产业格局、模型生态（Kimi K2/K2.5、DeepSeek V4、Qwen3.5）、Agent 选型指南 | ⭐⭐⭐ |
-| 3.7 基座模型架构详解 | MHA→GQA→MLA、RoPE、SwiGLU、MoE，及 2026 新突破：混合注意力、Attention Residuals、MuonClip、Engram 内存 | ⭐⭐⭐⭐ |
-| 3.8 SFT 与强化学习训练数据准备 | 数据量选择、质量评估、SFT 数据制作、RL 奖励函数设计、难度校准与课程学习 | ⭐⭐⭐ |
+| 2.1 LLM 是如何工作的？ | 直觉理解 Transformer、预训练与涌现能力 | ⭐⭐ |
+| 2.2 Prompt Engineering | 系统消息、角色扮演、结构化输出 | ⭐⭐ |
+| 2.3 提示策略 | Zero-shot、Few-shot、CoT、ToT | ⭐⭐⭐ |
+| 2.4 模型 API 调用入门 | OpenAI SDK、开源模型、流式调用 | ⭐⭐ |
+| 2.5 Token 与模型参数 | Token 计数、Temperature、Top-p 等 | ⭐⭐ |
+| 2.6 基座模型前沿进展 | 产业格局、模型生态与 Agent 选型指南 | ⭐⭐⭐ |
+| 2.7 基座模型架构详解 | MHA→GQA→MLA、RoPE、SwiGLU、MoE，及前沿突破 | ⭐⭐⭐⭐ |
+| 2.8 SFT 与强化学习训练数据准备 | 数据量选择、质量评估、SFT 数据制作、RL 奖励函数设计、难度校准与课程学习 | ⭐⭐⭐ |
 
 ## 核心概念速览
 
@@ -86,14 +72,6 @@
 
 理解 LLM 就像理解发动机原理——即使你不造发动机，懂原理也能让你成为更好的驾驶员。
 
-## 🔗 学习路径
-
-> **前置知识**：[第1章 什么是 Agent？](../chapter_intro/README.md)、[第2章 开发环境搭建](../chapter_setup/README.md)
->
-> **后续推荐**：
-> - 👉 [第4章 工具调用](../chapter_tools/README.md) — Agent 的核心能力
-> - 👉 [第8章 上下文工程](../chapter_context_engineering/README.md) — 从 Prompt 工程升级到系统化的上下文管理
-
 ---
 
-*下一节：[3.1 LLM 是如何工作的？（直觉理解）](./01_how_llm_works.md)*
+*下一节：[2.1 LLM 是如何工作的？（直觉理解）](./01_how_llm_works.md)*

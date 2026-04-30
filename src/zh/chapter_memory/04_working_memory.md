@@ -1,4 +1,4 @@
-# 5.4 工作记忆：草稿本模式
+# 4.4 工作记忆：Scratchpad 模式
 
 工作记忆是 Agent 在执行复杂任务时的"草稿纸"——记录推理步骤、中间结果，帮助 Agent 保持任务状态。
 
@@ -294,4 +294,4 @@ react_with_scratchpad = """
 
 ---
 
-*下一节：[5.5 实战：带记忆的个人助理 Agent](./05_practice_memory_agent.md)*
+*下一节：[4.5 实战：带记忆的个人助理 Agent](./05_practice_memory_agent.md)*

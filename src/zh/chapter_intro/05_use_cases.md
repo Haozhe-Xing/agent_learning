@@ -1,4 +1,4 @@
-# 1.5 Agent 应用全景图
+# 1.5 Agent 的应用场景全景图
 
 > 📖 *"Agent 不是某个行业的专属技术，它是一种通用的智能化范式。"*
 
@@ -254,4 +254,16 @@ my_first_agent = {
 
 ---
 
-> 下一节，我们将回顾 Agent 技术的发展历史，了解它是如何从符号主义走到今天的 LLM 驱动时代的。
+## 参考文献
+
+[1] NAKANO R, HILTON J, BALWIT A, et al. WebGPT: Browser-assisted question-answering with human feedback[R]. arXiv preprint arXiv:2112.09332, 2021.
+
+[2] CHEN M, TWOREK J, JUN H, et al. Evaluating large language models trained on code[R]. arXiv preprint arXiv:2107.03374, 2021.
+
+[3] YANG J, JIMENEZ C E, WETTIG A, et al. SWE-agent: Agent-computer interfaces enable automated software engineering[R]. arXiv preprint arXiv:2405.15793, 2024.
+
+[4] CHASE H. LangChain: Building applications with LLMs through composability[EB/OL]. 2022. https://github.com/langchain-ai/langchain.
+
+---
+
+*下一节：[1.6 智能体发展史：从符号主义到大模型驱动](./06_history.md)*

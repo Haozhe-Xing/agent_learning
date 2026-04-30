@@ -1,4 +1,4 @@
-# 17.3 ANP（Agent Network Protocol）协议
+# 16.3 ANP（Agent Network Protocol）协议
 
 > **本节目标**：理解 ANP 协议的设计理念，掌握去中心化智能体网络的核心机制，并与 MCP/A2A 进行对比分析。
 
@@ -278,43 +278,19 @@ class ANPRouter:
 
 ### 场景 1：跨组织 Agent 协作
 
-```
-公司 A 的客服 Agent
-    ↕ (ANP 发现 + 身份验证)
-公司 B 的物流 Agent
-    ↕ (A2A 任务协作)
-公司 C 的支付 Agent
-
-场景：用户向公司 A 的客服咨询退货。客服 Agent 通过 ANP 
-发现公司 B 的物流 Agent 查询物流状态，再通过公司 C 的
-支付 Agent 处理退款——全程自动完成，无需人工干预。
-```
+> 公司 A 的客服 Agent ↕ （ANP 发现 + 身份验证） ↕ 公司 B 的物流 Agent ↕ （A2A 任务协作） ↕ 公司 C 的支付 Agent
+>
+> 场景：用户向公司 A 的客服咋询退货。客服 Agent 通过 ANP 发现公司 B 的物流 Agent 查询物流状态，再通过公司 C 的支付 Agent 处理退款——全程自动完成，无需人工干预。
 
 ### 场景 2：去中心化 Agent 市场
 
-```
-开发者发布 Agent → 注册 DID + 能力描述
-                        ↓
-用户描述需求 → ANP 路由器匹配最优 Agent
-                        ↓
-            自动协商定价、SLA、数据权限
-                        ↓
-              执行任务 → 自动结算
-```
+> 开发者发布 Agent → 注册 DID + 能力描述 → 用户描述需求 → ANP 路由器匹配最优 Agent → 自动协商定价、SLA、数据权限 → 执行任务 → 自动结算
 
 ### 场景 3：物联网 Agent 网络
 
-```
-智能家居 Agent 集群：
-  - 温控 Agent (DID: did:anp:hvac_001)
-  - 照明 Agent (DID: did:anp:light_001)
-  - 安防 Agent (DID: did:anp:security_001)
-  - 能源 Agent (DID: did:anp:energy_001)
-
-通过 ANP 组成自治网络，无需中央控制器：
-  安防 Agent 检测到异常 → 通知照明 Agent 开灯
-                       → 通知能源 Agent 进入警戒模式
-```
+> 智能家居 Agent 集群：温控 Agent / 照明 Agent / 安防 Agent / 能源 Agent，通过 ANP 组成自治网络，无需中央控制器：
+>
+> 安防 Agent 检测到异常 → 通知照明 Agent 开灯 → 通知能源 Agent 进入警戞模式
 
 ---
 
@@ -345,7 +321,7 @@ class ANPRouter:
 
 ---
 
-*下一节：[15.4 Agent 间的消息传递与状态共享](./04_message_passing.md)*
+*下一节：[16.4 Agent 间的消息传递与状态共享](./04_message_passing.md)*
 
 ---
 

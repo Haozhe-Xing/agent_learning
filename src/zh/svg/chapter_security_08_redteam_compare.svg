@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="500" height="280" rx="12" fill="#f8fafc"/>
+  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">传统安全测试 vs AI 红队测试</text>
+
+  <!-- 传统软件 -->
+  <rect x="20" y="48" width="215" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="127" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">传统软件安全测试</text>
+
+  <rect x="36" y="78" width="183" height="30" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="127" y="98" text-anchor="middle" font-size="11" fill="#1e40af">输入</text>
+
+  <line x1="127" y1="108" x2="127" y2="124" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="36" y="126" width="183" height="30" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="127" y="146" text-anchor="middle" font-size="11" fill="#1e40af">[确定性逻辑]</text>
+
+  <line x1="127" y1="156" x2="127" y2="172" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="36" y="174" width="183" height="30" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="127" y="194" text-anchor="middle" font-size="11" fill="#1e40af">可预测的输出</text>
+
+  <text x="127" y="228" text-anchor="middle" font-size="10" fill="#3b82f6">方法：边界值 / 等价类 / 模糊测试</text>
+  <text x="127" y="242" text-anchor="middle" font-size="10" fill="#3b82f6">特点：确定性、可枚举</text>
+
+  <!-- AI 系统 -->
+  <rect x="265" y="48" width="215" height="200" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="372" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">AI 系统红队测试</text>
+
+  <rect x="281" y="78" width="183" height="30" rx="6" fill="#fed7aa" stroke="#fb923c" stroke-width="1"/>
+  <text x="372" y="98" text-anchor="middle" font-size="11" fill="#9a3412">输入</text>
+
+  <line x1="372" y1="108" x2="372" y2="124" stroke="#f97316" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="281" y="126" width="183" height="30" rx="6" fill="#fed7aa" stroke="#fb923c" stroke-width="1"/>
+  <text x="372" y="146" text-anchor="middle" font-size="11" fill="#9a3412">[概率性模型]</text>
+
+  <line x1="372" y1="156" x2="372" y2="172" stroke="#f97316" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="281" y="174" width="183" height="30" rx="6" fill="#fed7aa" stroke="#fb923c" stroke-width="1"/>
+  <text x="372" y="194" text-anchor="middle" font-size="11" fill="#9a3412">不可完全预测的输出</text>
+
+  <text x="372" y="228" text-anchor="middle" font-size="10" fill="#f97316">方法：红队测试 / 对抗性测试</text>
+  <text x="372" y="242" text-anchor="middle" font-size="10" fill="#f97316">特点：概率性、开放性、涌现性</text>
+</svg>

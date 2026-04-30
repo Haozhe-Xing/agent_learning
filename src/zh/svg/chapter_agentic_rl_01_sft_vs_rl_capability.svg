@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" width="520" height="200" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="520" height="200" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">SFT 阶段 vs RL 阶段学到的能力</text>
+
+  <!-- SFT -->
+  <rect x="16" y="46" width="225" height="130" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="128" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">SFT 阶段</text>
+  <text x="128" y="80" text-anchor="middle" font-size="11" fill="#3b82f6">模仿示范数据</text>
+  <rect x="28" y="88" width="201" height="28" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="128" y="107" text-anchor="middle" font-size="12" fill="#1e40af">看到数学题 → 调用计算器</text>
+  <text x="128" y="148" text-anchor="middle" font-size="10" fill="#3b82f6">✅ 格式规范、训练稳定</text>
+  <text x="128" y="164" text-anchor="middle" font-size="10" fill="#ef4444">❌ 能力上界受限于数据质量</text>
+
+  <!-- RL -->
+  <rect x="279" y="46" width="225" height="130" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="391" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">RL 阶段</text>
+  <text x="391" y="80" text-anchor="middle" font-size="11" fill="#22c55e">环境反馈驱动</text>
+  <rect x="291" y="88" width="201" height="72" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="391" y="104" text-anchor="middle" font-size="10" fill="#166534">分析问题结构</text>
+  <text x="391" y="118" text-anchor="middle" font-size="10" fill="#166534">→ 判断是否需要分步</text>
+  <text x="391" y="132" text-anchor="middle" font-size="10" fill="#166534">→ 选择最优工具组合</text>
+  <text x="391" y="146" text-anchor="middle" font-size="10" fill="#166534">→ 验证中间结果 → 主动回溯</text>
+  <text x="391" y="164" text-anchor="middle" font-size="10" fill="#15803d">✅ 可超越数据质量，涌现新能力</text>
+</svg>

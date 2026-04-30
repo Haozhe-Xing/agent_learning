@@ -1,4 +1,4 @@
-# 5.1 为什么 Agent 需要记忆？
+# 4.1 为什么 Agent 需要记忆？
 
 想象一个助理，每次你找他，他都把你忘得一干二净——你是谁、你的工作是什么、你上次交代了什么任务。这样的助理，根本无法提供真正的帮助。
 
@@ -122,8 +122,8 @@ skip_memory = [
 - 工作记忆：支持复杂推理任务
 - 核心挑战：Token 限制、选择性记忆、准确性
 
-> 📖 **想深入了解记忆系统的学术前沿？** 请阅读 [5.6 论文解读：记忆系统前沿进展](./06_paper_readings.md)，涵盖 Generative Agents、MemGPT、MemoryBank、CoALA 四篇核心论文的深度解读。
+> 📖 **想深入了解记忆系统的学术前沿？** 请阅读 [4.6 论文解读：记忆系统前沿进展](./06_paper_readings.md)，涵盖 Generative Agents、MemGPT、MemoryBank、CoALA 四篇核心论文的深度解读。
 
 ---
 
-*下一节：[5.2 短期记忆：对话历史管理](./02_short_term_memory.md)*
+*下一节：[4.2 短期记忆：对话历史管理](./02_short_term_memory.md)*

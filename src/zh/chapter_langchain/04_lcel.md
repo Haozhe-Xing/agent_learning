@@ -1,4 +1,4 @@
-# 12.4 LCEL：LangChain 表达式语言
+# 11.4 LCEL：LangChain 表达式语言
 
 LCEL（LangChain Expression Language）是 LangChain 的核心构建语言，用 `|` 符号将组件连接成处理管道，代码简洁且功能强大。
 

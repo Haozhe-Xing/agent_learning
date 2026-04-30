@@ -1,4 +1,4 @@
-# 2.4 第一个 Agent：Hello Agent！
+# F.4 第一个 Agent：Hello Agent！
 
 终于到了激动人心的时刻——让我们构建第一个真正的 Agent！它能使用工具、进行推理，并完成实际任务。
 
@@ -430,4 +430,4 @@ Agent：计算结果是 18,945。
 
 ---
 
-*下一章：[第3章 大语言模型基础](../chapter_llm/README.md)*
+*下一章：[第2章 大语言模型基础](../chapter_llm/README.md)*

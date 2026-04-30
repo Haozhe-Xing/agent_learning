@@ -1,4 +1,4 @@
-# 19.5 Agent 行为的可控性与对齐
+# 18.5 Agent 行为的可控性与对齐
 
 > **本节目标**：理解 Agent 对齐的重要性，学会设计行为边界和兜底机制。
 
@@ -259,4 +259,4 @@ class ProgressiveAutonomy:
 
 ---
 
-[下一章：第18章 部署与生产化 →](../chapter_deployment/README.md)
+[第19章 部署与生产化](../chapter_deployment/README.md)

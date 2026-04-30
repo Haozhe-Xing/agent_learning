@@ -1,4 +1,4 @@
-# 6.1 Agent 是如何「思考」的？
+# 5.1 Agent 如何"思考"？
 
 > 🎯 **本节学习目标**：建立 Agent 推理的心理模型，理解 OODA 循环在 AI 决策中的应用。
 
@@ -24,19 +24,6 @@ def structured_thinking(question: str) -> str:
 ```
 
 ---
-
-## 认知框架：OODA 循环
-
-Agent 的决策可以用 OODA（观察、定位、决策、行动）循环来理解。
-
-{visualizer_call: ooda_loop_viz}
-
-```python
-# 练习：OODAAgent 中的 act 阶段，如果 Agent 发现之前的 plan 执行失败，应该如何返回到 orient 阶段？
-# 请修改下面的 process 方法，加入简单的重试机制
-def process(self, user_input: str) -> str:
-    # 你的逻辑...
-```
 
 ## 认知框架：OODA 循环
 
@@ -179,4 +166,4 @@ Agent 的"思考"依赖于：
 
 ---
 
-*下一节：[6.2 ReAct：推理 + 行动框架](./02_react_framework.md)*
+*下一节：[5.2 ReAct：推理 + 行动框架](./02_react_framework.md)*

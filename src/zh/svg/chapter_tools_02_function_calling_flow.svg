@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" width="480" height="340" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="480" height="340" rx="12" fill="#f8fafc"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Function Calling 完整流程</text>
+
+  <rect x="140" y="44" width="200" height="28" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="240" y="63" text-anchor="middle" font-size="11" fill="#1d4ed8">你（用户）："北京今天天气怎么样？"</text>
+  <line x1="240" y1="72" x2="240" y2="88" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="90" width="320" height="44" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="240" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#3730a3">LLM（大脑）分析</text>
+  <text x="240" y="126" text-anchor="middle" font-size="10" fill="#4338ca">"需要实时天气数据，我有 get_weather 工具可以用！"</text>
+  <line x1="240" y1="134" x2="240" y2="150" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="152" width="320" height="28" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="240" y="171" text-anchor="middle" font-size="11" fill="#a16207">LLM 输出工具调用指令：get_weather(city='北京')</text>
+  <line x1="240" y1="180" x2="240" y2="196" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="198" width="320" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="240" y="217" text-anchor="middle" font-size="11" fill="#15803d">你的代码执行：调用天气 API → 15°C，晴，湿度40%</text>
+  <line x1="240" y1="226" x2="240" y2="242" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="244" width="320" height="28" rx="6" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="240" y="263" text-anchor="middle" font-size="11" fill="#9d174d">把结果反馈给 LLM：工具返回 {temp:15, condition:'晴'}</text>
+  <line x1="240" y1="272" x2="240" y2="288" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="290" width="320" height="40" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="240" y="308" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">LLM 基于真实数据组织回答：</text>
+  <text x="240" y="322" text-anchor="middle" font-size="10" fill="#166534">"北京今天 15°C，晴天，湿度适中，挺适合出门的~"</text>
+</svg>

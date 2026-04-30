@@ -71,12 +71,12 @@
 以下是本书涉及的核心学术论文，按技术主题分类。每个主题在书中都有对应的**独立论文解读章节**，建议按照学习进度有选择地阅读。
 
 > 💡 **深度解读章节索引**：
-> - 工具使用 → [4.6 论文解读：工具学习前沿进展](../chapter_tools/06_paper_readings.md)
-> - 记忆系统 → [5.6 论文解读：记忆系统前沿进展](../chapter_memory/06_paper_readings.md)
-> - 规划与推理 → [6.6 论文解读：规划与推理前沿研究](../chapter_planning/06_paper_readings.md)
-> - RAG → [7.6 论文解读：RAG 前沿进展](../chapter_rag/06_paper_readings.md)
-> - 多 Agent → [14.6 论文解读：多 Agent 系统前沿研究](../chapter_multi_agent/06_paper_readings.md)
-> - 安全与可靠性 → [17.6 论文解读：安全与可靠性前沿研究](../chapter_security/06_paper_readings.md)
+> - 工具使用 → [3.6 论文解读：工具学习前沿进展](../chapter_tools/06_paper_readings.md)
+> - 记忆系统 → [4.6 论文解读：记忆系统前沿进展](../chapter_memory/06_paper_readings.md)
+> - 规划与推理 → [5.7 论文解读：规划与推理前沿研究](../chapter_planning/06_paper_readings.md)
+> - RAG → [6.6 论文解读：RAG 前沿进展](../chapter_rag/06_paper_readings.md)
+> - 多 Agent → [15.6 论文解读：多 Agent 系统前沿研究](../chapter_multi_agent/06_paper_readings.md)
+> - 安全与可靠性 → [18.6 论文解读：安全与可靠性前沿研究](../chapter_security/06_paper_readings.md)
 
 ### 提示策略与推理
 

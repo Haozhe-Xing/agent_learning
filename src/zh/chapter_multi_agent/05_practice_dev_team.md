@@ -1,4 +1,4 @@
-# 16.5 实战：多 Agent 软件开发团队
+# 15.5 实战：多 Agent 软件开发团队
 
 综合本章所有知识，构建一个完整的多 Agent 软件开发系统，模拟真实的开发团队协作。
 
@@ -261,4 +261,4 @@ if __name__ == "__main__":
 
 ---
 
-*下一章：[第15章 Agent 通信协议](../chapter_protocol/README.md)*
+*下一章：[第16章 Agent 通信协议](../chapter_protocol/README.md)*

@@ -1,4 +1,4 @@
-# 第23章 项目实战：多模态 Agent
+# 第22章 项目实战：多模态 Agent
 
 > 🎨 *"真实世界的信息不只有文字——图片、语音、视频都是 Agent 需要理解的语言。"*
 
@@ -13,6 +13,8 @@
 - ✅ 掌握视觉理解（图像分析）的集成方式
 - ✅ 实现语音输入/输出与 Agent 的集成
 - ✅ 构建一个具备图像和语音能力的多模态个人助手
+- ✅ 了解 Computer Use / GUI Agent 的核心架构和安全实践
+- ✅ 掌握视频理解和多模态 RAG 的实现方法
 
 ## ⏱️ 预计学习时间
 
@@ -50,10 +52,12 @@
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 21.1 多模态能力概述 | 多模态模型的能力和应用场景 | ⭐⭐ |
-| 21.2 图像理解与生成 | GPT-4.1 分析图像，DALL-E 生成图像 | ⭐⭐⭐ |
-| 21.3 语音交互集成 | 语音识别和语音合成 | ⭐⭐⭐ |
-| 21.4 实战：多模态个人助理 | 构建完整的多模态 Agent | ⭐⭐⭐⭐ |
+| 22.1 多模态能力概述 | 多模态模型的能力和应用场景 | ⭐⭐ |
+| 22.2 图像理解与生成 | GPT-4.1 分析图像，DALL-E 生成图像 | ⭐⭐⭐ |
+| 22.3 语音交互集成 | 语音识别和语音合成 | ⭐⭐⭐ |
+| 22.4 实战：多模态个人助理 | 构建完整的多模态 Agent | ⭐⭐⭐⭐ |
+| 22.5 Computer Use 与 GUI Agent | 让 Agent 操作计算机和浏览器 | ⭐⭐⭐⭐ |
+| 22.6 视频理解与多模态 RAG | 视频分析与图文混合检索 | ⭐⭐⭐⭐ |
 
 ## ⏱️ 预计学习时间
 
@@ -67,13 +71,13 @@
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第13章 LangGraph](../chapter_langgraph/README.md)
-> 推荐但非必须：[第16-18章 生产化篇](../chapter_evaluation/README.md)
+> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+> 推荐但非必须：[第17章 Agent 的评估与优化](../chapter_evaluation/README.md)
 >
 > **同系列项目**：
-> - 🔨 [第19章 AI 编程助手](../chapter_coding_agent/README.md)
-> - 📊 [第22章 数据分析 Agent](../chapter_data_agent/README.md)
+> - 🔨 [第20章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
+> - 📊 [第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
 
 ---
 
-*下一节：[21.1 多模态能力概述](./01_multimodal_overview.md)*
+*下一节：[22.1 多模态能力概述](./01_multimodal_overview.md)*

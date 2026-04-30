@@ -1,4 +1,4 @@
-# 2.1 Python 环境与依赖管理
+# F.1 Python 环境与依赖管理
 
 Agent 项目依赖众多第三方库，版本冲突是常见的"头疼问题"。使用虚拟环境可以为每个项目创建独立的依赖空间，彻底避免冲突。
 
@@ -237,4 +237,4 @@ python check_env.py
 
 ---
 
-*下一节：[2.2 关键库安装：LangChain、OpenAI SDK 等](./02_install_libs.md)*
+*下一节：[F.2 关键库安装](./02_install_libs.md)*

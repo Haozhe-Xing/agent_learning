@@ -1,4 +1,4 @@
-# 15.3 源码解密：System Prompt 与权限工程
+# 14.3 源码解密：System Prompt 与权限工程
 
 > 🔐 *"The most interesting thing about the leak wasn't what Claude Code could do — it was seeing the engineering discipline behind how they prevent it from doing the wrong things."*  
 > —— 知名安全研究员，评论 2026 年 3 月源码泄露事件
@@ -144,27 +144,14 @@ Explore Agent / Plan Agent 等专用角色：
 
 `getSimpleDoingTasksSection()` 函数输出的规则集，定义了 Claude 的"做事方法论"：
 
-```
 核心行为规则（来自源码注释）：
 
-1. 先读代码再改，不要对没读过的代码提出修改
-   → FileEditTool 的"先 Read 再 Edit"强制约束来自这里
-
-2. 不要创建不必要的文件，优先编辑已有文件
-   → 防止无节制地生成新文件污染代码库
-
-3. 不要过度设计，不添加超出要求的功能
-   → 对抗 LLM 的"功能蔓延"倾向
-
-4. 失败后先诊断，不要盲目重试
-   → 防止死循环（详见第9章 Harness Engineering）
-
-5. 三行相似代码好过过早抽象
-   → 明确的反过度工程原则
-
-6. 不要把没验证过的结果说成已成功
-   → 对抗"完成偏见"（Completion Bias）
-```
+1. **先读代码再改**，不要对没读过的代码提出修改 → `FileEditTool` 的"先 Read 再 Edit"强制约束来自这里
+2. **不要创建不必要的文件**，优先编辑已有文件 → 防止无节制地生成新文件污染代码库
+3. **不要过度设计**，不添加超出要求的功能 → 对抗 LLM 的"功能蔓延"倾向
+4. **失败后先诊断**，不要盲目重试 → 防止死循环（详见第 8 章 Harness Engineering）
+5. **三行相似代码好过过早抽象** → 明确的反过度工程原则
+6. **不要把没验证过的结果说成已成功** → 对抗"完成偏见"（Completion Bias）
 
 **③ 风险治理类（Risk Governance）**
 
@@ -214,21 +201,9 @@ if (isInternalUser) {
 
 两个关键设计决策，都是为了保护 Prompt Cache：
 
-```
-❌ 错误做法（会破坏缓存）：
-   将 CLAUDE.md 内容放入 System Prompt
-   → 每个项目的 CLAUDE.md 不同 → 静态区内容变化 → 缓存失效
-
-✅ 正确做法（保护缓存）：
-   将 CLAUDE.md 内容包装成 XML 标签，注入到用户消息中：
-   
-   <user_message>
-     <claude_md>
-       [CLAUDE.md 的完整内容]
-     </claude_md>
-     [用户实际输入]
-   </user_message>
-```
+> ❌ **错误做法（会破坏缓存）**：将 CLAUDE.md 内容放入 System Prompt → 每个项目的 CLAUDE.md 不同 → 静态区内容变化 → 缓存失效
+>
+> ✅ **正确做法（保护缓存）**：将 CLAUDE.md 内容包装成 XML 标签，注入到用户消息中：`<claude_md>[CLAUDE.md 的完整内容]</claude_md>` + 用户实际输入
 
 同样，MCP 工具描述也从 System Prompt 移至消息附件，原因相同：MCP 连接的工具集每次可能不同，放在 System Prompt 会导致静态区不稳定。
 
@@ -315,23 +290,10 @@ function analyzeCommand(command: string): PermissionResult {
 
 这个漏洞给所有 AI 安全工程师留下了深刻教训：
 
-```
-教训一：性能优化不能以牺牲安全边界为代价
-  → 内部工单 CC-643 为了解决"分析太慢"的问题，
-    引入了一个安全盲区。正确做法是优化算法，而非绕过检查。
-
-教训二：AI 工具的威胁模型不同于传统工具
-  → 传统工具假设"用户不会构造 50 个子命令的恶意命令"
-    但在 AI 执行环境中，命令可能来自不受信任的数据源
-
-教训三：Prompt Injection 是第一类威胁
-  → 当 AI 处理用户文件、网页、数据库内容时，
-    这些内容都可能包含伪装成"指令"的恶意内容
-
-教训四：最小化权限原则至关重要
-  → bypassPermissions 和 dontAsk 模式大幅放大了这个漏洞的影响
-    在自动化场景中，应尽量使用最严格的权限模式
-```
+1. **性能优化不能以牺牲安全边界为代价**：内部工单 CC-643 为了解决"分析太慢"的问题，引入了一个安全盲区。正确做法是优化算法，而非绕过检查。
+2. **AI 工具的威胁模型不同于传统工具**：传统工具假设"用户不会构造 50 个子命令的恶意命令"，但在 AI 执行环境中，命令可能来自不受信任的数据源。
+3. **Prompt Injection 是第一类威胁**：当 AI 处理用户文件、网页、数据库内容时，这些内容都可能包含伪装成"指令"的恶意内容。
+4. **最小化权限原则至关重要**：`bypassPermissions` 和 `dontAsk` 模式大幅放大了这个漏洞的影响，在自动化场景中应尽量使用最严格的权限模式。
 
 ---
 
@@ -415,5 +377,5 @@ const ANTI_DISTILLATION_CC = true; // 编译时常量
 
 ---
 
-*上一节：[15.2 核心架构深度解析](./02_architecture.md)*  
-*下一节：[15.4 高级用法：MCP、Hooks 与 Skills](./04_advanced_usage.md)*
+*上一节：[14.2 核心架构深度解析](./02_architecture.md)*  
+*下一节：[14.4 高级用法：MCP、Hooks 与 Skills](./04_advanced_usage.md)*

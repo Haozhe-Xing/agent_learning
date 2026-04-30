@@ -1,4 +1,4 @@
-# 7.4 检索策略与重排序
+# 6.4 检索策略与重排序
 
 基础的向量检索并不总是最优的。本节介绍多种高级检索策略，显著提升 RAG 系统的准确率。
 
@@ -308,4 +308,4 @@ class AdvancedRAGPipeline:
 
 ---
 
-*下一节：[7.5 实战：智能文档问答 Agent](./05_practice_qa_agent.md)*
+*下一节：[6.5 实战：智能文档问答 Agent](./05_practice_qa_agent.md)*

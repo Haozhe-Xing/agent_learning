@@ -1,4 +1,4 @@
-# 17.2 A2A（Agent-to-Agent）协议
+# 16.2 A2A（Agent-to-Agent）协议
 
 A2A（Agent-to-Agent）是 Google 于 2025 年 4 月在 Google Cloud Next 大会上推出的开放协议，专门设计用于不同 Agent 之间的互操作性。该协议发布时即获得超过 50 家技术合作伙伴的支持。
 
@@ -17,21 +17,7 @@ A2A 对 Agent = HTTP 对 Web 服务
 
 ### MCP vs A2A：互补而非竞争
 
-```
-MCP 和 A2A 解决的是不同层面的问题：
-
-MCP（模型-工具层）：
-  Agent ←→ 工具/数据
-  "让 Agent 能使用各种工具"
-  类比：人学会使用锤子、扳手
-
-A2A（Agent-Agent 层）：
-  Agent ←→ Agent
-  "让 Agent 能与其他 Agent 协作"
-  类比：人与人之间的沟通协作
-
-两者结合 = 完整的 Agent 互操作体系
-```
+![MCP vs A2A：互补而非竞争](../svg/chapter_protocol_02_mcp_vs_a2a.svg)
 
 ## Agent 能力卡（Agent Card）
 
@@ -438,4 +424,4 @@ A2A 协议的价值：
 
 ---
 
-*下一节：[15.3 ANP（Agent Network Protocol）协议](./03_anp_protocol.md)*
+*下一节：[16.3 ANP（Agent Network Protocol）协议](./03_anp_protocol.md)*

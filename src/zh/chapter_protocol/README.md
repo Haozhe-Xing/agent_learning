@@ -1,4 +1,4 @@
-# 第17章 Agent 通信协议
+# 第16章 Agent 通信协议
 
 > 🔌 *"Agent 之间需要标准化的通信方式，就像人类需要共同语言一样。"*
 
@@ -20,7 +20,7 @@
 
 ## 💡 前置知识
 
-- 完成第4章（工具调用）和第16章（多 Agent 协作）
+- 完成第4章（工具调用）和第15章（多 Agent 协作）
 - 了解 HTTP 协议和 JSON-RPC 的基本概念
 
 ---
@@ -28,7 +28,7 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md)
+> - 👉 [第17章 Agent 的评估与优化](../chapter_evaluation/README.md)
 
 ---
 
@@ -67,12 +67,12 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第14章 多 Agent 协作](../chapter_multi_agent/README.md)、[第4章 工具调用](../chapter_tools/README.md)
+> **前置知识**：[第15章 多 Agent 协作](../chapter_multi_agent/README.md)、[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)
 >
 > **后续推荐**：
-> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md) — 进入生产化篇
-> - 👉 [第18章 部署与生产化](../chapter_deployment/README.md) — 部署基于 MCP 的 Agent 服务
+> - 👉 [第17章 Agent 的评估与优化](../chapter_evaluation/README.md) — 进入生产化篇
+> - 👉 [第19章 部署与生产化](../chapter_deployment/README.md) — 部署基于 MCP 的 Agent 服务
 
 ---
 
-*下一节：[15.1 MCP（Model Context Protocol）详解](./01_mcp_protocol.md)*
+*下一节：[16.1 MCP（Model Context Protocol）详解](./01_mcp_protocol.md)*

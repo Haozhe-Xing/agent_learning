@@ -1,4 +1,4 @@
-# 17.4 Agent 间的消息传递与状态共享
+# 16.4 Agent 间的消息传递与状态共享
 
 > **本节目标**：学习 Agent 间消息传递的实现方式，并通过 MCP 工具集成实战加深理解。
 
@@ -213,4 +213,4 @@ Agent 通信协议的核心：
 
 ---
 
-*下一节：[15.5 实战：基于 MCP 的工具集成](./05_practice_mcp_integration.md)*
+*下一节：[16.5 实战：基于 MCP 的工具集成](./05_practice_mcp_integration.md)*

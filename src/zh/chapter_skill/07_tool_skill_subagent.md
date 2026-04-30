@@ -1,8 +1,8 @@
-# 10.7 Tool、Skill 与 Sub-Agent：三层能力抽象
+# 9.7 Tool、Skill 与 Sub Agent：三层能力抽象
 
 > 🎯 *"Tool 是手，Skill 是技能，Sub Agent 是团队成员——理解三者的关系，是设计好 Agent 架构的关键。"*
 
-在前面的章节中，我们分别学习了工具调用（第4章）、技能系统（第9章）和多 Agent 协作（第14章）。本节将它们放在一起，做一次**统一的对比和梳理**——帮你在实际开发中做出正确的架构选择。
+在前面的章节中，我们分别学习了工具调用（第3章）、技能系统（第9章）和多 Agent 协作（第15章）。本节将它们放在一起，做一次**统一的对比和梳理**——帮你在实际开发中做出正确的架构选择。
 
 ![Tool · Skill · Sub Agent 三层能力抽象](../svg/chapter_skill_07_three_layers.svg)
 
@@ -84,11 +84,9 @@ class DataAnalystAgent:
 
 ### 决策能力的递进
 
-```
-Tool:       input → output                （确定性映射）
-Skill:      input → [策略选择] → output     （有限的条件分支）
-Sub Agent:  objective → [规划→执行→反思→调整]* → output  （自主推理循环）
-```
+> - **Tool**：`input → output`（确定性映射）
+> - **Skill**：`input → [策略选择] → output`（有限的条件分支）
+> - **Sub Agent**：`objective → [规划→执行→反思→调整]* → output`（自主推理循环）
 
 用一个实际例子来感受这种递进：
 
@@ -262,4 +260,4 @@ orchestrator = OrchestratorAgent(sub_agents=[analyst, reviewer])
 
 ---
 
-*相关章节：[第4章 工具调用](../chapter_tools/README.md) · [第9章 技能系统](./README.md) · [第14章 多 Agent 协作](../chapter_multi_agent/README.md) · [第15章 Agent 通信协议](../chapter_protocol/README.md)*
+*相关章节：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md) · [第9章 Skill System](./README.md) · [第15章 多 Agent 协作](../chapter_multi_agent/README.md) · [第16章 Agent 通信协议](../chapter_protocol/README.md)*

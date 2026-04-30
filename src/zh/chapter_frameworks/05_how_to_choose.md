@@ -1,4 +1,4 @@
-# 14.5 如何选择合适的框架？
+# 13.5 如何选择合适的框架？
 
 框架选择是 Agent 项目成功的关键决策之一。随着 2025 年 OpenAI Agents SDK 的发布和各框架的快速迭代，选择变得更加丰富。本节提供系统的决策框架。
 
@@ -184,34 +184,14 @@ class HybridAgentSystem:
 
 ## 最终建议
 
-```
 选择框架的核心原则：
 
-1. 从简单开始
-   先尝试 OpenAI Agents SDK 或 LangChain + 直接 API 调用
-   够用就不要引入复杂框架
-
-2. 根据瓶颈升级
-   发现需要状态管理 → 引入 LangGraph
-   需要多角色协作 → 考虑 CrewAI
-   需要代码执行 → 考虑 AutoGen
-
-3. 拥抱标准协议
-   用 MCP 统一工具接口，降低框架切换成本
-   关注 A2A 协议发展，为 Agent 间互操作做准备
-
-4. 保持框架无关的代码
-   业务逻辑不要与框架强耦合
-   工具函数保持通用性
-
-5. 重视调试与可观测性
-   生产环境首选有良好日志和观测性的方案
-   LangSmith、Dify 等都提供了较好的可观测能力
-
-6. 社区和生态
-   选择活跃维护的框架（查看 GitHub 活跃度）
-   2025 年最活跃：LangGraph、CrewAI、OpenAI Agents SDK
-```
+1. **从简单开始**：先尝试 OpenAI Agents SDK 或 LangChain + 直接 API 调用，够用就不要引入复杂框架
+2. **根据瓶颈升级**：发现需要状态管理 → 引入 LangGraph；需要多角色协作 → 考虑 CrewAI；需要代码执行 → 考虑 AutoGen
+3. **拥抱标准协议**：用 MCP 统一工具接口，降低框架切换成本；关注 A2A 协议发展，为 Agent 间互操作做准备
+4. **保持框架无关的代码**：业务逻辑不要与框架强耦合，工具函数保持通用性
+5. **重视调试与可观测性**：生产环境首选有良好日志和观测性的方案（LangSmith、Dify 等都提供了较好的可观测能力）
+6. **社区和生态**：选择活跃维护的框架（查看 GitHub 活跃度）；2025 年最活跃：LangGraph、CrewAI、OpenAI Agents SDK
 
 ---
 
@@ -230,4 +210,4 @@ class HybridAgentSystem:
 
 ---
 
-*下一章：[第14章 多 Agent 协作](../chapter_multi_agent/README.md)*
+*下一章：[第15章 多 Agent 协作](../chapter_multi_agent/README.md)*

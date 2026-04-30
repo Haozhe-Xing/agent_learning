@@ -1,4 +1,4 @@
-# 13.2 LangGraph 核心概念：节点、边与状态
+# 12.2 LangGraph 核心概念：节点、边、状态
 
 ![LangGraph三大核心概念：State·Node·Edge](../svg/chapter_langgraph_02_state_node_edge.svg)
 

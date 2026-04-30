@@ -1,4 +1,4 @@
-# 6.2 ReAct：推理 + 行动框架
+# 5.2 ReAct：推理 + 行动框架
 
 ReAct（Reasoning + Acting）是 Agent 开发中最重要的框架之一，来自 2022 年普林斯顿大学和 Google Brain 的论文《ReAct: Synergizing Reasoning and Acting in Language Models》（Yao et al.）。它将 LLM 的推理能力与工具使用结合起来，创造出更可靠、更透明的 Agent 行为。
 
@@ -259,7 +259,7 @@ ReAct 框架的三大要素：
 - **行动-观察循环**：工具调用与推理交替进行
 - **自然终止**：最终答案时结束循环
 
-> 📖 **想深入了解 ReAct 及规划推理的学术前沿？** 请阅读 [6.6 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 ReAct、MRKL、Plan-and-Solve、Reflexion、CRITIC 等核心论文的深度解读。
+> 📖 **想深入了解 ReAct 及规划推理的学术前沿？** 请阅读 [5.7 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 ReAct、MRKL、Plan-and-Solve、Reflexion、CRITIC 等核心论文的深度解读。
 >
 > 💡 **实践建议**：ReAct 是目前大多数 Agent 框架（LangChain、LlamaIndex）的默认架构。但它并非万能——对于不需要工具的纯推理任务，CoT 更高效；对于流程固定的工作流，直接编排（LangGraph）更可控。选择合适的架构，而非一味使用 ReAct。
 
@@ -275,4 +275,4 @@ ReAct 框架的三大要素：
 
 ---
 
-*下一节：[6.3 任务分解：将复杂问题拆解为子任务](./03_task_decomposition.md)*
+*下一节：[5.3 任务分解：将复杂问题拆解为子任务](./03_task_decomposition.md)*

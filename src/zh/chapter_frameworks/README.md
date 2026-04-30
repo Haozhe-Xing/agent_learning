@@ -1,4 +1,4 @@
-# 第14章 主流 Agent 框架总览
+# 第13章 其他主流框架概览
 
 > 🧭 *"框架只是工具，理解原理才是根本。本章快速浏览主流 Agent 框架，帮你做出明智的技术选择。"*
 
@@ -28,7 +28,7 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第16章 多 Agent 协作](../chapter_multi_agent/README.md)
+> - 👉 [第15章 多 Agent 协作](../chapter_multi_agent/README.md)
 
 ---
 
@@ -67,11 +67,11 @@ Agent 框架生态发展迅速，除了 LangChain/LangGraph 外，还有 AutoGPT
 
 ## 🔗 学习路径
 
-> **前置知识**：[第12章 LangChain](../chapter_langchain/README.md)、[第13章 LangGraph](../chapter_langgraph/README.md)
+> **前置知识**：[第11章 LangChain 深入实战](../chapter_langchain/README.md)、[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
 >
 > **后续推荐**：
-> - 👉 [第14章 多 Agent 协作](../chapter_multi_agent/README.md) — 深入多 Agent 架构设计
-> - 👉 [第18章 评估与优化](../chapter_evaluation/README.md) — 评估不同框架的实际表现
+> - 👉 [第15章 多 Agent 协作](../chapter_multi_agent/README.md) — 深入多 Agent 架构设计
+> - 👉 [第17章 Agent 的评估与优化](../chapter_evaluation/README.md) — 评估不同框架的实际表现
 
 ---
 

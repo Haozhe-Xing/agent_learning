@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" width="480" height="240" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="480" height="240" rx="12" fill="#f8fafc"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">MCP vs A2A：互补而非竞争</text>
+
+  <!-- MCP -->
+  <rect x="16" y="46" width="210" height="150" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="121" y="66" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">MCP（模型-工具层）</text>
+  <rect x="28" y="74" width="186" height="28" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="121" y="93" text-anchor="middle" font-size="12" fill="#1e40af">Agent ←→ 工具/数据</text>
+  <text x="121" y="116" text-anchor="middle" font-size="11" fill="#3b82f6">"让 Agent 能使用各种工具"</text>
+  <text x="121" y="134" text-anchor="middle" font-size="11" fill="#3b82f6">类比：人学会使用</text>
+  <text x="121" y="150" text-anchor="middle" font-size="11" fill="#3b82f6">锤子、扳手</text>
+  <text x="121" y="170" text-anchor="middle" font-size="10" fill="#60a5fa">工具调用 / 数据访问</text>
+  <text x="121" y="184" text-anchor="middle" font-size="10" fill="#60a5fa">文件系统 / 数据库 / API</text>
+
+  <!-- A2A -->
+  <rect x="254" y="46" width="210" height="150" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="359" y="66" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">A2A（Agent-Agent 层）</text>
+  <rect x="266" y="74" width="186" height="28" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="359" y="93" text-anchor="middle" font-size="12" fill="#166534">Agent ←→ Agent</text>
+  <text x="359" y="116" text-anchor="middle" font-size="11" fill="#22c55e">"让 Agent 能与其他 Agent 协作"</text>
+  <text x="359" y="134" text-anchor="middle" font-size="11" fill="#22c55e">类比：人与人之间的</text>
+  <text x="359" y="150" text-anchor="middle" font-size="11" fill="#22c55e">沟通协作</text>
+  <text x="359" y="170" text-anchor="middle" font-size="10" fill="#4ade80">任务委托 / 结果汇报</text>
+  <text x="359" y="184" text-anchor="middle" font-size="10" fill="#4ade80">跨 Agent 协作 / 能力发现</text>
+
+  <!-- 结合 -->
+  <rect x="80" y="208" width="320" height="24" rx="6" fill="#6366f1" stroke="#4338ca" stroke-width="1.5"/>
+  <text x="240" y="225" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">两者结合 = 完整的 Agent 互操作体系</text>
+</svg>

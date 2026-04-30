@@ -1,4 +1,4 @@
-# 2.3 API Key 管理与安全最佳实践
+# F.3 API Key 管理与安全最佳实践
 
 API Key 是访问 LLM 服务的凭证，一旦泄露可能导致严重的费用损失。本节讲解如何安全地管理 API Key。
 
@@ -145,11 +145,9 @@ print(f"使用模型：{settings.default_model}")
 
 ### 1. 按用途申请不同的 Key
 
-```
-开发 Key   → 用于本地开发，设置较低的用量限制
-测试 Key   → 用于 CI/CD 测试
-生产 Key   → 最高权限，只有生产环境能访问
-```
+> - **开发 Key**：用于本地开发，设置较低的用量限制
+> - **测试 Key**：用于 CI/CD 测试
+> - **生产 Key**：最高权限，只有生产环境能访问
 
 ### 2. 设置用量告警
 
@@ -302,4 +300,4 @@ logger.info("Using key: sk-proj-abc123xyz789...")
 
 ---
 
-*下一节：[2.4 第一个 Agent：Hello Agent！](./04_hello_agent.md)*
+*下一节：[F.4 第一个 Agent：Hello Agent！](./04_hello_agent.md)*

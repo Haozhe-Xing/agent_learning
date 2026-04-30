@@ -1,4 +1,4 @@
-# 19.2 幻觉问题与事实性保障
+# 18.2 幻觉问题与事实性保障
 
 > **本节目标**：理解 LLM 幻觉的成因，掌握减少幻觉、提高事实性的实用技术。
 
@@ -215,22 +215,7 @@ def create_grounded_agent(llm, tools):
 
 OpenAI o1/o3、DeepSeek-R1 等推理模型（Reasoning Models）通过内化的思维链（Chain-of-Thought）在生成答案前进行自我验证，显著降低了幻觉率。
 
-```
-传统模型：
-  问题 → 直接生成答案 → 可能"自信地犯错"
-
-推理模型：
-  问题 → 内部推理链：
-    "让我分析一下...这个信息我确定吗？"
-    "我不太确定这个日期，让我从另一个角度验证..."
-    "这可能是错的，让我重新考虑..."
-  → 经过验证的答案 → 幻觉显著减少
-
-实证数据（SimpleQA 基准）：
-  GPT-4o：  38.2% 错误率
-  o1：      16.0% 错误率（降低 58%）
-  o3-mini： 12.8% 错误率（降低 66%）
-```
+![传统模型 vs 推理模型](../svg/chapter_security_02_reasoning_model.svg)
 
 在 Agent 中使用推理模型的最佳实践：
 
@@ -613,10 +598,10 @@ class RealtimeFactAgent:
 | 多 Agent 交叉验证 | 多模型互相核查 | 关键决策 | ⭐ 2025-2026 |
 | 实时检索增强 | 结合网络搜索获取最新信息 | 时效性问题 | ⭐ 2025-2026 |
 
-> 📖 **想深入了解幻觉检测与缓解的学术前沿？** 请阅读 [17.6 论文解读：安全与可靠性前沿研究](./06_paper_readings.md)，涵盖 FActScore、SelfCheckGPT、Self-Consistency、CoVe 等核心论文的深度解读。
+> 📖 **想深入了解幻觉检测与缓解的学术前沿？** 请阅读 [18.6 论文解读：安全与可靠性前沿研究](./06_paper_readings.md)，涵盖 FActScore、SelfCheckGPT、Self-Consistency、CoVe 等核心论文的深度解读。
 
 > **下一节预告**：Agent 不仅要"说得对"，还要"做得安全"——权限控制至关重要。
 
 ---
 
-[下一节：17.3 权限控制与沙箱隔离 →](./03_permission_sandbox.md)
+[18.3 权限控制与沙箱隔离](./03_permission_sandbox.md)

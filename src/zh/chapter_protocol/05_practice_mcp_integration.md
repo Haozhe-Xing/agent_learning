@@ -1,4 +1,4 @@
-# 17.5 实战：基于 MCP 的完整工具集成
+# 16.5 实战：基于 MCP 的工具集成
 
 本节展示如何将自定义工具封装为 MCP 服务器，并在 LangChain Agent 中使用。
 
@@ -233,4 +233,4 @@ def cached_database_query(db_path: str, sql: str) -> str:
 
 ---
 
-*下一章：[第16章 Agent 的评估与优化](../chapter_evaluation/README.md)*
+*下一章：[第17章 Agent 的评估与优化](../chapter_evaluation/README.md)*

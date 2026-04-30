@@ -1,4 +1,4 @@
-# 20.2 API 服务化：FastAPI / Flask 封装
+# 19.2 API 服务化：FastAPI / Flask 封装
 
 > **本节目标**：学会用 FastAPI 将 Agent 封装为可用的 API 服务。
 
@@ -264,4 +264,4 @@ if __name__ == "__main__":
 
 ---
 
-[下一节：18.3 容器化与云部署 →](./03_containerization.md)
+[19.3 容器化与云部署](./03_containerization.md)

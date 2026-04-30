@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280" height="360" width="280" height="360" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="280" height="360" rx="12" fill="#f8fafc"/>
+  <text x="140" y="28" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Deep Research Agent 流水线</text>
+
+  <!-- 步骤 -->
+  <rect x="30" y="44" width="220" height="34" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="140" y="66" text-anchor="middle" font-size="12" fill="#1d4ed8">研究问题澄清</text>
+  <line x1="140" y1="78" x2="140" y2="94" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="30" y="96" width="220" height="34" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="140" y="118" text-anchor="middle" font-size="12" fill="#3730a3">研究计划生成</text>
+  <line x1="140" y1="130" x2="140" y2="146" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="30" y="148" width="220" height="34" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="140" y="170" text-anchor="middle" font-size="12" fill="#15803d">多轮搜索 / 浏览 / 文档读取</text>
+  <line x1="140" y1="182" x2="140" y2="198" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="30" y="200" width="220" height="34" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="140" y="222" text-anchor="middle" font-size="12" fill="#a16207">证据抽取与来源记录</text>
+  <line x1="140" y1="234" x2="140" y2="250" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="30" y="252" width="220" height="34" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="140" y="274" text-anchor="middle" font-size="12" fill="#9d174d">交叉验证与冲突分析</text>
+  <line x1="140" y1="286" x2="140" y2="302" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="30" y="304" width="220" height="34" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="140" y="326" text-anchor="middle" font-size="12" fill="#3730a3">结论合成</text>
+  <line x1="140" y1="338" x2="140" y2="354" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="30" y="356" width="220" height="34" rx="8" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="140" y="378" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">质量审查与引用检查</text>
+</svg>

@@ -1,4 +1,4 @@
-# 7.5 实战：智能文档问答 Agent
+# 6.5 实战：智能文档问答 Agent
 
 综合本章知识，构建一个可以回答关于任意文档集合问题的智能问答系统。
 
@@ -351,4 +351,4 @@ uvicorn main:app --reload
 
 ---
 
-*下一章：[第8章 上下文工程](../chapter_context_engineering/README.md)*
+*下一节：[6.6 论文解读：RAG 前沿进展](./06_paper_readings.md)*

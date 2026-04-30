@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" width="480" height="200" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="480" height="200" rx="12" fill="#f8fafc"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Superpowers：SKILL.md 按需加载 vs 传统做法</text>
+
+  <!-- 传统做法 -->
+  <rect x="16" y="44" width="210" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="121" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">❌ 传统做法</text>
+  <text x="121" y="78" text-anchor="middle" font-size="10" fill="#ef4444">把所有规范塞进主 System Prompt</text>
+  <text x="121" y="94" text-anchor="middle" font-size="10" fill="#ef4444">↓ 上下文过长</text>
+  <text x="121" y="110" text-anchor="middle" font-size="10" fill="#ef4444">↓ 模型退化</text>
+  <text x="121" y="126" text-anchor="middle" font-size="10" fill="#b91c1c">↓ AI 忘记遵守规范</text>
+
+  <!-- Superpowers -->
+  <rect x="254" y="44" width="210" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="359" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">✅ Superpowers 做法</text>
+  <text x="359" y="78" text-anchor="middle" font-size="10" fill="#22c55e">SKILL.md 按需注入</text>
+  <text x="359" y="94" text-anchor="middle" font-size="10" fill="#22c55e">↓ 每次只加载当前需要的 Skill</text>
+  <text x="359" y="110" text-anchor="middle" font-size="10" fill="#22c55e">↓ 上下文聚焦</text>
+  <text x="359" y="126" text-anchor="middle" font-size="10" fill="#15803d">↓ 规范有效执行</text>
+
+  <!-- 说明 -->
+  <rect x="16" y="158" width="448" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="240" y="174" text-anchor="middle" font-size="11" fill="#3730a3">核心矛盾：规范越多 → 上下文越长 → 模型越容易忘记规范</text>
+  <text x="240" y="186" text-anchor="middle" font-size="10" fill="#4338ca">Superpowers 的解法：把规范拆成独立 SKILL.md，任务需要时才注入</text>
+</svg>

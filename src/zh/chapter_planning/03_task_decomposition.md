@@ -1,4 +1,4 @@
-# 6.3 任务分解：将复杂问题拆解为子任务
+# 5.3 任务分解：将复杂问题拆解为子任务
 
 复杂任务往往超出单个 LLM 调用的能力范围。任务分解是将大问题拆成可管理的小问题，然后逐步解决。
 
@@ -228,7 +228,7 @@ print(json.dumps(task_tree, ensure_ascii=False, indent=2))
 - **层次化分解**：递归拆解直到原子任务
 - **依赖管理**：并行执行无依赖的子任务
 
-> 📖 **想深入了解任务规划的学术前沿？** 请阅读 [6.6 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 Plan-and-Solve、HuggingGPT、LLM+P 等论文的深度解读。
+> 📖 **想深入了解任务规划的学术前沿？** 请阅读 [5.7 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 Plan-and-Solve、HuggingGPT、LLM+P 等论文的深度解读。
 
 ---
 
@@ -242,4 +242,4 @@ print(json.dumps(task_tree, ensure_ascii=False, indent=2))
 
 ---
 
-*下一节：[6.4 反思与自我纠错机制](./04_reflection.md)*
+*下一节：[5.4 反思与自我纠错机制](./04_reflection.md)*

@@ -1,4 +1,4 @@
-# 15.2 核心架构深度解析
+# 14.2 核心架构深度解析
 
 > 🏗️ *"The best architectures are the ones where the design decisions are invisible — you only notice them when something goes wrong."*  
 > —— 源自 Claude Code 源码注释（2026年3月意外泄露）
@@ -218,9 +218,11 @@ function ConversationView({ messages }: Props) {
 | **React + Ink** | 用 React 组件渲染终端 UI，支持实时流式更新 |
 | **并行工具调用** | 单次 Think 可并发执行多个工具，提升执行效率 |
 
-> 💡 **核心洞察**：Claude Code 的架构将"AI 智能"（QueryEngine）和"可靠执行"（Tool System + 权限管理）明确分层——这正是第9章 Harness Engineering 的工程哲学在实践中的体现。
+> 💡 **核心洞察**：Claude Code 的架构将"AI 智能"（QueryEngine）和"可靠执行"（Tool System + 权限管理）明确分层——这正是第8章 Harness Engineering 的工程哲学在实践中的体现。
+
+> 💡 **延伸阅读**：关于 Computer Use 和 GUI Agent 的核心循环与安全边界设计，详见 [22.5 Computer Use 与 GUI Agent](../chapter_multimodal/05_computer_use_agent.md)。
 
 ---
 
-*上一节：[15.1 认识 Claude Code：从零到上手](./01_introduction.md)*  
-*下一节：[15.3 源码解密：System Prompt 与权限工程](./03_source_code_analysis.md)*
+*上一节：[14.1 认识 Claude Code：从零到上手](./01_introduction.md)*  
+*下一节：[14.3 源码解密：System Prompt 与权限工程](./03_source_code_analysis.md)*

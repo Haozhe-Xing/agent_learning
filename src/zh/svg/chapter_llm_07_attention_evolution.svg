@@ -1,171 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
-  <defs>
-    <marker id="arr-llm07b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
-    </marker>
-    <filter id="sh-llm07b">
-      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 220" width="520" height="220" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="520" height="220" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">注意力机制演进：MHA → GQA → MLA</text>
 
-  <rect width="800" height="380" fill="#f8f9fa" rx="12"/>
-  <text x="400" y="30" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">注意力机制演进：MHA → GQA → MLA</text>
-  <text x="400" y="48" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">核心驱动力：降低推理时 KV-Cache 显存压力</text>
+  <!-- MHA -->
+  <rect x="16" y="44" width="148" height="130" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="90" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">MHA（2017）</text>
+  <text x="90" y="78" text-anchor="middle" font-size="10" fill="#ef4444">每个 Q 头独立 KV</text>
+  <rect x="28" y="84" width="112" height="52" rx="4" fill="#fca5a5" stroke="#f87171" stroke-width="1"/>
+  <text x="84" y="100" text-anchor="middle" font-size="9" fill="#7f1d1d">32 组 Q</text>
+  <text x="84" y="114" text-anchor="middle" font-size="9" fill="#7f1d1d">32 组 K</text>
+  <text x="84" y="128" text-anchor="middle" font-size="9" fill="#7f1d1d">32 组 V</text>
+  <text x="90" y="152" text-anchor="middle" font-size="10" fill="#b91c1c">KV Cache 最大</text>
+  <text x="90" y="166" text-anchor="middle" font-size="9" fill="#ef4444">~2.5 GB / 1K Token</text>
 
-  <!-- ===== MHA ===== -->
-  <rect x="20" y="65" width="240" height="290" rx="10" fill="#e74c3c" opacity="0.05" stroke="#e74c3c" stroke-width="2"/>
-  <text x="140" y="88" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">MHA 多头注意力</text>
-  <text x="140" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">GPT-2/3, 原始 Transformer</text>
+  <!-- GQA -->
+  <rect x="186" y="44" width="148" height="130" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="260" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#a16207">GQA（2023）</text>
+  <text x="260" y="78" text-anchor="middle" font-size="10" fill="#a16207">多 Q 共享一组 KV</text>
+  <rect x="198" y="84" width="112" height="52" rx="4" fill="#fef08a" stroke="#facc15" stroke-width="1"/>
+  <text x="254" y="100" text-anchor="middle" font-size="9" fill="#a16207">32 组 Q</text>
+  <text x="254" y="114" text-anchor="middle" font-size="9" fill="#a16207">8 组 K（共享）</text>
+  <text x="254" y="128" text-anchor="middle" font-size="9" fill="#a16207">8 组 V（共享）</text>
+  <text x="260" y="152" text-anchor="middle" font-size="10" fill="#a16207">KV Cache 缩小 4x</text>
+  <text x="260" y="166" text-anchor="middle" font-size="9" fill="#a16207">~0.32 GB / 1K Token</text>
 
-  <!-- Q K V 头示意 -->
-  <text x="60" y="130" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#e74c3c">Q heads</text>
-  <text x="130" y="130" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#3498db">K heads</text>
-  <text x="200" y="130" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">V heads</text>
+  <!-- MLA -->
+  <rect x="356" y="44" width="148" height="130" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="430" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">MLA（2024）</text>
+  <text x="430" y="78" text-anchor="middle" font-size="10" fill="#22c55e">KV 压缩到低维向量</text>
+  <rect x="368" y="84" width="112" height="52" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="424" y="100" text-anchor="middle" font-size="9" fill="#166534">128 组 Q</text>
+  <text x="424" y="114" text-anchor="middle" font-size="9" fill="#166534">512 维压缩向量</text>
+  <text x="424" y="128" text-anchor="middle" font-size="9" fill="#166534">（实时解压 K/V）</text>
+  <text x="430" y="152" text-anchor="middle" font-size="10" fill="#15803d">KV Cache 缩小 70x</text>
+  <text x="430" y="166" text-anchor="middle" font-size="9" fill="#22c55e">~0.04 GB / 1K Token</text>
 
-  <!-- Q 列 -->
-  <rect x="45" y="138" width="40" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="65" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₁</text>
-  <rect x="45" y="160" width="40" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="65" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₂</text>
-  <rect x="45" y="182" width="40" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="65" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₃</text>
-  <rect x="45" y="204" width="40" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="65" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₄</text>
+  <!-- 演进箭头 -->
+  <text x="172" y="112" text-anchor="middle" font-size="18" fill="#6366f1">→</text>
+  <text x="342" y="112" text-anchor="middle" font-size="18" fill="#6366f1">→</text>
 
-  <!-- K 列 -->
-  <rect x="115" y="138" width="40" height="18" rx="3" fill="#3498db" opacity="0.7"/>
-  <text x="135" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K₁</text>
-  <rect x="115" y="160" width="40" height="18" rx="3" fill="#3498db" opacity="0.7"/>
-  <text x="135" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K₂</text>
-  <rect x="115" y="182" width="40" height="18" rx="3" fill="#3498db" opacity="0.7"/>
-  <text x="135" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K₃</text>
-  <rect x="115" y="204" width="40" height="18" rx="3" fill="#3498db" opacity="0.7"/>
-  <text x="135" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K₄</text>
-
-  <!-- V 列 -->
-  <rect x="185" y="138" width="40" height="18" rx="3" fill="#27ae60" opacity="0.7"/>
-  <text x="205" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V₁</text>
-  <rect x="185" y="160" width="40" height="18" rx="3" fill="#27ae60" opacity="0.7"/>
-  <text x="205" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V₂</text>
-  <rect x="185" y="182" width="40" height="18" rx="3" fill="#27ae60" opacity="0.7"/>
-  <text x="205" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V₃</text>
-  <rect x="185" y="204" width="40" height="18" rx="3" fill="#27ae60" opacity="0.7"/>
-  <text x="205" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V₄</text>
-
-  <!-- 连接线 1:1 -->
-  <line x1="85" y1="147" x2="115" y2="147" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="85" y1="169" x2="115" y2="169" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="85" y1="191" x2="115" y2="191" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="85" y1="213" x2="115" y2="213" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="155" y1="147" x2="185" y2="147" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="155" y1="169" x2="185" y2="169" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="155" y1="191" x2="185" y2="191" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="155" y1="213" x2="185" y2="213" stroke="#7f8c8d" stroke-width="1"/>
-
-  <text x="140" y="242" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">每个 Q 有独立 K, V</text>
-  <text x="140" y="258" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">KV-Cache = 4 × head_dim</text>
-
-  <rect x="40" y="278" width="200" height="65" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
-  <text x="140" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ KV-Cache 显存大</text>
-  <text x="140" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">4Q : 4K : 4V = 1:1:1</text>
-  <text x="140" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">显存随头数线性增长</text>
-
-  <!-- ===== GQA ===== -->
-  <rect x="280" y="65" width="240" height="290" rx="10" fill="#e67e22" opacity="0.05" stroke="#e67e22" stroke-width="2"/>
-  <text x="400" y="88" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">GQA 分组查询注意力</text>
-  <text x="400" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Llama 2/3, Qwen, Gemma</text>
-
-  <!-- Q K V 组示意 -->
-  <text x="315" y="130" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#e74c3c">Q heads</text>
-  <text x="390" y="130" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#3498db">K groups</text>
-  <text x="460" y="130" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">V groups</text>
-
-  <!-- Q 列 -->
-  <rect x="305" y="138" width="35" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="322" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₁</text>
-  <rect x="305" y="160" width="35" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="322" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₂</text>
-  <rect x="305" y="186" width="35" height="18" rx="3" fill="#e74c3c" opacity="0.5"/>
-  <text x="322" y="199" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₃</text>
-  <rect x="305" y="208" width="35" height="18" rx="3" fill="#e74c3c" opacity="0.5"/>
-  <text x="322" y="221" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Q₄</text>
-
-  <!-- K 组（2个，每个对应2个Q） -->
-  <rect x="380" y="148" width="35" height="30" rx="3" fill="#3498db" opacity="0.7"/>
-  <text x="397" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K₁</text>
-  <rect x="380" y="196" width="35" height="30" rx="3" fill="#3498db" opacity="0.5"/>
-  <text x="397" y="216" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K₂</text>
-
-  <!-- V 组 -->
-  <rect x="448" y="148" width="35" height="30" rx="3" fill="#27ae60" opacity="0.7"/>
-  <text x="465" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V₁</text>
-  <rect x="448" y="196" width="35" height="30" rx="3" fill="#27ae60" opacity="0.5"/>
-  <text x="465" y="216" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V₂</text>
-
-  <!-- 分组连线 -->
-  <line x1="340" y1="147" x2="380" y2="156" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="340" y1="169" x2="380" y2="165" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="340" y1="195" x2="380" y2="204" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="340" y1="217" x2="380" y2="213" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="415" y1="163" x2="448" y2="163" stroke="#7f8c8d" stroke-width="1"/>
-  <line x1="415" y1="211" x2="448" y2="211" stroke="#7f8c8d" stroke-width="1"/>
-
-  <!-- 分组括号 -->
-  <text x="355" y="154" font-family="Arial, sans-serif" font-size="14" fill="#e67e22">}</text>
-  <text x="355" y="210" font-family="Arial, sans-serif" font-size="14" fill="#e67e22">}</text>
-
-  <text x="400" y="248" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">多个 Q 共享同组 K, V</text>
-  <text x="400" y="264" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">KV-Cache = 2 × head_dim</text>
-
-  <rect x="300" y="278" width="200" height="65" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
-  <text x="400" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ KV-Cache 减半</text>
-  <text x="400" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">4Q : 2K : 2V (分组共享)</text>
-  <text x="400" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">性能损失 &lt;1%</text>
-
-  <!-- ===== MLA ===== -->
-  <rect x="540" y="65" width="240" height="290" rx="10" fill="#27ae60" opacity="0.05" stroke="#27ae60" stroke-width="2"/>
-  <text x="660" y="88" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">MLA 多头潜在注意力</text>
-  <text x="660" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">DeepSeek V2/V3/R1</text>
-
-  <!-- 压缩 → 恢复 -->
-  <text x="660" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">低秩压缩 + 解压</text>
-
-  <!-- 大矩阵 → 小矩阵 -->
-  <rect x="575" y="140" width="70" height="55" rx="5" fill="#e74c3c" opacity="0.2" stroke="#e74c3c" stroke-width="1"/>
-  <text x="610" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c">K, V</text>
-  <text x="610" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e74c3c">高维</text>
-  <text x="610" y="190" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="7" fill="#e74c3c">dim × n_heads</text>
-
-  <line x1="645" y1="167" x2="680" y2="167" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-llm07b)"/>
-  <text x="662" y="160" font-family="Arial, sans-serif" font-size="8" fill="#27ae60">压缩</text>
-
-  <rect x="682" y="148" width="45" height="38" rx="5" fill="#27ae60" opacity="0.8"/>
-  <text x="704" y="167" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">c_kv</text>
-  <text x="704" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#d4f0e0">低秩</text>
-
-  <!-- 推理时解压 -->
-  <line x1="704" y1="186" x2="704" y2="210" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-llm07b)"/>
-  <text x="720" y="204" font-family="Arial, sans-serif" font-size="7" fill="#27ae60">解压</text>
-
-  <rect x="575" y="212" width="70" height="24" rx="4" fill="#3498db" opacity="0.6"/>
-  <text x="610" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">K' heads</text>
-
-  <rect x="660" y="212" width="70" height="24" rx="4" fill="#27ae60" opacity="0.6"/>
-  <text x="695" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">V' heads</text>
-
-  <text x="660" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">只缓存低维 c_kv</text>
-  <text x="660" y="268" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">KV-Cache 压缩 ~93%</text>
-
-  <rect x="560" y="278" width="200" height="65" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="660" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅✅ KV-Cache 极度压缩</text>
-  <text x="660" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">cache 只需存 c_kv (低秩)</text>
-  <text x="660" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">效果 ≈ MHA，成本 &lt; GQA</text>
-
-  <!-- 底部演进箭头 -->
-  <line x1="260" y1="367" x2="278" y2="367" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-llm07b)"/>
-  <line x1="520" y1="367" x2="538" y2="367" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-llm07b)"/>
-
-  <text x="270" y="362" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#7f8c8d">2017</text>
-  <text x="530" y="362" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#7f8c8d">2023</text>
-  <text x="770" y="362" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#7f8c8d">2024</text>
+  <!-- 底部说明 -->
+  <rect x="16" y="186" width="488" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="260" y="205" text-anchor="middle" font-size="11" fill="#3730a3">驱动力：KV Cache 显存压力 → 推理效率 → 支持更长上下文</text>
 </svg>

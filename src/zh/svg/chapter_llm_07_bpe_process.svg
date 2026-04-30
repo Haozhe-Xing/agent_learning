@@ -1,184 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
-  <defs>
-    <marker id="arr-bpe" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
-    </marker>
-    <marker id="arr-bpe-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" width="520" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="520" height="260" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">三种分词方案对比："unbelievable"</text>
 
-  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
-  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">BPE 分词：三种方案对比</text>
-  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">以 "unbelievable" 为例</text>
+  <!-- 字符级 -->
+  <rect x="16" y="44" width="150" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="91" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">字符级</text>
+  <text x="91" y="78" text-anchor="middle" font-size="10" fill="#ef4444">词表极小（~256）</text>
+  <text x="91" y="92" text-anchor="middle" font-size="10" fill="#ef4444">无 OOV 问题</text>
+  <text x="91" y="106" text-anchor="middle" font-size="10" fill="#b91c1c">❌ 序列太长</text>
+  <text x="91" y="120" text-anchor="middle" font-size="9" fill="#ef4444">[u,n,b,e,l,i,e,v,a,b,l,e]</text>
+  <text x="91" y="134" text-anchor="middle" font-size="9" fill="#ef4444">→ 12 个 Token</text>
 
-  <!-- ===== 字符级 ===== -->
-  <rect x="20" y="62" width="235" height="160" rx="8" fill="#e74c3c" opacity="0.06" stroke="#e74c3c" stroke-width="1.5"/>
-  <text x="137" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">字符级（Character-level）</text>
+  <!-- 词级 -->
+  <rect x="185" y="44" width="150" height="100" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="260" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#a16207">词级</text>
+  <text x="260" y="78" text-anchor="middle" font-size="10" fill="#a16207">序列短</text>
+  <text x="260" y="92" text-anchor="middle" font-size="10" fill="#a16207">语义完整</text>
+  <text x="260" y="106" text-anchor="middle" font-size="10" fill="#b91c1c">❌ 词表巨大</text>
+  <text x="260" y="120" text-anchor="middle" font-size="9" fill="#a16207">["unbelievable"]</text>
+  <text x="260" y="134" text-anchor="middle" font-size="9" fill="#a16207">→ 1 个 Token，但新词 [UNK]</text>
 
-  <!-- 12个字符块 -->
-  <rect x="28" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="37" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">u</text>
-  <rect x="49" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="58" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">n</text>
-  <rect x="70" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="79" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">b</text>
-  <rect x="91" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="100" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">e</text>
-  <rect x="112" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="121" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">l</text>
-  <rect x="133" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="142" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">i</text>
-  <rect x="154" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="163" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">e</text>
-  <rect x="175" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="184" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">v</text>
-  <rect x="196" y="92" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="205" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">a</text>
-  <rect x="28" y="118" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="37" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">b</text>
-  <rect x="49" y="118" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="58" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">l</text>
-  <rect x="70" y="118" width="18" height="22" rx="3" fill="#e74c3c" opacity="0.7"/>
-  <text x="79" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">e</text>
+  <!-- BPE -->
+  <rect x="354" y="44" width="150" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="429" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">BPE（折中）</text>
+  <text x="429" y="78" text-anchor="middle" font-size="10" fill="#22c55e">词表可控（32K~150K）</text>
+  <text x="429" y="92" text-anchor="middle" font-size="10" fill="#22c55e">无 OOV 问题</text>
+  <text x="429" y="106" text-anchor="middle" font-size="10" fill="#15803d">✅ 子词共享语义</text>
+  <text x="429" y="120" text-anchor="middle" font-size="9" fill="#22c55e">["un", "believ", "able"]</text>
+  <text x="429" y="134" text-anchor="middle" font-size="9" fill="#22c55e">→ 3 个 Token</text>
 
-  <text x="137" y="158" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e74c3c">12 个 Token</text>
-  <rect x="35" y="168" width="185" height="44" rx="5" fill="white" stroke="#e74c3c" stroke-width="1"/>
-  <text x="127" y="184" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 序列过长</text>
-  <text x="127" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">模型需更多步理解语义</text>
-
-  <!-- ===== 词级 ===== -->
-  <rect x="283" y="62" width="235" height="160" rx="8" fill="#e67e22" opacity="0.06" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="400" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">词级（Word-level）</text>
-
-  <rect x="300" y="92" width="165" height="22" rx="3" fill="#e67e22" opacity="0.7"/>
-  <text x="382" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">unbelievable</text>
-
-  <text x="400" y="132" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e67e22">1 个 Token</text>
-  <text x="400" y="150" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">但新词 → [UNK]</text>
-
-  <rect x="298" y="168" width="185" height="44" rx="5" fill="white" stroke="#e67e22" stroke-width="1"/>
-  <text x="390" y="184" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">❌ 词表巨大（数百万）</text>
-  <text x="390" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">新词/专有名词 → [UNK]</text>
-
-  <!-- ===== BPE ===== -->
-  <rect x="546" y="62" width="235" height="160" rx="8" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="663" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">BPE（折中方案）</text>
-
-  <rect x="556" y="92" width="32" height="22" rx="3" fill="#27ae60" opacity="0.8"/>
-  <text x="572" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">un</text>
-  <rect x="592" y="92" width="52" height="22" rx="3" fill="#27ae60" opacity="0.8"/>
-  <text x="618" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">believ</text>
-  <rect x="648" y="92" width="38" height="22" rx="3" fill="#27ae60" opacity="0.8"/>
-  <text x="667" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">able</text>
-
-  <text x="663" y="132" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#27ae60">3 个 Token</text>
-  <text x="663" y="150" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">子词共享，无 OOV</text>
-
-  <rect x="561" y="168" width="185" height="44" rx="5" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="653" y="184" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 词表可控（32K~150K）</text>
-  <text x="653" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">子词共享语义，无 OOV</text>
-
-  <!-- ===== BPE 合并过程 ===== -->
-  <rect x="20" y="240" width="760" height="165" rx="8" fill="#3498db" opacity="0.04" stroke="#3498db" stroke-width="1.5"/>
-  <text x="400" y="260" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#3498db">BPE 合并过程（迭代示意）</text>
-
-  <!-- 初始 -->
-  <text x="30" y="282" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">初始：</text>
-  <rect x="70" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="77" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">u</text>
-  <rect x="86" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="93" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">n</text>
-  <rect x="102" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="109" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">b</text>
-  <rect x="118" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="125" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <rect x="134" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="141" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">l</text>
-  <rect x="150" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="157" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">i</text>
-  <rect x="166" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="173" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <rect x="182" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="189" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">v</text>
-  <rect x="198" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="205" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">a</text>
-  <rect x="214" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="221" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">b</text>
-  <rect x="230" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="237" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">l</text>
-  <rect x="246" y="270" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="253" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <text x="268" y="283" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">12 tokens</text>
-
-  <!-- 第1次合并 -->
-  <line x1="400" y1="270" x2="400" y2="390" stroke="#ecf0f1" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="30" y="310" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">合并1：</text>
-  <text x="30" y="324" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">"un" 高频</text>
-  <rect x="70" y="298" width="28" height="18" rx="2" fill="#e67e22" opacity="0.8"/>
-  <text x="84" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">un</text>
-  <rect x="100" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="107" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">b</text>
-  <rect x="116" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="123" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <rect x="132" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="139" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">l</text>
-  <rect x="148" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="155" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">i</text>
-  <rect x="164" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="171" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <rect x="180" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="187" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">v</text>
-  <rect x="196" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="203" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">a</text>
-  <rect x="212" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="219" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">b</text>
-  <rect x="228" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="235" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">l</text>
-  <rect x="244" y="298" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="251" y="311" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <text x="268" y="311" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">11 tokens</text>
-
-  <!-- 第2次合并 -->
-  <text x="30" y="338" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">合并2：</text>
-  <text x="30" y="352" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">"able" 高频</text>
-  <rect x="70" y="326" width="28" height="18" rx="2" fill="#e67e22" opacity="0.8"/>
-  <text x="84" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">un</text>
-  <rect x="100" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="107" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">b</text>
-  <rect x="116" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="123" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <rect x="132" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="139" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">l</text>
-  <rect x="148" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="155" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">i</text>
-  <rect x="164" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="171" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">e</text>
-  <rect x="180" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="187" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">v</text>
-  <rect x="196" y="326" width="14" height="18" rx="2" fill="#bdc3c7"/>
-  <text x="203" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2c3e50">a</text>
-  <rect x="212" y="326" width="42" height="18" rx="2" fill="#e67e22" opacity="0.8"/>
-  <text x="233" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">ble</text>
-  <text x="268" y="339" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">9 tokens</text>
-
-  <!-- 最终结果 -->
-  <text x="30" y="370" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">最终：</text>
-  <rect x="70" y="358" width="28" height="20" rx="3" fill="#27ae60" opacity="0.9"/>
-  <text x="84" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">un</text>
-  <rect x="102" y="358" width="52" height="20" rx="3" fill="#27ae60" opacity="0.9"/>
-  <text x="128" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">believ</text>
-  <rect x="158" y="358" width="38" height="20" rx="3" fill="#27ae60" opacity="0.9"/>
-  <text x="177" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">able</text>
-  <text x="210" y="372" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">3 tokens ✅</text>
-
-  <!-- 右侧说明 -->
-  <rect x="430" y="255" width="340" height="140" rx="8" fill="white" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="600" y="275" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">BPE 的核心优势：子词共享</text>
-  <text x="440" y="296" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">• "running" / "runner" / "runs"</text>
-  <text x="455" y="312" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">都包含子词 "run" → 共享语义</text>
-  <text x="440" y="332" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">• 遇到新词（如代码变量名）</text>
-  <text x="455" y="348" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">拆成已知子词，不会出现 [UNK]</text>
-  <text x="440" y="368" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">• 词表大小可控（32K ~ 150K）</text>
-  <text x="455" y="384" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">平衡序列长度与覆盖率</text>
+  <!-- BPE 合并过程 -->
+  <rect x="16" y="158" width="488" height="90" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="260" y="176" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">BPE 合并过程（直觉示例）</text>
+  <text x="30" y="194" font-size="10" fill="#4338ca">初始：[u, n, b, e, l, i, e, v, a, b, l, e]</text>
+  <text x="30" y="210" font-size="10" fill="#4338ca">第1次合并："ab" 高频 → [u, n, b, e, l, i, e, v, ab, l, e]</text>
+  <text x="30" y="226" font-size="10" fill="#4338ca">第2次合并："le" 高频 → [u, n, b, e, l, i, e, v, ab, le]</text>
+  <text x="30" y="242" font-size="10" fill="#3730a3">...最终结果：["un", "believ", "able"]  ← 3 个 Token</text>
 </svg>

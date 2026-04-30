@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 340" width="520" height="340" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="520" height="340" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">MHA / GQA / MLA 三代注意力对比</text>
+
+  <!-- MHA -->
+  <rect x="16" y="46" width="148" height="130" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="90" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">MHA</text>
+  <text x="90" y="80" text-anchor="middle" font-size="10" fill="#3b82f6">每个 Q 对应独立 KV</text>
+  <text x="30" y="100" font-size="10" fill="#1e40af">Q₁ → K₁,V₁</text>
+  <text x="30" y="116" font-size="10" fill="#1e40af">Q₂ → K₂,V₂</text>
+  <text x="30" y="132" font-size="10" fill="#1e40af">Q₃ → K₃,V₃</text>
+  <text x="30" y="148" font-size="10" fill="#1e40af">Q₄ → K₄,V₄</text>
+  <rect x="24" y="158" width="132" height="12" rx="4" fill="#ef4444" opacity="0.7"/>
+  <text x="90" y="168" text-anchor="middle" font-size="9" fill="#fff">KV Cache 最大</text>
+
+  <!-- GQA -->
+  <rect x="186" y="46" width="148" height="130" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="260" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">GQA</text>
+  <text x="260" y="80" text-anchor="middle" font-size="10" fill="#22c55e">多个 Q 共享一组 KV</text>
+  <text x="196" y="100" font-size="10" fill="#166534">Q₁ ─┐</text>
+  <text x="196" y="116" font-size="10" fill="#166534">Q₂ ─┤→ K₁,V₁</text>
+  <text x="196" y="132" font-size="10" fill="#166534">Q₃ ─┐</text>
+  <text x="196" y="148" font-size="10" fill="#166534">Q₄ ─┤→ K₂,V₂</text>
+  <rect x="194" y="158" width="132" height="12" rx="4" fill="#22c55e" opacity="0.7"/>
+  <text x="260" y="168" text-anchor="middle" font-size="9" fill="#fff">KV Cache 缩小 4~8x</text>
+
+  <!-- MLA -->
+  <rect x="356" y="46" width="148" height="130" rx="8" fill="#fdf4ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="430" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#7e22ce">MLA</text>
+  <text x="430" y="80" text-anchor="middle" font-size="10" fill="#a855f7">所有 KV 压缩为低维向量</text>
+  <text x="366" y="100" font-size="10" fill="#7e22ce">Q₁ ─┐</text>
+  <text x="366" y="116" font-size="10" fill="#7e22ce">Q₂ ─┤→ [c: 512维]</text>
+  <text x="366" y="132" font-size="10" fill="#7e22ce">Q₃ ─┤  → 实时解压</text>
+  <text x="366" y="148" font-size="10" fill="#7e22ce">Q₄ ─┘  → K,V</text>
+  <rect x="364" y="158" width="132" height="12" rx="4" fill="#a855f7" opacity="0.7"/>
+  <text x="430" y="168" text-anchor="middle" font-size="9" fill="#fff">KV Cache 缩小 ~70x</text>
+
+  <!-- 对比表 -->
+  <rect x="16" y="192" width="488" height="136" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="260" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">关键指标对比</text>
+
+  <!-- 表头 -->
+  <rect x="24" y="216" width="472" height="22" rx="4" fill="#e2e8f0"/>
+  <text x="100" y="231" text-anchor="middle" font-size="10" font-weight="bold" fill="#475569">机制</text>
+  <text x="220" y="231" text-anchor="middle" font-size="10" font-weight="bold" fill="#475569">KV Cache 大小</text>
+  <text x="350" y="231" text-anchor="middle" font-size="10" font-weight="bold" fill="#475569">表达能力</text>
+  <text x="460" y="231" text-anchor="middle" font-size="10" font-weight="bold" fill="#475569">代表模型</text>
+
+  <text x="100" y="254" text-anchor="middle" font-size="10" fill="#1d4ed8">MHA</text>
+  <text x="220" y="254" text-anchor="middle" font-size="10" fill="#ef4444">最大（基准）</text>
+  <text x="350" y="254" text-anchor="middle" font-size="10" fill="#166534">最强</text>
+  <text x="460" y="254" text-anchor="middle" font-size="10" fill="#475569">GPT-3</text>
+
+  <text x="100" y="272" text-anchor="middle" font-size="10" fill="#15803d">GQA</text>
+  <text x="220" y="272" text-anchor="middle" font-size="10" fill="#22c55e">缩小 4~8x</text>
+  <text x="350" y="272" text-anchor="middle" font-size="10" fill="#166534">略降</text>
+  <text x="460" y="272" text-anchor="middle" font-size="10" fill="#475569">Llama 3 / Mistral</text>
+
+  <text x="100" y="290" text-anchor="middle" font-size="10" fill="#7e22ce">MLA</text>
+  <text x="220" y="290" text-anchor="middle" font-size="10" fill="#a855f7">缩小 ~70x</text>
+  <text x="350" y="290" text-anchor="middle" font-size="10" fill="#166534">接近 MHA</text>
+  <text x="460" y="290" text-anchor="middle" font-size="10" fill="#475569">DeepSeek V2/V3</text>
+
+  <line x1="24" y1="240" x2="496" y2="240" stroke="#cbd5e1" stroke-width="0.5"/>
+  <line x1="24" y1="260" x2="496" y2="260" stroke="#cbd5e1" stroke-width="0.5"/>
+  <line x1="24" y1="278" x2="496" y2="278" stroke="#cbd5e1" stroke-width="0.5"/>
+  <line x1="155" y1="216" x2="155" y2="296" stroke="#cbd5e1" stroke-width="0.5"/>
+  <line x1="285" y1="216" x2="285" y2="296" stroke="#cbd5e1" stroke-width="0.5"/>
+  <line x1="415" y1="216" x2="415" y2="296" stroke="#cbd5e1" stroke-width="0.5"/>
+</svg>

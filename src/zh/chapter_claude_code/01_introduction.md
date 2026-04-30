@@ -1,4 +1,4 @@
-# 15.1 认识 Claude Code：不只是代码补全
+# 14.1 认识 Claude Code：从零到上手
 
 > 🖥️ *"We didn't set out to build a coding assistant. We set out to build a trusted, capable colleague who happens to work entirely in the terminal."*  
 > —— Anthropic 工程团队，2024 年

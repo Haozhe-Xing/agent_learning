@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 380" width="400" height="380" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <rect width="400" height="380" rx="12" fill="#f8fafc"/>
+  <text x="200" y="28" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Superpowers Skill 调用流程</text>
+
+  <rect x="100" y="44" width="200" height="28" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="200" y="63" text-anchor="middle" font-size="11" fill="#1d4ed8">收到用户消息</text>
+  <line x1="200" y1="72" x2="200" y2="88" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="60" y="90" width="280" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="200" y="109" text-anchor="middle" font-size="11" fill="#3730a3">即将进入 EnterPlanMode？</text>
+  <line x1="200" y1="118" x2="200" y2="134" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="60" y="136" width="280" height="28" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="200" y="155" text-anchor="middle" font-size="11" fill="#a16207">是否已 Brainstorm？</text>
+  <!-- 没有分支 -->
+  <line x1="100" y1="150" x2="40" y2="150" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="40" y1="150" x2="40" y2="176" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="68" y="146" text-anchor="middle" font-size="9" fill="#ef4444">没有</text>
+  <rect x="16" y="178" width="100" height="24" rx="4" fill="#fca5a5" stroke="#ef4444" stroke-width="1"/>
+  <text x="66" y="195" text-anchor="middle" font-size="9" fill="#7f1d1d">先调用 brainstorming</text>
+  <line x1="200" y1="164" x2="200" y2="180" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="60" y="182" width="280" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="200" y="201" text-anchor="middle" font-size="11" fill="#3730a3">有没有可能适用的 Skill（哪怕 1%）？</text>
+  <!-- 有分支 -->
+  <line x1="200" y1="210" x2="200" y2="226" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 没有分支 -->
+  <line x1="340" y1="196" x2="380" y2="196" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="380" y1="196" x2="380" y2="350" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="380" y1="350" x2="300" y2="350" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="370" y="192" text-anchor="middle" font-size="9" fill="#ef4444">绝对没有</text>
+
+  <rect x="60" y="228" width="280" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="200" y="247" text-anchor="middle" font-size="11" fill="#15803d">调用 Skill 工具 → 宣告使用目的</text>
+  <line x1="200" y1="256" x2="200" y2="272" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="60" y="274" width="280" height="28" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="200" y="293" text-anchor="middle" font-size="11" fill="#a16207">Skill 有检查清单？</text>
+  <!-- 有分支 -->
+  <line x1="100" y1="288" x2="40" y2="288" stroke="#22c55e" stroke-width="1.5"/>
+  <line x1="40" y1="288" x2="40" y2="314" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="68" y="284" text-anchor="middle" font-size="9" fill="#15803d">有</text>
+  <rect x="16" y="316" width="100" height="24" rx="4" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+  <text x="66" y="333" text-anchor="middle" font-size="9" fill="#166534">创建 TodoWrite 待办项</text>
+  <line x1="200" y1="302" x2="200" y2="318" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="60" y="320" width="280" height="28" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="200" y="339" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">严格按 Skill 执行</text>
+
+  <rect x="200" y="352" width="160" height="24" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="280" y="369" text-anchor="middle" font-size="10" fill="#3730a3">直接回应（无 Skill）</text>
+</svg>

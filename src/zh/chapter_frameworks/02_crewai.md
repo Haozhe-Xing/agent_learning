@@ -1,4 +1,4 @@
-# 14.2 CrewAI：角色扮演多智能体框架
+# 13.2 CrewAI：角色扮演型多 Agent 框架
 
 CrewAI 是一个专为多 Agent 协作设计的框架，通过"角色扮演"让不同的 Agent 扮演不同的专业角色，共同完成复杂任务。自 2024 年推出以来，CrewAI 已发展为最受欢迎的多 Agent 框架之一，并在 2025 年引入了 **Flows** 等重要新特性。
 
@@ -241,30 +241,14 @@ result = flow.kickoff()
 
 ## CrewAI vs LangGraph 对比
 
-```
-CrewAI 特点：
-✅ 简单直观的角色扮演模型
-✅ 声明式定义，代码量少
-✅ 适合任务分工明确的场景
-✅ Flows 支持事件驱动工作流（新）
-❌ 复杂状态管理能力不如 LangGraph
-❌ 调试工具相对有限
+| 维度 | CrewAI | LangGraph |
+|------|--------|-----------|
+| 上手难度 | ✅ 简单直观的角色扮演模型，声明式定义，代码量少 | ❌ 代码量更多，学习曲线较陡 |
+| 适用场景 | ✅ 任务分工明确、Agent 可自主协作；Flows 支持事件驱动工作流 | ✅ 需要精确控制流程、有条件分支和循环的复杂工作流 |
+| 状态管理 | ❌ 复杂状态管理能力不如 LangGraph | ✅ 强大的状态管理和循环控制，细粒度控制每个步骤 |
+| 调试能力 | ❌ 调试工具相对有限 | ✅ 支持 Human-in-the-Loop，可视化调试（LangSmith 集成）|
 
-LangGraph 特点：
-✅ 强大的状态管理和循环控制
-✅ 细粒度控制每个步骤
-✅ 支持 Human-in-the-Loop
-✅ 可视化调试（LangSmith 集成）
-❌ 代码量更多
-❌ 学习曲线较陡
-
-建议：
-- 角色分工清晰的任务 → CrewAI（Crew 模式）
-- 需要复杂控制流和状态管理 → LangGraph
-- 需要流程编排 + 多 Agent → CrewAI（Flow 模式）
-- 快速原型 → CrewAI
-- 生产环境高可靠需求 → LangGraph
-```
+**选型建议**：角色分工清晰的任务 → CrewAI（Crew 模式）；需要复杂控制流和状态管理 → LangGraph；需要流程编排 + 多 Agent → CrewAI（Flow 模式）；快速原型 → CrewAI；生产环境高可靠需求 → LangGraph
 
 ---
 

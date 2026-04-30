@@ -1,4 +1,4 @@
-# 9.3 AGENTS.md / CLAUDE.md：编写 Agent 宪章
+# 8.3 AGENTS.md / CLAUDE.md：Agent 宪法写作指南
 
 > 📜 *"代码仓库是唯一的真相源（Source of Truth）。所有指导 AI Agent 行为的知识，必须以机器可读的形式存储在代码库中。"*  
 > —— OpenAI Codex 团队工程实践
@@ -400,4 +400,4 @@ jobs:
 
 ---
 
-*下一节：[9.4 生产级案例：OpenAI、LangChain、Stripe](./04_production_cases.md)*
+*下一节：[8.4 生产级案例：OpenAI、LangChain、Stripe](./04_production_cases.md)*

@@ -1,4 +1,4 @@
-# 4.2 Function Calling 机制详解
+# 3.2 Function Calling 机制
 
 > 🎯 **本节目标**：理解 Function Calling 的完整流程，能写出最小可运行的示例。
 
@@ -8,27 +8,7 @@
 
 在深入代码之前，让我们用一个日常对话来模拟整个过程：
 
-```
-你（用户）："北京今天天气怎么样？"
-         ↓
-LLM（大脑）分析：
-  "这个问题需要实时天气数据，
-   我的训练数据里没有……
-   哦对了，我有一个 get_weather 工具可以用！"
-         ↓
-LLM 输出指令（不是直接回答）：
-  "请调用 get_weather 工具，参数是 city='北京'"
-         ↓
-你的代码（手脚）执行：
-  调用天气 API → 得到 "北京：15°C，晴，湿度40%"
-         ↓
-把结果反馈给 LLM：
-  "工具返回结果：{temp: 15, condition: '晴', humidity: '40%'}"
-         ↓
-LLM 基于真实数据组织回答：
-  "北京今天的天气不错！气温 15°C，晴天，湿度适中。
-   挺适合出门的~"
-```
+![Function Calling 完整流程](../svg/chapter_tools_02_function_calling_flow.svg)
 
 **注意这个循环中的角色分工**：
 
@@ -46,26 +26,7 @@ LLM 基于真实数据组织回答：
 >
 > <a href="../animations/function_calling.html" target="_blank" style="display:inline-block;padding:8px 16px;background:#9C27B0;color:white;border-radius:6px;text-decoration:none;font-weight:bold;">▶ 打开 Function Calling 交互动画</a>
 
-```
-步骤1：定义工具（JSON Schema）
-  → 告诉 LLM："我有一个叫 get_weather 的工具，
-    它接受 city 参数，用来查询天气"
-
-步骤2：发送请求
-  → 把用户的消息 + 工具定义一起发给 LLM
-
-步骤3：模型决策
-  → LLM 返回两种结果之一：
-    a) 直接回答（不需要工具）
-    b) 工具调用请求（需要工具）
-
-步骤4：执行工具
-  → 你的代码解析 LLM 的指令，调用真正的函数
-
-步骤5：生成回答
-  → 把工具结果追加到对话历史，
-    再发给 LLM 组织最终回答
-```
+![Function Calling 5 步流程](../svg/chapter_tools_02_function_calling_flow.svg)
 
 这个流程可能会循环多次。比如用户说"如果下雨就发邮件提醒"——先查天气，再决定是否发邮件。
 
@@ -211,12 +172,7 @@ tools = [{
 
 当多个工具之间没有依赖关系时，可以让模型一次返回多个调用指令：
 
-```
-用户："同时查一下北京、上海、广州的天气"
-  → 模型一次性返回 3 个 tool_calls
-  → 你的代码并行执行 3 个查询（用 ThreadPoolExecutor 或 asyncio）
-  → 总等待时间 ≈ 最慢的那一个（而不是三个相加）
-```
+> 用户："同时查一下北京、上海、广州的天气" → 模型一次性返回 3 个 tool_calls → 你的代码并行执行 3 个查询（用 ThreadPoolExecutor 或 asyncio）→ 总等待时间 ≈ 最慢的那一个（而不是三个相加）
 
 适用条件：**工具之间互相独立**。如果有依赖（先查天气→再决定是否发邮件），应设 `parallel_tool_calls=False`。
 
@@ -259,7 +215,7 @@ def good_tool(query):
 
 可以把它们理解为：**Function Calling 是"自己做饭"，MCP 是"点外卖"**。前者灵活自由，后者标准化可复用。掌握了 Function Calling 后，理解 MCP 会非常自然——本质上就是把工具的定义和执行从代码中抽离出来变成独立服务。
 
-详细内容见 [第 15 章 通信协议](../chapter_protocol/README.md)。
+详细内容见 [第16章 Agent 通信协议](../chapter_protocol/README.md)。
 
 ---
 
@@ -326,4 +282,4 @@ def good_tool(query):
 
 ---
 
-*下一节：[4.3 自定义工具的设计与实现](./03_custom_tools.md)*
+*下一节：[3.3 自定义工具的设计与实现](./03_custom_tools.md)*

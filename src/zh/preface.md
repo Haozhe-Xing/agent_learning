@@ -45,7 +45,7 @@
 
 - **编程语言**：Python 3.11+
 - **核心框架**：LangChain, LangGraph, OpenAI Agents SDK
-- **LLM 服务**：OpenAI API（GPT-4.1/GPT-5）, Anthropic（Claude 4）, 开源模型（Llama 4, Qwen 3）
+- **LLM 服务**：OpenAI API, Anthropic（Claude 系列）, 开源模型（Llama, Qwen 等）
 - **Agent 协议**：MCP（Model Context Protocol）, A2A（Agent-to-Agent）, ANP（Agent Network Protocol）
 - **向量数据库**：ChromaDB, FAISS
 - **Web 框架**：FastAPI

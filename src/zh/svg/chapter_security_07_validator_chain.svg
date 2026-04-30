@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <rect width="560" height="200" rx="12" fill="#f8fafc"/>
+  <text x="280" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Validator 链式验证框架</text>
+
+  <!-- LLM 输出 -->
+  <rect x="16" y="50" width="80" height="36" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="56" y="73" text-anchor="middle" font-size="11" fill="#4338ca">LLM 输出</text>
+  <line x1="96" y1="68" x2="114" y2="68" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Validator 1 -->
+  <rect x="116" y="44" width="110" height="48" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="171" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">Validator 1</text>
+  <text x="171" y="80" text-anchor="middle" font-size="10" fill="#3b82f6">格式检查</text>
+  <line x1="226" y1="68" x2="244" y2="68" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 失败箭头 -->
+  <line x1="171" y1="92" x2="171" y2="110" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="171" y="126" text-anchor="middle" font-size="9" fill="#ef4444">通过/失败</text>
+  <text x="171" y="140" text-anchor="middle" font-size="9" fill="#ef4444">修复建议</text>
+
+  <!-- Validator 2 -->
+  <rect x="246" y="44" width="110" height="48" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="301" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">Validator 2</text>
+  <text x="301" y="80" text-anchor="middle" font-size="10" fill="#22c55e">内容检查</text>
+  <line x1="356" y1="68" x2="374" y2="68" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 失败箭头 -->
+  <line x1="301" y1="92" x2="301" y2="110" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="301" y="126" text-anchor="middle" font-size="9" fill="#ef4444">通过/失败</text>
+  <text x="301" y="140" text-anchor="middle" font-size="9" fill="#ef4444">修复建议</text>
+
+  <!-- Validator 3 -->
+  <rect x="376" y="44" width="110" height="48" rx="6" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="431" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#9d174d">Validator 3</text>
+  <text x="431" y="80" text-anchor="middle" font-size="10" fill="#ec4899">安全检查</text>
+  <line x1="486" y1="68" x2="504" y2="68" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 失败箭头 -->
+  <line x1="431" y1="92" x2="431" y2="110" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="431" y="126" text-anchor="middle" font-size="9" fill="#ef4444">通过/失败</text>
+  <text x="431" y="140" text-anchor="middle" font-size="9" fill="#ef4444">修复建议</text>
+
+  <!-- 最终输出 -->
+  <rect x="506" y="50" width="44" height="36" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="528" y="73" text-anchor="middle" font-size="10" fill="#14532d">最终输出</text>
+
+  <!-- 说明 -->
+  <rect x="16" y="158" width="528" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="280" y="174" text-anchor="middle" font-size="11" fill="#3730a3">💡 Validator 可组合：每个验证器独立检查，失败时提供修复建议，支持自动重试</text>
+  <text x="280" y="186" text-anchor="middle" font-size="10" fill="#4338ca">内置验证器：格式/长度/正则/JSON/Pydantic/毒性检测/PII 检测/代码检查...</text>
+</svg>

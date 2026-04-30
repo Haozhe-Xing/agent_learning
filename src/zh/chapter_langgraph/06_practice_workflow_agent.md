@@ -1,4 +1,4 @@
-# 13.6 实战：工作流自动化 Agent
+# 12.6 实战：工作流自动化 Agent
 
 本节综合运用前面学到的 LangGraph 知识——状态管理、条件路由、循环控制，构建一个完整的工作流自动化 Agent。
 
@@ -199,6 +199,8 @@ print(f"\n最终内容（前500字）：\n{result['final_content'][:500]}")
 **节点间的数据传递**：每个节点函数只返回需要更新的状态字段，而不是整个状态。LangGraph 会自动将返回值合并到当前状态中。比如 `write_content` 只返回 `{"content": response.content}`，不需要关心 `topic`、`outline` 等其他字段。
 
 **LLM 输出的容错解析**：`review_content` 和 `analyze_topic` 都用正则表达式从 LLM 回复中提取 JSON，并提供了兜底值。这是因为 LLM 有时不会严格按照指定格式返回（可能在 JSON 前后加上说明文字），我们需要容忍这种不确定性。
+
+> 💡 **延伸阅读**：关于 Plan-and-Execute 模式的完整实现和 Test-time Compute Scaling 策略，详见 [5.6 Plan-and-Execute 与 Test-time Compute Scaling](../chapter_planning/07_plan_and_execute.md)。
 
 ## 本章小结
 

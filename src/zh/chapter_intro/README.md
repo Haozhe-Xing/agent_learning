@@ -38,8 +38,8 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第2章 开发环境搭建](../chapter_setup/README.md) — 搭好工具，开始动手
-> - 👉 [第3章 大语言模型基础](../chapter_llm/README.md) — 理解 Agent 的"大脑"
+> - 👉 [第2章 大语言模型基础](../chapter_llm/README.md) — 理解 Agent 的"大脑"
+> - 👉 [附录 F：开发环境搭建](../chapter_setup/README.md) — 搭好工具，开始动手
 
 ---
 

@@ -1,4 +1,4 @@
-# 11.6 实战：完整 SFT + GRPO 训练 Pipeline
+# 10.6 实战：完整 SFT + GRPO 训练 Pipeline
 
 ## 项目概述与实验设计
 

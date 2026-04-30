@@ -1,4 +1,4 @@
-# 5.3 长期记忆：向量数据库与检索
+# 4.3 长期记忆：向量数据库与检索
 
 长期记忆让 Agent 能够"记住"跨越多次会话的信息——你今天告诉它你是 Python 开发者、偏好简洁风格，下周再来对话时它依然记得。
 
@@ -364,7 +364,85 @@ def test_memory_system():
 
 ---
 
-*下一节：[5.4 工作记忆：Scratchpad 模式](./04_working_memory.md)*
+## Memory Governance：记忆不是越多越好
+
+当 Agent 进入长期使用阶段，记忆系统会从"功能模块"变成"治理对象"。因为记忆一旦持久化，就会影响未来所有对话和决策：错误记忆会反复误导模型，过期记忆会污染用户画像，敏感记忆会带来隐私风险。
+
+**Memory Governance（记忆治理）** 要回答四个问题：
+
+1. **什么可以被记住？** 用户偏好、长期事实、项目背景可以记；临时查询、敏感凭证、一次性信息不应默认记。
+2. **谁有权写入和修改记忆？** 自动提取器、用户显式指令、管理员规则的优先级不同。
+3. **记忆什么时候过期或删除？** 过期偏好、被用户撤回的信息、低置信度事实需要衰减或移除。
+4. **如何审计记忆影响？** 当 Agent 给出某个建议时，应能说明使用了哪些记忆。
+
+### 记忆治理的五条规则
+
+| 规则 | 说明 | 工程实现 |
+|------|------|----------|
+| **显式优先** | 用户明确说"记住/忘记"的优先级最高 | 为显式记忆打 `source=explicit` 标签 |
+| **敏感最小化** | 不保存密码、密钥、身份证号等高风险信息 | PII 检测 + 写入前过滤 |
+| **可撤回** | 用户可以查看、修改、删除记忆 | 提供 memory list/update/delete 接口 |
+| **时间有效性** | 偏好和任务会变化，记忆需要有效期 | `created_at`、`updated_at`、`expires_at` 字段 |
+| **可追溯** | 重要输出应能追踪到使用了哪些记忆 | 记录 `memory_id` 与回答的关联 |
+
+### 为记忆增加治理元数据
+
+上面的 `LongTermMemory` 已经保存了 `type`、`importance`、`source` 和 `created_at`。生产系统中建议进一步增加：
+
+```python
+memory_metadata = {
+    "type": "preference",
+    "importance": 7,
+    "source": "explicit",        # explicit / extracted / imported
+    "confidence": 0.92,           # 自动提取的置信度
+    "created_at": "2026-04-30T10:00:00",
+    "updated_at": "2026-04-30T10:00:00",
+    "expires_at": None,           # 可选：过期时间
+    "sensitivity": "low",        # low / medium / high
+    "consent": True,              # 是否获得用户同意
+    "status": "active",          # active / archived / deleted
+}
+```
+
+检索时不应该只看语义相似度，还要过滤状态、敏感度和有效期：
+
+```python
+def is_memory_usable(meta: dict) -> bool:
+    """判断一条记忆是否可用于当前回答"""
+    if meta.get("status") != "active":
+        return False
+    if meta.get("sensitivity") == "high":
+        return False
+    if meta.get("consent") is False:
+        return False
+    if meta.get("expires_at") and meta["expires_at"] < datetime.datetime.now().isoformat():
+        return False
+    return True
+```
+
+### 记忆冲突与更新
+
+长期记忆中最常见的问题不是"记不住"，而是"记住了互相矛盾的信息"。例如：
+
+```text
+2025-01：用户主要使用 Python。
+2026-04：用户现在主要使用 Rust。
+```
+
+这时不应该简单返回两条记忆，而应根据时间、置信度和显式程度做冲突解决：
+
+| 冲突类型 | 处理策略 |
+|----------|----------|
+| 新旧偏好冲突 | 新记忆优先，旧记忆归档或降低权重 |
+| 显式与自动提取冲突 | 显式记忆优先 |
+| 低置信度事实冲突 | 请求用户确认或不用于关键决策 |
+| 敏感信息误写入 | 立即删除并记录审计日志 |
+
+Memory Governance 的目标不是让 Agent "记住一切"，而是让它**有边界、有来源、有生命周期地记住真正有用的信息**。
+
+---
+
+*下一节：[4.4 工作记忆：Scratchpad 模式](./04_working_memory.md)*
 
 ---
 

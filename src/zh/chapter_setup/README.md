@@ -1,4 +1,4 @@
-# 第2章 开发环境搭建
+# 附录 F：开发环境搭建
 
 > 磨刀不误砍柴工。一个配置良好的开发环境，能让你的 Agent 开发事半功倍。
 
@@ -47,9 +47,9 @@
 > **前置知识**：[第1章 什么是 Agent？](../chapter_intro/README.md)
 >
 > **后续推荐**：
-> - 👉 [第3章 大语言模型基础](../chapter_llm/README.md) — 理解 Agent 的核心"大脑"
-> - 👉 [第4章 工具调用](../chapter_tools/README.md) — 让 Agent 能"动手做事"
+> - 👉 [第2章 大语言模型基础](../chapter_llm/README.md) — 理解 Agent 的核心"大脑"
+> - 👉 [第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md) — 让 Agent 能"动手做事"
 
 ---
 
-*下一节：[2.1 Python 环境与依赖管理](./01_python_setup.md)*
+*下一节：[F.1 Python 环境与依赖管理](./01_python_setup.md)*

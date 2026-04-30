@@ -1,4 +1,4 @@
-# 第21章 项目实战：AI 编程助手
+# 第20章 项目实战：AI 编程助手
 
 > 从零构建一个能理解代码、生成代码、写测试和修 Bug 的 AI 编程助手。
 
@@ -28,7 +28,7 @@
 ## 🔗 学习路径
 
 > **后续推荐**：
-> - 👉 [第22章 项目实战：数据分析 Agent](../chapter_data_agent/README.md)
+> - 👉 [第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
 
 ---
 
@@ -48,21 +48,21 @@
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 19.1 项目架构设计 | 整体方案和组件设计 | ⭐⭐ |
-| 19.2 代码理解与分析 | AST 解析、语义搜索 | ⭐⭐⭐ |
-| 19.3 代码生成与修改 | 结构化生成、Diff 修改 | ⭐⭐⭐ |
-| 19.4 测试生成与 Bug 修复 | 自动测试、诊断修复 | ⭐⭐⭐ |
-| 19.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
+| 20.1 项目架构设计 | 整体方案和组件设计 | ⭐⭐ |
+| 20.2 代码理解与分析 | AST 解析、语义搜索 | ⭐⭐⭐ |
+| 20.3 代码生成与修改 | 结构化生成、Diff 修改 | ⭐⭐⭐ |
+| 20.4 测试生成与 Bug 修复 | 自动测试、诊断修复 | ⭐⭐⭐ |
+| 20.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第4章 工具调用](../chapter_tools/README.md)、[第7章 RAG](../chapter_rag/README.md)、[第13章 LangGraph](../chapter_langgraph/README.md)
-> 推荐但非必须：[第16-18章 生产化篇](../chapter_evaluation/README.md)
+> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第6章 检索增强生成（RAG）](../chapter_rag/README.md)、[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+> 推荐但非必须：[第17章 Agent 的评估与优化](../chapter_evaluation/README.md)
 >
 > **同系列项目**：
-> - 📊 [第22章 数据分析 Agent](../chapter_data_agent/README.md)
-> - 🎨 [第23章 多模态 Agent](../chapter_multimodal/README.md)
+> - 📊 [第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
+> - 🎨 [第22章 项目实战：多模态 Agent](../chapter_multimodal/README.md)
 
 ---
 
-*下一节：[19.1 项目架构设计](./01_architecture.md)*
+*下一节：[20.1 项目架构设计](./01_architecture.md)*

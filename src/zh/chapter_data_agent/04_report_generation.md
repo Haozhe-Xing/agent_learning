@@ -1,4 +1,4 @@
-# 22.4 报告生成与导出
+# 21.4 报告生成与导出
 
 > **本节目标**：将分析结果自动整合为结构化的 Markdown 报告。
 
@@ -332,4 +332,4 @@ async def generate_sales_report():
 
 ---
 
-[下一节：20.5 完整项目实现 →](./05_full_implementation.md)
+[21.5 完整项目实现](./05_full_implementation.md)

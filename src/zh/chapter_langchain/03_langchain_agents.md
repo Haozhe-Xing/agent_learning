@@ -1,4 +1,4 @@
-# 12.3 用 LangChain 构建 Agent
+# 11.3 使用 LangChain 构建 Agent
 
 前面几章我们都是"手工"构建 Agent——自己写工具 Schema、自己管理消息循环、自己处理工具调用。这虽然有助于理解底层原理，但在实际项目中太繁琐了。LangChain 提供了标准化的工具接口和 AgentExecutor，大大简化了 Agent 开发。
 

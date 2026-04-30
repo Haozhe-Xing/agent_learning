@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 260" width="500" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="500" height="260" rx="12" fill="#f8fafc"/>
+  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">SFT 数据 vs RL 数据</text>
+
+  <!-- SFT -->
+  <rect x="20" y="50" width="215" height="160" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="127" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">SFT 数据</text>
+  <text x="127" y="90" text-anchor="middle" font-size="11" fill="#3b82f6">模仿学习（"照着做"）</text>
+
+  <rect x="36" y="100" width="183" height="30" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="127" y="120" text-anchor="middle" font-size="11" fill="#1e40af">问题 + 标准答案</text>
+
+  <line x1="127" y1="130" x2="127" y2="148" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="36" y="150" width="183" height="44" rx="6" fill="#93c5fd" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="127" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e3a8a">模型学会</text>
+  <text x="127" y="185" text-anchor="middle" font-size="11" fill="#1e3a8a">"像人一样回答"</text>
+
+  <!-- RL -->
+  <rect x="265" y="50" width="215" height="160" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="372" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">RL 数据</text>
+  <text x="372" y="90" text-anchor="middle" font-size="11" fill="#22c55e">探索学习（"自己找最优解"）</text>
+
+  <rect x="281" y="100" width="183" height="30" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="372" y="120" text-anchor="middle" font-size="11" fill="#166534">问题 + 奖励函数</text>
+
+  <line x1="372" y1="130" x2="372" y2="148" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="281" y="150" width="183" height="44" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="372" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">模型学会</text>
+  <text x="372" y="185" text-anchor="middle" font-size="11" fill="#14532d">"在环境里把任务做成"</text>
+
+  <!-- 说明 -->
+  <rect x="20" y="224" width="460" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="250" y="243" text-anchor="middle" font-size="11" fill="#3730a3">💡 RL 不需要标准答案，让模型自己探索——赢了给奖励，输了给惩罚</text>
+</svg>

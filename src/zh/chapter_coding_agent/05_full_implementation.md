@@ -1,4 +1,4 @@
-# 21.5 完整项目实现
+# 20.5 完整项目实现
 
 > **本节目标**：将前面几节的组件整合，构建一个可交互的 AI 编程助手。
 
@@ -19,12 +19,12 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 # 导入前面实现的组件（实际项目中从模块导入）
 # 各组件的完整实现请参考对应章节：
-# from code_indexer import CodeIndexer         # → 19.2 节
-# from code_search import CodeSearchEngine     # → 19.2 节
-# from code_generator import CodeGenerator     # → 19.3 节
-# from test_generator import TestGenerator     # → 19.4 节
-# from bug_fixer import BugFixer               # → 19.4 节
-# 提示：运行本节代码前，需先将 19.2-19.4 节的代码保存为独立模块
+# from code_indexer import CodeIndexer         # → 20.2 节
+# from code_search import CodeSearchEngine     # → 20.2 节
+# from code_generator import CodeGenerator     # → 20.3 节
+# from test_generator import TestGenerator     # → 20.4 节
+# from bug_fixer import BugFixer               # → 20.4 节
+# 提示：运行本节代码前，需先将 20.2-20.4 节的代码保存为独立模块
 
 class AICodeAssistant:
     """AI 编程助手 —— 完整实现"""
@@ -234,4 +234,4 @@ if __name__ == "__main__":
 
 ---
 
-[下一章：第20章 项目实战：智能数据分析 Agent →](../chapter_data_agent/README.md)
+[第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
