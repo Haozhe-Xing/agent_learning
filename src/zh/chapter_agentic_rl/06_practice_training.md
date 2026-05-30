@@ -35,6 +35,154 @@ GSM8K 是验证 Agentic-RL 效果的理想基准数据集，具备以下关键�
 
 ---
 
+## Demo 0：先用 5 分钟跑通一个最小 GRPO/RLVR 训练
+
+在真正训练 1.5B/7B 模型之前，建议先用一个**纯 PyTorch 玩具实验**理解 GRPO 的核心机制。这个 demo 不依赖 `transformers`、不下载模型、CPU 也能运行，模拟的是 RLVR 中最常见的场景：
+
+> 给定一道题，策略一次采样多条答案；奖励函数只判断答案是否正确；GRPO 用组内相对优势把高奖励答案概率推高、低奖励答案概率压低。
+
+它虽然不是语言模型训练，但保留了 GRPO 的三个关键结构：
+
+| 结构 | 在真实 LLM 训练中 | 在这个 demo 中 |
+|------|------------------|----------------|
+| **Policy** | LLM 输出 token 序列 | 一个小分类器输出候选答案分布 |
+| **Group Sampling** | 同一 prompt 生成 G 条回答 | 同一题采样 G 个候选答案 |
+| **Verifiable Reward** | 数学答案 / 单测 / 工具执行结果 | 候选数字是否等于标准答案 |
+| **Relative Advantage** | 组内奖励标准化 | `A = (r - mean(r)) / std(r)` |
+| **KL 约束** | 避免偏离参考模型太远 | 避免策略分布偏离初始分布太远 |
+
+```python
+"""
+toy_grpo_rlvr.py
+
+一个最小可运行的 GRPO/RLVR demo：
+- 任务：给定 a+b，模型从候选数字中选择答案
+- 奖励：选中正确答案得 1，否则得 0
+- 训练：每个问题采样 G 个答案，用组内标准化优势做策略梯度更新
+
+运行：python toy_grpo_rlvr.py
+"""
+
+import random
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+# 为了让实验可复现
+random.seed(42)
+torch.manual_seed(42)
+
+# 候选答案空间：0~18，覆盖一位数加法
+VOCAB_SIZE = 19
+GROUP_SIZE = 8
+KL_COEF = 0.02
+LR = 3e-2
+STEPS = 800
+
+
+class TinyPolicy(nn.Module):
+    """一个极简策略网络：输入两个数字，输出候选答案的概率分布"""
+
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(2, 64),
+            nn.Tanh(),
+            nn.Linear(64, VOCAB_SIZE),
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
+def make_batch(batch_size=32):
+    """随机生成一批一位数加法题"""
+    a = torch.randint(0, 10, (batch_size, 1)).float()
+    b = torch.randint(0, 10, (batch_size, 1)).float()
+    x = torch.cat([a / 9.0, b / 9.0], dim=1)
+    y = (a + b).long().squeeze(1)
+    return x, y
+
+
+def evaluate(policy, n=512):
+    """用贪心解码评估准确率"""
+    x, y = make_batch(n)
+    with torch.no_grad():
+        pred = policy(x).argmax(dim=-1)
+    return (pred == y).float().mean().item()
+
+
+policy = TinyPolicy()
+# reference policy 固定不训练，用于 KL 约束
+ref_policy = TinyPolicy()
+ref_policy.load_state_dict(policy.state_dict())
+for p in ref_policy.parameters():
+    p.requires_grad_(False)
+
+optimizer = torch.optim.AdamW(policy.parameters(), lr=LR)
+
+for step in range(1, STEPS + 1):
+    x, answer = make_batch(batch_size=32)
+
+    logits = policy(x)
+    log_probs = F.log_softmax(logits, dim=-1)
+    probs = log_probs.exp()
+
+    with torch.no_grad():
+        ref_log_probs = F.log_softmax(ref_policy(x), dim=-1)
+
+    # 对每个问题采样 G 个候选答案：[batch, group]
+    sampled = torch.multinomial(probs, num_samples=GROUP_SIZE, replacement=True)
+    chosen_logp = log_probs.gather(1, sampled)
+    chosen_ref_logp = ref_log_probs.gather(1, sampled)
+
+    # 可验证奖励：答案正确为 1，否则为 0
+    rewards = (sampled == answer[:, None]).float()
+
+    # GRPO 核心：组内相对优势
+    group_mean = rewards.mean(dim=1, keepdim=True)
+    group_std = rewards.std(dim=1, keepdim=True).clamp_min(1e-4)
+    advantages = (rewards - group_mean) / group_std
+
+    # 策略梯度损失：提高高优势样本概率，降低低优势样本概率
+    policy_loss = -(chosen_logp * advantages.detach()).mean()
+
+    # KL 约束：防止策略相对 reference 变化过猛
+    approx_kl = (chosen_logp - chosen_ref_logp).mean()
+    loss = policy_loss + KL_COEF * approx_kl
+
+    optimizer.zero_grad()
+    loss.backward()
+    nn.utils.clip_grad_norm_(policy.parameters(), max_norm=1.0)
+    optimizer.step()
+
+    if step % 100 == 0:
+        acc = evaluate(policy)
+        avg_reward = rewards.mean().item()
+        print(
+            f"step={step:04d} | loss={loss.item():+.4f} | "
+            f"group_reward={avg_reward:.3f} | greedy_acc={acc:.1%}"
+        )
+
+print("\n训练完成。示例预测：")
+for a, b in [(2, 3), (7, 8), (9, 9)]:
+    x = torch.tensor([[a / 9.0, b / 9.0]])
+    pred = policy(x).argmax(dim=-1).item()
+    print(f"{a} + {b} = {pred}")
+```
+
+你应该能看到准确率从随机水平逐步上升。这个小实验对应真实 GRPO 训练时的关键直觉：
+
+- **奖励不需要可微**：答案对错、单测通过、工具执行成功都可以作为奖励。
+- **不需要 Critic**：优势来自同一问题下多条回答的相对比较。
+- **组内方差很重要**：如果 G 条回答全对或全错，优势接近 0，几乎没有有效梯度；这也是 Selective Rollout、UCPO 等新工作要解决的问题。
+- **KL 不是装饰项**：没有 KL 或学习率过大时，策略很容易坍缩到某几个候选答案。
+
+> 如果你想把这个 demo 改成真正的文本任务，只需要把 `TinyPolicy` 换成 LLM，把 `sampled` 从候选数字换成生成的 token 序列，把 `rewards` 换成数学验证器、代码单测或工具执行结果即可。
+
+---
+
 ## Step 1：环境搭建
 
 ```bash

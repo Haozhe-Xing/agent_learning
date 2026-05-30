@@ -12,13 +12,15 @@
 - ✅ 深入理解 PPO、DPO、GRPO 三大强化学习算法的原理
 - ✅ 了解 DP / TP / PP / SP / ZeRO 分布式训练方法
 - ✅ 完成一个完整的 SFT + GRPO 训练 Pipeline
+- ✅ 通过最小可运行 demo 理解 GRPO/RLVR 的组内采样、相对优势和 KL 约束
 - ✅ 掌握专为 Agent 微调的数据构建方法（工具调用轨迹、Gorilla/ToolBench 数据集）
 - ✅ 理解 Agentic 数据飞轮：如何让 Agent 用自身运行数据持续自我进化
 - ✅ 掌握 Self-Evolution Agent 的系统架构：让 Agent 从记忆、Prompt、Skill 到模型训练持续改进
+- ✅ 跟踪 2025—2026 年 GRPO 家族、Agent RL、过程奖励与训练效率优化的最新研究脉络
 
 ## ⏱️ 预计学习时间
 
-约 **180-240 分钟**（含实战，建议分两天完成）
+约 **240-300 分钟**（含实战，建议分两到三天完成）
 
 ## 💡 前置知识
 
@@ -58,8 +60,8 @@
 | 10.3 | PPO：近端策略优化 | 从策略梯度出发，系统理解重要性采样、优势函数、GAE 和 Clip 机制 |
 | 10.4 | DPO：直接偏好优化 | 掌握从 RLHF 到 DPO 的完整数学推导，理解隐式奖励的思想 |
 | 10.5 | GRPO/GSPO + 奖励函数设计 | 理解组内比较替代 Critic 的原理，以及多维度奖励函数设计与奖励黑客防御 |
-| 10.6 | 实战：完整训练 Pipeline | 基于 GSM8K 完成从数据准备到模型部署的完整 Agentic-RL 训练 |
-| 10.7 | 最新研究进展（2025—2026） | 纵览 DeepSeek-R1、DAPO、VAPO、SAR 等前沿工作，掌握领域最新动态 |
+| 10.6 | 实战：完整训练 Pipeline | 先用最小 GRPO/RLVR demo 跑通核心机制，再基于 GSM8K 完成从数据准备到模型部署的完整训练 |
+| 10.7 | 最新研究进展（2025—2026） | 纵览 DeepSeek-R1、DAPO、VAPO、SAR、T-STAR、UCPO、DelTA、SRPO、GROW 等前沿工作，掌握 GRPO 家族与 Agent RL 的技术脉络 |
 | 10.8 | 专为 Agent 的微调 | 工具调用数据构建、三大开源数据集（Gorilla/ToolBench/AgentInstruct）、Agent SFT 专项配置 |
 | 10.9 | Agentic 数据飞轮 | 轨迹收集→质量过滤→奖励标注→训练迭代的完整闭环系统设计 |
 | 10.10 | Self-Evolution Agent | 记忆、Prompt、Skill、评估与数据飞轮协同形成自我改进闭环 |
