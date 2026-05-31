@@ -937,7 +937,7 @@ class ContextQualityMetrics:
 
 ## 📰 最新论文速递
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 5 月 24 日**
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 5 月 31 日**
 
 ### [上下文工程：从提示词工程到企业多 Agent 架构的范式演进](https://arxiv.org/abs/2603.09619)
 
@@ -976,6 +976,16 @@ class ContextQualityMetrics:
 **核心贡献**：长上下文 Agent 在重复操作同一文档库或代码仓时，每次调用都要重新定向——浪费大量推理步骤和 token。PEEK 提出以"上下文地图"（Context Map）作为持久化方向缓存，嵌入 Agent Prompt 中跨调用复用：Distiller 从推理信号中提取可迁移知识，Cartographer 将其结构化编辑进地图，priority-based Evictor 保持固定 token 预算。相比最强基线 ACE，PEEK 在长上下文推理和聚合任务上提升 6.3–34.0%，同时减少 93–145 次迭代，成本降低 1.7–5.8 倍。
 
 **与本章关系**：对应本章"Agent 上下文管理策略"知识点，是将"反复读取同一外部上下文"的低效模式转化为"可编程可复用方向缓存"的创新方案，与 KV Cache 复用技术形成系统层-应用层互补。
+
+---
+
+### [LongSeeker：弹性上下文编排——长视野搜索 Agent 的动态工作记忆管理](https://arxiv.org/abs/2605.05191)
+
+**发表**：2026 年 5 月 6 日 | [arXiv:2605.05191](https://arxiv.org/abs/2605.05191)
+
+**核心贡献**：长视野搜索 Agent 在多轮推理和工具调用中会积累大量中间内容，被动累积导致上下文爆炸、成本激增和推理退化。本文提出 **Context-ReAct** 范式，在标准 ReAct 循环中引入五种原子上下文操作（Skip/Compress/Rollback/Snippet/Delete），Agent 在每步生成推理和工具调用时同步生成上下文操作指令，从而实现弹性、多分辨率的工作记忆管理。在此范式上微调的 **LongSeeker**（Qwen3-30B-A3B + 10k 合成轨迹）在 BrowseComp 上达到 **61.5%**，超越通义 DeepResearch（43.2%）近 20 个百分点，在 BrowseComp-ZH 上同样大幅领先。
+
+**与本章关系**：直接对应本章"上下文生命周期管理"与"Agent 工作记忆弹性调控"核心主题，将上下文管理从外部工程启发式（长度阈值触发）提升为 Agent 内生的第一类操作，是 Context Engineering 走向"端到端可学习"的最新里程碑。
 
 ---
 
