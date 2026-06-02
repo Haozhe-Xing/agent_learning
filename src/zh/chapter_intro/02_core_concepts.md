@@ -4,7 +4,7 @@
 
 ## 1. 从强化学习到大模型：Agent 定义的演进
 
-在探讨正式定义之前，我们需要理清 Agent（智能体）概念的历史脉络。Agent 并非大语言模型（LLM）时代的全新发明。早在强化学习（Reinforcement Learning, RL）主导的时期，Agent 就被用来描述在特定环境（Environment）中，通过不断的试错（Trial and Error）来最大化累积奖励（Cumulative Reward）的算法实体（例如击败人类围棋冠军的 AlphaGo）。
+在探讨正式定义之前，我们需要理清 Agent（智能体）概念的历史脉络。Agent 并非大语言模型（LLM）时代的全新发明。早在强化学习（Reinforcement Learning, RL）主导的时期，Agent 就被用来描述在特定环境（Environment）中，通过不断地和环境交互试错（Trial and Error）来最大化累积奖励（Cumulative Reward）的算法实体（例如击败人类围棋冠军的 AlphaGo）。
 
 然而，传统 RL 时代的 Agent 存在明显的局限性：它们往往局限于特定的封闭环境（如规则明确的棋盘或游戏），在面对全新的开放式任务时存在严重的**冷启动问题（Cold-start Problem）**，且极难将学到的策略泛化、迁移到其他领域。
 
@@ -83,9 +83,9 @@ Agent 通过**工具调用（Tool Calling / Function Calling）**跨越数字边
 
 ### 特征5：学习与适应能力（Learning & Adaptation）—— 记忆机制与防疲劳控制
 
-这是区分“玩具级 Agent”和“工业级 Agent”的终极分水岭。一个强大的 Agent 系统在面临连续交互或环境数据分布发生偏移（Data Drift）时，必须具备**记忆（Memory）与自我反思（Reflection）机制**。
+这是区分“玩具级 Agent”和“工业级 Agent”的终极分水岭。一个强大的 Agent 系统在面临连续交互或环境数据分布发生偏移（Data Shift）时，必须具备**记忆（Memory）与自我反思（Reflection）机制**。
 
-在真实的业务流中（例如广告推荐或内容分发 Agent），如果系统仅仅是一个贪心算法，不断地向用户推荐 pCTR（预估点击率）最高的内容，很快就会导致**内容同质化（Content Homogenization）**。用户在连续接收相似的多模态刺激后，会产生严重的**疲劳效应（Fatigue Effect）**，进而导致后链路的转化率（pCVR）断崖式下跌。
+在真实的业务流中（例如广告推荐或内容分发 Agent），如果系统仅仅是一个贪心算法，不断地向用户推荐 pCTR（预估点击率）最高的内容，很快就会导致**内容同质化（Content Homogenization）**,陷入信息茧房。用户在连续接收相似的多模态刺激后，会产生严重的**疲劳效应（Fatigue Effect）**，进而导致后链路的转化率（pCVR）断崖式下跌。
 
 具备适应能力的 Agent 会利用长短期记忆机制进行动态干预，主动打破信息茧房：
 
