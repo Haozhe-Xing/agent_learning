@@ -1112,7 +1112,7 @@ detail = harness_detail.extract(f"{text}\n\nConfirmed category: {basic.category}
 
 ---
 
-## Section Summary
+## Summary
 
 | Technology | Key Points |
 |-----------|-----------|

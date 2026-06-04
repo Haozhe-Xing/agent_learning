@@ -399,7 +399,7 @@ const ANTI_DISTILLATION_CC = true; // Compile-time constant
 
 ---
 
-## Section Summary
+## Summary
 
 | Key Point | Summary |
 |-----------|---------|

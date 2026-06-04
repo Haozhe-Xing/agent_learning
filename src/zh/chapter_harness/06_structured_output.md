@@ -353,7 +353,7 @@ print(type(result.persons[0].age))  # <class 'int'>，类型已保证
 
 ### Anthropic Claude 结构化输出
 
-Claude 的实现思路不同于 OpenAI——它没有专门的 `response_format` 参数，而是复用了**工具调用（Tool Use）**机制。核心思路是：定义一个"假工具"，其输入 Schema 就是你想要的 JSON 格式，然后通过 `tool_choice` 强制模型调用该工具。
+Claude 的实现思路不同于 OpenAI——它没有专门的 `response_format` 参数，而是复用了**工具调用（Tool Use）** 机制。核心思路是：定义一个"假工具"，其输入 Schema 就是你想要的 JSON 格式，然后通过 `tool_choice` 强制模型调用该工具。
 
 这种方式的好处是与 Claude 的 Agent 工具调用体系无缝集成；缺点是需要额外的工具定义，且返回结果嵌套在 `tool_use` 块中，需要一步提取：
 
@@ -1078,7 +1078,7 @@ detail = harness_detail.extract(f"{text}\n\n已确认类别：{basic.category}")
 
 ---
 
-## 本节小结
+## 小结
 
 | 技术 | 关键点 |
 |------|--------|

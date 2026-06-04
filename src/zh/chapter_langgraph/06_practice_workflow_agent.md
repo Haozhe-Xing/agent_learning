@@ -202,7 +202,7 @@ print(f"\n最终内容（前500字）：\n{result['final_content'][:500]}")
 
 > 💡 **延伸阅读**：关于 Plan-and-Execute 模式的完整实现和 Test-time Compute Scaling 策略，详见 [5.6 Plan-and-Execute 与 Test-time Compute Scaling](../chapter_planning/07_plan_and_execute.md)。
 
-## 本章小结
+## 小结
 
 LangGraph 的核心价值：
 

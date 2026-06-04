@@ -164,7 +164,7 @@ In real business deployments, don't force-fit Agents just to chase AI trends. Ar
 
 ---
 
-## Section Summary
+## Summary
 
 If **traditional programs are pre-laid "railway tracks"** — trains can only travel along fixed routes, safe but inflexible — then **Agents are GPS-equipped "off-road vehicles"**: you only need to set the destination coordinates, and they autonomously perceive the terrain, navigate around obstacles, and even find a spare tire when one blows out, ultimately reaching the goal.
 

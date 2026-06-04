@@ -180,7 +180,7 @@ In summary, academia and industry broadly distill the underlying architecture of
 
 ---
 
-## Section Summary
+## Summary
 
 If a Large Language Model is a "brain" enshrined in a data center — possessing vast knowledge but unable to move directly — then the Agent framework connects it with "multimodal sensors" for perceiving complex environments, a "hippocampus" (memory system) for storing past experiences, and "limbs" (tool APIs) capable of changing the real world.
 

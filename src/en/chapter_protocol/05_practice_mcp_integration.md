@@ -223,7 +223,7 @@ def cached_database_query(db_path: str, sql: str) -> str:
     return json.dumps(result)
 ```
 
-## Chapter Summary
+## Summary
 
 This chapter built a complete MCP tool integration system:
 - ✅ MCP Server: standardized tool server

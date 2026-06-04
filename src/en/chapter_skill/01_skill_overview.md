@@ -120,7 +120,7 @@ Manages skill registration, discovery, selection, and version control. This is e
 
 ![Skill System Development Timeline](../svg/chapter_skill_01_timeline.svg)
 
-## Section Summary
+## Summary
 
 | Concept | Tool | Skill |
 |---------|------|-------|

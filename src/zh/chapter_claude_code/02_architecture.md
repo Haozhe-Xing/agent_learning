@@ -207,7 +207,7 @@ function ConversationView({ messages }: Props) {
 
 ---
 
-## 本节小结
+## 小结
 
 | 概念 | 要点 |
 |------|------|

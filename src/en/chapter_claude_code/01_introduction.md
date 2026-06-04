@@ -448,7 +448,7 @@ Claude Code's capabilities cover the full software development lifecycle:
 
 ---
 
-## Section Summary
+## Summary
 
 | Concept | Key Points |
 |---------|-----------|

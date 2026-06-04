@@ -334,7 +334,7 @@ However, the documents don't directly describe how to integrate the two; please 
 
 ---
 
-## Chapter Summary
+## Summary
 
 This chapter built a complete RAG system from scratch:
 

@@ -325,7 +325,7 @@ class SkillOrchestrator:
         return candidates[0]["skill"]
 ```
 
-## 本节小结
+## 小结
 
 | 发现方式 | 机制 | 优点 | 缺点 |
 |---------|------|------|------|

@@ -1039,7 +1039,7 @@ class HarnessObservabilityDashboard:
 
 ---
 
-## Section Summary
+## Summary
 
 You just built a Harness system with the following capabilities:
 

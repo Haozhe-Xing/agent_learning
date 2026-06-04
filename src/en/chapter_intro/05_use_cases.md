@@ -238,7 +238,7 @@ my_first_agent = {
 }
 ```
 
-## Section Summary
+## Summary
 
 | Key Point | Description |
 |-----------|-------------|

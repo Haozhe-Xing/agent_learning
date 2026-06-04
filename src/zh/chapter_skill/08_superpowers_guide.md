@@ -417,7 +417,7 @@ git worktree add .worktrees/feature-name -b feature/name
 
 ---
 
-## 本节小结
+## 小结
 
 | 维度 | 核心内容 |
 |---|---|

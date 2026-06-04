@@ -246,7 +246,7 @@ orchestrator = OrchestratorAgent(sub_agents=[analyst, reviewer])
 
 ---
 
-## 本节小结
+## 小结
 
 | 要点 | 说明 |
 |------|------|

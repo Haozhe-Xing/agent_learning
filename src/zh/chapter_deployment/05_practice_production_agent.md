@@ -199,7 +199,7 @@ if __name__ == "__main__":
 
 AGENT_OPENAI_API_KEY=sk-your-key-here
 AGENT_API_KEYS=key1,key2,key3
-AGENT_MODEL_NAME=gpt-4o
+AGENT_MODEL_NAME=gpt-4.1
 AGENT_REDIS_URL=redis://redis:6379
 ```
 

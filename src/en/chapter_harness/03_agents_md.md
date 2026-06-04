@@ -386,7 +386,7 @@ jobs:
 
 ---
 
-## Section Summary
+## Summary
 
 | Key Point | Summary |
 |-----------|---------|

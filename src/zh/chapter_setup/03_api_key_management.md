@@ -27,7 +27,7 @@ ANTHROPIC_API_KEY=your-anthropic-key
 DASHSCOPE_API_KEY=your-qwen-key
 
 # 其他配置
-DEFAULT_MODEL=gpt-4o-mini
+DEFAULT_MODEL=gpt-4.1-mini
 MAX_TOKENS=2000
 EOF
 
@@ -100,7 +100,7 @@ DASHSCOPE_API_KEY=your-dashscope-api-key-here
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
 
 # 默认模型配置
-DEFAULT_MODEL=gpt-4o-mini
+DEFAULT_MODEL=gpt-4.1-mini
 MAX_TOKENS=2000
 ```
 

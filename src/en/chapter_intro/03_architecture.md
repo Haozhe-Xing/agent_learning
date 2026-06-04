@@ -259,7 +259,7 @@ In real online business environments, the environment is full of noise and Agent
 
 ---
 
-## Section Summary
+## Summary
 
 ![Key Takeaways Summary](../svg/chapter_intro_03_summary.svg)
 

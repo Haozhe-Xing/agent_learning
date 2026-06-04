@@ -271,7 +271,7 @@ The three layers of abstraction are closely related to the communication protoco
 
 ---
 
-## Section Summary
+## Summary
 
 | Key Point | Description |
 |-----------|-------------|

@@ -375,7 +375,7 @@ The comparison table below summarizes the key mindset upgrades. When developing 
 
 These mindset shifts don't negate the value of prompt engineering — a good prompt is still very important; it's the foundation of context engineering. But if you only stay at the level of optimizing prompts, it's like an architect only caring about the design of the entrance door while ignoring the structure of the entire building — no matter how beautiful the door, if the building is unsound, it's useless.
 
-## Section Summary
+## Summary
 
 | Concept | Description |
 |---------|-------------|

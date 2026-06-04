@@ -666,7 +666,7 @@ Automatic prompt optimization amplifies engineering discipline; it does not repl
 
 ---
 
-## Section Summary
+## Summary
 
 | Topic | Key Points |
 |-------|------------|

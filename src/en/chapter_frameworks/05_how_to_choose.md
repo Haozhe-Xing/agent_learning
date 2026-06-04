@@ -220,7 +220,7 @@ Core principles for choosing a framework:
 
 ---
 
-## Chapter Summary
+## Summary
 
 Overview of major frameworks:
 

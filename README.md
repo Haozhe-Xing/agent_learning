@@ -398,6 +398,33 @@ git push origin feature/improve-chapter-3
 - Chinese SVG illustrations go in `src/zh/svg/`, English versions in `src/en/svg/`, naming format: `chapter_xxx_description.svg`
 - Chinese interactive animations go in `src/zh/animations/`, English versions in `src/en/animations/`
 
+### Paper Reading Template
+
+All paper reading and frontier research sections should follow a consistent structure so that readers can quickly understand why a paper matters, what it contributed at the time, and how it connects to real Agent engineering.
+
+Use the following template for each representative paper:
+
+```markdown
+### Paper Title: one-sentence explanation of the problem it solves
+
+- **Paper link**:
+- **Code / project link**:
+- **Year / organization**:
+- **Problem addressed at the time**:
+- **Core contribution**:
+- **Method breakdown**:
+- **Engineering insight for Agent systems**:
+- **Limitations**:
+```
+
+Quality requirements:
+
+- **Link to the original source**: include the arXiv, conference, official blog, GitHub, or project page whenever available.
+- **Explain historical contribution**: describe what problem the work solved when it appeared, not only what it does.
+- **Connect to engineering practice**: explain how the idea affects Agent memory, tools, planning, evaluation, safety, training, or deployment.
+- **State limitations**: clarify what the paper does not solve, where assumptions are strong, or whether the result is mainly benchmark-driven.
+- **Avoid paper lists without synthesis**: after several papers, add a short comparison table or narrative summary explaining how the works relate to each other.
+
 ---
 
 ## 📄 License

@@ -498,7 +498,7 @@ class HybridDataAnalystSkill:
         return graph.compile()
 ```
 
-## 本节小结
+## 小结
 
 - **Prompt-based Skill** 最适合知识密集型任务——用 Markdown 文件快速定义领域知识和行为指南
 - **Code-based Skill** 最适合需要精确控制的任务——用可执行代码实现可靠的技能逻辑

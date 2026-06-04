@@ -147,7 +147,7 @@ print(prompt)
 
 **Chain-of-Thought（思维链）** 是一种革命性的提示策略：通过让模型展示推理过程，显著提升其在复杂问题上的准确率。
 
-> 📄 **论文出处**：CoT 由 Google Brain 团队在论文 *"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"*（Wei et al., 2022）中首次提出。该论文发现，只要在 Few-shot 示例中加入推理步骤，模型在 GSM8K 数学推理数据集上的准确率就能从 17.7% 飙升到 58.1%——仅仅是改变了提示的格式，没有修改模型的任何参数。这个发现揭示了一个深刻的事实：**大型语言模型已经具备了推理能力，我们需要的只是用正确的方式"激发"它。**
+> 📄 **论文出处**：CoT 由 Google Brain 团队在论文 *"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"*（Wei et al., 2022）中首次提出。该论文发现，只要在 Few-shot 示例中加入推理步骤，模型在 GSM8K 数学推理数据集上的准确率就能从 17.9% 飙升到 58.1%——仅仅是改变了提示的格式，没有修改模型的任何参数。这个发现揭示了一个深刻的事实：**大型语言模型已经具备了推理能力，我们需要的只是用正确的方式"激发"它。**
 
 ![思维链推理示意图](../svg/chapter_llm_03_cot.svg)
 
@@ -330,7 +330,7 @@ react_prompt = """
 
 ## 提示策略选择指南
 
-![\u63d0\u793a\u7b56\u7565\u9009\u62e9\u6307\u5357](../svg/chapter_llm_03_strategy_guide.svg)
+![提示策略选择指南](../svg/chapter_llm_03_strategy_guide.svg)
 
 ## 实战：综合策略对比
 
@@ -427,126 +427,28 @@ for strategy, data in results.items():
 
 ---
 
-## 进阶：自动提示优化（APO）—— 让 LLM 自己写 Prompt
+## 进阶预告：当手工写 Prompt 走到尽头
 
 上面介绍的所有策略——Zero-shot、Few-shot、CoT、ToT、ReAct——都有一个共同点：**需要人来设计 prompt**。你需要反复试验、手动调整措辞、挑选示例、评估效果。这个过程费时费力，而且很难找到"最优解"。
 
 一个自然的问题是：**能不能让 LLM 自己把 prompt 优化到最好？**
 
-这正是 **自动提示优化（Automatic Prompt Optimization，APO）** 要解决的问题——把"写 prompt"从一门手艺变成一个**可以自动求解的优化问题**。
-
-### 核心思路：把 Prompt 当作优化变量
-
-APO 的基本循环如下：
+这正是 **自动提示优化（Automatic Prompt Optimization，APO）** 要解决的问题——把"写 prompt"从一门手艺变成一个**可以自动求解的优化问题**。它的基本循环是：
 
 ![Prompt 自动优化循环（APO）](../svg/chapter_llm_03_prompt_opt_loop.svg)
 
-与神经网络的梯度下降不同，APO 的"梯度"是**自然语言描述的改进建议**，"参数更新"是**重写 prompt 的文字内容**。整个过程不涉及任何模型权重的修改。
+与神经网络的梯度下降不同，APO 的"梯度"是**自然语言描述的改进建议**，"参数更新"是**重写 prompt 的文字内容**，整个过程不涉及任何模型权重的修改。围绕这个核心思路，业界已经发展出一整套方法谱系：
 
-### 五种主流方法横向对比
+| 方法 | 一句话理解 |
+|------|-----------|
+| **APE** | 大量采样候选 prompt，打分后取最优 |
+| **OPRO** | 把历史"prompt → 得分"日志喂给 LLM，让它当优化器 |
+| **DSPy** | 声明 pipeline 逻辑，编译出最优 prompt + few-shot 组合 |
+| **TextGrad** | 文本空间的"反向传播"：用自然语言计算 loss 和 gradient |
+| **EvoPrompt / PromptBreeder** | 进化算法：生成变体 → 交叉变异 → 选优 |
+| **GEPA** | 反思式进化，集大成者 |
 
-| 方法 | 核心机制 | 最适合的场景 |
-|------|---------|------------|
-| **APE** | 大量采样候选 prompt，打分后取最优 | 快速验证、简单分类任务 |
-| **OPRO** | 把历史"prompt → 得分"日志喂给 LLM，让它当优化器 | 中等复杂任务，无需训练集 |
-| **DSPy** | 编译 pipeline，自动生成最优 few-shot 示例组合 | 工程化 Agent pipeline |
-| **TextGrad** | 文本"反向传播"：LLM 计算 loss 和 gradient | 多模块端到端系统优化 |
-| **EvoPrompting** | 进化算法：生成变体 → 交叉变异 → 选优 | 大搜索空间、黑盒场景 |
-
-### OPRO：把 LLM 当优化器
-
-> 📄 **论文出处**：*"Large Language Models as Optimizers"*（Yang et al., DeepMind, 2023）arXiv:2309.03409。论文用一个简洁的实验说明了这个想法的可行性：在 GSM8K 数学推理任务上，OPRO 找到的最优 prompt 把准确率从 50.6%（人工 prompt）提升到 80.3%——完全依靠自动迭代，无需任何模型微调。
-
-OPRO 的关键创新是**把优化历史本身写进 prompt**，让 LLM 从历次失败中归纳规律：
-
-```
-你是一个提示词优化专家。下面是已经尝试过的提示词和对应的任务得分（满分 1.0）：
-
-提示词 A："请解答以下数学题："          得分：0.51
-提示词 B："请一步步分析这道题，然后给出答案："  得分：0.74
-提示词 C："作为数学专家，请详细推导："       得分：0.68
-
-请分析上面的规律，生成一个预计得分更高的新提示词：
-```
-
-LLM 读完这段"优化日志"，就能像人类调参工程师一样，从成功和失败的案例中总结出什么写法有效、什么无效，进而生成更好的候选。这个过程可以迭代 10~20 轮，通常能找到明显优于人工初稿的 prompt。
-
-### DSPy 实战：声明逻辑，编译出最优 Prompt
-
-> 📄 **论文出处**：*"DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines"*（Khattab et al., Stanford NLP, 2023）arXiv:2310.03714。DSPy 的核心思想是：让开发者只声明 pipeline 的**逻辑结构**，由框架自动找到最优的 prompt 措辞和 few-shot 示例组合——就像编译器把高级语言编译成机器码一样。
-
-```python
-import dspy
-
-# ① 定义模块：只描述逻辑，完全不写 prompt 措辞
-class AgentQA(dspy.Module):
-    def __init__(self):
-        # "question -> answer" 是签名，DSPy 会自动生成最优 prompt
-        self.qa = dspy.ChainOfThought("question -> answer")
-
-    def forward(self, question: str):
-        return self.qa(question=question)
-
-# ② 配置语言模型
-lm = dspy.LM("openai/gpt-4.1-mini", max_tokens=1000)
-dspy.configure(lm=lm)
-
-# ③ 准备少量标注训练集（十几条即可）
-trainset = [
-    dspy.Example(
-        question="什么是 ReAct 框架？",
-        answer="ReAct 将推理（Reasoning）和行动（Acting）交织在一起，让 Agent 在调用工具的同时进行思维链推理。"
-    ).with_inputs("question"),
-    dspy.Example(
-        question="向量数据库的作用是什么？",
-        answer="向量数据库将文本转化为高维向量并存储，支持基于语义相似度的快速检索，是 RAG 系统的核心组件。"
-    ).with_inputs("question"),
-    # ... 更多示例
-]
-
-# ④ 定义评估指标（这里用关键词覆盖率作为简单示例）
-def keyword_coverage(example, pred, trace=None):
-    """判断预测答案是否包含参考答案的关键词"""
-    key_words = example.answer.split("，")[:3]  # 取前3个关键短语
-    return sum(kw in pred.answer for kw in key_words) / len(key_words)
-
-# ⑤ 自动编译：找出最优的 prompt + few-shot 示例组合
-optimizer = dspy.MIPROv2(metric=keyword_coverage, auto="medium")
-optimized_module = optimizer.compile(
-    AgentQA(),
-    trainset=trainset,
-    num_trials=20  # 尝试 20 种 prompt 配置
-)
-
-# ⑥ 使用优化后的模块（内置了 DSPy 找到的最优 prompt）
-result = optimized_module(question="Agent 的记忆系统有哪几种类型？")
-print(result.answer)
-
-# 查看 DSPy 生成的最终 prompt（可以学习它找到了什么）
-print(dspy.inspect_history(n=1))
-```
-
-DSPy 的强大之处在于：你修改模块结构（比如从 `ChainOfThought` 改成 `ReAct`），只需重新编译，无需手动重写 prompt——**prompt 跟着逻辑自动更新**。
-
-### TextGrad：文本空间的反向传播
-
-> 📄 **论文出处**：*"TextGrad: Automatic 'Differentiation' via Text"*（Yuksekgonul et al., Stanford, 2024）arXiv:2406.07496。
-
-TextGrad 把 PyTorch 的自动微分框架搬到了文本空间：
-
-> **神经网络**：`loss = f(params)` → `gradient = ∂loss/∂params` → `params -= lr * gradient`
->
-> **TextGrad**：`loss = "答案不够准确，缺少数学推导步骤"` → `gradient = LLM 分析"prompt 哪里导致了这个 loss"` → `new_prompt = 把 gradient 应用到旧 prompt 上`
-
-整个过程**全部用自然语言**完成——loss 是文字描述，gradient 是文字建议，参数更新是文字改写。适合需要同时优化多个 prompt（多模块系统）的场景。
-
-### 选型建议
-
-> 💡 **核心建议**：先把 prompt 手动做到"还不错"再交给 APO——冷启动质量直接决定优化上限。
-
-- **快速验证 / 一次性任务** → 手动 OPRO 思路：写个简单的迭代循环，10 轮内能得到有意义的改进
-- **有少量标注数据、工程化 pipeline** → **DSPy MIPROv2**：目前生产可用性最好，社区活跃
-- **多模块端到端系统** → **TextGrad**：适合把整条 Agent 链路的 prompt 一起优化
+> 📌 **本节到此为止只做预告，建立"prompt 可被自动优化"的直觉即可。** 完整的方法原理、可运行代码（APE / OPRO / DSPy / TextGrad / 进化算法）、GEPA 反思式进化、反馈函数设计与过拟合防治，将在 [2.9 Prompt 自动调优](./09_automatic_prompt_optimization.md) 中系统展开。一个贯穿始终的实践原则是：**先把 prompt 手动做到"还不错"再交给 APO——冷启动质量直接决定优化上限。**
 
 ---
 
@@ -571,5 +473,7 @@ TextGrad 把 PyTorch 的自动微分框架搬到了文本空间：
 [9] YUKSEKGONUL M, BIANCHI F, BOEN J, et al. TextGrad: Automatic "differentiation" via text[J]. arXiv:2406.07496. 2024.
 
 ---
+
+*上一节：[2.2 Prompt Engineering](./02_prompt_engineering.md)*
 
 *下一节：[2.4 模型 API 调用入门](./04_api_basics.md)*

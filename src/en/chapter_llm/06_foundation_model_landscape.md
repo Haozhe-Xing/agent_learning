@@ -280,7 +280,7 @@ Several development directions worth watching:
 
 ---
 
-## Section Summary
+## Summary
 
 | Trend | Core Change | Impact on Agent Development |
 |-------|------------|----------------------------|

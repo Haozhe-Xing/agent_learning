@@ -337,7 +337,7 @@ A real-world analogy to help understand:
 
 ![Real-World Analogy: From Information Desk to a Real Doctor](../svg/chapter_intro_01_analogy.svg)
 
-## Section Summary
+## Summary
 
 - AI interaction has evolved through four stages: **Rules → Intent Recognition → LLM → Agent**
 - Each generation builds on the previous one, adding new capabilities

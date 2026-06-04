@@ -525,7 +525,7 @@ print(f"Token 总消耗：{result['usage']['total']}")
 
 ---
 
-## 本节小结
+## 小结
 
 理解模型参数是 Agent 架构师的必备基本功：
 
@@ -544,4 +544,6 @@ print(f"Token 总消耗：{result['usage']['total']}")
 
 ---
 
-*下一章：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)*
+*上一节：[2.4 模型 API 调用入门](./04_api_basics.md)*
+
+*下一节：[2.6 基座模型前沿进展与选型指南](./06_foundation_model_landscape.md)*

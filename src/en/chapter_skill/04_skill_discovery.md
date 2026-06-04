@@ -335,7 +335,7 @@ class SkillOrchestrator:
         return candidates[0]["skill"]
 ```
 
-## Section Summary
+## Summary
 
 | Discovery Method | Mechanism | Pros | Cons |
 |-----------------|-----------|------|------|

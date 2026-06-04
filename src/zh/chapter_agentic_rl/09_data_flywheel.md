@@ -742,7 +742,7 @@ class BlindSpotFixer:
 
 ---
 
-## 本节小结
+## 小结
 
 Agentic 数据飞轮的本质是：**用 Agent 自身的运行数据来训练更强的 Agent，形成自我强化循环**。
 

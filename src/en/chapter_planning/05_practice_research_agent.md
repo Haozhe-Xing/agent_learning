@@ -241,7 +241,7 @@ Example output:
 
 ---
 
-## Chapter Summary
+## Summary
 
 This chapter covered the core techniques for Agent planning and reasoning:
 

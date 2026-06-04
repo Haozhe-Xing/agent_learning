@@ -750,7 +750,7 @@ Before starting training, use the following checklist to review your data prepar
 
 ---
 
-## Section Summary
+## Summary
 
 | Topic | Key Points |
 |-------|-----------|

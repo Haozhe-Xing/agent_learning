@@ -707,7 +707,7 @@ model.gradient_checkpointing_enable()  # One line, saves ~50% memory
 
 ---
 
-## Section Summary
+## Summary
 
 | Technology | Split Dimension | Problem Solved | Key Constraint |
 |-----------|----------------|----------------|----------------|

@@ -336,7 +336,7 @@ uvicorn main:app --reload
 
 ---
 
-## 本章小结
+## 小结
 
 本章从零构建了完整的 RAG 系统：
 

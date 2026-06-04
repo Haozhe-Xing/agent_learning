@@ -1039,7 +1039,7 @@ class HarnessObservabilityDashboard:
 
 ---
 
-## 本节小结
+## 小结
 
 你刚刚构建了一个包含以下能力的 Harness 系统：
 

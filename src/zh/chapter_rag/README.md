@@ -27,21 +27,9 @@
 - 了解向量和余弦相似度的基本概念
 - `pip install langchain faiss-cpu sentence-transformers graphrag lightrag-hku langgraph`
 
----
-
-## 🔗 学习路径
-
-> **后续推荐**：
-> - 👉 [第7章 上下文工程](../chapter_context_engineering/README.md)
-> - 👉 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 深入 Agentic RAG 所用的状态机框架
-
----
-
-## 本章概览
+## 📚 本章结构
 
 RAG（Retrieval-Augmented Generation，检索增强生成）是当前最重要的 AI 应用技术之一。LLM 的知识有截止日期，而且无法访问你的私有数据。RAG 通过"先检索、再生成"的方式，让 Agent 能够基于最新的、特定领域的知识来回答问题。本章从原理到实战，全面讲解如何构建 RAG 系统。
-
-## 本章结构
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
@@ -59,6 +47,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）是当前最重要�
 >
 > **后续推荐**：
 > - 👉 [第7章 上下文工程](../chapter_context_engineering/README.md) — 系统化管理 RAG 检索到的上下文信息
+> - 👉 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 深入 Agentic RAG 所用的状态机框架
 
 ---
 

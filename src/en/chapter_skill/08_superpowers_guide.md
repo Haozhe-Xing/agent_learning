@@ -537,7 +537,7 @@ git worktree add .worktrees/feature-name -b feature/name
 
 ---
 
-## Section Summary
+## Summary
 
 | Dimension | Core Content |
 |-----------|-------------|

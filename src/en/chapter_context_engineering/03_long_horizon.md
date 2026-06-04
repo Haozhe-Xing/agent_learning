@@ -474,7 +474,7 @@ How do you judge how "heavy" a context management approach your project needs? H
 | Complex long-term projects (50+ rounds) | All three strategies | Sub-Agents share complexity, notes + compaction manage main Agent |
 | Parallelizable large tasks | Sub-agent architecture as primary | Naturally parallel, each sub-Agent's context is clean |
 
-## Section Summary
+## Summary
 
 | Strategy | Core Idea | Information Efficiency | Best For |
 |----------|----------|----------------------|---------|

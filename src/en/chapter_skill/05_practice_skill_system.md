@@ -469,7 +469,7 @@ This basic framework can be further extended:
 | **Multi-Agent collaboration** | Each skill corresponds to an expert Agent, coordinating Agent handles orchestration |
 | **Skill marketplace** | Similar to npm, support skill publishing, searching, and installation |
 
-## Section Summary
+## Summary
 
 Through this hands-on project, we built a complete skill-driven Agent system:
 

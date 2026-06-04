@@ -1,7 +1,5 @@
 # 第8章 Harness Engineering：驾驭 Agent 的系统工程
 
-# 第8章 Harness Engineering：驾驭 Agent 的系统工程
-
 > 🔧 *"不要只关注让 AI 写更好的代码，要关注如何构建一个能让 AI 持续可靠地工作的系统。"*  
 > —— Mitchell Hashimoto，HashiCorp 联合创始人
 
@@ -75,7 +73,7 @@
 > Harness Engineering ⊇ Context Engineering ⊇ Prompt Engineering  
 > 优秀的 Harness 系统一定包含好的上下文工程，好的上下文工程一定包含精心设计的 Prompt。
 
-### 本章内容概览
+## 📚 本章结构
 
 | 小节 | 内容 | 你将学到 |
 |------|------|---------|

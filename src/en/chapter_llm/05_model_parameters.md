@@ -478,7 +478,7 @@ print(f"Total token usage: {result['usage']['total']}")
 
 ---
 
-## Section Summary
+## Summary
 
 Understanding model parameters is a fundamental skill for Agent architects in 2026:
 

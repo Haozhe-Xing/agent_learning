@@ -690,7 +690,7 @@ class EngramMemory:
 
 ---
 
-## Section Summary
+## Summary
 
 | Architecture Component | Evolution Direction | Modern Consensus | Frontier Breakthroughs (2026) |
 |-----------------------|--------------------|-----------------|-----------------------------|

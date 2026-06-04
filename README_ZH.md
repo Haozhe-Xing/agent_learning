@@ -79,12 +79,18 @@
 
 ## 🧭 学习路径
 
-| 路线 | 从这里开始 | 学习目标 |
-| ---- | ---------- | -------- |
-| **新手路线** | LLM 基础 → Prompt Engineering → Function Calling → RAG → Memory → ReAct | 理解一个 Agent 如何端到端工作 |
-| **工程路线** | Tool Layer → LangGraph → Evaluation → Security → Deployment → Observability | 构建生产级 Agent 系统 |
-| **研究路线** | ReAct → Reflexion → MemGPT → PPO / DPO / GRPO → Agentic RL | 跟进并理解 Agent 前沿研究 |
-| **实战路线** | Hello Agent → RAG QA Agent → Memory Agent → Data Analysis Agent → Coding Agent | 通过完整应用边做边学 |
+如果你不知道从哪里开始，可以直接按下面的目标选择阅读顺序。
+
+| 你的目标 | 推荐阅读路线 |
+| -------- | ------------ |
+| **快速理解 Agent 是什么** | 第 1 章 Agent 基础 → 第 2 章大语言模型基础 → 第 3 章工具调用 → 第 5.2 节 ReAct → 附录 F.4 Hello Agent |
+| **了解大模型，并学习使用 Codex、Claude Code 等 AI 编程工具** | 第 2 章大语言模型基础 → 第 2.2 节 Prompt Engineering → 第 2.4 节模型 API 调用入门 → 第 14 章 Claude Code 深度解析 → 第 20 章 AI 编程助手 |
+| **构建一个能用的 Agent 应用** | 第 3 章工具调用 → 第 4 章记忆系统 → 第 5 章规划与推理 → 第 6 章 RAG → 第 7 章上下文工程 → 第 8 章 Harness Engineering |
+| **把 Agent 上线到生产环境** | 第 8 章 Harness Engineering → 第 17 章评估与优化 → 第 18 章安全与可靠性 → 第 19 章部署与生产化 |
+| **掌握 LangChain / LangGraph 等框架** | 第 3 章工具调用 → 第 5 章规划与推理 → 第 6 章 RAG → 第 11 章 LangChain → 第 12 章 LangGraph → 第 13 章框架概览 |
+| **理解 Agent 前沿论文和研究脉络** | 第 5.2 节 ReAct → 第 5.4 节反思机制 → 第 5.7 节规划论文解读 → 第 4.6 节记忆论文解读 → 第 6.6 节 RAG 论文解读 → 第 15.6 节多 Agent 论文解读 |
+| **学习 Agentic-RL 和自我进化** | 第 2.8 节训练数据准备 → 第 10.1 节 Agentic-RL → 第 10.4 节 DPO → 第 10.5 节 GRPO / GSPO → 第 10.8 节 Agent 微调 → 第 10.9 节数据飞轮 → 第 10.10 节 Self-Evolution Agent |
+| **边做项目边学习** | 附录 F 开发环境搭建 → 第 3 章工具调用 → 第 6 章 RAG → 第 12 章 LangGraph → 第 20 章 AI 编程助手 → 第 21 章数据分析 Agent → 第 22 章多模态 Agent |
 
 ---
 
@@ -396,6 +402,33 @@ git push origin feature/improve-chapter-3
 - 章节概述放在 `README.md`，各小节按 `01_xxx.md`、`02_xxx.md` 编号
 - 中文版 SVG 插图放在 `src/zh/svg/`，英文版放在 `src/en/svg/`，命名格式 `chapter_xxx_描述.svg`
 - 中文版交互动画放在 `src/zh/animations/`，英文版放在 `src/en/animations/`
+
+### 论文解读模板
+
+所有论文解读和前沿进展章节应采用统一结构，帮助读者快速理解一篇论文为什么重要、当时解决了什么问题，以及它如何影响真实 Agent 工程。
+
+每篇代表性论文建议使用以下模板：
+
+```markdown
+### 论文名：一句话说明它解决什么问题
+
+- **论文链接**：
+- **代码 / 项目链接**：
+- **发表时间 / 机构**：
+- **当时解决的问题**：
+- **核心贡献**：
+- **方法拆解**：
+- **对 Agent 工程的启发**：
+- **局限性**：
+```
+
+质量要求：
+
+- **链接到原始来源**：优先提供 arXiv、会议页面、官方博客、GitHub 或项目主页。
+- **说明历史贡献**：不要只说论文做了什么，还要说明它在发表时解决了什么关键问题。
+- **连接工程实践**：说明该工作对 Agent 记忆、工具、规划、评估、安全、训练或部署有什么启发。
+- **写清局限性**：说明论文没有解决什么、依赖哪些强假设，或者是否主要是 benchmark 驱动。
+- **避免只堆论文列表**：多篇论文之后，应补充对比表或脉络小结，说明这些工作之间的关系。
 
 ---
 

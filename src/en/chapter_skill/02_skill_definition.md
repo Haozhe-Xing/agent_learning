@@ -498,7 +498,7 @@ class HybridDataAnalystSkill:
         return graph.compile()
 ```
 
-## Section Summary
+## Summary
 
 - **Prompt-based Skills** are best for knowledge-intensive tasks — quickly define domain knowledge and behavioral guidelines using Markdown files
 - **Code-based Skills** are best for tasks requiring precise control — implement reliable skill logic with executable code

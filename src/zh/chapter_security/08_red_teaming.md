@@ -1016,7 +1016,7 @@ class SecurityAuditChecklist:
 >
 > 💡 **与第 22 章的关联**：Computer Use Agent（[22.5 Computer Use 与 GUI Agent](../chapter_multimodal/05_computer_use_agent.md)）拥有操作系统级别的权限，红队测试时需特别关注 GUI 操作的安全边界——如防止 Agent 在桌面环境中执行危险操作。
 >
-> 💡 **与上一节的关联**：[18.7 Guardrails 运行时防护](./07_guardrails_runtime.md) 是防御，本节的红队测试是验证——两者形成**"防-验"闭环**，缺一不可。
+> 💡 **与上一节的关联**：[18.7 Guardrails 运行时防护](./07_guardrails_runtime.md) 是防御，本节的红队测试是验证——两者形成 **"防-验"闭环** ，缺一不可。
 
 ---
 

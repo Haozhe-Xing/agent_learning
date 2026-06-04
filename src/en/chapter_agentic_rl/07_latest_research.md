@@ -593,7 +593,7 @@ If you are interested in specific topics:
 
 ---
 
-## Section Summary
+## Summary
 
 In 2025–2026, the Agentic-RL field underwent a fundamental transformation from "alignment auxiliary tool" to "core capability stimulation engine." Several key trends are worth noting:
 

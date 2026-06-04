@@ -381,7 +381,7 @@ Level 5: Self-Evolving Skills
   Example: Voyager's learning loop, CRAFT's tool creation
 ```
 
-## Section Summary
+## Summary
 
 | Learning Paradigm | Representative | Core Mechanism | Applicable Scenarios |
 |------------------|---------------|----------------|---------------------|

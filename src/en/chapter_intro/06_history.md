@@ -275,7 +275,7 @@ The entire history of intelligent agents can be connected by one clear thread:
 | 1990s–2020s | Connectionism | Data-driven statistical learning | AlphaGo, DQN |
 | 2023–Present | LLM-Driven | Pre-trained knowledge + natural language reasoning | GPT-4 Agent, Claude Agent |
 
-## Section Summary
+## Summary
 
 - The concept of Agent spans over 70 years of AI history — far predating the LLM era
 - Symbolic AI laid the foundation of "rules + reasoning"; BDI architecture defined the theoretical framework for rational Agents

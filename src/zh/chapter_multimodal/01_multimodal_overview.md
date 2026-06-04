@@ -72,7 +72,7 @@ import base64
 client = OpenAI()
 
 def analyze_image(image_path: str, question: str) -> str:
-    """用 GPT-4o 分析图像"""
+    """用多模态模型分析图像"""
     
     # 读取并编码图片
     with open(image_path, "rb") as f:

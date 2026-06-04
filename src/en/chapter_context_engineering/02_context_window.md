@@ -437,7 +437,7 @@ Now that you understand the three context management techniques, a natural quest
 
 > 💡 **Practical recommendation**: in production projects, these three techniques are typically **used in combination**: use sliding window to keep recent conversations, use summary compression to handle earlier history, and use semantic filtering to recall relevant information from long-term memory. We'll demonstrate this combination in the hands-on practice in Section 8.4.
 
-## Section Summary
+## Summary
 
 | Concept | Description |
 |---------|-------------|

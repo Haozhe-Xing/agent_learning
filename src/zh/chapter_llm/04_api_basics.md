@@ -426,4 +426,6 @@ print(result)
 
 ---
 
+*上一节：[2.3 Few-shot / Zero-shot / Chain-of-Thought 提示策略](./03_prompting_strategies.md)*
+
 *下一节：[2.5 Token、Temperature 与模型参数详解](./05_model_parameters.md)*

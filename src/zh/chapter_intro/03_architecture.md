@@ -6,7 +6,7 @@
 
 在剖析具体的代码架构之前，我们需要从系统控制论和算法原理的视角，重新审视 Agent 的运行机制。Agent 的运行绝非单向的 DAG（有向无环图）流水线，而是一个不断重复的**反馈控制回路（Feedback Control Loop）**。
 
-在经典强化学习中，这被定义为智能体与环境的交互。在大语言模型（LLM）的语境下，我们将其精炼为 **感知-思考-行动（Observe-Think-Act, PTA）循环**。我们可以将其形式化为一个部分可观测马尔可夫决策过程（POMDP）的变体。
+在经典强化学习中，这被定义为智能体与环境的交互。在大语言模型（LLM）的语境下，我们将其精炼为 **感知-思考-行动（Observe-Think-Act, OTA）循环**。我们可以将其形式化为一个部分可观测马尔可夫决策过程（POMDP）的变体。
 
 假设当前为第 $t$ 个时间步，整个闭环的数学与逻辑表达如下：
 
@@ -36,13 +36,13 @@
 
 ![Agent感知-思考-行动循环](../svg/chapter_intro_03_loop.svg)
 
-> 🎬 **交互式动画**：想亲眼看看 PTA 循环如何运转？点击下方链接打开交互式演示，观察感知、思考、行动三个阶段的完整流转过程。
+> 🎬 **交互式动画**：想亲眼看看 OTA 循环如何运转？点击下方链接打开交互式演示，观察感知、思考、行动三个阶段的完整流转过程。
 >
-> <a href="../animations/pta_cycle.html" target="_blank" style="display:inline-block;padding:8px 16px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;font-weight:bold;">▶ 打开 PTA 循环交互动画</a>
+> <a href="../animations/pta_cycle.html" target="_blank" style="display:inline-block;padding:8px 16px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;font-weight:bold;">▶ 打开 OTA 循环交互动画</a>
 
 ---
 
-## 2. 深度拆解：PTA 循环的工程实现壁垒
+## 2. 深度拆解：OTA 循环的工程实现壁垒
 
 要构建一个工业级的 Agent，单纯依靠拼接 API 是远远不够的，开发者必须深入这三个阶段的底层架构。
 
@@ -68,7 +68,7 @@
 
 ### 🦾 阶段三：行动（Act）—— 跨越边界与执行环境的博弈
 
-行动是 Agent 跨越数字边界、干涉现实的物理抓手。主流工程实践深度依赖大模型的 `Function Calling` 机制。然而，在执行大模型生成的代码或高危指令时，系统设计必须在**“安全性”**与**“便捷性”**之间做出妥协。
+行动是 Agent 跨越数字边界、干涉现实的物理抓手。主流工程实践深度依赖大模型的 `Function Calling` 机制。然而，在执行大模型生成的代码或高危指令时，系统设计必须在 **“安全性”** 与 **“便捷性”** 之间做出妥协。
 
 根据应用场景的不同，Act 阶段的执行环境通常分为两条截然不同的演进路线：
 
@@ -87,9 +87,9 @@
 
 ## 3. 工业级核心源码：基于 FSM 的状态机调度架构
 
-相比于简单的 `while True` 循环，现代先进的 Agent 框架（如 LangGraph, AutoGen）底层都采用了**有限状态机（Finite State Machine, FSM）**的流转架构。
+相比于简单的 `while True` 循环，现代先进的 Agent 框架（如 LangGraph, AutoGen）底层都采用了**有限状态机**（Finite State Machine, FSM）的流转架构。
 
-下面我们将摒弃玩具级的“天气查询”案例，直接手搓一个贴近算法真实业务流的**“广告算法调优 Agent”**骨架。它展示了高内聚的 ReAct 循环引擎如何维护状态、追踪轨迹并进行多工具路由。
+下面我们将摒弃玩具级的“天气查询”案例，直接手搓一个贴近算法真实业务流的 **“广告算法调优 Agent”** 骨架。它展示了高内聚的 ReAct 循环引擎如何维护状态、追踪轨迹并进行多工具路由。
 
 工业级 Agent 的状态机调度器可以先用架构视角理解，而不必一上来阅读完整源码。一个可靠的调度器通常包含以下组件：
 
@@ -121,17 +121,17 @@
 该 Agent 的循环日志将展现出极其专业的诊断逻辑：
 
 ```text
-🔄 --- [PTA Loop 1/12] ---
+🔄 --- [OTA Loop 1/12] ---
 🧠 [Thought] 我需要先确认大盘数据的下滑幅度，以及主要影响的流量特征。我将查询今日各策略组的 pCVR 数据。
 🦾 [Action Decision] -> query_pctr_cvr_metrics({"experiment_group": "multimodal_exp_v2", "metric": "pCVR"})
 📊 [Observation] 返回结果：相比对照组，实验组 pCVR 下滑 14.2%，主要集中在长尾冷启动视频类别。
 
-🔄 --- [PTA Loop 2/12] ---
+🔄 --- [OTA Loop 2/12] ---
 🧠 [Thought] 既然问题出在长尾视频，这可能是因为多模态 Embedding 融合阶段对稀疏特征的表达能力不足，或者内容推荐过于同质化导致了用户的审美疲劳。我需要查询冷启动阶段的特征分布相似度。
 🦾 [Action Decision] -> analyze_multimodal_embeddings({"target_category": "long_tail_video"})
 📊 [Observation] 返回结果：实验组召回列表的内容 Embedding 余弦相似度均值达到 0.89，表明内容高度同质化。
 
-🔄 --- [PTA Loop 3/12] ---
+🔄 --- [OTA Loop 3/12] ---
 🧠 [Thought] 明确了原因。多模态语义捕捉能力过强，导致对相同特征的内容进行了过度推荐，引发了严重的防疲劳机制缺失。我可以输出诊断报告了。
 🦾 [Action Decision] -> Finish({"final_report": "诊断完毕。下滑原因为多模态推荐过度拟合，引发用户疲劳。建议在 SE_Logit 或重排层增加多样性惩罚项 (Anti-fatigue penalty)。"})
 ```
@@ -140,7 +140,7 @@
 
 ## 4. 工业级暗礁：循环失控与系统级护栏 (Guardrails)
 
-在真实的线上业务中，环境充满噪声，Agent 极易陷入**“循环崩溃”**。一个成熟的架构必须在 PTA 循环外部署多层“护栏”：
+在真实的线上业务中，环境充满噪声，Agent 极易陷入 **“循环崩溃”**。一个成熟的架构必须在 OTA 循环外部署多层“护栏”：
 
 1. **无限死循环（Infinite Looping）：**
    * *现象：* Agent 陷入逻辑死锁。例如：*“尝试读取表A -> 表A不存在 -> 再次尝试读取表A”*。
@@ -154,13 +154,13 @@
 
 ---
 
-## 本节小结
+## 小结
 
 ![本节核心要点总结](../svg/chapter_intro_03_summary.svg)
 
-| PTA 阶段 | 系统职责 | 工程化挑战与技术防线 |
+| OTA 阶段 | 系统职责 | 工程化挑战与技术防线 |
 | :--- | :--- | :--- |
-| **感知 (Perceive)** | 从高维、噪声环境中提取有效状态表征 | 数据防截断、多路特征聚合、JSON 结构体清洗 |
+| **感知 (Observe)** | 从高维、噪声环境中提取有效状态表征 | 数据防截断、多路特征聚合、JSON 结构体清洗 |
 | **思考 (Think)** | 状态流转评估、多步目标寻优与规划 | Prompt 工程、ReAct 模板、ToT 剪枝机制、反思记忆注入 |
 | **行动 (Act)** | 跨越边界触发外部物理/数字世界状态变更 | Schema 强校验、沙盒隔离执行、容错与重试路由 |
 

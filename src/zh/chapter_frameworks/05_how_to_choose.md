@@ -195,7 +195,7 @@ class HybridAgentSystem:
 
 ---
 
-## 本章小结
+## 小结
 
 主流框架一览：
 

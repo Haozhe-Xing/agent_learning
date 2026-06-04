@@ -472,7 +472,7 @@ Self-Evolution Agent 听起来很诱人，但必须避免“失控自改”。�
 5. Hu et al. [**Automated Design of Agentic Systems**](https://arxiv.org/abs/2408.08435). ICLR 2025.
 6. Robeyns et al. [**A Self-Improving Coding Agent**](https://arxiv.org/abs/2504.15228). 2025.
 
-## 本节小结
+## 小结
 
 Self-Evolution Agent 的本质是：**让 Agent 从自身运行轨迹中提取经验，并把经验转化为可复用、可验证、可回滚的能力资产**。
 

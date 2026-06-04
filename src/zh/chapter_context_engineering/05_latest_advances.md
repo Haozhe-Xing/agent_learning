@@ -266,7 +266,7 @@ def context_collapse_demo():
 
 ### ACE 框架：让上下文自我进化
 
-ACE 的核心创新是将上下文视为**"不断演变的战术手册"（Evolving Playbook）**，通过三个模块化阶段实现自我改进：
+ACE 的核心创新是将上下文视为 **"不断演变的战术手册"（Evolving Playbook）** ，通过三个模块化阶段实现自我改进：
 
 ```python
 class ACEFramework:
@@ -898,7 +898,7 @@ class ContextQualityMetrics:
 
 > 💡 **延伸阅读**：关于分层记忆架构（Core/Working/Archive 三层）的工程实践，详见 [4.7 实战：MemGPT/Letta 记忆架构工程实践](../chapter_memory/06b_memgpt_practice.md)。
 
-## 本节小结
+## 小结
 
 | 进展方向 | 核心突破 | 对 Agent 开发的实际影响 |
 |---------|---------|----------------------|

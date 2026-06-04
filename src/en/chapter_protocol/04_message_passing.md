@@ -200,7 +200,7 @@ Once the MCP Server is written, it needs to be registered in the client (Host) b
 
 ---
 
-## Chapter Summary
+## Summary
 
 The core of Agent communication protocols:
 

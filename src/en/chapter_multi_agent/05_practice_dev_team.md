@@ -247,7 +247,7 @@ if __name__ == "__main__":
     print("\n📁 All files saved to the output/ directory")
 ```
 
-## Chapter Summary
+## Summary
 
 Key points for multi-Agent collaboration:
 

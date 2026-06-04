@@ -120,7 +120,7 @@ DATA_ANALYSIS_SKILL = """
 
 ![技能系统发展脉络](../svg/chapter_skill_01_timeline.svg)
 
-## 本节小结
+## 小结
 
 | 概念 | 工具（Tool） | 技能（Skill） |
 |------|------------|-------------|

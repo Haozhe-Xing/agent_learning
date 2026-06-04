@@ -8,7 +8,7 @@
 
 ## 现代 LLM 的标准"骨架"：Decoder-Only Transformer
 
-2023 年以来，几乎所有主流 LLM 都采用了 **Decoder-Only** 架构。这与最初 Transformer 的 Encoder-Decoder 结构不同——它只保留了解码器部分，通过**因果注意力掩码（Causal Mask）**保证每个 Token 只能"看到"它左边的内容。
+2023 年以来，几乎所有主流 LLM 都采用了 **Decoder-Only** 架构。这与最初 Transformer 的 Encoder-Decoder 结构不同——它只保留了解码器部分，通过**因果注意力掩码（Causal Mask）** 保证每个 Token 只能"看到"它左边的内容。
 
 ```python
 # 因果注意力掩码的直觉
@@ -1348,13 +1348,13 @@ class EngramMemory:
     # - 推理和知识存储可独立扩展
 ```
 
-**mHC（Manifold-Constrained Hyper-Connections）**是 DeepSeek V4 的另一个创新——用 Sinkhorn-Knopp 算法约束残差混合矩阵，在仅增加 6.7% 训练开销的情况下，维持数百层网络的信号稳定性。
+**mHC（Manifold-Constrained Hyper-Connections）** 是 DeepSeek V4 的另一个创新——用 Sinkhorn-Knopp 算法约束残差混合矩阵，在仅增加 6.7% 训练开销的情况下，维持数百层网络的信号稳定性。
 
 > 💡 **对 Agent 的影响**：Engram 内存的"知识-推理分离"范式特别适合 Agent 场景——Agent 需要大量的领域知识（存在 CPU 内存中），同时需要强大的推理能力（GPU 专注计算）。这让在受限硬件上运行知识密集型 Agent 成为可能。
 
 ---
 
-## 本节小结
+## 小结
 
 | 架构组件 | 演进方向 | 现代共识 | 前沿突破（2026） |
 |---------|---------|---------|---------| 
@@ -1373,5 +1373,7 @@ class EngramMemory:
 > 📖 *理解这些架构组件不是为了让你去训练模型——而是为了在模型选型、推理优化、成本估算时有底层判断力。当有人说"这个模型用了 Gated DeltaNet 混合注意力"时，你就知道它在长文本场景下的推理延迟会非常低；当有人说"用了 Engram 内存"时，你就知道它可以在更小的 GPU 上处理知识密集型任务；当有人说"用了 TurboQuant"时，你就知道部署成本会大幅下降。2026 年，架构创新重新回到了竞争的前沿。*
 
 ---
+
+*上一节：[2.6 基座模型前沿进展与选型指南](./06_foundation_model_landscape.md)*
 
 *下一节：[2.8 SFT 与强化学习训练数据准备](./08_training_data.md)*

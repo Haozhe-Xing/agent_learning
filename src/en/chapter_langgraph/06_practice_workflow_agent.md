@@ -200,7 +200,7 @@ The code above has a few design points worth noting:
 
 **Fault-tolerant parsing of LLM output**: Both `review_content` and `analyze_topic` use regular expressions to extract JSON from LLM responses, with fallback values provided. This is because LLMs sometimes don't strictly follow the specified format (they may add explanatory text before or after the JSON), and we need to tolerate this uncertainty.
 
-## Chapter Summary
+## Summary
 
 The core value of LangGraph:
 

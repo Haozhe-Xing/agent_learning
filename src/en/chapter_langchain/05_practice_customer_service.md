@@ -198,7 +198,7 @@ if __name__ == "__main__":
     main()
 ```
 
-## Chapter Summary
+## Summary
 
 In this chapter, we built a multi-function customer service Agent that combines all of LangChain's core capabilities. The system's design philosophy is: **decompose the customer service scenario into independent tool functions** (order queries, returns/exchanges, FAQ answers), then let the LLM Agent autonomously select the appropriate tool to respond based on user intent. This "tool-driven" architectural pattern is very common in real projects and is the most typical use case for LangChain Agents.
 

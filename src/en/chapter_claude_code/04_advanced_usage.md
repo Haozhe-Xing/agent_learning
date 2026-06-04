@@ -668,7 +668,7 @@ Claude Code manages **long-term memory** and **session state** separately, preve
 
 ---
 
-## Section Summary
+## Summary
 
 | Mechanism | Core Value | Configuration Location | Learning Priority |
 |-----------|-----------|----------------------|------------------|

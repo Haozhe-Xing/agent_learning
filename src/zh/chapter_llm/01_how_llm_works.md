@@ -57,7 +57,7 @@ LLM 会根据这个概率分布采样出一个词（比如“发展”），然�
 
 ## 3. 从预训练到对话：LLM 的“炼丹”三阶段
 
-一个顶级的对话模型（如 GPT-4.1、Claude 3.5 Sonnet）并不是一次性训练出来的。它的诞生是一场漫长的接力赛：
+一个顶级的对话模型（如 GPT-5、Claude Opus 4）并不是一次性训练出来的。它的诞生是一场漫长的接力赛：
 
 ![LLM三阶段训练过程](../svg/chapter_llm_01_training_stages.svg)
 
@@ -76,7 +76,7 @@ LLM 会根据这个概率分布采样出一个词（比如“发展”），然�
 
 ![模型规模vs能力涌现](../svg/chapter_llm_01_emergence.svg)
 
-小模型只是在学习语言的“统计规律”和“语法”，而大模型在海量数据的压缩过程中，被迫在内部构建了复杂的**世界模型（World Model）**和逻辑表征。典型的涌现能力包括：
+小模型只是在学习语言的“统计规律”和“语法”，而大模型在海量数据的压缩过程中，被迫在内部构建了复杂的**世界模型（World Model）** 和逻辑表征。典型的涌现能力包括：
 
 - **少样本上下文学习 (Few-shot In-context Learning)**：Agent 开发的基石。无需改动模型代码，只需在 Prompt 里给几个例子，它就能现场学会全新任务。
 - **思维链推理 (Chain of Thought, CoT)**：能够一步步推理解决复杂问题。
@@ -106,7 +106,7 @@ LLM 会根据这个概率分布采样出一个词（比如“发展”），然�
 2024-2025 年，单纯依赖扩大参数量带来了极大的成本边际递减效应，一种新范式正在彻底重塑 Agent 的大脑——**推理模型（Reasoning Models）**。
 
 传统 LLM 采用丹尼尔·卡尼曼所说的"System 1（快思考）"：看到输入，依靠直觉般的概率分布直接生成输出。
-而推理模型（如 OpenAI o3、DeepSeek-R1）引入了"System 2（慢思考）"，它们在**推理时计算（Test-time Compute）**上发力：
+而推理模型（如 OpenAI o3、DeepSeek-R1）引入了"System 2（慢思考）"，它们在**推理时计算（Test-time Compute）** 上发力：
 
 推理模型和传统对话模型的差别，可以理解为“快思考”和“慢思考”：
 
@@ -188,5 +188,7 @@ LLM 有一个绝对的物理限制：**上下文窗口（Context Window）**。�
 [5] OPENAI. GPT-4 technical report[R]. arXiv preprint arXiv:2303.08774, 2023.
 
 ---
+
+*上一节：[第2章 大语言模型基础（导读）](./README.md)*
 
 *下一节：[2.2 Prompt Engineering](./02_prompt_engineering.md)*

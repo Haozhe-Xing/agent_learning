@@ -733,7 +733,7 @@ stripe_minions_learnings = {
 
 ---
 
-## Section Summary
+## Summary
 
 These three cases collectively reveal several **universal principles** of Harness Engineering:
 

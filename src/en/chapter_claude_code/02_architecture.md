@@ -207,7 +207,7 @@ function ConversationView({ messages }: Props) {
 
 ---
 
-## Section Summary
+## Summary
 
 | Concept | Key Points |
 |---------|-----------|

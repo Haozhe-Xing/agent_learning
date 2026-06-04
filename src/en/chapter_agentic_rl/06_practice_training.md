@@ -623,7 +623,7 @@ agent-rl-training/
 
 ---
 
-## Chapter Summary
+## Summary
 
 Through systematic study of this chapter, you have mastered the complete knowledge system for Agentic-RL training:
 

@@ -316,7 +316,7 @@ This shift doesn't mean engineers are "unemployed" — it means a dramatic incre
 
 ---
 
-## Section Summary
+## Summary
 
 | Concept | Key Points |
 |---------|-----------|

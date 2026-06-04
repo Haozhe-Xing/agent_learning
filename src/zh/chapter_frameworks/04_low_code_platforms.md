@@ -188,7 +188,7 @@ result = trigger_n8n_workflow(
         "context": "下午有一个重要的客户演示",
     },
 )
-# n8n 工作流：读取任务 → 调用 GPT-4o 分析优先级 → 返回排序结果
+# n8n 工作流：读取任务 → 调用 GPT-4.1 分析优先级 → 返回排序结果
 print(result)  # {"prioritized_tasks": [...], "reasoning": "..."}
 ```
 

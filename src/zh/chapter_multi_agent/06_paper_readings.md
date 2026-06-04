@@ -86,7 +86,7 @@ ChatDev 模拟了一个软件公司的组织结构，但采用了与 MetaGPT 不
 
 ### Inception Prompting
 
-ChatDev 使用了一种称为**“Inception Prompting（初始提示）”**的技术来引导每个阶段的对话：
+ChatDev 使用了一种称为 **“Inception Prompting（初始提示）”** 的技术来引导每个阶段的对话：
 
 > 在每个聊天阶段开始时，两个 Agent 都会收到：
 > 1. 角色描述：“你是 CTO，负责选择技术方案...”
@@ -106,7 +106,7 @@ ChatDev 使用了一种称为**“Inception Prompting（初始提示）”**的�
 
 ### 对 Agent 开发的启示
 
-ChatDev 的**"每阶段只有两个 Agent 对话"**的设计降低了多 Agent 协调的复杂度——N 个 Agent 的全连接通信复杂度是 O(N²)，而两两对话将其降为 O(N)。在实际项目中，如果 Agent 数量不多（< 5个），两两对话可能比复杂的共享状态更容易调试。
+ChatDev 的 **"每阶段只有两个 Agent 对话"** 的设计降低了多 Agent 协调的复杂度——N 个 Agent 的全连接通信复杂度是 O(N²)，而两两对话将其降为 O(N)。在实际项目中，如果 Agent 数量不多（< 5个），两两对话可能比复杂的共享状态更容易调试。
 
 ---
 
@@ -226,7 +226,7 @@ AgentVerse 提出了一种**动态角色调整机制**：在协作过程中，�
 
 ### 架构设计
 
-Magentic-One 采用了**"指挥官 + 专家团"**架构：
+Magentic-One 采用了 **"指挥官 + 专家团"** 架构：
 
 ![Magentic-One 架构](../svg/chapter_multi_agent_06_magentic_one.svg)
 

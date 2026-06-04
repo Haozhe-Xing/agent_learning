@@ -597,7 +597,7 @@ messages = pipeline.build(
 # 🏗️ Construct: 构建完成，约 5000 tokens
 ```
 
-## 本节小结
+## 小结
 
 恭喜你完成了 GSSC 上下文构建流水线的实现！这是一个可以直接应用于生产项目的上下文管理基础设施。
 

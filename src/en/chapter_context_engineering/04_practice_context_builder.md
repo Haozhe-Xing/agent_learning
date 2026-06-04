@@ -597,7 +597,7 @@ messages = pipeline.build(
 # 🏗️ Construct: build complete, approximately 5000 tokens
 ```
 
-## Section Summary
+## Summary
 
 Congratulations on completing the implementation of the GSSC context building pipeline! This is a context management infrastructure that can be directly applied to production projects.
 
