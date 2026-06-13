@@ -75,7 +75,7 @@ from langchain_openai import ChatOpenAI
 class AgentAsJudge:
     """用 Agent 评估 Agent 的完整执行轨迹"""
 
-    def __init__(self, model: str = "gpt-4.1"):
+    def __init__(self, model: str = "gpt-4o"):
         self.llm = ChatOpenAI(model=model, temperature=0)
 
     def evaluate_trace(self, trace: AgentTrace) -> dict:
@@ -232,7 +232,7 @@ sample_trace = AgentTrace(
 )
 
 # 运行 Agent-as-Judge 评估
-judge = AgentAsJudge(model="gpt-4.1")
+judge = AgentAsJudge(model="gpt-4o")
 result = judge.evaluate_trace(sample_trace)
 print(json.dumps(result["overall"], ensure_ascii=False, indent=2))
 ```
@@ -247,7 +247,7 @@ print(json.dumps(result["overall"], ensure_ascii=False, indent=2))
 | 评估能力上限 | Judge Agent 的评估能力受自身模型能力限制 | 使用强于被评估 Agent 的模型做 Judge |
 | 轨迹格式化 | 过长的轨迹可能超出上下文窗口 | 对轨迹做摘要或分段评估 |
 
-> 💡 **最佳实践**：Agent-as-Judge 的 Judge 模型应当比被评估的 Agent 使用更强的模型。例如，用 gpt-4.1 评估 gpt-4.1-mini 驱动的 Agent，避免"学生给自己打分"的问题。
+> 💡 **最佳实践**：Agent-as-Judge 的 Judge 模型应当比被评估的 Agent 使用更强的模型。例如，用 gpt-4o 评估 gpt-4o-mini 驱动的 Agent，避免"学生给自己打分"的问题。
 
 ---
 
@@ -748,7 +748,7 @@ class SWEBenchEvaluator:
 |------|------|--------|------|
 | OpenHands + CodeAct | ~53% | 2025 年初 | 开源最佳 |
 | Devin | ~50% | 2025 年初 | 商业产品 |
-| SWE-Agent + GPT-4.1 | ~48% | 2025 年 | Agent 框架 |
+| SWE-Agent + GPT-4o | ~48% | 2025 年 | Agent 框架 |
 | AutoCodeRover | ~45% | 2024 年 | 谱分析 + LLM |
 | Amazon Q Developer | ~42% | 2024 年 | Amazon 出品 |
 
@@ -841,7 +841,7 @@ class AgentAsJudgeEvaluator:
 
     def __init__(
         self,
-        judge_model: str = "gpt-4.1",
+        judge_model: str = "gpt-4o",
         dimensions: list[str] = None
     ):
         self.llm = ChatOpenAI(model=judge_model, temperature=0)
@@ -1120,7 +1120,7 @@ def demo_evaluation():
     )
 
     # 3. 运行评估
-    evaluator = AgentAsJudgeEvaluator(judge_model="gpt-4.1")
+    evaluator = AgentAsJudgeEvaluator(judge_model="gpt-4o")
     trace = collector.get_trace(task_id)
 
     result = evaluator.evaluate(

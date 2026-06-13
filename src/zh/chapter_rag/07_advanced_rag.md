@@ -77,7 +77,7 @@ python -m graphrag init --root .
 llm:
   api_key: ${GRAPHRAG_API_KEY}
   type: openai_chat
-  model: gpt-4.1-mini         # 索引阶段用 mini 节省成本
+  model: gpt-4o-mini         # 索引阶段用 mini 节省成本
   max_tokens: 4000
 
 embeddings:
@@ -102,7 +102,7 @@ community_reports:
 python -m graphrag index --root .
 
 # 成本估算（1000 篇短文档，约 500K tokens）
-# gpt-4.1-mini: ~$0.4-1 
+# gpt-4o-mini: ~$0.4-1 
 # text-embedding-3-small: ~$0.02
 ```
 
@@ -286,7 +286,7 @@ def should_retrieve(question: str, chat_history: list[dict]) -> bool:
 只回复 "YES" 或 "NO"。"""
 
     response = client.chat.completions.create(
-        model="gpt-4.1-mini",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=5,
         temperature=0,
@@ -308,7 +308,7 @@ def rewrite_query(original_question: str, context: str = "") -> list[str]:
 用户问题：{original_question}"""
 
     response = client.chat.completions.create(
-        model="gpt-4.1-mini",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=200,
         temperature=0.3,
@@ -342,7 +342,7 @@ def evaluate_retrieval(
 以 JSON 格式回复。"""
 
     response = client.chat.completions.create(
-        model="gpt-4.1-mini",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         response_format={"type": "json_object"},
         max_tokens=200,
@@ -372,7 +372,7 @@ def generate_with_citation(
 用户问题：{question}"""
 
     response = client.chat.completions.create(
-        model="gpt-4.1",
+        model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1000,
     )
@@ -469,7 +469,7 @@ def generate_answer(state: AgenticRAGState) -> AgenticRAGState:
 def answer_directly(state: AgenticRAGState) -> AgenticRAGState:
     """节点 6：无需检索，直接回答"""
     response = client.chat.completions.create(
-        model="gpt-4.1",
+        model="gpt-4o",
         messages=[
             *state.get("chat_history", []),
             {"role": "user", "content": state["question"]}
@@ -587,7 +587,7 @@ def enhance_query_after_failure(
 每行一个查询。"""
 
     response = client.chat.completions.create(
-        model="gpt-4.1-mini",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=150,
     )
@@ -618,7 +618,7 @@ class MultiSourceRetriever:
 只返回逗号分隔的数据源名称列表。"""
         
         response = client.chat.completions.create(
-            model="gpt-4.1-mini",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=50,
             temperature=0,
@@ -659,7 +659,7 @@ async def agentic_rag_stream(question: str):
         
         # 流式生成答案
         stream = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{
                 "role": "user",
                 "content": f"基于以下文档回答：\n{docs}\n\n问题：{question}"
@@ -672,7 +672,7 @@ async def agentic_rag_stream(question: str):
                 yield chunk.choices[0].delta.content
     else:
         stream = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{"role": "user", "content": question}],
             stream=True,
         )

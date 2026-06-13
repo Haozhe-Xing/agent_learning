@@ -72,7 +72,7 @@ Agent 的记忆系统类比人类记忆，分为三个层次：
 
 ```python
 # Context Window 限制了短期记忆的大小
-# GPT-4.1 有 1M Token 的上下文
+# GPT-4o 有 1M Token 的上下文
 # 但长对话 Token 消耗快，成本高
 
 # 解决方案：

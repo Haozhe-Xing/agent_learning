@@ -6,7 +6,7 @@
 
 ---
 
-### 2.1 DPO 的核心洞察
+### 10.4.1 DPO 的核心洞察
 
 DPO [1] 是 2023 年 Stanford 团队提出的算法。它的核心洞察可以用一句话概括：
 
@@ -16,7 +16,7 @@ DPO [1] 是 2023 年 Stanford 团队提出的算法。它的核心洞察可以�
 
 ![DPO 核心直觉](../svg/chapter_agentic_rl_03_dpo_intuition.svg)
 
-### 2.2 数学推导：从 RLHF 到 DPO
+### 10.4.2 数学推导：从 RLHF 到 DPO
 
 这一推导是 DPO 论文最精妙的部分，我们逐步展开。
 
@@ -81,7 +81,7 @@ $$\mathcal{L}_{DPO}(\theta) = -\mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left
 
 **一句话总结**：DPO 让模型学会"给好输出更高的隐式奖励，给差输出更低的隐式奖励"——不需要显式训练奖励模型，也不需要在线采样。
 
-### 2.3 DPO 的训练架构
+### 10.4.3 DPO 的训练架构
 
 ![DPO 训练架构](../svg/chapter_agentic_rl_03_dpo_architecture.svg)
 
@@ -95,7 +95,7 @@ DPO 的训练只需要：
 - ❌ Critic 模型
 - ❌ 在线采样（完全离线训练）
 
-### 2.4 DPO 的代码实现
+### 10.4.4 DPO 的代码实现
 
 ```python
 import torch
@@ -152,7 +152,7 @@ def dpo_loss(
     return loss, metrics
 ```
 
-### 2.5 深入理解：DPO 与 KL 散度的关系
+### 10.4.5 深入理解：DPO 与 KL 散度的关系
 
 读到这里，你可能会有一个疑问：**DPO 的 loss 中还有 KL 散度吗？** 毕竟在 PPO 中，KL 散度是作为显式惩罚项出现的。
 
@@ -193,7 +193,7 @@ DPO loss 中的核心项 $\log \frac{\pi_\theta(y|x)}{\pi_{ref}(y|x)}$ 正是 KL
 > 
 > **DPO 说**："我直接把奖励和 KL 约束合并成一个公式，用对数概率比同时编码了'什么是好的'和'别跑太远'。" → 一步到位
 
-### 2.6 DPO 的优缺点总结
+### 10.4.6 DPO 的优缺点总结
 
 | 维度 | 评价 |
 |------|------|

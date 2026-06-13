@@ -404,7 +404,7 @@ class LLMRewardModel:
     """
     当任务不可自动验证时，用强 LLM 作为奖励模型。
     
-    成本权衡：每条轨迹调用一次 GPT-4.1 评估。
+    成本权衡：每条轨迹调用一次 GPT-4o 评估。
     建议：只对边界分数（0.5-0.7）的样本调用奖励模型。
     """
     
@@ -426,14 +426,14 @@ Agent 的完整轨迹：
 {{"scores": [score1, score2, score3, score4, score5], "overall": <0-1的浮点数>, "reason": "<简短说明>"}}"""
     
     async def score(self, traj: AgentTrajectory) -> float:
-        """用 GPT-4.1 对轨迹打分"""
+        """用 GPT-4o 对轨迹打分"""
         from openai import AsyncOpenAI
         client = AsyncOpenAI()
         
         trajectory_text = self._format_trajectory(traj)
         
         response = await client.chat.completions.create(
-            model="gpt-4.1-mini",  # 用便宜的模型降低成本
+            model="gpt-4o-mini",  # 用便宜的模型降低成本
             messages=[{
                 "role": "user",
                 "content": self.EVALUATION_PROMPT.format(

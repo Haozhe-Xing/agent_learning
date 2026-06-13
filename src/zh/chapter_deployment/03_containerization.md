@@ -124,6 +124,10 @@ volumes:
 
 ```nginx
 # nginx.conf
+
+# 限流：每个 IP 每秒最多 10 个请求（必须在 http 块内定义）
+limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+
 upstream agent_backend {
     server agent-api:8000;
 }
@@ -132,9 +136,6 @@ server {
     listen 80;
     server_name your-domain.com;
 
-    # 限流：每个 IP 每秒最多 10 个请求
-    limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
-    
     location / {
         limit_req zone=api burst=20 nodelay;
         

@@ -15,7 +15,7 @@
 
 ## 项目结构
 
-```
+```text
 skill_agent/
 ├── main.py                    # 主入口
 ├── skill_manager.py           # 技能管理器
@@ -273,7 +273,7 @@ from skill_manager import SkillManager
 class SkillAgent:
     """技能驱动的 Agent"""
     
-    def __init__(self, skill_manager: SkillManager, model: str = "gpt-4.1"):
+    def __init__(self, skill_manager: SkillManager, model: str = "gpt-4o"):
         self.skill_manager = skill_manager
         self.client = OpenAI()
         self.model = model
@@ -414,7 +414,7 @@ if __name__ == "__main__":
 
 ## 运行效果
 
-```
+```text
 ============================================================
   🤖 技能驱动的 Agent 系统
 ============================================================

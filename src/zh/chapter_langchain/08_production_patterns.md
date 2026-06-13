@@ -443,7 +443,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_core.messages import AIMessage, ToolMessage
+from langchain_core.messages import AIMessage
 
 @tool
 def risky_operation(param: str) -> str:
@@ -452,17 +452,6 @@ def risky_operation(param: str) -> str:
     if random.random() < 0.3:  # 30% 概率失败
         raise ValueError("操作失败：模拟的错误")
     return f"操作成功：{param}"
-
-def handle_tool_error(state: MessagesState) -> dict:
-    """处理工具执行错误：将错误信息回传给 Agent"""
-    error = state.get("error")
-    if error:
-        return {
-            "messages": [
-                AIMessage(content=f"工具执行出错：{error}。请尝试其他方法。")
-            ]
-        }
-    return state
 
 # 构建带错误处理的图
 tools = [risky_operation]
@@ -477,7 +466,7 @@ def agent_node(state: MessagesState):
 
 graph = StateGraph(MessagesState)
 graph.add_node("agent", agent_node)
-graph.add_node("tools", ToolNode(tools, handle_tool_error=True))  # 自动处理工具错误
+graph.add_node("tools", ToolNode(tools, handle_tool_errors=True))  # 自动捕获工具错误并回传
 graph.add_edge(START, "agent")
 graph.add_conditional_edges("agent", tools_condition)
 graph.add_edge("tools", "agent")

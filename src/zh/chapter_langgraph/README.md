@@ -4,28 +4,22 @@
 
 ---
 
+## 本章概览
+
+LangGraph 是 LangChain 团队推出的下一代 Agent 框架。相比于线性的 Chain，LangGraph 通过有向图（Directed Graph）构建 Agent 工作流，原生支持循环、条件分支和持久状态——这些正是构建复杂 Agent 系统所必需的能力。
+
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
 
-- ✅ 理解为什么复杂 Agent 需要图结构来管理状态
+- ✅ 理解图结构相比线性链的优势
 - ✅ 掌握 LangGraph 的核心概念：节点、边、状态
-- ✅ 实现条件路由、循环控制和 Human-in-the-Loop 人机协作
-- ✅ 从零构建一个工作流自动化 Agent
+- ✅ 从零构建一个 Graph Agent
+- ✅ 实现条件路由、循环控制等高级工作流
+- ✅ 掌握 Human-in-the-Loop 人机协作模式
+- ✅ 构建一个工作流自动化 Agent
 
-## ⏱️ 预计学习时间
-
-约 **120-150 分钟**（含实战练习）
-
-## 💡 前置知识
-
-- 完成第11章（LangChain）
-- 了解有向图的基本概念（节点和边）
-- Python 异步编程基础（`async/await`），`pip install langgraph langchain`
-
-## 📚 本章结构
-
-LangGraph 是 LangChain 团队推出的下一代 Agent 框架。相比于线性的 Chain，LangGraph 通过有向图（Directed Graph）构建 Agent 工作流，原生支持循环、条件分支和持久状态——这些正是构建复杂 Agent 系统所必需的能力。
+## 📑 本章结构
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
@@ -35,6 +29,16 @@ LangGraph 是 LangChain 团队推出的下一代 Agent 框架。相比于线性�
 | 12.4 条件路由与循环控制 | 高级工作流 | ⭐⭐⭐ |
 | 12.5 Human-in-the-Loop | 人机协作 | ⭐⭐⭐ |
 | 12.6 实战：工作流自动化 Agent | 综合应用 | ⭐⭐⭐⭐ |
+
+## ⏱️ 预计学习时间
+
+约 **120-150 分钟**（含实战练习）
+
+## 💡 前置知识
+
+- 已完成第 11 章 LangChain 基础
+- 了解有向图的基本概念（节点和边）
+- Python 异步编程基础（`async/await`）
 
 ## 🔗 学习路径
 

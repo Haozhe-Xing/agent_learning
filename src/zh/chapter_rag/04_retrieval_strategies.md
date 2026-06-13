@@ -141,7 +141,7 @@ class HybridRetriever:
 
 初步检索（无论是向量检索还是混合检索）通常会返回一批"大致相关"的候选文档。但这些文档的排序可能并不准确——真正最相关的文档可能排在第 3 位或第 5 位。
 
-重排序就是对初步检索结果进行"二次精排"。它的工作方式是：将查询和所有候选文档一起交给一个更强的模型（比如 gpt-4.1-mini），让模型逐一评估每个文档与查询的相关性，然后按相关性重新排序。
+重排序就是对初步检索结果进行"二次精排"。它的工作方式是：将查询和所有候选文档一起交给一个更强的模型（比如 gpt-4o-mini），让模型逐一评估每个文档与查询的相关性，然后按相关性重新排序。
 
 这种"先粗筛再精排"的两阶段架构在搜索引擎领域是标准做法——第一阶段追求**召回率**（不遗漏相关文档），第二阶段追求**精准率**（将最相关的排在最前面）。
 
@@ -149,7 +149,7 @@ class HybridRetriever:
 class Reranker:
     """使用 LLM 对初步检索结果进行重排序"""
     
-    def __init__(self, model: str = "gpt-4.1-mini"):
+    def __init__(self, model: str = "gpt-4o-mini"):
         self.model = model
     
     def rerank(self, query: str, candidates: List[str], top_k: int = 3) -> List[dict]:
@@ -225,7 +225,7 @@ class QueryExpander:
     def expand(self, query: str, n_variations: int = 3) -> List[str]:
         """生成查询的多个变体"""
         response = client.chat.completions.create(
-            model="gpt-4.1-mini",
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "user",

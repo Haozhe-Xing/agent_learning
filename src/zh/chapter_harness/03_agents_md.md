@@ -59,13 +59,13 @@ OpenAI 团队发现：一个 5000 行的 `AGENTS.md` 反而比一个 200 行的 
 
 ```markdown
 ## 架构概览
-详见 [docs/architecture.md](./docs/architecture.md)
+详见 docs/architecture.md（见 `./docs/architecture.md`）
 
 ## API 规范
-详见 [docs/api-conventions.md](./docs/api-conventions.md)
+详见 docs/api-conventions.md（见 `./docs/api-conventions.md`）
 
 ## 测试指南  
-详见 [docs/testing-guide.md](./docs/testing-guide.md)
+详见 docs/testing-guide.md（见 `./docs/testing-guide.md`）
 ```
 
 ### 原则三：规范行为，而非描述状态
@@ -99,9 +99,9 @@ _Last updated: 2026-03-01 | Applies to: All AI Agents working on this codebase_
 **核心功能**：[一句话描述]  
 **技术栈**：Python 3.11 / FastAPI / PostgreSQL / Redis / Docker  
 **文档索引**：
-- 架构文档：[docs/architecture.md](./docs/architecture.md)
-- API 规范：[docs/api-spec.md](./docs/api-spec.md)
-- 数据库 Schema：[docs/schema.md](./docs/schema.md)
+- 架构文档：docs/architecture.md（见 `./docs/architecture.md`）
+- API 规范：docs/api-spec.md（见 `./docs/api-spec.md`）
+- 数据库 Schema：docs/schema.md（见 `./docs/schema.md`）
 
 ---
 
@@ -281,7 +281,7 @@ _此文件由团队维护。如果发现内容过时或错误，请更新此文�
 - 禁止直接修改 payment_records 表的已完成记录
 
 ## 支付渠道联调
-见 [docs/payment-integration-guide.md](../../docs/payment-integration-guide.md)
+见 `docs/payment-integration-guide.md`
 ```
 
 ---

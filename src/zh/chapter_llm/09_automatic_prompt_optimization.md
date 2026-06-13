@@ -1243,7 +1243,7 @@ best_prompt = select_final_prompt(pareto_front, regression_tests, safety_tests)
 使用的模型包括：
 
 - Qwen3-8B。
-- GPT-4.1 Mini。
+- GPT-4o Mini。
 
 对比方法包括：
 
@@ -1257,8 +1257,8 @@ best_prompt = select_final_prompt(pareto_front, regression_tests, safety_tests)
 | 模型 | Baseline | 对比方法表现 | GEPA 表现 |
 |------|----------|--------------|-----------|
 | Qwen3-8B | 45.23 | GRPO 48.91，MIPROv2 47.84 | **54.85** |
-| GPT-4.1 Mini | 53.03 | MIPROv2 58.67，TextGrad 59.14 | **65.22** |
-| GPT-4.1 Mini + Merge | 53.03 | - | **66.36** |
+| GPT-4o Mini | 53.03 | MIPROv2 58.67，TextGrad 59.14 | **65.22** |
+| GPT-4o Mini + Merge | 53.03 | - | **66.36** |
 
 论文报告中，GEPA 相比 GRPO 平均高约 6%，最高高约 20%，同时 rollout 数最多可以少 35 倍。
 

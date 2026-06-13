@@ -65,7 +65,7 @@ class MixtureOfExperts:
 | **Kimi K2.6** | 1T | 32B | K2 upgrade, 13-hour coding, 300 sub-agents parallel, SWE-bench Pro 58.6% |
 | **Kimi K2** | 1T | 32B | MuonClip optimizer, trillion-parameter open-source MoE |
 | **Qwen3.6-35B-A3B** | 35B | 3B | Released 2026.04, lightweight MoE, extreme efficiency |
-| **Llama 4 Maverick** | ~400B | 17B | 128 experts, native multimodal, text generation surpasses GPT-4.1 |
+| **Llama 4 Maverick** | ~400B | 17B | 128 experts, native multimodal, text generation surpasses GPT-4o |
 | **Qwen3-235B-A22B** | 235B | 22B | Hybrid reasoning, Apache 2.0, tops open-source leaderboard |
 | **Qwen3-30B-A3B** | 30B | 3B | Lightweight MoE, runs on single GPU |
 | **DeepSeek-V3** | 671B | 37B | MoE architecture, $5.57M training cost, best price-performance |
@@ -84,7 +84,7 @@ In 2025–2026, open-source models are no longer just "catching up" with closed-
 - **Kimi K2** (Moonshot AI, 2025.07): 1T total/32B active MoE, MuonClip optimizer doubles training efficiency, open-source Agent SOTA, compatible with OpenAI/Anthropic API
 - **Qwen3-235B-A22B** (Alibaba, 2025.04): 235B MoE hybrid reasoning, surpasses DeepSeek-R1 and o1, Apache 2.0
 - **DeepSeek-V3-0324** (DeepSeek, 2025.03): 685B MoE, coding surpasses Claude 3.7, more permissive open-source license
-- **Llama 4 Maverick** (Meta, 2025.04): ~400B MoE multimodal, text generation surpasses GPT-4.1
+- **Llama 4 Maverick** (Meta, 2025.04): ~400B MoE multimodal, text generation surpasses GPT-4o
 
 **Tier 2 (Lightweight and Efficient, single-GPU capable)**:
 - **Qwen3.6-35B-A3B** (Alibaba, 2026.04): 35B total/3B active, lightweight MoE, extreme efficiency
@@ -233,7 +233,7 @@ def select_model(requirements: dict) -> str:
 |---------------|------------------|--------|
 | Coding assistant | Claude Opus 4.7 / Kimi K2.6 | SWE-bench dual #1; K2.6 extreme price-performance (1/8 of Opus 4.6) |
 | Data analysis | GPT-5.4 / Gemini 2.5 Pro | Multimodal understanding + stable function calling |
-| Customer service | GPT-4.1-mini / Qwen3-8B | Cost-sensitive, high response speed requirement |
+| Customer service | GPT-4o-mini / Qwen3-8B | Cost-sensitive, high response speed requirement |
 | Deep research | Claude Opus 4.6 / GPT-5.4 | 1M context + deep reasoning |
 | Document processing | Gemini 2.5 Pro / Claude Opus 4.6 | 1M ultra-long document input, PDF layout understanding |
 | Local privacy | Kimi K2.6 / Qwen3-235B (self-hosted) | Data stays local, complete Agent capability, K2.6 is open-source |

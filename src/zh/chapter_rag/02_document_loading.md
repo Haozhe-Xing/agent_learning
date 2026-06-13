@@ -258,7 +258,7 @@ class TextSplitter:
         
         return split_recursive(text)
     
-    def split_by_tokens(self, text: str, model: str = "gpt-4.1") -> list[str]:
+    def split_by_tokens(self, text: str, model: str = "gpt-4o") -> list[str]:
         """按 Token 数量分割（更精确的控制）"""
         import tiktoken
         

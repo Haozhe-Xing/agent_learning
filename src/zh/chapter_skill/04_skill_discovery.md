@@ -106,7 +106,7 @@ agents = registry.discover_by_skill("数据分析")
 
 ![好的与差的技能描述对比](../svg/chapter_skill_04_good_bad_desc.svg)
 
-```
+```json
 ✅ 好的技能描述：
   {
     "name": "CSV 数据分析",

@@ -31,7 +31,7 @@ class AICodeAssistant:
     
     def __init__(self, project_path: str):
         self.project_path = project_path
-        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0)
+        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
         self.embeddings = OpenAIEmbeddings()
         
         # 初始化各组件

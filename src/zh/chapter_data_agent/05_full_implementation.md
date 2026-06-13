@@ -71,7 +71,7 @@ class SmartDataAnalyst:
     """智能数据分析 Agent"""
     
     def __init__(self, db_path: str):
-        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0)
+        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
         self.db = SafeDatabaseConnector(db_path)
         self.text2sql = TextToSQL(self.llm, self.db)
         self.analyzer = DataAnalyzer()

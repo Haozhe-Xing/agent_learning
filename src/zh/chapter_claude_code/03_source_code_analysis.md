@@ -369,7 +369,7 @@ const ANTI_DISTILLATION_CC = true; // 编译时常量
 | **Prompt 缓存策略** | 静态区/动态区分离，最大化 API 缓存命中，节省 90% 成本 |
 | **`getSystemPrompt()`** | 返回 `string[]` 数组，支持缓存分块；Promise.all 并行预取 |
 | **四类 Prompt 模块** | 身份类、行为契约类、风险治理类、工具使用类 |
-| **七层权限模式** | 5 个对外公开 + 2 个内部，`bypassPermissions` 极度危险 |
+| **七种权限模式** | 5 个对外公开 + 2 个内部，`bypassPermissions` 极度危险 |
 | **50 子命令漏洞** | 性能优化引入安全盲区，v2.1.90 已修复 |
 | **隐藏功能** | ULTRAPLAN（30分钟云端推理）、KAIROS（7×24常驻）、UNDERCOVER（隐形模式）|
 

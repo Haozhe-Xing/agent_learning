@@ -114,7 +114,7 @@ training_sample = {
 
 ### 来源二：基于强模型的自动合成（效率最高）
 
-用 GPT-4.1 / Claude Sonnet 4.5 等强模型批量生成轨迹数据，再经过过滤：
+用 GPT-4o / Claude Sonnet 4.5 等强模型批量生成轨迹数据，再经过过滤：
 
 ```python
 import asyncio
@@ -137,7 +137,7 @@ SYNTHESIS_SYSTEM_PROMPT = """你是一个数据合成专家。
 async def synthesize_trajectory(
     tools: list[dict],
     task: str,
-    model: str = "gpt-4.1"
+    model: str = "gpt-4o"
 ) -> dict | None:
     """用强模型合成一条 Agent 轨迹"""
     try:
@@ -581,7 +581,7 @@ Agentic-RL 目标：
 ```
 阶段一（1-2周）：数据构建
 ├── 定义你的工具集（10-50个工具是合适的起点）
-├── 用 GPT-4.1 合成 5000-10000 条基础轨迹
+├── 用 GPT-4o 合成 5000-10000 条基础轨迹
 ├── 过滤格式错误和明显错误的样本（保留 70-80%）
 └── 人工抽查 100 条，评估质量分布
 

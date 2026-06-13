@@ -280,7 +280,7 @@ class ANPRouter:
 
 > 公司 A 的客服 Agent ↕ （ANP 发现 + 身份验证） ↕ 公司 B 的物流 Agent ↕ （A2A 任务协作） ↕ 公司 C 的支付 Agent
 >
-> 场景：用户向公司 A 的客服**咨**询退货。客服 Agent 通过 ANP 发现公司 B 的物流 Agent 查询物流状态，再通过公司 C 的支付 Agent 处理退款——全程自动完成，无需人工干预。
+> 场景：用户向公司 A 的客服咨询退货。客服 Agent 通过 ANP 发现公司 B 的物流 Agent 查询物流状态，再通过公司 C 的支付 Agent 处理退款——全程自动完成，无需人工干预。
 
 ### 场景 2：去中心化 Agent 市场
 
@@ -290,7 +290,7 @@ class ANPRouter:
 
 > 智能家居 Agent 集群：温控 Agent / 照明 Agent / 安防 Agent / 能源 Agent，通过 ANP 组成自治网络，无需中央控制器：
 >
-> 安防 Agent 检测到异常 → 通知照明 Agent 开灯 → 通知能源 Agent 进入警**戒**模式
+> 安防 Agent 检测到异常 → 通知照明 Agent 开灯 → 通知能源 Agent 进入警戒模式
 
 ---
 

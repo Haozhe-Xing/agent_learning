@@ -183,7 +183,7 @@ if __name__ == "__main__":
 
 MCP Server 编写完成后，需要在客户端（Host）中注册才能使用。以 Claude Desktop 为例，只需在配置文件中指定 MCP Server 的启动命令和路径。Claude 会在启动时自动连接这些 Server，并在对话中展示可用的工具列表。
 
-```json
+```jsonc
 // ~/.config/claude/claude_desktop_config.json
 {
   "mcpServers": {

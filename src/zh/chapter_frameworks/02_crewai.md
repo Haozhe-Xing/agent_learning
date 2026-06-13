@@ -16,7 +16,7 @@ from crewai import Agent, Task, Crew, Process
 # ============================
 # 1. 定义 Agent（角色）
 # ============================
-# CrewAI 内置 LLM 支持，默认使用 OpenAI 模型（如 GPT-4.1）
+# CrewAI 内置 LLM 支持，默认使用 OpenAI 模型（如 GPT-4o）
 # 也可通过 llm 参数指定其他模型
 
 researcher = Agent(

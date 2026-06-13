@@ -48,7 +48,7 @@ client = OpenAI()
 class VideoUnderstandingAgent:
     """视频理解 Agent（截帧方案）"""
     
-    def __init__(self, model: str = "gpt-4.1"):
+    def __init__(self, model: str = "gpt-4o"):
         self.model = model
     
     def extract_key_frames(
@@ -324,7 +324,7 @@ class MultimodalDocumentProcessor:
             img_b64 = base64.b64encode(f.read()).decode()
         
         response = self.vision_client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{
                 "role": "user",
                 "content": [
@@ -403,7 +403,7 @@ class MultimodalRAG:
         context = "\n\n---\n\n".join(retrieved)
         
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{
                 "role": "user",
                 "content": f"""基于以下检索到的内容回答问题。
@@ -615,7 +615,7 @@ class ProductionMultimodalAgent:
         self.computer_use = SafeComputerUseAgent()    # 计算机操作
         
         # 编排层：统一入口
-        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0.7)
+        self.llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
     
     async def process(self, user_input: dict) -> dict:
         """处理多模态输入并返回多模态输出

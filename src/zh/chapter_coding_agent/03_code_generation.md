@@ -73,7 +73,7 @@ class CodeGenerator:
 
 # 使用示例
 async def demo():
-    llm = ChatOpenAI(model="gpt-4.1", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
     generator = CodeGenerator(llm)
     
     result = await generator.generate(

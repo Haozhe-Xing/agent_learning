@@ -296,7 +296,7 @@ class TextToSQL:
 ```python
 async def demo():
     db = SafeDatabaseConnector("sales.db")
-    llm = ChatOpenAI(model="gpt-4.1", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
     t2s = TextToSQL(llm, db)
     
     questions = [

@@ -319,7 +319,7 @@ class ResearchAssistant:
         # ===== 阶段1：规划研究 =====
         print("📋 阶段1：制定研究计划...")
         plan_response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
@@ -363,7 +363,7 @@ class ResearchAssistant:
         print("\n🧠 阶段3：分析综合...")
         
         analysis_response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
@@ -389,7 +389,7 @@ class ResearchAssistant:
         print("\n✅ 阶段4：质量检查...")
         
         review_response = client.chat.completions.create(
-            model="gpt-4.1-mini",
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "user",

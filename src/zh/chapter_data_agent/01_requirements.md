@@ -67,9 +67,9 @@ class AnalysisResult:
 ```python
 TECH_STACK = {
     "LLM 层": {
-        "推荐": "GPT-4.1",
+        "推荐": "GPT-4o",
         "原因": "SQL 生成准确率最高，代码理解能力强",
-        "备选": "GPT-4.1-mini（成本敏感场景）、Claude 4（长上下文分析）",
+        "备选": "GPT-4o-mini（成本敏感场景）、Claude 4（长上下文分析）",
     },
     "数据库连接层": {
         "推荐": "SQLAlchemy",

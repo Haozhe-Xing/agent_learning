@@ -120,7 +120,6 @@ results = collection.query(
 )
 print(results)
 
-import chromadb
 print(f"ChromaDB 版本：{chromadb.__version__}")
 ```
 

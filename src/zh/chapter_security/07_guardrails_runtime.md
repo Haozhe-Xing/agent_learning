@@ -32,7 +32,7 @@
 
 ### 三层 Guardrails 架构
 
-```
+```text
                     ┌──────────────────────────────────┐
                     │        输入 Guardrails            │
                     │  · 注入检测                       │
@@ -131,7 +131,7 @@ flow
 models:
   - type: main
     engine: openai
-    model: gpt-4.1-mini
+    model: gpt-4o-mini
 
 rails:
   # 输入 Guardrails：在用户消息到达 LLM 之前执行
@@ -170,7 +170,7 @@ instructions:
 
 ### 完整的 NeMo Guardrails 项目结构
 
-```
+```text
 my_guardrails_app/
 ├── config.yml          # 主配置
 ├── prompts.yml         # Prompt 模板
@@ -407,7 +407,7 @@ guard = Guard.from_pydantic(output_class=MovieReview)
 
 result = guard(
     messages=[{"role": "user", "content": "请评论电影《星际穿越》"}],
-    model="gpt-4.1",
+    model="gpt-4o",
     max_retries=3,  # 验证失败时自动重试
 )
 
@@ -457,7 +457,7 @@ rail_spec = """
 guard = Guard.from_rail_string(rail_spec)
 result = guard(
     messages=[{"role": "user", "content": "Python 是什么时候发布的？"}],
-    model="gpt-4.1-mini",
+    model="gpt-4o-mini",
 )
 
 print(result.validated_output)
@@ -516,7 +516,7 @@ class ProductDescription(BaseModel):
 guard = Guard.from_pydantic(output_class=ProductDescription)
 result = guard(
     messages=[{"role": "user", "content": "请描述我们的云服务产品"}],
-    model="gpt-4.1-mini",
+    model="gpt-4o-mini",
 )
 ```
 
@@ -1124,7 +1124,7 @@ class EnhancedPIIDetector:
 
 **Constitutional AI（宪法 AI）** 是 Anthropic 在 2022 年提出的方法，核心思想是让 AI 系统遵循一组"宪法原则"来约束自身行为。
 
-```
+```text
 Constitutional AI 的核心流程：
 
 1. 定义"宪法原则"（Constitutional Principles）

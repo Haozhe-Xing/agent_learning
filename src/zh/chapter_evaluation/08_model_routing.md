@@ -12,13 +12,13 @@
 
 | 模型 | 输入价格 (/1M tokens) | 输出价格 (/1M tokens) | 推理能力 | 速度 |
 |------|----------------------|----------------------|----------|------|
-| gpt-4.1 | $2.00 | $8.00 | 强 | 中 |
-| gpt-4.1-mini | $0.40 | $1.60 | 中 | 快 |
-| gpt-4.1-nano | $0.10 | $0.40 | 基础 | 最快 |
+| gpt-4o | $2.00 | $8.00 | 强 | 中 |
+| gpt-4o-mini | $0.40 | $1.60 | 中 | 快 |
+| gpt-4o-nano | $0.10 | $0.40 | 基础 | 最快 |
 
 假设一个 Agent 每天处理 10,000 次请求：
 
-- **全部用 gpt-4.1**：约 $100/天，月成本 $3,000
+- **全部用 gpt-4o**：约 $100/天，月成本 $3,000
 - **智能路由（70% 小模型 + 30% 大模型）**：约 $40/天，月成本 $1,200
 - **节省**：每月 $1,800，年节省 $21,600
 
@@ -96,22 +96,22 @@ class TaskProfile:
 
 # 定义模型档案
 MODELS = {
-    "gpt-4.1": ModelProfile(
-        name="gpt-4.1",
+    "gpt-4o": ModelProfile(
+        name="gpt-4o",
         input_cost_per_mtok=2.0,
         output_cost_per_mtok=8.0,
         avg_latency_ms=1500,
         quality_score=0.95
     ),
-    "gpt-4.1-mini": ModelProfile(
-        name="gpt-4.1-mini",
+    "gpt-4o-mini": ModelProfile(
+        name="gpt-4o-mini",
         input_cost_per_mtok=0.4,
         output_cost_per_mtok=1.6,
         avg_latency_ms=500,
         quality_score=0.85
     ),
-    "gpt-4.1-nano": ModelProfile(
-        name="gpt-4.1-nano",
+    "gpt-4o-nano": ModelProfile(
+        name="gpt-4o-nano",
         input_cost_per_mtok=0.1,
         output_cost_per_mtok=0.4,
         avg_latency_ms=200,
@@ -256,13 +256,13 @@ tasks = [
 ]
 
 # 策略 1：全部使用大模型
-strategy_all_large = {"gpt-4.1": 1.0}
+strategy_all_large = {"gpt-4o": 1.0}
 
 # 策略 2：全部使用中模型
-strategy_all_medium = {"gpt-4.1-mini": 1.0}
+strategy_all_medium = {"gpt-4o-mini": 1.0}
 
 # 策略 3：智能路由
-strategy_smart = {"gpt-4.1-nano": 0.4, "gpt-4.1-mini": 0.4, "gpt-4.1": 0.2}
+strategy_smart = {"gpt-4o-nano": 0.4, "gpt-4o-mini": 0.4, "gpt-4o": 0.2}
 
 strategies = {
     "全部大模型": strategy_all_large,
@@ -316,7 +316,7 @@ class StaticRouter:
                     len(query) < 50
                     and any(kw in query for kw in ["什么是", "多少", "什么时候"])
                 ),
-                "model": "gpt-4.1-nano"
+                "model": "gpt-4o-nano"
             },
             {
                 "name": "中等任务",
@@ -324,7 +324,7 @@ class StaticRouter:
                     len(query) < 200
                     or any(kw in query for kw in ["分析", "对比", "总结"])
                 ),
-                "model": "gpt-4.1-mini"
+                "model": "gpt-4o-mini"
             },
             {
                 "name": "复杂任务",
@@ -332,7 +332,7 @@ class StaticRouter:
                     len(query) >= 200
                     or any(kw in query for kw in ["规划", "设计", "优化"])
                 ),
-                "model": "gpt-4.1"
+                "model": "gpt-4o"
             },
         ]
 
@@ -341,7 +341,7 @@ class StaticRouter:
         for rule in self.rules:
             if rule["condition"](query):
                 return rule["model"]
-        return "gpt-4.1-mini"  # 默认中等模型
+        return "gpt-4o-mini"  # 默认中等模型
 ```
 
 **优点**：零成本、确定性、可解释。**缺点**：规则维护困难、无法处理边界情况。
@@ -354,12 +354,12 @@ class StaticRouter:
 class LLMRouter:
     """基于 LLM 的动态路由器"""
 
-    def __init__(self, router_model: str = "gpt-4.1-mini"):
+    def __init__(self, router_model: str = "gpt-4o-mini"):
         self.llm = ChatOpenAI(model=router_model, temperature=0)
         self.route_options = {
-            "simple": "gpt-4.1-nano",
-            "medium": "gpt-4.1-mini",
-            "complex": "gpt-4.1"
+            "simple": "gpt-4o-nano",
+            "medium": "gpt-4o-mini",
+            "complex": "gpt-4o"
         }
 
     def route(self, query: str, context: dict = None) -> dict:
@@ -383,7 +383,7 @@ class LLMRouter:
         try:
             result = json.loads(response.content)
             complexity = result.get("complexity", "medium")
-            model = self.route_options.get(complexity, "gpt-4.1-mini")
+            model = self.route_options.get(complexity, "gpt-4o-mini")
             return {
                 "model": model,
                 "complexity": complexity,
@@ -393,7 +393,7 @@ class LLMRouter:
             }
         except json.JSONDecodeError:
             return {
-                "model": "gpt-4.1-mini",
+                "model": "gpt-4o-mini",
                 "complexity": "medium",
                 "confidence": 0.0,
                 "reasoning": "路由解析失败，使用默认模型",
@@ -401,7 +401,7 @@ class LLMRouter:
             }
 
     def _estimate_router_cost(self, query: str) -> float:
-        """估算路由成本（基于 gpt-4.1-mini 价格）"""
+        """估算路由成本（基于 gpt-4o-mini 价格）"""
         input_tokens = len(query) // 4 + 150  # 粗略估算
         output_tokens = 50
         return (
@@ -440,7 +440,7 @@ class RoutingExample:
 class RouterTrainingDataGenerator:
     """生成路由模型的训练数据"""
 
-    def __init__(self, judge_model: str = "gpt-4.1"):
+    def __init__(self, judge_model: str = "gpt-4o"):
         self.llm = ChatOpenAI(model=judge_model, temperature=0)
 
     def generate_labels(
@@ -449,7 +449,7 @@ class RouterTrainingDataGenerator:
         models: list[str] = None
     ) -> list[RoutingExample]:
         """为一批查询生成最优模型标注"""
-        models = models or ["gpt-4.1-nano", "gpt-4.1-mini", "gpt-4.1"]
+        models = models or ["gpt-4o-nano", "gpt-4o-mini", "gpt-4o"]
 
         labeled_data = []
         for query in queries:
@@ -502,9 +502,9 @@ class RouterTrainingDataGenerator:
         """选择最优模型（平衡质量和成本）"""
         # 成本权重：小模型成本更低，可以容忍略低的质量
         cost_weights = {
-            "gpt-4.1-nano": 1.0,    # 最便宜，质量折扣少
-            "gpt-4.1-mini": 0.85,   # 中等
-            "gpt-4.1": 0.65,        # 最贵，质量折扣多
+            "gpt-4o-nano": 1.0,    # 最便宜，质量折扣少
+            "gpt-4o-mini": 0.85,   # 中等
+            "gpt-4o": 0.65,        # 最贵，质量折扣多
         }
 
         adjusted = {}
@@ -609,8 +609,8 @@ class SmartRouter:
     def __init__(
         self,
         strategy: RoutingStrategy = RoutingStrategy.LLM,
-        router_model: str = "gpt-4.1-mini",
-        fallback_model: str = "gpt-4.1",
+        router_model: str = "gpt-4o-mini",
+        fallback_model: str = "gpt-4o",
         min_confidence: float = 0.6
     ):
         self.strategy = strategy
@@ -621,17 +621,17 @@ class SmartRouter:
 
         # 模型配置
         self.models = {
-            "gpt-4.1": {
+            "gpt-4o": {
                 "cost_per_token": 10e-6,
                 "quality_tier": "high",
                 "max_tokens": 16384
             },
-            "gpt-4.1-mini": {
+            "gpt-4o-mini": {
                 "cost_per_token": 2e-6,
                 "quality_tier": "medium",
                 "max_tokens": 16384
             },
-            "gpt-4.1-nano": {
+            "gpt-4o-nano": {
                 "cost_per_token": 0.5e-6,
                 "quality_tier": "basic",
                 "max_tokens": 16384
@@ -698,7 +698,7 @@ class SmartRouter:
 
         if any(kw in query for kw in simple_keywords) and query_len < 100:
             return RoutingDecision(
-                selected_model="gpt-4.1-nano",
+                selected_model="gpt-4o-nano",
                 strategy=RoutingStrategy.STATIC,
                 confidence=0.7,
                 reasoning="简单查询，短文本",
@@ -707,7 +707,7 @@ class SmartRouter:
             )
         elif any(kw in query for kw in complex_keywords) or query_len > 500:
             return RoutingDecision(
-                selected_model="gpt-4.1",
+                selected_model="gpt-4o",
                 strategy=RoutingStrategy.STATIC,
                 confidence=0.6,
                 reasoning="复杂查询或长文本",
@@ -716,7 +716,7 @@ class SmartRouter:
             )
         else:
             return RoutingDecision(
-                selected_model="gpt-4.1-mini",
+                selected_model="gpt-4o-mini",
                 strategy=RoutingStrategy.STATIC,
                 confidence=0.7,
                 reasoning="中等复杂度查询",
@@ -733,21 +733,21 @@ class SmartRouter:
         prompt = f"""你是一个模型路由器。请判断处理以下查询应该使用哪个模型。
 
 可用模型：
-- gpt-4.1-nano：适合简单查询（事实查询、关键词提取、格式转换），成本最低
-- gpt-4.1-mini：适合中等查询（推理、搜索、工具调用），成本适中
-- gpt-4.1：适合复杂查询（深度推理、多步规划、创造性任务），成本最高
+- gpt-4o-nano：适合简单查询（事实查询、关键词提取、格式转换），成本最低
+- gpt-4o-mini：适合中等查询（推理、搜索、工具调用），成本适中
+- gpt-4o：适合复杂查询（深度推理、多步规划、创造性任务），成本最高
 
 查询：{query}{context_text}
 
 只回复 JSON：
-{{"model": "gpt-4.1-nano/gpt-4.1-mini/gpt-4.1", "confidence": 0.0-1.0, "reasoning": "简短理由"}}"""
+{{"model": "gpt-4o-nano/gpt-4o-mini/gpt-4o", "confidence": 0.0-1.0, "reasoning": "简短理由"}}"""
 
         response = self.llm.invoke(prompt)
         try:
             result = json.loads(response.content)
-            model = result.get("model", "gpt-4.1-mini")
+            model = result.get("model", "gpt-4o-mini")
             if model not in self.models:
-                model = "gpt-4.1-mini"
+                model = "gpt-4o-mini"
 
             # 估算路由成本
             router_input_tokens = len(query) // 4 + 200
@@ -767,7 +767,7 @@ class SmartRouter:
             )
         except json.JSONDecodeError:
             return RoutingDecision(
-                selected_model="gpt-4.1-mini",
+                selected_model="gpt-4o-mini",
                 strategy=RoutingStrategy.LLM,
                 confidence=0.0,
                 reasoning="路由解析失败",
@@ -779,7 +779,7 @@ class SmartRouter:
         """级联路由：先用小模型，不够再升级"""
         # 级联策略默认从最小的模型开始
         return RoutingDecision(
-            selected_model="gpt-4.1-nano",
+            selected_model="gpt-4o-nano",
             strategy=RoutingStrategy.CASCADE,
             confidence=0.5,
             reasoning="级联策略，从小模型开始",
@@ -864,8 +864,8 @@ def demo_router():
     """演示智能路由器"""
     router = SmartRouter(
         strategy=RoutingStrategy.LLM,
-        router_model="gpt-4.1-mini",
-        fallback_model="gpt-4.1",
+        router_model="gpt-4o-mini",
+        fallback_model="gpt-4o",
         min_confidence=0.6
     )
 
@@ -915,7 +915,7 @@ class CascadeRouter:
             confidence_key: 输出中表示置信度的字段
         """
         self.model_chain = model_chain or [
-            "gpt-4.1-nano", "gpt-4.1-mini", "gpt-4.1"
+            "gpt-4o-nano", "gpt-4o-mini", "gpt-4o"
         ]
         self.quality_threshold = quality_threshold
         self.confidence_key = confidence_key
@@ -976,7 +976,7 @@ class CascadeRouter:
 
 # 使用示例
 cascade = CascadeRouter(
-    model_chain=["gpt-4.1-nano", "gpt-4.1-mini", "gpt-4.1"],
+    model_chain=["gpt-4o-nano", "gpt-4o-mini", "gpt-4o"],
     quality_threshold=0.7
 )
 
@@ -1037,7 +1037,7 @@ class RouterEvaluator:
         self,
         router: SmartRouter,
         test_cases: list[dict],    # {query, optimal_model, quality_requirements}
-        judge_model: str = "gpt-4.1"
+        judge_model: str = "gpt-4o"
     ):
         self.router = router
         self.test_cases = test_cases
@@ -1053,14 +1053,14 @@ class RouterEvaluator:
 
         # 模型成本和质量的层级排序
         model_tier = {
-            "gpt-4.1-nano": 1,
-            "gpt-4.1-mini": 2,
-            "gpt-4.1": 3
+            "gpt-4o-nano": 1,
+            "gpt-4o-mini": 2,
+            "gpt-4o": 3
         }
         model_cost = {
-            "gpt-4.1-nano": 0.5e-6,
-            "gpt-4.1-mini": 2e-6,
-            "gpt-4.1": 10e-6
+            "gpt-4o-nano": 0.5e-6,
+            "gpt-4o-mini": 2e-6,
+            "gpt-4o": 10e-6
         }
 
         total_cost = 0
@@ -1087,10 +1087,10 @@ class RouterEvaluator:
             tokens = case.get("avg_tokens", 500)
             total_cost += tokens * model_cost.get(selected, 2e-6)
             optimal_cost += tokens * model_cost.get(optimal, 2e-6)
-            all_large_cost += tokens * model_cost["gpt-4.1"]
+            all_large_cost += tokens * model_cost["gpt-4o"]
 
             # 估算质量
-            model_quality = {"gpt-4.1-nano": 0.72, "gpt-4.1-mini": 0.85, "gpt-4.1": 0.95}
+            model_quality = {"gpt-4o-nano": 0.72, "gpt-4o-mini": 0.85, "gpt-4o": 0.95}
             quality_scores.append(model_quality.get(selected, 0.85))
 
         avg_quality = sum(quality_scores) / total if total > 0 else 0
@@ -1150,12 +1150,12 @@ customer_service_tasks = [
 # 创建路由器
 router = SmartRouter(
     strategy=RoutingStrategy.LLM,
-    router_model="gpt-4.1-mini"
+    router_model="gpt-4o-mini"
 )
 
 # 模拟路由决策
 total_cost = 0
-model_usage = {"gpt-4.1-nano": 0, "gpt-4.1-mini": 0, "gpt-4.1": 0}
+model_usage = {"gpt-4o-nano": 0, "gpt-4o-mini": 0, "gpt-4o": 0}
 
 for task in customer_service_tasks:
     # 根据复杂度选择查询模板
@@ -1171,9 +1171,9 @@ for task in customer_service_tasks:
 
     # 计算成本
     model_costs = {
-        "gpt-4.1-nano": 0.5e-6,
-        "gpt-4.1-mini": 2e-6,
-        "gpt-4.1": 10e-6
+        "gpt-4o-nano": 0.5e-6,
+        "gpt-4o-mini": 2e-6,
+        "gpt-4o": 10e-6
     }
     tokens = task["avg_input_tokens"] + task["avg_output_tokens"]
     cost = tokens * model_costs[decision.selected_model] * task["volume"]
@@ -1188,8 +1188,8 @@ print(f"模型分布：{model_usage}")
 
 | 策略 | 月成本 | 平均质量 | 节省比例 |
 |------|--------|----------|----------|
-| 全部 gpt-4.1 | $2,880 | 0.95 | 基线 |
-| 全部 gpt-4.1-mini | $576 | 0.85 | 80% |
+| 全部 gpt-4o | $2,880 | 0.95 | 基线 |
+| 全部 gpt-4o-mini | $576 | 0.85 | 80% |
 | 静态规则路由 | $920 | 0.87 | 68% |
 | LLM 智能路由 | $780 | 0.89 | 73% |
 | 级联路由 | $650 | 0.86 | 77% |

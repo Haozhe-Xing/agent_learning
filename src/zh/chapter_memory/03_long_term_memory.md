@@ -303,7 +303,7 @@ class MemoryExtractor:
             return memories if isinstance(memories, list) else []
         except:
             return []
-
+```
 
 # ============================
 # 测试

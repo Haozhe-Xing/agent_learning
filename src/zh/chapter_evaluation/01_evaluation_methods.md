@@ -277,7 +277,7 @@ evaluator.add_rule(
 # 检查是否包含代码块（如果是编程问题）
 evaluator.add_rule(
     "包含代码",
-    lambda output, ctx: "```" in output if ctx.get("type") == "coding" else True,
+    lambda output, ctx: "\`\`\`" in output if ctx.get("type") == "coding" else True,
     weight=1.0
 )
 
@@ -301,7 +301,7 @@ from langchain_openai import ChatOpenAI
 class LLMJudge:
     """用 LLM 作为评审"""
     
-    def __init__(self, model: str = "gpt-4.1"):
+    def __init__(self, model: str = "gpt-4o"):
         self.llm = ChatOpenAI(model=model, temperature=0)
     
     def evaluate(

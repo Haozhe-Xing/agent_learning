@@ -4,7 +4,7 @@ A2A（Agent-to-Agent）是 Google 于 2025 年 4 月在 Google Cloud Next 大会
 
 ## A2A 的设计目标
 
-```
+```text
 A2A 解决的问题：
 - 不同公司/团队开发的 Agent 如何互相调用？
 - 如何标准化 Agent 能力的声明和发现？

@@ -20,8 +20,8 @@
 
 | 模型 | 上下文窗口 | 约等于 | 典型应用场景 |
 |------|-----------|--------|------------|
-| GPT-4.1-mini | 1M tokens | ~750,000 汉字 | 简单对话、成本敏感任务 |
-| GPT-4.1 / Claude Sonnet 4.5 | 1M tokens | ~750,000 汉字 | 复杂 Agent 任务、长文档分析 |
+| GPT-4o-mini | 1M tokens | ~750,000 汉字 | 简单对话、成本敏感任务 |
+| GPT-4o / Claude Sonnet 4.5 | 1M tokens | ~750,000 汉字 | 复杂 Agent 任务、长文档分析 |
 | Gemini 2.5 Pro | 2M tokens | ~1,500,000 汉字 | 超长上下文分析（当前最长）|
 | Claude 3.5 Sonnet | 200K tokens | ~150,000 汉字 | 完整代码库分析、深度研究 |
 | Gemini 1.5 Pro | 1M tokens | ~750,000 汉字 | 超长视频/音频理解 |

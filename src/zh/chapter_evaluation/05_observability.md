@@ -107,7 +107,7 @@ class AgentLogger:
 logger = AgentLogger("customer_service", log_file="agent.log")
 
 logger.log_llm_call(
-    model="gpt-4.1",
+    model="gpt-4o",
     prompt="用户问：我的订单到哪了？",
     response="让我帮您查询一下订单状态...",
     tokens={"input": 150, "output": 80},
@@ -348,7 +348,7 @@ os.environ["LANGCHAIN_PROJECT"] = "my-agent-project"
 # 之后所有 LangChain 调用都会自动被追踪
 from langchain_openai import ChatOpenAI
 
-llm = ChatOpenAI(model="gpt-4.1")
+llm = ChatOpenAI(model="gpt-4o")
 response = llm.invoke("你好")
 # 这次调用的详细信息（输入、输出、延迟、Token）
 # 会自动出现在 LangSmith 的 Web 界面上
@@ -416,7 +416,7 @@ trace = langfuse.trace(
 # 记录 LLM 调用
 generation = trace.generation(
     name="intent_classification",
-    model="gpt-4.1",
+    model="gpt-4o",
     input=[{"role": "user", "content": "我的订单到哪了？"}],
     output={"intent": "order_query", "confidence": 0.95},
     usage={"prompt_tokens": 45, "completion_tokens": 12, "total_tokens": 57},
@@ -434,7 +434,7 @@ tool_span = trace.span(
 # 记录最终回复
 final_generation = trace.generation(
     name="generate_reply",
-    model="gpt-4.1",
+    model="gpt-4o",
     input=[{"role": "system", "content": "根据查询结果生成友好回复"}],
     output="您的订单已发货，预计明天下午送达。",
     usage={"prompt_tokens": 120, "completion_tokens": 35, "total_tokens": 155},
@@ -617,7 +617,7 @@ def handle_user_query(query: str) -> str:
     with otel_tracer.trace_agent_request(query, "customer_service") as req_span:
         # 步骤 1：意图分类
         with otel_tracer.trace_llm_call(
-            req_span, "gpt-4.1-mini", 45, 12, 320
+            req_span, "gpt-4o-mini", 45, 12, 320
         ):
             intent = classify_intent(query)
 
@@ -631,7 +631,7 @@ def handle_user_query(query: str) -> str:
 
         # 步骤 3：生成回复
         with otel_tracer.trace_llm_call(
-            req_span, "gpt-4.1", 120, 35, 480
+            req_span, "gpt-4o", 120, 35, 480
         ):
             reply = generate_reply(query, order_info)
 
@@ -660,7 +660,7 @@ LangChainInstrumentor().instrument()
 
 # 所有 LangChain 调用都会自动出现在 Phoenix UI 中
 from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model="gpt-4.1")
+llm = ChatOpenAI(model="gpt-4o")
 result = llm.invoke("你好")
 
 # 查看 Phoenix UI

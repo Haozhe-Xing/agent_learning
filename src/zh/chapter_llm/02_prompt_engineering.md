@@ -175,7 +175,7 @@ def extract_features(text: str) -> dict:
     # 关键：用 XML 分隔符把"不可控的外部文本"和"系统指令"隔离开
     user_content = f"<input>\n{text}\n</input>"
     resp = client.chat.completions.create(
-        model="gpt-4.1-mini",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_content},

@@ -8,31 +8,32 @@
 
 完成本章学习后，你将能够：
 
-- ✅ 深入理解 MCP（Model Context Protocol）的设计与使用，能实现 Server 和 Client
+- ✅ 深入理解 MCP（Model Context Protocol）的设计与使用
 - ✅ 了解 A2A（Agent-to-Agent）和 ANP（Agent Network Protocol）协议
 - ✅ 掌握 Agent 间消息传递和状态共享的实现方式
 - ✅ 完成基于 MCP 的工具集成实战项目
 
 ## ⏱️ 预计学习时间
 
-约 **90-120 分钟**（含实战练习）
+约 **90-120 分钟**（含实战）
 
 ## 💡 前置知识
 
 - 完成第3章（工具调用）和第15章（多 Agent 协作）
-- 了解 HTTP 协议、JSON-RPC 的基本概念
-- Python 异步编程（`asyncio`）基础
+- 了解 HTTP 协议和 JSON-RPC 的基本概念
 
-## 📚 本章结构
+## 本章概览
 
-随着 Agent 生态的快速发展，标准化的通信协议变得越来越重要。MCP（Model Context Protocol）定义了 Agent 与工具/数据源的连接标准，而 A2A（Agent-to-Agent）、ANP（Agent Network Protocol）则规范了 Agent 之间的交互方式。本章深入讲解这些协议的设计理念和实战应用。
+随着 Agent 生态的快速发展，标准化的通信协议变得越来越重要。MCP（Model Context Protocol）定义了 Agent 与工具/数据源的连接标准，而 A2A（Agent-to-Agent）协议则规范了 Agent 之间的交互方式。本章深入讲解这些协议的设计理念和实战应用。
+
+## 本章结构
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
 | 16.1 MCP 协议详解 | Model Context Protocol 的设计与实现 | ⭐⭐⭐ |
 | 16.2 A2A 协议 | Agent-to-Agent 通信标准 | ⭐⭐⭐ |
 | 16.3 ANP 协议 | Agent Network Protocol | ⭐⭐⭐ |
-| 16.4 Agent 间消息传递 | 消息传递与状态共享 | ⭐⭐⭐ |
+| 16.4 Agent 间消息传递 | 实践中的通信模式 | ⭐⭐⭐ |
 | 16.5 实战：基于 MCP 的工具集成 | 完整实现 | ⭐⭐⭐⭐ |
 
 ## 🔗 学习路径

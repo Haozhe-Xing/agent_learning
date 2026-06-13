@@ -33,7 +33,7 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第1章 什么是 Agent？](../chapter_intro/README.md)、[附录 F：开发环境搭建](../chapter_setup/README.md)
+> **相关章节**：[第1章 什么是 Agent？](../chapter_intro/README.md)、[附录 F：开发环境搭建](../chapter_setup/README.md)
 >
 > **后续推荐**：
 > - 👉 [第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md) — Agent 的核心能力

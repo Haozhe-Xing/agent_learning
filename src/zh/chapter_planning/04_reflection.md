@@ -28,7 +28,7 @@ class ReflectiveAgent:
     def generate(self, task: str, context: str = "") -> str:
         """生成初始答案"""
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": context or "你是一个专业助手"},
                 {"role": "user", "content": task}
@@ -46,7 +46,7 @@ class ReflectiveAgent:
         criteria_text = "\n".join([f"- {c}" for c in criteria])
         
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
@@ -83,7 +83,7 @@ class ReflectiveAgent:
         failed = "\n".join([f"- {c}" for c in feedback.get("failed_criteria", [])])
         
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
@@ -192,7 +192,7 @@ def self_correcting_code_generator(requirement: str) -> str:
         
         # 生成代码
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
@@ -241,7 +241,7 @@ def self_correcting_code_generator(requirement: str) -> str:
                 
                 # 修复错误
                 fix_response = client.chat.completions.create(
-                    model="gpt-4.1",
+                    model="gpt-4o",
                     messages=[
                         {
                             "role": "user",

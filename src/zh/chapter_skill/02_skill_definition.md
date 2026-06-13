@@ -16,7 +16,7 @@
 
 一个 Skill 的目录结构：
 
-```
+```text
 my-skill/
 ├── SKILL.md          # 技能定义文件（核心）
 ├── examples/         # 示例文件（可选）
@@ -67,7 +67,7 @@ description: 专业的数据分析技能，能够自动完成数据清洗、分�
 
 技能可以嵌套和组合，形成层级结构：
 
-```
+```text
 项目级技能/
 ├── SKILL.md                    # 项目总技能
 ├── code-review/

@@ -65,7 +65,7 @@ class MixtureOfExperts:
 | **Kimi K2.6** | 1T | 32B | K2 升级版，13 小时编码，300 子智能体并行，SWE-bench Pro 58.6% |
 | **Kimi K2** | 1T | 32B | MuonClip 优化器，万亿参数开源 MoE |
 | **Qwen3.6-35B-A3B** | 35B | 3B | 2026.04 发布，轻量 MoE，极致效率 |
-| **Llama 4 Maverick** | ~400B | 17B | 128 专家，原生多模态，文本生成超越 GPT-4.1 |
+| **Llama 4 Maverick** | ~400B | 17B | 128 专家，原生多模态，文本生成超越 GPT-4o |
 | **Qwen3-235B-A22B** | 235B | 22B | 混合推理，Apache 2.0，登顶开源榜 |
 | **Qwen3-30B-A3B** | 30B | 3B | 轻量 MoE，单卡可跑 |
 | **DeepSeek-V3** | 671B | 37B | MoE 架构，557 万美元训练成本，性价比之王 |
@@ -84,7 +84,7 @@ class MixtureOfExperts:
 - **Kimi K2**（Moonshot AI，2025.07）：1T 总参/32B 激活 MoE，MuonClip 优化器训练效率翻倍，开源 Agent 能力 SOTA，兼容 OpenAI/Anthropic API
 - **Qwen3-235B-A22B**（阿里，2025.04）：235B MoE 混合推理，性能超越 DeepSeek-R1 和 o1，Apache 2.0
 - **DeepSeek-V3-0324**（DeepSeek，2025.03）：685B MoE，编程能力超越 Claude 3.7，开源协议更宽松
-- **Llama 4 Maverick**（Meta，2025.04）：~400B MoE 多模态，文本生成超越 GPT-4.1
+- **Llama 4 Maverick**（Meta，2025.04）：~400B MoE 多模态，文本生成超越 GPT-4o
 
 **第二梯队（轻量高效，单卡可跑）**：
 - **Qwen3.6-35B-A3B**（阿里，2026.04）：35B 总参/3B 激活，轻量 MoE，极致效率
@@ -162,7 +162,7 @@ response = client.chat.completions.create(
 | **GPT-5** | 2025.08 | 文本+图像+音频 | 文本+图像+音频 | 实时语音对话，原生图像生成，Computer Use |
 | **Claude Opus 4.6** | 2026.02 | 文本+图像+PDF | 文本 | 1M 上下文（Beta），企业级 Agent 工作流 |
 | **Gemini 2.5 Pro** | 2025.03 | 文本+图像+视频+音频 | 文本+图像 | 原生视频理解，1M 上下文，推理预算控制 |
-| **Llama 4 Maverick** | 2025.04 | 文本+图像 | 文本 | 开源多模态 MoE，文本生成超越 GPT-4.1 |
+| **Llama 4 Maverick** | 2025.04 | 文本+图像 | 文本 | 开源多模态 MoE，文本生成超越 GPT-4o |
 | **Gemma 4-31B** | 2026.04 | 文本+图像+视频 | 文本 | Apache 2.0，Arena 全球开源前三 |
 | **Gemma 4-E2B/E4B** | 2026.04 | 文本+图像+音频 | 文本 | 手机可跑，Apache 2.0，原生音视频 |
 | **Phi-4-multimodal** | 2025.02 | 文本+图像+语音 | 文本 | 仅 5.6B 参数，统一多模态架构 |
@@ -230,7 +230,7 @@ def select_model(requirements: dict) -> str:
             return "DeepSeek-V3 API / o4-mini"  # 性价比推理
     
     if budget < 50:
-        return "DeepSeek-V3 API / GPT-4.1-mini"  # 极致性价比
+        return "DeepSeek-V3 API / GPT-4o-mini"  # 极致性价比
     
     return "GPT-5 / Claude Sonnet 4"  # 通用均衡之选
 ```
@@ -241,7 +241,7 @@ def select_model(requirements: dict) -> str:
 |-----------|---------|------|
 | 编程助手 | Claude Opus 4.7 / Kimi K2.6 | SWE-bench 双料第一，K2.6 性价比极高（Opus 4.6 的 1/8） |
 | 数据分析 | GPT-5.4 / Gemini 2.5 Pro | 多模态理解 + 函数调用稳定 |
-| 客服对话 | GPT-4.1-mini / Qwen3-8B | 成本敏感，响应速度要求高 |
+| 客服对话 | GPT-4o-mini / Qwen3-8B | 成本敏感，响应速度要求高 |
 | 深度研究 | Claude Opus 4.6 / GPT-5.4 | 1M 上下文 + 深度推理 |
 | 文档处理 | Gemini 2.5 Pro / Claude Opus 4.6 | 1M 超长文档输入，PDF 布局理解 |
 | 本地隐私 | Kimi K2.6 / Qwen3-235B (自部署) | 数据不出本地，Agent 能力完整，K2.6 开源 |
@@ -262,7 +262,7 @@ def select_model(requirements: dict) -> str:
 2025.04  o3 / o4-mini ── OpenAI 多模态推理，首次"看图思考"
 2025.04  Qwen3 ── 阿里混合推理全系列（0.6B~235B），Apache 2.0
 2025.05  Claude 4 (Opus 4 / Sonnet 4) ── 连续编程 7 小时，SWE-bench 72.5%
-2025.05  GPT-4.1 ── 100 万 token 上下文，编程能力大幅提升
+2025.05  GPT-4o ── 100 万 token 上下文，编程能力大幅提升
 2025.07  Kimi K2 ── 月之暗面万亿参数开源 MoE，MuonClip 优化器
 2025.08  GPT-5 ── OpenAI 统一系统架构，内置推理路由，SWE-bench 75%
 ━━━━━━━━━━━━━━━━━━━━━━━━ 2026 年 ━━━━━━━━━━━━━━━━━━━━━━━━

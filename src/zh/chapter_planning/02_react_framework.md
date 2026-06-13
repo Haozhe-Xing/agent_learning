@@ -116,7 +116,7 @@ class ReActAgent:
         for step in range(max_steps):
             # 调用 LLM
             response = client.chat.completions.create(
-                model="gpt-4.1",
+                model="gpt-4o",
                 messages=messages,
                 stop=["观察："],  # 在"观察："前停止，等待工具执行
                 max_tokens=500

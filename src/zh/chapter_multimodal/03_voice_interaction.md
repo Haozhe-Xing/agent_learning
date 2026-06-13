@@ -371,7 +371,7 @@ class VoiceSentimentAnalyzer:
 转录文本：{transcript.text}"""
         
         response = self.client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{"role": "user", "content": analysis_prompt}],
             response_format={"type": "json_object"}
         )

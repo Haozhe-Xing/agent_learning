@@ -361,7 +361,7 @@ class SearchCalcAgent:
         while self.step_count < MAX_STEPS:
             # 调用 LLM
             response = client.chat.completions.create(
-                model="gpt-4.1",
+                model="gpt-4o",
                 messages=self.messages,
                 tools=TOOLS,
                 tool_choice="auto",
@@ -489,7 +489,7 @@ python search_calc_agent.py --demo
 
 ## 示例对话
 
-```
+```json
 💬 你：地球和月球之间的距离是多少？如果用光速飞行需要多少秒？
 
 🔧 工具调用 #1

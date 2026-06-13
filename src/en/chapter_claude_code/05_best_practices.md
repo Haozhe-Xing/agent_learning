@@ -120,10 +120,10 @@ The reason is "context anxiety" — when the model faces a massive number of rul
 
 # ✅ Correct: main file as a table of contents, details split out
 ## Architecture Constraints
-Core rules here (10 lines); full explanation at [docs/architecture.md](./docs/architecture.md)
+Core rules here (10 lines); full explanation at docs/architecture.md（见 `./docs/architecture.md`）
 
 ## Code Style
-See [.eslintrc.js](./.eslintrc.js) and [docs/code-style.md](./docs/code-style.md)
+See [.eslintrc.js](./.eslintrc.js) and docs/code-style.md（见 `./docs/code-style.md`）
 ```
 
 **Golden rule**: Keep the CLAUDE.md main file to 150–300 lines; use links to reference detailed documentation.
@@ -221,9 +221,9 @@ _Last updated: 2026-04-01 | Scope: All AI Agents working in this codebase_
 **Project**: [Project Name]  
 **Tech Stack**: TypeScript 5.3 / Node.js 20 / PostgreSQL 15 / Prisma / Jest  
 **Documentation Index**:
-- Architecture design: [docs/architecture.md](./docs/architecture.md)
-- API specification: [docs/api-spec.md](./docs/api-spec.md)
-- Testing strategy: [docs/testing.md](./docs/testing.md)
+- Architecture design: docs/architecture.md（见 `./docs/architecture.md`）
+- API specification: docs/api-spec.md（见 `./docs/api-spec.md`）
+- Testing strategy: docs/testing.md（见 `./docs/testing.md`）
 
 ---
 

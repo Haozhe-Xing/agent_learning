@@ -13,7 +13,7 @@
 ```
 # 模型实际输出的各种"意外"
 
-✗ 有 Markdown 包裹：```json { "key": "value" } ```
+✗ 有 Markdown 包裹：\`\`\`json { "key": "value" } \`\`\`
 ✗ 末尾多余文字：{"key": "value"} 以上是分析结果
 ✗ 单引号代替双引号：{'key': 'value'}
 ✗ 注释（JSON 不支持）：{"key": "value" // 这是注释}
@@ -332,7 +332,7 @@ class ExtractionResult(BaseModel):
 
 # ── 调用 API，使用 parse() 方法直接得到 Pydantic 对象 ──
 response = client.beta.chat.completions.parse(
-    model="gpt-4.1",   # 支持 Structured Outputs 的版本
+    model="gpt-4o",   # 支持 Structured Outputs 的版本
     messages=[
         {"role": "system", "content": "你是一个信息提取助手，从文本中提取人员信息。"},
         {"role": "user", "content": "张三，男，28岁，邮箱 zhangsan@example.com。李四，35岁。"},
@@ -656,7 +656,7 @@ def extract_with_retry(
     text: str,
     schema_class: type[BaseModel],
     max_retries: int = 3,
-    model: str = "gpt-4.1-mini",
+    model: str = "gpt-4o-mini",
 ) -> BaseModel:
     """
     带重试的结构化提取
@@ -786,7 +786,7 @@ class StructuredOutputHarness(Generic[T]):
         self,
         schema_class: Type[T],
         backend: OutputBackend = OutputBackend.OPENAI,
-        model: str = "gpt-4.1",
+        model: str = "gpt-4o",
         max_retries: int = 3,
         retry_delay: float = 0.5,
     ):
@@ -945,7 +945,7 @@ class SentimentAnalysis(BaseModel):
 harness = StructuredOutputHarness(
     SentimentAnalysis,
     backend=OutputBackend.OPENAI,
-    model="gpt-4.1-mini",
+    model="gpt-4o-mini",
     max_retries=3,
 )
 

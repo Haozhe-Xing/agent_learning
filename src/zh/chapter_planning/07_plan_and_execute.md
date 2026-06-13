@@ -37,7 +37,7 @@ client = OpenAI()
 class PlanAndExecuteAgent:
     """Plan-and-Execute Agent"""
     
-    def __init__(self, model: str = "gpt-4.1", max_replans: int = 3):
+    def __init__(self, model: str = "gpt-4o", max_replans: int = 3):
         self.model = model
         self.max_replans = max_replans
     
@@ -161,7 +161,7 @@ class PlanAndExecuteAgent:
         expected = last["step"].get("expected_output", "")
         
         response = client.chat.completions.create(
-            model="gpt-4.1-mini",  # 用小模型做判断，节省成本
+            model="gpt-4o-mini",  # 用小模型做判断，节省成本
             messages=[{
                 "role": "user",
                 "content": f"""判断执行结果是否偏离预期。
@@ -419,7 +419,7 @@ class AdaptiveReasoningAgent:
         "hard": {"max_thinking_tokens": 8000, "strategy": "search"},
     }
     
-    def __init__(self, model: str = "gpt-4.1"):
+    def __init__(self, model: str = "gpt-4o"):
         self.model = model
     
     def run(self, question: str) -> dict:
@@ -449,7 +449,7 @@ class AdaptiveReasoningAgent:
     def _assess_difficulty(self, question: str) -> str:
         """评估问题难度"""
         response = client.chat.completions.create(
-            model="gpt-4.1-mini",
+            model="gpt-4o-mini",
             messages=[{
                 "role": "user",
                 "content": f"""评估以下问题的难度等级：
@@ -626,7 +626,7 @@ class MCTSReasoningAgent:
     def _expand(self, node: MCTSNode, problem: str):
         """扩展：为节点生成候选推理步骤"""
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{
                 "role": "user",
                 "content": f"""问题：{problem}
@@ -656,7 +656,7 @@ class MCTSReasoningAgent:
     def _simulate(self, node: MCTSNode, problem: str) -> float:
         """模拟：从当前节点快速推演到终点，评估质量"""
         response = client.chat.completions.create(
-            model="gpt-4.1-mini",  # 用小模型快速模拟
+            model="gpt-4o-mini",  # 用小模型快速模拟
             messages=[{
                 "role": "user",
                 "content": f"""基于以下推理路径，快速判断是否能解决问题。

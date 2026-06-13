@@ -18,7 +18,7 @@ def structured_thinking(question: str) -> str:
     system_prompt = """请使用结构化分析：
     1. 【问题拆解】...
     2. 【推理步骤】...
-    3. 【自我验证】... # 在这里尝试增加检查是否存在逻辑跳跃的检查逻辑
+    3. 【自我验证】... # Try adding logic to check for logical leaps here
     """
     # ...
 ```
@@ -50,7 +50,7 @@ class OODAAgent:
 3. 可能的障碍
 """
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}]
         )
         observation = response.choices[0].message.content
@@ -69,7 +69,7 @@ class OODAAgent:
 3. 主要的风险和挑战是什么？
 """
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}]
         )
         orientation = response.choices[0].message.content
@@ -88,7 +88,7 @@ class OODAAgent:
 3. 执行步骤（按优先级排序）
 """
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}]
         )
         decision = response.choices[0].message.content
@@ -98,7 +98,7 @@ class OODAAgent:
     def act(self, plan: str, user_input: str) -> str:
         """行动：执行计划并生成最终响应"""
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
@@ -127,7 +127,7 @@ def metacognitive_reasoning(problem: str) -> dict:
     """元认知推理：Agent 能评估自己的置信度和局限性"""
     
     response = client.chat.completions.create(
-        model="gpt-4.1",
+        model="gpt-4o",
         messages=[
             {
                 "role": "system",

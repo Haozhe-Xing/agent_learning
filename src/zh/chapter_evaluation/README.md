@@ -37,7 +37,7 @@ Agent 开发不是"写完代码就完了"——你需要衡量它的表现，找
 
 ## 🔗 学习路径
 
-> **前置知识**：[第11章 LangChain 深入实战](../chapter_langchain/README.md)
+> **相关章节**：[第11章 LangChain 深入实战](../chapter_langchain/README.md)
 >
 > **后续推荐**：
 > - 👉 [第18章 安全与可靠性](../chapter_security/README.md) — 安全也是"质量"的一部分

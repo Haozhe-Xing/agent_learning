@@ -107,7 +107,7 @@ class ABTestFramework:
         self,
         agent_factory_a: Callable,
         agent_factory_b: Callable,
-        judge_model: str = "gpt-4.1"
+        judge_model: str = "gpt-4o"
     ):
         """
         Args:
@@ -375,7 +375,7 @@ PROMPT_B = """你是一个专业的客服助手。回答用户问题时请遵循
 
 def create_agent_a():
     """创建变体 A 的 Agent"""
-    llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     prompt = ChatPromptTemplate.from_messages([
         ("system", PROMPT_A),
         ("human", "{input}")
@@ -395,7 +395,7 @@ def create_agent_a():
 
 def create_agent_b():
     """创建变体 B 的 Agent"""
-    llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     prompt = ChatPromptTemplate.from_messages([
         ("system", PROMPT_B),
         ("human", "{input}")
@@ -439,8 +439,8 @@ test_cases = [
 config = ABTestConfig(
     name="客服 Prompt 优化测试",
     description="对比简洁版和详细版 Prompt 的客服质量",
-    variant_a_config={"prompt": "简洁版", "model": "gpt-4.1-mini"},
-    variant_b_config={"prompt": "详细版", "model": "gpt-4.1-mini"},
+    variant_a_config={"prompt": "简洁版", "model": "gpt-4o-mini"},
+    variant_b_config={"prompt": "详细版", "model": "gpt-4o-mini"},
     confidence_level=0.95
 )
 
@@ -448,7 +448,7 @@ config = ABTestConfig(
 framework = ABTestFramework(
     agent_factory_a=create_agent_a,
     agent_factory_b=create_agent_b,
-    judge_model="gpt-4.1"
+    judge_model="gpt-4o"
 )
 
 result = framework.run_test(test_cases, config)
@@ -499,7 +499,7 @@ class RegressionTestSuite:
     def __init__(
         self,
         agent_factory: Callable,
-        judge_model: str = "gpt-4.1"
+        judge_model: str = "gpt-4o"
     ):
         self.agent_factory = agent_factory
         self.judge_llm = ChatOpenAI(model=judge_model, temperature=0)
@@ -685,7 +685,7 @@ agent_factory = create_agent_a  # 使用你的 Agent 工厂函数
 
 suite = RegressionTestSuite(
     agent_factory=agent_factory,
-    judge_model="gpt-4.1"
+    judge_model="gpt-4o"
 )
 
 # 注册测试用例

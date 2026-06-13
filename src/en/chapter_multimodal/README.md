@@ -35,7 +35,7 @@ In previous chapters, all the Agents we built only processed text. But in the re
 After completing this chapter, you will be able to:
 
 - ✅ Understand the core capabilities and application scenarios of multimodal models
-- ✅ Implement image understanding and analysis with GPT-4.1
+- ✅ Implement image understanding and analysis with GPT-4o
 - ✅ Implement image generation with DALL-E
 - ✅ Integrate speech recognition (STT) and text-to-speech (TTS)
 - ✅ Build a complete multimodal personal assistant Agent
@@ -47,7 +47,7 @@ After completing this chapter, you will be able to:
 | Section | Content | Difficulty |
 |---------|---------|-----------|
 | 22.1 Multimodal Capabilities Overview | Capabilities and application scenarios of multimodal models | ⭐⭐ |
-| 22.2 Image Understanding and Generation | GPT-4.1 analyzes images, DALL-E generates images | ⭐⭐⭐ |
+| 22.2 Image Understanding and Generation | GPT-4o analyzes images, DALL-E generates images | ⭐⭐⭐ |
 | 22.3 Voice Interaction Integration | Speech recognition and text-to-speech | ⭐⭐⭐ |
 | 22.4 Practice: Multimodal Personal Assistant | Build a complete multimodal Agent | ⭐⭐⭐⭐ |
 | 22.5 Computer Use and GUI Agents | Let Agents operate computers and browsers | ⭐⭐⭐⭐ |

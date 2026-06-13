@@ -59,13 +59,13 @@ The OpenAI team found that a 5,000-line `AGENTS.md` actually performs worse than
 
 ```markdown
 ## Architecture Overview
-See [docs/architecture.md](./docs/architecture.md)
+See docs/architecture.md（见 `./docs/architecture.md`）
 
 ## API Conventions
-See [docs/api-conventions.md](./docs/api-conventions.md)
+See docs/api-conventions.md（见 `./docs/api-conventions.md`）
 
 ## Testing Guide  
-See [docs/testing-guide.md](./docs/testing-guide.md)
+See docs/testing-guide.md（见 `./docs/testing-guide.md`）
 ```
 
 ### Principle 3: Prescribe Behavior, Not Describe State
@@ -99,9 +99,9 @@ _Last updated: 2026-03-01 | Applies to: All AI Agents working on this codebase_
 **Core Function**: [One-sentence description]  
 **Tech Stack**: Python 3.11 / FastAPI / PostgreSQL / Redis / Docker  
 **Documentation Index**:
-- Architecture docs: [docs/architecture.md](./docs/architecture.md)
-- API spec: [docs/api-spec.md](./docs/api-spec.md)
-- Database schema: [docs/schema.md](./docs/schema.md)
+- Architecture docs: docs/architecture.md（见 `./docs/architecture.md`）
+- API spec: docs/api-spec.md（见 `./docs/api-spec.md`）
+- Database schema: docs/schema.md（见 `./docs/schema.md`）
 
 ---
 
@@ -281,7 +281,7 @@ The payment module integrates three payment channels: WeChat Pay V3, Alipay V2, 
 - Forbidden: directly modifying completed records in the payment_records table
 
 ## Payment Channel Integration Testing
-See [docs/payment-integration-guide.md](../../docs/payment-integration-guide.md)
+See `docs/payment-integration-guide.md`
 ```
 
 ---

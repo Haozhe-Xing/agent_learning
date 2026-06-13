@@ -31,7 +31,7 @@ class PlanAndExecuteAgent:
             [{"step": 1, "task": "...", "tool": "...", "depends_on": []}]
         """
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
@@ -71,7 +71,7 @@ class PlanAndExecuteAgent:
         if tool_name and tool_name in self.tools:
             # 让 LLM 决定工具参数
             param_response = client.chat.completions.create(
-                model="gpt-4.1-mini",
+                model="gpt-4o-mini",
                 messages=[
                     {
                         "role": "user",
@@ -91,7 +91,7 @@ class PlanAndExecuteAgent:
         else:
             # 直接用 LLM 处理
             response = client.chat.completions.create(
-                model="gpt-4.1",
+                model="gpt-4o",
                 messages=[
                     {
                         "role": "system",
@@ -122,7 +122,7 @@ class PlanAndExecuteAgent:
         
         # 3. 汇总结果
         summary_response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "user",
@@ -183,7 +183,7 @@ def hierarchical_decompose(task: str, depth: int = 2) -> dict:
     """
     
     response = client.chat.completions.create(
-        model="gpt-4.1",
+        model="gpt-4o",
         messages=[
             {
                 "role": "system",
