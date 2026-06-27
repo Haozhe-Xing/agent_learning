@@ -25,11 +25,9 @@ def zero_shot_classify(text: str) -> str:
             {
                 "role": "user",
                 "content": f"""
-对以下评论进行情感分类，只返回：正面、负面、中性 之一。
-
-评论：{text}
-
-分类结果："""
+						对以下评论进行情感分类，只返回：正面、负面、中性 之一。
+						评论：{text}
+						分类结果："""
             }
         ]
     )
@@ -72,9 +70,11 @@ def few_shot_classify(text: str) -> str:
     # 构建 Few-shot Prompt
     few_shot_prompt = "对以下评论进行情感分类（正面/负面/中性）。\n\n"
     
+    # 将示例传递给Prompt
     for example_text, label in examples:
         few_shot_prompt += f"评论：{example_text}\n情感：{label}\n\n"
     
+    # 将用户的问题传递给Prompt
     few_shot_prompt += f"评论：{text}\n情感："
     
     response = client.chat.completions.create(
@@ -161,13 +161,13 @@ def solve_with_cot(problem: str) -> str:
             {
                 "role": "system",
                 "content": """解题时，请严格按照以下步骤：
-1. 理解问题（用1-2句话复述问题）
-2. 分析已知条件
-3. 制定解题思路
-4. 逐步推导
-5. 得出结论并验证
+                    1. 理解问题（用1-2句话复述问题）
+                    2. 分析已知条件
+                    3. 制定解题思路
+                    4. 逐步推导
+                    5. 得出结论并验证
 
-每一步都要明确标注。"""
+                    每一步都要明确标注。"""
             },
             {
                 "role": "user",
@@ -243,10 +243,10 @@ def tree_of_thought(problem: str, num_paths: int = 3) -> str:
     
     # 步骤1：生成多条推理路径
     paths_prompt = f"""
-问题：{problem}
+        问题：{problem}
 
-请提供 {num_paths} 种不同的解决思路（每种思路用简短的标题开头，然后描述核心方法）：
-"""
+        请提供 {num_paths} 种不同的解决思路（每种思路用简短的标题开头，然后描述核心方法）：
+        """
     
     paths_response = client.chat.completions.create(
         model="gpt-4.1",
@@ -257,18 +257,18 @@ def tree_of_thought(problem: str, num_paths: int = 3) -> str:
     
     # 步骤2：评估各路径
     eval_prompt = f"""
-问题：{problem}
+        问题：{problem}
 
-以下是几种解决思路：
-{paths}
+        以下是几种解决思路：
+        {paths}
 
-请评估每种思路的：
-1. 可行性（1-10分）
-2. 时间成本
-3. 潜在风险
+        请评估每种思路的：
+        1. 可行性（1-10分）
+        2. 时间成本
+        3. 潜在风险
 
-最终推荐哪种方案并说明原因。
-"""
+        最终推荐哪种方案并说明原因。
+        """
     
     eval_response = client.chat.completions.create(
         model="gpt-4.1",
@@ -356,12 +356,12 @@ def benchmark_strategies(question: str) -> dict:
                 {
                     "role": "user",
                     "content": """示例：
-问题：5个人分12个苹果，平均每人得几个？
-分析：总量12，人数5，做除法
-计算：12 ÷ 5 = 2.4
-答案：平均每人得 2.4 个苹果
+                        问题：5个人分12个苹果，平均每人得几个？
+                        分析：总量12，人数5，做除法
+                        计算：12 ÷ 5 = 2.4
+                        答案：平均每人得 2.4 个苹果
 
-现在解答：""" + question
+                        现在解答：""" + question
                 }
             ]
         }
