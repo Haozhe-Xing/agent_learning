@@ -1,4 +1,4 @@
-# 11.6 LangSmith 集成与可观测性
+# 12.6 LangSmith 集成与可观测性
 
 > **本节目标**：掌握 LangSmith 的核心功能，学会在 LangChain 应用中集成追踪（Tracing）、评估（Evaluation）和 Prompt 管理，构建生产级的可观测性体系。
 
@@ -642,13 +642,13 @@ LangSmith 为 LangChain 应用提供了完整的可观测性解决方案：
 | **隐私合规** | 数据敏感场景可选用 LangFuse 自托管 |
 
 > 💡 **与本书其他章节的关系**：
-> - 第 12 章 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 中构建的图 Agent 同样可以通过 LangSmith 追踪
-> - 第 17 章 [第17章 Agent 的评估与优化](../chapter_evaluation/README.md) 深入讨论了 Agent 评估方法论
-> - 第 19 章 [第19章 部署与生产化](../chapter_deployment/README.md) 涵盖了更完整的监控体系
+> - 第 12 章 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 中构建的图 Agent 同样可以通过 LangSmith 追踪
+> - 第 17 章 [第18章 Agent 的评估与优化](../chapter_evaluation/README.md) 深入讨论了 Agent 评估方法论
+> - 第 19 章 [第20章 部署与生产化](../chapter_deployment/README.md) 涵盖了更完整的监控体系
 
 ---
 
-*下一节：[11.7 LangChain 生态 2026](./07_langchain_ecosystem_2026.md)*
+*下一节：[12.7 LangChain 生态 2026](./07_langchain_ecosystem_2026.md)*
 
 ---
 

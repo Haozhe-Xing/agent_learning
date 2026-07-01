@@ -1,4 +1,4 @@
-# 13.2 CrewAI：角色扮演型多 Agent 框架
+# 14.2 CrewAI：角色扮演型多 Agent 框架
 
 CrewAI 是一个专为多 Agent 协作设计的框架，通过"角色扮演"让不同的 Agent 扮演不同的专业角色，共同完成复杂任务。自 2024 年推出以来，CrewAI 已发展为最受欢迎的多 Agent 框架之一，并在 2025 年引入了 **Flows** 等重要新特性。
 
@@ -258,4 +258,4 @@ CrewAI 通过角色（Agent）+ 任务（Task）+ 团队（Crew）的简洁抽�
 
 ---
 
-*下一节：[13.3 AutoGen：多 Agent 对话框架](./03_autogen.md)*
+*下一节：[14.3 AutoGen：多 Agent 对话框架](./03_autogen.md)*

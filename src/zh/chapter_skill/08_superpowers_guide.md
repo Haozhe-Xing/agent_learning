@@ -1,4 +1,4 @@
-# 9.8 Skills圣经：Superpowers工程实践指南
+# 9.8 Skills 圣经：Superpowers 工程实践指南
 
 > 🎯 *"工具给了 Agent 行动能力，Skills 给了 Agent 工程纪律。Superpowers 做的事，是把软件开发中最难坚持的那些最佳实践，变成 AI 不可绕过的执行规范。"*
 

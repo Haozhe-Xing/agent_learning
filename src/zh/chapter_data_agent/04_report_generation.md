@@ -1,4 +1,4 @@
-# 21.4 报告生成与导出
+# 22.4 报告生成与导出
 
 > **本节目标**：将分析结果自动整合为结构化的 Markdown 报告。
 
@@ -284,10 +284,10 @@ async def generate_sales_report():
     
     # 模拟数据
     data = [
-        {"region": "华东", "sales": 1250000, "growth": 12.5},
+        {"region": "华东", "sales": 1250000, "growth": 13.5},
         {"region": "华北", "sales": 980000, "growth": 8.3},
-        {"region": "华南", "sales": 1100000, "growth": 15.2},
-        {"region": "西部", "sales": 650000, "growth": 22.1},
+        {"region": "华南", "sales": 1100000, "growth": 16.2},
+        {"region": "西部", "sales": 650000, "growth": 23.1},
     ]
     
     # 1. 分析
@@ -332,4 +332,4 @@ async def generate_sales_report():
 
 ---
 
-[21.5 完整项目实现](./05_full_implementation.md)
+[22.5 完整项目实现](./05_full_implementation.md)

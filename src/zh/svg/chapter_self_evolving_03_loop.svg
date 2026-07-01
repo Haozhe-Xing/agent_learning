@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 230" width="880" height="230">
+  <defs>
+    <marker id="sa_arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="880" height="230" fill="#f8f9fa" rx="12"/>
+  <text x="440" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">自进化 Agent 的工作闭环</text>
+
+  <!-- 4 个节点 -->
+  <g font-family="Arial, sans-serif">
+    <!-- 1. 用户交互 -->
+    <rect x="30" y="80" width="130" height="56" rx="10" fill="#3498db" opacity="0.13" stroke="#2471a3" stroke-width="1.6"/>
+    <text x="95" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#2471a3">用户交互</text>
+    <text x="95" y="122" text-anchor="middle" font-size="10.5" fill="#555">接收任务</text>
+
+    <!-- 2. 构建记忆 -->
+    <rect x="215" y="80" width="130" height="56" rx="10" fill="#3498db" opacity="0.13" stroke="#2471a3" stroke-width="1.6"/>
+    <text x="280" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#2471a3">构建记忆</text>
+    <text x="280" y="122" text-anchor="middle" font-size="10.5" fill="#555">沉淀经验</text>
+
+    <!-- 3. 抽取 Skill（节点稍宽，因下方有子项） -->
+    <rect x="400" y="56" width="240" height="104" rx="10" fill="#e67e22" opacity="0.13" stroke="#b9690e" stroke-width="1.8"/>
+    <text x="520" y="80" text-anchor="middle" font-size="13" font-weight="bold" fill="#b9690e">抽取有价值的记忆作为 Skill</text>
+    <text x="520" y="96" text-anchor="middle" font-size="10" fill="#555">（或"经验"等）</text>
+    <text x="520" y="118" text-anchor="middle" font-size="11" fill="#b9690e">· 多次出现的操作</text>
+    <text x="520" y="138" text-anchor="middle" font-size="11" fill="#b9690e">· 纠正的错误操作</text>
+    <text x="520" y="155" text-anchor="middle" font-size="9" fill="#999" font-style="italic">（经 L2 层验证门后入 Skill 库）</text>
+
+    <!-- 4. 下次遇到复用 Skill -->
+    <rect x="695" y="80" width="160" height="56" rx="10" fill="#27ae60" opacity="0.13" stroke="#1e8449" stroke-width="1.6"/>
+    <text x="775" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e8449">下次遇到复用 Skill</text>
+    <text x="775" y="122" text-anchor="middle" font-size="10.5" fill="#555">检索 / 注入 / 内化</text>
+  </g>
+
+  <!-- 箭头 -->
+  <line x1="160" y1="108" x2="208" y2="108" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#sa_arrow)"/>
+  <line x1="345" y1="108" x2="393" y2="108" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#sa_arrow)"/>
+  <line x1="640" y1="108" x2="688" y2="108" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#sa_arrow)"/>
+
+  <!-- 底部说明 -->
+  <text x="440" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">每一圈循环，Agent 在经验池上"长出"新本事，且全过程 base 模型可冻结</text>
+</svg>

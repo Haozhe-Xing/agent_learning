@@ -1,4 +1,4 @@
-# 17.8 模型路由评估
+# 18.8 模型路由评估
 
 > **本节目标**：理解模型路由的核心问题，掌握成本-质量权衡分析方法，能够实现和评估智能路由器，在多模型环境下为每个任务选择最优模型。
 
@@ -277,7 +277,7 @@ print("-" * 55)
 for name, ratios in strategies.items():
     result = analyzer.analyze_routing(tasks, ratios)
     cost_eff = result["weighted_quality"] / (result["monthly_cost"] / 1000)
-    print(f"{name:<12} ${result['monthly_cost']:<11,.0f} {result['weighted_quality']:<12.2f} {cost_eff:.2f}")
+    print(f"{name:<12} ${result['monthly_cost']:<11,.0f} {result['weighted_quality']:<13.2f} {cost_eff:.2f}")
 ```
 
 | 策略 | 月成本 | 加权质量 | 性价比 |
@@ -1208,6 +1208,126 @@ print(f"模型分布：{model_usage}")
 | 级联路由 | 先小后大逐级升级，适合简单任务占多数的场景 |
 | 成本-质量权衡 | 小模型节省成本但可能牺牲质量，需量化分析 |
 | 评估指标 | 路由准确率、过度/不足路由率、成本比、质量比 |
+
+---
+
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：本章一开始就说"评估 Agent 比评估传统软件难得多"。请说出 Agent 评估难在哪里（至少 3 点），并解释为什么生产中推荐"规则评估 → LLM-as-Judge → 人类评估"这样的三层组合，而不是只用其中一种。
+
+<details>
+<summary>参考答案</summary>
+
+**Agent 评估为什么难**（见 18.1）：
+
+1. **输出不确定**：同样的输入，LLM 每次的回答可能都不一样，没法像传统单元测试那样"输入 A 必然得到输出 B"。
+2. **行为路径多样**：完成同一个任务，Agent 可能用不同的工具组合、不同的步骤顺序，很难说哪条路径才是"标准答案"。
+3. **质量是主观的**：回答"好不好"往往要靠人来判断，比如同理心、清晰度，这些没有客观分数。
+4. **链路长**：从用户提问到最终回答，中间经过意图识别、工具调用、推理等多步，出了问题要定位到具体哪一步也不容易。
+
+**为什么要三层组合**：因为三种方法各有长短，是在"速度、成本、准确性"之间做权衡：
+
+| 方法 | 速度 | 成本 | 一致性 | 短板 |
+|------|------|------|--------|------|
+| 规则评估 | 最快 | 最低 | 完全一致 | 只能查格式/关键词，看不懂语义 |
+| LLM-as-Judge | 较快 | 中等 | 较高 | 有位置偏差、冗长偏差，偶尔判错 |
+| 人类评估 | 最慢 | 最高 | 因人而异 | 贵、慢，没法规模化 |
+
+合理的做法是**层层过滤**：先用便宜的规则把明显不合格的（比如格式错、没引用来源）快速筛掉；剩下的用 LLM-as-Judge 批量打分；最后只把最关键、最高风险的少量案例交给人类做最终确认。这样既保证了覆盖面和速度，又把昂贵的人力用在刀刃上——这正是"用便宜手段处理多数，用昂贵手段处理少数"的工程思想。
+
+</details>
+
+**练习 2（辨析）**：BFCL 评估工具调用时，为什么坚持用 **AST 匹配**而不是直接做字符串匹配？请举一个字符串匹配会"误判"的例子。另外，LLM-as-Judge 中提到的"位置偏差"是什么，书里用什么办法消除它？
+
+<details>
+<summary>参考答案</summary>
+
+**为什么不用字符串匹配**（见 18.2）：函数调用的"对不对"应该看**语义**，而不是看字符是否一模一样。同一个调用，参数顺序换一下，字符串就不同了，但语义完全相同。例如：
+
+```python
+ground_truth = 'get_weather(city="Beijing", unit="celsius")'
+prediction   = 'get_weather(unit="celsius", city="Beijing")'
+```
+
+这两行调用的效果一模一样，但字符串逐字比较会判为"不相等"，于是把对的判成错的——这就是误判。
+
+**AST 匹配怎么解决**：把调用解析成抽象语法树（AST），分别比较"函数名"和"参数集合"。参数用字典/集合来比，天然忽略顺序，所以上面两行会被正确判为相等。BFCL 还做了"类型感知匹配"，比如把整数 `1` 和浮点 `1.0` 视为相等，避免无意义的类型差异造成误判。
+
+**位置偏差**（见 18.2 的 LLM-as-Judge 偏差表）：指 Judge 模型在两两比较时，倾向于偏好排在前面（或后面）的那个回答，而不是真正按质量判断。
+
+**消除办法**：交换位置评估两次——先按 (A, B) 顺序比一次，再按 (B, A) 顺序比一次。只有两次结果一致（都认为同一个更好）才算它真赢，否则算平局。书里 `compute_win_rate` 就是这么做的，用一致性来抵消位置带来的偏差。
+
+</details>
+
+**练习 3（动手）**：某客服系统每天 10000 次请求，其中 70% 是简单任务、30% 是复杂任务。你打算用"级联路由"：先用便宜的小模型试，小模型对简单任务有 90% 的把握能直接答好（不用升级），但复杂任务一定要升级到大模型。假设小模型每次 $0.001、大模型每次 $0.01。请写一个函数，估算级联路由相比"全部用大模型"能省多少钱，并说说级联路由在什么情况下反而不划算。
+
+<details>
+<summary>参考答案</summary>
+
+思路：级联路由里，**升级的请求会被调用两次**（先小后大），所以要把"小模型那次的浪费"也算进成本。
+
+```python
+def estimate_cascade_cost(
+    daily_volume: int,
+    simple_ratio: float,      # 简单任务占比
+    small_success_on_simple: float,  # 小模型处理简单任务的成功率
+    small_cost: float,        # 小模型单次成本
+    large_cost: float,        # 大模型单次成本
+) -> dict:
+    """估算级联路由 vs 全部大模型的成本"""
+    simple_volume = daily_volume * simple_ratio
+    complex_volume = daily_volume * (1 - simple_ratio)
+
+    # 简单任务：全部先过小模型(成本small_cost)
+    #   成功的那部分到此为止；失败的部分还要再调一次大模型
+    simple_small_cost = simple_volume * small_cost
+    simple_escalate = simple_volume * (1 - small_success_on_simple)
+    simple_large_cost = simple_escalate * large_cost
+
+    # 复杂任务：先过小模型(浪费一次)，再升级到大模型
+    complex_small_cost = complex_volume * small_cost
+    complex_large_cost = complex_volume * large_cost
+
+    cascade_cost = (
+        simple_small_cost + simple_large_cost
+        + complex_small_cost + complex_large_cost
+    )
+    all_large_cost = daily_volume * large_cost
+
+    return {
+        "cascade_daily": cascade_cost,
+        "all_large_daily": all_large_cost,
+        "saved_daily": all_large_cost - cascade_cost,
+        "saved_ratio": 1 - cascade_cost / all_large_cost,
+    }
+
+
+r = estimate_cascade_cost(
+    daily_volume=10000,
+    simple_ratio=0.7,
+    small_success_on_simple=0.9,
+    small_cost=0.001,
+    large_cost=0.01,
+)
+print(f"级联日成本: ${r['cascade_daily']:.2f}")
+print(f"全大模型日成本: ${r['all_large_daily']:.2f}")
+print(f"每天省: ${r['saved_daily']:.2f}（{r['saved_ratio']:.0%}）")
+```
+
+算一下：
+- 简单任务 7000 次：小模型 7000×$0.001 = $7；其中 10%(700 次)升级，大模型 700×$0.01 = $7
+- 复杂任务 3000 次：小模型白跑 3000×$0.001 = $3；大模型 3000×$0.01 = $30
+- 级联总计 = 7+7+3+30 = **$47/天**
+- 全部大模型 = 10000×$0.01 = **$100/天**
+- 每天省 $53，约 **53%**
+
+**什么情况下级联反而不划算**：如果复杂任务占比很高（简单任务很少），那么大量请求都会"先用小模型白跑一次再升级"，这一次小模型调用纯属浪费，叠加起来可能比直接用大模型还贵。所以正如本章所说——**级联路由最适合"简单任务占多数"的场景**；当复杂任务占主导时，不如直接路由到大模型，或改用一次性判断复杂度的 LLM 路由。
+
+</details>
+
+---
 
 > **下一节预告**：本章到此结束。通过 8 个小节的学习，你已经掌握了 Agent 评估的完整方法论——从基本评估方法、基准测试、Prompt 调优、成本优化、可观测性，到 Agent 专项评估、A/B 测试和模型路由。接下来，我们将进入安全与可靠性章节。
 

@@ -1,4 +1,4 @@
-# 22.1 多模态能力概述
+# 23.1 多模态能力概述
 
 > **本节目标**：了解多模态大模型的能力边界和典型应用场景。
 
@@ -370,4 +370,4 @@ def analyze_with_detail_control(
 
 ---
 
-[22.2 图像理解与生成](./02_image_understanding.md)
+[23.2 图像理解与生成](./02_image_understanding.md)

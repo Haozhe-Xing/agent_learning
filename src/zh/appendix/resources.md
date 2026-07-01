@@ -77,8 +77,8 @@
 > - 记忆系统 → [4.6 论文解读：记忆系统前沿进展](../chapter_memory/06_paper_readings.md)
 > - 规划与推理 → [5.7 论文解读：规划与推理前沿研究](../chapter_planning/06_paper_readings.md)
 > - RAG → [6.6 论文解读：RAG 前沿进展](../chapter_rag/06_paper_readings.md)
-> - 多 Agent → [15.6 论文解读：多 Agent 系统前沿研究](../chapter_multi_agent/06_paper_readings.md)
-> - 安全与可靠性 → [18.6 论文解读：安全与可靠性前沿研究](../chapter_security/06_paper_readings.md)
+> - 多 Agent → [16.6 论文解读：多 Agent 系统前沿研究](../chapter_multi_agent/06_paper_readings.md)
+> - 安全与可靠性 → [19.6 论文解读：安全与可靠性前沿研究](../chapter_security/06_paper_readings.md)
 
 ### 提示策略与推理
 
@@ -86,7 +86,7 @@
 |------|------|------|---------|------|
 | Chain-of-Thought Prompting Elicits Reasoning in Large Language Models | Wei et al. (Google Brain) | 2022 | 3.3 | [arXiv:2201.11903](https://arxiv.org/abs/2201.11903) |
 | Large Language Models are Zero-Shot Reasoners | Kojima et al. | 2022 | 3.3 | [arXiv:2205.11916](https://arxiv.org/abs/2205.11916) |
-| Self-Consistency Improves Chain of Thought Reasoning | Wang et al. (Google Brain) | 2023 | 3.3, 17.2 | [arXiv:2203.11171](https://arxiv.org/abs/2203.11171) |
+| Self-Consistency Improves Chain of Thought Reasoning | Wang et al. (Google Brain) | 2023 | 3.3, 18.2 | [arXiv:2203.11171](https://arxiv.org/abs/2203.11171) |
 | Tree of Thoughts: Deliberate Problem Solving with LLMs | Yao et al. (Princeton) | 2023 | 3.3 | [arXiv:2305.10601](https://arxiv.org/abs/2305.10601) |
 | ReAct: Synergizing Reasoning and Acting in Language Models | Yao et al. (Princeton) | 2022 | 3.3, 6.2 | [arXiv:2210.03629](https://arxiv.org/abs/2210.03629) |
 | Plan-and-Solve Prompting | Wang et al. | 2023 | 6.3 | [arXiv:2305.04091](https://arxiv.org/abs/2305.04091) |
@@ -152,24 +152,24 @@
 
 | 论文 | 作者 | 年份 | 本书章节 | 链接 |
 |------|------|------|---------|------|
-| MetaGPT: Meta Programming for Multi-Agent Collaboration | Hong et al. | 2023 | 14.1 | [arXiv:2308.00352](https://arxiv.org/abs/2308.00352) |
-| Communicative Agents for Software Development (ChatDev) | Qian et al. | 2023 | 14.1 | [arXiv:2307.07924](https://arxiv.org/abs/2307.07924) |
-| AutoGen: Enabling Next-Gen LLM Applications | Wu et al. (Microsoft) | 2023 | 14.1 | [arXiv:2308.08155](https://arxiv.org/abs/2308.08155) |
-| AgentVerse: Facilitating Multi-Agent Collaboration | Chen et al. | 2023 | 14.1 | [arXiv:2308.10848](https://arxiv.org/abs/2308.10848) |
-| Magentic-One: A Generalist Multi-Agent System | Fourney et al. (Microsoft) | 2024 | 14.6 | [arXiv:2411.04468](https://arxiv.org/abs/2411.04468) |
-| Multi-Agent Collaboration Mechanisms: A Survey of LLMs | Nguyen et al. | 2025 | 14.6 | [arXiv:2501.06322](https://arxiv.org/abs/2501.06322) |
+| MetaGPT: Meta Programming for Multi-Agent Collaboration | Hong et al. | 2023 | 15.1 | [arXiv:2308.00352](https://arxiv.org/abs/2308.00352) |
+| Communicative Agents for Software Development (ChatDev) | Qian et al. | 2023 | 15.1 | [arXiv:2307.07924](https://arxiv.org/abs/2307.07924) |
+| AutoGen: Enabling Next-Gen LLM Applications | Wu et al. (Microsoft) | 2023 | 15.1 | [arXiv:2308.08155](https://arxiv.org/abs/2308.08155) |
+| AgentVerse: Facilitating Multi-Agent Collaboration | Chen et al. | 2023 | 15.1 | [arXiv:2308.10848](https://arxiv.org/abs/2308.10848) |
+| Magentic-One: A Generalist Multi-Agent System | Fourney et al. (Microsoft) | 2024 | 15.6 | [arXiv:2411.04468](https://arxiv.org/abs/2411.04468) |
+| Multi-Agent Collaboration Mechanisms: A Survey of LLMs | Nguyen et al. | 2025 | 15.6 | [arXiv:2501.06322](https://arxiv.org/abs/2501.06322) |
 
 ### 安全与可靠性
 
 | 论文 | 作者 | 年份 | 本书章节 | 链接 |
 |------|------|------|---------|------|
-| Not What You've Signed Up For: Indirect Prompt Injection | Greshake et al. | 2023 | 17.1 | [arXiv:2302.12173](https://arxiv.org/abs/2302.12173) |
-| HackAPrompt: Exposing Systemic Weaknesses of LLMs | Schulhoff et al. | 2023 | 17.1 | [arXiv:2311.16119](https://arxiv.org/abs/2311.16119) |
-| FActScore: Fine-grained Atomic Evaluation of Factual Precision | Min et al. (UW) | 2023 | 17.2 | [arXiv:2305.14251](https://arxiv.org/abs/2305.14251) |
-| A Survey on Hallucination in Large Language Models | Huang et al. | 2023 | 17.2 | [arXiv:2311.05232](https://arxiv.org/abs/2311.05232) |
-| InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Agents | Zhan et al. | 2024 | 17.6 | [arXiv:2403.02691](https://arxiv.org/abs/2403.02691) |
-| AgentDojo: Dynamic Environment for Agent Attack/Defense | Debenedetti et al. (ETH Zurich) | 2024 | 17.6 | [arXiv:2406.13352](https://arxiv.org/abs/2406.13352) |
-| Agent Security Bench (ASB): Attacks and Defenses in LLM Agents | Zhang et al. | 2025 | 17.6 | [arXiv:2410.02644](https://arxiv.org/abs/2410.02644) |
+| Not What You've Signed Up For: Indirect Prompt Injection | Greshake et al. | 2023 | 18.1 | [arXiv:2302.12173](https://arxiv.org/abs/2302.12173) |
+| HackAPrompt: Exposing Systemic Weaknesses of LLMs | Schulhoff et al. | 2023 | 18.1 | [arXiv:2311.16119](https://arxiv.org/abs/2311.16119) |
+| FActScore: Fine-grained Atomic Evaluation of Factual Precision | Min et al. (UW) | 2023 | 18.2 | [arXiv:2305.14251](https://arxiv.org/abs/2305.14251) |
+| A Survey on Hallucination in Large Language Models | Huang et al. | 2023 | 18.2 | [arXiv:2311.05232](https://arxiv.org/abs/2311.05232) |
+| InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Agents | Zhan et al. | 2024 | 18.6 | [arXiv:2403.02691](https://arxiv.org/abs/2403.02691) |
+| AgentDojo: Dynamic Environment for Agent Attack/Defense | Debenedetti et al. (ETH Zurich) | 2024 | 18.6 | [arXiv:2406.13352](https://arxiv.org/abs/2406.13352) |
+| Agent Security Bench (ASB): Attacks and Defenses in LLM Agents | Zhang et al. | 2025 | 18.6 | [arXiv:2410.02644](https://arxiv.org/abs/2410.02644) |
 
 ### Agent 综述
 

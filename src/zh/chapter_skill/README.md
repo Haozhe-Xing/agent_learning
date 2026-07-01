@@ -4,7 +4,6 @@
 
 ---
 
-
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
@@ -15,22 +14,13 @@
 - ✅ 实现一个完整的可复用技能系统
 - ✅ 掌握 Tool、Skill、Sub-Agent 三层能力抽象的设计原则
 
-## ⏱️ 预计学习时间
-
-约 **90-120 分钟**
-
-## 💡 前置知识
-
-- 完成第3章（工具调用）和第8章（Harness 工程）
-- 了解 YAML / TOML 配置文件格式
-
 ---
 
 ## 🔗 学习路径
 
 > **后续推荐**：
 > - 👉 [第10章 Agentic-RL：智能体强化学习训练](../chapter_agentic_rl/README.md)
-> - 👉 [第15章 多 Agent 协作](../chapter_multi_agent/README.md)
+> - 👉 [第16章 多 Agent 协作](../chapter_multi_agent/README.md)
 
 ---
 

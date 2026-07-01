@@ -1,4 +1,4 @@
-# 14.1 认识 Claude Code：从零到上手
+# 15.1 认识 Claude Code：从零到上手
 
 > 🖥️ *"We didn't set out to build a coding assistant. We set out to build a trusted, capable colleague who happens to work entirely in the terminal."*  
 > —— Anthropic 工程团队，2024 年
@@ -475,4 +475,4 @@ Claude Code 的能力覆盖软件开发的全生命周期：
 
 ---
 
-*下一节：[14.2 Claude Code 核心架构](./02_architecture.md)*
+*下一节：[15.2 Claude Code 核心架构](./02_architecture.md)*

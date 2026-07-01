@@ -1,4 +1,4 @@
-# 18.3 权限控制与沙箱隔离
+# 19.3 权限控制与沙箱隔离
 
 > **本节目标**：学会为 Agent 设计最小权限体系和安全的执行环境。
 
@@ -380,4 +380,4 @@ print(result)  # {"success": False, "error": "禁止导入: os", "output": ""}
 
 ---
 
-[18.4 敏感数据保护](./04_data_protection.md)
+[19.4 敏感数据保护](./04_data_protection.md)

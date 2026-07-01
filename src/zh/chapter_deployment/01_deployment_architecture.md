@@ -1,4 +1,4 @@
-# 19.1 Agent 应用的部署架构
+# 20.1 Agent 应用的部署架构
 
 > **本节目标**：理解 Agent 从开发环境到生产环境需要哪些架构变化，掌握 Agent 特有的部署挑战与解决方案。
 
@@ -319,10 +319,10 @@ class AgentConfig(BaseSettings):
 | 配置管理 | 从环境变量加载配置，不硬编码 |
 | 水平扩展 | 多实例部署，无状态 API 层 |
 
-> 💡 **延伸阅读**：关于模型路由评估和 A/B 测试，详见 [17.7 A/B 测试与回归测试自动化](../chapter_evaluation/07_ab_testing.md) 和 [17.8 模型路由评估](../chapter_evaluation/08_model_routing.md)。
+> 💡 **延伸阅读**：关于模型路由评估和 A/B 测试，详见 [18.7 A/B 测试与回归测试自动化](../chapter_evaluation/07_ab_testing.md) 和 [18.8 模型路由评估](../chapter_evaluation/08_model_routing.md)。
 
 > **下一节预告**：接下来我们用 FastAPI 把 Agent 封装成一个完整的 API 服务。
 
 ---
 
-[19.2 API 服务化：FastAPI / Flask 封装](./02_api_service.md)
+[20.2 API 服务化：FastAPI / Flask 封装](./02_api_service.md)

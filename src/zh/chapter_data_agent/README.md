@@ -1,4 +1,4 @@
-# 第21章 项目实战：智能数据分析 Agent
+# 第22章 项目实战：智能数据分析 Agent
 
 > 用自然语言做数据分析——从 "帮我分析上月销售" 到完整的分析报告。
 
@@ -14,37 +14,27 @@
 - ✅ 自动生成结构化的数据分析报告
 - ✅ 交付一个端到端可用的数据分析 Agent
 
-## ⏱️ 预计学习时间
-
-约 **180-240 分钟**（综合实战项目）
-
-## 💡 前置知识
-
-- 完成第一至五部分所有章节
-- 了解 SQL 基础语法
-- 已安装数据分析依赖：`pip install pandas matplotlib sqlalchemy`
-
 ## 📚 本章结构
 
 数据分析是 Agent 最实用的应用场景之一。本章构建一个智能数据分析 Agent，让用户用自然语言描述分析需求，Agent 自动完成 SQL 查询、统计分析、图表生成和报告输出。
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 21.1 需求分析与架构设计 | 功能规划和架构 | ⭐⭐ |
-| 21.2 数据连接与查询 | Text-to-SQL、安全访问 | ⭐⭐⭐ |
-| 21.3 自动化分析与可视化 | 统计分析、图表生成 | ⭐⭐⭐ |
-| 21.4 报告生成与导出 | Markdown 报告 | ⭐⭐ |
-| 21.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
+| 22.1 需求分析与架构设计 | 功能规划和架构 | ⭐⭐ |
+| 22.2 数据连接与查询 | Text-to-SQL、安全访问 | ⭐⭐⭐ |
+| 22.3 自动化分析与可视化 | 统计分析、图表生成 | ⭐⭐⭐ |
+| 22.4 报告生成与导出 | Markdown 报告 | ⭐⭐ |
+| 22.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)、[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
-> 推荐但非必须：[第17章 Agent 的评估与优化](../chapter_evaluation/README.md)
+> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)、[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+> 推荐但非必须：[第18章 Agent 的评估与优化](../chapter_evaluation/README.md)
 >
 > **同系列项目**：
-> - 🔨 [第20章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
-> - 🎨 [第22章 项目实战：多模态 Agent](../chapter_multimodal/README.md)
+> - 🔨 [第21章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
+> - 🎨 [第23章 项目实战：多模态 Agent](../chapter_multimodal/README.md)
 
 ---
 
-*下一节：[21.1 需求分析与架构设计](./01_requirements.md)*
+*下一节：[22.1 需求分析与架构设计](./01_requirements.md)*

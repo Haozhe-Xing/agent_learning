@@ -1,4 +1,4 @@
-# 14.3 源码解密：System Prompt 与权限工程
+# 15.3 源码解密：System Prompt 与权限工程
 
 > 🔐 *"The most interesting thing about the leak wasn't what Claude Code could do — it was seeing the engineering discipline behind how they prevent it from doing the wrong things."*  
 > —— 知名安全研究员，评论 2026 年 3 月源码泄露事件
@@ -377,5 +377,5 @@ const ANTI_DISTILLATION_CC = true; // 编译时常量
 
 ---
 
-*上一节：[14.2 核心架构深度解析](./02_architecture.md)*  
-*下一节：[14.4 高级用法：MCP、Hooks 与 Skills](./04_advanced_usage.md)*
+*上一节：[15.2 核心架构深度解析](./02_architecture.md)*  
+*下一节：[15.4 高级用法：MCP、Hooks 与 Skills](./04_advanced_usage.md)*

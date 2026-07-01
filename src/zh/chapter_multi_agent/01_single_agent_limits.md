@@ -1,4 +1,4 @@
-# 15.1 单 Agent 的局限性
+# 16.1 单 Agent 的局限性
 
 > **本节目标**：理解单 Agent 在复杂任务场景下的三大核心限制，掌握何时应该引入多 Agent 架构的判断方法。
 
@@ -291,10 +291,10 @@ class AgentEvolution:
 - 调试困难（分布式问题定位）
 - 信息丢失（Agent 间传递的上下文截断）
 
-> 📖 **想深入了解多 Agent 系统的学术前沿？** 请阅读 [15.6 论文解读：多 Agent 系统前沿研究](./06_paper_readings.md)，涵盖 MetaGPT、ChatDev、AutoGen、AgentVerse 等核心论文的深度解读。
+> 📖 **想深入了解多 Agent 系统的学术前沿？** 请阅读 [16.6 论文解读：多 Agent 系统前沿研究](./06_paper_readings.md)，涵盖 MetaGPT、ChatDev、AutoGen、AgentVerse 等核心论文的深度解读。
 
-> 💡 **延伸阅读**：关于多 Agent 系统的专项评估方法（Agent-as-Judge、τ-bench、SWE-bench），详见 [17.6 Agent 专项评估框架](../chapter_evaluation/06_agent_evaluation.md)。
+> 💡 **延伸阅读**：关于多 Agent 系统的专项评估方法（Agent-as-Judge、τ-bench、SWE-bench），详见 [18.6 Agent 专项评估框架](../chapter_evaluation/06_agent_evaluation.md)。
 
 ---
 
-*下一节：[15.2 多 Agent 通信模式](./02_communication_patterns.md)*
+*下一节：[16.2 多 Agent 通信模式](./02_communication_patterns.md)*

@@ -1,4 +1,4 @@
-# 第15章 多 Agent 协作
+# 第16章 多 Agent 协作
 
 > 👥 *"一个 Agent 能做的事有限，多个 Agent 协作才能完成复杂任务。"*
 
@@ -14,37 +14,27 @@
 - ✅ 区分 Supervisor 模式和去中心化模式的适用场景
 - ✅ 使用 LangGraph 构建一个多 Agent 软件开发团队作为综合实战
 
-## ⏱️ 预计学习时间
-
-约 **120-150 分钟**（含实战练习）
-
-## 💡 前置知识
-
-- 完成第12章（LangGraph）
-- 理解 Agent 的工具调用和状态管理
-- 了解软件开发的基本流程（便于理解实战项目）
-
 ## 📚 本章结构
 
 当单个 Agent 面对需要多种专业能力的复杂任务时，就需要多个专业化 Agent 分工协作。本章介绍多 Agent 系统的设计模式、通信机制和协作策略，并实战构建一个由架构师、开发者、测试员和运维工程师组成的多 Agent 软件开发团队。
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 15.1 单 Agent 的局限性 | 为什么需要多 Agent？ | ⭐⭐ |
-| 15.2 多 Agent 通信模式 | 消息传递、共享状态 | ⭐⭐⭐ |
-| 15.3 角色分工与任务分配 | 专业化与分工 | ⭐⭐⭐ |
-| 15.4 Supervisor 模式 vs 去中心化 | 架构选择 | ⭐⭐⭐ |
-| 15.5 实战：多 Agent 软件开发团队 | 完整实现 | ⭐⭐⭐⭐ |
-| 15.6 论文解读：多 Agent 系统前沿研究 | 学术前沿 | ⭐⭐⭐ |
+| 16.1 单 Agent 的局限性 | 为什么需要多 Agent？ | ⭐⭐ |
+| 16.2 多 Agent 通信模式 | 消息传递、共享状态 | ⭐⭐⭐ |
+| 16.3 角色分工与任务分配 | 专业化与分工 | ⭐⭐⭐ |
+| 16.4 Supervisor 模式 vs 去中心化 | 架构选择 | ⭐⭐⭐ |
+| 16.5 实战：多 Agent 软件开发团队 | 完整实现 | ⭐⭐⭐⭐ |
+| 16.6 论文解读：多 Agent 系统前沿研究 | 学术前沿 | ⭐⭐⭐ |
 
 ## 🔗 学习路径
 
-> **前置知识**：[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+> **前置知识**：[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
 >
 > **后续推荐**：
-> - 👉 [第16章 Agent 通信协议](../chapter_protocol/README.md) — MCP/A2A 等 Agent 间通信标准
-> - 👉 [第18章 安全与可靠性](../chapter_security/README.md) — 多 Agent 系统的安全挑战
+> - 👉 [第17章 Agent 通信协议](../chapter_protocol/README.md) — MCP/A2A 等 Agent 间通信标准
+> - 👉 [第19章 安全与可靠性](../chapter_security/README.md) — 多 Agent 系统的安全挑战
 
 ---
 
-*下一节：[15.1 单 Agent 的局限性](./01_single_agent_limits.md)*
+*下一节：[16.1 单 Agent 的局限性](./01_single_agent_limits.md)*

@@ -1,4 +1,4 @@
-# 17.5 可观测性：日志、追踪与监控
+# 18.5 可观测性：日志、追踪与监控
 
 > **本节目标**：学会为 Agent 构建完善的可观测性体系，做到"出了问题能发现、发现了能定位"。
 
@@ -863,10 +863,10 @@ class ProductionObservability:
 | 开发调试 | Arize Phoenix（零配置） |
 | 生产级统一 | OTel Collector → LangFuse + Prometheus → Grafana |
 
-> 💡 **延伸阅读**：关于 Agent 运行时的模型路由评估和 A/B 测试，详见 [17.7 A/B 测试与回归测试自动化](./07_ab_testing.md) 和 [17.8 模型路由评估](./08_model_routing.md)。
+> 💡 **延伸阅读**：关于 Agent 运行时的模型路由评估和 A/B 测试，详见 [18.7 A/B 测试与回归测试自动化](./07_ab_testing.md) 和 [18.8 模型路由评估](./08_model_routing.md)。
 
 > 🎓 **本章总结**：评估和优化是一个持续迭代的过程。先建立评估体系，然后通过 Prompt 调优、成本控制和可观测性来不断改进 Agent。
 
 ---
 
-[第18章 安全与可靠性](../chapter_security/README.md)
+[第19章 安全与可靠性](../chapter_security/README.md)

@@ -1,4 +1,4 @@
-# 15.3 角色分工与任务分配
+# 16.3 角色分工与任务分配
 
 > **本节目标**：掌握多 Agent 系统中的角色设计原则、任务分配策略，以及动态角色分配的实现方法。
 
@@ -445,8 +445,8 @@ class ContextManager:
 - **容错降级**：设计备用方案，避免单点故障
 - **上下文隔离**：私有上下文不泄漏，共享上下文精简传递
 
-> 💡 **延伸阅读**：关于 Supervisor 模式与去中心化模式的深入对比，详见 [15.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)。
+> 💡 **延伸阅读**：关于 Supervisor 模式与去中心化模式的深入对比，详见 [16.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)。
 
 ---
 
-*下一节：[15.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)*
+*下一节：[16.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)*

@@ -1,4 +1,4 @@
-# 17.6 Agent 专项评估框架
+# 18.6 Agent 专项评估框架
 
 > **本节目标**：掌握 Agent 专项评估的前沿方法，包括 Agent-as-Judge 范式、τ-bench / OSWorld / SWE-bench 等基准测试，并能实现完整的 Agent-as-Judge 评估器。
 
@@ -6,7 +6,7 @@
 
 ## 从 LLM-as-Judge 到 Agent-as-Judge
 
-在 18.1 中我们介绍了 LLM-as-Judge——用一个 LLM 来评判另一个 LLM 的输出质量。但 Agent 不同于普通的聊天模型：Agent 会调用工具、执行多步操作、与环境交互。仅仅评估最终输出是不够的，我们需要评估 Agent 的**整个行为轨迹**。
+在 19.1 中我们介绍了 LLM-as-Judge——用一个 LLM 来评判另一个 LLM 的输出质量。但 Agent 不同于普通的聊天模型：Agent 会调用工具、执行多步操作、与环境交互。仅仅评估最终输出是不够的，我们需要评估 Agent 的**整个行为轨迹**。
 
 这就是 **Agent-as-Judge** 的核心思想：用一个 Agent（而不仅仅是一个 LLM）来评估另一个 Agent 的完整执行过程 [1]。
 
@@ -1233,4 +1233,4 @@ if __name__ == "__main__":
 
 ---
 
-[17.7 A/B 测试与回归测试自动化](./07_ab_testing.md)
+[18.7 A/B 测试与回归测试自动化](./07_ab_testing.md)

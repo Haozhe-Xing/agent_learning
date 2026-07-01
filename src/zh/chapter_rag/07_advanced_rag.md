@@ -777,7 +777,7 @@ graph.add_conditional_edges(
 
 ---
 
-> 💡 **延伸阅读**：关于多模态 RAG 的三种架构（文本优先/多模态 Embedding/原生多模态）和 CLIP 跨模态检索，详见 [22.6 视频理解与多模态 RAG](../chapter_multimodal/06_video_and_multimodal_rag.md)。
+> 💡 **延伸阅读**：关于多模态 RAG 的三种架构（文本优先/多模态 Embedding/原生多模态）和 CLIP 跨模态检索，详见 [23.6 视频理解与多模态 RAG](../chapter_multimodal/06_video_and_multimodal_rag.md)。
 
 ## 练习题
 

@@ -1,4 +1,4 @@
-# 22.5 Computer Use 与 GUI Agent
+# 23.5 Computer Use 与 GUI Agent
 
 > **本节目标**：掌握 Computer Use Agent 的核心架构与实现，理解 GUI 自动化在 2025-2026 年的最新进展。
 
@@ -719,4 +719,4 @@ SANDBOX_OPTIONS = {
 
 ---
 
-[22.6 视频理解与多模态 RAG](./06_video_and_multimodal_rag.md)
+[23.6 视频理解与多模态 RAG](./06_video_and_multimodal_rag.md)

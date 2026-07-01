@@ -1,4 +1,4 @@
-# 20.5 完整项目实现
+# 21.5 完整项目实现
 
 > **本节目标**：将前面几节的组件整合，构建一个可交互的 AI 编程助手。
 
@@ -19,12 +19,12 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 # 导入前面实现的组件（实际项目中从模块导入）
 # 各组件的完整实现请参考对应章节：
-# from code_indexer import CodeIndexer         # → 20.2 节
-# from code_search import CodeSearchEngine     # → 20.2 节
-# from code_generator import CodeGenerator     # → 20.3 节
-# from test_generator import TestGenerator     # → 20.4 节
-# from bug_fixer import BugFixer               # → 20.4 节
-# 提示：运行本节代码前，需先将 20.2-20.4 节的代码保存为独立模块
+# from code_indexer import CodeIndexer         # → 21.2 节
+# from code_search import CodeSearchEngine     # → 21.2 节
+# from code_generator import CodeGenerator     # → 21.3 节
+# from test_generator import TestGenerator     # → 21.4 节
+# from bug_fixer import BugFixer               # → 21.4 节
+# 提示：运行本节代码前，需先将 21.2-20.4 节的代码保存为独立模块
 
 class AICodeAssistant:
     """AI 编程助手 —— 完整实现"""
@@ -234,4 +234,110 @@ if __name__ == "__main__":
 
 ---
 
-[第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：21.2 节用 Python 的 `ast`（抽象语法树）来给代码建索引，提取函数名、签名、文档字符串。为什么本项目要用 AST 解析，而不是简单地"按关键字搜索代码文本"？请结合 Coding Agent 的实际需求说明 AST 方式好在哪里。
+
+<details>
+<summary>参考答案</summary>
+
+**关键字文本搜索的局限**：如果只是把代码当成普通文本来搜（比如 `grep "def login"`），机器其实并不"理解"代码的结构。它分不清一个 `login` 是函数名、变量名、还是注释里出现的字；也拿不到这个函数从第几行到第几行、参数有哪些、返回什么类型、有没有文档说明。
+
+**AST 解析的优势**（见 21.2）：`ast.parse` 把源码解析成"语法树"，于是 Agent 能精确地拿到结构化信息：
+
+1. **准确识别实体类型**：知道这是 `FunctionDef`（函数）还是 `ClassDef`（类），不会把注释或字符串里的同名词当成函数。
+2. **拿到精确的位置和范围**：`node.lineno` 和 `end_lineno` 给出实体的起止行，方便后续精确读取、修改或定位 Bug。
+3. **提取结构化元数据**：函数签名（参数+类型注解+返回值）、docstring 都能干净地取出来，这些正是构建"代码索引 / 语义搜索描述"的高质量素材（21.2 的 `CodeSearchEngine` 就是用这些描述去生成向量的）。
+4. **为可靠修改打基础**：Coding Agent 要做的不只是"读"，还要"改"。基于 AST 的精确行号，修改才能落到正确的位置，而不是误伤同名文本。
+
+一句话：**Coding Agent 需要"理解代码结构"，而不只是"匹配字符串"，AST 正是把代码从文本升级为结构化数据的工具。** 这也是 21.1 提到的 Devin、SWE-Agent、Cursor 等产品共同采用 AST/LSP 做代码理解的原因。
+
+</details>
+
+**练习 2（辨析）**：21.3 节的 `CodeGenerator` 用 `with_structured_output(GeneratedCode)` 让 LLM 输出结构化结果，而且生成后还要过一遍 `CodeValidator`。有同学说："LLM 这么强，生成的代码直接用就行，验证器是多余的。"请反驳这个观点。
+
+<details>
+<summary>参考答案</summary>
+
+这个观点忽略了 21.3 开头强调的——**生成代码比生成普通文本难得多**：代码必须语法正确、逻辑正确、风格一致、考虑边界。LLM 再强，也是"概率生成"，不能保证每次都对。验证器不是多余，而是必要的"安全网"：
+
+1. **语法可能就是错的**：LLM 偶尔会漏个括号、缩进错位。`CodeValidator._check_python_syntax` 用 `ast.parse` 一跑就知道能不能编译，这是文本层面看不出来的。
+2. **会引入安全隐患**：LLM 可能生成 `eval()`、`os.system()`、`pickle.loads()` 这类危险调用。验证器的 `_check_security` 专门拦截这些——这点和第 19 章"代码沙箱在执行前做 AST 安全检查"是一脉相承的。
+3. **结构化输出 ≠ 内容正确**：`with_structured_output` 只保证返回的 JSON 字段齐全（有 code、explanation、dependencies），但不保证 code 字段里的代码真的能跑、真的安全。结构对了，内容仍要验证。
+4. **生产中要"信任但要核实"**：正如 21.4 的最佳实践所说，AI 生成的代码"必须经过人工审查后再合并"。验证器是人工审查之前的第一道自动关卡，能快速筛掉明显有问题的产物，提高效率。
+
+所以正确的流程是 **生成 → 自动验证（语法/风格/安全）→ 人工审查 → 合并**，验证器是这条质量链上不可省略的一环。
+
+</details>
+
+**练习 3（动手）**：本章的 Bug 修复目前是"修一次就交"。请参考 21.4 的"测试-诊断-修复闭环"思想，设计并写出一个**带验证的自动修复循环** `auto_fix_loop`：让 Agent 修复后自动跑测试，如果还没通过就把新的报错喂回去再修，最多修 N 次。用伪代码或简化代码表达核心逻辑即可。
+
+<details>
+<summary>参考答案</summary>
+
+核心思想：把"诊断→修复→验证"做成一个**带上限的循环**，每轮把上一轮的真实报错反馈给 Agent，直到测试通过或达到最大次数。这正是 SWE-bench 类 Coding Agent 的核心工作模式。
+
+```python
+async def auto_fix_loop(
+    bug_fixer,          # 21.4 的 BugFixer
+    run_tests,          # 跑测试的函数：返回 (是否通过, 报错信息)
+    code: str,
+    test_code: str,
+    file_path: str,
+    max_attempts: int = 3,
+) -> dict:
+    """带验证的自动修复循环：修复 → 跑测试 → 不过就再修"""
+    current_code = code
+
+    # 先跑一次，确认确实有问题
+    passed, error_msg = run_tests(current_code, test_code)
+    if passed:
+        return {"success": True, "attempts": 0, "code": current_code}
+
+    for attempt in range(1, max_attempts + 1):
+        print(f"第 {attempt} 次尝试修复，当前报错：{error_msg[:80]}")
+
+        # 1) 让 Agent 基于"当前代码 + 当前真实报错"诊断并修复
+        fix = await bug_fixer.diagnose_and_fix(
+            code=current_code,
+            error_message=error_msg,
+            file_path=file_path,
+        )
+        current_code = fix["fixed_code"]
+
+        # 2) 用修复后的代码重新跑测试（回归验证）
+        passed, error_msg = run_tests(current_code, test_code)
+
+        # 3) 通过就提前结束
+        if passed:
+            return {
+                "success": True,
+                "attempts": attempt,
+                "code": current_code,
+                "last_fix": fix["fix_description"],
+            }
+
+    # 修了 max_attempts 次仍没过，交给人工
+    return {
+        "success": False,
+        "attempts": max_attempts,
+        "code": current_code,
+        "last_error": error_msg,
+        "note": "已达最大修复次数，建议人工介入",
+    }
+```
+
+**几个关键设计点**：
+
+1. **每轮反馈真实报错**：不是凭空再修，而是把上一轮跑测试得到的 `error_msg` 喂回给 Agent，让它"看到"上次没修好——这是闭环的灵魂。
+2. **必须设最大次数 `max_attempts`**：否则 Agent 可能在两个错误版本之间反复横跳，陷入死循环、烧掉大量 token（这也呼应第 18 章的成本控制和第 20 章的预算治理）。
+3. **修复后一定要跑回归测试**：正如 21.4 最佳实践强调的，"自动修复后必须运行全量测试套件，防止修复引入新问题"——不能只看"这个 Bug 没了"，还要确认"没把别的搞坏"。
+4. **失败要能优雅退出并转人工**：修不好不等于崩溃，而是返回明确状态交给人审查。这与本章和第 19 章反复强调的"AI 产物必须人工把关"一致。
+
+</details>
+
+---
+
+[第22章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)

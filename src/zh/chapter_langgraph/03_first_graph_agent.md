@@ -1,4 +1,4 @@
-# 12.3 构建你的第一个 Graph Agent
+# 13.3 构建你的第一个 Graph Agent
 
 本节手把手构建一个完整的 LangGraph Agent，包括工具调用和循环推理。
 
@@ -162,7 +162,7 @@ for event in app.stream({"messages": [HumanMessage(content="地球直径是多�
 
 ## 与 LangChain AgentExecutor 的对比
 
-如果你用过 LangChain 的 `AgentExecutor`（第12章），你可能会问：为什么要费劲用图来构建 Agent？让我们通过一个对比来理解两者的本质差异：
+如果你用过 LangChain 的 `AgentExecutor`（第13章），你可能会问：为什么要费劲用图来构建 Agent？让我们通过一个对比来理解两者的本质差异：
 
 ```python
 # LangChain AgentExecutor 方式（黑盒）
@@ -256,4 +256,4 @@ result = app.invoke(
 
 ---
 
-*下一节：[12.4 条件路由与循环控制](./04_conditional_routing.md)*
+*下一节：[13.4 条件路由与循环控制](./04_conditional_routing.md)*

@@ -2,7 +2,6 @@
 
 > 📖 *"如果说 Prompt Engineering 是给 Agent 写'使用说明书'，那么 Agentic-RL 就是让 Agent 通过反复实践，自己悟出最优解法。"*
 
-
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
@@ -14,20 +13,7 @@
 - ✅ 完成一个完整的 SFT + GRPO 训练 Pipeline
 - ✅ 通过最小可运行 demo 理解 GRPO/RLVR 的组内采样、相对优势和 KL 约束
 - ✅ 掌握专为 Agent 微调的数据构建方法（工具调用轨迹、Gorilla/ToolBench 数据集）
-- ✅ 理解 Agentic 数据飞轮：如何让 Agent 用自身运行数据持续自我进化
-- ✅ 掌握 Self-Evolution Agent 的系统架构：让 Agent 从记忆、Prompt、Skill 到模型训练持续改进
 - ✅ 跟踪 2025—2026 年 GRPO 家族、Agent RL、过程奖励与训练效率优化的最新研究脉络
-
-## ⏱️ 预计学习时间
-
-约 **240-300 分钟**（含实战，建议分两到三天完成）
-
-## 💡 前置知识
-
-- 完成第2章（LLM 基础）和第9章（技能系统）
-- 了解神经网络基础和反向传播
-- 具备 PyTorch 基础操作经验
-- GPU 环境（推荐）或 Google Colab
 
 ---
 
@@ -37,8 +23,8 @@
 > 推荐但非必须：[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)、[附录 E：KL 散度详解](../appendix/kl_divergence.md)
 >
 > **后续推荐**：
-> - 👉 [第11章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架快速实践你训练出的模型
-> - 👉 [第17章 Agent 的评估与优化](../chapter_evaluation/README.md) — 评估 RL 训练后的 Agent 效果
+> - 👉 [第12章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架快速实践你训练出的模型
+> - 👉 [第18章 Agent 的评估与优化](../chapter_evaluation/README.md) — 评估 RL 训练后的 Agent 效果
 
 ---
 
@@ -63,8 +49,8 @@
 | 10.6 | 实战：完整训练 Pipeline | 先用最小 GRPO/RLVR demo 跑通核心机制，再基于 GSM8K 完成从数据准备到模型部署的完整训练 |
 | 10.7 | 最新研究进展（2025—2026） | 纵览 DeepSeek-R1、DAPO、VAPO、SAR、T-STAR、UCPO、DelTA、SRPO、GROW 等前沿工作，掌握 GRPO 家族与 Agent RL 的技术脉络 |
 | 10.8 | 专为 Agent 的微调 | 工具调用数据构建、三大开源数据集（Gorilla/ToolBench/AgentInstruct）、Agent SFT 专项配置 |
-| 10.9 | Agentic 数据飞轮 | 轨迹收集→质量过滤→奖励标注→训练迭代的完整闭环系统设计 |
-| 10.10 | Self-Evolution Agent | 记忆、Prompt、Skill、评估与数据飞轮协同形成自我改进闭环 |
+
+> 📌 **延伸阅读**：原 10.9 Agentic 数据飞轮、原 10.10/10.11 Self-Evolution Agent 与自进化前沿内容已独立扩展为 [第11章 自我进化与持续学习](../chapter_self_evolving/README.md)，建议学完本章后继续阅读。
 
 ---
 

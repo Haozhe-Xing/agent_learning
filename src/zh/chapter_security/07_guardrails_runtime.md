@@ -1,4 +1,4 @@
-# 18.7 Guardrails 运行时防护
+# 19.7 Guardrails 运行时防护
 
 > **本节目标**：理解 Guardrails 的概念与架构，掌握 NeMo Guardrails、Guardrails AI 等主流框架，学会构建自定义运行时防护系统。
 
@@ -1390,17 +1390,17 @@ class OptimizedGuardrails:
 | Constitutional AI | 让 Agent 遵循"宪法原则"自我审查和约束 |
 | 性能优化 | 缓存、并行、短路等策略降低 Guardrails 延迟 |
 
-> 📖 **想深入了解运行时防护的学术前沿？** 请阅读 [18.6 论文解读：安全与可靠性前沿研究](./06_paper_readings.md)，其中 SafeAgent [1] 提出了将 Guardrails 升级为有状态决策架构的最新方案。
+> 📖 **想深入了解运行时防护的学术前沿？** 请阅读 [19.6 论文解读：安全与可靠性前沿研究](./06_paper_readings.md)，其中 SafeAgent [1] 提出了将 Guardrails 升级为有状态决策架构的最新方案。
 >
-> 💡 **与第 17 章的关联**：Guardrails 的效果需要通过系统化的评估来验证——这正是 [17.7 A/B 测试与回归测试自动化](../chapter_evaluation/07_ab_testing.md) 的应用场景。建议为每条 Guardrails 规则编写回归测试，确保规则更新不会引入安全回归。
+> 💡 **与第 17 章的关联**：Guardrails 的效果需要通过系统化的评估来验证——这正是 [18.7 A/B 测试与回归测试自动化](../chapter_evaluation/07_ab_testing.md) 的应用场景。建议为每条 Guardrails 规则编写回归测试，确保规则更新不会引入安全回归。
 >
-> 💡 **与第 22 章的关联**：Computer Use Agent（[22.5 Computer Use 与 GUI Agent](../chapter_multimodal/05_computer_use_agent.md)）拥有比聊天 Agent 更大的权限（可以操作桌面、浏览器），因此对 Guardrails 的要求更高——必须在工具调用层面实施严格的权限控制和安全审计。
+> 💡 **与第 22 章的关联**：Computer Use Agent（[23.5 Computer Use 与 GUI Agent](../chapter_multimodal/05_computer_use_agent.md)）拥有比聊天 Agent 更大的权限（可以操作桌面、浏览器），因此对 Guardrails 的要求更高——必须在工具调用层面实施严格的权限控制和安全审计。
 
 > **下一节预告**：防御做好了，如何检验防御是否有效？下一节我们学习红队测试方法论。
 
 ---
 
-[18.8 红队测试方法论](./08_red_teaming.md)
+[19.8 红队测试方法论](./08_red_teaming.md)
 
 ---
 

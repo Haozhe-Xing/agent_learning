@@ -148,7 +148,7 @@ OpenAI 在 2024 年推出了 Structured Outputs 功能。可以把 `strict` 理�
 
 可以把它们理解为：**Function Calling 是"自己做饭"，MCP 是"点外卖"**。前者灵活自由，后者标准化可复用。掌握了 Function Calling 后，理解 MCP 会非常自然——本质上就是把工具的定义和执行从代码中抽离出来变成独立服务。
 
-详细内容见 [第16章 Agent 通信协议](../chapter_protocol/README.md)。
+详细内容见 [第17章 Agent 通信协议](../chapter_protocol/README.md)。
 
 ---
 

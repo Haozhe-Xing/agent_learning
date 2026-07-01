@@ -5,7 +5,6 @@
 
 ---
 
-
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
@@ -16,22 +15,13 @@
 - ✅ 构建你的第一个完整 Harness 系统
 - ✅ 实现结构化输出与可靠 JSON 生成
 
-## ⏱️ 预计学习时间
-
-约 **90-120 分钟**（含实战）
-
-## 💡 前置知识
-
-- 完成第3~7章（工具、记忆、规划、RAG、上下文）
-- 有一定的 Agent 开发经验
-
 ---
 
 ## 🔗 学习路径
 
 > **后续推荐**：
 > - 👉 [第9章 Skill System](../chapter_skill/README.md)
-> - 👉 [第14章 Claude Code 深度解析：从使用到源码](../chapter_claude_code/README.md)
+> - 👉 [第15章 Claude Code 深度解析：从使用到源码](../chapter_claude_code/README.md)
 
 ---
 

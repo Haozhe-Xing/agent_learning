@@ -1,4 +1,4 @@
-# 19.5 实战：部署一个生产级 Agent 服务
+# 20.5 实战：部署一个生产级 Agent 服务
 
 > **本节目标**：综合运用本章所学知识，完成一个 Agent 服务从开发到部署的完整流程。
 
@@ -266,4 +266,4 @@ curl -X POST http://localhost:8000/chat/stream \
 
 ---
 
-[第20章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)
+[第21章 项目实战：AI 编程助手](../chapter_coding_agent/README.md)

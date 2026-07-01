@@ -1,4 +1,4 @@
-# 11.8 LangChain 生产化模式
+# 12.8 LangChain 生产化模式
 
 > **本节目标**：掌握 LangChain 应用从开发走向生产所需的关键工程能力——流式输出、异步执行、错误处理、缓存策略和并发控制。
 
@@ -720,15 +720,127 @@ asyncio.run(process_with_semaphore(inputs, max_concurrency=5))
 | **Checklist** | 可靠性、性能、可观测性、安全、部署五维检查 |
 
 > 💡 **与本书其他章节的关系**：
-> - 第 17 章 [第17章 Agent 的评估与优化](../chapter_evaluation/README.md) 讨论了性能优化和成本控制的更多细节
-> - 第 18 章 [第18章 安全与可靠性](../chapter_security/README.md) 深入讲解了 Prompt 注入防御和沙箱隔离
-> - 第 19 章 [第19章 部署与生产化](../chapter_deployment/README.md) 涵盖了容器化、K8s、Serverless 等部署方案
+> - 第 17 章 [第18章 Agent 的评估与优化](../chapter_evaluation/README.md) 讨论了性能优化和成本控制的更多细节
+> - 第 18 章 [第19章 安全与可靠性](../chapter_security/README.md) 深入讲解了 Prompt 注入防御和沙箱隔离
+> - 第 19 章 [第20章 部署与生产化](../chapter_deployment/README.md) 涵盖了容器化、K8s、Serverless 等部署方案
 
 ---
 
-*上一节：[11.7 LangChain 生态 2026](./07_langchain_ecosystem_2026.md)*
+## 📝 本章练习
 
-*下一章：[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)*
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：本章反复出现一个词——Runnable 协议。请解释：什么是 Runnable 协议？为什么说它是 LCEL（用 `|` 管道符连接组件）能够成立的基础？再举例说明："一条链写好之后自动获得了流式、异步、批处理能力"这句话背后的原理是什么。
+
+<details>
+<summary>参考答案</summary>
+
+**Runnable 协议是什么？**
+Runnable 是 LangChain 0.2+ 引入的最核心抽象——它是一套**统一的接口约定**。LangChain 里几乎所有组件（Prompt 模板、LLM、输出解析器、工具、检索器）都实现了这个接口，因此它们都拥有完全一致的调用方法：`invoke`（同步单次）、`ainvoke`（异步）、`stream`（流式）、`batch`（批量）等。
+
+**为什么它是 LCEL 的基础？**
+LCEL 用 `|` 管道符把组件串起来，例如 `prompt | llm | parser`。这个 `|` 背后调用的其实是 Python 的 `__or__` 方法，它把两个 Runnable 组合成一个新的、同样满足 Runnable 接口的 `RunnableSequence`。正因为"每个组件都是 Runnable，组合的结果还是 Runnable"，所以才能像搭积木一样无限串联——这正是接口统一带来的可组合性。如果各组件的调用方式五花八门，`|` 就无法通用地工作。
+
+**为什么自动获得流式/异步/批处理？**
+因为这三种能力都是 Runnable 接口本身定义的方法（`stream`/`astream`、`ainvoke`、`batch`/`abatch`）。当你用 `|` 把组件组合成一条链时，这条链作为一个新的 Runnable，会把这些调用"沿管道传递"给每个子组件。例如对整条链调用 `.astream()`，LangChain 会依次让 prompt、llm、parser 都以异步流式方式工作，最终把 LLM 的 token 一块块吐出来。你不需要为每条链单独再写流式或异步逻辑——这是"面向接口编程"省下的工作量。
+
+</details>
+
+**练习 2（辨析）**：本章介绍了三种缓存：InMemoryCache、RedisCache、SemanticCache。有同学说："既然 SemanticCache（语义缓存）连措辞不同的问题都能命中，那它一定是最好的，应该到处都用它。" 这个说法对吗？请对比三种缓存的命中条件和代价，并说明为什么本章特别提醒"`temperature > 0` 时要慎用缓存"。
+
+<details>
+<summary>参考答案</summary>
+
+**这个说法不全对——SemanticCache 强大但有代价和风险，不该无脑全用。**
+
+三种缓存对比：
+
+| 缓存 | 命中条件 | 代价 / 风险 | 适用场景 |
+|------|---------|------------|---------|
+| InMemoryCache | 输入**完全相同** | 重启后丢失，多进程不共享 | 本地开发 / 测试 |
+| RedisCache | 输入**完全相同** | 需要部署、维护 Redis | 生产环境的主力缓存 |
+| SemanticCache | 语义**相似**（向量相似度超过阈值） | 每次查询都要先算一次 Embedding（额外成本和延迟）；有**误判风险** | 高重复、措辞多变的查询 |
+
+**SemanticCache 的两个隐患：**
+1. **额外成本**：判断是否命中需要先把问题转成向量（调用 Embedding 模型），这本身要花钱和时间。如果查询重复率不高，省下的钱还不够付 Embedding 的。
+2. **误判风险**：相似度阈值（`score_threshold`）定得太低，会把"看似相似实则不同"的问题误判为命中，返回错误答案。例如"Python 怎么读文件"和"Python 怎么写文件"语义很近，却可能要完全不同的答案。所以本章建议它作为优化补充，生产主力仍用 RedisCache。
+
+**为什么 `temperature > 0` 时慎用缓存？**
+缓存的前提是"同样的输入应该得到同样的输出"。但 `temperature > 0` 意味着我们**故意让模型带随机性**——比如创意写作、多样化推荐，用户每次提问可能就是想要不一样的回答。如果开了缓存，第二次相同提问会直接返回第一次的旧结果，随机性和多样性就被破坏了。因此缓存最适合 `temperature=0`（确定性输出）的场景，如固定问答、信息抽取。
+
+</details>
+
+**练习 3（动手）**：你要把一个 LangChain 问答链部署成生产级的 FastAPI 服务，要求满足两点：(1) 用 SSE（Server-Sent Events）流式把回答推给前端，降低用户的感知延迟；(2) 主模型用 `gpt-4.1`，当它失败时自动降级到 `gpt-4.1-mini`，保证可用性。请写出核心代码，并解释为什么在 FastAPI 里必须用 `astream` 而不是 `stream`。
+
+<details>
+<summary>参考答案</summary>
+
+核心是把两个本章学到的能力组合起来：`with_fallbacks` 做降级 + `astream` + `StreamingResponse` 做 SSE 流式。
+
+```python
+import json
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
+app = FastAPI()
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一个专业的技术顾问。"),
+    ("human", "{question}"),
+])
+
+# ── 主链：gpt-4.1 ──────────────────────────────────────
+primary_chain = (
+    prompt
+    | ChatOpenAI(model="gpt-4.1", temperature=0, streaming=True, max_retries=3)
+    | StrOutputParser()
+)
+
+# ── 备用链：gpt-4.1-mini ───────────────────────────────
+fallback_chain = (
+    prompt
+    | ChatOpenAI(model="gpt-4.1-mini", temperature=0, streaming=True, max_retries=3)
+    | StrOutputParser()
+)
+
+# ── 组合：主链失败自动切到备用链 ───────────────────────
+robust_chain = primary_chain.with_fallbacks([fallback_chain])
+
+@app.post("/chat/stream")
+async def chat_stream(question: str):
+    async def event_generator():
+        # 用 astream 异步流式逐块产出
+        async for chunk in robust_chain.astream({"question": question}):
+            # 封装为 SSE 数据帧
+            yield f"data: {json.dumps({'content': chunk}, ensure_ascii=False)}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # 关闭 Nginx 缓冲，否则流式会被攒成一坨
+        },
+    )
+```
+
+**为什么 FastAPI 里必须用 `astream` 而不是 `stream`？**
+FastAPI 是基于**异步事件循环**（asyncio）的框架——它靠一个单线程的事件循环来同时服务大量并发请求。`stream()` 是**同步**方法，调用它时会**阻塞**当前线程，直到 LLM 返回数据。一旦阻塞，整个事件循环就被卡住，这段时间内**所有其他用户的请求都无法被处理**，并发能力直接归零。
+
+而 `astream()` 是**异步**方法：当它在等待 LLM 返回下一个 token 时，会用 `await` 把控制权交还给事件循环，让循环去处理其他请求；数据到了再回来继续。这样单个请求的等待时间被"重叠"利用，服务才能扛住高并发。所以本章在异步注意事项里特别强调：在 FastAPI 这类异步框架中，务必使用 `ainvoke` / `astream`，否则会阻塞事件循环。
+
+</details>
+
+---
+
+*上一节：[12.7 LangChain 生态 2026](./07_langchain_ecosystem_2026.md)*
+
+*下一章：[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)*
 
 ---
 

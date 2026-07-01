@@ -1,4 +1,4 @@
-# 第20章 项目实战：AI 编程助手
+# 第21章 项目实战：AI 编程助手
 
 > 从零构建一个能理解代码、生成代码、写测试和修 Bug 的 AI 编程助手。
 
@@ -14,36 +14,27 @@
 - ✅ 实现自动测试生成和 Bug 修复的全流程
 - ✅ 交付一个可实际使用的 AI 编程辅助工具
 
-## ⏱️ 预计学习时间
-
-约 **180-240 分钟**（综合实战项目）
-
-## 💡 前置知识
-
-- 完成第一至五部分所有章节
-- 熟悉 Python 项目开发流程（虚拟环境、包管理）
-
 ## 📚 本章结构
 
 本章是第一个综合实战项目。我们将综合运用前面所学的 Agent 核心技术——工具调用、记忆系统、RAG、规划推理——构建一个能真正帮助开发者的 AI 编程助手。
 
 | 小节 | 内容 | 难度 |
 |------|------|------|
-| 20.1 项目架构设计 | 整体方案和组件设计 | ⭐⭐ |
-| 20.2 代码理解与分析 | AST 解析、语义搜索 | ⭐⭐⭐ |
-| 20.3 代码生成与修改 | 结构化生成、Diff 修改 | ⭐⭐⭐ |
-| 20.4 测试生成与 Bug 修复 | 自动测试、诊断修复 | ⭐⭐⭐ |
-| 20.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
+| 21.1 项目架构设计 | 整体方案和组件设计 | ⭐⭐ |
+| 21.2 代码理解与分析 | AST 解析、语义搜索 | ⭐⭐⭐ |
+| 21.3 代码生成与修改 | 结构化生成、Diff 修改 | ⭐⭐⭐ |
+| 21.4 测试生成与 Bug 修复 | 自动测试、诊断修复 | ⭐⭐⭐ |
+| 21.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第6章 检索增强生成（RAG）](../chapter_rag/README.md)、[第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
-> 推荐但非必须：[第17章 Agent 的评估与优化](../chapter_evaluation/README.md)
+> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第6章 检索增强生成（RAG）](../chapter_rag/README.md)、[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+> 推荐但非必须：[第18章 Agent 的评估与优化](../chapter_evaluation/README.md)
 >
 > **同系列项目**：
-> - 📊 [第21章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
-> - 🎨 [第22章 项目实战：多模态 Agent](../chapter_multimodal/README.md)
+> - 📊 [第22章 项目实战：智能数据分析 Agent](../chapter_data_agent/README.md)
+> - 🎨 [第23章 项目实战：多模态 Agent](../chapter_multimodal/README.md)
 
 ---
 
-*下一节：[20.1 项目架构设计](./01_architecture.md)*
+*下一节：[21.1 项目架构设计](./01_architecture.md)*

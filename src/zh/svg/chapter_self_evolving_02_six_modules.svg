@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" width="760" height="470" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/></marker>
+  </defs>
+  <rect width="760" height="470" rx="18" fill="#f8fafc"/>
+  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Self-Evolution Agent 的六模块系统架构</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">执行路径与进化路径分离：用户结果优先，进化逻辑异步运行</text>
+
+  <!-- 用户任务 -->
+  <rect x="310" y="78" width="140" height="44" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="380" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">用户任务</text>
+
+  <!-- Executor -->
+  <rect x="120" y="150" width="160" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="200" y="174" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">① Executor 执行器</text>
+  <text x="200" y="193" text-anchor="middle" font-size="10" fill="#2563eb">完成任务、调工具</text>
+
+  <!-- 用户结果（执行路径终点） -->
+  <rect x="120" y="240" width="160" height="48" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="200" y="269" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">用户结果（即时返回）</text>
+
+  <!-- Trajectory Logger -->
+  <rect x="480" y="150" width="160" height="56" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="560" y="174" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">② Trajectory Logger</text>
+  <text x="560" y="193" text-anchor="middle" font-size="10" fill="#7c3aed">记录计划/工具/成本</text>
+
+  <!-- Evaluator -->
+  <rect x="480" y="226" width="160" height="50" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="560" y="250" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">③ Evaluator 评估器</text>
+  <text x="560" y="267" text-anchor="middle" font-size="10" fill="#b45309">成败/可靠性/安全</text>
+
+  <!-- Diagnoser -->
+  <rect x="480" y="296" width="160" height="50" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="560" y="320" text-anchor="middle" font-size="13" font-weight="bold" fill="#9a3412">④ Diagnoser 归因器</text>
+  <text x="560" y="337" text-anchor="middle" font-size="10" fill="#c2410c">定位可改进点</text>
+
+  <!-- Evolution Engine -->
+  <rect x="480" y="366" width="160" height="50" rx="10" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="560" y="390" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">⑤ Evolution Engine</text>
+  <text x="560" y="407" text-anchor="middle" font-size="10" fill="#db2777">生成记忆/Prompt/Skill 补丁</text>
+
+  <!-- Validator -->
+  <rect x="270" y="366" width="160" height="50" rx="10" fill="#e1f5ee" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="350" y="390" text-anchor="middle" font-size="13" font-weight="bold" fill="#0f766e">⑥ Validator 验证器</text>
+  <text x="350" y="407" text-anchor="middle" font-size="10" fill="#0d9488">回归测试 + 沙箱</text>
+
+  <!-- 落地资产 -->
+  <rect x="60" y="366" width="180" height="50" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="150" y="388" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">记忆 / Prompt / Skill</text>
+  <text x="150" y="405" text-anchor="middle" font-size="10" fill="#16a34a">/ 训练数据（验证后入库）</text>
+
+  <!-- 箭头：执行路径 -->
+  <line x1="350" y1="122" x2="220" y2="148" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="200" y1="206" x2="200" y2="238" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="246" y="228" font-size="10" fill="#16a34a">执行路径</text>
+
+  <!-- 箭头：进化路径 -->
+  <line x1="410" y1="122" x2="540" y2="148" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="280" y1="178" x2="478" y2="178" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="378" y="170" text-anchor="middle" font-size="10" fill="#7c3aed">轨迹</text>
+  <line x1="560" y1="206" x2="560" y2="224" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="560" y1="276" x2="560" y2="294" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="560" y1="346" x2="560" y2="364" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="478" y1="391" x2="433" y2="391" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="268" y1="391" x2="243" y2="391" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 验证后反哺执行器 -->
+  <path d="M150 366 L150 178 L118 178" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr)"/>
+  <text x="95" y="300" font-size="10" fill="#16a34a" text-anchor="middle">下次复用</text>
+
+  <text x="380" y="445" text-anchor="middle" font-size="12" fill="#475569">关键原则：进化路径异步执行，绝不拖慢当前用户请求</text>
+</svg>

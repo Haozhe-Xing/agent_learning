@@ -1103,5 +1103,92 @@ detail = harness_detail.extract(f"{text}\n\n已确认类别：{basic.category}")
 
 ---
 
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：本章开头有句话——"Agent 输出一个无法解析的 JSON，下游整个流水线就崩了。这不是模型问题——这是你的 Harness 没做好。" 请解释：为什么 JSON 可靠性被归为 **Harness 问题**而不是模型问题？这背后体现了"软约束"到"硬约束"的什么思想？
+
+<details>
+<summary>参考答案</summary>
+
+**为什么是 Harness 问题而非模型问题：** 模型**天生不保证**输出合法 JSON——即使你在 Prompt 里写了"请输出 JSON"，生产中仍会遇到 Markdown 包裹、末尾多余文字、单引号、注释、类型错误、幻觉字段、截断等各种"意外"。指望模型"自律地"每次都输出完美 JSON 是不现实的。既然模型的不确定性是已知的客观事实，那么**保障可靠性就成了系统设计者（你）的责任**——要用工程机制去兜住它，而不是抱怨模型不听话。这就是为什么它属于 Harness（驾驭 Agent 的系统工程）。
+
+**软约束 → 硬约束的思想：**
+- **软约束**：在输入端"告诉"模型应该怎么做（Prompt 里写要求）——模型**可以遵守，也可以不遵守**。
+- **硬约束**：在输出端"控制"模型只能怎么做——比如 API 原生结构化输出 / 约束解码，在 token 生成层把所有不合法的候选概率强制设为 0，模型**物理上不可能**生成非法输出。
+
+本章的核心理念（支柱二·架构约束）就是：**不依赖模型的自律，而用工程机制强制保证。** 把"模型应该输出正确 JSON"升级为"模型无法输出错误 JSON"。
+
+</details>
+
+**练习 2（辨析）**：`jsonrepair`（事后修复）和约束解码（如 Outlines，事前预防）都能提升 JSON 可靠性。请辨析它们的本质区别，并判断下面这句话对不对——"既然约束解码更可靠，那就所有场景都用约束解码，不要用 jsonrepair 了。"
+
+<details>
+<summary>参考答案</summary>
+
+**本质区别：**
+- **jsonrepair = 事后修复**：模型已经生成了畸形 JSON，再用库去修补括号、引号、逗号、补全截断等。是"亡羊补牢"。
+- **约束解码 = 事前预防**：在 token 生成阶段就用 FSM 屏蔽所有不合法的 token，**错误的 JSON 根本不会被生成**。是"防患未然"。
+- 可靠性上：约束解码 > jsonrepair。
+
+**那句话不对**，因为约束解码有一个硬前提——**必须能控制推理引擎**，所以**只能用于本地部署的开源模型**（通过 Outlines / vLLM 等）。在下列场景你根本用不了约束解码，只能靠 jsonrepair 兜底：
+- 用的是云端 API 但**旧版本不支持**原生结构化输出；
+- 调用的是**无法干预解码过程**的第三方模型；
+- 历史代码迁移成本高，一时改不动。
+
+而且要注意：**两者都只解决"格式"问题，都不保证"语义/类型"正确**——jsonrepair 修不了 `"age": "二十八"` 这种类型错误，也拦不住幻觉字段。所以正确姿势不是二选一，而是**分层叠加**：能用硬约束（API 原生 / 约束解码）就优先用；用不了就上 jsonrepair；最后**始终**再叠一层 Pydantic 做类型 + 业务验证。技术选型要看约束条件，没有"一招通吃"。
+
+</details>
+
+**练习 3（动手）**：你的 Agent 要从用户文本里提取订单信息。即使 JSON 格式合法，仍可能出现 `{"amount": -5}`（金额为负）、`{"status": "已发货", "shipped_date": null}`（已发货却没发货日期）这类**业务上不合理**的值。请用 Pydantic 写一个 `OrderInfo` 模型，要求：禁止幻觉字段、金额必须为正、并校验"已发货必须有发货日期"。说明每个机制各防住了什么。
+
+<details>
+<summary>参考答案</summary>
+
+```python
+from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+from typing import Optional, Literal
+
+class OrderInfo(BaseModel):
+    # 机制 1：禁止 Schema 之外的幻觉字段
+    model_config = ConfigDict(extra="forbid")
+
+    order_id: str
+    amount: float
+    status: Literal["待支付", "已支付", "已发货", "已完成"]  # 机制 2：限定取值
+    shipped_date: Optional[str] = None
+
+    # 机制 3：字段级校验——金额必须为正
+    @field_validator("amount")
+    @classmethod
+    def amount_must_be_positive(cls, v):
+        if v <= 0:
+            raise ValueError(f"金额必须为正，收到：{v}")
+        return v
+
+    # 机制 4：跨字段校验——已发货必须有发货日期
+    @model_validator(mode="after")
+    def shipped_needs_date(self):
+        if self.status == "已发货" and not self.shipped_date:
+            raise ValueError("状态为'已发货'时，shipped_date 不能为空")
+        return self
+```
+
+**每个机制各防住了什么：**
+
+| 机制 | 防住的问题 | 对应本章的陷阱 |
+|---|---|---|
+| `extra="forbid"` | 模型自作主张加 Schema 里没有的字段（幻觉字段静默通过） | 陷阱 1：嵌套 Schema 幻觉字段 |
+| `Literal[...]` | status 出现"已发货中"等非法状态 | 值域/枚举越界 |
+| `@field_validator`（金额为正） | `{"amount": -5}` 这种格式合法但业务不合理的值 | 值域超限 |
+| `@model_validator`（跨字段一致性） | `已发货却 shipped_date=null` 这种字段间语义矛盾 | 字段冲突/语义矛盾 |
+
+**核心要点：** 本章反复强调——**JSON 格式合法 ≠ 值在业务上合理**。API 原生结构化输出和约束解码只能保证"格式/类型对得上、`json.loads()` 不报错"，但管不了业务规则。这些规则在 JSON Schema 的"管辖范围之外"，必须由 **Pydantic 的 validator 这层业务逻辑**来把关。所以完整防线是：硬约束保格式 → Pydantic 保语义 → 失败时带错误上下文有限重试。三层缺一不可。
+
+</details>
+
+---
+
 *上一节：[8.5 实战：构建你的第一个 Harness 系统](./05_practice_harness_builder.md)*  
 *下一章：[第9章 Skill System](../chapter_skill/README.md)*

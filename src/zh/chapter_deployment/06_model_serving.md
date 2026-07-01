@@ -1,4 +1,4 @@
-# 19.6 模型推理服务化
+# 20.6 模型推理服务化
 
 > **本节目标**：掌握大模型推理服务化的三大框架（vLLM / SGLang / TGI），了解主流量化方案（GPTQ / AWQ / GGUF），学会设计模型路由策略以实现成本与性能的最优平衡。
 
@@ -706,4 +706,4 @@ def warm_up_model(base_url: str, model_name: str, warmup_rounds: int = 3):
 
 ---
 
-[19.7 Kubernetes 编排与 Serverless GPU](./07_k8s_serverless.md)
+[20.7 Kubernetes 编排与 Serverless GPU](./07_k8s_serverless.md)

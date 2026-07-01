@@ -283,7 +283,7 @@ class TeamState(TypedDict):
 2. **效率**：用了多少步？消耗了多少 Token？延迟多少？
 3. **安全性**：是否遵循了安全边界？是否拒绝了不合理的请求？
 
-具体可以参考第15章介绍的 AgentBench、SWE-bench、GAIA 等基准测试。
+具体可以参考第16章介绍的 AgentBench、SWE-bench、GAIA 等基准测试。
 
 ### Q27：Agent 的输出不稳定，每次结果都不一样怎么办？
 

@@ -1,4 +1,4 @@
-# 13.3 AutoGen：多 Agent 对话框架
+# 14.3 AutoGen：多 Agent 对话框架
 
 AutoGen 是微软开发的多 Agent 对话框架，其核心创新是：通过 **Agent 之间的对话** 来完成任务，而非传统的调用链。
 
@@ -262,4 +262,4 @@ AutoGen 的核心价值在于**代码的自动生成和执行**能力，以及**
 
 ---
 
-*下一节：[13.4 Dify / Coze 等低代码 Agent 平台](./04_low_code_platforms.md)*
+*下一节：[14.4 Dify / Coze 等低代码 Agent 平台](./04_low_code_platforms.md)*

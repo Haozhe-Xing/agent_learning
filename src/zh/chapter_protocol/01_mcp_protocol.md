@@ -1,4 +1,4 @@
-# 16.1 MCP（Model Context Protocol）详解
+# 17.1 MCP（Model Context Protocol）详解
 
 MCP（Model Context Protocol）是 Anthropic 于 2024 年 11 月推出的开放协议，旨在标准化 LLM 与外部工具、数据源之间的连接方式。经过一年多的发展，MCP 已成为 Agent 工具接口的事实标准，被 Claude Desktop、Cursor、Windsurf、OpenAI Agents SDK 等主流产品广泛支持。
 
@@ -417,4 +417,4 @@ MCP 的价值：
 
 ---
 
-*下一节：[16.2 A2A（Agent-to-Agent）协议](./02_a2a_protocol.md)*
+*下一节：[17.2 A2A（Agent-to-Agent）协议](./02_a2a_protocol.md)*

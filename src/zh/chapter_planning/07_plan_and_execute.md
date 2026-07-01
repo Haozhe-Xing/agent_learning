@@ -252,7 +252,7 @@ print(f"\n📊 最终答案：\n{result}")
 
 ## LangGraph 实现 Plan-and-Execute
 
-生产环境中，推荐用 LangGraph（第12章）实现 Plan-and-Execute，因为它天然支持状态图和条件路由：
+生产环境中，推荐用 LangGraph（第13章）实现 Plan-and-Execute，因为它天然支持状态图和条件路由：
 
 ```python
 from langgraph.graph import StateGraph, END

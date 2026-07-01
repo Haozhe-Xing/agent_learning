@@ -497,4 +497,97 @@ print(memory.cleanup())
 
 ---
 
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：MemGPT 把 LLM 的上下文类比为操作系统的内存。本节实现的分层记忆 Agent 有三层：Core Memory、Working Memory、Archive Memory。请用自己的话说清这三层各自放什么、为什么要这样分层，并解释它对应操作系统里的哪个概念。
+
+<details>
+<summary>参考答案</summary>
+
+三层记忆的分工：
+
+| 层 | 放什么 | 类比操作系统 | 关键特点 |
+|---|---|---|---|
+| **Core Memory（核心记忆）** | 用户姓名、长期偏好、关键事实、当前目标 | 常驻内存 / 寄存器 | **始终**在 Prompt 里，是模型回答的"常识依据" |
+| **Working Memory（工作记忆）** | 当前任务相关的近期上下文 | 内存（RAM） | 容量有限，只保留最近若干条 |
+| **Archive Memory（归档记忆）** | 大量历史内容、长文档 | 硬盘 / 外部存储 | 不进 Prompt，**按需检索**才调出来 |
+
+**为什么要分层：** 上下文窗口是有限且昂贵的资源。如果把所有历史都塞进 Prompt，很快就会超出窗口、而且充满噪声。分层的核心思想是——**把最重要、最常用的信息常驻（Core），把次要的暂存（Working），把海量但偶尔才用的信息放到外部、用检索按需调取（Archive）**。这正是操作系统"内存分级（寄存器/RAM/硬盘）"的思路：用有限的快速存储装最热的数据，冷数据放慢速大容量存储。
+
+这样既突破了上下文窗口的物理限制，又保证了关键信息（如"用户在做客户流失预测项目"）不会被遗忘。
+
+</details>
+
+**练习 2（辨析）**：本节的记忆衰减机制里，"identity"类记忆衰减率是 0.0（永不衰减），"trivial"类是 0.3（极快衰减）。有同学说："既然存储成本越来越低，干脆所有记忆都永不衰减，全都记住最保险。" 这个想法对吗？请结合检索质量分析。
+
+<details>
+<summary>参考答案</summary>
+
+这个想法**不对**。问题不在存储成本，而在**检索质量和上下文噪声**。
+
+- **"全都记住"会让检索被噪声淹没**：Agent 每次决策能放进上下文的记忆数量有限（top_k）。如果"用户今天喝了一杯咖啡"这种琐碎信息和"用户名叫小明""当前项目是客户流失预测"这种关键信息一起参与排序，琐碎记忆可能挤占宝贵的名额，反而让真正重要的信息被漏掉。
+- **人脑也是这么做的**：本节开头就点明"人脑不是什么都记——重要的记住，不重要的逐渐遗忘"。遗忘不是缺陷，而是一种**主动的信息筛选机制**。
+- **衰减率分级体现了信息的价值差异**：身份信息（identity）几乎永远有用，所以不衰减；琐碎信息（trivial）很快失去价值，让它快速衰减、被 `cleanup()` 清理掉，能保持记忆库的信噪比。
+- 同时本节还设计了**访问增强**（access_count）：经常被检索的记忆会获得加成、不容易被遗忘——这模拟了人脑"越回忆越牢固"的特性，是对单纯时间衰减的补充。
+
+所以正确思路是**有区别地遗忘**：重要的留住，琐碎的淘汰，被反复用到的强化。这样检索出来的才是真正相关、高质量的记忆。
+
+</details>
+
+**练习 3（动手）**：本节 `MemoryWithDecay` 的 `_compute_relevance` 用的是简单的"关键词重叠"来算相关性，对中文和近义词很不友好（比如查询"项目"匹配不到"客户流失预测工作"）。请说明它的缺陷，并写出用**向量相似度（Embedding）** 改造后的 `_compute_relevance` 思路与核心代码。
+
+<details>
+<summary>参考答案</summary>
+
+**关键词重叠的缺陷：**
+- 只能匹配**字面完全相同**的词，无法理解语义。查询"项目"匹配不到"客户流失预测工作"，因为没有共同的词。
+- 对中文尤其不友好：中文不像英文用空格天然分词，`content.split()` 切不出合理的词。
+- 无法处理近义词、上下位词（"手机"vs"智能手机"）。
+
+**用 Embedding 改造的思路：** 把查询和记忆内容都编码成向量，用**余弦相似度**衡量语义接近程度——语义相近的向量在空间里距离也近，哪怕一个字都不重叠。
+
+```python
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+class MemoryWithDecay:
+    def __init__(self):
+        self.memories = []
+        # 加载一个支持中文的句向量模型
+        self.embedder = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+
+    def add(self, content, memory_type, importance=0.5):
+        # 入库时就把内容编码成向量缓存起来，避免每次检索重复计算
+        self.memories.append({
+            "content": content,
+            "type": memory_type,
+            "importance": importance,
+            "created_at": time.time(),
+            "access_count": 0,
+            "embedding": self.embedder.encode(content),   # 新增
+        })
+
+    def _compute_relevance(self, query: str, mem: dict) -> float:
+        """用余弦相似度替代关键词重叠"""
+        q_vec = self.embedder.encode(query)
+        m_vec = mem["embedding"]
+        cos = np.dot(q_vec, m_vec) / (
+            np.linalg.norm(q_vec) * np.linalg.norm(m_vec) + 1e-8
+        )
+        # 余弦值范围 [-1, 1]，归一化到 [0, 1] 便于和其它分项加权
+        return (cos + 1) / 2
+```
+
+**讲解：**
+- 入库（`add`）时就编码并缓存向量，检索时只需编码一次查询，避免重复开销。
+- 余弦相似度衡量两个向量方向的接近程度，是语义检索的标准做法；这样"项目"就能和"客户流失预测工作"匹配上。
+- 归一化到 [0,1] 是为了和 `retrieve` 里的 `importance × decay`、`access_bonus` 等分项在同一量纲上加权。
+- 这其实就是把 4.3 节"长期记忆：向量数据库与检索"的思想，落到了记忆衰减系统里——真实生产中 Archive Memory 通常就用向量数据库（如 Milvus）实现。
+
+</details>
+
+---
+
 [4.6 论文解读：记忆系统前沿进展](./06_paper_readings.md)

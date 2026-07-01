@@ -1,4 +1,4 @@
-# 12.1 为什么需要图结构？
+# 13.1 为什么需要图结构？
 
 > **本节目标**：理解线性链的局限，掌握图结构解决复杂 Agent 场景的核心优势。
 
@@ -14,19 +14,7 @@ LangGraph 的设计灵感直接来源于计算机科学中的两个经典概念�
 
 Agent 的行为本质上是一个**有限状态机**——在有限个状态之间，根据输入和条件进行转换 [1]：
 
-```
-                ┌──────────────────────────┐
-                ▼                          │
-         ┌──────────┐    有工具调用    ┌──────────┐
-START ──▶│  思考中   │ ─────────────▶ │ 执行工具  │
-         └──────────┘                └──────────┘
-              │
-              │ 无工具调用（直接回答）
-              ▼
-         ┌──────────┐
-         │   结束    │
-         └──────────┘
-```
+![Agent 作为有限状态机：思考-执行工具构成环](../svg/chapter_langgraph_01_fsm.svg)
 
 在 FSM 模型中：
 - **状态**（State）：Agent 当前所处的阶段（如"思考中"、"执行工具"、"等待人类审批"）
@@ -189,7 +177,76 @@ use_lcel_instead = [
 
 ---
 
-*下一节：[12.2 LangGraph 核心概念：节点、边、状态](./02_core_concepts.md)*
+## 📝 本章练习
+
+读完本节，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：为什么说 LangGraph 是「支持环的有向图」而不是 DAG？这个区别对 Agent 意味着什么？
+
+<details>
+<summary>参考答案</summary>
+
+DAG（有向无环图）不允许任何节点回指到之前的节点，因此只能表达「一次性、单向」的流程。而 Agent 最核心的行为模式是 **ReAct 循环**：思考 → 行动 → 观察 → 再思考，这本质上是一个**环**——同一个「思考」节点会被反复进入。
+
+- 如果用 DAG，必须把每一轮循环都展开成独立节点，循环次数不确定时根本无法静态建模。
+- LangGraph 允许条件边指回已有节点（甚至指回自己），因此能用**固定的图结构**表达**运行时长度不定的循环**。
+
+这就是 Airflow 这类 DAG 工作流引擎无法原生表达 Agent 推理的根本原因。
+
+</details>
+
+**练习 2（辨析）**：下面这段需求，应该用 LCEL 链还是 LangGraph？为什么？
+
+> "用户上传一段代码，先分析，若发现安全漏洞则插入一个额外的安全审查步骤，修复后若引入新问题需要重新审查。"
+
+<details>
+<summary>参考答案</summary>
+
+应该用 **LangGraph**。这段需求踩中了 LCEL 的三个死穴：
+
+1. **动态插入步骤**——"若发现漏洞则插入安全审查"是运行时条件分支，LCEL 的 `a | b | c` 是固定管道，做不到。
+2. **回溯重审**——"修复引入新问题需重新审查"是一个环，LCEL 无法回到之前的节点。
+3. 需要在节点间共享分析结果（持久 State）。
+
+用 LangGraph，把"分析/安全审查/修复/重审"做成节点，用条件边根据 State 中的 `has_vulnerability`、`new_issue` 字段动态路由即可。
+
+</details>
+
+**练习 3（动手）**：本节的示例图里，`should_continue` 在 `iterations >= 5` 时返回 `"end"`。请说明这行代码的作用，并尝试修改 `AgentState` 与条件函数，让循环上限可以由外部传入而不是硬编码为 5。
+
+<details>
+<summary>参考答案</summary>
+
+**作用**：这是**防无限循环的兜底**。Agent 的循环长度由 LLM 决定，若模型始终不给出 `final_answer`，图就会无限循环、烧光 token。`iterations >= 5` 强制在 5 轮后退出。
+
+**让上限可配置**的一种改法：在 State 里加一个 `max_iterations` 字段，初始化时传入，条件函数读取它：
+
+```python
+class AgentState(TypedDict):
+    messages: list
+    current_task: str
+    iterations: int
+    max_iterations: int   # 新增：循环上限
+    final_answer: str
+
+def should_continue(state: AgentState) -> str:
+    if state.get("final_answer"):
+        return "end"
+    if state.get("iterations", 0) >= state.get("max_iterations", 5):
+        return "end"
+    return "continue"
+
+# 调用时通过初始 State 传入上限
+app.invoke({"current_task": "...", "iterations": 0, "max_iterations": 10})
+```
+
+要点：把"策略参数"放进 State，而不是写死在代码里，是让图可复用、可测试的常见技巧。
+
+</details>
+
+---
+
+*下一节：[13.2 LangGraph 核心概念：节点、边、状态](./02_core_concepts.md)*
 
 ---
 

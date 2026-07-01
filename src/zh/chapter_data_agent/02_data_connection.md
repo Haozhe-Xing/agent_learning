@@ -1,4 +1,4 @@
-# 21.2 数据连接与查询
+# 22.2 数据连接与查询
 
 > **本节目标**：实现安全的数据库连接和自然语言到 SQL 的转换，深入理解 Text-to-SQL 的原理与安全挑战。
 
@@ -467,4 +467,4 @@ class QueryResultValidator:
 
 ---
 
-[21.3 自动化分析与可视化](./03_analysis_visualization.md)
+[22.3 自动化分析与可视化](./03_analysis_visualization.md)

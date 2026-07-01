@@ -1,4 +1,4 @@
-# 2.9 Prompt 自动调优：从手工提示词到自我进化的 Agent
+# 11.1 Prompt 自动调优：从手工提示词到自我进化的 Agent
 
 > 🧬 *"一个好的 Prompt 不是一次写成的，而是在任务、反馈、失败和反思中不断进化出来的。未来的 Agent 不只是会回答问题，还会观察自己的失败，修改自己的工作方式，并把成功经验沉淀下来。"*
 
@@ -54,7 +54,7 @@
 
 ---
 
-## 先用一个生活类比理解 Prompt 自动调优
+## 11.1.1 先用一个生活类比理解 Prompt 自动调优
 
 可以把 Prompt 想象成老师给学生写的“做题说明”。
 
@@ -154,7 +154,7 @@ score = 0
 
 ---
 
-## 为什么手工 Prompt 调优不够用了？
+## 11.1.2 为什么手工 Prompt 调优不够用了？
 
 简单任务中，手工写 Prompt 通常已经够用。例如：
 
@@ -191,7 +191,7 @@ score = 0
 
 ---
 
-## Prompt 自动调优到底在优化什么？
+## 11.1.3 Prompt 自动调优到底在优化什么？
 
 在神经网络训练中，我们优化的是模型权重。权重是数字，所以可以用梯度下降更新。
 
@@ -276,7 +276,7 @@ Prompt 应要求模型优先选择显式匹配年份的证据句。
 
 ---
 
-## 这个方向的发展脉络
+## 11.1.4 这个方向的发展脉络
 
 Prompt 自动调优不是突然出现的。它大致经历了下面几步发展：
 
@@ -310,13 +310,19 @@ Prompt 自动调优不是突然出现的。它大致经历了下面几步发展�
 
 ---
 
-## 第一类：自动生成 Prompt
+## 11.1.5 第一类：自动生成 Prompt
 
-### APE：让 LLM 自动写 Prompt
+### APE（ICLR 2023）：让 LLM 自动写 Prompt
 
-**APE** 的全名是 *Large Language Models Are Human-Level Prompt Engineers*，发表于 ICLR 2023。
+**APE** 的全名是 *Large Language Models Are Human-Level Prompt Engineers*。
+
+> 📄 **发表信息**：Zhou et al.，**ICLR 2023**｜arXiv: [2211.01910](https://arxiv.org/abs/2211.01910)
 
 它的想法很简单：既然 LLM 很会写文字，能不能让 LLM 自己给任务写 Prompt？
+
+![APE 流程：示例 → LLM 反推指令 → 生成候选 → 打分筛选 → 执行评估](../svg/chapter_llm_09_ape_paper.png)
+
+*▲ APE 原论文 Figure（来源：Zhou et al., ICLR 2023, arXiv:2211.01910）*
 
 流程大致是：
 
@@ -392,13 +398,19 @@ APE 可能生成类似这样的候选：
 
 ---
 
-## 第二类：把 LLM 当优化器
+## 11.1.6 第二类：把 LLM 当优化器
 
-### OPRO：把历史候选和分数写进 Prompt
+### OPRO（ICLR 2024）：把历史候选和分数写进 Prompt
 
-**OPRO** 的全名是 *Large Language Models as Optimizers*，发表于 ICLR 2024。
+**OPRO** 的全名是 *Large Language Models as Optimizers*。
+
+> 📄 **发表信息**：Yang et al.（Google DeepMind），**ICLR 2024**｜arXiv: [2309.03409](https://arxiv.org/abs/2309.03409)
 
 它的核心想法是：把 LLM 当成一个优化器。
+
+![OPRO 工作流：LLM 作为优化器，从 meta-prompt 的"解-分数对"生成新候选](../svg/chapter_llm_09_opro_paper.png)
+
+*▲ OPRO 原论文 Figure（来源：Yang et al., ICLR 2024, arXiv:2309.03409）*
 
 做法是把历史尝试写进一个 meta-prompt，让 LLM 观察"什么有效、什么无效"，然后提出新候选：
 
@@ -456,11 +468,13 @@ OPRO 比 APE 多了迭代，但仍然只看分数。下一步自然就是：能�
 
 ---
 
-## 第三类：文本反馈驱动的 Prompt 优化
+## 11.1.7 第三类：文本反馈驱动的 Prompt 优化
 
-### ProTeGi：文字版"梯度下降"
+### ProTeGi（EMNLP 2023）：文字版"梯度下降"
 
-**ProTeGi** 的全名是 *Automatic Prompt Optimization with "Gradient Descent" and Beam Search*，发表于 EMNLP 2023。
+**ProTeGi** 的全名是 *Automatic Prompt Optimization with "Gradient Descent" and Beam Search*。
+
+> 📄 **发表信息**：Pryzant et al.（Microsoft），**EMNLP 2023**｜arXiv: [2305.03495](https://arxiv.org/abs/2305.03495)
 
 它是 GEPA 最重要的思想来源之一。
 
@@ -471,6 +485,12 @@ ProTeGi 提出一个很形象的想法：
 > 能不能用自然语言批评来充当"文本梯度"？
 
 ![ProTeGi 文本梯度下降流程](../svg/chapter_llm_09_protegi_flow.svg)
+
+下面是 ProTeGi 原论文给出的一个完整示例：从初始 Prompt 出发，对错例生成自然语言"梯度"，再据此改写出新 Prompt，最后用 bandit 策略挑选。
+
+![ProTeGi 原论文示例：初始 Prompt → minibatch 错例 → 文本梯度 → 新 Prompt → bandit 选择](../svg/chapter_llm_09_protegi_paper.png)
+
+*▲ ProTeGi 原论文 Figure 1（来源：Pryzant et al., EMNLP 2023, arXiv:2305.03495）*
 
 它的流程如下：
 
@@ -579,9 +599,11 @@ ProTeGi 证明了：虽然 Prompt 不是数字，但只要能把"错在哪里"�
 
 可以把 GEPA 理解为：在 ProTeGi 的“文本梯度”思想上，进一步加入了多模块轨迹、进化搜索和 Pareto 选择。
 
-### TextGrad：像自动微分一样传播文字反馈
+### TextGrad（Nature 2025）：像自动微分一样传播文字反馈
 
-**TextGrad** 的全名是 *TextGrad: Automatic Differentiation via Text*，发表于 2024。
+**TextGrad** 的全名是 *TextGrad: Automatic "Differentiation" via Text*。
+
+> 📄 **发表信息**：Yuksekgonul et al.（Stanford），arXiv 预印本 2024，正式版以 *Optimizing generative AI by backpropagating language model feedback* 发表于 **Nature 2025**（vol. 639, pp. 609–616）｜arXiv: [2406.07496](https://arxiv.org/abs/2406.07496)
 
 它的想法更抽象：既然 PyTorch 可以把数值梯度沿计算图反向传播，那么能不能把文字反馈也组织成类似的“反向传播”？
 
@@ -596,6 +618,12 @@ ProTeGi 证明了：虽然 Prompt 不是数字，但只要能把"错在哪里"�
 它把每个文本变量都看成可优化对象，然后让评估反馈沿着系统结构反向传递。
 
 ![TextGrad 反向传播类比](../svg/chapter_llm_09_textgrad_flow.svg)
+
+下图是 TextGrad 原论文的总览图：左上 (a) 是神经网络的数值梯度反向传播，右上 (b) 是把同样的思想搬到"黑盒 AI 系统 + 自然语言梯度"，下方 (c)–(g) 展示了它在分子设计、代码、放疗计划、Prompt 优化等任务上的应用。
+
+![TextGrad 原论文总览图：数值梯度 vs 自然语言梯度，及多任务应用](../svg/chapter_llm_09_textgrad_paper.png)
+
+*▲ TextGrad 原论文 Figure 1（来源：Yuksekgonul et al., arXiv:2406.07496；正式版载于 Nature 2025, 639:609–616）*
 
 #### 用一个例子理解 TextGrad 的"反向传播"
 
@@ -644,15 +672,23 @@ TextGrad 和 GEPA 的共同点是：都认为自然语言可以承载优化信�
 
 ---
 
-## 第四类：进化算法做 Prompt 搜索
+## 11.1.8 第四类：进化算法做 Prompt 搜索
 
-### EvoPrompt：把遗传算法搬到 Prompt 上
+### EvoPrompt（ICLR 2024）：把遗传算法搬到 Prompt 上
 
-**EvoPrompt** 的全名是 *Connecting Large Language Models with Evolutionary Algorithms Yields Powerful Prompt Optimizers*，发表于 ICLR 2024。
+**EvoPrompt** 的全名是 *Connecting Large Language Models with Evolutionary Algorithms Yields Powerful Prompt Optimizers*。
+
+> 📄 **发表信息**：Guo et al.（Microsoft），**ICLR 2024**｜arXiv: [2309.08532](https://arxiv.org/abs/2309.08532)
 
 它把 Prompt 优化看成一种进化过程：
 
 ![EvoPrompt 遗传算法搜索流程](../svg/chapter_llm_09_evoprompt_flow.svg)
+
+下图是 EvoPrompt 原论文给出的具体算子示意（以遗传算法 GA 为例）：从一组父代 Prompt 出发，经选择、交叉、变异生成子代，再按适应度筛选。
+
+![EvoPrompt 原论文示例：基于 LLM 的交叉与变异算子](../svg/chapter_llm_09_evoprompt_paper.png)
+
+*▲ EvoPrompt 原论文 Figure（来源：Guo et al., ICLR 2024, arXiv:2309.08532）*
 
 ```text
 一批 Prompt 候选
@@ -697,11 +733,17 @@ EvoPrompt 的贡献是把经典进化算法用于 Prompt 搜索。
 
 这种方法的优点是：不需要理解 Prompt 为什么好或差，只需要有分数就够了。缺点是：搜索可能比较盲目，需要大量候选才能碰到好的。
 
-### PromptBreeder：连“变异规则”也一起进化
+### PromptBreeder（ICML 2024）：连“变异规则”也一起进化
 
-**PromptBreeder** 的全名是 *Promptbreeder: Self-Referential Self-Improvement via Prompt Evolution*，发表于 ICML 2024。
+**PromptBreeder** 的全名是 *Promptbreeder: Self-Referential Self-Improvement via Prompt Evolution*。
+
+> 📄 **发表信息**：Fernando et al.（Google DeepMind），**ICML 2024**｜arXiv: [2309.16797](https://arxiv.org/abs/2309.16797)
 
 它更进一步：不只进化任务 Prompt，还进化“如何修改 Prompt 的 Prompt”。
+
+![PromptBreeder 原论文总览：任务 Prompt 与变异 Prompt 的双层自指进化](../svg/chapter_llm_09_promptbreeder_paper.png)
+
+*▲ PromptBreeder 原论文总览图（来源：Fernando et al., ICML 2024, arXiv:2309.16797）*
 
 也就是说，系统里有两类 Prompt：
 
@@ -732,11 +774,17 @@ PromptBreeder 让这两类 Prompt 一起进化，因此带有一种"自指式改
 
 ---
 
-## 第五类：多模块 LLM 程序优化
+## 11.1.9 第五类：多模块 LLM 程序优化
 
-### DSPy：从手写 Prompt 到编译 LLM 程序
+### DSPy（ICLR 2024）：从手写 Prompt 到编译 LLM 程序
 
-**DSPy** 是 Stanford 开源的 LLM 编程框架。它背后的思想是：
+**DSPy** 是 Stanford 开源的 LLM 编程框架。
+
+> 📄 **发表信息**：Khattab et al.（Stanford），*DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines*，**ICLR 2024**｜arXiv: [2310.03714](https://arxiv.org/abs/2310.03714)
+
+它背后的思想是：
+
+![DSPy + MIPROv2：开发者只写签名，框架自动编译优化 instruction 与 few-shot](../svg/chapter_llm_09_miprov2_flow.svg)
 
 > 不要把 LLM 应用写成一堆手工 Prompt，而是写成模块化程序，再让框架自动优化 Prompt 和示例。
 
@@ -800,9 +848,11 @@ optimized_program = optimizer.compile(
 
 这和传统"手写大段 Prompt 字符串"的方式完全不同。
 
-### MIPROv2：优化 instruction 和 few-shot 的组合
+### MIPROv2（EMNLP 2024）：优化 instruction 和 few-shot 的组合
 
-**MIPROv2** 是 DSPy 中常用的优化器，对应论文 *Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs*，发表于 EMNLP 2024。
+**MIPROv2** 是 DSPy 中常用的优化器，对应论文 *Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs*。
+
+> 📄 **发表信息**：Opsahl-Ong et al.（Stanford），**EMNLP 2024**｜arXiv: [2406.11695](https://arxiv.org/abs/2406.11695)
 
 它要优化的是：
 
@@ -848,13 +898,19 @@ MIPROv2 的优势是适合模块化 LM pipeline，并且能同时优化指令和
 
 ---
 
-## 第六类：轨迹驱动的通用优化
+## 11.1.10 第六类：轨迹驱动的通用优化
 
-### Trace：把执行轨迹当成优化信号
+### Trace（NeurIPS 2024）：把执行轨迹当成优化信号
 
-**Trace** 的全名是 *Trace is the Next AutoDiff: Generative Optimization with Rich Feedback, Execution Traces, and LLMs*，发表于 2024。
+**Trace** 的全名是 *Trace is the Next AutoDiff: Generative Optimization with Rich Feedback, Execution Traces, and LLMs*。
+
+> 📄 **发表信息**：Cheng et al.（Microsoft Research），**NeurIPS 2024**｜arXiv: [2406.16218](https://arxiv.org/abs/2406.16218)
 
 它提出一个更宽的观点：
+
+![Trace 原论文示意：执行流（黑）与反馈流（红）沿轨迹图反向传播](../svg/chapter_llm_09_trace_paper.png)
+
+*▲ Trace 原论文 Figure（来源：Cheng et al., NeurIPS 2024, arXiv:2406.16218）*
 
 > 对复杂 AI 系统来说，执行轨迹就像新的“计算图”。如果我们能记录系统每一步做了什么，就能利用这些轨迹优化系统。
 
@@ -914,11 +970,13 @@ GEPA 和 Trace 都重视 trace，但 GEPA 更聚焦于 Prompt 优化这个子问
 
 ---
 
-## GEPA：这个方向的集成型代表
+## 11.1.11 GEPA（ICLR 2026）：这个方向的集成型代表
 
 现在我们可以更好地理解 GEPA。
 
-**GEPA** 的全名是 *Genetic-Pareto Prompt Evolution through Reflection*，论文标题是 *GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning*，发表于 ICLR 2026。
+**GEPA** 的全名是 *Genetic-Pareto Prompt Evolution through Reflection*，论文标题是 *GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning*。
+
+> 📄 **发表信息**：Agrawal et al.（UC Berkeley、Stanford 等），**ICLR 2026（Oral）**，arXiv 首次提交于 2025 年 7 月｜arXiv: [2507.19457](https://arxiv.org/abs/2507.19457)
 
 一句话理解 GEPA：
 
@@ -934,7 +992,7 @@ GEPA 这个名字里有三个关键词：
 
 ---
 
-## GEPA 要解决什么问题？
+### GEPA 要解决什么问题？
 
 GEPA 针对的是这样的场景：
 
@@ -957,7 +1015,7 @@ GEPA 的选择是第三条路：
 
 ---
 
-## GEPA 的输入和输出
+### GEPA 的输入和输出
 
 GEPA 的输入通常包括五类：
 
@@ -987,11 +1045,17 @@ GEPA 的输出不是一个新模型，而是一组优化后的 Prompt：
 
 ---
 
-## GEPA 的核心流程
+### GEPA 的核心流程
 
 一个简化版 GEPA 流程如下：
 
 ![GEPA 核心流程](../svg/chapter_llm_09_gepa_flow.svg)
+
+下图是 GEPA 原论文给出的完整框架图，可以对照上面的流程理解它如何采样轨迹、反思、变异，并维护 Pareto 候选池：
+
+![GEPA 原论文框架图：轨迹采样 → 反思诊断 → Prompt 变异 → Pareto 前沿候选选择](../svg/chapter_llm_09_gepa_paper.png)
+
+*▲ GEPA 原论文框架图（来源：Agrawal et al., ICLR 2026 Oral, arXiv:2507.19457）*
 
 如果用更细的步骤描述，GEPA 可以理解成下面这个循环：
 
@@ -1227,7 +1291,7 @@ best_prompt = select_final_prompt(pareto_front, regression_tests, safety_tests)
 
 ---
 
-## GEPA 的实验结果说明了什么？
+### GEPA 的实验结果说明了什么？
 
 根据 GEPA 论文中的实验，它测试了多类任务：
 
@@ -1268,7 +1332,7 @@ best_prompt = select_final_prompt(pareto_front, regression_tests, safety_tests)
 
 ---
 
-## 为什么 GEPA 可能比强化学习更省样本？
+### 为什么 GEPA 可能比强化学习更省样本？
 
 强化学习经常只看到这样的信号：
 
@@ -1294,7 +1358,7 @@ GEPA 看到的信号更像这样：
 
 所以它可能用更少 rollout 达到更好效果。
 
-#### 更直观的对比：学做菜
+### 更直观的对比：学做菜
 
 | 类比 | 强化学习 | GEPA |
 |------|----------|------|
@@ -1311,7 +1375,7 @@ GEPA 看到的信号更像这样：
 
 ---
 
-## 如何设计好的反馈函数？
+## 11.1.12 如何设计好的反馈函数？
 
 Prompt 自动调优的效果高度依赖反馈质量。
 
@@ -1345,7 +1409,7 @@ Prompt 自动调优的效果高度依赖反馈质量。
 
 对多模块 Agent 来说，反馈最好能指出失败模块。
 
-#### 不同类型的评估器
+### 不同类型的评估器
 
 评估器不一定要用 LLM。根据任务特点，可以选择不同类型的评估器：
 
@@ -1397,7 +1461,7 @@ def evaluate_output(question, prediction, reference):
 
 ---
 
-## 如何避免 Prompt 自动调优过拟合？
+## 11.1.13 如何避免 Prompt 自动调优过拟合？
 
 Prompt 自动调优也会过拟合。
 
@@ -1409,7 +1473,7 @@ Prompt 自动调优也会过拟合。
 
 这在训练集上可能得分高，但换个问题就不行。
 
-#### 过拟合是怎么发生的？
+### 过拟合是怎么发生的？
 
 ![Prompt 自动调优过拟合过程](../svg/chapter_llm_09_overfitting.svg)
 
@@ -1469,11 +1533,13 @@ Prompt 自动调优也会过拟合。
 
 ---
 
-## Prompt 进化之外：Skill 自动进化
+## 11.1.14 Prompt 进化之外：Skill 自动进化
 
 到这里为止，我们讨论的是 Prompt 如何自动变好。
 
 但真正长期运行的 Agent 还需要另一种能力：**Skill 自动进化**。
+
+> 📎 本节侧重"Prompt → Skill"这一对优化对象的关系；如果想从"自我进化层级（记忆 / Prompt / Skill / 模型）"的系统视角理解同一批工作（Reflexion、Voyager 等），见 [11.2 节](./02_self_evolution_agent.md)。
 
 Prompt 进化解决的是：
 
@@ -1500,11 +1566,17 @@ Skill 进化：积累工具箱。
 
 ## Skill 进化代表方法
 
-### Reflexion：失败后写反思，下次再用
+### Reflexion（NeurIPS 2023）：失败后写反思，下次再用
 
-**Reflexion** 发表于 NeurIPS 2023，是自然语言反思方向的重要代表。
+**Reflexion** 是自然语言反思方向的重要代表。
+
+> 📄 **发表信息**：Shinn et al.（Northeastern、MIT 等），*Reflexion: Language Agents with Verbal Reinforcement Learning*，**NeurIPS 2023**｜arXiv: [2303.11366](https://arxiv.org/abs/2303.11366)
 
 它的思路是：Agent 做错任务后，不马上训练模型，而是写一段反思记忆：
+
+![Reflexion 原论文框架：Actor / Evaluator / Self-Reflection 三模块与记忆闭环](../svg/chapter_llm_09_reflexion_paper.png)
+
+*▲ Reflexion 原论文 Figure 1（来源：Shinn et al., NeurIPS 2023, arXiv:2303.11366）*
 
 ```text
 我失败是因为没有先检查函数参数类型。
@@ -1542,9 +1614,11 @@ Reflexion 的核心意义是：
 
 它和 GEPA 的区别是：Reflexion 不直接改 Prompt，而是把反思存进记忆，让模型在下次执行时参考。GEPA 则直接把反思转化为 Prompt 修改。
 
-### Voyager：把成功代码存成技能库
+### Voyager（TMLR 2024）：把成功代码存成技能库
 
-**Voyager** 是 NVIDIA 在 2023 年提出的开放世界 Agent，运行在 Minecraft 环境中。
+**Voyager** 是 NVIDIA 等机构提出的开放世界 Agent，运行在 Minecraft 环境中。
+
+> 📄 **发表信息**：Wang et al.（NVIDIA、Caltech 等），*Voyager: An Open-Ended Embodied Agent with Large Language Models*，**TMLR 2024**（2023 年首次公开）｜arXiv: [2305.16291](https://arxiv.org/abs/2305.16291)
 
 它有三个关键组件：
 
@@ -1586,11 +1660,17 @@ def craft_wooden_pickaxe():
 - 工作流片段。
 - 结构化策略。
 
-### ExpeL：从多次经验中提炼通用 insight
+### ExpeL（AAAI 2024）：从多次经验中提炼通用 insight
 
-**ExpeL** 的全名是 *LLM Agents Are Experiential Learners*，发表于 AAAI 2024。
+**ExpeL** 的全名是 *ExpeL: LLM Agents Are Experiential Learners*。
+
+> 📄 **发表信息**：Zhao et al.（清华大学等），**AAAI 2024**｜arXiv: [2308.10144](https://arxiv.org/abs/2308.10144)
 
 它想解决的问题是：
+
+![ExpeL 原论文框架：从训练任务收集经验 → 提炼 insight 与成功示例 → 新任务检索复用](../svg/chapter_llm_09_expel_paper.png)
+
+*▲ ExpeL 原论文 Figure（来源：Zhao et al., AAAI 2024, arXiv:2308.10144）*
 
 > Agent 能不能从很多成功和失败轨迹中，总结出更通用的经验规则？
 
@@ -1736,7 +1816,7 @@ SKILL_DB = {
 
 ---
 
-## Prompt 进化和 Skill 进化如何结合？
+## 11.1.15 Prompt 进化和 Skill 进化如何结合？
 
 一个长期自我改进的 Agent，可能会同时做两件事：
 
@@ -1760,7 +1840,7 @@ SKILL_DB = {
 
 这样，系统不仅"说明书"变好了，"工具箱"也变丰富了。
 
-#### 更完整的闭环示例
+### 更完整的闭环示例
 
 下面用一个代码修复 Agent 来演示完整的 Prompt + Skill 双进化过程：
 
@@ -1804,7 +1884,7 @@ Agent 自动：检索 skill "run_tests_and_parse_failures" → 运行测试 → 
 
 ---
 
-## 实际项目中如何落地 Prompt 自动调优？
+## 11.1.16 实际项目中如何落地 Prompt 自动调优？
 
 下面是一套可以在 Agent 项目中落地的流程。
 
@@ -1995,11 +2075,11 @@ Prompt 自动调优会产生很多候选版本。如果没有版本管理，很�
 
 ---
 
-## 常见失败模式与风险
+## 11.1.17 常见失败模式与风险
 
 Prompt 自动调优很有用，但不是魔法。它也有风险。
 
-#### 失败模式 1：评估器被 hack
+### 失败模式 1：评估器被 hack
 
 优化器可能发现：只要在 Prompt 里加入某些话术，就能让评估器打高分，即使答案实际上不好。
 
@@ -2088,7 +2168,7 @@ Prompt 自动调优很有用，但不是魔法。它也有风险。
 
 ---
 
-## 什么时候应该使用 Prompt 自动调优？
+## 11.1.18 什么时候应该使用 Prompt 自动调优？
 
 适合使用的情况：
 
@@ -2113,7 +2193,7 @@ Prompt 自动调优很有用，但不是魔法。它也有风险。
 
 Prompt 自动调优放大的是工程纪律，而不是替代工程纪律。
 
-#### 决策流程：我该用 Prompt 自动调优吗？
+### 决策流程：我该用 Prompt 自动调优吗？
 
 下面的流程图可以帮助你判断当前阶段是否适合引入 Prompt 自动调优：
 
@@ -2146,9 +2226,9 @@ Prompt 自动调优放大的是工程纪律，而不是替代工程纪律。
 | 方法 | 时间 | 核心思想 | 单阶段 / 多阶段 | 和 GEPA 的关系 |
 |------|------|----------|----------------|----------------|
 | **APE** | 2023 | 让 LLM 自动生成候选 Prompt，再用验证集筛选 | 单阶段 | 证明 LLM 可以自动写 Prompt |
-| **ProTeGi** | 2023 | 用文本批评作为“文本梯度”，再改 Prompt | 单阶段 | GEPA 的重要思想来源 |
-| **OPRO** | 2024 | 把历史候选和分数放进 meta-prompt，让 LLM 继续优化 | 单阶段 | 提供 LLM-as-optimizer 思路 |
-| **EvoPrompt** | 2024 | 用遗传算法 / 差分进化搜索 Prompt | 单阶段 | 共享进化搜索思想 |
+| **ProTeGi** | 2023 | 用文本批评作为“文本梯度”，再改 Prompt | 多阶段（迭代） | GEPA 的重要思想来源 |
+| **OPRO** | 2024 | 把历史候选和分数放进 meta-prompt，让 LLM 继续优化 | 多阶段（迭代） | 提供 LLM-as-optimizer 思路 |
+| **EvoPrompt** | 2024 | 用遗传算法 / 差分进化搜索 Prompt | 多阶段（进化） | 共享进化搜索思想 |
 | **PromptBreeder** | 2024 | 任务 Prompt 和变异 Prompt 一起进化 | 过渡型 | 共享自指式 Prompt 进化思想 |
 | **TextGrad** | 2024 | 像自动微分一样组织文本反馈 | 多阶段 | 共享“语言反馈可传播”的思想 |
 | **DSPy / MIPROv2** | 2024 | 编译模块化 LLM 程序，优化 instruction 和 few-shot | 多阶段 | GEPA 可作为反思式补充 |
@@ -2225,7 +2305,7 @@ Skill 进化：让 Agent 更会复用和执行。
 
 ## 参考文献
 
-[1] ZHOU et al. [GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning](https://arxiv.org/abs/2507.19457)[C]//ICLR. 2026.
+[1] AGRAWAL et al. [GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning](https://arxiv.org/abs/2507.19457)[C]//ICLR. 2026.
 
 [2] ZHOU et al. [Large Language Models Are Human-Level Prompt Engineers](https://arxiv.org/abs/2211.01910)[C]//ICLR. 2023.
 
@@ -2233,15 +2313,15 @@ Skill 进化：让 Agent 更会复用和执行。
 
 [4] PRYZANT et al. [Automatic Prompt Optimization with Gradient Descent and Beam Search](https://arxiv.org/abs/2305.03495)[C]//EMNLP. 2023.
 
-[5] YUKSEKGONUL et al. [TextGrad: Automatic Differentiation via Text](https://arxiv.org/abs/2406.07496)[R]. 2024.
+[5] YUKSEKGONUL et al. [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/abs/2406.07496)[J]. Nature, 2025, 639: 609-616.
 
 [6] GUO et al. [Connecting Large Language Models with Evolutionary Algorithms Yields Powerful Prompt Optimizers](https://arxiv.org/abs/2309.08532)[C]//ICLR. 2024.
 
 [7] FERNANDO et al. [Promptbreeder: Self-Referential Self-Improvement via Prompt Evolution](https://arxiv.org/abs/2309.16797)[C]//ICML. 2024.
 
-[8] KHATTAB et al. [Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs](https://arxiv.org/abs/2406.11695)[C]//EMNLP. 2024.
+[8] OPSAHL-ONG et al. [Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs](https://arxiv.org/abs/2406.11695)[C]//EMNLP. 2024.
 
-[9] WANG et al. [Trace is the Next AutoDiff: Generative Optimization with Rich Feedback, Execution Traces, and LLMs](https://arxiv.org/abs/2406.16218)[R]. 2024.
+[9] CHENG et al. [Trace is the Next AutoDiff: Generative Optimization with Rich Feedback, Execution Traces, and LLMs](https://arxiv.org/abs/2406.16218)[C]//NeurIPS. 2024.
 
 [10] SHINN et al. [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)[C]//NeurIPS. 2023.
 
@@ -2259,6 +2339,6 @@ Skill 进化：让 Agent 更会复用和执行。
 
 ---
 
-*上一节：[2.8 SFT 与强化学习训练数据准备](./08_training_data.md)*
+*上一章：[第10章 Agentic-RL：智能体强化学习训练](../chapter_agentic_rl/README.md)*
 
-*下一章：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)*
+*下一节：[11.2 Self-Evolution Agent：从会执行到会自我改进](./02_self_evolution_agent.md)*

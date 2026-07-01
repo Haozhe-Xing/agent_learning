@@ -1,4 +1,4 @@
-# 12.4 条件路由与循环控制
+# 13.4 条件路由与循环控制
 
 LangGraph 的强大之处在于灵活的条件路由和循环控制——这让它能够表达比简单的"调用工具"更复杂的工作流。
 
@@ -272,4 +272,4 @@ for event in app.stream(initial_state):
 
 ---
 
-*下一节：[12.5 Human-in-the-Loop：人机协作](./05_human_in_the_loop.md)*
+*下一节：[13.5 Human-in-the-Loop：人机协作](./05_human_in_the_loop.md)*

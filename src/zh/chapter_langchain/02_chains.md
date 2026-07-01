@@ -1,4 +1,4 @@
-# 11.2 Chain：构建处理管道
+# 12.2 Chain：构建处理管道
 
 Chain（链）是 LangChain 的核心概念——将多个处理步骤串联成可复用的流水线。你可以把 Chain 想象成一条装配线：原材料（用户输入）从一端进入，经过多个加工站（提示模板、LLM、解析器等），最终从另一端输出成品（结构化结果）。
 
@@ -213,4 +213,4 @@ LCEL（`|` 管道语法）是 LangChain 的核心构建方式：
 
 ---
 
-*下一节：[11.3 使用 LangChain 构建 Agent](./03_langchain_agents.md)*
+*下一节：[12.3 使用 LangChain 构建 Agent](./03_langchain_agents.md)*

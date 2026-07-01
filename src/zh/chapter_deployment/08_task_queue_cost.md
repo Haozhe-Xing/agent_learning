@@ -1,4 +1,4 @@
-# 19.8 长任务队列与成本治理
+# 20.8 长任务队列与成本治理
 
 > **本节目标**：学会使用任务队列（Celery / Temporal）管理 Agent 的长时任务，掌握 Token 预算控制和大小模型按需路由策略，建立完整的成本监控与告警体系。
 
@@ -1232,4 +1232,103 @@ def send_alert_dedup(alert_type: str, message: str, dedup_window: int = 300):
 
 ---
 
-[19.7 Kubernetes 编排与 Serverless GPU](./07_k8s_serverless.md)
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：本章 20.1 列出了"Agent 部署的五大独特挑战"。请挑出其中的"工具调用的副作用"这一条，解释它为什么让"失败重试"变得危险，并说明本章 20.8 用什么办法来解决这个问题。
+
+<details>
+<summary>参考答案</summary>
+
+**为什么"工具调用副作用"让重试变危险**（见 20.1、20.8）：
+
+传统 Web API 大多是"读"操作——失败了重试一次没关系，无非是再查一次数据库。但 Agent 会**真的对外界产生副作用**：发邮件、转账、写数据库、提交订单。这些是"写"操作。如果一个请求在"已经发了邮件、但还没返回成功"时失败了，系统按常规去重试，就会**把同一封邮件再发一遍**——用户收到两封、被扣两次款。也就是说，重试机制本身在副作用场景下会"帮倒忙"。
+
+**解决办法：幂等性（Idempotency）**。核心思想是——给每个会产生副作用的操作分配一个唯一的"幂等键"（idempotency_key），执行前先检查"这个键对应的操作是不是已经做过了"，做过就直接返回上次的结果，不再重复执行。本章 20.8 的例子：
+
+```python
+def send_email_idempotent(to, subject, body, idempotency_key):
+    # 先查这个 key 是否已发送过
+    if redis.get(f"email_sent:{idempotency_key}"):
+        return {"status": "already_sent"}   # 已发过，直接返回，不重发
+    result = email_client.send(to, subject, body)
+    redis.set(f"email_sent:{idempotency_key}", "1", ex=86400)  # 标记已发
+    return result
+```
+
+这样无论任务被重试多少次，邮件只会真正发出一次。所以本章强调："工具调用必须幂等，防止重试导致副作用"。
+
+</details>
+
+**练习 2（辨析）**：同样是"管理 Agent 的异步任务"，本章对比了 Celery 和 Temporal。有同学说"它俩功能差不多，随便选一个就行"。请指出这种看法的问题，并举一个"非 Temporal 不可"的具体 Agent 场景。
+
+<details>
+<summary>参考答案</summary>
+
+这种看法忽略了两者**定位不同**（见 20.8 的对比表）：
+
+- **Celery 是"任务队列"**：擅长"投递一个任务 → Worker 执行 → 返回结果"这种相对独立、线性的任务，最多用 chain/group 做简单的链式或扇出。
+- **Temporal 是"工作流编排引擎"**：它把整个多步流程当作一个**有状态的工作流**来管理，状态自动持久化、每个步骤（Activity）失败可独立重试、支持条件分支，还能"长时间等待"。
+
+为什么不能"随便选"：如果 Agent 流程很复杂（多步、有分支、要等外部信号），用 Celery 就得自己手写一堆状态保存和恢复逻辑，既容易出 bug 又难以追踪。
+
+**一个"非 Temporal 不可"的场景**：一个**带人工审批的退款 Agent**。流程是：用户申请退款 → Agent 理解并核对订单 → 金额超过 1000 元时，**暂停等待人工经理审批**（这一等可能是几个小时甚至第二天经理上班）→ 审批通过后继续调用退款接口 → 通知用户。
+
+这里的关键是"等待人工审批可能要等几小时/几天"。用 Celery 处理会很尴尬——总不能让一个 Worker `sleep` 一整天空占资源。而 Temporal 原生支持 `workflow.wait_condition`，可以在不消耗计算资源的情况下挂起等待外部信号，等审批信号到了再无缝继续，整个工作流状态全程持久化，服务重启也不丢。这正是本章指出的："如果 Agent 涉及复杂的多步工作流（如条件分支、人工审批、子任务编排），Temporal 的状态管理和可视化能力远超 Celery。"
+
+</details>
+
+**练习 3（动手）**：本章 20.8 的 Token 预算是"分层"的（请求级/会话级/用户级/全局级）。请你实现一个**简化版**的预算检查函数 `can_proceed(user_id, estimated_tokens)`，只做"用户每日预算"这一层：用一个普通字典模拟存储，超出当日限额就拒绝。再说说：为什么生产环境里这个计数器要用 Redis 而不是 Python 字典？
+
+<details>
+<summary>参考答案</summary>
+
+简化版实现（只做用户日预算这一层）：
+
+```python
+from datetime import date
+
+class SimpleUserBudget:
+    """简化版：只控制单用户每日 token 预算"""
+
+    def __init__(self, daily_limit: int = 100000):
+        self.daily_limit = daily_limit
+        # key = (user_id, 日期字符串)，value = 当天已用 tokens
+        self.usage = {}
+
+    def can_proceed(self, user_id: str, estimated_tokens: int) -> tuple[bool, str]:
+        today = date.today().isoformat()
+        key = (user_id, today)
+        used = self.usage.get(key, 0)
+
+        if used + estimated_tokens > self.daily_limit:
+            remaining = self.daily_limit - used
+            return False, f"日预算不足：已用 {used}，剩余 {remaining}，需要 {estimated_tokens}"
+
+        # 预留（扣减）预算
+        self.usage[key] = used + estimated_tokens
+        return True, "OK"
+
+
+# 测试
+budget = SimpleUserBudget(daily_limit=1000)
+print(budget.can_proceed("user_A", 600))   # (True, 'OK')
+print(budget.can_proceed("user_A", 600))   # (False, 日预算不足...) 已用600，再要600超了
+print(budget.can_proceed("user_B", 600))   # (True, 'OK')  不同用户互不影响
+```
+
+**为什么生产环境要用 Redis 而不是 Python 字典**：
+
+1. **多进程/多实例共享**：生产 Agent 服务通常跑多个 worker、多个 Pod（本章 20.1、20.7 都讲了水平扩展）。Python 字典是**进程内**的，每个实例各记各的，用户在实例 A 花的额度，实例 B 根本不知道，预算就形同虚设。Redis 是所有实例**共享的同一份**计数。
+2. **原子操作防并发出错**：用户同时发多个请求时，"读出已用量→加上→写回"这几步如果不是原子的，会出现两个请求都读到旧值、都以为预算够，导致超支。Redis 的 `INCRBY` 是原子的，天然避免这种竞态。
+3. **自动过期**：本章用 `expire(key, 86400)` 让计数器 24 小时后自动清零，实现"每日"重置。Python 字典需要自己写定时清理逻辑，还容易内存泄漏。
+4. **重启不丢**：服务重启后 Python 字典清空，预算被"重置"，用户可以绕过限制；Redis 数据持久化，重启后计数仍在。
+
+所以本章的 `TokenBudgetManager` 用的是 Redis pipeline + incrby + expire，正是为了满足"共享、原子、自动过期、持久"这四点。
+
+</details>
+
+---
+
+[20.7 Kubernetes 编排与 Serverless GPU](./07_k8s_serverless.md)

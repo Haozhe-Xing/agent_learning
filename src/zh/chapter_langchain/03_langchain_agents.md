@@ -1,4 +1,4 @@
-# 11.3 使用 LangChain 构建 Agent
+# 12.3 使用 LangChain 构建 Agent
 
 前面几章我们都是"手工"构建 Agent——自己写工具 Schema、自己管理消息循环、自己处理工具调用。这虽然有助于理解底层原理，但在实际项目中太繁琐了。LangChain 提供了标准化的工具接口和 AgentExecutor，大大简化了 Agent 开发。
 
@@ -23,7 +23,7 @@ from langchain_core.tools import tool, BaseTool
 from langchain_openai import ChatOpenAI
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 # ⚠️ 注意：AgentExecutor 是 LangChain 的 legacy Agent 方案。
-# LangChain 官方推荐新项目使用 LangGraph 构建 Agent（见第12章）。
+# LangChain 官方推荐新项目使用 LangGraph 构建 Agent（见第13章）。
 # 此处使用 AgentExecutor 是为了快速理解 Agent 概念。
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import math
@@ -225,4 +225,4 @@ LangChain Agent 的关键组件：
 
 ---
 
-*下一节：[11.4 LCEL：LangChain 表达式语言](./04_lcel.md)*
+*下一节：[12.4 LCEL：LangChain 表达式语言](./04_lcel.md)*

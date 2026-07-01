@@ -210,6 +210,100 @@ Transformer 架构使得模型规模可以高效地扩展到数千亿参数，�
 
 ---
 
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：本章用一条主线串起了整部智能体发展史。请用自己的话说出这条主线是什么，并解释：为什么说今天 LLM Agent 里的 System Prompt 和"工具参数约束"，其实是符号主义"规则 + 推理"思想的延续，而不是把它彻底抛弃了？
+
+<details>
+<summary>参考答案</summary>
+
+主线是：**从"写规则"到"学规则"，再到"用语言替代规则"——Agent 的能力来源在不断抽象化、通用化。**
+
+- 符号主义（MYCIN、SHRDLU、STRIPS）：能力来自人工一条条手写的逻辑规则；
+- 联结主义（AlphaGo、深度 RL）：能力来自数据驱动的统计学习；
+- LLM 驱动：能力来自预训练习得的世界知识 + 自然语言推理。
+
+但"规则"并没有消失，只是换了形态：
+
+- **System Prompt 是一种"软规则"**：用自然语言描述 Agent 的行为边界、偏好和职责，模型会大致遵守（但不是 100% 强制）。
+- **工具的参数定义、必填项是"硬规则"**：是结构化约束，参数不合法就无法调用，必须满足才行。
+
+区别在于分工变了：过去规则要人逐条写死、而且模型必须严格按规则执行；今天大部分"推理"交给了统计学习出来的大模型，规则退居为"引导 + 护栏"。这也解释了为什么 STRIPS 的"前置条件—动作—效果"范式，至今还活在 Agent 的工具调用里。所以是**分工的演变，而非彻底替代**——理解这一点能避免"重新发明轮子"。
+
+</details>
+
+**练习 2（辨析）**：有人说"ReAct 是 2022 年才出现的新发明，和上世纪那些老理论没什么关系"。结合本章讲的 BDI 架构，判断这句话对不对，并具体说明 ReAct 的 Thought / Action / Observation 分别对应 BDI 的哪个部分。
+
+<details>
+<summary>参考答案</summary>
+
+这句话**不对**。ReAct 在工程实现上确实是新的（用 LLM 的自回归生成，把推理和行动放进同一个循环里），但它的**思想骨架**和 1990 年代的 BDI（Belief-Desire-Intention）架构高度同构。
+
+对应关系：
+
+- **Thought（思考/推理）≈ Belief 的形成与更新 + 审慎推理**：模型根据当前观察和历史，整理出"我现在认为世界是什么样、接下来该怎么做"。
+- **Action（行动/工具调用）≈ Intention 的执行**：模型承诺并执行一条具体的行动计划。
+- **Observation（工具返回）≈ Belief 的更新来源**：环境把反馈传回来，刷新模型对世界的认知，进入下一轮。
+- 而 **Desire（愿望/目标）** 对应用户任务或系统目标，贯穿整个循环。
+
+所以可以说"ReAct 本质上是用 LLM 实现了 BDI 架构里的审慎推理过程"。这正印证了本章主线：很多看似全新的框架，其实是旧理论在新算力、新载体上的复活——读历史能让我们看穿"新瓶装旧酒"。
+
+</details>
+
+**练习 3（动手）**：1.3 节强调"Agent 架构的核心不是某段循环代码，而是状态、工具、反馈和护栏组成的闭环"。请写出一个**最小 OTA 循环**的伪代码（或 Python）骨架，要求至少包含两道护栏：**最大轮数限制**和**重复动作检测**。
+
+<details>
+<summary>参考答案</summary>
+
+```python
+def run_agent(goal, tools, llm, max_steps=10):
+    trajectory = []        # 状态：累积的"所见、所想、所做"
+    recent = []            # 用于重复动作检测
+
+    for step in range(max_steps):          # 护栏 1：最大轮数，防死循环
+        # —— 思考 (Think) ——
+        thought, action, action_input = llm.decide(goal, trajectory)
+
+        # 护栏 2：重复动作检测
+        signature = (action, str(action_input))
+        recent.append(signature)
+        if recent[-3:].count(signature) == 3:   # 连续 3 次完全相同
+            obs = "[System] 你已连续重复同一无效动作 3 次，请换思路或换工具。"
+            trajectory.append((thought, action, obs))
+            continue
+
+        # 正常出口
+        if action == "Finish":
+            return action_input
+
+        # —— 行动 (Act) ——
+        if action not in tools:
+            obs = f"[Error] 未知工具 {action}"
+        else:
+            obs = str(tools[action](action_input))[:2000]  # 截断，防上下文爆炸
+
+        # —— 观察并更新状态 (Observe + Update) ——
+        trajectory.append((thought, action, obs))
+
+    return "[未在限定轮数内完成任务]"   # 护栏 1 触发后的兜底
+```
+
+讲解：
+
+- 循环体现了 **Think → Act → Observe** 三个阶段，每轮的结果都写回 `trajectory`，作为下一轮推理的依据；
+- `max_steps` 是第一道护栏，防止 Agent 永远跑不停；
+- 重复动作检测是第二道护栏，防止"读表 A → 表 A 不存在 → 再读表 A"这种逻辑死锁；
+- 对工具返回做截断，防止超长结果撑爆上下文窗口；
+- `Finish` 是正常出口。
+
+可以看到：真正撑起这段代码的不是 `for` 循环本身，而是**状态（trajectory）+ 工具 + 反馈（obs）+ 护栏**这套闭环——这正是本章想强调的架构思维。
+
+</details>
+
+---
+
 ## 参考文献
 
 [1] TURING A M. Computing machinery and intelligence[J]. Mind, 1950, 59(236): 433-460.

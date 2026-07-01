@@ -1,4 +1,4 @@
-# 12.6 实战：工作流自动化 Agent
+# 13.6 实战：工作流自动化 Agent
 
 本节综合运用前面学到的 LangGraph 知识——状态管理、条件路由、循环控制，构建一个完整的工作流自动化 Agent。
 
@@ -216,4 +216,4 @@ LangGraph 的核心价值：
 
 ---
 
-*下一章：[第13章 其他主流框架概览](../chapter_frameworks/README.md)*
+*下一章：[第14章 其他主流框架概览](../chapter_frameworks/README.md)*

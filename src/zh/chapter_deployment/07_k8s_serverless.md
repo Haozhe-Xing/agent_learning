@@ -1,4 +1,4 @@
-# 19.7 Kubernetes 编排与 Serverless GPU
+# 20.7 Kubernetes 编排与 Serverless GPU
 
 > **本节目标**：学会用 Kubernetes 编排完整的 Agent 服务栈，掌握 Serverless GPU 平台（Modal / RunPod）的使用方法，理解 GPU 工作负载的自动伸缩策略。
 
@@ -852,4 +852,4 @@ volumes:
 
 ---
 
-[19.8 长任务队列与成本治理](./08_task_queue_cost.md)
+[20.8 长任务队列与成本治理](./08_task_queue_cost.md)

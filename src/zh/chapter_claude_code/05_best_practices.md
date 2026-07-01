@@ -1,10 +1,10 @@
-# 14.5 生产实践：在团队中用好 Claude Code
+# 15.5 生产实践：在团队中用好 Claude Code
 
 > 🏗️ *"工具本身不重要，重要的是你围绕它建立的工程规范。"*
 
 ---
 
-经过前四节的学习，你已经掌握了 Claude Code 的架构原理、权限系统、扩展机制和多 Agent 能力。本节是第14章的收官之作，聚焦于一个核心问题：**如何在真实的团队和生产环境中，可靠地使用 Claude Code？**
+经过前四节的学习，你已经掌握了 Claude Code 的架构原理、权限系统、扩展机制和多 Agent 能力。本节是第15章的收官之作，聚焦于一个核心问题：**如何在真实的团队和生产环境中，可靠地使用 Claude Code？**
 
 这不是理论，而是来自工程实践的经验总结。
 
@@ -635,15 +635,15 @@ npm update -g @anthropic-ai/claude-code
 
 ## 六、本章总结
 
-### 第14章知识回顾
+### 第15章知识回顾
 
 | 节次 | 核心内容 | 关键洞察 |
 |------|---------|---------|
-| **14.1 基础与架构** | 六层架构，System Prompt 静/动态分区 | Prompt Caching 是降低成本的核心设计 |
-| **14.2 权限系统** | 7 种权限模式，6 阶段决策流水线 | bypassPermissions 生产中绝对不用 |
-| **14.3 扩展机制** | MCP、Hooks、Skills、Sub-agents | Hooks 的 PreToolUse 是最强的拦截点 |
-| **14.4 多 Agent 协作** | Coordinator/Worker 模式，ULTRAPLAN | 任务拆分是多 Agent 成功的关键 |
-| **14.5 生产实践** | CLAUDE.md、团队协作、安全、成本 | 工程规范比工具本身更重要 |
+| **15.1 基础与架构** | 六层架构，System Prompt 静/动态分区 | Prompt Caching 是降低成本的核心设计 |
+| **15.2 权限系统** | 7 种权限模式，6 阶段决策流水线 | bypassPermissions 生产中绝对不用 |
+| **15.3 扩展机制** | MCP、Hooks、Skills、Sub-agents | Hooks 的 PreToolUse 是最强的拦截点 |
+| **15.4 多 Agent 协作** | Coordinator/Worker 模式，ULTRAPLAN | 任务拆分是多 Agent 成功的关键 |
+| **15.5 生产实践** | CLAUDE.md、团队协作、安全、成本 | 工程规范比工具本身更重要 |
 
 ### Claude Code 代表的工程哲学
 
@@ -667,11 +667,142 @@ Claude Code 不只是一个 AI 编程工具——它代表了一种新的**人�
 
 ---
 
-> 🎉 **感谢你完成第14章的全部内容！**  
+## 📝 本章练习
+
+读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
+
+**练习 1（概念）**：本章源码解密部分反复提到一个设计——CLAUDE.md 不放进 System Prompt，而是包装成 XML 标签注入到用户消息中；System Prompt 本身也分成"静态区"和"动态区"。请解释：这两个设计背后的共同目的是什么？为什么这么做能"降低约 90% 的 API 成本"？
+
+<details>
+<summary>参考答案</summary>
+
+两个设计背后的共同目的都是：**最大化 Prompt Caching（提示词缓存）的命中率。**
+
+**先理解什么是 Prompt Caching：**
+Anthropic API 提供一个缓存机制——如果一段提示词的**前缀**和上一次完全相同，就可以直接复用缓存结果，而不必重新计算。缓存命中的部分计费极低（可低至约 1/10）。但缓存有个硬性前提：**前缀必须逐字不变**——只要前面某个字符变了，从该字符往后的缓存全部失效。
+
+**为什么 System Prompt 要分静态区 / 动态区？**
+System Prompt 里有些内容是永远不变的（身份、行为规则、工具使用规范），有些是每次都可能变的（当前时间、Git 状态、当前目录）。如果把变化的东西混在前面，会把后面大量本可缓存的内容也"带崩"。所以 Claude Code 把**不变的放前面（静态区）、会变的放后面（动态区）**，并在两者之间设一条"CACHE BOUNDARY（缓存边界）"——这样每次请求，庞大的静态区都能稳定命中缓存。这也是 `getSystemPrompt()` 返回 `string[]` 数组而非单个字符串的原因：数组每个元素对应一个可独立打缓存标记的块。
+
+**为什么 CLAUDE.md 不能放进 System Prompt？**
+每个项目的 CLAUDE.md 都不一样，甚至同一项目每次修改后都会变。如果把它塞进 System Prompt，就等于在静态区里埋了一颗"会变的雷"，导致整个 System Prompt 前缀不稳定、缓存频繁失效。正确做法是把 CLAUDE.md 包装成 `<claude_md>...</claude_md>` 放到**用户消息**里——这样它的变化只影响用户消息部分，完全不碰 System Prompt 的缓存。
+
+**为什么能省约 90%？**
+System Prompt 通常很长（身份 + 几十个工具定义 + 大量规则），是每次请求都要发送的固定开销。把它做成稳定可缓存的前缀后，这部分内容在后续请求里几乎都按"缓存命中价"计费，而缓存命中价大约是原价的 1/10——这就是 90% 成本节省的来源。
+
+</details>
+
+**练习 2（辨析）**：本章披露的"50 子命令绕过漏洞"是一个很好的安全教学案例。有同学说："这个漏洞不严重，因为正常人根本不会写出 50 个子命令用 `&&` 连起来的命令。" 请反驳这个观点：为什么在 AI Agent 的场景下，这个"正常人不会做"的假设是危险的？并说明这个漏洞给出的两条核心工程启示。
+
+<details>
+<summary>参考答案</summary>
+
+**这个观点恰恰踩中了 AI 安全最危险的盲区——它用"传统软件的威胁模型"去套"AI Agent 的威胁模型"。**
+
+**为什么"正常人不会做"的假设危险？**
+漏洞的本质是：当 `&&`/`||`/`;` 连接的子命令超过 50 个时，出于性能考虑（内部工单 CC-643 嫌"分析太慢"），Claude Code 直接跳过逐子命令的安全检查，回退到"询问用户"。而在无人值守模式（`dontAsk` / `bypassPermissions`）下，"询问"实际等价于"放行"。
+
+关键区别在于命令的**来源**：
+- 传统 CLI 工具假设命令由**可信的人类**手敲，人类确实不会没事写 50 个子命令。
+- 但 AI Agent 会去读取**不可信的外部内容**——代码注释、文档、网页、数据库记录。攻击者可以在这些内容里植入 **Prompt Injection**：故意构造"前 50 个无害命令 + 第 51 个恶意命令（如 `rm -rf ~/.ssh`、偷取 `.env` 上传到外部服务器）"。前 50 个把命令"撑过"阈值，触发安全检查被跳过，第 51 个恶意命令就畅通无阻地执行了。
+
+所以"正常人不会做"在 AI 场景里完全不成立——**因为命令不再只来自正常人，而可能来自蓄意攻击者注入的数据**。这正是"Prompt Injection 是第一类威胁"的含义。
+
+**两条核心工程启示：**
+1. **性能优化绝不能以牺牲安全边界为代价**。CC-643 为了解决"分析太慢"，选择了"跳过检查"这条捷径，结果开了个安全后门。正确做法是优化分析算法（如改用整体模式匹配），而不是绕过它。
+2. **AI 工具的威胁模型不同于传统工具，必须坚持最小权限原则**。当 AI 会处理不受信任的数据时，要默认这些数据可能含恶意指令；`bypassPermissions`/`dontAsk` 这类放大风险的模式应尽量避免，自动化场景用最严格的权限模式。
+
+</details>
+
+**练习 3（动手）**：你的团队让你用 Claude Code 的 Hooks 机制建立一道安全护栏：**任何 Bash 命令在执行前都要被检查，一旦命中危险模式（如 `rm -rf /`、`curl ... | sh` 管道执行远程脚本）就立即阻断，并把所有命令记入审计日志。** 请写出这个 PreToolUse Hook 脚本（Python），并解释：(1) 为什么这类拦截必须用 PreToolUse 而不是 PostToolUse？(2) 脚本里 `sys.exit(2)` 这个退出码起什么作用？
+
+<details>
+<summary>参考答案</summary>
+
+核心：PreToolUse Hook 从 stdin 读到即将执行的命令 JSON，先全部记审计日志，再做危险模式匹配，命中就用退出码 2 阻断。
+
+```python
+#!/usr/bin/env python3
+# ~/.claude/hooks/guard_bash.py  —— PreToolUse Hook
+import json
+import sys
+import re
+from datetime import datetime
+from pathlib import Path
+
+# 1) 从 stdin 读取 Hook 事件数据
+event = json.loads(sys.stdin.read())
+tool_input = event.get("tool_input", {})
+command = tool_input.get("command", "")
+session_id = event.get("session_id", "unknown")
+
+# 2) 先记审计日志（无论是否阻断都要记，便于事后追溯）
+audit_log = Path.home() / ".claude" / "audit.log"
+audit_log.parent.mkdir(exist_ok=True)
+with open(audit_log, "a") as f:
+    f.write(json.dumps({
+        "timestamp": datetime.now().isoformat(),
+        "session_id": session_id,
+        "command": command,
+    }, ensure_ascii=False) + "\n")
+
+# 3) 危险模式检测
+DANGER_PATTERNS = [
+    (r"rm\s+-rf\s+/(?!\w)",        "删除根目录"),
+    (r"rm\s+-rf\s+~",              "删除 home 目录"),
+    (r"curl\s+.*\|\s*(?:ba)?sh",   "管道执行远程脚本（供应链攻击风险）"),
+    (r"wget\s+.*\|\s*(?:ba)?sh",   "管道执行远程脚本"),
+    (r"chmod\s+777",               "危险的 777 权限"),
+    (r"dd\s+if=.*of=/dev/",        "直接写入块设备"),
+]
+
+for pattern, reason in DANGER_PATTERNS:
+    if re.search(pattern, command):
+        print(f"⛔ [安全护栏] 操作已被阻断")
+        print(f"   原因：{reason}")
+        print(f"   命令：{command}")
+        sys.exit(2)   # 退出码 2 = 阻断本次工具调用
+
+# 4) 没命中危险模式，放行
+sys.exit(0)
+```
+
+配置（`.claude/settings.json`）：
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {"type": "command", "command": "python3 ~/.claude/hooks/guard_bash.py"}
+        ]
+      }
+    ]
+  }
+}
+```
+
+**(1) 为什么必须用 PreToolUse 而不是 PostToolUse？**
+PreToolUse 在工具**真正执行之前**触发——这是唯一能"拦在前面、阻止操作发生"的时机。本章明确指出：PreToolUse 是唯一能**阻断操作**的 Hook 事件。而 PostToolUse 是在工具**已经执行完之后**才触发的，那时 `rm -rf /` 早已把文件删光，再做检查毫无意义——你只能"事后通知"，无法"事前拦截"。安全护栏的本质是预防，所以必须用 PreToolUse。
+
+**(2) `sys.exit(2)` 起什么作用？**
+退出码是 Hook 与 Claude Code 沟通"是否放行"的信号约定：
+- `exit 0`：检查通过，**允许**这次工具调用继续执行。
+- `exit 2`：**阻断**这次工具调用，Claude Code 不会执行该命令，并把脚本通过 `print` 输出的内容（阻断原因）回传给 Claude，让它知道为什么被拦、从而换一种安全的方式继续。
+
+所以 `sys.exit(2)` 就是这道护栏真正"叫停"危险命令的开关——配合 PreToolUse 的拦截时机，构成"检测到危险 → 立即阻断 → 告知原因"的完整防线。这正是 Harness Engineering 的精髓：把安全约束编码进系统本身，而不是依赖 AI"记得别乱来"。
+
+</details>
+
+---
+
+> 🎉 **感谢你完成第15章的全部内容！**  
 > 从 Claude Code 的架构原理到生产实践，从权限系统到多 Agent 协作，你已经系统地掌握了在生产环境中用好 Claude Code 所需的全部知识。  
 > 接下来，去你的项目中创建第一个 `CLAUDE.md` 吧——这是真正掌握本章精髓的开始。
 
 ---
 
-*上一节：[14.4 高级用法：MCP、Hooks 与 Skills](./04_advanced_usage.md)*  
-*返回章节首页：[第14章 Claude Code 深度解析：从使用到源码](./README.md)*
+*上一节：[15.4 高级用法：MCP、Hooks 与 Skills](./04_advanced_usage.md)*  
+*返回章节首页：[第15章 Claude Code 深度解析：从使用到源码](./README.md)*

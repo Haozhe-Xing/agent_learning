@@ -4,7 +4,6 @@
 
 ---
 
-
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
@@ -14,16 +13,6 @@
 - ✅ 使用 Chroma / FAISS 等向量数据库构建长期记忆
 - ✅ 掌握工作记忆（草稿本模式）的设计与实现
 - ✅ 构建一个具备持久记忆能力的个人助手 Agent
-
-## ⏱️ 预计学习时间
-
-约 **90-120 分钟**（含实战）
-
-## 💡 前置知识
-
-- 已完成第3章（工具调用）
-- 了解向量相似度搜索的基本概念
-- Python 面向对象编程基础
 
 ---
 
@@ -51,7 +40,7 @@
 
 | 项目 | 简介 | Stars |
 |------|------|-------|
-| [supermemory](https://github.com/supermemoryai/supermemory) | AI 时代的记忆与上下文引擎。支持自动事实提取、用户画像构建、遗忘曲线式记忆衰减、混合搜索（RAG + Memory）。在 LongMemEval、LoCoMo、ConvoMem 三大基准测试中均排名第一。提供 API、MCP 服务及 LangChain/LangGraph 集成。 | 17.5k+ |
+| [supermemory](https://github.com/supermemoryai/supermemory) | AI 时代的记忆与上下文引擎。支持自动事实提取、用户画像构建、遗忘曲线式记忆衰减、混合搜索（RAG + Memory）。在 LongMemEval、LoCoMo、ConvoMem 三大基准测试中均排名第一。提供 API、MCP 服务及 LangChain/LangGraph 集成。 | 18.5k+ |
 
 ---
 

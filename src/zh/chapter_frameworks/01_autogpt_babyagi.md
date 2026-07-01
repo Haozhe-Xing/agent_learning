@@ -1,4 +1,4 @@
-# 13.1 AutoGPT 与 BabyAGI 的启示
+# 14.1 AutoGPT 与 BabyAGI 的启示
 
 AutoGPT（2023年3月）和 BabyAGI（2023年4月）是最早引起广泛关注的自主 Agent 项目。虽然它们在生产环境中的实用性有限，但其设计理念对整个 Agent 领域产生了深远影响。
 
@@ -249,4 +249,4 @@ AutoGPT/BabyAGI 的历史价值：
 
 ---
 
-*下一节：[13.2 CrewAI：角色扮演型多 Agent 框架](./02_crewai.md)*
+*下一节：[14.2 CrewAI：角色扮演型多 Agent 框架](./02_crewai.md)*

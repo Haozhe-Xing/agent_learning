@@ -1,4 +1,4 @@
-# 15.4 Supervisor 模式 vs. 去中心化模式
+# 16.4 Supervisor 模式 vs. 去中心化模式
 
 多 Agent 系统有一个根本性的架构决策：**谁来协调？** 是设置一个"项目经理"统一调度所有 Agent（Supervisor 模式），还是让 Agent 之间自由协商（去中心化模式）？
 
@@ -227,8 +227,8 @@ network.add_agent("editing", "文章编辑")
 
 **实际建议**：大多数生产项目应优先选择 Supervisor 模式，其可控性和可调试性远优于去中心化方案。仅在需要高容错性或 Agent 数量极大时，才考虑去中心化架构。
 
-> 💡 **延伸阅读**：关于多 Agent 系统的专项评估方法（Agent-as-Judge、τ-bench、SWE-bench），详见 [17.6 Agent 专项评估框架](../chapter_evaluation/06_agent_evaluation.md)。
+> 💡 **延伸阅读**：关于多 Agent 系统的专项评估方法（Agent-as-Judge、τ-bench、SWE-bench），详见 [18.6 Agent 专项评估框架](../chapter_evaluation/06_agent_evaluation.md)。
 
 ---
 
-*下一节：[15.5 实战：多 Agent 软件开发团队](./05_practice_dev_team.md)*
+*下一节：[16.5 实战：多 Agent 软件开发团队](./05_practice_dev_team.md)*

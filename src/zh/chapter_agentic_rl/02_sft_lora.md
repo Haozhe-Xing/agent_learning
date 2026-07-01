@@ -86,7 +86,7 @@ LIMA [1] 的研究提供了重要的实证依据：**1,000 条精心筛选的高
 total_params = 8_000_000_000        # 80 亿参数
 
 # 推理阶段（float16）
-inference_memory = total_params * 2 / (1024**3)   # ≈ 14.9 GB
+inference_memory = total_params * 2 / (1024**3)   # ≈ 15.9 GB
 
 # 训练阶段（Adam 优化器，混合精度）
 # 参数（float32）：4 bytes/param
@@ -159,7 +159,7 @@ compression_ratio = lora_params / original_params   # ≈ 0.78%
 # 全模型 LoRA 参数量（应用于所有注意力层）
 # Llama 3.1 8B: 32 层，每层 4 个投影（q, k, v, o）
 num_lora_layers = 32 * 4
-total_lora_params = num_lora_layers * lora_params   # ≈ 16.8M
+total_lora_params = num_lora_layers * lora_params   # ≈ 17.8M
 
 # 全模型压缩比
 total_compression = total_lora_params / total_params  # ≈ 0.21%
@@ -825,3 +825,5 @@ def sft_graduation_check(
 [2] HU E J, SHEN Y, WALLIS P, et al. LoRA: Low-rank adaptation of large language models[C]//International Conference on Learning Representations (ICLR). 2022.
 
 [3] DETTMERS T, PAGNONI A, HOLTZMAN A, et al. QLoRA: Efficient finetuning of quantized language models[C]//Advances in Neural Information Processing Systems (NeurIPS). 2023.
+
+[4] AGHAJANYAN A, ZETTLEMOYER L, GUPTA S. Intrinsic dimensionality explains the effectiveness of language model fine-tuning[C]//Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL). 2021.

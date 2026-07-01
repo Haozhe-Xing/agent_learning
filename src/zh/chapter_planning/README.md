@@ -4,7 +4,6 @@
 
 ---
 
-
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
@@ -15,16 +14,6 @@
 - ✅ 构建自我反思与错误纠正机制
 - ✅ 完成一个自动化研究助手 Agent 的实战项目
 
-## ⏱️ 预计学习时间
-
-约 **90-120 分钟**（含实战）
-
-## 💡 前置知识
-
-- 已完成第3章（工具调用）和第4章（记忆系统）
-- 了解递归和循环控制流
-- 对 LLM 的 API 调用有基本经验
-
 ---
 
 ## 🔗 学习路径
@@ -33,8 +22,8 @@
 >
 > **后续推荐**：
 > - 👉 [第6章 检索增强生成（RAG）](../chapter_rag/README.md) — 给 Agent 接入外部知识
-> - 👉 [第11章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架高效实现 ReAct Agent
-> - 👉 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 用图结构实现复杂推理流程
+> - 👉 [第12章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架高效实现 ReAct Agent
+> - 👉 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 用图结构实现复杂推理流程
 
 ---
 

@@ -4,7 +4,6 @@
 
 ---
 
-
 ## 🎓 学习目标
 
 完成本章学习后，你将能够：
@@ -16,16 +15,6 @@
 - ✅ 构建一个完整的智能文档问答 Agent
 - ✅ 掌握 GraphRAG / LightRAG 知识图谱增强检索
 - ✅ 用 LangGraph 实现生产级 Agentic RAG 系统
-
-## ⏱️ 预计学习时间
-
-约 **150-180 分钟**（含实战，含 6.7 进阶内容）
-
-## 💡 前置知识
-
-- 完成第4章（记忆系统）
-- 了解向量和余弦相似度的基本概念
-- `pip install langchain faiss-cpu sentence-transformers graphrag lightrag-hku langgraph`
 
 ## 📚 本章结构
 
@@ -47,7 +36,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）是当前最重要�
 >
 > **后续推荐**：
 > - 👉 [第7章 上下文工程](../chapter_context_engineering/README.md) — 系统化管理 RAG 检索到的上下文信息
-> - 👉 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 深入 Agentic RAG 所用的状态机框架
+> - 👉 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 深入 Agentic RAG 所用的状态机框架
 
 ---
 

@@ -1,4 +1,4 @@
-# 12.5 Human-in-the-Loop：人机协作
+# 13.5 Human-in-the-Loop：人机协作
 
 在生产环境中，让 Agent 完全自主运行是有风险的——删除文件、发送邮件、执行支付等操作一旦出错就无法撤回。**Human-in-the-Loop（人机协作）** 机制允许在 Agent 执行危险操作前暂停，等待人类确认后再继续。
 
@@ -282,4 +282,4 @@ Human-in-the-Loop 的实现要点：
 
 ---
 
-*下一节：[12.6 实战：工作流自动化 Agent](./06_practice_workflow_agent.md)*
+*下一节：[13.6 实战：工作流自动化 Agent](./06_practice_workflow_agent.md)*

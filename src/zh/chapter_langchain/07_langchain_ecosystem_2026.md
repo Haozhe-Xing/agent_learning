@@ -1,4 +1,4 @@
-# 11.7 LangChain 生态 2026
+# 12.7 LangChain 生态 2026
 
 > **本节目标**：了解 LangChain 生态的最新进展，掌握 LangGraph Platform、LangServe、MCP 集成等核心工具，并理解从旧版 AgentExecutor 迁移到 LangGraph 的路径。
 
@@ -342,7 +342,7 @@ langchain app new my-rag-app --template rag-conversational
 
 MCP（Model Context Protocol）是 Anthropic 提出的标准化协议，让 LLM 能以统一的方式连接外部工具和数据源。LangChain 社区已经提供了 MCP 集成。
 
-> 📌 关于 MCP 的详细介绍，请参考第 16 章 [第16章 Agent 通信协议](../chapter_protocol/README.md)。
+> 📌 关于 MCP 的详细介绍，请参考第 16 章 [第17章 Agent 通信协议](../chapter_protocol/README.md)。
 
 ### 使用 MCP 工具
 
@@ -591,7 +591,7 @@ print(result["messages"][-1].content)
 > 💡 **迁移建议**：
 > - 新项目直接用 LangGraph，不要再用 AgentExecutor
 > - 旧项目可以分步迁移——先替换 Agent 核心循环，工具定义不需要改
-> - 详细的 LangGraph 教程请参考第 12 章 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+> - 详细的 LangGraph 教程请参考第 12 章 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
 
 ---
 
@@ -608,13 +608,13 @@ LangChain 生态在 2025-2026 年的核心演进方向是**从"框架"走向"平
 | **架构稳定** | v0.3 移除废弃 API，LCEL 成为标准范式 |
 
 > 💡 **与本书其他章节的关系**：
-> - 第 12 章 [第12章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 深入讲解 LangGraph 图编排
-> - 第 16 章 [第16章 Agent 通信协议](../chapter_protocol/README.md) 详解 MCP 协议
-> - 第 19 章 [第19章 部署与生产化](../chapter_deployment/README.md) 讨论更完整的部署方案
+> - 第 12 章 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 深入讲解 LangGraph 图编排
+> - 第 16 章 [第17章 Agent 通信协议](../chapter_protocol/README.md) 详解 MCP 协议
+> - 第 19 章 [第20章 部署与生产化](../chapter_deployment/README.md) 讨论更完整的部署方案
 
 ---
 
-*下一节：[11.8 LangChain 生产化模式](./08_production_patterns.md)*
+*下一节：[12.8 LangChain 生产化模式](./08_production_patterns.md)*
 
 ---
 

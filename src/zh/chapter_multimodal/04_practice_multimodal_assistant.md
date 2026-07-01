@@ -1,4 +1,4 @@
-# 22.4 实战：多模态个人助理
+# 23.4 实战：多模态个人助理
 
 > **本节目标**：构建一个能处理文本、图像和语音的多模态 Agent。
 
@@ -19,11 +19,11 @@ from langchain_openai import ChatOpenAI
 
 # 导入前面实现的组件
 # 各组件的完整实现请参考对应章节：
-# from vision_tool import VisionTool           # → 21.2 节
-# from image_generator import ImageGenerator   # → 21.2 节
-# from speech_to_text import SpeechToText      # → 21.3 节
-# from text_to_speech import TextToSpeech      # → 21.3 节
-# 提示：运行本节代码前，需先将 21.2-21.3 节的代码保存为独立模块
+# from vision_tool import VisionTool           # → 22.2 节
+# from image_generator import ImageGenerator   # → 22.2 节
+# from speech_to_text import SpeechToText      # → 22.3 节
+# from text_to_speech import TextToSpeech      # → 22.3 节
+# 提示：运行本节代码前，需先将 22.2-21.3 节的代码保存为独立模块
 
 
 class MultimodalAssistant:
@@ -222,7 +222,7 @@ if __name__ == "__main__":
 
 > 🎓 **本章总结**：多模态 Agent 让 AI 不再局限于文字交互。通过整合视觉理解、图像生成、语音识别和合成，我们构建了一个更自然、更强大的个人助理。
 
-> 🎉 **全书总结**：从第1章的基本概念，到第21章的多模态实战，你已经走完了 Agent 开发的完整学习路径。你学会了工具调用、记忆系统、规划推理、RAG、多 Agent 协作、安全部署等核心技术。现在，去构建你自己的 Agent 应用吧！
+> 🎉 **全书总结**：从第1章的基本概念，到第22章的多模态实战，你已经走完了 Agent 开发的完整学习路径。你学会了工具调用、记忆系统、规划推理、RAG、多 Agent 协作、安全部署等核心技术。现在，去构建你自己的 Agent 应用吧！
 
 ---
 
