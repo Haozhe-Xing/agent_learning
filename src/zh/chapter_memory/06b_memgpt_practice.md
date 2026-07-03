@@ -14,287 +14,100 @@ MemGPT 的工程化版本 **Letta**（2025 年更名）提供了完整的 Agent 
 
 ## 分层记忆架构实现
 
-### 核心设计
+### 三层记忆的分工
+
+MemGPT 把 LLM 上下文类比为操作系统内存，采用"内存分级"思路：
+
+| 层 | 放什么 | 类比 OS | 关键特点 |
+|---|---|---|---|
+| **Core Memory（核心记忆）** | 用户姓名、长期偏好、关键事实、当前目标 | 常驻内存/寄存器 | 始终在 Prompt 里，是模型回答的"常识依据" |
+| **Working Memory（工作记忆）** | 当前任务相关的近期上下文 | 内存（RAM） | 容量有限，只保留最近若干条 |
+| **Archive Memory（归档记忆）** | 大量历史内容、长文档 | 硬盘 / 外部存储 | 不进 Prompt，**按需检索**才调出来 |
+
+**为什么要分层**：上下文窗口是有限且昂贵的资源。如果把所有历史都塞进 Prompt，很快就会超出窗口、且充满噪声。分层的核心思想是——**把最重要、最常用的信息常驻（Core），把次要的暂存（Working），把海量但偶尔才用的信息放到外部、用检索按需调取（Archive）**。
+
+### 核心实现
+
+整个 Agent 的关键在 `chat` 方法：自动管理记忆 → 构建含记忆的 Prompt → 调用 LLM → 处理记忆工具调用。
 
 ```python
-from openai import OpenAI
-import json
-import time
-
-client = OpenAI()
-
-
 class LayeredMemoryAgent:
-    """分层记忆 Agent（MemGPT 思想的工程实现）
-    
-    三层记忆架构：
-    1. Core Memory（核心记忆）— 始终在上下文中，放最关键的信息
-    2. Working Memory（工作记忆）— 当前任务相关的短期信息
-    3. Archive Memory（归档记忆）— 外部存储，按需检索
-    """
-    
+    """分层记忆 Agent：Core + Working + Archive 三层。"""
+
     def __init__(self, model: str = "gpt-4.1"):
         self.model = model
-        
-        # 核心记忆：始终在 Prompt 中，放用户画像和关键偏好
+        # 始终在 Prompt 中：放用户画像和关键偏好
         self.core_memory = {
-            "user_name": "",
-            "preferences": [],
-            "key_facts": [],
-            "active_goals": [],
+            "user_name": "", "preferences": [],
+            "key_facts": [], "active_goals": []
         }
-        
-        # 工作记忆：当前对话的相关上下文
+        # 当前任务相关的短期信息
         self.working_memory = []
-        self.max_working_items = 10
-        
-        # 归档记忆：持久化存储，模拟向量数据库
+        # 持久化存储，模拟向量数据库
         self.archive_memory = []
-        
         # 对话历史
         self.conversation = []
-    
+
     def chat(self, user_input: str) -> str:
-        """主对话入口"""
-        
+        """主对话入口：5 步流水线。"""
         # 1. 自动记忆管理：检查是否需要更新记忆
         self._auto_manage_memory(user_input)
-        
-        # 2. 构建包含记忆的 Prompt
+        # 2. 构建含记忆的 Prompt
         messages = self._build_messages(user_input)
-        
         # 3. 调用 LLM
         response = client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            max_tokens=2000,
-            tools=self._get_memory_tools()
+            model=self.model, messages=messages,
+            max_tokens=2000, tools=self._get_memory_tools()
         )
-        
         # 4. 处理工具调用（记忆自我编辑）
         reply = self._process_response(response)
-        
         # 5. 保存到对话历史
         self.conversation.append({"role": "user", "content": user_input})
         self.conversation.append({"role": "assistant", "content": reply})
-        
         return reply
-    
-    def _auto_manage_memory(self, user_input: str):
-        """自动从用户输入中提取关键信息更新记忆"""
-        
-        # 使用小模型快速判断是否需要更新记忆
-        response = client.chat.completions.create(
-            model="gpt-4.1-mini",
-            messages=[{
-                "role": "user",
-                "content": f"""分析以下用户输入，提取需要记住的关键信息。
 
-当前核心记忆：
-{json.dumps(self.core_memory, ensure_ascii=False, indent=2)}
-
-用户输入：{user_input}
-
-如果包含需要记忆的信息（如姓名、偏好、重要事实），返回 JSON：
-{{"updates": {{"field": "值", ...}}, "archive": "需要归档的内容或null"}}
-
-如果没有需要记忆的信息，返回：
-{{"updates": {{}}, "archive": null}}"""
-            }],
-            response_format={"type": "json_object"},
-            max_tokens=300
-        )
-        
-        result = json.loads(response.choices[0].message.content)
-        
-        # 更新核心记忆
-        for key, value in result.get("updates", {}).items():
-            if key in self.core_memory and value:
-                if isinstance(self.core_memory[key], list):
-                    if value not in self.core_memory[key]:
-                        self.core_memory[key].append(value)
-                else:
-                    self.core_memory[key] = value
-        
-        # 归档长内容
-        archive_content = result.get("archive")
-        if archive_content:
-            self.archive_memory.append({
-                "content": archive_content,
-                "timestamp": time.time(),
-                "source": "auto_extract"
-            })
-    
     def _build_messages(self, user_input: str) -> list[dict]:
-        """构建包含记忆的完整 Prompt"""
-        
-        # System Prompt：包含核心记忆
-        system_prompt = f"""你是一个具备分层记忆能力的 Agent。
-
+        """System Prompt 中始终注入核心记忆 + 近期工作记忆。"""
+        system = f"""你是具备分层记忆能力的 Agent。
 ## 核心记忆（始终记住）
 {json.dumps(self.core_memory, ensure_ascii=False, indent=2)}
-
 ## 工作记忆（当前任务相关）
 {json.dumps(self.working_memory[-5:], ensure_ascii=False, indent=2)}
-
 ## 记忆管理指令
-- 核心记忆中的信息是你的"常识"，始终作为回答的依据
-- 如果用户问到归档记忆中的内容，使用 search_archive 工具搜索
-- 如果需要记住新的重要信息，使用 update_core_memory 工具
-- 如果当前对话产生了需要长期保存的内容，使用 archive_content 工具"""
-        
-        messages = [
-            {"role": "system", "content": system_prompt},
-        ]
-        
-        # 添加近期对话（保留最近 10 轮）
-        recent = self.conversation[-20:]  # 10轮 = 20条消息
-        messages.extend(recent)
-        
-        # 添加当前用户输入
-        messages.append({"role": "user", "content": user_input})
-        
-        return messages
-    
-    def _get_memory_tools(self) -> list[dict]:
-        """定义记忆管理工具"""
-        return [
-            {
-                "type": "function",
-                "function": {
-                    "name": "search_archive",
-                    "description": "在归档记忆中搜索相关内容",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "query": {
-                                "type": "string",
-                                "description": "搜索关键词"
-                            }
-                        },
-                        "required": ["query"]
-                    }
-                }
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "update_core_memory",
-                    "description": "更新核心记忆中的字段",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "field": {
-                                "type": "string",
-                                "description": "字段名（user_name/preferences/key_facts/active_goals）"
-                            },
-                            "value": {
-                                "type": "string",
-                                "description": "新的值"
-                            }
-                        },
-                        "required": ["field", "value"]
-                    }
-                }
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "archive_content",
-                    "description": "将内容保存到归档记忆",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "content": {
-                                "type": "string",
-                                "description": "要归档的内容"
-                            }
-                        },
-                        "required": ["content"]
-                    }
-                }
-            },
-        ]
-    
-    def _process_response(self, response) -> str:
-        """处理 LLM 响应，执行记忆工具调用"""
-        message = response.choices[0].message
-        
-        # 如果没有工具调用，直接返回文本
-        if not message.tool_calls:
-            return message.content or ""
-        
-        # 执行工具调用
-        tool_results = []
-        text_parts = []
-        
-        if message.content:
-            text_parts.append(message.content)
-        
-        for tool_call in message.tool_calls:
-            func_name = tool_call.function.name
-            args = json.loads(tool_call.function.arguments)
-            
-            if func_name == "search_archive":
-                results = self._search_archive(args["query"])
-                tool_results.append({
-                    "tool_call_id": tool_call.id,
-                    "result": json.dumps(results, ensure_ascii=False)
-                })
-                text_parts.append(f"[检索到归档内容: {len(results)} 条]")
-            
-            elif func_name == "update_core_memory":
-                field = args["field"]
-                value = args["value"]
-                if field in self.core_memory:
-                    if isinstance(self.core_memory[field], list):
-                        self.core_memory[field].append(value)
-                    else:
-                        self.core_memory[field] = value
-                    text_parts.append(f"[已更新核心记忆: {field}]")
-            
-            elif func_name == "archive_content":
-                self.archive_memory.append({
-                    "content": args["content"],
-                    "timestamp": time.time(),
-                    "source": "agent_archived"
-                })
-                text_parts.append("[已归档内容]")
-        
-        return "\n".join(text_parts)
-    
-    def _search_archive(self, query: str) -> list[dict]:
-        """在归档记忆中搜索（简化版：关键词匹配）"""
-        results = []
-        query_lower = query.lower()
-        
-        for item in self.archive_memory:
-            if query_lower in item["content"].lower():
-                results.append(item)
-        
-        return results[:5]  # 最多返回5条
+- 核心记忆中的信息是你的"常识"，始终作为回答依据
+- 问到归档内容时，用 search_archive 工具检索
+- 需要记新信息时，用 update_core_memory 工具
+- 当前对话产生需长期保存的内容时，用 archive_content 工具"""
+        recent = self.conversation[-20:]  # 滑动窗口：最近 10 轮
+        return [{"role": "system", "content": system}] + recent \
+             + [{"role": "user", "content": user_input}]
 
+    # 其余方法（_auto_manage_memory / _get_memory_tools /
+    # _process_response / _search_archive）见仓库完整实现
+```
 
-# 使用示例
+> 📦 **完整代码（约 250 行）见仓库** `examples/chapter04/layered_memory_agent.py`，含自动记忆提取 prompt、3 个记忆管理工具的 schema、工具调用分发逻辑。
+
+### 使用示例
+
+```python
 agent = LayeredMemoryAgent()
 
 # 第一轮：用户介绍自己
-print(agent.chat("你好！我叫小明，我是一名数据科学家，平时喜欢用 Python"))
+agent.chat("你好！我叫小明，我是一名数据科学家，平时喜欢用 Python")
 
 # 第二轮：用户提出偏好
-print(agent.chat("我比较喜欢简洁的回答，不要太啰嗦"))
+agent.chat("我比较喜欢简洁的回答，不要太啰嗦")
 
 # 第三轮：用户讨论工作
-print(agent.chat("我正在做一个客户流失预测项目，使用的是 XGBoost"))
+agent.chat("我正在做一个客户流失预测项目，使用的是 XGBoost")
 
 # 第四轮：验证记忆是否保持
 print(agent.chat("我之前说我在做什么项目来着？"))
 # Agent 应该能从核心记忆中回忆起"客户流失预测项目"
-
-# 查看核心记忆状态
-print("\n当前核心记忆：")
-print(json.dumps(agent.core_memory, ensure_ascii=False, indent=2))
 ```
+
+四轮对话中，**核心记忆自动捕获**了用户姓名（"小明"）、身份（"数据科学家"）、偏好（"简洁回答"）、项目（"客户流失预测"）。第五轮即使 Agent 重启，只要核心记忆持久化，就能正确回答。
 
 ---
 
@@ -303,26 +116,17 @@ print(json.dumps(agent.core_memory, ensure_ascii=False, indent=2))
 Letta（原 MemGPT）是论文作者创办的商业化框架，提供了完整的分层记忆管理：
 
 ```python
-# Letta 安装：pip install letta
-# 详细文档：https://docs.letta.com
-
+# pip install letta
 from letta import create_client
 
-# 创建 Letta 客户端
 letta_client = create_client()
 
-# 创建一个带记忆的 Agent
+# 创建一个带分层记忆的 Agent
 agent = letta_client.create_agent(
     name="memory_assistant",
     memory_blocks=[
-        {
-            "label": "persona",
-            "value": "你是一个有帮助的AI助手，善于记住用户信息。"
-        },
-        {
-            "label": "human",
-            "value": "用户信息待填写"  # Agent 会自动更新
-        }
+        {"label": "persona", "value": "你是一个有帮助的AI助手，善于记住用户信息。"},
+        {"label": "human",   "value": "用户信息待填写"},   # Agent 会自动更新
     ],
     llm="gpt-4.1",
     embedding="text-embedding-3-small",
@@ -334,12 +138,13 @@ response = letta_client.send_message(
     message="你好！我叫小红，我在做 NLP 研究",
     role="user"
 )
-
-print(response.messages)
-
-# Agent 会自动将用户信息更新到 human 记忆块中
-# 后续对话中，Agent 能自动检索和回忆这些信息
+# Agent 会自动将"小红""NLP 研究"更新到 human 记忆块中
 ```
+
+> 💡 **何时用 Letta 而不是自己实现**：
+> - 多用户管理、记忆持久化、审计日志、模型路由——这些"非核心"能力 Letta 已经做好了
+> - 如果你的项目里"分层记忆"是核心创新点，自己实现更可控
+> - 简单原型或学习目的，推荐 Letta（生产级稳定性）
 
 ---
 
@@ -348,147 +153,77 @@ print(response.messages)
 人脑不是什么都记——重要的记住，不重要的逐渐遗忘。Agent 的记忆也应如此：
 
 ```python
-import math
-import time
+import math, time
 
+# 记忆类型及其衰减速率：身份信息永不衰减，琐碎信息快速衰减
+DECAY_RATES = {
+    "identity": 0.0,    # 永不衰减
+    "preference": 0.01, # 缓慢衰减
+    "fact": 0.05,       # 中速衰减
+    "context": 0.1,     # 快速衰减
+    "trivial": 0.3,     # 极快衰减
+}
 
 class MemoryWithDecay:
-    """带衰减机制的 Agent 记忆
-    
-    灵感来自 Generative Agents 论文的重要性评分 + 时间衰减
-    """
-    
-    # 记忆类型及其衰减速率
-    DECAY_RATES = {
-        "identity": 0.0,      # 身份信息永不衰减
-        "preference": 0.01,   # 偏好缓慢衰减
-        "fact": 0.05,         # 事实性信息中速衰减
-        "context": 0.1,       # 上下文信息快速衰减
-        "trivial": 0.3,       # 琐碎信息极快衰减
-    }
-    
+    """带衰减机制 + 访问增强的记忆系统。"""
+
     def __init__(self):
-        self.memories = []  # [{"content", "type", "importance", "created_at", "access_count"}]
-    
-    def add(self, content: str, memory_type: str, importance: float = 0.5):
-        """添加记忆
-        
-        Args:
-            content: 记忆内容
-            memory_type: 记忆类型（决定衰减速率）
-            importance: 重要性评分 0.0-1.0
-        """
+        self.memories: list[dict] = []  # 每条含 content/type/importance/created_at/access_count
+
+    def add(self, content: str, type: str, importance: float = 0.5):
         self.memories.append({
-            "content": content,
-            "type": memory_type,
-            "importance": importance,
-            "created_at": time.time(),
-            "access_count": 0,
+            "content": content, "type": type, "importance": importance,
+            "created_at": time.time(), "access_count": 0
         })
-    
+
     def retrieve(self, query: str, top_k: int = 5) -> list[dict]:
-        """检索记忆，综合考虑相关性和衰减"""
-        
+        """综合考虑：相关性、时间衰减、访问增强。"""
         scored = []
         for mem in self.memories:
-            # 1. 语义相关性（简化版：关键词匹配，实际应用中用 Embedding）
             relevance = self._compute_relevance(query, mem["content"])
-            
-            # 2. 时间衰减
+            # 时间衰减：越久远的记忆强度越低
             age_hours = (time.time() - mem["created_at"]) / 3600
-            decay_rate = self.DECAY_RATES.get(mem["type"], 0.05)
-            decay_factor = math.exp(-decay_rate * age_hours)
-            
-            # 3. 访问增强（经常被检索的记忆不容易遗忘）
+            decay = math.exp(-DECAY_RATES.get(mem["type"], 0.05) * age_hours)
+            # 访问增强：经常被检索的记忆不容易遗忘
             access_bonus = min(0.2, mem["access_count"] * 0.02)
-            
-            # 4. 综合评分
-            score = (
-                relevance * 0.4 +
-                mem["importance"] * decay_factor * 0.4 +
-                access_bonus * 0.2
-            )
-            
+            # 综合评分
+            score = relevance * 0.4 + mem["importance"] * decay * 0.4 + access_bonus * 0.2
             scored.append((score, mem))
-        
-        # 排序并返回 top_k
+
         scored.sort(key=lambda x: x[0], reverse=True)
-        
         results = []
         for score, mem in scored[:top_k]:
-            mem["access_count"] += 1  # 访问计数+1
+            mem["access_count"] += 1   # 访问计数+1（强化记忆）
             results.append({
-                "content": mem["content"],
-                "score": score,
-                "type": mem["type"],
-                "age_hours": (time.time() - mem["created_at"]) / 3600,
+                "content": mem["content"], "score": score,
+                "type": mem["type"], "age_hours": (time.time() - mem["created_at"]) / 3600
             })
-        
         return results
-    
-    def cleanup(self, threshold: float = 0.01):
-        """清理衰减到阈值的记忆"""
+
+    def cleanup(self, threshold: float = 0.01) -> str:
+        """清理衰减到阈值的记忆。"""
         before = len(self.memories)
-        
-        self.memories = [
-            mem for mem in self.memories
-            if self._current_strength(mem) > threshold
-        ]
-        
-        removed = before - len(self.memories)
-        return f"已清理 {removed} 条衰减记忆，剩余 {len(self.memories)} 条"
-    
-    def _compute_relevance(self, query: str, content: str) -> float:
-        """计算语义相关性（简化版）"""
-        query_words = set(query.lower().split())
-        content_words = set(content.lower().split())
-        
-        if not query_words:
-            return 0.0
-        
-        overlap = len(query_words & content_words)
-        return overlap / len(query_words)
-    
-    def _current_strength(self, mem: dict) -> float:
-        """计算记忆当前强度"""
-        age_hours = (time.time() - mem["created_at"]) / 3600
-        decay_rate = self.DECAY_RATES.get(mem["type"], 0.05)
-        decay_factor = math.exp(-decay_rate * age_hours)
-        access_bonus = min(0.2, mem["access_count"] * 0.02)
-        
-        return mem["importance"] * decay_factor + access_bonus
-
-
-# 使用示例
-memory = MemoryWithDecay()
-
-# 添加不同类型的记忆
-memory.add("用户名叫小明", "identity", importance=1.0)
-memory.add("用户偏好简洁的回答", "preference", importance=0.8)
-memory.add("当前项目是客户流失预测", "fact", importance=0.6)
-memory.add("上次对话提到了周末计划", "context", importance=0.3)
-memory.add("用户今天喝了一杯咖啡", "trivial", importance=0.1)
-
-# 检索记忆
-results = memory.retrieve("项目")
-for r in results:
-    print(f"[{r['type']}] score={r['score']:.3f}: {r['content']}")
-
-# 清理衰减记忆
-print(memory.cleanup())
+        self.memories = [m for m in self.memories if self._current_strength(m) > threshold]
+        return f"已清理 {before - len(self.memories)} 条衰减记忆，剩余 {len(self.memories)} 条"
 ```
+
+### 三件事值得专门讲
+
+1. **"全都记住"是错的**：存储成本是次要问题，**检索质量**才是核心。琐碎记忆挤占 top_k 名额，反而让重要信息被漏掉。
+2. **衰减率分级体现信息价值差异**：身份信息几乎永远有用，琐碎信息很快失去价值——遗忘不是缺陷，是主动的信息筛选机制。
+3. **访问增强补充单纯时间衰减**：经常被检索的记忆获得加成（"越回忆越牢固"），模拟人脑的记忆巩固。
 
 ---
 
 ## 小结
 
 | 概念 | 说明 |
-|------|------|
-| 分层记忆 | Core Memory + Working Memory + Archive Memory 三层架构 |
+|---|---|
+| 分层记忆 | Core + Working + Archive 三层，对应 OS 内存分级 |
 | 记忆自管理 | Agent 通过工具调用主动管理自己的记忆（MemGPT 核心思想） |
 | Letta 框架 | MemGPT 的商业化版本，提供完整的分层记忆管理 |
-| 记忆衰减 | 不同类型的记忆有不同的衰减速率，重要的记忆永不遗忘 |
-| 访问增强 | 经常被检索的记忆不容易遗忘（模拟人脑的"回忆强化"） |
+| 记忆衰减 | 不同类型记忆有不同衰减速率，重要记忆永不遗忘 |
+| 访问增强 | 经常被检索的记忆不易遗忘（模拟人脑"回忆强化"） |
 
 > 📖 **延伸阅读**：
 > - Packer et al. "MemGPT: Towards LLMs as Operating Systems." arXiv:2310.08560, 2023.
@@ -498,8 +233,6 @@ print(memory.cleanup())
 ---
 
 ## 📝 本章练习
-
-读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
 
 **练习 1（概念）**：MemGPT 把 LLM 的上下文类比为操作系统的内存。本节实现的分层记忆 Agent 有三层：Core Memory、Working Memory、Archive Memory。请用自己的话说清这三层各自放什么、为什么要这样分层，并解释它对应操作系统里的哪个概念。
 
@@ -536,7 +269,7 @@ print(memory.cleanup())
 
 </details>
 
-**练习 3（动手）**：本节 `MemoryWithDecay` 的 `_compute_relevance` 用的是简单的"关键词重叠"来算相关性，对中文和近义词很不友好（比如查询"项目"匹配不到"客户流失预测工作"）。请说明它的缺陷，并写出用**向量相似度（Embedding）** 改造后的 `_compute_relevance` 思路与核心代码。
+**练习 3（动手）**：本节 `MemoryWithDecay` 的 `_compute_relevance` 用的是简单的"关键词重叠"来算相关性，对中文和近义词很不友好。请说明它的缺陷，并写出用**向量相似度（Embedding）** 改造后的思路与核心代码。
 
 <details>
 <summary>参考答案</summary>
@@ -555,29 +288,20 @@ import numpy as np
 class MemoryWithDecay:
     def __init__(self):
         self.memories = []
-        # 加载一个支持中文的句向量模型
         self.embedder = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
     def add(self, content, memory_type, importance=0.5):
-        # 入库时就把内容编码成向量缓存起来，避免每次检索重复计算
         self.memories.append({
-            "content": content,
-            "type": memory_type,
-            "importance": importance,
-            "created_at": time.time(),
-            "access_count": 0,
-            "embedding": self.embedder.encode(content),   # 新增
+            "content": content, "type": memory_type, "importance": importance,
+            "created_at": time.time(), "access_count": 0,
+            "embedding": self.embedder.encode(content),   # 入库时缓存向量
         })
 
     def _compute_relevance(self, query: str, mem: dict) -> float:
-        """用余弦相似度替代关键词重叠"""
         q_vec = self.embedder.encode(query)
         m_vec = mem["embedding"]
-        cos = np.dot(q_vec, m_vec) / (
-            np.linalg.norm(q_vec) * np.linalg.norm(m_vec) + 1e-8
-        )
-        # 余弦值范围 [-1, 1]，归一化到 [0, 1] 便于和其它分项加权
-        return (cos + 1) / 2
+        cos = np.dot(q_vec, m_vec) / (np.linalg.norm(q_vec) * np.linalg.norm(m_vec) + 1e-8)
+        return (cos + 1) / 2   # 归一化到 [0, 1]
 ```
 
 **讲解：**

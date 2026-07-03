@@ -19,340 +19,164 @@
 ```python
 import chromadb
 from openai import OpenAI
-import json
-import datetime
-from typing import Optional
+import numpy as np
 
 client = OpenAI()
 
-# ============================
-# 向量嵌入工具
-# ============================
-
 def get_embedding(text: str, model: str = "text-embedding-3-small") -> list[float]:
-    """获取文本的向量嵌入"""
-    response = client.embeddings.create(
-        input=text,
-        model=model
-    )
+    """获取文本的向量嵌入（1536 维）"""
+    response = client.embeddings.create(input=text, model=model)
     return response.data[0].embedding
 
-# 测试：语义相似的文本有相近的向量
-from numpy import dot
-from numpy.linalg import norm
-
-def cosine_similarity(v1, v2) -> float:
-    """计算余弦相似度"""
-    return dot(v1, v2) / (norm(v1) * norm(v2))
+def cosine_sim(v1, v2) -> float:
+    return float(np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2)))
 
 # 验证语义相似性
 texts = [
-    "Python 是一种编程语言",  # 原始句
-    "Python 是用于编程的语言",  # 语义相似
-    "今天天气很好",            # 语义不相关
+    "Python 是一种编程语言",        # 原始句
+    "Python 是用于编程的语言",      # 语义相似
+    "今天天气很好",                 # 语义不相关
 ]
-
 embeddings = [get_embedding(t) for t in texts]
-sim_1_2 = cosine_similarity(embeddings[0], embeddings[1])
-sim_1_3 = cosine_similarity(embeddings[0], embeddings[2])
-print(f"相似度（语义相似）：{sim_1_2:.4f}")  # 应该 > 0.9
-print(f"相似度（语义不同）：{sim_1_3:.4f}")  # 应该 < 0.5
+print(f"相似度（语义相似）：{cosine_sim(embeddings[0], embeddings[1]):.4f}")  # > 0.9
+print(f"相似度（语义不同）：{cosine_sim(embeddings[0], embeddings[2]):.4f}")  # < 0.5
 ```
 
-## 使用 ChromaDB 构建记忆系统
+> 💡 **理解余弦相似度**：返回值范围 `[-1, 1]`。OpenAI 的 `text-embedding-3-small` 通常让语义相近的文本相似度在 `0.7~0.95` 之间，无关文本在 `0.1~0.4`。阈值 `0.4` 是常见的"勉强相关"分界线。
 
-有了向量嵌入的概念基础，我们可以构建一个完整的长期记忆系统了。[ChromaDB](https://www.trychroma.com/) 是一个轻量级的开源向量数据库，支持持久化存储和语义检索，非常适合本地开发和原型构建。
+## 用 ChromaDB 构建记忆系统
 
-下面的 `LongTermMemory` 类封装了记忆系统的核心操作：**添加记忆**（将文本向量化后存入数据库）、**语义检索**（根据查询找到最相关的记忆）、**分类管理**（区分偏好、事实、任务等不同类型的记忆）。
-
-设计上有几个值得注意的点：
-- **每个用户独立的 Collection**：避免不同用户的记忆互相干扰
-- **重要性评分**：每条记忆都有 1-10 的重要性分数，检索时可以过滤低重要性的记忆
-- **相关性阈值**：`format_for_prompt` 方法将检索到的记忆标记为"高度相关"、"相关"和"参考"，帮助 LLM 判断哪些记忆更值得参考
+[ChromaDB](https://www.trychroma.com/) 是轻量级开源向量数据库，支持持久化和语义检索，适合本地开发与原型。
 
 ```python
 class LongTermMemory:
-    """
-    基于 ChromaDB 的长期记忆系统
-    支持：添加记忆、语义检索、更新、删除
-    """
-    
+    """基于 ChromaDB 的长期记忆系统：每用户独立 collection。"""
+
     def __init__(self, user_id: str, persist_dir: str = "./memory_db"):
         self.user_id = user_id
-        
-        # 创建持久化向量数据库
-        self.chroma_client = chromadb.PersistentClient(path=persist_dir)
-        
-        # 每个用户有独立的 Collection
-        self.collection = self.chroma_client.get_or_create_collection(
+        self.client = chromadb.PersistentClient(path=persist_dir)
+        # 每个用户独立 collection：避免不同用户的记忆互相干扰
+        self.collection = self.client.get_or_create_collection(
             name=f"user_{user_id}_memory",
-            metadata={"hnsw:space": "cosine"}  # 使用余弦相似度
+            metadata={"hnsw:space": "cosine"}     # 用余弦相似度
         )
-        
-        print(f"[记忆系统] 加载用户 {user_id} 的记忆库，"
-              f"已有 {self.collection.count()} 条记忆")
-    
-    def _embed(self, text: str) -> list[float]:
-        """生成文本嵌入"""
-        response = client.embeddings.create(
-            input=text,
-            model="text-embedding-3-small"
-        )
-        return response.data[0].embedding
-    
-    def add_memory(
-        self,
-        content: str,
-        memory_type: str = "general",
-        importance: int = 5,
-        source: str = "conversation"
-    ) -> str:
-        """
-        添加一条记忆
-        
-        Args:
-            content: 记忆内容
-            memory_type: 类型（preference/fact/event/task）
-            importance: 重要性（1-10）
-            source: 来源
-        
-        Returns:
-            记忆ID
-        """
+
+    def add(self, content: str, type: str = "general",
+            importance: int = 5, source: str = "conversation") -> str:
+        """把一段文本向量化后写入数据库，返回记忆 ID。"""
         import uuid
-        
         memory_id = str(uuid.uuid4())
-        
         self.collection.add(
             ids=[memory_id],
-            embeddings=[self._embed(content)],
+            embeddings=[get_embedding(content)],
             documents=[content],
             metadatas=[{
-                "type": memory_type,
-                "importance": importance,
-                "source": source,
-                "created_at": datetime.datetime.now().isoformat(),
-                "user_id": self.user_id
+                "type": type, "importance": importance,
+                "source": source, "user_id": self.user_id,
+                "created_at": datetime.now().isoformat()
             }]
         )
-        
-        print(f"[记忆] 已保存：{content[:50]}...")
         return memory_id
-    
-    def search_memories(
-        self,
-        query: str,
-        n_results: int = 5,
-        memory_type: Optional[str] = None,
-        min_importance: int = 1
-    ) -> list[dict]:
-        """
-        语义搜索记忆
-        
-        Args:
-            query: 查询内容（自然语言）
-            n_results: 返回结果数量
-            memory_type: 过滤类型
-            min_importance: 最低重要性阈值
-        
-        Returns:
-            相关记忆列表，按相似度排序
-        """
-        query_embedding = self._embed(query)
-        
-        # 构建过滤条件
+
+    def search(self, query: str, n: int = 5,
+               type: str | None = None, min_importance: int = 1) -> list[dict]:
+        """按查询语义找最相关的记忆。"""
         where = {"user_id": self.user_id}
-        if memory_type:
-            where["type"] = memory_type
+        if type:
+            where["type"] = type
         if min_importance > 1:
             where["importance"] = {"$gte": min_importance}
-        
-        try:
-            results = self.collection.query(
-                query_embeddings=[query_embedding],
-                n_results=min(n_results, self.collection.count()),
-                where=where,
-                include=["documents", "metadatas", "distances"]
-            )
-        except Exception:
-            # 如果没有足够的结果
-            results = self.collection.query(
-                query_embeddings=[query_embedding],
-                n_results=max(1, self.collection.count()),
-                include=["documents", "metadatas", "distances"]
-            )
-        
-        memories = []
-        if results["documents"] and results["documents"][0]:
-            for i, (doc, meta, dist) in enumerate(zip(
-                results["documents"][0],
-                results["metadatas"][0],
-                results["distances"][0]
-            )):
-                memories.append({
-                    "content": doc,
-                    "type": meta.get("type"),
-                    "importance": meta.get("importance"),
-                    "created_at": meta.get("created_at"),
-                    "relevance": 1 - dist  # 转换为相似度（0-1）
-                })
-        
-        return memories
-    
-    def get_all_memories(self, memory_type: Optional[str] = None) -> list[dict]:
-        """获取所有记忆"""
-        where = {"user_id": self.user_id}
-        if memory_type:
-            where["type"] = memory_type
-        
-        if self.collection.count() == 0:
-            return []
-        
-        results = self.collection.get(
-            where=where,
-            include=["documents", "metadatas"]
-        )
-        
-        memories = []
-        for doc, meta in zip(results["documents"], results["metadatas"]):
-            memories.append({
-                "content": doc,
-                "type": meta.get("type"),
-                "importance": meta.get("importance"),
-                "created_at": meta.get("created_at"),
-            })
-        
-        # 按重要性排序
-        return sorted(memories, key=lambda x: x.get("importance", 0), reverse=True)
-    
-    def format_for_prompt(self, memories: list[dict]) -> str:
-        """将记忆格式化为 Prompt 可用的文本"""
-        if not memories:
-            return "无相关记忆"
-        
-        lines = ["【相关记忆】"]
-        for m in memories:
-            relevance = m.get("relevance", 0)
-            if relevance >= 0.7:
-                relevance_label = "高度相关"
-            elif relevance >= 0.5:
-                relevance_label = "相关"
-            else:
-                relevance_label = "参考"
-            
-            lines.append(f"[{m['type']} | {relevance_label}] {m['content']}")
-        
-        return "\n".join(lines)
 
+        results = self.collection.query(
+            query_embeddings=[get_embedding(query)],
+            n_results=min(n, self.collection.count()),
+            where=where,
+            include=["documents", "metadatas", "distances"]
+        )
+        return [
+            {"content": d, "type": m.get("type"),
+             "importance": m.get("importance"), "relevance": 1 - dist}
+            for d, m, dist in zip(
+                results["documents"][0], results["metadatas"][0],
+                results["distances"][0])
+        ]
 ```
 
-接下来是记忆系统中最"智能"的部分——**自动记忆提取器**。与其让用户手动告诉 Agent"请记住这个信息"，不如让系统在每轮对话结束后自动分析：这轮对话中有没有值得长期记忆的信息？
+> 📦 **完整代码（含 `format_for_prompt`、`get_all`、`update`、`delete` 等工程化方法）见仓库** `examples/chapter04/long_term_memory.py`。
 
-`MemoryExtractor` 利用 LLM 来完成这个判断。它分析每轮对话的用户消息和 Agent 回复，提取出用户的个人信息、偏好、正在做的项目等有持久价值的内容，忽略闲聊和临时性查询。提取出的记忆会带有类型标签和重要性评分，方便后续的分类检索。
+### 三个设计决策
+
+1. **每用户独立 collection**：避免不同用户的记忆互相污染。如果有 10 万用户，建议改用单 collection + `user_id` metadata 过滤，否则 collection 数量爆炸。
+2. **`importance` 字段**：检索时可过滤低重要性记忆，避免噪音。
+3. **`type` 字段（preference/fact/event/task）**：检索时支持按类型过滤——例如只检索 preference 类，缩小范围。
+
+## 自动从对话中提取记忆
+
+手动调用 `memory.add()` 很不实用。更优雅的做法是：**每轮对话结束后，自动让 LLM 决定哪些值得记**。
 
 ```python
 class MemoryExtractor:
-    """从对话中自动提取值得记忆的信息"""
-    
-    def __init__(self):
-        self.client = OpenAI()
-    
-    def extract_memories(self, user_message: str, agent_reply: str) -> list[dict]:
-        """
-        分析对话，提取值得记忆的信息
-        
-        Returns:
-            记忆列表，每条包含 content、type、importance
-        """
-        prompt = f"""分析以下对话，提取值得长期记忆的重要信息。
+    """分析对话轮次，提取值得长期记忆的内容。"""
 
-用户说：{user_message}
-助手回复：{agent_reply}
+    EXTRACT_PROMPT = """分析以下对话，提取值得长期记忆的重要信息。
+用户说：{user_msg}
+助手回复：{assistant_reply}
 
 提取规则：
-- 记录用户的个人信息、偏好、习惯
-- 记录重要的决策和结论
-- 记录正在进行的项目或任务
-- 忽略闲聊、日常问候、重复信息
-- 忽略临时性的查询（如"今天几号"）
+- 记录用户的个人信息、偏好、习惯、正在做的项目、重要决策
+- 忽略闲聊、问候、临时查询、重复信息
+- 用简洁陈述句（第三人称）
 
-返回 JSON 格式（若无值得记忆的内容则返回空列表）：
-[
-  {{
-    "content": "记忆内容（简洁陈述句）",
-    "type": "preference|fact|event|task|skill",
-    "importance": 1-10的整数
-  }}
-]
+返回 JSON 数组（无内容则返回 []）：
+[{{"content": "记忆内容", "type": "preference|fact|event|task|skill", "importance": 1-10}}]"""
 
-只返回 JSON，不要其他内容。"""
-        
-        response = self.client.chat.completions.create(
+    def extract(self, user_msg: str, assistant_reply: str) -> list[dict]:
+        import json
+        prompt = self.EXTRACT_PROMPT.format(
+            user_msg=user_msg, assistant_reply=assistant_reply[:300])
+        resp = client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"}
+            response_format={"type": "json_object"},
+            max_tokens=300
         )
-        
         try:
-            result = json.loads(response.choices[0].message.content)
-            # 处理可能的嵌套格式
-            if isinstance(result, dict):
-                memories = result.get("memories", result.get("items", []))
-            else:
-                memories = result
-            return memories if isinstance(memories, list) else []
-        except:
+            data = json.loads(resp.choices[0].message.content)
+            return data if isinstance(data, list) else data.get("memories", [])
+        except Exception:
             return []
-
-
-# ============================
-# 测试
-# ============================
-
-def test_memory_system():
-    """测试记忆系统"""
-    
-    # 初始化
-    memory = LongTermMemory(user_id="user_001")
-    extractor = MemoryExtractor()
-    
-    # 添加一些记忆
-    memory.add_memory("用户叫张伟，是一名 Python 后端工程师", "fact", importance=8)
-    memory.add_memory("用户偏好简洁的代码风格，不喜欢过度注释", "preference", importance=7)
-    memory.add_memory("用户正在开发一个基于 FastAPI 的微服务项目", "task", importance=8)
-    memory.add_memory("用户擅长 Python 和 Go 语言", "skill", importance=6)
-    
-    print("\n=== 语义搜索测试 ===")
-    
-    # 测试1：搜索代码风格相关
-    results = memory.search_memories("写代码的时候有什么注意事项？")
-    print("\n查询：写代码的时候有什么注意事项？")
-    for r in results[:3]:
-        print(f"  [{r['relevance']:.2f}] {r['content']}")
-    
-    # 测试2：搜索项目相关
-    results = memory.search_memories("用户在做什么项目？")
-    print("\n查询：用户在做什么项目？")
-    for r in results[:3]:
-        print(f"  [{r['relevance']:.2f}] {r['content']}")
-    
-    print("\n=== 自动提取记忆测试 ===")
-    
-    # 测试从对话中提取记忆
-    new_memories = extractor.extract_memories(
-        user_message="我最近开始学习 Rust，觉得所有权系统很有意思",
-        agent_reply="Rust 的所有权系统确实很独特，是保证内存安全的核心机制..."
-    )
-    
-    print("从对话中提取的记忆：")
-    for m in new_memories:
-        print(f"  [{m['type']} | 重要性:{m['importance']}] {m['content']}")
-        memory.add_memory(m['content'], m['type'], m['importance'])
-    
-    return memory
-
-# memory = test_memory_system()
 ```
+
+### 关键设计决策
+
+| 决策 | 选择 | 原因 |
+|---|---|---|
+| **模型** | `gpt-4.1-mini` | 提取是结构化任务，不需要最强推理；mini 成本约为主力的 1/20 |
+| **温度** | 默认 1.0 → 建议改为 0.0 | 提取需要稳定，避免随机生成不同 schema |
+| **`response_format: json_object`** | 开启 | 强制 JSON 输出，避免手动 `json.loads` 失败的概率 |
+| **失败兜底** | `try/except` 返回 `[]` | 提取是"锦上添花"功能，失败不能影响主对话 |
+
+## 完整链路
+
+把短期记忆（4.2 节）、长期记忆（4.3 节）、自动提取三者串起来：
+
+```text
+用户消息
+   │
+   ├─→ 检索长期记忆（按当前消息查相关历史）
+   │
+   ├─→ 拼装 system_prompt = 系统角色 + 相关长期记忆 + 历史摘要
+   │
+   ├─→ 发送：system_prompt + 滑动窗口内的近期消息 + 用户消息
+   │
+   ├─→ 收到 LLM 回复
+   │
+   ├─→ 追加到滑动窗口（短期记忆）
+   │
+   └─→ 调用 MemoryExtractor 提取新记忆 → 写入长期记忆库
+```
+
+这套"滑动窗口 + 长期记忆 + 自动提取"的组合，是工业级个人助理 Agent 的标准架构（4.5 节实战会完整搭建）。
 
 ---
 
@@ -380,7 +204,7 @@ def test_memory_system():
 ### 记忆治理的五条规则
 
 | 规则 | 说明 | 工程实现 |
-|------|------|----------|
+|---|---|---|
 | **显式优先** | 用户明确说"记住/忘记"的优先级最高 | 为显式记忆打 `source=explicit` 标签 |
 | **敏感最小化** | 不保存密码、密钥、身份证号等高风险信息 | PII 检测 + 写入前过滤 |
 | **可撤回** | 用户可以查看、修改、删除记忆 | 提供 memory list/update/delete 接口 |
@@ -389,35 +213,28 @@ def test_memory_system():
 
 ### 为记忆增加治理元数据
 
-上面的 `LongTermMemory` 已经保存了 `type`、`importance`、`source` 和 `created_at`。生产系统中建议进一步增加：
+在写入时给每条记忆打上"治理标签"：
 
-```python
-memory_metadata = {
-    "type": "preference",
-    "importance": 7,
-    "source": "explicit",        # explicit / extracted / imported
-    "confidence": 0.92,           # 自动提取的置信度
-    "created_at": "2026-04-30T10:00:00",
-    "updated_at": "2026-04-30T10:00:00",
-    "expires_at": None,           # 可选：过期时间
-    "sensitivity": "low",        # low / medium / high
-    "consent": True,              # 是否获得用户同意
-    "status": "active",          # active / archived / deleted
-}
-```
+| 字段 | 取值示例 | 作用 |
+|---|---|---|
+| `confidence` | `0.92` | 自动提取的置信度（低置信度不用于关键决策） |
+| `expires_at` | `2027-01-01T00:00:00` | 过期时间（到期自动失效） |
+| `sensitivity` | `low / medium / high` | 敏感度（高敏感需用户二次确认） |
+| `consent` | `True / False` | 用户是否同意记录 |
+| `status` | `active / archived / deleted` | 状态（被撤回的记忆归档而非硬删） |
 
 检索时不应该只看语义相似度，还要过滤状态、敏感度和有效期：
 
 ```python
 def is_memory_usable(meta: dict) -> bool:
-    """判断一条记忆是否可用于当前回答"""
+    """判断一条记忆是否可用于当前回答。"""
     if meta.get("status") != "active":
         return False
     if meta.get("sensitivity") == "high":
         return False
     if meta.get("consent") is False:
         return False
-    if meta.get("expires_at") and meta["expires_at"] < datetime.datetime.now().isoformat():
+    if meta.get("expires_at") and meta["expires_at"] < datetime.now().isoformat():
         return False
     return True
 ```
@@ -434,7 +251,7 @@ def is_memory_usable(meta: dict) -> bool:
 这时不应该简单返回两条记忆，而应根据时间、置信度和显式程度做冲突解决：
 
 | 冲突类型 | 处理策略 |
-|----------|----------|
+|---|---|
 | 新旧偏好冲突 | 新记忆优先，旧记忆归档或降低权重 |
 | 显式与自动提取冲突 | 显式记忆优先 |
 | 低置信度事实冲突 | 请求用户确认或不用于关键决策 |
