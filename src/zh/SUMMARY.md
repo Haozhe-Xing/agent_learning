@@ -15,8 +15,8 @@
   - [1.6 智能体发展史：从符号主义到大模型驱动](./chapter_intro/06_history.md)
 
 - [第2章 大语言模型基础](./chapter_llm/README.md)
-  - [2.1 LLM 是如何工作的？（直觉理解）](./chapter_llm/01_how_llm_works.md)
-  - [2.2 Prompt Engineering](./chapter_llm/02_prompt_engineering.md)
+  - [2.1 拆穿 LLM 的"魔法"：从文字接龙到智能涌现](./chapter_llm/01_how_llm_works.md)
+  - [2.2 不写代码也要"编程"：Prompt Engineering 是怎样把话术变成确定性指令的](./chapter_llm/02_prompt_engineering.md)
   - [2.3 Few-shot / Zero-shot / Chain-of-Thought 提示策略](./chapter_llm/03_prompting_strategies.md)
   - [2.4 模型 API 调用入门](./chapter_llm/04_api_basics.md)
   - [2.5 Token、Temperature 与模型参数详解](./chapter_llm/05_model_parameters.md)

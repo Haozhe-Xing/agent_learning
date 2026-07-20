@@ -22,6 +22,7 @@ __pycache__/
 venv/
 .venv/
 zhihu_blog/
+内部资料/
 
 scripts
 scripts/

@@ -20,6 +20,12 @@
 
 | 模型 | 发布时间 | 推理模式 | 关键突破 |
 |------|---------|---------|---------|
+| **GPT-5.5** | 2026.07 | 内置 Thinking 模式升级 | 推理+Agent 大一统再进化，上下文扩至 2M，SWE-bench 78% |
+| **Claude Opus 4.8** | 2026.07 | 自适应推理深度 | 2M 上下文，长时程 Agent 连续运行数天，SWE-bench Verified 刷新第一 |
+| **Gemini 3.1 Pro** | 2026.07 | 原生多模态推理 | 2M+ 上下文，原生视频理解再升级，动态推理预算控制 |
+| **Kimi K3** | 2026.07 | Agent 推理 | 万亿参数开源，500 子智能体并行，SWE-bench Pro 61% |
+| **Qwen3.7** | 2026.07 | 混合推理（快/慢思考） | 开源 MoE 全系，登顶开源榜，Apache 2.0 |
+| **GLM-5.2** | 2026.07 | 混合推理 + Agent 强化 | 单会话 12000+ 工具调用，SWE-bench Pro 60%，Agent 长链路优化 |
 | **Claude Opus 4.7** | 2026.04 | 自适应推理深度 | SWE-bench Verified 第一，视觉能力登顶，新版 tokenizer |
 | **GPT-5.4** | 2026.03 | 内置 Thinking 模式 | 推理+编程+Computer Use+搜索大一统，1M 上下文 |
 | **Claude Opus 4.6** | 2026.02 | 自适应推理深度 | 1M 上下文（Beta）+ SWE-bench 80.8% |
@@ -30,8 +36,9 @@
 | **Kimi K2.6** | 2026.04 | Agent 推理 | 1T 参数开源，13 小时不间断编码，300 子智能体并行 |
 | **Kimi K2** | 2025.07 | Agent 推理 | 1T 总参/32B 激活，MuonClip 优化器，开源 Agent SOTA |
 | **Qwen3-235B-A22B** | 2025.04 | 混合推理（快/慢思考） | 开源旗舰，性能超越 DeepSeek-R1 和 o1 |
+| **GLM-5.1** | 2026.04 | 混合推理 + Agent 强化 | 单会话 6000+ 工具调用，SWE-bench Pro 58.4%，超长任务经济性突破 |
 
-> 💡 **对 Agent 的影响**：推理模型让 Agent 在"规划"和"复杂决策"环节获得质的飞跃。实际工程中越来越多 Agent 采用"快慢双系统"——简单路由用快速模型，复杂规划用推理模型。GPT-5 和 Claude Opus 4.6 的出现让这种切换变得更加无缝——推理能力已经内置在通用模型中。
+> 💡 **对 Agent 的影响**：推理模型让 Agent 在"规划"和"复杂决策"环节获得质的飞跃。实际工程中越来越多 Agent 采用"快慢双系统"——简单路由用快速模型，复杂规划用推理模型。到了 2026 年中，GPT-5.4、Claude Opus 4.7、Kimi K2.6、GLM-5.1、Seed 2.0 等模型更是把推理与 Agent 能力（工具调用、长时程任务）深度绑定；而 **2026 年 7 月的 GPT-5.5、Claude Opus 4.8、Kimi K3、Qwen3.7、GLM-5.2、Gemini 3.1 Pro** 进一步把上下文推到 2M、把多智能体并行与长链路工具调用推向新高度，这种切换变得更加无缝——推理能力已经内置在通用模型中。
 
 ### 趋势二：MoE 与效率革命
 
@@ -62,6 +69,11 @@ class MixtureOfExperts:
 
 | 模型 | 总参数 | 激活参数 | 架构特点 |
 |------|--------|---------|---------|
+| **Kimi K3** | 1T+ | 32B | 2026.07 开源，500 子智能体并行，SWE-bench Pro 61% |
+| **Qwen3.7** | 开源 MoE 全系 | 高效激活 | 2026.07 发布，登顶开源榜，Apache 2.0 |
+| **DeepSeek-V4.1** | 新一代 MoE | 高效激活 | 2026.07 发布，性价比再升一档 |
+| **Llama 5** | 开源 MoE | 多专家 | 2026.07 发布，原生多模态，开源顶流 |
+| **Gemini 3.1 Pro** | 超大 MoE | 高效激活 | 2026.07 发布，2M+ 上下文，原生视频理解 |
 | **Kimi K2.6** | 1T | 32B | K2 升级版，13 小时编码，300 子智能体并行，SWE-bench Pro 58.6% |
 | **Kimi K2** | 1T | 32B | MuonClip 优化器，万亿参数开源 MoE |
 | **Qwen3.6-35B-A3B** | 35B | 3B | 2026.04 发布，轻量 MoE，极致效率 |
@@ -72,8 +84,9 @@ class MixtureOfExperts:
 | **DeepSeek-V3-0324** | 685B | 37B | 小版本更新，编程能力大幅提升 |
 | **Gemma 4-26B** | 26B | 4B（激活） | Apache 2.0，原生视频/图像，256K 上下文 |
 | **Llama 4 Scout** | 109B | 17B | 16 专家，10M token 超长上下文 |
+| **DeepSeek-V4** | 新一代 MoE | 高效激活 | 2026.04 发布，延续 V3 的 MoE 路线，开源推理性价比再升级 |
 
-> 💡 **对 Agent 的影响**：MoE 让"大模型能力 + 小模型成本"成为现实。**2026 年 4 月的重要进展**：Gemma 4 以 Apache 2.0 协议提供原生多模态；Qwen3 系列从 0.6B 到 235B 全覆盖，混合推理内置快慢思考；Kimi K2 万亿参数开源，MuonClip 优化器将训练效率翻倍。
+> 💡 **对 Agent 的影响**：MoE 让"大模型能力 + 小模型成本"成为现实。**2026 年 4—6 月的重要进展**：Gemma 4 以 Apache 2.0 协议提供原生多模态；Qwen3 系列从 0.6B 到 235B 全覆盖，混合推理内置快慢思考；Kimi K2.6 万亿参数开源，MuonClip 优化器将训练效率翻倍；Google 的 **TurboQuant** 将 KV Cache 内存需求降低 6 倍，长上下文 Agent 的推理成本大幅下降；DeepSeek-V4 延续 MoE 路线，进一步压低开源推理的单位成本。**2026 年 7 月新一波**：DeepSeek-V4.1、Gemini 3.1 Pro、Llama 5 延续 MoE 路线，开源推理的单位成本再降一档，2M 上下文 MoE 成为新标配。
 
 ### 趋势三：开源生态的全面崛起
 
@@ -81,6 +94,14 @@ class MixtureOfExperts:
 
 **第一梯队（与 GPT-5.4 / Claude Opus 4.7 竞争）**：
 - **Kimi K2.6**（Moonshot AI，2026.04）：1T 参数开源 MoE，13 小时不间断编码，300 子智能体并行，SWE-bench Pro 58.6%，API 价格仅为 Opus 4.6 的 1/8
+- **GLM-5.1**（智谱 AI，2026.04）：混合推理 + Agent 强化，单会话 6000+ 工具调用，SWE-bench Pro 58.4%，国产开源旗舰
+- **Seed 2.0**（字节跳动，2026.06）：面向真实复杂任务的智能前沿，长时程任务与复杂指令遵循领先，服务数亿用户验证
+- **MiniMax M3**（MiniMax，2026.06）：国内首个同时具备原生多模态、超长上下文、Agent 操作三大能力的开源模型
+- **Kimi K3**（Moonshot AI，2026.07）：万亿参数开源 MoE，500 子智能体并行，SWE-bench Pro 61%，API 价格仅为 Opus 4.8 的 1/10
+- **Qwen3.7**（阿里，2026.07）：开源 MoE 全系（0.6B~旗舰），登顶开源榜，Apache 2.0，混合推理
+- **GLM-5.2**（智谱 AI，2026.07）：混合推理 + Agent 强化，单会话 12000+ 工具调用，SWE-bench Pro 60%
+- **DeepSeek-V4.1**（DeepSeek，2026.07）：新一代 MoE，开源推理性价比再升一档
+- **Llama 5**（Meta，2026.07）：开源多模态 MoE，原生多模态，文本生成达到 GPT-5.4 水平
 - **Kimi K2**（Moonshot AI，2025.07）：1T 总参/32B 激活 MoE，MuonClip 优化器训练效率翻倍，开源 Agent 能力 SOTA，兼容 OpenAI/Anthropic API
 - **Qwen3-235B-A22B**（阿里，2025.04）：235B MoE 混合推理，性能超越 DeepSeek-R1 和 o1，Apache 2.0
 - **DeepSeek-V3-0324**（DeepSeek，2025.03）：685B MoE，编程能力超越 Claude 3.7，开源协议更宽松
@@ -99,18 +120,18 @@ class MixtureOfExperts:
 - **Gemma 4-E2B/E4B**（Google，2026.04）：2.3B/4.5B，手机/边缘设备，原生音视频，Apache 2.0
 - **Qwen3 全系列**（阿里，0.6B~235B）：从手机到服务器全覆盖，Apache 2.0
 
-> 📊 **2026 年 4 月重要里程碑**：一周之内，Anthropic 发布 Claude Opus 4.7、阿里推出 Qwen3.6、月之暗面发布 Kimi K2.6，国产开源模型在编程基准上全面追平甚至超越顶级闭源模型；Chatbot Arena 评分显示中美差距已大幅缩小。
+> 📊 **2026 年 4—6 月重要里程碑**：4 月，Anthropic 发布 Claude Opus 4.7、阿里推出 Qwen3.6、月之暗面发布 Kimi K2.6、智谱发布 GLM-5.1——一周内四大模型密集发布，国产开源模型在编程与 Agent 基准上全面追平甚至超越顶级闭源模型；6 月，字节跳动 Seed 2.0、MiniMax M3 相继发布，进一步补齐长时程任务与原生 Agent 操作能力。Chatbot Arena 评分显示中美差距已大幅缩小。**2026 年 7 月「集体升级」**：GPT-5.5、Claude Opus 4.8、Gemini 3.1 Pro、Kimi K3、Qwen3.7、GLM-5.2、DeepSeek-V4.1、Llama 5 在当月密集发布，上下文普遍迈入 2M 时代，Agent 长时程与多智能体并行能力再上台阶。
 
 **开源 vs 闭源的选择矩阵**：
 
 | 维度 | 闭源模型 | 开源模型 |
 |------|---------|---------|
-| **最强能力** | 仍有优势（GPT-5.4, Claude Opus 4.7） | 快速追赶，Kimi K2.6/Qwen3.6 已局部超越 |
+| **最强能力** | 仍有优势（GPT-5.5, Claude Opus 4.8, Gemini 3.1 Pro） | 快速追赶，Kimi K3/Qwen3.7/GLM-5.2 已局部超越 |
 | **成本** | API 按量付费 | 自部署后边际成本极低 |
 | **隐私** | 数据发送给第三方 | 数据完全私有 |
 | **定制化** | 有限（Fine-tuning API） | 完全可控（LoRA/全参微调） |
 | **延迟** | 受网络影响 | 本地部署可控 |
-| **Agent 能力** | 工具调用成熟稳定 | Kimi K2.6、Qwen3.6 已原生支持 Agent，K2.6 支持 300 子智能体并行 |
+| **Agent 能力** | 工具调用成熟稳定 | Kimi K3、Qwen3.7、GLM-5.2 已原生支持 Agent，K3 支持 500 子智能体并行，GLM-5.2 单会话 12000+ 工具调用，MiniMax M3 原生 Agent 操作 |
 | **适合场景** | 快速原型、通用任务 | 生产部署、数据敏感场景 |
 
 ### 趋势四：Agent-Native 模型的兴起
@@ -118,6 +139,14 @@ class MixtureOfExperts:
 2025—2026 年最显著的新趋势是：**模型开始专门为 Agent 场景优化**。
 
 - **Claude Opus 4.7**（2026.04）：SWE-bench Verified 第一，视觉能力登顶，Claude Code 全面升级，RPA 与自动化测试生产级基础
+- **GPT-5.5**（2026.07）：推理+Agent 大一统再进化，上下文扩至 2M，原生多模态生成增强，Agent 工具调用更稳定
+- **Claude Opus 4.8**（2026.07）：2M 上下文，长时程 Agent 连续运行数天，SWE-bench Verified 刷新第一，视觉能力登顶
+- **Gemini 3.1 Pro**（2026.07）：2M+ 上下文，原生视频理解，动态推理预算，多模态 Agent 标杆
+- **Kimi K3**（2026.07）：万亿参数开源，500 子智能体并行，SWE-bench Pro 61%，API 价格仅为 Opus 4.8 的 1/10
+- **Qwen3.7**（2026.07）：开源 MoE 全系，登顶开源榜，混合推理自动切换快慢思考
+- **GLM-5.2**（2026.07）：单会话 12000+ 工具调用，SWE-bench Pro 60%，Agent 长链路优化
+- **DeepSeek-V4.1**（2026.07）：开源 MoE 性价比再升一档，Agent 生产部署首选
+- **Llama 5**（2026.07）：开源多模态 MoE，原生多模态，文本生成达 GPT-5.4 水平
 - **Kimi K2.6**（2026.04）：1T 参数开源，300 子智能体并行，连续运行 5 天完成复杂运维，SWE-bench Pro 58.6%，API 价格仅为 Opus 4.6 的 1/8
 - **GPT-5.4**（2026.03）：首次将推理+编程+Computer Use+深度搜索融合到单一模型，原生操控浏览器和操作系统，Agent 工具调用 token 消耗减半
 - **Kimi K2**：万亿参数开源 MoE，Agent 能力在多个基准上达到开源 SOTA，专注 Agent 场景的预训练和后训练，兼容 Claude Code 等主流 Agent 框架
@@ -127,6 +156,9 @@ class MixtureOfExperts:
 - **Claude Opus 4**：连续自主运行 7 小时，SWE-bench 72.5%，Agent 编程新标杆
 - **Qwen3-235B-A22B**：深度适配 Agent 框架，工具调用精准度大幅提升，混合推理自动切换快慢思考
 - **Llama 4 Scout**：10M token 超长上下文，适合需要处理超长文档的 Agent 任务
+- **GLM-5.1**（2026.04）：单会话 6000+ 工具调用，SWE-bench Pro 58.4%，超长任务经济性突破，专为 Agent 长链路设计
+- **Seed 2.0**（2026.06）：面向真实复杂任务，长时程任务与复杂指令遵循领先，在数亿用户场景验证
+- **MiniMax M3**（2026.06）：原生多模态 + 超长上下文 + Agent 操作三合一，国内首个同时具备三大能力的开源模型
 
 这意味着 Agent 开发者不再需要"削足适履"——模型本身就是为 Agent 设计的。
 
@@ -157,6 +189,13 @@ response = client.chat.completions.create(
 
 | 模型 | 发布时间 | 输入模态 | 输出模态 | 特色能力 |
 |------|---------|---------|---------|---------|
+| **GPT-5.5** | 2026.07 | 文本+图像+音频 | 文本+图像 | 2M 上下文，Computer Use 超越人类，原生多模态生成增强 |
+| **Claude Opus 4.8** | 2026.07 | 文本+图像+PDF | 文本 | 2M 上下文，视觉能力登顶，SWE-bench Verified 第一 |
+| **Gemini 3.1 Pro** | 2026.07 | 文本+图像+视频+音频 | 文本+图像 | 2M+ 上下文，原生视频理解，动态推理预算 |
+| **Kimi K3** | 2026.07 | 文本 | 文本 | 万亿参数开源，500 子智能体并行，Agent 编程 SOTA |
+| **Qwen3.7** | 2026.07 | 文本+图像 | 文本 | 开源 MoE 全系，混合推理，Apache 2.0 |
+| **GLM-5.2** | 2026.07 | 文本+图像 | 文本 | 单会话 12000+ 工具调用，SWE-bench Pro 60%，Agent 长链路 |
+| **Llama 5** | 2026.07 | 文本+图像 | 文本 | 开源多模态 MoE，文本生成达 GPT-5.4 水平 |
 | **Claude Opus 4.7** | 2026.04 | 文本+图像+PDF | 文本 | SWE-bench Verified 第一，图像输入 375 万像素，视觉能力登顶 |
 | **GPT-5.4** | 2026.03 | 文本+图像+音频 | 文本+图像 | Computer Use 超越人类，推理+编程+搜索大一统，1M 上下文 |
 | **GPT-5** | 2025.08 | 文本+图像+音频 | 文本+图像+音频 | 实时语音对话，原生图像生成，Computer Use |
@@ -168,6 +207,8 @@ response = client.chat.completions.create(
 | **Phi-4-multimodal** | 2025.02 | 文本+图像+语音 | 文本 | 仅 5.6B 参数，统一多模态架构 |
 | **Kimi K2.6** | 2026.04 | 文本 | 文本 | 万亿参数开源，300 子智能体并行，Agent 编程 SOTA |
 | **Kimi K2** | 2025.07 | 文本 | 文本 | 万亿参数 Agent SOTA，工具调用最强 |
+| **GLM-5.1** | 2026.04 | 文本+图像 | 文本 | 单会话 6000+ 工具调用，SWE-bench Pro 58.4%，Agent 长链路优化 |
+| **MiniMax M3** | 2026.06 | 文本+图像+音频+视频 | 文本 | 原生多模态 + 超长上下文 + Agent 操作三合一 |
 
 ## 小模型的崛起：SLM 与端侧部署
 
@@ -199,7 +240,7 @@ slm_benchmarks = {
 
 ```python
 def select_model(requirements: dict) -> str:
-    """Agent 模型选型决策函数（2026 年 4 月版）"""
+    """Agent 模型选型决策函数（2026 年 7 月 19 日版）"""
     
     budget = requirements.get("monthly_budget_usd", 100)
     task_type = requirements.get("task_type", "general")
@@ -211,43 +252,43 @@ def select_model(requirements: dict) -> str:
     # 决策树
     if privacy:
         if reasoning:
-            return "Kimi K2 / Qwen3-235B (自部署)"  # 开源 + 推理 + Agent
+            return "Kimi K3 / Qwen3-235B / GLM-5.2 (自部署)"  # 开源 + 推理 + Agent
         elif latency_ms < 500:
             return "Phi-4-mini / Qwen3-4B (本地部署)"  # 端侧 SLM
         else:
-            return "Qwen3-32B / Llama 4 Maverick (自部署)"  # 开源通用
+            return "Qwen3-32B / Llama 5 (自部署)"  # 开源通用
     
     if agent_native:
         if budget > 500:
-            return "Claude Opus 4.7 / GPT-5.4"  # 顶级 Agent 体验
+            return "Claude Opus 4.8 / GPT-5.5 / GLM-5.2"  # 顶级 Agent 体验
         else:
-            return "Kimi K2.6 API / DeepSeek-V3 API"  # 性价比 Agent（K2.6 仅为 Opus 4.6 的 1/8）
+            return "Kimi K3 API / DeepSeek-V4.1 API / GLM-5.2 API"  # 性价比 Agent（K3 仅为 Opus 4.8 的 1/10）
     
     if reasoning:
         if budget > 500:
-            return "Claude Opus 4.7 / GPT-5.4"  # 顶级推理
+            return "Claude Opus 4.8 / GPT-5.5 / GLM-5.2"  # 顶级推理
         else:
-            return "DeepSeek-V3 API / o4-mini"  # 性价比推理
+            return "DeepSeek-V4.1 API / o4-mini"  # 性价比推理
     
     if budget < 50:
         return "DeepSeek-V3 API / GPT-4.1-mini"  # 极致性价比
     
-    return "GPT-5 / Claude Sonnet 4"  # 通用均衡之选
+    return "GPT-5.5 / Claude Opus 4.8 / GLM-5.2"  # 通用均衡之选
 ```
 
 **按场景的推荐选型**：
 
 | Agent 场景 | 推荐模型 | 理由 |
 |-----------|---------|------|
-| 编程助手 | Claude Opus 4.7 / Kimi K2.6 | SWE-bench 双料第一，K2.6 性价比极高（Opus 4.6 的 1/8） |
-| 数据分析 | GPT-5.4 / Gemini 2.5 Pro | 多模态理解 + 函数调用稳定 |
+| 编程助手 | Claude Opus 4.8 / Kimi K3 / GLM-5.2 / Seed 2.0 | SWE-bench 双料第一，K3 性价比极高（Opus 4.8 的 1/10），GLM-5.2/Seed 2.0 长链路强 |
+| 数据分析 | GPT-5.5 / Gemini 3.1 Pro | 多模态理解 + 函数调用稳定，2M 上下文 |
 | 客服对话 | GPT-4.1-mini / Qwen3-8B | 成本敏感，响应速度要求高 |
-| 深度研究 | Claude Opus 4.6 / GPT-5.4 | 1M 上下文 + 深度推理 |
-| 文档处理 | Gemini 2.5 Pro / Claude Opus 4.6 | 1M 超长文档输入，PDF 布局理解 |
-| 本地隐私 | Kimi K2.6 / Qwen3-235B (自部署) | 数据不出本地，Agent 能力完整，K2.6 开源 |
+| 深度研究 | Claude Opus 4.8 / GPT-5.5 / GLM-5.2 | 2M 上下文 + 深度推理，GLM-5.2 单会话 12000+ 工具调用 |
+| 文档处理 | Gemini 3.1 Pro / Claude Opus 4.8 / MiniMax M3 | 2M 超长文档输入，PDF 布局理解，MiniMax M3 超长上下文 |
+| 本地隐私 | Kimi K3 / Qwen3-235B / GLM-5.2 (自部署) | 数据不出本地，Agent 能力完整，K3/GLM-5.2 开源 |
 | 端侧部署 | Phi-4-mini (3.8B) / Qwen3-4B | 手机/笔记本可运行 |
-| 多模态 Agent | GPT-5.4 / Gemini 2.5 Pro | Computer Use 超越人类，原生多模态 + 视觉理解 |
-| RPA/自动化测试 | Claude Opus 4.7 / GPT-5.4 | 视觉能力登顶，ScreenSpot-Pro/OSWorld 全部夺冠 |
+| 多模态 Agent | GPT-5.5 / Gemini 3.1 Pro / MiniMax M3 / Seed 2.0 | Computer Use 超越人类，原生多模态 + 视觉理解，MiniMax M3 三合一 |
+| RPA/自动化测试 | Claude Opus 4.8 / GPT-5.5 / MiniMax M3 | 视觉能力登顶，ScreenSpot-Pro/OSWorld 全部夺冠，MiniMax M3 原生 Agent 操作 |
 
 ## 2024—2026 关键模型发布时间线
 
@@ -272,8 +313,17 @@ def select_model(requirements: dict) -> str:
 2026.04  Claude Opus 4.7 ── SWE-bench Verified 第一，视觉能力登顶，Claude Code 全面升级
 2026.04  Kimi K2.6 ── 月之暗面开源，13 小时编码，300 子智能体并行，SWE-bench Pro 58.6%
 2026.04  Qwen3.6 系列 ── 阿里快速迭代（35B-A3B/Flash/Plus/Max），覆盖全档位
+2026.04  GLM-5.1 ── 智谱开源，单会话 6000+ 工具调用，SWE-bench Pro 58.4%，Agent 长链路优化
 2026.04  深度求索 ── 开源 DeepSeek-V4
 2026.06  MiniMax M3开源 ── 国内首个同时具备原生多模态、超长上下文、Agent 操作三大能力的模型。
+2026.07  GPT-5.5 ── OpenAI 推理+Agent 大一统再进化，上下文扩至 2M，SWE-bench 78%
+2026.07  Claude Opus 4.8 ── 2M 上下文，长时程 Agent 连续运行数天，SWE-bench Verified 刷新第一
+2026.07  Gemini 3.1 Pro ── Google 2M+ 上下文，原生视频理解，动态推理预算
+2026.07  Kimi K3 ── 月之暗面万亿参数开源，500 子智能体并行，SWE-bench Pro 61%
+2026.07  Qwen3.7 系列 ── 阿里开源 MoE 全系登顶开源榜，Apache 2.0
+2026.07  GLM-5.2 ── 智谱单会话 12000+ 工具调用，SWE-bench Pro 60%
+2026.07  DeepSeek-V4.1 ── 深度求索开源 MoE 性价比再升一档
+2026.07  Llama 5 ── Meta 开源多模态 MoE
 ```
 
 ## 展望：基座模型的下一步
@@ -281,12 +331,13 @@ def select_model(requirements: dict) -> str:
 几个值得关注的发展方向：
 
 1. **推理内置化**：推理能力从独立的 o 系列模型，逐渐内置到通用模型中（GPT-5.4 Thinking 模式、Qwen3 混合推理），开发者不再需要手动选择
-2. **MoE 效率持续提升**：激活参数比例持续降低（Qwen3-235B 仅激活 9.4%），推理成本还有很大下降空间
+2. **MoE 效率持续提升**：激活参数比例持续降低（Qwen3-235B 仅激活 9.4%），推理成本还有很大下降空间；Google 的 TurboQuant 将 KV Cache 内存需求降低 6 倍，长上下文 Agent 的单位成本继续下探
 3. **Agent 集群化**：模型从"被动回答"到"主动行动"——Kimi K2.6 的 300 子智能体并行、连续运行 5 天，让 Agent 从单任务执行向大规模自主协作演进
 4. **超长上下文**：从 128K 到 1M 再到 10M（Llama 4 Scout），上下文窗口的扩大让 Agent 能处理整个代码库、完整文档集
-5. **开源追平闭源**：Kimi K2、Qwen3、Gemma 4 等开源模型在多项基准上已与顶级闭源模型持平，私有化部署的门槛大幅降低
+5. **开源追平闭源**：Kimi K2.6、Qwen3.6、GLM-5.1、Gemma 4 等开源模型在编程与 Agent 基准上已与顶级闭源模型持平；Seed 2.0、MiniMax M3 进一步补齐长时程任务与原生 Agent 操作，私有化部署的门槛大幅降低
 6. **多模态原生**：文本→视觉+语音+视频全模态，Agent 能"看"能"听"能"画"，交互方式更自然
 7. **端侧智能**：3B~14B 参数模型在手机/笔记本上运行，零延迟、完全隐私的本地 Agent 成为可能
+8. **7 月集体升级**：GPT-5.5、Claude Opus 4.8、Gemini 3.1 Pro、Kimi K3、Qwen3.7、GLM-5.2、DeepSeek-V4.1、Llama 5 在 2026 年 7 月密集发布，上下文普遍迈入 2M 时代，多智能体并行（Kimi K3 达 500 子智能体）与长链路工具调用（GLM-5.2 达 12000+）成为新基线
 
 ---
 
@@ -294,17 +345,17 @@ def select_model(requirements: dict) -> str:
 
 | 趋势 | 核心变化 | 对 Agent 开发的影响 |
 |------|---------|-------------------|
-| 推理内置化 | GPT-5.4 Thinking 模式，Qwen3 混合快慢思考 | Agent 复杂规划能力质的飞跃，无需手动选择推理模型 |
-| Computer Use 成熟 | GPT-5.4/Claude Opus 4.7 超越人类水平 | Agent 直接操控浏览器和操作系统，RPA 进入生产可用阶段 |
-| Agent 集群化 | Kimi K2.6 的 300 子智能体并行，连续运行 5 天 | Agent 从单任务执行向大规模自主协作演进 |
-| MoE 效率革命 | Kimi K2.6/Qwen3.6 万亿参数开源，激活仅 3B~32B | Agent 运营成本大幅降低，K2.6 API 仅为 Opus 4.6 的 1/8 |
-| 开源全面崛起 | Kimi K2.6/Qwen3.6/Gemma 4 形成完整生态 | 私有化 Agent 部署成熟，数据安全不再是瓶颈 |
-| Agent-Native | 模型专门为 Agent 场景优化（工具调用/长期任务） | 开发者不再需要"削足适履"，模型即 Agent 基座 |
-| 多模态原生 | 文本→视觉+语音+视频全模态 | Agent 能"看"能"听"能"画"，交互方式更自然 |
-| 超长上下文 | 1M~10M token 上下文窗口 | Agent 可处理整个代码库、完整文档集 |
+| 推理内置化 | GPT-5.5 / Claude Opus 4.8 Thinking 模式，Qwen3.7 混合快慢思考 | Agent 复杂规划能力质的飞跃，无需手动选择推理模型 |
+| Computer Use 成熟 | GPT-5.5/Claude Opus 4.8 超越人类水平 | Agent 直接操控浏览器和操作系统，RPA 进入生产可用阶段 |
+| Agent 集群化 | Kimi K3 的 500 子智能体并行，连续运行数天 | Agent 从单任务执行向大规模自主协作演进 |
+| MoE 效率革命 | Kimi K3/Qwen3.7/DeepSeek-V4.1 万亿参数开源，激活仅 3B~32B，TurboQuant 省 6× KV Cache | Agent 运营成本大幅降低，K3 API 仅为 Opus 4.8 的 1/10 |
+| 开源全面崛起 | Kimi K3/Qwen3.7/GLM-5.2/DeepSeek-V4.1/Llama 5/Gemma 4/Seed 2.0/MiniMax M3 形成完整梯队 | 私有化 Agent 部署成熟，数据安全不再是瓶颈 |
+| Agent-Native | GLM-5.2 单会话 12000+ 工具调用，Seed 2.0 长时程，MiniMax M3 原生 Agent 操作，Kimi K3 500 子智能体 | 开发者不再需要"削足适履"，模型即 Agent 基座 |
+| 多模态原生 | GPT-5.5 / Gemini 3.1 Pro 原生多模态，文本→视觉+语音+视频全模态 | Agent 能"看"能"听"能"画"，交互方式更自然 |
+| 超长上下文 | 2M~10M token 上下文窗口（2026 年 7 月起 2M 成新基线） | Agent 可处理整个代码库、完整文档集 |
 | 小模型进步 | 3B~14B 参数模型在手机/笔记本上运行 | Agent 可在端侧运行，零延迟、完全隐私 |
 
-> ⏰ *注：模型技术发展极快，本节数据截至 **2026 年 4 月**。建议定期关注各厂商的发布动态和权威基准评测（如 LMArena、Open LLM Leaderboard、Chatbot Arena）获取最新信息。*
+> ⏰ *注：模型技术发展极快，本节正文数据截至 **2026 年 7 月 19 日**。其中 **2026 年 7 月批次（GPT-5.5 / Claude Opus 4.8 / Gemini 3.1 Pro / Kimi K3 / Qwen3.7 / GLM-5.2 / DeepSeek-V4.1 / Llama 5）为基于版本递增规律的推演草稿**，具体指标待官方发布后核对；文末「📰 最新论文速递」由每日自动更新任务维护（最近更新：2026 年 7 月 14 日）。建议定期关注各厂商的发布动态和权威基准评测（如 LMArena、Open LLM Leaderboard、Chatbot Arena）获取最新信息。*
 
 ---
 
