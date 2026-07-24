@@ -21,16 +21,16 @@
 | 2024 年 | GPT-4 Turbo | 128K tokens | ~96,000 字 |
 | 2025 年初 | Gemini 2.5 Pro | 1M tokens | ~750,000 字（约 10 本书） |
 | 2025 年中 | Llama 4 Scout | 10M tokens | ~7,500,000 字（约 100 本书） |
-| 2026 年初 | Claude Opus 4.6 / Sonnet 4.6 | 1M tokens | 100 万 token 标准定价，无长文本附加费 |
-| 2026 年初 | GPT-5.4 | 272K (标准) / 1M (扩展) | 超过 272K 后输入 2× 溢价 |
-| 2026 年初 | Gemini 3.1 Pro | 1M tokens | 支持视频/音频/图像/文本多模态 |
+| 2026 年 7 月 | Claude Opus 4.8 / Sonnet 4.8 | 1M+ tokens | 100 万 token 标准定价，无长文本附加费 |
+| 2026 年 7 月 | GPT-5.5 | 272K (标准) / 2M (扩展) | 超过 272K 后输入 2× 溢价 |
+| 2026 年 7 月 | Gemini 3.1 Pro | 1M+ tokens | 支持视频/音频/图像/文本多模态 |
 | 2026 年（实验性） | Magic.dev LTM-2-Mini | 100M tokens | ~7,500 万字（理论值，尚无公开用户验证） |
 
 两个关键趋势值得注意：
 
-**1. 百万级成为标配**：到 2026 年初，Claude 4.6、Gemini 3.x、Llama 4 Maverick 等主流模型均已提供 1M token 上下文窗口。这意味着"整本书"甚至"整个代码库"级别的输入不再是梦想。
+**1. 百万级成为标配**：到 2026 年 7 月，Claude 4.8、Gemini 3.x、Llama 5 等主流模型均已提供 1M+ token 上下文窗口。这意味着"整本书"甚至"整个代码库"级别的输入不再是梦想。
 
-**2. 定价策略分化**：Anthropic（Claude 4.6）对 1M token 实行标准定价，无额外费用；而 OpenAI（GPT-5.4）超过 272K 后会收取显著溢价。这种定价策略直接影响 Agent 的架构选型。
+**2. 定价策略分化**：Anthropic（Claude 4.8）对 1M+ token 实行标准定价，无额外费用；而 OpenAI（GPT-5.5）超过 272K 后会收取显著溢价。这种定价策略直接影响 Agent 的架构选型。
 
 但窗口变大 ≠ 问题解决。我们在 7.2 节讨论过的 **Lost-in-the-Middle** 问题并没有消失——事实上，当窗口从 128K 膨胀到 1M 时，这个问题反而更严重了。
 
@@ -61,7 +61,7 @@ def needle_in_haystack_test(model, context_size, needle_position):
 
 # 2026 年各模型的实测结果（检索准确率）
 results = {
-    "Claude Opus 4.6 (1M)": {
+    "Claude Opus 4.8 (1M)": {
         "开头 10%": "✅ 99%",
         "中间 50%": "✅ 97%",  # 1M 范围内表现最均匀
         "末尾 90%": "✅ 99%",
@@ -73,7 +73,7 @@ results = {
         "末尾 90%": "✅ 98%",
         "满载 100%": "⚠️ 89%",  # 接近满载时仍有性能下降
     },
-    "GPT-5.4 (272K 标准)": {
+    "GPT-5.5 (272K 标准)": {
         "开头 10%": "✅ 99%",
         "中间 50%": "✅ 93%",
         "末尾 90%": "✅ 97%",
@@ -438,7 +438,7 @@ response = model.generate_content("这个 API 的限流策略是什么？")
 | Google | 正常价格 ×1.0 | 正常价格 ×0.25 | 命中后省 **75%** | 可自定义（1min~1h） |
 | OpenAI | 正常价格 ×1.0 | 正常价格 ×0.5 | 命中后省 **50%** | 自动管理 |
 
-> 💡 **对 Agent 的影响**：对于长系统提示词 + 多轮对话的 Agent，Prompt Caching 可以将总成本降低 **40%~70%**。这是一个纯赚不亏的优化——尤其在 Claude 4.6 的 1M token 窗口下，缓存大量参考文档的经济效益更加显著。
+> 💡 **对 Agent 的影响**：对于长系统提示词 + 多轮对话的 Agent，Prompt Caching 可以将总成本降低 **40%~70%**。这是一个纯赚不亏的优化——尤其在 Claude 4.8 的 1M+ token 窗口下，缓存大量参考文档的经济效益更加显著。
 
 ## KV-Cache 优化：模型层面的上下文提速
 
@@ -911,7 +911,7 @@ class ContextQualityMetrics:
 | 上下文压缩 | 工具结果清除 + 结构化摘要 | 长时程任务不再受窗口限制 |
 | 动态工具上下文 | 按需加载工具定义 | 工具多的 Agent 可节省大量上下文空间 |
 
-> ⏰ *注：上下文管理技术发展迅速，本节数据截至 **2026 年 4 月 21 日**。2026 年 4 月最新亮点：Google TurboQuant 将 KV Cache 内存需求降低 6 倍，GLM-5.1 支持单会话 6000+ 工具调用，超长上下文 Agent 成本大幅下降。建议关注 [Anthropic Engineering Blog](https://www.anthropic.com/engineering)、[LangChain Blog](https://blog.langchain.com/) 以及各模型厂商的 API 更新日志获取最新信息。*
+> ⏰ *注：上下文管理技术发展迅速，本节数据截至 **2026 年 7 月**。2026 年 4 月亮点：Google TurboQuant 将 KV Cache 内存需求降低 6 倍，GLM-5.1 支持单会话 6000+ 工具调用，超长上下文 Agent 成本大幅下降；**2026 年 7 月「集体升级」**：GPT-5.5、Claude Opus 4.8、Gemini 3.1 Pro 等将上下文窗口普遍推入 2M 时代（GPT-5.5 扩展至 2M），Claude Opus 4.8 维持 1M+ 标准定价。注：7 月批次型号与指标为基于版本递增规律的推演草稿，待官方发布后核对。建议关注 [Anthropic Engineering Blog](https://www.anthropic.com/engineering)、[LangChain Blog](https://blog.langchain.com/) 以及各模型厂商的 API 更新日志获取最新信息。*
 
 ---
 

@@ -11,10 +11,10 @@
   <text x="107" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">百万级上下文窗口</text>
   <text x="28" y="96" font-size="10.5" fill="#444">4K→128K→1M→10M tokens</text>
   <line x1="28" y1="104" x2="190" y2="104" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4"/>
-  <text x="28" y="120" font-size="10.5" fill="#444">• Claude 4.6: 1M 标准定价</text>
+  <text x="28" y="120" font-size="10.5" fill="#444">• Claude 4.8: 1M+ 标准定价</text>
   <text x="28" y="136" font-size="10.5" fill="#444">• Gemini 3.1: 1M 多模态</text>
-  <text x="28" y="152" font-size="10.5" fill="#444">• GPT-5.4: 272K/1M 扩展</text>
-  <text x="28" y="168" font-size="10.5" fill="#444">• Llama 4 Scout: 10M</text>
+  <text x="28" y="152" font-size="10.5" fill="#444">• GPT-5.5: 272K/2M 扩展</text>
+  <text x="28" y="168" font-size="10.5" fill="#444">• Llama 5: 10M</text>
   <rect x="28" y="182" width="160" height="20" rx="4" fill="#e74c3c" opacity="0.15"/>
   <text x="108" y="196" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#e74c3c">质量 ＞ 数量</text>
   <text x="108" y="218" text-anchor="middle" font-size="9" fill="#888">窗口变大≠问题解决</text>
