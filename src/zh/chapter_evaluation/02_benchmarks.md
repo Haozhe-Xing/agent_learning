@@ -23,7 +23,7 @@ Agent 评估基准可按能力维度分为以下几类 [1]：
 | **工具调用** | BFCL, ToolBench, API-Bank | 正确调用 API、处理参数、组合工具 |
 | **通用推理** | GAIA, MMLU, GSM8K | 多步推理、知识广度、数学能力 |
 | **综合 Agent** | AgentBench | 8 个领域的端到端任务完成 |
-| **Web 操作** | WebArena, Mind2Web | 在真实网站上完成指定任务 |
+| **Web 操作** | WebArena, Mind2Web, ClawBench | 在受控和真实在线 Web 环境中完成任务 |
 | **软件工程** | SWE-bench, HumanEval | 代码生成、Bug 修复、项目级改动 |
 | **多模态** | VisualWebArena, OSWorld | 视觉理解 + 操作执行 |
 
@@ -430,6 +430,12 @@ class WebArenaEvaluator:
         return True  # 所有条件满足
 ```
 
+### 补充：真实在线网站评估 ClawBench
+
+[**ClawBench**](https://claw-bench.com/) [8]（[代码仓库](https://github.com/TIGER-AI-Lab/ClawBench)）在真实第三方网站的日常任务上评估浏览器 Agent。V1 包含覆盖 144 个网站的 153 项任务，V2 又增加了 130 项任务。每次运行都在隔离容器中进行，并同步记录五层证据：会话视频、动作截图、HTTP 流量、浏览器动作和 Agent 消息。请求拦截器会阻止匹配到的不可逆最终请求，使运行过程可以在不真正执行现实副作用的情况下接受检查和评判。
+
+> **WebArena 还是 ClawBench？** WebArena 的自托管应用便于重置和进行可复现的状态评估；ClawBench 则让 Agent 面对真实网站的漂移及网络或界面变化，以部分可复现性换取部署真实性和更广的网站覆盖。两者结合有助于区分受控环境能力与真实在线 Web 鲁棒性。
+
 ---
 
 ## 5. SWE-bench —— 软件工程评估
@@ -789,7 +795,7 @@ class AgentBenchmarkRunner:
 | **通用助手** | GAIA + MMLU | 知识准确率 + 多步推理 |
 | **代码 Agent** | SWE-bench + HumanEval | 测试通过率 + 代码质量 |
 | **工具调用 Agent** | BFCL + ToolBench | AST 匹配准确率 + 参数正确性 |
-| **Web Agent** | WebArena | 任务完成率 + 操作效率 |
+| **Web Agent** | WebArena + ClawBench | 任务完成率 + 操作效率 + 真实网站鲁棒性 |
 | **客服 Agent** | 自定义 | LLM-as-Judge + 人工抽检 |
 
 > **🏭 生产实践**
@@ -898,6 +904,8 @@ class RegressionTracker:
 [6] JIMENEZ C E, YANG J, WETTIG A, et al. SWE-bench: Can language models resolve real-world GitHub issues?[C]//ICLR. 2024.
 
 [7] ZHENG L, CHIANG W L, SHENG Y, et al. Judging LLM-as-a-judge with MT-bench and chatbot arena[C]//NeurIPS. 2023.
+
+[8] ZHANG Y, WANG Y, ZHU Y, et al. ClawBench: Can AI agents complete everyday online tasks?[EB/OL]. arXiv:2604.08523, 2026. https://arxiv.org/abs/2604.08523.
 
 ---
 

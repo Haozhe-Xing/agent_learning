@@ -23,7 +23,7 @@ Agent evaluation benchmarks can be categorized by capability dimension as follow
 | **Tool calling** | BFCL, ToolBench, API-Bank | Correctly calling APIs, handling parameters, combining tools |
 | **General reasoning** | GAIA, MMLU, GSM8K | Multi-step reasoning, knowledge breadth, math ability |
 | **Comprehensive Agent** | AgentBench | End-to-end task completion across 8 domains |
-| **Web operations** | WebArena, Mind2Web | Completing specified tasks on real websites |
+| **Web operations** | WebArena, Mind2Web, ClawBench | Completing tasks in controlled and live Web environments |
 | **Software engineering** | SWE-bench, HumanEval | Code generation, bug fixing, project-level changes |
 | **Multimodal** | VisualWebArena, OSWorld | Visual understanding + action execution |
 
@@ -431,6 +431,12 @@ class WebArenaEvaluator:
         return True  # All conditions met
 ```
 
+### Complementary Live-Web Evaluation: ClawBench
+
+[**ClawBench**](https://claw-bench.com/) [8] ([repository](https://github.com/TIGER-AI-Lab/ClawBench)) evaluates browser Agents on everyday tasks across live third-party websites. V1 contains 153 tasks across 144 sites, and V2 adds 130 tasks. Every run takes place in an isolated container and records five synchronized evidence layers: session video, action screenshots, HTTP traffic, browser actions, and Agent messages. A request interceptor blocks matched irreversible final requests, allowing the run to be inspected and judged without completing the real-world side effect.
+
+> **WebArena or ClawBench?** WebArena's self-hosted applications make reset and state-based evaluation reproducible. ClawBench exposes Agents to live-site drift and network or UI variation, trading some reproducibility for deployment realism and broader site coverage. Using both helps separate controlled-environment capability from live-site robustness.
+
 ---
 
 ## 5. SWE-bench — Software Engineering Evaluation
@@ -790,7 +796,7 @@ class AgentBenchmarkRunner:
 | **General assistant** | GAIA + MMLU | Knowledge accuracy + multi-step reasoning |
 | **Code Agent** | SWE-bench + HumanEval | Test pass rate + code quality |
 | **Tool-calling Agent** | BFCL + ToolBench | AST match accuracy + parameter correctness |
-| **Web Agent** | WebArena | Task completion rate + operation efficiency |
+| **Web Agent** | WebArena + ClawBench | Task completion rate + operation efficiency + live-site robustness |
 | **Customer service Agent** | Custom | LLM-as-Judge + manual spot checks |
 
 > **🏭 Production Practice**
@@ -899,6 +905,8 @@ class RegressionTracker:
 [6] JIMENEZ C E, YANG J, WETTIG A, et al. SWE-bench: Can language models resolve real-world GitHub issues?[C]//ICLR. 2024.
 
 [7] ZHENG L, CHIANG W L, SHENG Y, et al. Judging LLM-as-a-judge with MT-bench and chatbot arena[C]//NeurIPS. 2023.
+
+[8] ZHANG Y, WANG Y, ZHU Y, et al. ClawBench: Can AI agents complete everyday online tasks?[EB/OL]. arXiv:2604.08523, 2026. https://arxiv.org/abs/2604.08523.
 
 ---
 
