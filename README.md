@@ -6,13 +6,11 @@
 
 # 🤖 Agent Learning: Learn Agent Development from Scratch
 
-**The complete open-source roadmap for learning AI Agents — from LLM basics to production-ready Agent systems.**
+**A practical AI Agent book for Python developers — go from a first working Agent in 30 minutes to evaluated, production-ready Agent systems.**
 
-**Agent Learning** (`agent_learning`) is a systematic, practice-oriented AI Agent learning roadmap and hands-on tutorial covering LLM fundamentals, RAG, memory, tool use, function calling, agentic workflows, LangChain, LangGraph, MCP, multi-agent systems, evaluation, deployment, and agentic RL.
+> Go beyond calling a chatbot: understand and connect tool use, RAG, memory, planning, LangGraph, MCP, evaluation, safety, and deployment by building a complete mental model.
 
-> If you want to learn how to build AI Agents — not just use ChatGPT, but understand how agents retrieve knowledge, remember context, call tools, plan actions, collaborate, and run safely in production — this project is for you.
-
-**Daily auto-tracking of arXiv frontier papers — content stays cutting-edge, always.**
+**23 chapters · 120+ original diagrams · 5 interactive animations · bilingual online book · daily Agent research tracking**
 
 <br>
 
@@ -24,28 +22,23 @@
 
 <br>
 
-[<img src="https://img.shields.io/badge/📖_Read_Online_(中文)-4CAF50?style=for-the-badge" alt="Read Online Chinese">](https://Haozhe-Xing.github.io/agent_learning/zh/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_Read_Online_(English)-2196F3?style=for-the-badge" alt="Read Online English">](https://Haozhe-Xing.github.io/agent_learning/en/)
+[<img src="https://img.shields.io/badge/📖_Build_your_first_Agent-4CAF50?style=for-the-badge" alt="Start with your first Agent">](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/🗺️_Choose_a_learning_path-2196F3?style=for-the-badge" alt="Choose a learning path">](#-choose-your-outcome)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_Read_online_(English)-673AB7?style=for-the-badge" alt="Read online in English">](https://Haozhe-Xing.github.io/agent_learning/en/)
 
-<br>
+</div>
 
-<table>
-<tr>
-<td width="50%" align="center">
-<img src="scripts/agent2.png" width="100%" alt="Agent Learning online book screenshot - frontier research chapter">
-<br>
-<sub>Daily updated Agentic-RL frontier research chapter</sub>
-</td>
-<td width="50%" align="center">
-<img src="scripts/grpo_chapter.png" width="100%" alt="Agent Learning online book screenshot - GRPO chapter">
-<br>
-<sub>Step-by-step GRPO / GSPO learning content</sub>
-</td>
-</tr>
-</table>
+## 🎯 Choose your outcome
 
-<br>
+| Your goal | What you will be able to do | Start here |
+| --- | --- | --- |
+| **Build your first Agent in 30 minutes** | Form a concrete intuition for the perceive-think-act loop and tool use | [Chapter 1: Agent Basics](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/) → [Appendix: Hello Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_setup/04_hello_agent.html) |
+| **Build a useful Agent application** | Combine tool calling, RAG, memory, planning, and context engineering | [Chapter 3: Tool Use](https://Haozhe-Xing.github.io/agent_learning/en/chapter_tools/) → [Chapter 6: RAG](https://Haozhe-Xing.github.io/agent_learning/en/chapter_rag/) |
+| **Ship an Agent to production** | Develop an engineering perspective on evaluation, safety, observability, deployment, and cost | [Chapter 17: Evaluation](https://Haozhe-Xing.github.io/agent_learning/en/chapter_evaluation/) → [Chapter 19: Deployment](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deployment/) |
 
-[🐛 Report Issues](https://github.com/Haozhe-Xing/agent_learning/issues) · [💬 Discussions](https://github.com/Haozhe-Xing/agent_learning/discussions) · [🇨🇳 中文版 README](README_ZH.md)
+> ⭐ If this path saves you research time and avoids common pitfalls, please Star the repository. It helps more developers discover this actively maintained open-source guide.
+
+<div align="center">
+
+[🐛 Report an issue](https://github.com/Haozhe-Xing/agent_learning/issues) · [💡 Suggest an improvement](https://github.com/Haozhe-Xing/agent_learning/issues/new) · [🇨🇳 中文版 README](README_ZH.md)
 
 </div>
 
@@ -370,7 +363,7 @@ export OPENAI_API_KEY="your-key-here"
 All forms of contribution are welcome!
 
 - 🐛 **Found a bug**: [Submit an Issue](https://github.com/Haozhe-Xing/agent_learning/issues)
-- 💡 **Content suggestions**: [Start a Discussion](https://github.com/Haozhe-Xing/agent_learning/discussions)
+- 💡 **Content suggestions**: [Open a suggestion issue](https://github.com/Haozhe-Xing/agent_learning/issues/new)
 - 📝 **Improve content**: Fork → Edit → Submit PR
 - ⭐ **Support the project**: Give this repo a Star!
 

@@ -6,13 +6,11 @@
 
 # 🤖 Agent Learning：从零开始学 Agent
 
-**一份从 LLM 基础到生产级 Agent 系统的完整开源学习路线图。**
+**面向 Python 开发者的 AI Agent 实战书：从 30 分钟跑通第一个 Agent，到构建可评估、可上线的 Agent 系统。**
 
-**Agent Learning**（`agent_learning`）是一个系统、实战导向的 AI Agent 学习路线图与动手教程，覆盖 LLM 基础、RAG、记忆系统、工具调用、Function Calling、Agentic Workflow、LangChain、LangGraph、MCP、多智能体系统、评估、部署和 Agentic RL。
+> 不只学会调用聊天模型：你将亲手理解并串联工具调用、RAG、记忆、规划、LangGraph、MCP、评估、安全与部署。
 
-> 如果你想系统学习如何构建 AI Agent，而不只是会用 ChatGPT，本项目会从 LLM 基础讲到 RAG、Memory、Tool Use、Planning、多 Agent、LangGraph、MCP、部署评估与生产级 Agent 系统。
-
-**每日自动追踪 arXiv 前沿论文，内容持续更新，始终紧跟最新进展**
+**23 章系统路径 · 120+ 原创图解 · 5 个交互动画 · 中英双语在线阅读 · 每日追踪 Agent 前沿论文**
 
 <br>
 
@@ -24,28 +22,23 @@
 
 <br>
 
-[<img src="https://img.shields.io/badge/📖_在线阅读（中文）-4CAF50?style=for-the-badge" alt="在线阅读中文版">](https://Haozhe-Xing.github.io/agent_learning/zh/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_Read_Online_(English)-2196F3?style=for-the-badge" alt="Read Online English">](https://Haozhe-Xing.github.io/agent_learning/en/)
+[<img src="https://img.shields.io/badge/📖_30分钟理解第一个_Agent-4CAF50?style=for-the-badge" alt="从第一个 Agent 开始">](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/🗺️_查看学习路径-2196F3?style=for-the-badge" alt="查看学习路径">](#-学习路径)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_在线阅读（中文）-673AB7?style=for-the-badge" alt="在线阅读中文版">](https://Haozhe-Xing.github.io/agent_learning/zh/)
 
-<br>
+</div>
 
-<table>
-<tr>
-<td width="50%" align="center">
-<img src="scripts/agent2.png" width="100%" alt="Agent Learning 在线书截图 - 前沿研究章节">
-<br>
-<sub>每日更新的 Agentic-RL 前沿研究章节</sub>
-</td>
-<td width="50%" align="center">
-<img src="scripts/grpo_chapter.png" width="100%" alt="Agent Learning 在线书截图 - GRPO 章节">
-<br>
-<sub>循序渐进的 GRPO / GSPO 学习内容</sub>
-</td>
-</tr>
-</table>
+## 你想获得什么？从这里开始
 
-<br>
+| 目标 | 你会得到的结果 | 建议从这里开始 |
+| --- | --- | --- |
+| **30 分钟跑通第一个 Agent** | 建立对感知、推理、工具调用和行动循环的完整直觉 | [第 1 章：Agent 基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/) → [附录：Hello Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/04_hello_agent.html) |
+| **做出一个能用的 Agent 应用** | 掌握 Tool Calling、RAG、Memory、Planning 与 Context Engineering 的组合方式 | [第 3 章：工具调用](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_tools/) → [第 6 章：RAG](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_rag/) |
+| **把 Agent 推到生产环境** | 具备评估、安全、可观测性、部署和成本优化的工程视角 | [第 17 章：评估与优化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_evaluation/) → [第 19 章：部署与生产化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_deployment/) |
 
-[🐛 提交问题](https://github.com/Haozhe-Xing/agent_learning/issues) · [💬 参与讨论](https://github.com/Haozhe-Xing/agent_learning/discussions) · [🇺🇸 English README](README.md)
+> ⭐ 如果这条学习路径帮你节省了查资料和踩坑的时间，欢迎给仓库点个 Star；它能让更多开发者发现这份持续维护的开源教程。
+
+<div align="center">
+
+[🐛 报告问题](https://github.com/Haozhe-Xing/agent_learning/issues) · [💡 提出改进建议](https://github.com/Haozhe-Xing/agent_learning/issues/new) · [🇺🇸 English README](README.md)
 
 </div>
 
@@ -375,7 +368,7 @@ export OPENAI_API_KEY="your-key-here"
 欢迎任何形式的贡献！
 
 - 🐛 **发现错误**：[提交 Issue](https://github.com/Haozhe-Xing/agent_learning/issues)
-- 💡 **内容建议**：[发起 Discussion](https://github.com/Haozhe-Xing/agent_learning/discussions)
+- 💡 **内容建议**：[提交建议 Issue](https://github.com/Haozhe-Xing/agent_learning/issues/new)
 - 📝 **改进内容**：Fork → 修改 → 提交 PR
 - ⭐ **支持项目**：给本仓库点个 Star！
 
