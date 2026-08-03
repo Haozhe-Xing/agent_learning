@@ -838,6 +838,8 @@ print(processed)
 
 单层过滤（正则/关键词）速度快但容易绕过，LLM 审查更智能但延迟高。最佳实践是**双层组合**：
 
+> ⚠️ **fail-closed 是安全默认值**：任何一层（尤其是 LLM 审查）解析失败、超时或返回不确定结果时，**必须默认阻断，而不是默认放行**。很多人会把"LLM 审核器解析失败"写成 `passed: True`，这等于把安全闸门在异常时悄悄打开——这是第 19 章最不该犯的错误。仓库 `reference-agent/src/reference_agent/security/guardrails.py` 提供了一个**已测试、fail-closed** 的最小注入守卫，可作为基准实现。
+
 ![Guardrails 双层过滤机制](../svg/chapter_security_07_guardrails_chain.svg)
 
 ```python
@@ -957,10 +959,13 @@ class LLMAuditor:
                 "latency_ms": (time.time() - start) * 1000,
             }
         except json.JSONDecodeError:
-            # LLM 输出解析失败，保守起见放行
+            # ⚠️ 关键：LLM 输出解析失败时，必须 fail-closed（阻断），
+            # 绝不能写 passed: True。不确定 = 危险，拦截后交人工或重试。
             return {
-                "passed": True,
-                "reason": "审查结果解析失败，保守放行",
+                "passed": False,
+                "reason": "审查结果解析失败，按 fail-closed 默认阻断",
+                "risk_type": "不确定",
+                "confidence": 0.0,
                 "latency_ms": (time.time() - start) * 1000,
             }
 ```

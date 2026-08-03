@@ -1,222 +1,160 @@
-# 21.5 完整项目实现
+# 21.5 集成设计：从组件到助手
 
-> **本节目标**：将前面几节的组件整合，构建一个可交互的 AI 编程助手。
+> **本节目标**：把 21.2–21.4 的组件按职责组装成一个 AI 编程助手，并说清它在仓库中的真实运行方式。
 
 ![完整AI编程助手组件集成架构](../svg/chapter_coding_05_full.svg)
 
+> ⚠️ **诚实说明（可运行性）**：21.2–21.4 的 `CodeIndexer`、`CodeSearchEngine`、`CodeGenerator`、`CodeValidator`、`TestGenerator`、`BugFixer` 是在书中**以代码片段形式给出**的参考实现，依赖 `langchain_openai` 与你的 API Key，并非本仓库里可直接 `import` 的包。要让它们真正跑起来，你需要把各节代码保存为独立模块（如 `code_indexer.py` 等）并自行安装依赖——本节展示的是**组装逻辑**，不是"开箱即跑"的文件。
+>
+> 如果你想要一个**已经测试通过、默认离线即可运行**的最小 Agent 底座，请直接用仓库根目录的 `reference-agent/`（含工具调用、权限守卫、FastAPI 服务、评估与 MCP 示例）。第 12–23 章的"实战"均以其为准。
+
 ---
 
-## 整合所有组件
+## 组件的组装逻辑
+
+下面把各组件组合成 `AICodeAssistant`。它依赖前面几节定义的类；运行前请先把那些类整理成可导入的模块。
 
 ```python
 """
-完整的 AI 编程助手
-整合：代码索引 + 语义搜索 + 代码生成 + 测试生成 + Bug 修复
+AI 编程助手（组装逻辑）
+依赖：21.2 CodeIndexer / CodeSearchEngine
+      21.3 CodeGenerator / CodeValidator
+      21.4 TestGenerator / BugFixer
+前置：将上述类保存为独立模块并 pip install langchain-openai
 """
 import asyncio
 import os
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-# 导入前面实现的组件（实际项目中从模块导入）
-# 各组件的完整实现请参考对应章节：
-# from code_indexer import CodeIndexer         # → 21.2 节
-# from code_search import CodeSearchEngine     # → 21.2 节
-# from code_generator import CodeGenerator     # → 21.3 节
-# from test_generator import TestGenerator     # → 21.4 节
-# from bug_fixer import BugFixer               # → 21.4 节
-# 提示：运行本节代码前，需先将 21.2-20.4 节的代码保存为独立模块
+from code_indexer import CodeIndexer
+from code_search import CodeSearchEngine
+from code_generator import CodeGenerator
+from test_generator import TestGenerator
+from bug_fixer import BugFixer
+
 
 class AICodeAssistant:
-    """AI 编程助手 —— 完整实现"""
-    
+    """AI 编程助手组装实现"""
+
     def __init__(self, project_path: str):
         self.project_path = project_path
         self.llm = ChatOpenAI(model="gpt-4.1", temperature=0)
         self.embeddings = OpenAIEmbeddings()
-        
-        # 初始化各组件
+
         self.indexer = CodeIndexer(project_path)
         entities = self.indexer.build_index()
-        
+
         self.searcher = CodeSearchEngine(entities, self.embeddings)
         self.searcher.build()
-        
+
         self.generator = CodeGenerator(self.llm)
         self.test_gen = TestGenerator(self.llm)
         self.bug_fixer = BugFixer(self.llm)
-        
-        print(f"✅ 已索引 {len(entities)} 个代码实体")
-    
-    async def chat(self, user_input: str) -> str:
-        """处理用户输入"""
-        
-        # 识别意图
-        intent = await self._classify_intent(user_input)
-        
-        if intent == "explain":
-            return await self._handle_explain(user_input)
-        elif intent == "generate":
-            result = await self.generator.generate(user_input)
-            return f"```python\n{result.code}\n```\n\n{result.explanation}"
-        elif intent == "fix":
-            return await self._handle_fix(user_input)
-        elif intent == "test":
-            return await self._handle_test(user_input)
-        elif intent == "search":
-            return await self._handle_search(user_input)
-        else:
-            return await self._handle_general(user_input)
-    
-    async def _classify_intent(self, user_input: str) -> str:
-        """分类用户意图"""
-        prompt = f"""判断用户意图，只回复一个词：
-- explain: 解释代码
-- generate: 生成新代码
-- fix: 修复 Bug
-- test: 生成测试
-- search: 搜索代码
-- general: 其他问题
 
-用户说：{user_input}"""
-        
-        response = await self.llm.ainvoke(prompt)
-        return response.content.strip().lower()
-    
+        print(f"已索引 {len(entities)} 个代码实体")
+
+    async def chat(self, user_input: str) -> str:
+        intent = await self._classify_intent(user_input)
+        handlers = {
+            "explain": self._handle_explain,
+            "generate": self._handle_generate,
+            "fix": self._handle_fix,
+            "test": self._handle_test,
+            "search": self._handle_search,
+        }
+        handler = handlers.get(intent, self._handle_general)
+        return await handler(user_input)
+
+    async def _classify_intent(self, user_input: str) -> str:
+        prompt = (
+            "判断用户意图，只回复一个词："
+            "explain/generate/fix/test/search/general。\n用户说：" + user_input
+        )
+        return (await self.llm.ainvoke(prompt)).content.strip().lower()
+
     async def _handle_explain(self, query: str) -> str:
-        """处理代码解释请求"""
         results = self.searcher.search(query, top_k=3)
-        
         if not results:
             return "未找到相关代码。"
-        
         context = "\n\n".join(
             f"**{e.file_path}** - `{e.name}`\n```python\n{e.source}\n```"
             for e in results
         )
-        
-        prompt = f"用通俗语言解释以下代码：\n\n{context}\n\n用户问题：{query}"
-        response = await self.llm.ainvoke(prompt)
-        return response.content
-    
+        return (await self.llm.ainvoke(
+            f"用通俗语言解释以下代码：\n\n{context}\n\n用户问题：{query}"
+        )).content
+
+    async def _handle_generate(self, query: str) -> str:
+        result = await self.generator.generate(query)
+        return f"```python\n{result.code}\n```\n\n{result.explanation}"
+
     async def _handle_search(self, query: str) -> str:
-        """处理代码搜索请求"""
         results = self.searcher.search(query, top_k=5)
-        
-        output = "🔍 搜索结果：\n\n"
-        for i, entity in enumerate(results, 1):
-            output += (
-                f"{i}. **{entity.name}** ({entity.entity_type})\n"
-                f"   📄 {entity.file_path}:L{entity.start_line}\n"
-                f"   📝 {entity.docstring[:100] if entity.docstring else '无文档'}\n\n"
-            )
-        
-        return output
-    
+        if not results:
+            return "未找到相关代码。"
+        return "\n".join(
+            f"{i}. **{e.name}** ({e.entity_type}) @ {e.file_path}:L{e.start_line}"
+            for i, e in enumerate(results, 1)
+        )
+
     async def _handle_fix(self, query: str) -> str:
-        """处理 Bug 修复请求"""
-        # 搜索可能相关的代码
         results = self.searcher.search(query, top_k=3)
-        
-        if results:
-            code = results[0].source
-            fix = await self.bug_fixer.diagnose_and_fix(
-                code=code,
-                error_message=query,
-                file_path=results[0].file_path
-            )
-            return (
-                f"🔍 **原因**：{fix.get('root_cause', '未知')}\n\n"
-                f"🔧 **修复**：{fix.get('fix_description', '')}\n\n"
-                f"```python\n{fix.get('fixed_code', code)}\n```"
-            )
-        
-        return "请提供具体的错误信息和相关文件路径。"
-    
+        if not results:
+            return "请提供具体的错误信息和相关文件路径。"
+        code = results[0].source
+        fix = await self.bug_fixer.diagnose_and_fix(
+            code=code, error_message=query, file_path=results[0].file_path
+        )
+        return f"原因：{fix.get('root_cause')}\n修复：\n```python\n{fix.get('fixed_code', code)}\n```"
+
     async def _handle_test(self, query: str) -> str:
-        """处理测试生成请求"""
         results = self.searcher.search(query, top_k=1)
-        
-        if results:
-            entity = results[0]
-            tests = await self.test_gen.generate_tests(
-                source_code=entity.source,
-                file_path=entity.file_path
-            )
-            return f"为 `{entity.file_path}` 生成的测试：\n\n{tests}"
-        
-        return "请指定要生成测试的文件或函数。"
-    
+        if not results:
+            return "请指定要生成测试的文件或函数。"
+        tests = await self.test_gen.generate_tests(
+            source_code=results[0].source, file_path=results[0].file_path
+        )
+        return f"为 `{results[0].file_path}` 生成的测试：\n\n{tests}"
+
     async def _handle_general(self, query: str) -> str:
-        """处理通用问题"""
-        prompt = f"""你是一个专业的编程助手。当前项目路径：{self.project_path}
-        
-用户问题：{query}
-
-请尽量结合编程知识来回答。"""
-        
-        response = await self.llm.ainvoke(prompt)
-        return response.content
-
-
-async def main():
-    """交互式主循环"""
-    import sys
-    
-    project_path = sys.argv[1] if len(sys.argv) > 1 else "."
-    
-    print("🤖 AI 编程助手")
-    print(f"📁 项目: {os.path.abspath(project_path)}")
-    print("=" * 50)
-    print("输入 'quit' 退出\n")
-    
-    assistant = AICodeAssistant(project_path)
-    
-    while True:
-        user_input = input("你: ").strip()
-        
-        if user_input.lower() in ('quit', 'exit', 'q'):
-            print("👋 再见！")
-            break
-        
-        if not user_input:
-            continue
-        
-        response = await assistant.chat(user_input)
-        print(f"\n🤖: {response}\n")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+        return (await self.llm.ainvoke(
+            f"你是一个专业编程助手。项目路径：{self.project_path}\n用户问题：{query}"
+        )).content
 ```
+
+要点：**意图分类只是路由，真正的可用性取决于前面各组件是否真的可运行**——尤其是 `CodeValidator`（语法/安全检查）和 `BugFixer` 的"修复→测试→不过再修"闭环。
 
 ---
 
-## 运行效果示例
+## 自动修复闭环（设计模式）
 
+这是 Coding Agent 最有价值的部分，也是必须"带验证"的环节。下面给出带上限的修复循环设计（伪代码/简化代码，非本仓库直接运行文件）：
+
+```python
+async def auto_fix_loop(bug_fixer, run_tests, code, test_code,
+                         file_path, max_attempts: int = 3) -> dict:
+    """修复 → 跑测试 → 不过就再修，直到通过或达上限"""
+    current_code = code
+    passed, error_msg = run_tests(current_code, test_code)
+    if passed:
+        return {"success": True, "attempts": 0, "code": current_code}
+
+    for attempt in range(1, max_attempts + 1):
+        fix = await bug_fixer.diagnose_and_fix(
+            code=current_code, error_message=error_msg, file_path=file_path
+        )
+        current_code = fix["fixed_code"]
+        passed, error_msg = run_tests(current_code, test_code)
+        if passed:
+            return {"success": True, "attempts": attempt,
+                    "code": current_code, "last_fix": fix["fix_description"]}
+
+    return {"success": False, "attempts": max_attempts,
+            "code": current_code, "last_error": error_msg,
+            "note": "已达最大修复次数，建议人工介入"}
 ```
-🤖 AI 编程助手
-📁 项目: /home/user/my-project
-==================================================
-✅ 已索引 156 个代码实体
-输入 'quit' 退出
 
-你: 搜索所有处理用户认证的函数
-🤖: 🔍 搜索结果：
-1. **authenticate_user** (function)
-   📄 auth/service.py:L23
-   📝 验证用户凭据并返回 JWT token
-
-2. **verify_token** (function)
-   📄 auth/middleware.py:L15
-   📝 验证请求中的 JWT token
-
-你: 解释一下 authenticate_user 的逻辑
-🤖: `authenticate_user` 函数执行以下步骤...
-
-你: 为 verify_token 生成测试
-🤖: 为 `auth/middleware.py` 生成的测试：
-    ...pytest 测试代码...
-```
+设计要点：①每轮把**真实报错**反馈给模型，不凭空再修；②必须设 `max_attempts` 防止在两个错误版本间死循环烧 token；③修复后跑全量回归，不只看"这个 Bug 没了"；④失败优雅退出转人工。这与第 18 章成本控制、第 19 章"AI 产物必须人工把关"一致。
 
 ---
 

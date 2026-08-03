@@ -1,8 +1,12 @@
-# 22.5 完整项目实现
+# 22.5 集成设计与可运行底座
 
-> **本节目标**：整合所有组件，构建一个完整的智能数据分析 Agent，并深入分析架构决策与生产化考量。
+> **本节目标**：把 22.2–22.4 的组件按职责组装成一个智能数据分析 Agent，并说清它在仓库中的真实运行方式。
 
 ![管道式 vs Agent循环架构对比](../svg/chapter_data_05_full.svg)
+
+> ⚠️ **诚实说明（可运行性）**：22.2–22.4 的 `SafeDatabaseConnector`、`TextToSQL`、`DataAnalyzer`、`ChartGenerator`、`InsightGenerator`、`ReportGenerator` 是在书中**以代码片段形式给出**的参考实现，依赖 `langchain_openai` 与你的 API Key，并非本仓库里可直接 `import` 的包。要让它们真正跑起来，你需要把各节代码保存为独立模块并自行安装依赖——本节展示的是**组装逻辑**，不是"开箱即跑"的文件。
+>
+> 想要**已测试、默认离线即可运行**的底座，请用仓库根目录的 `reference-agent/`。第 12–23 章的"实战"均以其为准。
 
 ---
 
@@ -30,7 +34,9 @@ LLM 自主决定调用哪个工具、调用几次，可以根据中间结果追�
 | 可调试性 | 每步输出可检查 | 需要完整 trace |
 | 适用场景 | 标准数据分析流程 | 开放式探索分析 |
 
-> 💡 **实践建议**：如果你的场景需要 Agent 自主探索（如"帮我找出数据中的异常"），建议结合第 12 章 LangGraph 构建 Agent 循环版本。管道式架构更适合流程明确的场景。
+> 上表“单次请求成本”为**示例量级估算**，实际取决于模型、数据量与提供商账单，请以真实用量为准，勿作精确报价。
+
+> 💡 **实践建议**：如果你的场景需要 Agent 自主探索（如"帮我找出数据中的异常"），建议结合第 13 章 LangGraph 构建 Agent 循环版本。管道式架构更适合流程明确的场景。
 
 ### 组件交互时序
 
@@ -46,25 +52,25 @@ LLM 自主决定调用哪个工具、调用几次，可以根据中间结果追�
 
 ---
 
-## 完整实现
+## 完整实现（组装逻辑）
 
 ```python
 """
-智能数据分析 Agent —— 完整实现
-用自然语言完成数据分析的全流程
+智能数据分析 Agent —— 组装逻辑
+依赖：22.2 SafeDatabaseConnector / TextToSQL
+      22.3 DataAnalyzer / ChartGenerator / InsightGenerator
+      22.4 ReportGenerator
+前置：将上述类保存为独立模块并 pip install langchain-openai
 """
 import asyncio
 from langchain_openai import ChatOpenAI
 
-# 导入前面实现的组件
-# 各组件的完整实现请参考对应章节：
-# from db_connector import SafeDatabaseConnector   # → 21.2 节
-# from text_to_sql import TextToSQL                # → 21.2 节
-# from data_analyzer import DataAnalyzer           # → 21.3 节
-# from chart_generator import ChartGenerator       # → 21.3 节
-# from insight_generator import InsightGenerator   # → 21.3 节
-# from report_generator import ReportGenerator     # → 21.4 节
-# 提示：运行本节代码前，需先将 21.2-20.4 节的代码保存为独立模块
+from db_connector import SafeDatabaseConnector
+from text_to_sql import TextToSQL
+from data_analyzer import DataAnalyzer
+from chart_generator import ChartGenerator
+from insight_generator import InsightGenerator
+from report_generator import ReportGenerator
 
 
 class SmartDataAnalyst:
@@ -174,27 +180,16 @@ if __name__ == "__main__":
 
 ---
 
-## 使用效果
+## 预期行为（示意，非真实运行日志）
+
+> 下面是一段**示意性**交互，用于说明流程，不是本仓库直接运行产生的输出。真实结果取决于你的数据库、模型与提示词。
 
 ```
-📊 智能数据分析助手
-========================================
-📁 数据库中有 3 张表:
-   • orders: id, customer_id, product, amount, date, region
-   • customers: id, name, email, city, register_date
-   • products: id, name, category, price
-
 你的问题: 哪个区域的订单金额最高？按区域排序
-🤔 理解问题: 哪个区域的订单金额最高？按区域排序
-📝 生成查询...
-   SQL: SELECT region, SUM(amount) as total FROM orders GROUP BY region ORDER BY total DESC
-🔍 查询数据...
-   获得 4 条数据
-📊 分析数据...
-🎨 生成图表...
-💡 提取洞察...
-📄 生成报告...
-✅ 报告已保存: report_20260312_140000.md
+→ TextToSQL 生成: SELECT region, SUM(amount) AS total
+                   FROM orders GROUP BY region ORDER BY total DESC
+→ SafeDB 执行只读查询 → 获得若干行聚合结果
+→ Analyzer/Chart/Insight/Report 生成分析与报告
 ```
 
 ---

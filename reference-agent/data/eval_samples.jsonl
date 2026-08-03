@@ -1,0 +1,3 @@
+{"id": "math-1", "input": "请帮我计算 12*8 等于多少", "expect_contains": ["96"]}
+{"id": "math-2", "input": "计算 100 除以 4", "expect_contains": ["25"]}
+{"id": "math-3", "input": "23 加 19 的结果是多少", "expect_contains": ["42"]}

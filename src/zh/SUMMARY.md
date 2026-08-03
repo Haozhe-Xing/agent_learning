@@ -202,14 +202,14 @@
   - [21.2 代码理解与分析能力](./chapter_coding_agent/02_code_understanding.md)
   - [21.3 代码生成与修改能力](./chapter_coding_agent/03_code_generation.md)
   - [21.4 测试生成与 Bug 修复](./chapter_coding_agent/04_testing_debugging.md)
-  - [21.5 完整项目实现](./chapter_coding_agent/05_full_implementation.md)
+  - [21.5 集成设计与可运行底座](./chapter_coding_agent/05_full_implementation.md)
 
 - [第22章 项目实战：智能数据分析 Agent](./chapter_data_agent/README.md)
   - [22.1 需求分析与架构设计](./chapter_data_agent/01_requirements.md)
   - [22.2 数据连接与查询](./chapter_data_agent/02_data_connection.md)
   - [22.3 自动化分析与可视化](./chapter_data_agent/03_analysis_visualization.md)
   - [22.4 报告生成与导出](./chapter_data_agent/04_report_generation.md)
-  - [22.5 完整项目实现](./chapter_data_agent/05_full_implementation.md)
+  - [22.5 集成设计与可运行底座](./chapter_data_agent/05_full_implementation.md)
 
 - [第23章 项目实战：多模态 Agent](./chapter_multimodal/README.md)
   - [23.1 多模态能力概述](./chapter_multimodal/01_multimodal_overview.md)
