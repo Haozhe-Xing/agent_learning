@@ -4,11 +4,12 @@
 
 ---
 
-本节深入分析三个已在生产环境中验证的 Harness Engineering 案例。这三个案例覆盖了不同的应用场景：
+本节深入分析四个已在生产环境中验证的 Harness Engineering 案例。前三例来自公司内部实践，读者无法亲自验证其代码；第四例 **OpenHarness** 是完全开源、可阅读源码、可本地运行的生产级 Harness，正好补上"案例只能听、不能看"的缺口。
 
 - **OpenAI**：从零搭建完整 Harness 架构，5 个月交付 100 万行代码
 - **LangChain**：纯 Harness 优化，不换模型，基准测试提升 +13.7%
 - **Stripe**：大规模自动化技术债清理，每周合并 1000+ PR
+- **OpenHarness**：开源（MIT）的可运行 Harness，读者可 `git clone` 后对照本书逐行读源码
 
 ---
 
@@ -712,16 +713,80 @@ stripe_minions_learnings = {
 
 ---
 
-## 三大案例横向对比
+## 案例四：OpenHarness——可阅读源码的开源 Harness
 
-| 维度 | OpenAI | LangChain | Stripe |
-|------|--------|-----------|--------|
-| **核心目标** | 从零交付大量代码 | 提升基准测试成绩 | 大规模清理技术债 |
-| **Harness 重点** | 完整五层架构 | 验证循环 + 推理预算 | 任务原子化 + 审查清单 |
-| **规模** | 100 万行代码 / 5 个月 | 52.8% → 66.5% 提升 | 1000+ PR / 周 |
-| **关键创新** | AI 互审、文档园丁 | 推理三明治、死循环检测 | 原子化任务分配 |
-| **最大挑战** | 维护知识体系同步 | 完成偏见 | 审查清单的覆盖率 |
-| **适用场景** | 大型产品开发 | 任务型 Agent 优化 | 维护型自动化 |
+> 前面三个案例都来自公司内部实践，读者无法亲自验证其代码。OpenHarness 是少数**完全开源、可阅读源码、可本地运行**的生产级 Harness 之一，正好补上这个缺口：你不仅能读它的设计，还能 `git clone` 下来跑起来。
+
+### 它解决什么问题
+
+OpenHarness（HKUDS 出品，命令行 `oh`，内置个人智能体 `ohmo`）是一个轻量级、开源（MIT）的 Agent Harness Python 实现，把"工具调用、技能、记忆、多智能体协调"做成可插拔的基础设施。它的定位与本书 8.1 的公式一致：
+
+> **Agent = Model + Harness**
+
+`ohmo` 个人代理可以接入飞书 / Slack / Telegram / Discord，自动建分支、写代码、跑测试、开 PR，并复用你已有的 Claude Code 或 Codex 订阅，无需额外 API Key。
+
+### 架构如何对应本书的六大支柱
+
+OpenHarness 的 `openharness/` 目录划分为 10+ 个子系统，几乎一一对应本书 8.2 的六大工程支柱：
+
+```text
+openharness/
+  engine/          # Agent Loop：流式工具调用、指数退避重试、并行工具执行、Token/成本追踪
+  tools/           # 43 个工具（文件 / Shell / 搜索 / Web / MCP）
+  skills/          # 按需技能加载（兼容 anthropics/skills 与 claude-code/plugins）
+  permissions/     # 治理：多级权限模式、路径/命令规则、交互式审批
+  hooks/           # 生命周期钩子（Pre/PostToolUse）
+  mcp/             # MCP 客户端
+  memory/          # 持久记忆：MEMORY.md、会话恢复
+  tasks/           # 后台任务
+  coordinator/     # 多智能体：子代理派发、团队注册
+  prompts/         # 上下文组装（含 CLAUDE.md 发现注入、上下文压缩）
+  config/ ui/      # 配置与 React TUI 仪表盘
+```
+
+把这张图与 8.2 对照：
+
+| 本书支柱 | OpenHarness 对应实现 |
+|----------|----------------------|
+| 上下文架构 | `prompts/` 的 CLAUDE.md 发现注入 + 上下文压缩 |
+| 架构约束 | `permissions/` 的路径/命令规则 + 多级权限模式 |
+| 自验证循环 | `engine/` 的 Agent Loop 重试 + `tasks/` 后台测试 |
+| 上下文隔离 | `coordinator/` 的子代理派发与团队注册 |
+| 熵治理 | `memory/` 的 MEMORY.md 持久化与压缩 |
+| 可拆卸性 | `skills/` / `plugins/` / `hooks/` 的插件生态 |
+
+### 为什么它值得作为"真实项目"来读
+
+1. **可验证**：MIT 协议，main 分支 429 次提交，含 114 个单元/集成测试、6 个 CLI E2E、9 个功能 E2E、3 个 React TUI E2E，仓库公开声称全绿。
+2. **可运行**：一行安装 `pip install openharness-ai`，`oh setup` 配置、`oh` 启动；`ohmo init` 初始化个人代理。
+3. **覆盖完整 Harness 生命周期**：从工具调用、权限治理、钩子，到多智能体协调，再到持久记忆与上下文压缩——本书 8.1~8.3 的抽象概念在这里都有具体代码落地。
+4. **有中文资料**：仓库提供 `README.zh-CN.md` 与 `docs/SHOWCASE.md`，含可复现示例，便于对照学习。
+
+### 一个最小上手路径（建议读者自己做）
+
+```bash
+pip install openharness-ai     # Windows 上命令为 oh
+oh setup                       # 配置模型 / 权限
+oh "在 src/ 里找出所有没有类型注解的公开函数，并生成修复 PR"
+```
+
+> ⚠️ **诚实提示**：OpenHarness 由社区维护，版本迭代快（v0.1.0 于 2026-04 发布，最近提交 2026-06）。阅读源码时请以仓库当前 `main` 分支为准；本书只引用其**架构思路**，具体 API 请以官方文档为准。
+
+> 🔗 仓库：<https://github.com/HKUDS/OpenHarness> ｜ 中文文档：<https://github.com/HKUDS/OpenHarness/blob/main/README.zh-CN.md>
+
+---
+
+## 四大案例横向对比
+
+| 维度 | OpenAI | LangChain | Stripe | OpenHarness |
+|------|--------|-----------|--------|-------------|
+| **核心目标** | 从零交付大量代码 | 提升基准测试成绩 | 大规模清理技术债 | 开源、可运行的 Harness 底座 |
+| **Harness 重点** | 完整五层架构 | 验证循环 + 推理预算 | 任务原子化 + 审查清单 | 工具/Agent Loop/治理/多智能体 |
+| **规模** | 100 万行代码 / 5 个月 | 52.8% → 66.5% 提升 | 1000+ PR / 周 | 43 工具 / 10+ 子系统 / 429 提交 |
+| **关键创新** | AI 互审、文档园丁 | 推理三明治、死循环检测 | 原子化任务分配 | 权限钩子、CLAUDE.md 注入、Swarm |
+| **最大挑战** | 维护知识体系同步 | 完成偏见 | 审查清单的覆盖率 | 社区维护下的版本快速迭代 |
+| **适用场景** | 大型产品开发 | 任务型 Agent 优化 | 维护型自动化 | 学习 Harness 源码 / 自建 Agent CLI |
+| **源码是否公开** | 否（内部） | 否（内部） | 否（内部） | **是（MIT，可阅读可运行）** |
 
 ---
 
@@ -737,6 +802,8 @@ stripe_minions_learnings = {
 
 4. **持续迭代，永不止步**：最好的 Harness 不是一次性设计的，而是通过不断分析失败案例、持续改进而来的。
 
+5. **开源案例比闭门案例更有教学价值**：OpenAI / LangChain / Stripe 的方法论值得借鉴，但只有 OpenHarness 这类**可阅读、可运行**的开源 Harness，能让你把本章的抽象原则逐行对应到真实代码——这正是"学 Harness"与"懂 Harness"的分水岭。
+
 ---
 
 ## 参考资料
@@ -746,6 +813,8 @@ stripe_minions_learnings = {
 [2] LANGCHAIN TEAM. From 52.8% to 66.5% on Terminal Bench 2.0: a harness engineering case study[EB/OL]. LangChain Blog, 2026-01.
 
 [3] STRIPE ENGINEERING. Minions: autonomous agents for technical debt reduction[EB/OL]. Stripe Engineering Blog, 2025-12.
+
+[4] HKUDS. OpenHarness: Open Agent Harness with a Built-in Personal Agent--Ohmo[EB/OL]. https://github.com/HKUDS/OpenHarness （MIT，核验于 2026-08-03）.
 
 ---
 

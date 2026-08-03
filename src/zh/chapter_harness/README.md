@@ -11,7 +11,7 @@
 
 - ✅ 理解 Harness 工程的定义和六大工程支柱
 - ✅ 掌握 AGENTS.md / CLAUDE.md 的编写规范
-- ✅ 学习 OpenAI、LangChain、Stripe 的生产 Harness 案例
+- ✅ 学习 OpenAI、LangChain、Stripe 的生产 Harness 案例，以及可阅读源码的 OpenHarness 开源案例
 - ✅ 构建你的第一个完整 Harness 系统
 - ✅ 实现结构化输出与可靠 JSON 生成
 
@@ -70,7 +70,7 @@
 | 8.1 | 什么是 Harness Engineering | 核心概念、哲学理念、与传统工程的关系 |
 | 8.2 | 六大工程支柱 | 上下文架构、架构约束、自验证循环、上下文隔离、熵治理、可拆卸性 |
 | 8.3 | AGENTS.md / CLAUDE.md | 如何撰写高质量的 Agent 宪法文件 |
-| 8.4 | 生产级案例 | OpenAI 百万行代码实验、LangChain +13.7%、Stripe Minions |
+| 8.4 | 生产级案例 | OpenAI 百万行代码实验、LangChain +13.7%、Stripe Minions、OpenHarness 开源可运行案例 |
 | 8.5 | 实战：构建 Harness 系统 | 从零搭建一套可运行的 Harness 框架 |
 | 8.6 | 结构化输出 | 保障 JSON 可靠性的工程实践 |
 
