@@ -139,48 +139,27 @@ for scenario in scenarios:
     print(f"推荐：{framework}\n")
 ```
 
-## 实际项目的框架策略
+## 实际项目的框架策略：组合而非绑定
 
-```python
-# 大多数生产项目会混合使用多个框架
+> ⚠️ **诚实说明**：过去这一节曾用一个 `HybridAgentSystem` 类来"展示"多框架组合，但它的 `build()` 方法体是 `pass`——没有任何真实代码，属于"用空壳包装成可实战系统"的凑数写法。本节改为给出**可落地的组合决策矩阵**，并明确指出每种组合需要你自行实现的具体接缝点。
 
-class HybridAgentSystem:
-    """
-    实际生产系统的典型架构（2025-2026）：
-    - LangGraph 管理复杂工作流状态
-    - OpenAI Agents SDK 处理轻量 Agent 逻辑
-    - LangChain 处理 RAG 和链式调用
-    - MCP 统一工具接口
-    - 自定义代码处理业务逻辑
-    """
-    
-    def __init__(self):
-        # LangGraph 负责工作流
-        from langgraph.graph import StateGraph
-        self.workflow = None  # 用 LangGraph 构建
-        
-        # LangChain 负责 RAG
-        from langchain_community.vectorstores import Chroma
-        self.knowledge_base = None  # 用 LangChain 构建
-        
-        # OpenAI Agents SDK 负责轻量 Agent
-        # from agents import Agent, Runner
-        self.agents = {}
-        
-        # 自定义工具（可通过 MCP 标准化）
-        self.tools = {}
-    
-    def build(self):
-        """组合各框架构建完整系统"""
-        # 1. 用 LangChain 建立知识库
-        # 2. 用 LangGraph 建立工作流
-        # 3. 用 OpenAI Agents SDK 创建轻量 Agent
-        # 4. 用 MCP 标准化工具接口
-        pass
+真实生产系统确实常混合多个框架，但组合方式取决于"哪一部分是瓶颈"，而不是把所有框架都 import 进来。下面是按瓶颈划分的组合建议：
 
-# 建议：不要被任何单一框架绑定
-# 理解各框架的优势，按需组合
-```
+| 你的瓶颈 | 主导框架 | 辅助框架 | 真实接缝点（必须自己实现） |
+|----------|----------|----------|---------------------------|
+| 复杂状态 / 循环 / 人在回路 | LangGraph | MCP（工具标准化） | 把业务状态建模成 `TypedDict`，用条件边实现审批 / 回退 |
+| 多角色流水线（研究员→编辑→审查） | CrewAI / 自定义 | — | 角色 Prompt + 任务依赖；注意 CrewAI 不内置代码执行 |
+| 需要 Agent 真正运行代码 | AutoGen | Docker 沙箱 | 沙箱执行器 + 执行-报错-修正闭环 |
+| 轻量工具调用 Agent、快速上线 | OpenAI Agents SDK | MCP 原生 | Handoff 交接定义、工具 Schema |
+| RAG / 知识库问答 | LangChain | 向量库（Chroma 等） | 检索器 + 重排 + 引用溯源 |
+| 非技术团队快速验证 | Dify / Coze（低代码） | — | 工作流可视化编排、渠道对接 |
+
+组合时的两条硬原则：
+
+1. **业务逻辑与框架解耦**：工具函数、领域模型、校验逻辑写成框架无关的纯函数，框架只负责编排。这样未来换框架（如从 CrewAI 迁到 LangGraph）时不用重写业务代码。
+2. **用 MCP 统一工具接口**：无论哪个框架，工具都走 MCP 标准化，降低切换与集成成本。
+
+> 想看"多框架如何在一处真实协作"的最小样例：本书第16章 `examples/dev_team/` 用 LangGraph 编排，统一底座 `reference-agent/` 用 Provider 抽象隔离模型与工具——两者都没有"为了用而用"的框架堆叠。
 
 ## 最终建议
 

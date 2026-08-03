@@ -99,6 +99,8 @@ class ABTestConfig:
 
 ### A/B 测试框架实现
 
+> ⚠️ **诚实说明**：下面的 `ABTestFramework` 是一个**脚手架**——它本身不绑定任何具体 Agent 或固定测试集。要真正跑起来，你需要提供 `agent_factory_a/b`（能产出真实 Agent 的函数）和一份固定的 `test_cases`。本书已随附一个**真实可运行**的评估基座 `reference-agent/evaluation/harness.py`（基于固定 JSONL 任务集、可离线复现），建议把这里的 A/B 思想落到那个基座上，而不是另起一套只停留在类定义层面的代码。
+
 ```python
 class ABTestFramework:
     """Agent A/B 测试框架"""
@@ -144,9 +146,8 @@ class ABTestFramework:
             run_b = self._run_single(case, self.agent_factory_b, "B")
             results_b.append(run_b)
 
-            # 用 Judge 评估两个输出
-            if case.expected_output or True:  # 始终用 Judge 评估
-                self._judge_outputs(case, run_a, run_b)
+            # 始终用 Judge 评估两个变体的输出
+            self._judge_outputs(case, run_a, run_b)
 
         # 统计分析
         analysis = self._analyze_results(results_a, results_b, config)
@@ -492,6 +493,8 @@ print(f"效应量：{result['analysis']['quality']['effect_size']}")
 
 ### 回归测试框架实现
 
+> ⚠️ **诚实说明**：`RegressionTestSuite` 同样是**脚手架**——它定义了"注册用例 / 保存基线 / 回归比对"的接口，但 `register_test` 里的 `expected_*` 判定、语义相似度比对等都需要你接真实 Agent 与判定后端才能真正工作。本书的 `reference-agent/evaluation/harness.py` 已经给出了一个更轻量、可立即 `pytest` 复现的判定实现（`expect_contains`），可作为你扩展语义/快照判定的起点。
+
 ```python
 class RegressionTestSuite:
     """Agent 回归测试套件"""
@@ -781,22 +784,17 @@ jobs:
         run: |
           python -m pytest tests/regression/ -v --tb=short
 
-      - name: Run Agent A/B Test
-        if: github.event_name == 'pull_request'
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Run Eval (quality gate)
         run: |
-          python scripts/run_ab_test.py \
-            --baseline main \
-            --variant ${{ github.head_ref }} \
-            --output results/ab_test.json
+          cd reference-agent
+          pip install -e .
+          python -m pytest -q
 
       - name: Check Quality Gate
         run: |
-          python scripts/check_quality_gate.py \
-            --results results/ab_test.json \
-            --min-pass-rate 0.85 \
-            --max-regression 0.05
+          # 在 CI 中，eval 的 pass_rate 即质量门禁；
+          # 上面 pytest 失败时流水线会直接中断，等价于门禁不通过。
+          echo "Quality gate enforced by pytest exit code above."
 
       - name: Upload Results
         if: always()
@@ -805,6 +803,8 @@ jobs:
           name: evaluation-results
           path: results/
 ```
+
+> 💡 **CI 与上文脚手架的关系**：上面的工作流直接运行本书随附的 `reference-agent` 评估（`pip install -e . && pytest`），其 `pass_rate` 就是质量门禁——pytest 失败即流水线中断。前面两节给出的 `ABTestFramework` / `RegressionTestSuite` / `QualityGate` 是**概念脚手架**：当你要在自己的仓库里做变体对比或更细的语义回归时，把它们接到真实 Agent 和固定数据集上即可，不必从零设计评估范式。
 
 ### 质量门禁脚本
 

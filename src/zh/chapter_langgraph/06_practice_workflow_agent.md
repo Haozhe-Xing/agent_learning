@@ -28,9 +28,29 @@ from langgraph.graph import StateGraph, END, START
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 from typing import TypedDict, Optional, List
-import json
+from pydantic import BaseModel, Field
 
 llm = ChatOpenAI(model="gpt-4.1")
+
+# 用 Pydantic 描述模型应返回的"结构"，通过 with_structured_output 在协议层
+# 保证格式，避免再去用正则从文本里抠 JSON。
+class TopicAnalysis(BaseModel):
+    """主题分析结果"""
+    key_points: list[str] = Field(description="文章的 3-5 个核心要点")
+
+class ContentReview(BaseModel):
+    """文章质量审查的结构化结论"""
+    score: int = Field(description="质量评分，1-10 的整数")
+    issues: list[str] = Field(description="发现的问题")
+    suggestions: list[str] = Field(description="改进建议")
+
+analyze_llm = llm.with_structured_output(TopicAnalysis)
+review_llm = llm.with_structured_output(ContentReview)
+
+# 质量达标线：分数 ≥ 该值即视为通过。这是需要结合评测校准的超参数，
+# 不是"写死 8 分就够"——上线前应用人评 / LLM-as-Judge 校验 8 分对应的真实质量。
+QUALITY_PASS_SCORE = 8
+MAX_REVISIONS = 2
 
 class ContentState(TypedDict):
     topic: str
@@ -44,28 +64,16 @@ class ContentState(TypedDict):
     final_content: Optional[str]
 
 def analyze_topic(state: ContentState) -> dict:
-    """分析主题，提取关键要素"""
-    response = llm.invoke([HumanMessage(
+    """分析主题，提取关键要素（结构化输出）"""
+    analysis = analyze_llm.invoke([HumanMessage(
         content=f"""分析以下内容创作需求：
 主题：{state['topic']}
 受众：{state['target_audience']}
-字数：{state['word_count']}
-
-返回JSON：{{"key_points": ["要点1"], "tone": "风格", "structure": "结构类型"}}"""
+字数：{state['word_count']}"""
     )])
-    
-    # 解析 LLM 返回的分析结果，提取要点作为后续大纲的参考
-    import re
-    try:
-        json_match = re.search(r'\{.*\}', response.content, re.DOTALL)
-        if json_match:
-            analysis = json.loads(json_match.group())
-            key_points = analysis.get("key_points", ["主题分析完成"])
-            return {"outline": key_points}
-    except (json.JSONDecodeError, AttributeError):
-        pass
-    
-    return {"outline": [f"主题 '{state['topic']}' 分析完成"]}
+    # analysis 已是 TopicAnalysis 实例，直接取字段，无需正则解析
+    key_points = analysis.key_points or [f"主题 '{state['topic']}' 分析完成"]
+    return {"outline": key_points}
 
 def generate_outline(state: ContentState) -> dict:
     """生成文章大纲"""
@@ -97,31 +105,18 @@ def write_content(state: ContentState) -> dict:
     return {"content": response.content}
 
 def review_content(state: ContentState) -> dict:
-    """质量审查"""
-    response = llm.invoke([HumanMessage(
-        content=f"""审查以下文章质量（给出1-10分）：
+    """质量审查（结构化输出）"""
+    review = review_llm.invoke([HumanMessage(
+        content=f"""审查以下文章质量（给出 1-10 分）：
 
-{state.get('content', '')[:500]}...
-
-返回JSON：{{"score": 8, "issues": ["问题1"], "suggestions": ["建议1"]}}"""
+{state.get('content', '')[:800]}"""
     )])
-    
-    try:
-        import re
-        json_match = re.search(r'\{.*\}', response.content, re.DOTALL)
-        if json_match:
-            result = json.loads(json_match.group())
-            score = result.get("score", 7)
-            feedback = "\n".join(result.get("suggestions", []))
-        else:
-            score, feedback = 7, "内容需要改进"
-    except:
-        score, feedback = 7, "审查完成"
-    
+    # review 已是 ContentReview 实例，直接读字段，无需正则解析 JSON
+    feedback = "\n".join(review.suggestions) if review.suggestions else "内容需要改进"
     return {
-        "quality_score": score,
+        "quality_score": review.score,
         "review_feedback": feedback,
-        "revision_count": state.get("revision_count", 0) + 1
+        "revision_count": state.get("revision_count", 0) + 1,
     }
 
 def revise_content(state: ContentState) -> dict:
@@ -146,7 +141,7 @@ def route_after_review(state: ContentState) -> str:
     score = state.get("quality_score", 0)
     revisions = state.get("revision_count", 0)
     
-    if score >= 8 or revisions >= 2:
+    if score >= QUALITY_PASS_SCORE or revisions >= MAX_REVISIONS:
         return "finalize"
     return "revise"
 
@@ -198,7 +193,7 @@ print(f"\n最终内容（前500字）：\n{result['final_content'][:500]}")
 
 **节点间的数据传递**：每个节点函数只返回需要更新的状态字段，而不是整个状态。LangGraph 会自动将返回值合并到当前状态中。比如 `write_content` 只返回 `{"content": response.content}`，不需要关心 `topic`、`outline` 等其他字段。
 
-**LLM 输出的容错解析**：`review_content` 和 `analyze_topic` 都用正则表达式从 LLM 回复中提取 JSON，并提供了兜底值。这是因为 LLM 有时不会严格按照指定格式返回（可能在 JSON 前后加上说明文字），我们需要容忍这种不确定性。
+**结构化输出而非正则解析**：`review_content` 和 `analyze_topic` 改用 `with_structured_output(Pydantic)` 让模型直接返回结构化对象。相比"用正则从文本里抠 JSON + 兜底值"，结构化输出由推理接口在协议层保证格式，既省掉脆弱的解析代码，也让字段类型（如 `score: int`）在编码阶段就可校验。这**不**等于"模型一定不会犯错"——质量阈值（如 `QUALITY_PASS_SCORE = 8`）仍需用评测来校准，详见 [第18章 Agent 评估](../chapter_evaluation/README.md)。
 
 > 💡 **延伸阅读**：关于 Plan-and-Execute 模式的完整实现和 Test-time Compute Scaling 策略，详见 [5.6 Plan-and-Execute 与 Test-time Compute Scaling](../chapter_planning/07_plan_and_execute.md)。
 

@@ -557,445 +557,27 @@ class RouterTrainingDataGenerator:
 
 ---
 
-## 智能路由器完整实现
+## 路由器实现：去重与交叉引用
 
-```python
-"""
-智能模型路由器
-支持：多策略路由、降级机制、成本追踪、评估报告
-"""
-import json
-import time
-from dataclasses import dataclass, field
-from typing import Optional, Callable
-from enum import Enum
+> ⚠️ **诚实说明**：旧版这一节在"智能路由器完整实现""级联路由实现"两个小节里，给出了 `SmartRouter` / `CascadeRouter` 共 400+ 行的完整代码。但**路由器的真实、可运行实现已经在第 20 章《部署与运维》的 06_model_serving 中给出**（`StaticRouter` / `LLMRouter` / `CascadeRouter`，含降级与成本追踪）。把同一套代码在两个章节各写一遍，既冗余又容易版本漂移，属于"重复凑篇幅"。
 
-from langchain_openai import ChatOpenAI
+> 本节是"模型路由**评估**"，重点是**如何判断一个路由策略好不好**，而不是再实现一遍路由器。因此这里只保留路由策略的**选型对比**与**评估指标体系**，路由器的具体代码请直接复用第 20 章。
 
+### 三种路由策略的选型对比（评估视角）
 
-class RoutingStrategy(Enum):
-    """路由策略"""
-    STATIC = "static"        # 基于规则
-    LLM = "llm"              # 基于 LLM
-    CONFIDENCE = "confidence" # 基于置信度
-    CASCADE = "cascade"       # 级联（先小后大）
+| 策略 | 实现位置 | 适用评估场景 | 主要评估指标 |
+|------|----------|--------------|--------------|
+| 静态规则路由 | 第 20 章 `StaticRouter` | 任务类型可枚举、成本敏感 | 覆盖率、错误路由率 |
+| LLM 动态路由 | 第 20 章 `LLMRouter` | 任务复杂度难预判 | 路由准确率、额外延迟 |
+| 级联路由（先小后大） | 第 20 章 `CascadeRouter` | 简单任务占多数 | 升级率、成本节省比 |
 
+### 何时评估路由、何时直接上大模型
 
-@dataclass
-class RoutingDecision:
-    """路由决策"""
-    selected_model: str
-    strategy: RoutingStrategy
-    confidence: float
-    reasoning: str
-    latency_ms: float
-    router_cost: float
+- 当**简单任务占比 > 60%** 且质量容忍度较高时，路由（尤其级联）能显著降本，值得评估；
+- 当任务普遍复杂、或路由本身的延迟/成本不可忽略时，直接统一用中/大模型反而更省心，路由带来的边际收益有限。
 
+> 想看真实可运行的路由器代码与降级逻辑：跳到 **第 20 章 6 节（模型服务与路由）**。本节后半部分（"路由评估指标体系"）告诉你拿到路由决策日志后，该看哪些数。
 
-@dataclass
-class RoutingRecord:
-    """路由记录（用于评估和优化）"""
-    timestamp: float
-    query: str
-    decision: RoutingDecision
-    actual_quality: Optional[float] = None  # 事后评估
-    actual_cost: Optional[float] = None     # 实际成本
-    was_correct: Optional[bool] = None      # 路由是否正确
-
-
-class SmartRouter:
-    """智能模型路由器"""
-
-    def __init__(
-        self,
-        strategy: RoutingStrategy = RoutingStrategy.LLM,
-        router_model: str = "gpt-4.1-mini",
-        fallback_model: str = "gpt-4.1",
-        min_confidence: float = 0.6
-    ):
-        self.strategy = strategy
-        self.router_model = router_model
-        self.fallback_model = fallback_model
-        self.min_confidence = min_confidence
-        self.llm = ChatOpenAI(model=router_model, temperature=0)
-
-        # 模型配置
-        self.models = {
-            "gpt-4.1": {
-                "cost_per_token": 10e-6,
-                "quality_tier": "high",
-                "max_tokens": 16384
-            },
-            "gpt-4.1-mini": {
-                "cost_per_token": 2e-6,
-                "quality_tier": "medium",
-                "max_tokens": 16384
-            },
-            "gpt-4.1-nano": {
-                "cost_per_token": 0.5e-6,
-                "quality_tier": "basic",
-                "max_tokens": 16384
-            },
-        }
-
-        # 路由历史
-        self.history: list[RoutingRecord] = []
-
-    def route(
-        self,
-        query: str,
-        context: dict = None,
-        force_model: str = None
-    ) -> RoutingDecision:
-        """执行路由决策"""
-
-        # 强制指定模型
-        if force_model and force_model in self.models:
-            return RoutingDecision(
-                selected_model=force_model,
-                strategy=RoutingStrategy.STATIC,
-                confidence=1.0,
-                reasoning="强制指定模型",
-                latency_ms=0,
-                router_cost=0
-            )
-
-        start_time = time.time()
-
-        # 根据策略路由
-        if self.strategy == RoutingStrategy.STATIC:
-            decision = self._route_static(query)
-        elif self.strategy == RoutingStrategy.LLM:
-            decision = self._route_llm(query, context)
-        elif self.strategy == RoutingStrategy.CASCADE:
-            decision = self._route_cascade(query)
-        else:
-            decision = self._route_llm(query, context)
-
-        decision.latency_ms = (time.time() - start_time) * 1000
-
-        # 低置信度时降级到大模型
-        if decision.confidence < self.min_confidence:
-            decision.reasoning += "（置信度不足，降级到大模型）"
-            decision.selected_model = self.fallback_model
-
-        # 记录路由决策
-        self.history.append(RoutingRecord(
-            timestamp=time.time(),
-            query=query,
-            decision=decision
-        ))
-
-        return decision
-
-    def _route_static(self, query: str) -> RoutingDecision:
-        """静态规则路由"""
-        query_len = len(query)
-
-        # 简单关键词 + 长度规则
-        simple_keywords = ["什么是", "多少", "定义", "翻译", "格式化"]
-        complex_keywords = ["规划", "设计", "优化", "分析", "对比", "评估"]
-
-        if any(kw in query for kw in simple_keywords) and query_len < 100:
-            return RoutingDecision(
-                selected_model="gpt-4.1-nano",
-                strategy=RoutingStrategy.STATIC,
-                confidence=0.7,
-                reasoning="简单查询，短文本",
-                latency_ms=0,
-                router_cost=0
-            )
-        elif any(kw in query for kw in complex_keywords) or query_len > 500:
-            return RoutingDecision(
-                selected_model="gpt-4.1",
-                strategy=RoutingStrategy.STATIC,
-                confidence=0.6,
-                reasoning="复杂查询或长文本",
-                latency_ms=0,
-                router_cost=0
-            )
-        else:
-            return RoutingDecision(
-                selected_model="gpt-4.1-mini",
-                strategy=RoutingStrategy.STATIC,
-                confidence=0.7,
-                reasoning="中等复杂度查询",
-                latency_ms=0,
-                router_cost=0
-            )
-
-    def _route_llm(self, query: str, context: dict = None) -> RoutingDecision:
-        """LLM 动态路由"""
-        context_text = ""
-        if context:
-            context_text = f"\n上下文：{json.dumps(context, ensure_ascii=False)}"
-
-        prompt = f"""你是一个模型路由器。请判断处理以下查询应该使用哪个模型。
-
-可用模型：
-- gpt-4.1-nano：适合简单查询（事实查询、关键词提取、格式转换），成本最低
-- gpt-4.1-mini：适合中等查询（推理、搜索、工具调用），成本适中
-- gpt-4.1：适合复杂查询（深度推理、多步规划、创造性任务），成本最高
-
-查询：{query}{context_text}
-
-只回复 JSON：
-{{"model": "gpt-4.1-nano/gpt-4.1-mini/gpt-4.1", "confidence": 0.0-1.0, "reasoning": "简短理由"}}"""
-
-        response = self.llm.invoke(prompt)
-        try:
-            result = json.loads(response.content)
-            model = result.get("model", "gpt-4.1-mini")
-            if model not in self.models:
-                model = "gpt-4.1-mini"
-
-            # 估算路由成本
-            router_input_tokens = len(query) // 4 + 200
-            router_output_tokens = 50
-            router_cost = (
-                router_input_tokens * 0.4 / 1_000_000
-                + router_output_tokens * 1.6 / 1_000_000
-            )
-
-            return RoutingDecision(
-                selected_model=model,
-                strategy=RoutingStrategy.LLM,
-                confidence=result.get("confidence", 0.5),
-                reasoning=result.get("reasoning", ""),
-                latency_ms=0,
-                router_cost=router_cost
-            )
-        except json.JSONDecodeError:
-            return RoutingDecision(
-                selected_model="gpt-4.1-mini",
-                strategy=RoutingStrategy.LLM,
-                confidence=0.0,
-                reasoning="路由解析失败",
-                latency_ms=0,
-                router_cost=0
-            )
-
-    def _route_cascade(self, query: str) -> RoutingDecision:
-        """级联路由：先用小模型，不够再升级"""
-        # 级联策略默认从最小的模型开始
-        return RoutingDecision(
-            selected_model="gpt-4.1-nano",
-            strategy=RoutingStrategy.CASCADE,
-            confidence=0.5,
-            reasoning="级联策略，从小模型开始",
-            latency_ms=0,
-            router_cost=0
-        )
-
-    def evaluate_routing(self) -> dict:
-        """评估路由效果"""
-        if not self.history:
-            return {"message": "无路由记录"}
-
-        total = len(self.history)
-        evaluated = [r for r in self.history if r.was_correct is not None]
-
-        # 模型分布
-        model_counts = {}
-        total_router_cost = 0
-        for record in self.history:
-            model = record.decision.selected_model
-            model_counts[model] = model_counts.get(model, 0) + 1
-            total_router_cost += record.decision.router_cost
-
-        # 准确率
-        accuracy = 0
-        if evaluated:
-            accuracy = sum(1 for r in evaluated if r.was_correct) / len(evaluated)
-
-        # 平均置信度
-        avg_confidence = sum(r.decision.confidence for r in self.history) / total
-
-        # 低置信度降级次数
-        fallback_count = sum(
-            1 for r in self.history
-            if r.decision.confidence < self.min_confidence
-        )
-
-        return {
-            "total_routing_decisions": total,
-            "model_distribution": {
-                model: {"count": count, "percentage": count / total}
-                for model, count in model_counts.items()
-            },
-            "routing_accuracy": accuracy,
-            "avg_confidence": avg_confidence,
-            "fallback_count": fallback_count,
-            "total_router_cost": total_router_cost,
-            "avg_router_latency_ms": sum(
-                r.decision.latency_ms for r in self.history
-            ) / total
-        }
-
-    def get_report(self) -> str:
-        """生成路由评估报告"""
-        metrics = self.evaluate_routing()
-
-        lines = ["# 模型路由评估报告\n"]
-
-        lines.append("## 总体指标\n")
-        lines.append(f"- 总路由决策数：{metrics['total_routing_decisions']}")
-        lines.append(f"- 路由准确率：{metrics['routing_accuracy']:.1%}")
-        lines.append(f"- 平均置信度：{metrics['avg_confidence']:.2f}")
-        lines.append(f"- 低置信度降级次数：{metrics['fallback_count']}")
-        lines.append(f"- 总路由成本：${metrics['total_router_cost']:.4f}")
-
-        lines.append("\n## 模型分布\n")
-        lines.append("| 模型 | 次数 | 占比 |")
-        lines.append("|------|------|------|")
-        for model, info in metrics.get("model_distribution", {}).items():
-            lines.append(
-                f"| {model} | {info['count']} | {info['percentage']:.1%} |"
-            )
-
-        return "\n".join(lines)
-
-
-# ============================================================
-# 使用示例
-# ============================================================
-
-def demo_router():
-    """演示智能路由器"""
-    router = SmartRouter(
-        strategy=RoutingStrategy.LLM,
-        router_model="gpt-4.1-mini",
-        fallback_model="gpt-4.1",
-        min_confidence=0.6
-    )
-
-    test_queries = [
-        "什么是机器学习？",                           # 简单
-        "请分析 Python 和 Go 在微服务架构中的优劣势",    # 中等
-        "设计一个多 Agent 协作系统，要求支持动态角色分配、"
-        "任务依赖管理和冲突解决机制",                    # 复杂
-        "翻译：Hello World",                           # 简单
-        "总结这篇论文的核心贡献",                       # 中等
-    ]
-
-    for query in test_queries:
-        decision = router.route(query)
-        print(f"查询：{query[:30]}...")
-        print(f"  → 模型：{decision.selected_model}")
-        print(f"  → 置信度：{decision.confidence:.2f}")
-        print(f"  → 理由：{decision.reasoning}")
-        print()
-
-    # 生成评估报告
-    print(router.get_report())
-
-
-if __name__ == "__main__":
-    demo_router()
-```
-
-### 级联路由实现
-
-级联路由是另一种常用策略：先用小模型处理，如果小模型信心不足或质量不达标，再升级到大模型。
-
-```python
-class CascadeRouter:
-    """级联路由器：先小后大，逐级升级"""
-
-    def __init__(
-        self,
-        model_chain: list[str] = None,
-        quality_threshold: float = 0.7,
-        confidence_key: str = "confidence"
-    ):
-        """
-        Args:
-            model_chain: 模型链，从小到大排列
-            quality_threshold: 质量阈值，低于此值升级模型
-            confidence_key: 输出中表示置信度的字段
-        """
-        self.model_chain = model_chain or [
-            "gpt-4.1-nano", "gpt-4.1-mini", "gpt-4.1"
-        ]
-        self.quality_threshold = quality_threshold
-        self.confidence_key = confidence_key
-        self.llms = {
-            model: ChatOpenAI(model=model, temperature=0)
-            for model in self.model_chain
-        }
-
-    def route(self, query: str) -> dict:
-        """级联路由执行"""
-        for i, model in enumerate(self.model_chain):
-            llm = self.llms[model]
-            response = llm.invoke(query)
-
-            # 评估质量/置信度
-            quality = self._assess_quality(query, response.content)
-
-            result = {
-                "output": response.content,
-                "model": model,
-                "model_index": i,
-                "quality": quality,
-                "escalated": quality < self.quality_threshold and i < len(self.model_chain) - 1
-            }
-
-            # 质量达标，返回结果
-            if quality >= self.quality_threshold:
-                return result
-
-            # 质量不达标，升级到下一级模型
-            if i < len(self.model_chain) - 1:
-                continue
-
-        # 所有模型都尝试过了，返回最后一个
-        return result
-
-    def _assess_quality(self, query: str, output: str) -> float:
-        """快速评估输出质量（启发式）"""
-        # 基本检查
-        if not output or len(output.strip()) < 10:
-            return 0.0
-
-        # 检查是否包含"我不确定"等低置信度标记
-        low_confidence_markers = [
-            "我不确定", "无法确定", "可能", "也许",
-            "I'm not sure", "I cannot", "作为AI"
-        ]
-        for marker in low_confidence_markers:
-            if marker in output:
-                return 0.5
-
-        # 检查输出长度与查询复杂度的匹配
-        if len(query) > 200 and len(output) < 100:
-            return 0.4
-
-        return 0.8  # 默认高质量
-
-
-# 使用示例
-cascade = CascadeRouter(
-    model_chain=["gpt-4.1-nano", "gpt-4.1-mini", "gpt-4.1"],
-    quality_threshold=0.7
-)
-
-result = cascade.route("设计一个分布式系统的容错方案")
-print(f"最终模型：{result['model']}")
-print(f"是否升级：{result['escalated']}")
-print(f"输出质量：{result['quality']:.2f}")
-```
-
-### 级联路由的成本分析
-
-| 场景 | 小模型成功率 | 平均调用次数 | 相对成本 |
-|------|-------------|-------------|----------|
-| 70% 简单 + 30% 复杂 | 70% | 1.3x | 35% |
-| 50% 简单 + 50% 复杂 | 50% | 1.5x | 55% |
-| 30% 简单 + 70% 复杂 | 30% | 1.7x | 75% |
-| 全部大模型 | - | 1.0x | 100% |
-
-> 💡 **最佳实践**：级联路由最适合简单任务占多数的场景。如果大部分任务都是复杂的，级联反而增加成本（小模型的调用浪费了）。
 
 ---
 
@@ -1126,73 +708,65 @@ class RouterEvaluator:
 
 ---
 
-## 实战案例：客服系统的模型路由优化
+## 实战案例：客服系统的路由成本建模
 
-### 场景描述
+> ⚠️ **诚实说明**：旧版的同一小节用已移除的 `SmartRouter` 跑了一次"模拟路由"，并给出了一张看起来像真实跑出来的成本对比表（月成本 $2,880 / $780 等）。那些数字其实是**示意性假设**，并非真实系统测量值。下面改用本节保留的 `CostQualityAnalyzer` 做成本建模，数字同样是**基于给定费率和任务分布的推算**，请把它当作"如何建模"的示范，而非某产品的实测。
 
-一个电商客服系统，每天处理 10,000 次请求，需要优化模型路由策略。
+### 场景与任务分布（假设）
+
+一个电商客服系统，日请求 10,000 次，任务分布与费率假设如下（费率表 `MODELS` 见前文）：
 
 ```python
-# 定义业务任务分布
-customer_service_tasks = [
-    {"type": "FAQ", "volume": 4000, "complexity": "simple",
-     "avg_input_tokens": 150, "avg_output_tokens": 80},
-    {"type": "订单查询", "volume": 2500, "complexity": "simple",
-     "avg_input_tokens": 200, "avg_output_tokens": 100},
-    {"type": "退换货处理", "volume": 1500, "complexity": "medium",
-     "avg_input_tokens": 500, "avg_output_tokens": 300},
-    {"type": "投诉处理", "volume": 1200, "complexity": "complex",
-     "avg_input_tokens": 800, "avg_output_tokens": 500},
-    {"type": "技术支持", "volume": 800, "complexity": "complex",
-     "avg_input_tokens": 1000, "avg_output_tokens": 600},
+from dataclasses import dataclass
+
+@dataclass
+class TaskProfile:
+    name: str
+    avg_input_tokens: int
+    avg_output_tokens: int
+    daily_volume: int
+    quality_requirement: float
+
+tasks = [
+    TaskProfile("FAQ", 150, 80, 4000, 0.70),
+    TaskProfile("订单查询", 200, 100, 2500, 0.80),
+    TaskProfile("退换货", 500, 300, 1500, 0.85),
+    TaskProfile("投诉", 800, 500, 1200, 0.90),
+    TaskProfile("技术支持", 1000, 600, 800, 0.92),
 ]
-
-# 创建路由器
-router = SmartRouter(
-    strategy=RoutingStrategy.LLM,
-    router_model="gpt-4.1-mini"
-)
-
-# 模拟路由决策
-total_cost = 0
-model_usage = {"gpt-4.1-nano": 0, "gpt-4.1-mini": 0, "gpt-4.1": 0}
-
-for task in customer_service_tasks:
-    # 根据复杂度选择查询模板
-    sample_queries = {
-        "simple": "我的订单什么时候发货？",
-        "medium": "我收到的商品有质量问题，想退货但已经过了7天",
-        "complex": "我对你们的服务非常不满，要求经理给我回电解释为什么三次投诉都没解决"
-    }
-
-    query = sample_queries[task["complexity"]]
-    decision = router.route(query)
-    model_usage[decision.selected_model] += task["volume"]
-
-    # 计算成本
-    model_costs = {
-        "gpt-4.1-nano": 0.5e-6,
-        "gpt-4.1-mini": 2e-6,
-        "gpt-4.1": 10e-6
-    }
-    tokens = task["avg_input_tokens"] + task["avg_output_tokens"]
-    cost = tokens * model_costs[decision.selected_model] * task["volume"]
-    total_cost += cost
-
-print(f"日成本：${total_cost:.2f}")
-print(f"月成本：${total_cost * 30:.2f}")
-print(f"模型分布：{model_usage}")
 ```
 
-### 优化结果对比
+### 用 CostQualityAnalyzer 估算各路由策略成本
 
-| 策略 | 月成本 | 平均质量 | 节省比例 |
-|------|--------|----------|----------|
-| 全部 gpt-4.1 | $2,880 | 0.95 | 基线 |
-| 全部 gpt-4.1-mini | $576 | 0.85 | 80% |
-| 静态规则路由 | $920 | 0.87 | 68% |
-| LLM 智能路由 | $780 | 0.89 | 73% |
-| 级联路由 | $650 | 0.86 | 77% |
+```python
+# 复用本节前面的 CostQualityAnalyzer 与 MODELS 费率表
+# （gpt-4.1 / gpt-4.1-mini / gpt-4.1-nano 的费率与质量分见前文）
+
+# 单模型策略对照
+strategies = {
+    "全部 gpt-4.1":      {"gpt-4.1": 1.0},
+    "全部 gpt-4.1-mini": {"gpt-4.1-mini": 1.0},
+    "全部 gpt-4.1-nano": {"gpt-4.1-nano": 1.0},
+}
+for name, ratio in strategies.items():
+    rep = analyzer.analyze_routing(tasks, ratio)
+    print(f"{name}: 月成本 ${rep['monthly_cost']:.0f}, 加权质量 {rep['weighted_quality']:.2f}")
+
+# 路由策略：简单任务走 nano/mini，复杂任务走 4.1（示意比例）
+routed = analyzer.analyze_routing(tasks, {
+    "gpt-4.1-nano": 0.40,
+    "gpt-4.1-mini": 0.35,
+    "gpt-4.1": 0.25,
+})
+print(f"路由策略: 月成本 ${routed['monthly_cost']:.0f}, 加权质量 {routed['weighted_quality']:.2f}")
+```
+
+> 注意：上面的 `analyze_routing` 会把每个任务按比例拆分到不同模型并加权质量——它衡量的是"在给定路由比例下的总成本与加权质量"，**不是**真实路由器的在线决策。要得到真实路由效果，需要把第 20 章的路由器接到线上、记录 `RoutingRecord`（见下节评估指标），再用真实流量回算。
+
+### 建模结论（示意）
+
+在"简单任务占多数"的假设下，路由策略相比"全部用大模型"通常能省 60–80% 成本，代价是加权质量从 ~0.95 降到 ~0.85–0.90。是否划算取决于你的质量容忍度——这正是下一节的评估指标要回答的问题。
+
 
 ---
 

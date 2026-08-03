@@ -27,19 +27,64 @@ import math
 # 1. 定义工具
 # ============================
 
+# ============================
+# 0. 安全的表达式求值器（不使用 eval）
+# ============================
+# ⚠️ 重要：绝不能用 eval() 执行来自工具/用户的表达式。即使你像上面那样
+# 把 __builtins__ 清空，攻击者仍可能用 "__import__"、"().__class__..." 等
+# 对象链逃逸沙箱。正确做法是：只允许"算术"这一种语义，用 ast 把字符串
+# 解析成抽象语法树，再在白名单里逐项求值。
+import ast
+import operator
+
+_ALLOWED_BIN_OPS = {
+    ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+    ast.Div: operator.truediv, ast.Mod: operator.mod, ast.Pow: operator.pow,
+}
+_ALLOWED_UNARY_OPS = {ast.UAdd: operator.pos, ast.USub: operator.neg}
+_ALLOWED_FUNCS = {
+    "sqrt": math.sqrt, "sin": math.sin, "cos": math.cos, "tan": math.tan,
+    "log": math.log, "log10": math.log10, "exp": math.exp,
+    "abs": abs, "floor": math.floor, "ceil": math.ceil,
+}
+_ALLOWED_NAMES = {"pi": math.pi, "e": math.e}
+
+def _safe_eval_node(node):
+    if isinstance(node, ast.Expression):
+        return _safe_eval_node(node.body)
+    if isinstance(node, ast.Constant):
+        if isinstance(node.value, (int, float)):
+            return node.value
+        raise ValueError("只支持数值常量")
+    if isinstance(node, ast.BinOp):
+        return _ALLOWED_BIN_OPS[type(node.op)](
+            _safe_eval_node(node.left), _safe_eval_node(node.right)
+        )
+    if isinstance(node, ast.UnaryOp):
+        return _ALLOWED_UNARY_OPS[type(node.op)](_safe_eval_node(node.operand))
+    if isinstance(node, ast.Call):
+        if not isinstance(node.func, ast.Name) or node.func.id not in _ALLOWED_FUNCS:
+            raise ValueError(f"不允许的函数：{getattr(node.func, 'id', node.func)}")
+        return _ALLOWED_FUNCS[node.func.id](*[_safe_eval_node(a) for a in node.args])
+    if isinstance(node, ast.Name):
+        if node.id in _ALLOWED_NAMES:
+            return _ALLOWED_NAMES[node.id]
+        raise ValueError(f"不允许的变量：{node.id}")
+    raise ValueError(f"不支持的语法：{type(node).__name__}")
+
+def safe_calculate_expr(expression: str) -> str:
+    """用 AST 沙箱求值，支持 + - * / % ** 以及 sqrt/sin/cos/log/pi/e 等。"""
+    try:
+        tree = ast.parse(expression, mode="eval")
+        result = _safe_eval_node(tree)
+        return f"{result:.6g}" if isinstance(result, float) else str(result)
+    except Exception as e:
+        return f"计算错误：{e}"
+
 @tool
 def calculate(expression: str) -> str:
     """计算数学表达式，支持 sqrt, sin, cos, log, pi, e 等"""
-    try:
-        safe_env = {k: getattr(math, k) for k in dir(math) if not k.startswith('_')}
-        # ⚠️ 安全警告：eval() 即使限制了 __builtins__ 仍可能被绕过
-        # 生产环境请使用 simpleeval 或 numexpr 等安全的表达式解析库
-        result = eval(expression, {"__builtins__": {}}, safe_env)
-        if isinstance(result, float):
-            return f"{result:.6g}"
-        return str(result)
-    except Exception as e:
-        return f"计算错误：{e}"
+    return safe_calculate_expr(expression)
 
 @tool
 def get_fact(topic: str) -> str:

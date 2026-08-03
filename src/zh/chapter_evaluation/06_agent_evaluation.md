@@ -756,388 +756,52 @@ class SWEBenchEvaluator:
 
 ---
 
-## 完整实战：构建 Agent-as-Judge 评估系统
+## 完整实战：构建一个可运行的评估管线
 
-下面我们将实现一个完整的 Agent-as-Judge 评估系统，用于评估任意 LangChain Agent 的表现。
+> ⚠️ **诚实说明**：旧版这一节用 `TraceCollector` / `AgentAsJudgeEvaluator` 两个类"演示"了评估系统的完整实现，但它们的 `evaluate` 方法依赖真实 LLM API，且配套给出的"实战案例"是手写的**模拟轨迹**——也就是说，它从未在任何固定数据集上真正跑通过，属于"看似完整、实则无法复现"的凑数写法。
+
+> 评估系统真正的难点不在于写出 `class Evaluator`，而在于：**有一份固定、可复现的任务集，和一个能对每个任务给出通过/失败判定的可运行 harness**。本节不再重复造轮子，而是直接复用本书统一底座 `reference-agent/` 中**已经过测试**的评估模块。
+
+### 真实可运行的评估 harness
+
+`reference-agent/src/reference_agent/evaluation/harness.py` 提供三个函数：
+
+- `load_samples(path)` —— 从 JSONL 读取固定任务集；
+- `run_case(agent, sample)` —— 跑单个任务并判定 `passed`（基于 `expect_contains` 关键词命中）；
+- `evaluate(agent, samples)` —— 批量跑，返回 `total / passed / pass_rate / results` 的可复现报告。
 
 ```python
-"""
-Agent-as-Judge 评估系统
-支持：轨迹收集、多维度评估、报告生成
-"""
-import json
-import time
-from dataclasses import dataclass, field
-from typing import Optional, Callable
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
+# reference-agent 中的真实代码（已随本书提交，可通过 pytest 复现）
+from reference_agent.evaluation.harness import evaluate
 
-
-# ============================================================
-# 第一部分：轨迹收集器
-# ============================================================
-
-@dataclass
-class CollectedStep:
-    """收集的单步执行记录"""
-    step_index: int
-    thought: str = ""
-    tool_name: str = ""
-    tool_input: dict = field(default_factory=dict)
-    tool_output: str = ""
-    is_error: bool = False
-    timestamp: float = 0.0
-    token_count: int = 0
-
-
-class TraceCollector:
-    """收集 Agent 执行轨迹的回调处理器"""
-
-    def __init__(self):
-        self.traces: dict[str, list[CollectedStep]] = {}
-        self._current_trace: list[CollectedStep] = []
-        self._step_counter: int = 0
-
-    def start_trace(self, task_id: str):
-        """开始新的轨迹收集"""
-        self._current_trace = []
-        self._step_counter = 0
-        self.traces[task_id] = self._current_trace
-
-    def record_step(
-        self,
-        thought: str = "",
-        tool_name: str = "",
-        tool_input: dict = None,
-        tool_output: str = "",
-        is_error: bool = False,
-        token_count: int = 0
-    ):
-        """记录一步执行"""
-        step = CollectedStep(
-            step_index=self._step_counter,
-            thought=thought,
-            tool_name=tool_name,
-            tool_input=tool_input or {},
-            tool_output=tool_output,
-            is_error=is_error,
-            timestamp=time.time(),
-            token_count=token_count
-        )
-        self._current_trace.append(step)
-        self._step_counter += 1
-
-    def get_trace(self, task_id: str) -> list[CollectedStep]:
-        """获取指定任务的轨迹"""
-        return self.traces.get(task_id, [])
-
-
-# ============================================================
-# 第二部分：Agent-as-Judge 评估器
-# ============================================================
-
-class AgentAsJudgeEvaluator:
-    """完整的 Agent-as-Judge 评估系统"""
-
-    def __init__(
-        self,
-        judge_model: str = "gpt-4.1",
-        dimensions: list[str] = None
-    ):
-        self.llm = ChatOpenAI(model=judge_model, temperature=0)
-        self.dimensions = dimensions or [
-            "目标达成度",
-            "工具选择合理性",
-            "参数正确性",
-            "错误处理能力",
-            "执行效率",
-            "输出质量"
-        ]
-
-    def evaluate(
-        self,
-        task_query: str,
-        steps: list[CollectedStep],
-        final_output: str,
-        expected_output: str = None,
-        ground_truth_steps: list[dict] = None
-    ) -> dict:
-        """完整评估流程"""
-
-        # 1. 轨迹格式化
-        formatted_trace = self._format_steps(steps)
-
-        # 2. 逐步评估
-        step_evals = self._evaluate_each_step(
-            task_query, formatted_trace
-        )
-
-        # 3. 整体评估
-        overall_eval = self._evaluate_overall(
-            task_query, formatted_trace, final_output,
-            expected_output, step_evals
-        )
-
-        # 4. 与 Ground Truth 对比（如果有）
-        comparison = None
-        if ground_truth_steps:
-            comparison = self._compare_with_ground_truth(
-                steps, ground_truth_steps
-            )
-
-        return {
-            "query": task_query,
-            "step_count": len(steps),
-            "error_count": sum(1 for s in steps if s.is_error),
-            "dimensions": overall_eval,
-            "step_details": step_evals,
-            "ground_truth_comparison": comparison,
-            "final_output": final_output
-        }
-
-    def _format_steps(self, steps: list[CollectedStep]) -> str:
-        """格式化执行步骤"""
-        lines = []
-        for s in steps:
-            lines.append(f"### 步骤 {s.step_index + 1}")
-            if s.thought:
-                lines.append(f"思考：{s.thought}")
-            if s.tool_name:
-                lines.append(f"调用工具：{s.tool_name}")
-                lines.append(
-                    f"参数：{json.dumps(s.tool_input, ensure_ascii=False)}"
-                )
-            if s.tool_output:
-                status = "❌ 失败" if s.is_error else "✅ 成功"
-                lines.append(f"结果({status})：{s.tool_output[:200]}")
-            lines.append("")
-        return "\n".join(lines)
-
-    def _evaluate_each_step(
-        self, query: str, formatted_trace: str
-    ) -> list[dict]:
-        """逐步评估"""
-        prompt = f"""你是一个专业的 Agent 行为评审员。请逐步审查以下 Agent 执行轨迹。
-
-用户任务：{query}
-
-执行轨迹：
-{formatted_trace}
-
-请对每一步进行评估，输出 JSON：
-{{
-    "steps": [
-        {{
-            "step_number": 1,
-            "quality": "<优/良/中/差>",
-            "is_redundant": <true/false>,
-            "issues": ["问题1"],
-            "improvement": "改进建议"
-        }}
-    ]
-}}"""
-
-        response = self.llm.invoke(prompt)
-        try:
-            result = json.loads(response.content)
-            return result.get("steps", [])
-        except json.JSONDecodeError:
-            return []
-
-    def _evaluate_overall(
-        self,
-        query: str,
-        formatted_trace: str,
-        final_output: str,
-        expected_output: Optional[str],
-        step_evals: list[dict]
-    ) -> dict:
-        """整体维度评估"""
-        expected_section = ""
-        if expected_output:
-            expected_section = f"\n期望输出：\n{expected_output}\n"
-
-        dimensions_text = "、".join(self.dimensions)
-
-        prompt = f"""你是一个专业的 Agent 评估专家。请对以下 Agent 的整体表现进行评估。
-
-用户任务：{query}
-{expected_section}
-执行轨迹：
-{formatted_trace}
-
-最终输出：
-{final_output}
-
-请从以下维度评分（0-10 分）：{dimensions_text}
-
-以 JSON 格式回复：
-{{
-    "scores": {{
-        "目标达成度": <0-10>,
-        "工具选择合理性": <0-10>,
-        "参数正确性": <0-10>,
-        "错误处理能力": <0-10>,
-        "执行效率": <0-10>,
-        "输出质量": <0-10>
-    }},
-    "weighted_score": <加权总分 0-10>,
-    "summary": "2-3句总结",
-    "top_issue": "最需要改进的一点"
-}}"""
-
-        response = self.llm.invoke(prompt)
-        try:
-            return json.loads(response.content)
-        except json.JSONDecodeError:
-            return {"scores": {}, "weighted_score": 0, "summary": "解析失败"}
-
-    def _compare_with_ground_truth(
-        self,
-        actual: list[CollectedStep],
-        expected: list[dict]
-    ) -> dict:
-        """与 Ground Truth 对比"""
-        # 工具序列匹配
-        actual_tools = [s.tool_name for s in actual if s.tool_name]
-        expected_tools = [s["tool"] for s in expected if "tool" in s]
-
-        # 计算最长公共子序列比例
-        lcs_len = self._lcs_length(actual_tools, expected_tools)
-        tool_seq_accuracy = (
-            lcs_len / len(expected_tools) if expected_tools else 1.0
-        )
-
-        return {
-            "tool_sequence_accuracy": tool_seq_accuracy,
-            "actual_tool_count": len(actual_tools),
-            "expected_tool_count": len(expected_tools),
-            "extra_steps": max(0, len(actual_tools) - len(expected_tools)),
-            "missing_tools": [
-                t for t in expected_tools if t not in actual_tools
-            ]
-        }
-
-    @staticmethod
-    def _lcs_length(s1: list, s2: list) -> int:
-        """最长公共子序列长度"""
-        m, n = len(s1), len(s2)
-        dp = [[0] * (n + 1) for _ in range(m + 1)]
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
-                if s1[i-1] == s2[j-1]:
-                    dp[i][j] = dp[i-1][j-1] + 1
-                else:
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1])
-        return dp[m][n]
-
-
-# ============================================================
-# 第三部分：批量评估与报告生成
-# ============================================================
-
-class AgentEvaluationReport:
-    """生成评估报告"""
-
-    def __init__(self, results: list[dict]):
-        self.results = results
-
-    def generate(self) -> str:
-        """生成 Markdown 格式的评估报告"""
-        lines = ["# Agent 评估报告\n"]
-
-        # 总体统计
-        total = len(self.results)
-        avg_score = sum(
-            r["dimensions"].get("weighted_score", 0)
-            for r in self.results
-        ) / total if total > 0 else 0
-
-        lines.append("## 总体统计\n")
-        lines.append(f"- 评估任务数：{total}")
-        lines.append(f"- 平均加权得分：{avg_score:.1f} / 10")
-        lines.append(f"- 平均步骤数：{sum(r['step_count'] for r in self.results) / total:.1f}")
-        lines.append(f"- 平均错误数：{sum(r['error_count'] for r in self.results) / total:.1f}")
-
-        # 维度平均分
-        lines.append("\n## 各维度平均分\n")
-        lines.append("| 维度 | 平均分 |")
-        lines.append("|------|--------|")
-        for dim in ["目标达成度", "工具选择合理性", "参数正确性",
-                     "错误处理能力", "执行效率", "输出质量"]:
-            scores = [
-                r["dimensions"].get("scores", {}).get(dim, 0)
-                for r in self.results
-            ]
-            avg = sum(scores) / len(scores) if scores else 0
-            lines.append(f"| {dim} | {avg:.1f} |")
-
-        # 详细结果
-        lines.append("\n## 详细结果\n")
-        for i, result in enumerate(self.results):
-            lines.append(f"### 任务 {i+1}\n")
-            lines.append(f"- 查询：{result['query'][:100]}")
-            lines.append(f"- 步骤数：{result['step_count']}")
-            lines.append(f"- 错误数：{result['error_count']}")
-            score = result["dimensions"].get("weighted_score", 0)
-            lines.append(f"- 加权得分：{score:.1f} / 10")
-            summary = result["dimensions"].get("summary", "")
-            lines.append(f"- 评价：{summary}")
-            lines.append("")
-
-        return "\n".join(lines)
-
-
-# ============================================================
-# 使用示例
-# ============================================================
-
-def demo_evaluation():
-    """演示完整的评估流程"""
-
-    # 1. 创建轨迹收集器
-    collector = TraceCollector()
-
-    # 2. 模拟 Agent 执行
-    task_id = "demo_001"
-    collector.start_trace(task_id)
-
-    # 模拟步骤
-    collector.record_step(
-        thought="用户想了解北京的天气，我需要调用天气查询工具",
-        tool_name="get_weather",
-        tool_input={"city": "北京"},
-        tool_output="北京今天晴，气温 25°C，湿度 40%",
-        token_count=150
-    )
-
-    collector.record_step(
-        thought="已经获取到天气信息，可以回答用户了",
-        tool_name="",
-        tool_input={},
-        tool_output="",
-        token_count=80
-    )
-
-    # 3. 运行评估
-    evaluator = AgentAsJudgeEvaluator(judge_model="gpt-4.1")
-    trace = collector.get_trace(task_id)
-
-    result = evaluator.evaluate(
-        task_query="北京今天天气怎么样？",
-        steps=trace,
-        final_output="北京今天天气晴朗，气温 25°C，湿度 40%，适合出行。",
-        expected_output="北京的天气信息，包含温度和湿度"
-    )
-
-    # 4. 生成报告
-    report = AgentEvaluationReport([result])
-    print(report.generate())
-
-
-if __name__ == "__main__":
-    demo_evaluation()
+report = evaluate()  # 默认用 FakeProvider，离线即可跑通
+print(report["pass_rate"])  # 例如 1.0
 ```
+
+任务集 `reference-agent/data/eval_samples.jsonl` 每行一个 JSON 对象，schema 固定：
+
+```json
+{"id": "calc_001", "input": "3加5等于几", "expect_contains": ["8"]}
+```
+
+### 如何本地复现
+
+```bash
+cd reference-agent
+pip install -e .
+pytest                      # 含 evaluation 测试，离线通过
+```
+
+`FakeProvider` 默认离线返回确定性回答，因此 `pass_rate` 是可复现的；接真实模型时设 `AGENT_REAL=1` 并配置 API Key，harness 会自动切换到 `OpenAIProvider`。
+
+### 设计要点（比"写个类"更重要）
+
+1. **固定任务集 > 临时轨迹**：评估必须基于不随时间漂移的任务集，否则无法做回归对比。每次改动 Prompt / 模型后跑同一份 `eval_samples.jsonl`，看 `pass_rate` 是否下降。
+2. **判定要可执行**：`expect_contains` 是弱判定（关键词命中），生产环境应替换为更强的判定——结构化输出校验、单元测试、或人工标注。
+3. **报告要可复现**：`pass_rate` + 每条 `passed` 标志，可直接作为 CI 质量门禁（见 18.7）。
+
+> 想看"多维度 Agent-as-Judge 评分"如何落到真实代码：第 16 章 `examples/dev_team/` 的 `reviewer` 节点用结构化输出做质量判定，同样遵循"判定可执行、报告可复现"的原则。
+
 
 ---
 

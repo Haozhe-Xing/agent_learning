@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dev-team-example"
+version = "0.1.0"
+description = "Runnable multi-agent software dev team (chapter 16.5)."
+requires-python = ">=3.10"
+dependencies = ["langgraph>=0.2", "pytest>=8.0"]
+
+[tool.setuptools]
+py-modules = ["dev_team"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

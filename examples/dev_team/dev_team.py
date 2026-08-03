@@ -1,31 +1,14 @@
-# 16.5 实战：多 Agent 软件开发团队
+"""多 Agent 软件开发团队（可运行版）。
 
-综合本章所有知识，构建一个多 Agent 软件开发系统，模拟真实的开发团队协作。但这一节的关键不是"把六个角色摆出来"，而是让**交付物真正落盘、验收真正可执行**。
+与"只让每个角色用 LLM 吐一段文字"的演示有本质区别：
+- 开发工程师把代码真正写到磁盘（app.py + app_test.py）
+- 测试工程师用 pytest 真正跑测试并收集结果
+- 测试不通过就回到开发工程师重试（测试驱动的闭环）
 
-## 系统设计
-
-这个项目包含 6 个角色：产品经理、架构师、开发工程师、测试工程师、DevOps 工程师和文档工程师。每个角色由一个节点承担，通过**共享状态**（`DevState`）传递工作成果。
-
-## 先说清一个常见误区
-
-这一节在很多书里会被写成"六个角色各自调一次 LLM、各返回一段文字"。那种写法**根本不是闭环**：测试工程师节点只是让 LLM 生成一串"测试代码文本"，从不真正执行；所谓"测试通过"是 Agent 自己宣称的，没有任何客观判据。读者照抄后会以为"多 Agent 已经能交付软件"，实则连一行代码都没在磁盘上落地、没跑过一次测试。
-
-下面给出**可运行**的版本：开发工程师把代码真正写到文件，测试工程师用 `pytest` 真正跑测试、收集返回码，测试不通过就回到开发工程师重试——这是测试驱动的闭环，产物可被独立验证。完整代码见仓库 `examples/dev_team/dev_team.py`，配套 4 个 pytest 用例。
-
-## 设计理念
-
-1. **专业分工**：每个 Agent 只负责自己擅长的领域。产品经理不写代码，开发工程师不写测试用例。分工让每个角色的 Prompt 更聚焦。（如果你只是要 N 个同构的"文本 Agent"，工厂函数 `create_agent_node` 这类模式依然成立；但凡是"交付软件"这类需要产物落盘与客观验收的任务，节点必须写文件、跑测试。）
-2. **客观验收**：测试是否通过不靠 LLM 自述，而靠 `pytest` 的真实返回码（`test_passed = returncode == 0`）。这是整个系统可信的基础。
-3. **测试驱动的闭环**：测试失败时路由回开发工程师重写，直到通过或达到最大迭代次数（防止死循环）。
-
-![多 Agent 软件开发团队流程](../svg/chapter_multi_agent_05_dev_team_flow.svg)
-
-> 上图是 6 角色协作的概念示意。实际图的边以代码为准：产品 → 架构 → 开发 → 测试 →（不通过则回到开发）→ 通过则 → 运维 → 文档。
-
-## 完整实现
-
-```python
-# examples/dev_team/dev_team.py
+为了让图"不依赖 API key 也能跑、也能测"，代码生成器（Developer）是可
+注入的：默认用 DeterministicDeveloper 写出一份已知正确的模块；真实场景
+再换成调用 LLM 的实现（见参考底座 reference-agent）。
+"""
 from __future__ import annotations
 
 import os
@@ -116,7 +99,6 @@ def architect(state: DevState) -> dict:
 
 
 def developer(state: DevState, dev: Developer) -> dict:
-    # 关键区别：开发工程师把代码真正写到磁盘，而不是只返回一段文本
     code, test_code = dev.develop(state["technical_design"], state["original_requirement"])
     ws = state["workspace_dir"]
     with open(os.path.join(ws, "app.py"), "w", encoding="utf-8") as f:
@@ -225,54 +207,3 @@ if __name__ == "__main__":
     print("测试通过：", out["test_passed"])
     print("产物目录：", out["workspace_dir"])
     print(out["test_output"])
-```
-
-## 如何运行
-
-```bash
-cd examples/dev_team
-pip install -e .          # 安装 langgraph + pytest
-pytest -v                # 4 个测试全部通过
-```
-
-配套测试（`tests/test_dev_team.py`）验证了三件事：
-
-1. 整图离线可跑（`DeterministicDeveloper` 不调 LLM），且最终 `test_passed is True`；
-2. 角色**真的写出了文件**——`app.py`、`app_test.py`、`Dockerfile`、`README.md` 都落盘，而不是只返回文本；
-3. 路由逻辑正确：失败 → 回到开发重试，通过或达到上限 → 交付。
-
-实际运行输出（`pytest -v`）：
-
-```
-tests/test_dev_team.py::test_offline_dev_team_passes_tests PASSED
-tests/test_dev_team.py::test_route_fixes_on_failure PASSED
-tests/test_dev_team.py::test_route_delivers_when_passed PASSED
-tests/test_dev_team.py::test_route_delivers_at_cap PASSED
-============================== 4 passed ==============================
-```
-
-## 接入真实 LLM
-
-`DeterministicDeveloper` 只为让图"不依赖 API key 也能跑、也能测"。要真正用 LLM 写代码，实现 `LLMDeveloper.develop`：把 `design` + `requirement` 交给模型，从返回中解析出 `code` 与 `test_code`（建议用 `with_structured_output` 约束为 Pydantic 结构，避免正则抽 JSON 的脆弱做法，见 13.4 节）。更复杂的工程化版本（Provider 抽象、注入防护、流式 API）见本书统一底座 `reference-agent/`。
-
-## 关于"并行"
-
-原"六个角色"演示常声称测试、运维、文档三者"并行"。在**可信交付**里，测试必须先作为闸门跑完、通过后才做运维与文档，所以本实现让它们依次执行。若你的场景里运维/文档与代码正确性无关、可独立并行，LangGraph 的扇出（`add_edge` 到多个节点）确实能并行，但请先想清楚：并行任务是否真的不依赖上游产物的正确性。
-
-## 小结
-
-多 Agent 协作的核心要点：
-
-| 要素 | 关键实践 |
-|------|---------|
-| 角色设计 | 专业化、边界清晰 |
-| 通信机制 | 共享状态（LangGraph `StateGraph`） |
-| 架构选择 | 线性 + 条件边（本例）；复杂协作可用 Supervisor（见本章前面小节） |
-| 验收判据 | 客观可验证：测试靠 `pytest` 返回码，而非 Agent 自述 |
-| 闭环 | 测试不通过 → 路由回开发重试（测试驱动），设最大迭代防死循环 |
-| 并行执行 | 仅限真正无依赖的任务；涉及正确性的任务先做闸门 |
-| 错误处理 | 失败走条件边重试，上限兜底交付 |
-
----
-
-*下一章：[第17章 Agent 通信协议](../chapter_protocol/README.md)*

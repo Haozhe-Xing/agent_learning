@@ -19,7 +19,7 @@ from langgraph.graph import StateGraph, END, START
 from typing import TypedDict, Optional, Literal
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
-import json
+from pydantic import BaseModel, Field
 
 llm = ChatOpenAI(model="gpt-4.1-mini")
 
@@ -35,31 +35,32 @@ class CodeReviewState(TypedDict):
     max_iterations: int
     approved: bool
 
+# 用 Pydantic 描述"审查结果"的结构，让 LLM 直接返回结构化对象，
+# 而不是一段需要靠正则去抠的 JSON 文本。
+class CodeReview(BaseModel):
+    """一次代码审查的结构化结论"""
+    issues: list[str] = Field(description="发现的问题列表；没问题则为空列表")
+    severity: Literal["high", "medium", "low"] = Field(description="整体严重度")
+    approved: bool = Field(description="是否可以直接通过、无需修复")
+
+# with_structured_output 会让底层模型以受控格式输出，
+# 返回的 review 已经是 CodeReview 实例，无需再 json.loads / 正则解析。
+structured_llm = llm.with_structured_output(CodeReview)
+
 def analyze_code(state: CodeReviewState) -> CodeReviewState:
-    """分析代码质量"""
-    response = llm.invoke([
-        HumanMessage(content=f"""审查以下代码，找出所有问题（JSON格式）：
-```python
-{state['code']}
-```
-返回：{{"issues": ["问题1", "问题2"], "severity": "high/medium/low"}}""")
+    """分析代码质量，返回结构化审查结论"""
+    review = structured_llm.invoke([
+        HumanMessage(content=(
+            "你是资深代码审查员。审查下面的代码，列出所有问题。\n"
+            "只关注真实缺陷（bug、安全漏洞、明显性能问题、语法错误），"
+            "不要对风格吹毛求疵。\n\n"
+            f"```python\n{state['code']}\n```"
+        ))
     ])
-    
-    try:
-        import re
-        json_match = re.search(r'\{.*\}', response.content, re.DOTALL)
-        if json_match:
-            result = json.loads(json_match.group())
-            issues = result.get("issues", [])
-        else:
-            issues = []
-    except:
-        issues = []
-    
     return {
-        "issues": issues,
-        "review_result": response.content,
-        "iteration": state.get("iteration", 0) + 1
+        "issues": review.issues,
+        "review_result": review.model_dump_json(),
+        "iteration": state.get("iteration", 0) + 1,
     }
 
 def fix_code(state: CodeReviewState) -> CodeReviewState:
@@ -103,7 +104,8 @@ def should_fix_or_approve(state: CodeReviewState) -> Literal["fix", "approve", "
     if not state["issues"]:
         return "approve"
     
-    # 只有严重问题才继续修复
+    # 只有严重问题才继续修复。结构化输出让我们直接读 severity，
+    # 不必再用关键词去猜——这里以 high/medium 视为需要修复。
     critical_keywords = ["bug", "错误", "安全漏洞", "性能问题", "语法错误"]
     has_critical = any(
         any(kw in issue.lower() for kw in critical_keywords)
