@@ -643,6 +643,107 @@ The difference is:
 - TextGrad is more like a general framework, emphasizing "textual autodiff."
 - GEPA focuses more on prompt optimization, emphasizing "trajectory reflection + evolutionary selection."
 
+### EvoPrompt (ICLR 2024): Porting Genetic Algorithms onto Prompts
+
+**EvoPrompt** stands for *Connecting Large Language Models with Evolutionary Algorithms Yields Powerful Prompt Optimizers*.
+
+> 📄 **Publication:** Guo et al. (Microsoft), **ICLR 2024** | arXiv: [2309.08532](https://arxiv.org/abs/2309.08532)
+
+It views prompt optimization as an evolutionary process:
+
+![EvoPrompt genetic-algorithm search flow](../svg/chapter_llm_09_evoprompt_flow.svg)
+
+The figure below is the concrete operator illustration from the original EvoPrompt paper (using the Genetic Algorithm, GA, as an example): starting from a population of parent prompts, it generates offspring via selection, crossover, and mutation, then filters by fitness.
+
+![EvoPrompt paper example: LLM-based crossover and mutation operators](../svg/chapter_llm_09_evoprompt_paper.png)
+
+*▲ EvoPrompt original paper, Figure (Source: Guo et al., ICLR 2024, arXiv:2309.08532)*
+
+```text
+A population of prompt candidates
+   ↓
+Evaluate the fitness of each candidate
+   ↓
+Select the well-performing candidates
+   ↓
+Crossover and mutate to generate new candidates
+   ↓
+Keep filtering
+```
+
+This is very much like biological evolution:
+
+- Prompt candidates are like different individuals.
+- The score is the fitness.
+- Rewriting a prompt is like genetic mutation.
+- Combining the strengths of two prompts is like genetic crossover.
+
+EvoPrompt's contribution is applying classic evolutionary algorithms to prompt search.
+
+#### How are the Evolutionary Operators Done?
+
+**Mutation**: pick a prompt and ask the LLM to rewrite it slightly.
+
+```text
+Original prompt: "Answer the user's question."
+After mutation: "Answer the user's question based on the given material; do not fabricate information."
+```
+
+**Crossover**: pick two prompts and ask the LLM to merge their strengths.
+
+```text
+Parent A: "Answer the user's question based on the knowledge base."
+Parent B: "Before answering, first classify the user's inquiry type."
+
+After crossover: "Answer the user's question based on the knowledge base. Before answering,
+first classify whether the user is asking about a 'no-questions-asked refund' or a
+'quality-issue after-sales', then apply the corresponding rule."
+```
+
+After each round of evolution, evaluate the fitness (score) of all candidates on a validation set, eliminate the poor performers, keep the good ones, and continue mutating and crossing over.
+
+The advantage of this method is that it does not need to understand *why* a prompt is good or bad — only a score is enough. The drawback is that the search can be rather blind, requiring many candidates before it happens to find a good one.
+
+### PromptBreeder (ICML 2024): Even the "Mutation Rules" Evolve
+
+**PromptBreeder** stands for *Promptbreeder: Self-Referential Self-Improvement via Prompt Evolution*.
+
+> 📄 **Publication:** Fernando et al. (Google DeepMind), **ICML 2024** | arXiv: [2309.16797](https://arxiv.org/abs/2309.16797)
+
+It goes one step further: it evolves not only the task prompt, but also the "prompt that says how to modify the prompt."
+
+![PromptBreeder paper overview: dual self-referential evolution of task prompts and mutation prompts](../svg/chapter_llm_09_promptbreeder_paper.png)
+
+*▲ PromptBreeder original paper overview (Source: Fernando et al., ICML 2024, arXiv:2309.16797)*
+
+In other words, the system contains two kinds of prompts:
+
+```text
+Task prompt: tells the model how to complete the task.
+Mutation prompt: tells the model how to modify the task prompt.
+```
+
+PromptBreeder evolves both kinds of prompts together, giving it a flavor of "self-referential improvement."
+
+#### A Concrete Example
+
+The initial mutation prompt might be:
+
+```text
+Make the instruction below more concise.
+```
+
+But if this mutation direction keeps making prompts too short and losing key rules, then this mutation prompt itself will also be eliminated. The system may evolve a mutation prompt like:
+
+```text
+Add more specific steps and judgment conditions to the instruction below,
+but do not delete existing rules.
+```
+
+This is like: not just "editing the textbook," but also "improving the method of editing the textbook."
+
+This shows that prompt optimization is no longer just "searching for a better instruction" — it is exploring how a system can improve its own method of improvement.
+
 GEPA integrates several of these ideas into one coherent loop.
 
 ---
