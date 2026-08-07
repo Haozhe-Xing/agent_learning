@@ -1,4 +1,4 @@
-# Skill Definition and Encapsulation
+# 9.2 Skill Definition and Encapsulation
 
 In the previous section, we understood the concept of skills. This section dives deep into three mainstream skill encapsulation methods, from simplest to most complex, each with its applicable scenarios.
 
@@ -509,4 +509,4 @@ class HybridDataAnalystSkill:
 
 ---
 
-*Next section: [10.3 Skill Learning and Acquisition](./03_skill_learning.md)*
+*Next section: [9.3 Skill Learning and Acquisition](./03_skill_learning.md)*

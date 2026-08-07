@@ -1,4 +1,4 @@
-# Tokens, Temperature, and Model Parameters Explained
+# 2.5 Tokens, Temperature, and Model Parameters Explained
 
 Model parameters are key factors that affect the quality, cost, and stability of LLM output. In 2026, as model capabilities evolve at breakneck speed (Claude 4.6, Gemini 3.1 Pro, DeepSeek-R1, etc.), understanding these underlying parameters lets you control Agent behavior and costs with precision.
 
@@ -497,4 +497,4 @@ Mastering these parameters lets you achieve the perfect balance between quality,
 
 ---
 
-*Next chapter: [Chapter 4: Tool Calling (Tool Use / Function Calling)](../chapter_tools/README.md)*
+*Next chapter: [Chapter 3: Tool Calling (Tool Use / Function Calling)](../chapter_tools/README.md)*

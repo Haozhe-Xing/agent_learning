@@ -1,4 +1,4 @@
-# Latest Advances in Context Engineering
+# 7.5 Latest Advances in Context Engineering
 
 > 🔬 *"The expansion of context windows is not the endpoint — how to efficiently utilize the 'attention bandwidth' of every token is the real challenge."*
 
@@ -824,7 +824,7 @@ More and more research is exploring the use of structured formats (XML, JSON Sch
 
 ### 3. Multi-Agent Context Sharing
 
-In multi-Agent systems (Chapter 14), cross-Agent context transfer and sharing is an active research direction. The core challenge is: **how can multiple Agents collaborate efficiently without each needing to carry the complete context?**
+In multi-Agent systems (Chapter 16), cross-Agent context transfer and sharing is an active research direction. The core challenge is: **how can multiple Agents collaborate efficiently without each needing to carry the complete context?**
 
 ```python
 class SharedContextStore:

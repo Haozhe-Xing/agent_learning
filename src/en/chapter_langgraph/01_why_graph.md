@@ -1,4 +1,4 @@
-# Why Graph Structures?
+# 13.1 Why Graph Structures?
 
 > **Section Goal**: Understand the limitations of linear chains and master the core advantages of graph structures for solving complex Agent scenarios.
 
@@ -83,7 +83,7 @@ Submit code → Static analysis → LLM review
 
 This scenario requires: parallel branching (security and performance analyzed simultaneously), dynamic routing (different paths by issue type), and merging (combining analysis results).
 
-### Scenario 3: Data Analysis Agent (Chapter 22 of this book)
+### Scenario 3: Data Analysis Agent (Chapter 23 of this book)
 
 ```
 Natural language question → Understand intent → Generate SQL

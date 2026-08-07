@@ -1,4 +1,4 @@
-# Context Strategies for Long-Horizon Tasks
+# 7.3 Context Strategies for Long-Horizon Tasks
 
 > 📖 *"Short conversations rely on prompt techniques; long tasks rely on context strategies — when an Agent needs to work for hours or even days, context management is the lifeline."*
 
@@ -496,4 +496,4 @@ How do you judge how "heavy" a context management approach your project needs? H
 
 ---
 
-*Next: [8.4 Practice: Building a Context Manager](./04_practice_context_builder.md)*
+*Next: [7.4 Practice: Building a Context Manager](./04_practice_context_builder.md)*

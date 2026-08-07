@@ -1,4 +1,4 @@
-# How Do Agents "Think"?
+# 5.1 How Do Agents "Think"?
 
 An Agent's "thinking" is essentially the **process of organizing information, deriving conclusions, and formulating plans within a context**. Understanding this process is a prerequisite for designing effective Agents.
 
@@ -196,4 +196,4 @@ An Agent's "thinking" relies on:
 
 ---
 
-*Next: [6.2 ReAct: Reasoning + Acting Framework](./02_react_framework.md)*
+*Next: [5.2 ReAct: Reasoning + Acting Framework](./02_react_framework.md)*

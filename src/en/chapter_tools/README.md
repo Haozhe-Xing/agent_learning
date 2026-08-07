@@ -1,4 +1,4 @@
-# Chapter 4: Tool Calling (Tool Use / Function Calling)
+# Chapter 3: Tool Calling (Tool Use / Function Calling)
 
 > 🔧 *"The core capability of an Agent lies in being able to 'take action' — calling tools to interact with the external world."*
 
@@ -39,13 +39,13 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 2: Environment Setup](../chapter_setup/README.md), [Chapter 3: LLM Fundamentals](../chapter_llm/README.md)
+> **Prerequisites**: [Chapter 2: Environment Setup](../chapter_setup/README.md), [Chapter 2: LLM Fundamentals](../chapter_llm/README.md)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 5: Memory Systems](../chapter_memory/README.md) — Give your Agent "memories"
+> - 👉 [Chapter 4: Memory Systems](../chapter_memory/README.md) — Give your Agent "memories"
 > - 👉 [Chapter 9: Skill Systems](../chapter_skill/README.md) — Upgrade from individual tools to complete skills
-> - 👉 [Chapter 15: Communication Protocols](../chapter_protocol/README.md) — Standardized tool protocols like MCP
+> - 👉 [Chapter 17: Communication Protocols](../chapter_protocol/README.md) — Standardized tool protocols like MCP
 
 ---
 
-*Next section: [4.1 Why Do Agents Need Tools?](./01_why_tools.md)*
+*Next section: [3.1 Why Do Agents Need Tools?](./01_why_tools.md)*

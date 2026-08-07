@@ -1,4 +1,4 @@
-# Full Project Implementation
+# 22.5 Full Project Implementation
 
 > **Section Goal**: Integrate all components to build a complete intelligent data analysis Agent, with in-depth analysis of architectural decisions and production considerations.
 
@@ -40,7 +40,7 @@ Reasons for choosing pipeline architecture in this chapter:
 | Debuggability | Each step output can be inspected | Requires complete trace |
 | Applicable scenarios | Standard data analysis workflows | Open-ended exploratory analysis |
 
-> 💡 **Practical advice**: If your scenario requires the Agent to explore autonomously (e.g., "help me find anomalies in the data"), consider combining Chapter 12 LangGraph to build an Agent loop version. Pipeline architecture is better suited for scenarios with clear processes.
+> 💡 **Practical advice**: If your scenario requires the Agent to explore autonomously (e.g., "help me find anomalies in the data"), consider combining Chapter 13 LangGraph to build an Agent loop version. Pipeline architecture is better suited for scenarios with clear processes.
 
 ### Component Interaction Sequence
 
@@ -84,12 +84,12 @@ from langchain_openai import ChatOpenAI
 
 # Import components implemented in previous sections
 # Full implementations of each component are in the corresponding sections:
-# from db_connector import SafeDatabaseConnector   # → Section 20.2
-# from text_to_sql import TextToSQL                # → Section 20.2
-# from data_analyzer import DataAnalyzer           # → Section 20.3
-# from chart_generator import ChartGenerator       # → Section 20.3
-# from insight_generator import InsightGenerator   # → Section 20.3
-# from report_generator import ReportGenerator     # → Section 20.4
+# from db_connector import SafeDatabaseConnector   # → Section 21.2
+# from text_to_sql import TextToSQL                # → Section 21.2
+# from data_analyzer import DataAnalyzer           # → Section 21.3
+# from chart_generator import ChartGenerator       # → Section 21.3
+# from insight_generator import InsightGenerator   # → Section 21.3
+# from report_generator import ReportGenerator     # → Section 21.4
 # Note: Before running this section's code, save sections 20.2–20.4 code as independent modules
 
 
@@ -444,7 +444,7 @@ For complex analysis tasks (e.g., "compare sales trends across three quarters an
 - **Statistical Analysis Agent**: Responsible for trend detection, regression analysis
 - **Report Writing Agent**: Responsible for integrating all results into a report
 
-This can be implemented using the Multi-Agent architecture introduced in Chapter 14.
+This can be implemented using the Multi-Agent architecture introduced in Chapter 16.
 
 ---
 
@@ -463,4 +463,4 @@ This can be implemented using the Multi-Agent architecture introduced in Chapter
 
 ---
 
-[Next Chapter: Chapter 21 Project Practice: Multimodal Agent →](../chapter_multimodal/README.md)
+[Next Chapter: Chapter 22 Project Practice: Multimodal Agent →](../chapter_multimodal/README.md)

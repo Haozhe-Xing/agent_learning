@@ -111,7 +111,7 @@ A vivid analogy:
 
 ## Application in Agentic-RL
 
-In [18.1 What is Agentic-RL](../chapter_agentic_rl/01_agentic_rl_overview.md), the RL stage loss function includes a KL divergence penalty term:
+In [10.1 What is Agentic-RL](../chapter_agentic_rl/01_agentic_rl_overview.md), the RL stage loss function includes a KL divergence penalty term:
 
 $$\mathcal{L}_{RL}(\theta) = -\mathbb{E}_{\tau \sim \pi_\theta} \left[ R(\tau) \right] + \beta \cdot D_{KL}(\pi_\theta \| \pi_{SFT})$$
 
@@ -141,7 +141,7 @@ The hyperparameter $\beta$ controls the strength of the KL constraint:
 | **Smaller** (e.g., 0.001–0.01) | Free policy, allows large exploration | Late training, task has clear objective evaluation criteria |
 | **Adaptive** | Dynamically adjusted, keeps KL within target range | Commonly used in PPO |
 
-In GRPO (Group Relative Policy Optimization), the specific implementation of KL penalty differs; see [18.5 GRPO: Group Relative Policy Optimization and Reward Function Design](../chapter_agentic_rl/05_grpo.md).
+In GRPO (Group Relative Policy Optimization), the specific implementation of KL penalty differs; see [10.5 GRPO: Group Relative Policy Optimization and Reward Function Design](../chapter_agentic_rl/05_grpo.md).
 
 ---
 

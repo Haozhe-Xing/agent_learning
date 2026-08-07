@@ -1,4 +1,4 @@
-# Retrieval Strategies and Reranking
+# 6.4 Retrieval Strategies and Reranking
 
 Basic vector retrieval is not always optimal. This section introduces several advanced retrieval strategies that significantly improve the accuracy of RAG systems.
 
@@ -308,4 +308,4 @@ Advanced retrieval strategy key points:
 
 ---
 
-*Next: [7.5 Practice: Intelligent Document Q&A Agent](./05_practice_qa_agent.md)*
+*Next: [6.5 Practice: Intelligent Document Q&A Agent](./05_practice_qa_agent.md)*

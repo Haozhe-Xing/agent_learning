@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="500" height="280" rx="12" fill="#f8fafc"/>
+  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">FActScore：原子事实拆解与验证</text>
+
+  <!-- 步骤1 -->
+  <rect x="16" y="46" width="468" height="100" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="250" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">第一步：原子事实拆解</text>
+  <rect x="28" y="72" width="440" height="28" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="248" y="91" text-anchor="middle" font-size="11" fill="#1e40af">输入："爱因斯坦于 1879 年出生在德国的乌尔姆，是理论物理学家。"</text>
+  <text x="28" y="116" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦出生于 1879 年"  ← 可验证</text>
+  <text x="28" y="130" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦出生在德国"  ← 可验证</text>
+  <text x="248" y="116" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦出生在乌尔姆"  ← 可验证</text>
+  <text x="248" y="130" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦是理论物理学家"  ← 可验证</text>
+
+  <line x1="250" y1="146" x2="250" y2="164" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 步骤2 -->
+  <rect x="16" y="166" width="468" height="80" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="250" y="184" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">第二步：逐个验证</text>
+  <text x="250" y="202" text-anchor="middle" font-size="11" fill="#166534">对每个原子事实，检索知识源（如维基百科）进行验证</text>
+  <rect x="80" y="210" width="340" height="28" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="250" y="229" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">FActScore = 有支持的原子事实数 / 总原子事实数</text>
+
+  <!-- 说明 -->
+  <rect x="16" y="256" width="468" height="18" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="250" y="269" text-anchor="middle" font-size="10" fill="#3730a3">💡 借鉴思路：在 Agent 中实现"原子事实拆解 + 逐个验证"的自动事实核查</text>
+</svg>

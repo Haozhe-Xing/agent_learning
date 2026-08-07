@@ -1,4 +1,4 @@
-# Agent Behavior Controllability and Alignment
+# 19.5 Agent Behavior Controllability and Alignment
 
 > **Section Goal**: Understand the importance of Agent alignment, and learn how to design behavioral boundaries and fallback mechanisms.
 
@@ -259,4 +259,4 @@ class ProgressiveAutonomy:
 
 ---
 
-[Next Chapter: Chapter 18 Deployment and Production →](../chapter_deployment/README.md)
+[Next Chapter: Chapter 19 Deployment and Production →](../chapter_deployment/README.md)

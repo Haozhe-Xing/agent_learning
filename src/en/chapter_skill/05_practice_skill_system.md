@@ -1,4 +1,4 @@
-# Practice: Building a Reusable Skill System
+# 9.5 Practice: Building a Reusable Skill System
 
 This section puts the concepts learned earlier into practice — building a complete Agent skill system. This system supports skill definition, loading, discovery, and invocation.
 
@@ -482,4 +482,4 @@ Through this hands-on project, we built a complete skill-driven Agent system:
 
 ---
 
-*Next section: [10.6 Paper Readings: Frontier Research in Skill Systems](./06_paper_readings.md)*
+*Next section: [9.6 Paper Readings: Frontier Research in Skill Systems](./06_paper_readings.md)*

@@ -1,4 +1,4 @@
-# 4.6 Paper Readings: Frontier Advances in Tool Learning
+# 3.6 Paper Readings: Frontier Advances in Tool Learning
 
 > 📖 *"The best way to predict the future is to invent it."*  
 > *"Teaching LLMs to use tools" is one of the most active directions in Agent research. This section provides in-depth analysis of three foundational papers.*
@@ -254,10 +254,10 @@ ToolACE (solving high-quality tool call training data)
 MCP + RAG-MCP (industry standardization + dynamic tool discovery)
 ```
 
-> 💡 **Frontier Trends (2025–2026)**: Three major trends in the tool calling field: ① **MCP ecosystem explosion**: The MCP protocol led by Anthropic has been adopted by OpenAI, Google, Microsoft, and other giants, becoming the industry standard for tool integration (see Chapter 15); ② **Dynamic tool discovery**: Evolving from "predefined tool lists" to RAG-MCP-style "on-demand retrieval, on-demand loading"; ③ **Open-source model catch-up**: Through data synthesis methods like ToolACE, open-source models such as Qwen 3 and Llama 4 have tool calling capabilities approaching GPT-4o.
+> 💡 **Frontier Trends (2025–2026)**: Three major trends in the tool calling field: ① **MCP ecosystem explosion**: The MCP protocol led by Anthropic has been adopted by OpenAI, Google, Microsoft, and other giants, becoming the industry standard for tool integration (see Chapter 16); ② **Dynamic tool discovery**: Evolving from "predefined tool lists" to RAG-MCP-style "on-demand retrieval, on-demand loading"; ③ **Open-source model catch-up**: Through data synthesis methods like ToolACE, open-source models such as Qwen 3 and Llama 4 have tool calling capabilities approaching GPT-4o.
 
 ---
 
-*Back to: [Chapter 4: Tool Calling](./README.md)*
+*Back to: [Chapter 3: Tool Calling](./README.md)*
 
-*Next chapter: [Chapter 5: Memory Systems](../chapter_memory/README.md)*
+*Next chapter: [Chapter 4: Memory Systems](../chapter_memory/README.md)*

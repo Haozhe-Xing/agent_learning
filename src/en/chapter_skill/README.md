@@ -1,4 +1,4 @@
-# Chapter 10 Agent Skill System
+# Chapter 9: Agent Skill System
 
 > 🎯 *"Tools let an Agent do one thing; skills let an Agent do a class of things well. A skill is an organic combination of tools, prompts, processes, and experience."*
 
@@ -51,12 +51,12 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 4 Tool Calling](../chapter_tools/README.md)
+> **Prerequisites**: [Chapter 3 Tool Calling](../chapter_tools/README.md)
 >
 > **Recommended Next**:
-> - 👉 [Chapter 14 Multi-Agent Collaboration](../chapter_multi_agent/README.md) — sharing and discovering skills in multi-Agent systems
-> - 👉 [Chapter 15 Communication Protocols](../chapter_protocol/README.md) — skill declaration mechanisms in MCP/A2A
+> - 👉 [Chapter 16 Multi-Agent Collaboration](../chapter_multi_agent/README.md) — sharing and discovering skills in multi-Agent systems
+> - 👉 [Chapter 17 Communication Protocols](../chapter_protocol/README.md) — skill declaration mechanisms in MCP/A2A
 
 ---
 
-*Next section: [10.1 Skill System Overview](./01_skill_overview.md)*
+*Next section: [9.1 Skill System Overview](./01_skill_overview.md)*

@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <marker id="arr-rope" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">RoPE 旋转位置编码：核心思想</text>
+  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">通过旋转角度编码位置，使注意力分数只依赖相对位置差</text>
+
+  <!-- ===== 左侧：旋转直觉 ===== -->
+  <rect x="20" y="62" width="360" height="240" rx="8" fill="#e74c3c" opacity="0.04" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="200" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">二维旋转直觉</text>
+
+  <!-- 坐标系 -->
+  <line x1="120" y1="200" x2="240" y2="200" stroke="#bdc3c7" stroke-width="1.5" marker-end="url(#arr-rope)"/>
+  <line x1="180" y1="260" x2="180" y2="100" stroke="#bdc3c7" stroke-width="1.5" marker-end="url(#arr-rope)"/>
+  <text x="245" y="204" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">x</text>
+  <text x="184" y="98" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">y</text>
+
+  <!-- 原始向量 q -->
+  <line x1="180" y1="200" x2="230" y2="150" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr-rope)"/>
+  <text x="238" y="148" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e74c3c">q</text>
+  <text x="200" y="168" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">位置 m=0</text>
+
+  <!-- 旋转后向量 f(q,m) -->
+  <line x1="180" y1="200" x2="200" y2="135" stroke="#e74c3c" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arr-rope)"/>
+  <text x="205" y="130" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e74c3c">f(q,m)</text>
+  <text x="145" y="148" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">旋转 mθ</text>
+
+  <!-- 旋转弧 -->
+  <path d="M 220 165 A 30 30 0 0 0 205 148" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="222" y="158" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c">mθ</text>
+
+  <!-- 原始向量 k -->
+  <line x1="180" y1="200" x2="145" y2="145" stroke="#3498db" stroke-width="2.5" marker-end="url(#arr-rope)"/>
+  <text x="130" y="140" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3498db">k</text>
+  <text x="100" y="165" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#3498db">位置 n=0</text>
+
+  <!-- 旋转后向量 f(k,n) -->
+  <line x1="180" y1="200" x2="130" y2="155" stroke="#3498db" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arr-rope)"/>
+  <text x="108" y="152" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3498db">f(k,n)</text>
+
+  <!-- 旋转弧 k -->
+  <path d="M 155 158 A 25 25 0 0 1 143 148" fill="none" stroke="#3498db" stroke-width="1.5"/>
+  <text x="130" y="158" font-family="Arial, sans-serif" font-size="9" fill="#3498db">nθ</text>
+
+  <!-- 内积说明 -->
+  <rect x="30" y="220" width="340" height="72" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
+  <text x="200" y="238" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#2c3e50">关键性质：内积只依赖相对位置差</text>
+  <text x="200" y="256" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">⟨f(q,m), f(k,n)⟩ = g(q, k, m−n)</text>
+  <text x="200" y="274" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">注意力分数 = 内容相似度 × 相对位置函数</text>
+  <text x="200" y="288" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">无论绝对位置 m、n 是多少，只要 m−n 相同，分数就相同</text>
+
+  <!-- ===== 右侧：高维实现 ===== -->
+  <rect x="400" y="62" width="380" height="240" rx="8" fill="#3498db" opacity="0.04" stroke="#3498db" stroke-width="1.5"/>
+  <text x="590" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#3498db">高维实现：两两分组旋转</text>
+  <text x="590" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">d_k 维向量 → d_k/2 个二维旋转</text>
+
+  <!-- 向量分组 -->
+  <rect x="415" y="108" width="30" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
+  <text x="430" y="121" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₀</text>
+  <rect x="415" y="128" width="30" height="18" rx="3" fill="#e74c3c" opacity="0.7"/>
+  <text x="430" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₁</text>
+  <rect x="415" y="150" width="30" height="18" rx="3" fill="#3498db" opacity="0.7"/>
+  <text x="430" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₂</text>
+  <rect x="415" y="170" width="30" height="18" rx="3" fill="#3498db" opacity="0.7"/>
+  <text x="430" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₃</text>
+  <rect x="415" y="192" width="30" height="18" rx="3" fill="#27ae60" opacity="0.7"/>
+  <text x="430" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₄</text>
+  <rect x="415" y="212" width="30" height="18" rx="3" fill="#27ae60" opacity="0.7"/>
+  <text x="430" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₅</text>
+  <rect x="415" y="234" width="30" height="18" rx="3" fill="#f39c12" opacity="0.7"/>
+  <text x="430" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₆</text>
+  <rect x="415" y="254" width="30" height="18" rx="3" fill="#f39c12" opacity="0.7"/>
+  <text x="430" y="267" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₇</text>
+
+  <!-- 分组括号 -->
+  <text x="450" y="125" font-family="Arial, sans-serif" font-size="20" fill="#e74c3c">}</text>
+  <text x="450" y="168" font-family="Arial, sans-serif" font-size="20" fill="#3498db">}</text>
+  <text x="450" y="211" font-family="Arial, sans-serif" font-size="20" fill="#27ae60">}</text>
+  <text x="450" y="254" font-family="Arial, sans-serif" font-size="20" fill="#f39c12">}</text>
+
+  <!-- 旋转矩阵 -->
+  <rect x="470" y="108" width="80" height="28" rx="4" fill="#e74c3c" opacity="0.15" stroke="#e74c3c" stroke-width="1"/>
+  <text x="510" y="126" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c">R(mθ₀), θ₀=1/10000⁰</text>
+  <rect x="470" y="148" width="80" height="28" rx="4" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1"/>
+  <text x="510" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3498db">R(mθ₁), θ₁=1/10000²/d</text>
+  <rect x="470" y="188" width="80" height="28" rx="4" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="1"/>
+  <text x="510" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#27ae60">R(mθ₂), θ₂=1/10000⁴/d</text>
+  <rect x="470" y="228" width="80" height="28" rx="4" fill="#f39c12" opacity="0.15" stroke="#f39c12" stroke-width="1"/>
+  <text x="510" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f39c12">R(mθ₃), θ₃=1/10000⁶/d</text>
+
+  <!-- 箭头 -->
+  <line x1="550" y1="122" x2="568" y2="122" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr-rope)"/>
+  <line x1="550" y1="162" x2="568" y2="162" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr-rope)"/>
+  <line x1="550" y1="202" x2="568" y2="202" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr-rope)"/>
+  <line x1="550" y1="242" x2="568" y2="242" stroke="#7f8c8d" stroke-width="1.2" marker-end="url(#arr-rope)"/>
+
+  <!-- 输出 -->
+  <rect x="570" y="108" width="30" height="18" rx="3" fill="#e74c3c" opacity="0.9"/>
+  <text x="585" y="121" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₀'</text>
+  <rect x="570" y="128" width="30" height="18" rx="3" fill="#e74c3c" opacity="0.9"/>
+  <text x="585" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₁'</text>
+  <rect x="570" y="150" width="30" height="18" rx="3" fill="#3498db" opacity="0.9"/>
+  <text x="585" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₂'</text>
+  <rect x="570" y="170" width="30" height="18" rx="3" fill="#3498db" opacity="0.9"/>
+  <text x="585" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₃'</text>
+  <rect x="570" y="192" width="30" height="18" rx="3" fill="#27ae60" opacity="0.9"/>
+  <text x="585" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₄'</text>
+  <rect x="570" y="212" width="30" height="18" rx="3" fill="#27ae60" opacity="0.9"/>
+  <text x="585" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₅'</text>
+  <rect x="570" y="234" width="30" height="18" rx="3" fill="#f39c12" opacity="0.9"/>
+  <text x="585" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₆'</text>
+  <rect x="570" y="254" width="30" height="18" rx="3" fill="#f39c12" opacity="0.9"/>
+  <text x="585" y="267" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">q₇'</text>
+
+  <!-- 频率说明 -->
+  <rect x="615" y="108" width="155" height="165" rx="6" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="692" y="126" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">频率从低到高</text>
+  <rect x="622" y="132" width="12" height="12" rx="2" fill="#e74c3c" opacity="0.7"/>
+  <text x="640" y="143" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">低频：波长长</text>
+  <text x="640" y="155" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">区分远距离位置</text>
+  <rect x="622" y="165" width="12" height="12" rx="2" fill="#3498db" opacity="0.7"/>
+  <text x="640" y="176" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">中频：中等波长</text>
+  <text x="640" y="188" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">区分中等距离</text>
+  <rect x="622" y="198" width="12" height="12" rx="2" fill="#27ae60" opacity="0.7"/>
+  <text x="640" y="209" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">高频：波长短</text>
+  <text x="640" y="221" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">区分相邻位置</text>
+  <rect x="622" y="231" width="12" height="12" rx="2" fill="#f39c12" opacity="0.7"/>
+  <text x="640" y="242" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">最高频：θ≈1</text>
+  <text x="640" y="254" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#555">精细局部区分</text>
+  <text x="692" y="268" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#777">类比时钟：秒针/分针/时针</text>
+
+  <!-- ===== 底部：三代对比 ===== -->
+  <rect x="20" y="318" width="760" height="90" rx="8" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="400" y="336" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">三代位置编码对比</text>
+
+  <!-- 表头 -->
+  <rect x="25" y="342" width="750" height="20" rx="3" fill="#ecf0f1"/>
+  <text x="100" y="356" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">方法</text>
+  <text x="250" y="356" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">位置信息</text>
+  <text x="400" y="356" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">外推能力</text>
+  <text x="550" y="356" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">代表模型</text>
+  <text x="700" y="356" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50">使用率</text>
+
+  <text x="100" y="374" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">Sinusoidal（2017）</text>
+  <text x="250" y="374" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">绝对位置</text>
+  <text x="400" y="374" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 有限</text>
+  <text x="550" y="374" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">原始 Transformer</text>
+  <text x="700" y="374" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">已淘汰</text>
+
+  <text x="100" y="392" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">ALiBi（2021）</text>
+  <text x="250" y="392" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">相对距离惩罚</text>
+  <text x="400" y="392" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">⚠️ 较好</text>
+  <text x="550" y="392" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">MPT-7B</text>
+  <text x="700" y="392" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">少数</text>
+
+  <rect x="25" y="396" width="750" height="8" rx="0" fill="#27ae60" opacity="0.08"/>
+  <text x="100" y="404" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#27ae60">RoPE（2021）★</text>
+  <text x="250" y="404" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">相对位置（旋转）</text>
+  <text x="400" y="404" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 很好（+YaRN）</text>
+  <text x="550" y="404" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">Llama/Qwen/DeepSeek 全系</text>
+  <text x="700" y="404" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">69.8%</text>
+</svg>

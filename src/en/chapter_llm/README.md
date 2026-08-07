@@ -1,4 +1,4 @@
-# Chapter 3: LLM Fundamentals
+# Chapter 2: LLM Fundamentals
 
 > A craftsman must first sharpen his tools. Before we start building Agents, we need to deeply understand their "brain" — the Large Language Model (LLM).
 
@@ -56,9 +56,9 @@ Understanding LLMs is like understanding how an engine works — even if you don
 > **Prerequisites**: [Chapter 1: What is an Agent?](../chapter_intro/README.md), [Chapter 2: Development Environment Setup](../chapter_setup/README.md)
 >
 > **Recommended next steps**:
-> - 👉 [Chapter 4: Tool Calling](../chapter_tools/README.md) — The core capability of Agents
-> - 👉 [Chapter 8: Context Engineering](../chapter_context_engineering/README.md) — Upgrade from Prompt Engineering to systematic context management
+> - 👉 [Chapter 3: Tool Calling](../chapter_tools/README.md) — The core capability of Agents
+> - 👉 [Chapter 7: Context Engineering](../chapter_context_engineering/README.md) — Upgrade from Prompt Engineering to systematic context management
 
 ---
 
-*Next section: [3.1 How Does an LLM Work? (Intuitive Understanding)](./01_how_llm_works.md)*
+*Next section: [2.1 How Does an LLM Work? (Intuitive Understanding)](./01_how_llm_works.md)*

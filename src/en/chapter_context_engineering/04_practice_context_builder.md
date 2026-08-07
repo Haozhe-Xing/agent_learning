@@ -1,4 +1,4 @@
-# Practice: Building a Context Manager
+# 7.4 Practice: Building a Context Manager
 
 > 📖 *"Talk is cheap, show me the code." — Let's implement a complete context management system in code.*
 
@@ -639,7 +639,7 @@ You've now fully studied the theory and practice of context engineering:
 
 ---
 
-*Next: [8.5 Latest Advances in Context Engineering](./05_latest_advances.md)*
+*Next: [7.5 Latest Advances in Context Engineering](./05_latest_advances.md)*
 
 ---
 

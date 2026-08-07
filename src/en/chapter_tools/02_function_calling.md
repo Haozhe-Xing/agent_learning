@@ -1,4 +1,4 @@
-# Function Calling Mechanism Explained
+# 3.2 Function Calling Mechanism Explained
 
 Function Calling is an important feature introduced by OpenAI in June 2023, allowing models to output structured function call instructions. In August 2024, OpenAI further introduced **Structured Outputs**, using the `strict: true` parameter to ensure that model-generated parameters 100% conform to JSON Schema, greatly improving reliability in production environments. Understanding its complete mechanism is the foundation for building reliable Agents.
 
@@ -436,4 +436,4 @@ Key points of Function Calling:
 
 ---
 
-*Next section: [4.3 Designing and Implementing Custom Tools](./03_custom_tools.md)*
+*Next section: [3.3 Designing and Implementing Custom Tools](./03_custom_tools.md)*

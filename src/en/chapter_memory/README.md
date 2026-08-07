@@ -1,4 +1,4 @@
-# Chapter 5: Memory Systems
+# Chapter 4: Memory Systems
 
 > 🧩 *"An Agent without memory starts from scratch every conversation. Memory systems allow Agents to 'remember' the past and provide truly personalized experiences."*
 
@@ -39,11 +39,11 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 4: Tool Calling](../chapter_tools/README.md)
+> **Prerequisites**: [Chapter 3: Tool Calling](../chapter_tools/README.md)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 6: Planning and Reasoning](../chapter_planning/README.md) — Give your Agent "thinking power"
-> - 👉 [Chapter 7: RAG](../chapter_rag/README.md) — Enhance the Agent's knowledge base with retrieval
+> - 👉 [Chapter 5: Planning and Reasoning](../chapter_planning/README.md) — Give your Agent "thinking power"
+> - 👉 [Chapter 6: RAG](../chapter_rag/README.md) — Enhance the Agent's knowledge base with retrieval
 
 ## 🚀 Extended Projects
 
@@ -53,4 +53,4 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ---
 
-*Next section: [5.1 Why Do Agents Need Memory?](./01_why_memory.md)*
+*Next section: [4.1 Why Do Agents Need Memory?](./01_why_memory.md)*

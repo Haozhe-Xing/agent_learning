@@ -1,4 +1,4 @@
-# Practice: Intelligent Document Q&A Agent
+# 6.5 Practice: Intelligent Document Q&A Agent
 
 Combining the knowledge from this chapter, we'll build an intelligent Q&A system that can answer questions about any collection of documents.
 
@@ -349,4 +349,4 @@ This chapter built a complete RAG system from scratch:
 
 ---
 
-*Next chapter: [Chapter 8: Context Engineering](../chapter_context_engineering/README.md)*
+*Next chapter: [Chapter 7: Context Engineering](../chapter_context_engineering/README.md)*

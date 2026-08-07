@@ -1,4 +1,4 @@
-# Hallucination and Factuality Assurance
+# 19.2 Hallucination and Factuality Assurance
 
 > **Section Goal**: Understand the causes of LLM hallucinations and master practical techniques to reduce hallucinations and improve factuality.
 

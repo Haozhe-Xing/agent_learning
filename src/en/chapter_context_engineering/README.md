@@ -1,4 +1,4 @@
-# Chapter 8: Context Engineering
+# Chapter 7: Context Engineering
 
 > 📖 *"Prompt engineering teaches you how to talk to an LLM; context engineering teaches you how to help an LLM see the whole world."*
 
@@ -54,11 +54,11 @@ Context engineering is the systematic methodology for solving these problems. It
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 3: LLM Fundamentals](../chapter_llm/README.md), [Chapters 4–7: Core Capabilities](../chapter_tools/README.md)
+> **Prerequisites**: [Chapter 2: LLM Fundamentals](../chapter_llm/README.md), [Chapters 4–7: Core Capabilities](../chapter_tools/README.md)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 11: LangChain](../chapter_langchain/README.md) — Implement context management strategies with a framework
-> - 👉 [Chapter 16: Evaluation and Optimization](../chapter_evaluation/README.md) — Evaluate the effectiveness of context strategies
+> - 👉 [Chapter 12: LangChain](../chapter_langchain/README.md) — Implement context management strategies with a framework
+> - 👉 [Chapter 18: Evaluation and Optimization](../chapter_evaluation/README.md) — Evaluate the effectiveness of context strategies
 
 ---
 
@@ -68,4 +68,4 @@ Context engineering is the systematic methodology for solving these problems. It
 
 ---
 
-*Next: [8.1 From Prompt Engineering to Context Engineering](./01_context_vs_prompt.md)*
+*Next: [7.1 From Prompt Engineering to Context Engineering](./01_context_vs_prompt.md)*

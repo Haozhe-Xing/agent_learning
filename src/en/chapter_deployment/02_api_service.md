@@ -1,4 +1,4 @@
-# API Service Wrapping: FastAPI / Flask
+# 20.2 API Service Wrapping: FastAPI / Flask
 
 > **Section Goal**: Learn how to wrap an Agent as a usable API service using FastAPI.
 

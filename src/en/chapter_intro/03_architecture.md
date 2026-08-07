@@ -1,4 +1,4 @@
-# The Typical Agent Architecture: The Perceive-Think-Act Loop
+# 1.3 The Typical Agent Architecture: The Perceive-Think-Act Loop
 
 > 📖 *"Intelligence is not a static weight matrix — it is the dynamic adaptive process a system exhibits through high-frequency cyclic interaction in a complex environment."*
 

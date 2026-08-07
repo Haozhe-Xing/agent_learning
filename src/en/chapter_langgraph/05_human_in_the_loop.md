@@ -1,4 +1,4 @@
-# Human-in-the-Loop: Human-AI Collaboration
+# 13.5 Human-in-the-Loop: Human-AI Collaboration
 
 In production environments, letting an Agent run completely autonomously is risky — operations like deleting files, sending emails, and processing payments are irreversible once they go wrong. The **Human-in-the-Loop** mechanism allows the Agent to pause before executing dangerous operations and wait for human confirmation before continuing.
 

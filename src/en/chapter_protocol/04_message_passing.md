@@ -1,4 +1,4 @@
-# Inter-Agent Message Passing and State Sharing
+# 17.4 Inter-Agent Message Passing and State Sharing
 
 > **Section Goal**: Learn how to implement message passing between Agents, and deepen understanding through a hands-on MCP tool integration exercise.
 

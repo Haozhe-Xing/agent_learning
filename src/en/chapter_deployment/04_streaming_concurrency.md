@@ -1,4 +1,4 @@
-# Streaming Responses and Concurrency Handling
+# 20.4 Streaming Responses and Concurrency Handling
 
 > **Section Goal**: Master streaming output and high-concurrency handling techniques for Agent services.
 

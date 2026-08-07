@@ -1,4 +1,4 @@
-# Chapter 9: Harness Engineering — The Systems Engineering of Taming Agents
+# Chapter 8: Harness Engineering — The Systems Engineering of Taming Agents
 
 > 🔧 *"Don't just focus on making AI write better code — focus on building a system that lets AI work reliably and continuously."*  
 > — Mitchell Hashimoto, Co-founder of HashiCorp
@@ -66,4 +66,4 @@ If you're just starting to learn Agent development, it's recommended to first re
 
 ---
 
-*Next: [9.1 What Is Harness Engineering?](./01_what_is_harness.md)*
+*Next: [8.1 What Is Harness Engineering?](./01_what_is_harness.md)*

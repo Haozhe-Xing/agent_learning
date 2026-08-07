@@ -1,4 +1,4 @@
-# Hands-on: Search Engine + Calculator Agent
+# 3.5 Hands-on: Search Engine + Calculator Agent
 
 This section builds a practical search and calculation Agent capable of answering complex questions that require real-time information and mathematical reasoning.
 
@@ -528,4 +528,4 @@ This Agent can serve as the foundation framework for your future development, co
 
 ---
 
-*Next section: [4.6 Paper Readings: Frontier Advances in Tool Learning](./06_paper_readings.md)*
+*Next section: [3.6 Paper Readings: Frontier Advances in Tool Learning](./06_paper_readings.md)*

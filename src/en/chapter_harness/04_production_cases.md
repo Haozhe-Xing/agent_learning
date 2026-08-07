@@ -1,4 +1,4 @@
-# 9.4 Production Case Studies: OpenAI, LangChain, Stripe
+# 8.4 Production Case Studies: OpenAI, LangChain, Stripe
 
 > 📊 *"Theory can't explain practice. Let's look at how engineering teams that actually delivered millions of lines of code and hundreds of thousands of PRs did it."*
 
@@ -757,4 +757,4 @@ These three cases collectively reveal several **universal principles** of Harnes
 
 ---
 
-*Next: [9.5 Practice: Building Your First Harness System](./05_practice_harness_builder.md)*
+*Next: [8.5 Practice: Building Your First Harness System](./05_practice_harness_builder.md)*

@@ -1,4 +1,4 @@
-# Reflection and Self-Correction Mechanisms
+# 5.4 Reflection and Self-Correction Mechanisms
 
 An excellent Agent not only completes tasks but also evaluates the quality of its own output, identifies problems, and self-improves. This capability comes from the **Reflection mechanism**.
 
@@ -290,10 +290,10 @@ The value of reflection mechanisms:
 - **Continuous improvement**: each reflection round brings the output closer to the goal
 - **Use cases**: code generation, content writing, complex analysis
 
-> 📖 **Want to dive deeper into the academic frontiers of reflection and self-correction?** Read [6.6 Paper Readings: Frontiers in Planning and Reasoning](./06_paper_readings.md), covering in-depth analyses of Reflexion, Self-Refine, CRITIC, and more, as well as the boundaries and limitations of self-correction.
+> 📖 **Want to dive deeper into the academic frontiers of reflection and self-correction?** Read [5.7 Paper Readings: Frontiers in Planning and Reasoning](./06_paper_readings.md), covering in-depth analyses of Reflexion, Self-Refine, CRITIC, and more, as well as the boundaries and limitations of self-correction.
 >
 > 💡 **Practical advice**: When implementing reflection in real Agents, **always set a maximum iteration count** (usually 2–3 rounds is sufficient), and prioritize reflection with tool feedback (e.g., running tests, querying databases). Pure self-critique is suitable for subjective tasks (like improving writing style), while tasks requiring objective correctness (like code or data analysis) must have external validation.
 
 ---
 
-*Next: [6.5 Practice: Automated Research Assistant Agent](./05_practice_research_agent.md)*
+*Next: [5.5 Practice: Automated Research Assistant Agent](./05_practice_research_agent.md)*

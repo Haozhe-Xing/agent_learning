@@ -1,4 +1,4 @@
-# Long-Term Memory: Vector Databases and Retrieval
+# 4.3 Long-Term Memory: Vector Databases and Retrieval
 
 Long-term memory allows an Agent to "remember" information across multiple sessions — you tell it today that you're a Python developer who prefers concise code, and it still remembers next week.
 
@@ -365,7 +365,7 @@ Key elements of long-term memory:
 
 ---
 
-*Next: [5.4 Working Memory: The Scratchpad Pattern](./04_working_memory.md)*
+*Next: [4.4 Working Memory: The Scratchpad Pattern](./04_working_memory.md)*
 
 ---
 

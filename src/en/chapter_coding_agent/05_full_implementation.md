@@ -1,4 +1,4 @@
-# Full Project Implementation
+# 21.5 Full Project Implementation
 
 > **Section Goal**: Integrate the components from previous sections to build an interactive AI coding assistant.
 
@@ -19,11 +19,11 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 # Import components implemented in previous sections (import from modules in real projects)
 # Full implementations of each component are in the corresponding sections:
-# from code_indexer import CodeIndexer         # → Section 19.2
-# from code_search import CodeSearchEngine     # → Section 19.2
-# from code_generator import CodeGenerator     # → Section 19.3
-# from test_generator import TestGenerator     # → Section 19.4
-# from bug_fixer import BugFixer               # → Section 19.4
+# from code_indexer import CodeIndexer         # → Section 20.2
+# from code_search import CodeSearchEngine     # → Section 20.2
+# from code_generator import CodeGenerator     # → Section 20.3
+# from test_generator import TestGenerator     # → Section 20.4
+# from bug_fixer import BugFixer               # → Section 20.4
 # Note: Before running this section's code, save sections 19.2–19.4 code as independent modules
 
 class AICodeAssistant:
@@ -234,4 +234,4 @@ You: Generate tests for verify_token
 
 ---
 
-[Next Chapter: Chapter 20 Project Practice: Intelligent Data Analysis Agent →](../chapter_data_agent/README.md)
+[Next Chapter: Chapter 21 Project Practice: Intelligent Data Analysis Agent →](../chapter_data_agent/README.md)

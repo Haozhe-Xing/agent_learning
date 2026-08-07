@@ -1,4 +1,4 @@
-# Short-Term Memory: Conversation History Management
+# 4.2 Short-Term Memory: Conversation History Management
 
 Short-term memory is the most fundamental form of memory — maintaining conversation history so the Agent knows "what we just talked about."
 
@@ -317,4 +317,4 @@ Three strategies for short-term memory management:
 
 ---
 
-*Next section: [5.3 Long-Term Memory: Vector Databases and Retrieval](./03_long_term_memory.md)*
+*Next section: [4.3 Long-Term Memory: Vector Databases and Retrieval](./03_long_term_memory.md)*

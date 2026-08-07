@@ -1,4 +1,4 @@
-# Practice: Automated Research Assistant Agent
+# 5.5 Practice: Automated Research Assistant Agent
 
 Combining the planning, reasoning, and reflection capabilities learned in this chapter, we'll build an Agent capable of conducting research autonomously.
 
@@ -254,4 +254,4 @@ This chapter covered the core techniques for Agent planning and reasoning:
 
 ---
 
-*Next chapter: [Chapter 7: Retrieval-Augmented Generation (RAG)](../chapter_rag/README.md)*
+*Next chapter: [Chapter 6: Retrieval-Augmented Generation (RAG)](../chapter_rag/README.md)*

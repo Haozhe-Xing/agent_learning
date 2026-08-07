@@ -1,4 +1,4 @@
-# Building Agents with LangChain
+# 12.3 Building Agents with LangChain
 
 In previous chapters, we built Agents "by hand" — writing tool Schemas ourselves, managing the message loop ourselves, handling tool calls ourselves. While this helps understand the underlying principles, it's too cumbersome for real projects. LangChain provides standardized tool interfaces and AgentExecutor, greatly simplifying Agent development.
 
@@ -23,7 +23,7 @@ from langchain_core.tools import tool, BaseTool
 from langchain_openai import ChatOpenAI
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 # ⚠️ Note: AgentExecutor is LangChain's legacy Agent solution.
-# LangChain officially recommends using LangGraph to build Agents for new projects (see Chapter 13).
+# LangChain officially recommends using LangGraph to build Agents for new projects (see Chapter 14).
 # AgentExecutor is used here for quick conceptual understanding.
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import math

@@ -1,4 +1,4 @@
-# The History of Intelligent Agents: From Symbolic AI to LLM-Driven Systems
+# 1.6 The History of Intelligent Agents: From Symbolic AI to LLM-Driven Systems
 
 > 📖 *"Without understanding history, you cannot truly understand the present. Every leap in Agent development stands on the shoulders of those who came before."*
 

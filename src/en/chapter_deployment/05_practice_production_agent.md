@@ -1,4 +1,4 @@
-# Practice: Deploying a Production-Grade Agent Service
+# 20.5 Practice: Deploying a Production-Grade Agent Service
 
 > **Section Goal**: Apply everything learned in this chapter to complete the full workflow from development to deployment of an Agent service.
 
@@ -266,4 +266,4 @@ curl -X POST http://localhost:8000/chat/stream \
 
 ---
 
-[Next Chapter: Chapter 19 Project Practice: AI Coding Assistant →](../chapter_coding_agent/README.md)
+[Next Chapter: Chapter 20 Project Practice: AI Coding Assistant →](../chapter_coding_agent/README.md)

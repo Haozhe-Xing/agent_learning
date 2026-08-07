@@ -1,8 +1,8 @@
-# Tool, Skill, and Sub Agent: Three Layers of Capability Abstraction
+# 9.7 Tool, Skill, and Sub Agent: Three Layers of Capability Abstraction
 
 > 🎯 *"Tools are hands, Skills are abilities, Sub Agents are team members — understanding the relationship between the three is key to designing good Agent architectures."*
 
-In previous chapters, we learned about tool calling (Chapter 4), skill systems (Chapter 10), and multi-Agent collaboration (Chapter 14). This section brings them together for a **unified comparison and review** — helping you make the right architectural choices in real development.
+In previous chapters, we learned about tool calling (Chapter 3), skill systems (Chapter 9), and multi-Agent collaboration (Chapter 16). This section brings them together for a **unified comparison and review** — helping you make the right architectural choices in real development.
 
 ![Tool · Skill · Sub Agent Three-Layer Capability Abstraction](../svg/chapter_skill_07_three_layers.svg)
 
@@ -247,7 +247,7 @@ orchestrator = OrchestratorAgent(sub_agents=[analyst, reviewer])
 
 ## Relationship with Communication Protocols
 
-The three layers of abstraction are closely related to the communication protocols we learn in Chapter 15:
+The three layers of abstraction are closely related to the communication protocols we learn in Chapter 17:
 
 | Abstraction Layer | Typical Communication Protocol | Description |
 |------------------|-------------------------------|-------------|
@@ -285,4 +285,4 @@ The three layers of abstraction are closely related to the communication protoco
 
 ---
 
-*Related chapters: [Chapter 4 Tool Calling](../chapter_tools/README.md) · [Chapter 10 Skill System](./README.md) · [Chapter 14 Multi-Agent Collaboration](../chapter_multi_agent/README.md) · [Chapter 15 Agent Communication Protocols](../chapter_protocol/README.md)*
+*Related chapters: [Chapter 3 Tool Calling](../chapter_tools/README.md) · [Chapter 9 Skill System](./README.md) · [Chapter 16 Multi-Agent Collaboration](../chapter_multi_agent/README.md) · [Chapter 17 Agent Communication Protocols](../chapter_protocol/README.md)*

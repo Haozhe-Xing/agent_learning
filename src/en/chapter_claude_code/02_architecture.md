@@ -1,4 +1,4 @@
-# 14.2 Deep Dive into Core Architecture
+# 15.2 Deep Dive into Core Architecture
 
 > 🏗️ *"The best architectures are the ones where the design decisions are invisible — you only notice them when something goes wrong."*  
 > — From Claude Code source code comments (accidentally leaked in March 2026)
@@ -222,5 +222,5 @@ function ConversationView({ messages }: Props) {
 
 ---
 
-*Previous section: [14.1 Getting to Know Claude Code: From Zero to Hands-On](./01_introduction.md)*  
-*Next section: [14.3 Source Code Decoded: System Prompt and Permission Engineering](./03_source_code_analysis.md)*
+*Previous section: [15.1 Getting to Know Claude Code: From Zero to Hands-On](./01_introduction.md)*  
+*Next section: [15.3 Source Code Decoded: System Prompt and Permission Engineering](./03_source_code_analysis.md)*

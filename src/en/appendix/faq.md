@@ -283,7 +283,7 @@ Recommend keeping System Prompts within 500–1500 tokens, with core rules at th
 2. **Efficiency**: How many steps? How many tokens? What latency?
 3. **Safety**: Did it follow safety boundaries? Did it reject unreasonable requests?
 
-Specifically, refer to benchmarks like AgentBench, SWE-bench, and GAIA introduced in Chapter 16.
+Specifically, refer to benchmarks like AgentBench, SWE-bench, and GAIA introduced in Chapter 17.
 
 ### Q27: Agent output is unstable and results vary each time — what to do?
 

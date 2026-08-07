@@ -430,4 +430,4 @@ Subsequent chapters will build on this foundation to construct more powerful Age
 
 ---
 
-*Next chapter: [Chapter 3: LLM Fundamentals](../chapter_llm/README.md)*
+*Next chapter: [Chapter 2: LLM Fundamentals](../chapter_llm/README.md)*

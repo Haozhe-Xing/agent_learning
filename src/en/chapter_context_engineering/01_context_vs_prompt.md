@@ -1,4 +1,4 @@
-# From Prompt Engineering to Context Engineering
+# 7.1 From Prompt Engineering to Context Engineering
 
 > 📖 *"Prompt Engineering is about what you say to an LLM; Context Engineering is about what you let an LLM see."*
 
@@ -403,4 +403,4 @@ These mindset shifts don't negate the value of prompt engineering — a good pro
 
 ---
 
-*Next: [8.2 Context Window Management and Attention Budget](./02_context_window.md)*
+*Next: [7.2 Context Window Management and Attention Budget](./02_context_window.md)*

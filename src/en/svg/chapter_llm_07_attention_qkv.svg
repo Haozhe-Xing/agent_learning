@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 280" width="520" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="520" height="280" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Scaled Dot-Product Attention：Q/K/V 来源</text>
+
+  <!-- 输入 -->
+  <rect x="200" y="44" width="120" height="28" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="260" y="63" text-anchor="middle" font-size="12" fill="#1d4ed8">输入向量 x</text>
+
+  <!-- 三路投影 -->
+  <line x1="260" y1="72" x2="260" y2="88" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="100" y1="88" x2="420" y2="88" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="100" y1="88" x2="100" y2="104" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="260" y1="88" x2="260" y2="104" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="420" y1="88" x2="420" y2="104" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="36" y="106" width="128" height="44" rx="6" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="100" y="124" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">Q = xW_Q</text>
+  <text x="100" y="140" text-anchor="middle" font-size="10" fill="#3b82f6">"我想找什么？"</text>
+
+  <rect x="196" y="106" width="128" height="44" rx="6" fill="#bbf7d0" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="260" y="124" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">K = xW_K</text>
+  <text x="260" y="140" text-anchor="middle" font-size="10" fill="#22c55e">"我能提供什么标签？"</text>
+
+  <rect x="356" y="106" width="128" height="44" rx="6" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="420" y="124" text-anchor="middle" font-size="11" font-weight="bold" fill="#9d174d">V = xW_V</text>
+  <text x="420" y="140" text-anchor="middle" font-size="10" fill="#ec4899">"我携带的实际内容"</text>
+
+  <!-- 计算步骤 -->
+  <line x1="100" y1="150" x2="100" y2="166" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="260" y1="150" x2="260" y2="166" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="100" y1="166" x2="260" y2="166" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="180" y1="166" x2="180" y2="182" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="60" y="184" width="240" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="180" y="203" text-anchor="middle" font-size="11" fill="#3730a3">QK^T / √d_k → softmax → 注意力权重</text>
+  <line x1="180" y1="212" x2="180" y2="228" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="420" y1="150" x2="420" y2="228" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="180" y1="228" x2="420" y2="228" stroke="#6366f1" stroke-width="1.5"/>
+  <line x1="300" y1="228" x2="300" y2="244" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="160" y="246" width="280" height="28" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="300" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">输出 = 注意力权重 × V（加权求和）</text>
+</svg>

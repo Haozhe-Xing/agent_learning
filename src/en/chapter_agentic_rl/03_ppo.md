@@ -1,8 +1,8 @@
-# 11.3 PPO: Proximal Policy Optimization
+# 10.3 PPO: Proximal Policy Optimization
 
-In [Section 11.1](./01_agentic_rl_overview.md), we introduced the two-phase training paradigm of Agentic-RL (SFT → RL). The core question in the RL phase is: **how do we update model parameters based on reward signals?** This is exactly the problem that policy optimization algorithms solve.
+In [10.1 What Is Agentic-RL](./01_agentic_rl_overview.md), we introduced the two-phase training paradigm of Agentic-RL (SFT → RL). The core question in the RL phase is: **how do we update model parameters based on reward signals?** This is exactly the problem that policy optimization algorithms solve.
 
-This section will systematically explain the **PPO (Proximal Policy Optimization) algorithm** from scratch — it is the core training algorithm of InstructGPT and ChatGPT, and the foundation for understanding the subsequent DPO and GRPO algorithms. We will start from the most basic intuition, gradually derive the mathematical formulas, and use extensive diagrams to aid understanding.
+This section systematically explains the **PPO (Proximal Policy Optimization) algorithm** from scratch — it is the core training algorithm behind InstructGPT and ChatGPT, and the foundation for understanding the DPO and GRPO algorithms that follow. We will start from the most basic intuition, derive the mathematical formulas step by step, and use plenty of diagrams to aid understanding.
 
 ![Three Major Policy Optimization Algorithm Architecture Comparison](../svg/chapter_agentic_rl_03_three_algorithms.svg)
 
@@ -80,7 +80,7 @@ $R(\tau) = \sum_{t=0}^{T} r_t$ is the **cumulative reward** of the entire trajec
 - **$R(\tau) > 0$ (positive reward)**: the trajectory performed well overall
   - Gradient = positive weight × score function → update in the score function direction → **increase** the probability of each action in the trajectory
   - Intuition: this performance was good; do more of the same next time
-  
+
 - **$R(\tau) < 0$ (negative reward)**: the trajectory performed poorly overall
   - Gradient = negative weight × score function → update in the **opposite** direction of the score function → **decrease** the probability of each action in the trajectory
   - Intuition: this performance was bad; avoid doing the same next time
@@ -153,19 +153,55 @@ Although the intuition is clear, raw policy gradients have two serious problems:
 | **High variance** | $R(\tau)$ may vary enormously across different trajectories | Gradient estimates are unstable; training converges extremely slowly |
 | **Uncontrolled step size** | No constraint on the size of single-step updates | One "big jump" can destroy the entire policy |
 
-**PPO, DPO, and GRPO each solve these two problems in different ways.** This section explains PPO in detail; DPO and GRPO will be introduced in [11.4](./04_dpo.md) and [11.5](./05_grpo.md) respectively.
+**PPO, DPO, and GRPO each solve these two problems in different ways.** This section explains PPO in detail; DPO and GRPO will be introduced in [10.4 DPO: Direct Preference Optimization](./04_dpo.md) and [10.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md) respectively.
 
 ---
 
 ### 1.1 What Problem Does PPO Solve?
 
-PPO [2] is a policy optimization algorithm proposed by OpenAI in 2017, and is the core training algorithm of InstructGPT [3] and ChatGPT. PPO's design goal is:
+Before understanding PPO, we should look at the two pieces of historical baggage it has to pick up.
 
-> **While ensuring training stability, utilize sampled data as efficiently as possible to update the policy.**
+The first comes from the most naive policy gradient (REINFORCE): **every update depends on the batch of trajectories just sampled, so sample efficiency is very low**. In the large language model setting, a single trajectory may be a long response and sampling is extremely expensive; if the model has to generate a large batch of new responses every few update steps, training cost quickly spirals out of control.
 
-PPO achieves this through two key mechanisms:
+The second is the stability of policy updates. Policy gradients only tell us "in which direction to adjust the probabilities," but they don't automatically tell us "how far we may move in one step." If a single update pushes the probability of one token or action too hard, the model can jump from "slightly preferring good responses" to "the whole output distribution shifting," destroying capabilities it had already learned. This is what reinforcement learning calls **policy collapse**.
+
+Before PPO, TRPO (Trust Region Policy Optimization) had already tried to solve this: it uses KL divergence to constrain the distance between the new and old policies, requiring the new policy not to stray too far from the old one. The idea is right, but it is complex to implement, computationally expensive, and requires second-order optimization — not convenient for large model training.
+
+PPO [2] is a policy optimization algorithm proposed by OpenAI in 2017, and is the core training algorithm of InstructGPT [3] and ChatGPT. Its core goal can be summed up in one sentence:
+
+> **Approximate TRPO's "trust region" in a simpler, cheaper way, and reuse the same batch of sampled data for repeated updates without letting the policy jump too far.**
+
+So PPO is not a trick that appeared out of nowhere; it was designed to resolve two concrete tensions:
+
+| Problem with the old approach | Why it's painful | PPO's solution |
+|--------------|------------|----------------|
+| **Low sample efficiency of policy gradients** | Resampling for every update, and generating LLM trajectories is expensive | Reuse data generated by the old policy via importance sampling |
+| **Uncontrolled policy update step size** | One large update can cause policy collapse | Limit the new/old policy probability ratio with Clip |
+| **TRPO is too heavy** | KL constraints and second-order optimization are complex to implement and costly to train | Approximate the trust region with first-order optimization + a clipped objective |
+
+PPO achieves this goal through two key mechanisms:
 1. **Importance sampling**: allows using data collected by the "old policy" to train the "current policy" (data reuse)
 2. **Clip**: limits the step size of policy updates to prevent policy collapse
+
+#### Is PPO On-Policy or Off-Policy?
+
+Strictly speaking, PPO is still an **on-policy algorithm**. The criterion is simple: **is the data used to update the network produced by the latest policy of this round?**
+
+Purely on-policy algorithms, such as REINFORCE or A2C, typically run a batch of trajectories in the environment with the current policy, update the parameters once with that data, and then throw the batch away. Once the parameters change, the policy changes; the next update must resample. This is stable but sample-inefficient.
+
+Purely off-policy algorithms, such as DQN, SAC, and TD3, maintain a large **replay buffer**. Data collected days, weeks, or even longer ago can be pulled out repeatedly to train the current network. They do not require training data to come from the latest policy.
+
+PPO sits in between. It lets us perform multiple update passes over the same batch of data sampled by the old policy — for example, 4 to 10 epochs of training — which looks like a bit of off-policy capability. But this data can only be reused within a very short window. Once this round of PPO updates finishes, the batch is still discarded, and the next round must resample with the latest policy.
+
+So from a macro data-flow perspective, PPO still relies on fresh data "near the current policy" rather than a long-lived experience pool. **Importance sampling only gives PPO short-range data reuse; it does not turn PPO into a truly off-policy algorithm.**
+
+| Algorithm type | Where data comes from | How long old data lasts | Typical algorithms |
+|----------|--------------|----------------|----------|
+| **Pure on-policy** | Data just sampled by the current policy | Usually used only once | REINFORCE, A2C |
+| **PPO** | Data sampled by the most recent old policy | Briefly reused within a few epochs | PPO |
+| **Pure off-policy** | Historical data in a replay buffer | Can be reused repeatedly for a long time | DQN, SAC, TD3 |
+
+In one sentence: **PPO's identity is on-policy, but importance sampling gives it a limited, short-window ability to reuse off-policy data.**
 
 ### 1.2 Importance Sampling Ratio $\rho_t$: The Core of Off-Policy Training
 
@@ -202,31 +238,90 @@ $$A_t = Q(s_t, a_t) - V(s_t)$$
 
 ### 1.4 GAE: Generalized Advantage Estimation
 
-In actual training, neither $Q(s_t, a_t)$ nor $V(s_t)$ is precisely known; they need to be estimated using a **Critic model** $V_\phi(s)$. **GAE (Generalized Advantage Estimation)** [4] is a method that fuses multi-step estimates, achieving a balance between bias and variance:
+Don't rush to the formula. GAE solves a very concrete problem: **at a given time step $t$, how much better than expected was the action the model just took?**
 
-$$A_t^{GAE} = \sum_{l=0}^{T-t} (\gamma \lambda)^l \delta_{t+l}$$
+As the previous section said, the advantage function is:
 
-Where the **TD error (Temporal Difference Error)** is defined as:
+$$A_t = Q(s_t, a_t) - V(s_t)$$
+
+Intuitively, it asks: **"How much better is taking action $a_t$ in the current state $s_t$ than the average performance in that state?"** The problem is that in real training, neither $Q(s_t, a_t)$ nor $V(s_t)$ is precisely known. All we can do is train a **Critic model** $V_\phi(s)$ to estimate "roughly how much return we can still get if we continue from a given state."
+
+So GAE's idea can be split into two steps:
+
+1. First, use the **TD error** to measure the "degree of surprise" at each step;
+2. Then add up the "surprises" of the current step and the next few steps, weighted by distance, to obtain the advantage estimate for the current action.
+
+#### Step 1: The TD Error Measures Whether "This Small Step Beat Expectations"
+
+The **TD error (Temporal Difference Error)** is defined as:
 
 $$\delta_t = r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)$$
 
-Term-by-term interpretation of TD error:
+This formula can be read in plain language as:
 
-- $r_t$: immediate reward actually received at time step $t$
-- $\gamma V_\phi(s_{t+1})$: Critic's value estimate for the next state, multiplied by discount factor $\gamma$
-- $V_\phi(s_t)$: Critic's value estimate for the current state
-- **Intuition**: $\delta_t$ measures the difference between "what actually happened" ($r_t + \gamma V_\phi(s_{t+1})$) and "what the Critic expected" ($V_\phi(s_t)$). If $\delta_t > 0$, the actual result exceeded expectations (surprise!); $\delta_t < 0$ means the actual result fell short of expectations (disappointment!)
+> **TD error = what we actually observe after taking one step - what the Critic originally expected for the current state.**
 
-Term-by-term interpretation of GAE:
+Term by term:
 
-- $(\gamma\lambda)^l$: **exponential decay weight** — the further the time step, the smaller its contribution to the current advantage
-- $\lambda \in [0, 1]$: **GAE trade-off parameter**, controls the bias-variance trade-off:
+- $V_\phi(s_t)$: the Critic's original prediction of roughly how much total future value we get from the current state $s_t$ onward.
+- $r_t + \gamma V_\phi(s_{t+1})$: after actually taking the action, we immediately receive reward $r_t$ and arrive at the next state $s_{t+1}$; the Critic then estimates the future value of the next state, multiplied by the discount factor $\gamma$.
+- Subtracting the two gives "how much better reality was than expected."
+
+Therefore:
+
+- $\delta_t > 0$: the actual result is better than the Critic expected — a **positive surprise**, suggesting the action just taken may deserve reinforcement.
+- $\delta_t < 0$: the actual result is worse than the Critic expected — a **negative surprise**, suggesting the action just taken should probably be suppressed.
+- $\delta_t \approx 0$: the result basically matches expectations, meaning this step provides little new learning signal.
+
+Here's a small example. Suppose the Critic originally thought the current state's value was 5.0. The model takes a step and immediately receives a reward of 1.0; the next state's value is estimated at 5.5, with discount factor $\gamma = 0.9$:
+
+$$\delta_t = 1.0 + 0.9 \times 5.5 - 5.0 = 0.95$$
+
+This means: what actually happened was 0.95 better than originally expected. For PPO, this action should receive positive reinforcement.
+
+#### Step 2: GAE Combines Multi-Step "Surprises" into the Current Advantage
+
+Looking at only one step's TD error has a problem: it is too short-sighted. Whether the current action is good may not show up immediately; it may only become visible several steps later.
+
+For example, an Agent decides to call a search tool first. The current step may not immediately produce the final answer, but the following steps see a big jump in answer quality because the search results are now available. If we only look at the current step's reward, we would underestimate the value of the "call the tool" action.
+
+GAE's approach: don't just look at the current step's TD error $\delta_t$; also look at the TD errors of the following steps $\delta_{t+1}, \delta_{t+2}, ...$, with smaller weights the further away they are:
+
+$$A_t^{GAE} = \delta_t + (\gamma\lambda)\delta_{t+1} + (\gamma\lambda)^2\delta_{t+2} + \cdots$$
+
+Written as a summation:
+
+$$A_t^{GAE} = \sum_{l=0}^{T-t} (\gamma \lambda)^l \delta_{t+l}$$
+
+The key here is $(\gamma\lambda)^l$:
+
+- $l = 0$: the current step, weight 1.
+- $l = 1$: the next step, weight $\gamma\lambda$.
+- $l = 2$: the step after that, weight $(\gamma\lambda)^2$.
+- The further out, the more the weight decays exponentially, and the less influence it has on the current action.
+
+You can think of GAE as a "decaying ledger of surprises":
+
+| Time step | TD error | Contribution to the current action $a_t$ |
+|--------|---------|-------------------------|
+| Current step $t$ | $\delta_t$ | Most important; counted in full |
+| Next step $t+1$ | $\delta_{t+1}$ | Relevant, but discounted once |
+| Step after $t+2$ | $\delta_{t+2}$ | Possibly relevant; discounted again |
+| Further future | $\delta_{t+3}, ...$ | Influence keeps shrinking |
+
+#### $\lambda$ Controls "How Far Ahead We Look"
+
+$\lambda \in [0, 1]$ is the **GAE trade-off parameter**. It decides whether we trust "the nearby single-step TD estimate" more, or prefer to look at the full trajectory.
 
 | $\lambda$ value | GAE degenerates to | Bias | Variance | Intuition |
-|----------------|-------------------|------|----------|-----------|
-| $\lambda = 0$ | Single-step TD: $A_t = \delta_t$ | High (fully depends on Critic accuracy) | Low | Only looks at one step's "surprise" |
-| $\lambda = 1$ | Monte Carlo: $A_t = \sum_l \gamma^l \delta_{t+l}$ | Low (uses complete trajectory) | High | Looks at complete trajectory performance |
-| $\lambda = 0.95$ | **Recommended value** | Moderate | Moderate | Balances near-term and long-term information |
+|-------------|-----------|------|------|------|
+| $\lambda = 0$ | Single-step TD: $A_t = \delta_t$ | High (fully depends on Critic accuracy) | Low | Only looks at one step's "surprise" — very stable but short-sighted |
+| $\lambda = 1$ | Monte Carlo: $A_t = \sum_l \gamma^l \delta_{t+l}$ | Low (uses the complete trajectory) | High | Looks at the complete trajectory — full information but noisy |
+| $\lambda = 0.95$ | **Common value in PPO** | Moderate | Moderate | Looks at the near term while retaining some long-term influence |
+
+So the core of GAE is not "inventing yet another complex formula," but a compromise strategy:
+
+> **Use the Critic's short-term prediction error as the basic signal, then add back the errors of the next few steps with distance-based decay, yielding a more stable advantage estimate.**
 
 > **📌 Key issue**: GAE requires a Critic model $V_\phi(s)$ to estimate state values. For large language models (e.g., 7B parameters), this means **needing to load an additional Critic model of equivalent scale** — this is PPO's biggest resource bottleneck in large model training.
 
@@ -256,7 +351,7 @@ This formula looks complex, but the core idea is simple. Let's understand it in 
 
 ### 1.6 KL Divergence Penalty: Another Safety Net Against Policy "Drift"
 
-The Clip mechanism limits the magnitude of probability change for **individual actions**, but it cannot constrain the drift of the policy's **overall distribution**. In RLHF scenarios, if the model "forgets" the general language capabilities learned during SFT (such as grammar, coherence) in pursuit of high rewards, **language degeneration** or **reward hacking** occurs — the model finds some "clever" output pattern to trick the reward model into giving high scores, but the output is incomprehensible to humans.
+The Clip mechanism limits the magnitude of probability change for **individual actions**, but it cannot constrain the drift of the policy's **overall distribution**. In RLHF scenarios, if the model "forgets" the general language capabilities learned during SFT (such as grammar and coherence) in pursuit of high rewards, **language degeneration** or **reward hacking** occurs — the model finds some "clever" output pattern to trick its way to high rewards, but the result is a mess to read for humans.
 
 For this reason, PPO in RLHF typically adds an additional **KL divergence penalty term**; the complete optimization objective becomes:
 
@@ -268,9 +363,11 @@ $$D_{KL}\left(\pi_\theta \| \pi_{ref}\right) = \mathbb{E}_{y \sim \pi_\theta} \l
 
 Term-by-term interpretation:
 
-- $\pi_{ref}$: **Reference Policy** — see dedicated explanation below
+- $\pi_{ref}$: **Reference Policy** — see the dedicated explanation below
 - $D_{KL}(\pi_\theta \| \pi_{ref})$: measures the **distributional divergence** of the current policy $\pi_\theta$ relative to the reference policy $\pi_{ref}$. $D_{KL} = 0$ means they're completely identical; larger $D_{KL}$ means more severe divergence
 - $\beta$: **KL penalty coefficient** — controls the balance between "exploring new strategies" and "maintaining existing capabilities"
+
+> For the mathematical definition and intuitive explanation of KL divergence, see [Appendix E: KL Divergence Explained](../appendix/kl_divergence.md)
 
 #### What Is the Reference Model ($\pi_{ref}$)?
 
@@ -296,40 +393,39 @@ The reference model is a very important concept in RLHF and GRPO; beginners ofte
 
 During RL training, the model continuously iterates and updates. Without a Reference model as an anchor, the following problems may occur:
 
-1. **Reward Hacking**: the model discovers some "clever" output pattern that tricks the reward model into giving high scores (e.g., repeatedly outputting a high-reward phrase), but actual output quality is terrible
+1. **Reward Hacking**: the model discovers some "clever" output pattern that earns high rewards (e.g., repeatedly outputting a high-reward phrase), but actual output quality is terrible
 2. **Language Degeneration**: the model loses the grammar ability, coherence, and general knowledge learned during SFT in pursuit of rewards
 3. **Mode Collapse**: the model generates similar "safe" answers for all inputs, losing diversity
 
 KL divergence $D_{KL}(\pi_\theta \| \pi_{ref})$ is like an "elastic rope" — the further $\pi_\theta$ drifts from $\pi_{ref}$, the larger the penalty, pulling the policy back.
 
-**Timeline of three models during training**:
+**Timeline of the three models during training**:
 
-```
-Time →
-              RL Iteration 1   RL Iteration 2   RL Iteration 3
-              ─────────────   ─────────────   ─────────────
-π_ref:     [SFT model] ════════════════════════════════════  (never changes)
+| Model | Role | How it changes |
+|------|------|---------|
+| $\pi_{ref}$ | Reference model (KL anchor) | **Never changes**; always the SFT model |
+| $\pi_{\theta_{old}}$ | Sampling policy | Copied as a snapshot from $\pi_\theta$ at the **start** of each iteration, used to sample trajectories |
+| $\pi_\theta$ | Training policy | **Continuously updated**; gradient descent on every mini-batch |
 
-π_θ_old:   [SFT model]──→[θ₁]──→[θ₁]──→[θ₂]──→[θ₂]──→[θ₃]  (synced at start of each iteration)
-                sample↓      update↑    sample↓      update↑    sample↓
-π_θ:       [SFT model]→→→[θ₁]  [θ₁]→→→[θ₂]  [θ₂]→→→[θ₃]    (continuously trained and updated)
-```
+> Iteration 1: $\pi_{\theta_{old}}$ = SFT → sample → $\pi_\theta$ updated to $\theta_1$  
+> Iteration 2: $\pi_{\theta_{old}}$ = $\theta_1$ → sample → $\pi_\theta$ updated to $\theta_2$  
+> Iteration 3: $\pi_{\theta_{old}}$ = $\theta_2$ → sample → $\pi_\theta$ updated to $\theta_3$
 
 - Row 1: $\pi_{ref}$ is always the SFT model, unchanged from start to finish
 - Row 2: $\pi_{\theta_{old}}$ copies a snapshot from $\pi_\theta$ at the start of each iteration
-- Row 3: $\pi_\theta$ is the Policy model continuously trained and updated
+- Row 3: $\pi_\theta$ is the Policy model that is continuously trained and updated
 
 > **📌 Implementation detail**: The Reference model needs to occupy separate GPU memory. For a 7B parameter model (bf16), the Reference model takes ~14GB of GPU memory. To save memory, some implementations use LoRA adapters — in this case, the Reference model doesn't need to be loaded separately; just disable the LoRA adapter during inference to get $\pi_{ref}$'s output.
 
 **Role and adjustment of $\beta$**:
 
 | $\beta$ value | Effect | Applicable scenario |
-|--------------|--------|---------------------|
+|------------|------|---------|
 | $\beta$ too small (e.g., 0.001) | KL constraint almost ineffective; policy can deviate greatly | Strong exploration, but prone to reward hacking and language degeneration |
 | $\beta$ moderate (e.g., 0.01–0.1) | Balances exploration and constraint; recommended starting value | Most RLHF scenarios |
-| $\beta$ too large (e.g., 1.0) | Policy can barely deviate from SFT model | RL training is essentially useless |
+| $\beta$ too large (e.g., 1.0) | Policy can barely deviate from the SFT model | RL training is essentially useless |
 
-**Adaptive KL control**: InstructGPT [3] proposed a method for dynamically adjusting $\beta$ — set a target KL value $D_{target}$; if actual $D_{KL}$ exceeds the target, increase $\beta$ (tighten constraint); otherwise decrease $\beta$ (relax constraint):
+**Adaptive KL control**: InstructGPT [3] proposed a method for dynamically adjusting $\beta$ — set a target KL value $D_{target}$; if the actual $D_{KL}$ exceeds the target, increase $\beta$ (tighten the constraint); otherwise decrease $\beta$ (relax the constraint):
 
 $$\beta \leftarrow \begin{cases} \beta \times (1 + \alpha) & \text{if } D_{KL} > 1.5 \times D_{target} \\ \beta \times (1 - \alpha) & \text{if } D_{KL} < 0.5 \times D_{target} \\ \beta & \text{otherwise} \end{cases}$$
 
@@ -338,9 +434,9 @@ Where $\alpha$ is the adjustment step size (typically 0.1–0.2). This adaptive 
 **Synergistic effect of Clip + KL**:
 
 | Constraint mechanism | Constrains | Granularity | Intuition |
-|---------------------|-----------|-------------|-----------|
+|---------|---------|---------|------|
 | **Clip** | Probability ratio $\rho_t$ of individual actions | **Local** (per-token level) | "Each step can't go too far" |
-| **KL** | Overall output distribution $\pi_\theta$ vs $\pi_{ref}$ | **Global** (policy level) | "The overall direction can't deviate too far" |
+| **KL** | Overall output distribution $\pi_\theta$ vs $\pi_{ref}$ | **Global** (policy level) | "The overall route can't deviate too far" |
 
 The two are complementary: Clip prevents single-step updates from being too large; KL prevents cumulative drift from being too large. In practice, both are typically used simultaneously.
 
@@ -377,9 +473,9 @@ def compute_gae(
     Args:
         rewards:  immediate reward at each step, shape [T]
         values:   Critic's value estimate for each state, shape [T+1]
-                  (last one is the terminal state value, usually 0)
-        gamma:    discount factor, controls decay of future rewards
-        lam:      GAE λ parameter, controls bias-variance trade-off
+                  (the last one is the terminal state value, usually 0)
+        gamma:    discount factor, controls the decay of future rewards
+        lam:      GAE λ parameter, controls the bias-variance trade-off
                   λ=0 → single-step TD (low variance, high bias)
                   λ=1 → Monte Carlo (high variance, low bias)
 
@@ -407,19 +503,19 @@ def compute_gae(
 
 ```python
 def ppo_clip_loss(
-    log_probs: torch.Tensor,         # [B, T] log π_θ(a_t|s_t) of current policy
-    old_log_probs: torch.Tensor,     # [B, T] log π_θ_old(a_t|s_t) of old policy
+    log_probs: torch.Tensor,         # [B, T] log π_θ(a_t|s_t) of the current policy
+    old_log_probs: torch.Tensor,     # [B, T] log π_θ_old(a_t|s_t) of the old policy
     advantages: torch.Tensor,         # [B, T] GAE advantage estimates
     clip_epsilon: float = 0.2,        # Clip range ε
 ) -> tuple[torch.Tensor, dict]:
     """
-    Compute PPO Clip policy loss
+    Compute the PPO Clip policy loss
 
     Formula: L = -E[min(ρ_t·A_t, clip(ρ_t, 1-ε, 1+ε)·A_t)]
 
     Args:
-        log_probs:     log probability of each token under current policy [batch, seq_len]
-        old_log_probs: log probability of each token under old policy [batch, seq_len]
+        log_probs:     log probability of each token under the current policy [batch, seq_len]
+        old_log_probs: log probability of each token under the old policy [batch, seq_len]
         advantages:    advantage value for each token [batch, seq_len]
         clip_epsilon:  clipping range, typically 0.1-0.3
 
@@ -427,27 +523,27 @@ def ppo_clip_loss(
         loss: policy loss scalar
         metrics: monitoring metrics
     """
-    # ── Compute importance sampling ratio ────────────────────────────────
+    # ── Compute the importance sampling ratio ────────────────────
     # ρ_t = π_θ(a_t|s_t) / π_θ_old(a_t|s_t)
     # Division in log space = subtraction, then exp back
     ratio = torch.exp(log_probs - old_log_probs)  # [B, T]
 
-    # ── Unclipped objective ──────────────────────────────────────────────
+    # ── Unclipped objective ──────────────────────────────────────
     # ρ_t · A_t
     surr1 = ratio * advantages  # [B, T]
 
-    # ── Clipped objective ────────────────────────────────────────────────
+    # ── Clipped objective ────────────────────────────────────────
     # clip(ρ_t, 1-ε, 1+ε) · A_t
     clipped_ratio = torch.clamp(ratio, 1.0 - clip_epsilon, 1.0 + clip_epsilon)
     surr2 = clipped_ratio * advantages  # [B, T]
 
-    # ── PPO loss = -min(surr1, surr2) ────────────────────────────────────
+    # ── PPO loss = -min(surr1, surr2) ────────────────────────────
     # Taking min ensures:
     #   When A>0: don't let ρ exceed 1+ε (prevent over-reinforcement)
     #   When A<0: don't let ρ fall below 1-ε (prevent over-suppression)
     loss = -torch.min(surr1, surr2).mean()
 
-    # ── Monitoring metrics ───────────────────────────────────────────────
+    # ── Monitoring metrics ───────────────────────────────────────
     with torch.no_grad():
         # Clip fraction: proportion of clipped tokens (healthy range 0.1-0.3)
         clip_fraction = ((ratio - 1.0).abs() > clip_epsilon).float().mean().item()
@@ -456,8 +552,8 @@ def ppo_clip_loss(
 
     metrics = {
         "policy_loss": loss.item(),
-        "clip_fraction": clip_fraction,       # > 0.5 indicates update step too large
-        "approx_kl": approx_kl,               # > 0.02 may need to reduce learning rate
+        "clip_fraction": clip_fraction,       # > 0.5 indicates the update step is too large
+        "approx_kl": approx_kl,               # > 0.02 may require reducing the learning rate
         "mean_ratio": ratio.mean().item(),     # should be close to 1.0
     }
 
@@ -468,13 +564,13 @@ def ppo_clip_loss(
 
 ```python
 def critic_loss(
-    values: torch.Tensor,        # [B, T] V(s_t) predicted by Critic
+    values: torch.Tensor,        # [B, T] V(s_t) predicted by the Critic
     returns: torch.Tensor,       # [B, T] actual returns = advantages + old_values
 ) -> torch.Tensor:
     """
-    Compute Critic loss (mean squared error)
+    Compute the Critic loss (mean squared error)
 
-    Critic's goal: make V_ϕ(s_t) as close as possible to actual returns
+    The Critic's goal: make V_ϕ(s_t) as close as possible to the actual returns
 
     Args:
         values:  Critic's value prediction for each state [batch, seq_len]
@@ -490,17 +586,17 @@ def critic_loss(
 
 ```python
 def kl_penalty(
-    log_probs: torch.Tensor,     # [B, T] log π_θ of current policy
-    ref_log_probs: torch.Tensor, # [B, T] log π_ref of reference policy (SFT model)
+    log_probs: torch.Tensor,     # [B, T] log π_θ of the current policy
+    ref_log_probs: torch.Tensor, # [B, T] log π_ref of the reference policy (SFT model)
 ) -> torch.Tensor:
     """
-    Compute KL divergence between current policy and reference policy
+    Compute the KL divergence between the current policy and the reference policy
 
     Formula: D_KL(π_θ ‖ π_ref) = E[log(π_θ/π_ref)]
 
     Args:
-        log_probs:     log probabilities of current policy
-        ref_log_probs: log probabilities of reference policy (SFT model, frozen parameters)
+        log_probs:     log probabilities of the current policy
+        ref_log_probs: log probabilities of the reference policy (SFT model, frozen parameters)
 
     Returns:
         kl: KL divergence scalar
@@ -519,9 +615,9 @@ def ppo_training_step(
     ref_model,             # Reference model π_ref (frozen, not trained)
     input_ids,             # Input token ids
     response_ids,          # Generated response token ids
-    old_log_probs,         # Log probabilities of old policy
+    old_log_probs,         # Log probabilities of the old policy
     rewards,               # Reward signals
-    old_values,            # Value estimates from old Critic
+    old_values,            # Value estimates from the old Critic
     clip_epsilon=0.2,      # PPO Clip ε
     kl_coef=0.01,          # KL penalty coefficient β
     critic_coef=0.5,       # Critic loss weight
@@ -529,19 +625,19 @@ def ppo_training_step(
     lam=0.95,              # GAE λ
 ):
     """
-    Complete process of a single PPO training step
+    The complete process of a single PPO training step
 
     Total loss = policy loss + β·KL penalty + c·Critic loss
     """
-    # ── Step 1: Compute log probabilities of current policy ──────────────
-    # Forward pass to get log probabilities of each token under current policy
+    # ── Step 1: Compute log probabilities of the current policy ──
+    # Forward pass to get log probabilities of each token under the current policy
     logits = policy_model(input_ids=input_ids, response_ids=response_ids)
     log_probs = compute_token_log_probs(logits, response_ids)  # [B, T]
 
-    # ── Step 2: Compute Critic's value estimates ─────────────────────────
+    # ── Step 2: Compute the Critic's value estimates ─────────────
     values = critic_model(input_ids=input_ids, response_ids=response_ids)  # [B, T]
 
-    # ── Step 3: Compute GAE advantages ──────────────────────────────────
+    # ── Step 3: Compute GAE advantages ───────────────────────────
     # Compute GAE separately for each sample in the batch
     advantages_list = []
     for b in range(rewards.shape[0]):
@@ -552,25 +648,25 @@ def ppo_training_step(
     # Normalize advantages (reduce variance, stabilize training)
     advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
 
-    # Actual returns = advantages + old value estimates (for training Critic)
+    # Actual returns = advantages + old value estimates (used to train the Critic)
     returns = advantages + old_values[:, :-1]
 
-    # ── Step 4: Compute PPO Clip policy loss ─────────────────────────────
+    # ── Step 4: Compute the PPO Clip policy loss ─────────────────
     policy_loss, policy_metrics = ppo_clip_loss(
         log_probs, old_log_probs, advantages, clip_epsilon
     )
 
-    # ── Step 5: Compute KL divergence penalty ────────────────────────────
+    # ── Step 5: Compute the KL divergence penalty ────────────────
     with torch.no_grad():
         ref_logits = ref_model(input_ids=input_ids, response_ids=response_ids)
         ref_log_probs = compute_token_log_probs(ref_logits, response_ids)
     kl = kl_penalty(log_probs, ref_log_probs)
 
-    # ── Step 6: Compute Critic loss ──────────────────────────────────────
+    # ── Step 6: Compute the Critic loss ──────────────────────────
     c_loss = critic_loss(values[:, :-1], returns)
 
-    # ── Step 7: Total loss ───────────────────────────────────────────────
-    # Policy loss (make model do the right thing) + KL penalty (don't forget language ability) + Critic loss (learn to evaluate good/bad)
+    # ── Step 7: Total loss ───────────────────────────────────────
+    # Policy loss (make the model do the right thing) + KL penalty (don't forget language ability) + Critic loss (learn to judge good from bad)
     total_loss = policy_loss + kl_coef * kl + critic_coef * c_loss
 
     return total_loss, {
@@ -581,26 +677,29 @@ def ppo_training_step(
     }
 ```
 
-> **📌 Key differences from GRPO code**:
+> **📌 Key differences from the GRPO code**:
 > - PPO needs to additionally maintain a **Critic model** (`critic_model`) of equivalent scale to the Policy model
-> - Advantage estimation uses **GAE recurrence** (depends on Critic), not GRPO's within-group normalization
-> - Total loss has three parts: policy loss + KL penalty + **Critic loss**, while GRPO has no Critic loss
+> - Advantage estimation uses the **GAE recurrence** (depends on the Critic), not GRPO's within-group normalization
+> - The total loss has three parts: policy loss + KL penalty + **Critic loss**, while GRPO has no Critic loss
 > - This also explains why PPO's memory requirement is ≈ 3× model size (Policy + Critic + Reference)
 
 ### 1.9 Summary of PPO's Advantages and Disadvantages
 
 | Dimension | Assessment |
-|-----------|-----------|
+|------|------|
 | ✅ **Generality** | Applicable to almost all RL scenarios, not limited to language models |
-| ✅ **Stability** | Clip mechanism provides reliable training stability guarantees |
-| ✅ **Theoretical foundation** | Backed by mature theory (simplification of trust region methods) |
-| ❌ **Memory requirements** | Requires Critic model; memory usage ≈ 3× model size |
+| ✅ **Stability** | The Clip mechanism provides reliable training stability guarantees |
+| ✅ **Theoretical foundation** | Backed by mature theory (a simplification of trust region methods) |
+| ❌ **Memory requirements** | Requires a Critic model; memory usage ≈ 3× model size |
 | ❌ **Training complexity** | Critic and Policy are mutually dependent; joint training is unstable |
 | ❌ **Many hyperparameters** | GAE λ, Critic learning rate, clip ε, KL β, etc. all need careful tuning |
 
 ---
 
-*PPO is a powerful but resource-intensive algorithm — it requires a Critic model, reward model, and online sampling. The next section will introduce DPO, which through elegant mathematical derivation directly bypasses the reward model and Critic, transforming the RL problem into simple supervised learning.*
+
+---
+
+*PPO is a powerful but resource-intensive algorithm — it requires a Critic model, a reward model, and online sampling. The next section introduces DPO, which through elegant mathematical derivation directly bypasses both the reward model and the Critic, turning the RL problem into simple supervised learning.*
 
 ---
 

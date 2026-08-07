@@ -27,6 +27,7 @@ After completing this chapter, you will be able to:
 | 16.3 Role Division and Task Allocation | Specialization and division of labor | ⭐⭐⭐ |
 | 16.4 Supervisor Mode vs. Decentralized | Architecture choices | ⭐⭐⭐ |
 | 16.5 Practice: Multi-Agent Software Development Team | Complete implementation | ⭐⭐⭐⭐ |
+| 16.6 Paper Reading: Frontiers in Multi-Agent Systems | Key research papers | ⭐⭐⭐ |
 
 ## ⏱️ Estimated Study Time
 
@@ -34,7 +35,7 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 💡 Prerequisites
 
-- Completed Chapter 13 LangGraph study
+- Completed Chapter 14 LangGraph study
 - Understanding of Agent tool calls and state management
 - Familiarity with basic software development processes (helpful for understanding the hands-on project)
 

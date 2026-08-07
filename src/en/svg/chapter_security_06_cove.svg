@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="480" height="300" rx="12" fill="#f8fafc"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">CoVe：验证链（Chain-of-Verification）</text>
+
+  <!-- 初始回答 -->
+  <rect x="80" y="46" width="320" height="36" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="240" y="69" text-anchor="middle" font-size="11" fill="#1d4ed8">初始回答："北京是中国的首都，人口约 2200 万，位于华北平原。"</text>
+  <line x1="240" y1="82" x2="240" y2="100" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 生成验证问题 -->
+  <rect x="40" y="102" width="400" height="80" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="240" y="120" text-anchor="middle" font-size="12" font-weight="bold" fill="#a16207">生成验证问题</text>
+  <text x="60" y="140" font-size="11" fill="#a16207">Q1: "北京是中国的首都吗？"</text>
+  <text x="60" y="156" font-size="11" fill="#a16207">Q2: "北京的人口大约是多少？"</text>
+  <text x="60" y="172" font-size="11" fill="#a16207">Q3: "北京位于什么地理区域？"</text>
+  <line x1="240" y1="182" x2="240" y2="200" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 独立验证 -->
+  <rect x="40" y="202" width="400" height="36" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="240" y="225" text-anchor="middle" font-size="11" fill="#3730a3">逐个独立回答验证问题（避免受初始回答影响）</text>
+  <line x1="240" y1="238" x2="240" y2="256" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 修正 -->
+  <rect x="80" y="258" width="320" height="32" rx="8" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="240" y="279" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">若验证结果与初始回答矛盾 → 修正初始回答</text>
+</svg>

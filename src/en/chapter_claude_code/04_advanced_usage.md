@@ -1,4 +1,4 @@
-# 14.4 Advanced Usage: MCP, Hooks, and Skills
+# 15.4 Advanced Usage: MCP, Hooks, and Skills
 
 > 🔧 *"Tools are not obstacles — tools are leverage. The truly skilled engineer isn't the one who runs fastest, but the one who configures their Agent best."*
 
@@ -688,6 +688,6 @@ Claude Code manages **long-term memory** and **session state** separately, preve
 
 ---
 
-*Previous section: [14.3 Source Code Decoded: System Prompt and Permission Engineering](./03_source_code_analysis.md)*
+*Previous section: [15.3 Source Code Decoded: System Prompt and Permission Engineering](./03_source_code_analysis.md)*
 
-*Next section: [14.5 Production Practice: Using Claude Code Effectively in Teams](./05_best_practices.md)*
+*Next section: [15.5 Production Practice: Using Claude Code Effectively in Teams](./05_best_practices.md)*

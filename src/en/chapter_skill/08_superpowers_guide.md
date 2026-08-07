@@ -1,4 +1,4 @@
-# The Skills Bible: Superpowers Engineering Practice Guide
+# 9.8 The Skills Bible: Superpowers Engineering Practice Guide
 
 > 🎯 *"Tools give Agents the ability to act; Skills give Agents engineering discipline. What Superpowers does is turn the best practices in software development that are hardest to maintain into non-negotiable execution standards for AI."*
 
@@ -558,4 +558,4 @@ git worktree add .worktrees/feature-name -b feature/name
 
 ---
 
-*Chapter complete. Back to: [Chapter 10 Index](./README.md)*
+*Chapter complete. Back to: [Chapter 9 Index](./README.md)*

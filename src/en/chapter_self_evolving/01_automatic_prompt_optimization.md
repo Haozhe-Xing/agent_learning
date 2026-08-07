@@ -1,4 +1,4 @@
-# Automatic Prompt Optimization: From Handcrafted Prompts to Reflective Evolution
+# 11.1 Automatic Prompt Optimization: From Handcrafted Prompts to Reflective Evolution
 
 > 🧬 *"A good prompt is not written once; it is evolved through feedback. The future of Prompt Engineering is not better intuition alone, but systems that can observe failures, reflect in language, and rewrite themselves."*
 
@@ -698,6 +698,6 @@ Automatic Prompt Optimization marks an important transition: Prompt Engineering 
 
 ---
 
-*Previous section: [3.8 SFT and Reinforcement Learning Training Data Preparation](./08_training_data.md)*
+*Previous chapter: [Chapter 10: Agentic-RL: Reinforcement Learning for Agents](../chapter_agentic_rl/README.md)*
 
-*Next chapter: [Chapter 4: Tool Use / Function Calling](../chapter_tools/README.md)*
+*Next section: [11.2 Self-Evolution Agent](./02_self_evolution_agent.md)*

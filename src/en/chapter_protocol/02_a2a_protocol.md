@@ -1,4 +1,4 @@
-# A2A (Agent-to-Agent) Protocol
+# 17.2 A2A (Agent-to-Agent) Protocol
 
 A2A (Agent-to-Agent) is an open protocol launched by Google at Google Cloud Next in April 2025, specifically designed for interoperability between different Agents. The protocol received support from over 50 technology partners at launch.
 

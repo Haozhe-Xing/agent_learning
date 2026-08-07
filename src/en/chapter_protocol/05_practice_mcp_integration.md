@@ -1,4 +1,4 @@
-# Practice: Complete MCP-Based Tool Integration
+# 17.5 Practice: Complete MCP-Based Tool Integration
 
 This section demonstrates how to package custom tools as an MCP server and use them in a LangChain Agent.
 

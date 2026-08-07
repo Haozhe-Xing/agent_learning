@@ -1,4 +1,4 @@
-# Prompt Engineering: The Art of Communicating with Models
+# 2.2 Prompt Engineering: The Art of Communicating with Models
 
 > 🧠 *"When programming with traditional languages, you are a dictator and the computer obeys absolutely. When programming a large model with natural language, you are a master psychologist — you must use suggestion, constraint, and guidance to converge certainty from probabilistic chaos."*
 
@@ -358,4 +358,4 @@ Prompt Engineering is one of the core skills in Agent development. A good Prompt
 
 ---
 
-*Next section: [3.3 Few-shot / Zero-shot / Chain-of-Thought Prompting Strategies](./03_prompting_strategies.md)*
+*Next section: [2.3 Few-shot / Zero-shot / Chain-of-Thought Prompting Strategies](./03_prompting_strategies.md)*

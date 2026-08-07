@@ -1,4 +1,4 @@
-# Chapter 14 Deep Dive into Claude Code: From Usage to Source Code
+# Chapter 15: Deep Dive into Claude Code: From Usage to Source Code
 
 > 🛠️ *"Tools are not just for using — they are for understanding. Truly mastering a tool means you can predict its limits, control its behavior, and even reshape its direction."*  
 > — Adapted from Richard Feynman
@@ -19,11 +19,11 @@ Through this chapter, you will gain value on two levels: **practical level** —
 
 | Section | Content | What You'll Learn |
 |---------|---------|-------------------|
-| 14.1 Getting to Know Claude Code: From Zero to Hands-On | Installation, core interaction modes, common commands and shortcuts, fundamental differences from Copilot/Cursor | Quickly get started with Claude Code and understand how it differs fundamentally from traditional code completion tools as an Agent tool |
-| 14.2 Deep Dive into Core Architecture | Six-layer hierarchical architecture, QueryEngine main loop, React+Ink terminal UI, three-level context compression mechanism | Understand Claude Code's overall design philosophy and how Agent systems maintain stability at the engineering level |
-| 14.3 Source Code Decoded: System Prompt and Permission Engineering | Four module types in the 915-line System Prompt, static/dynamic zone separation, Prompt Cache reducing costs by 90%, 6-stage permission decision pipeline | Master industrial-grade System Prompt design patterns and understand the correct way to model permission systems |
-| 14.4 Advanced Usage: MCP, Hooks, and Skills | MCP server integration with the external world, Hooks event-driven automation (PreToolUse/PostToolUse), Skills reusable capability packages, sub-Agent orchestration | Use extension mechanisms to turn Claude Code into a team-specific workflow engine |
-| 14.5 Production Practice: Using Claude Code Effectively in Teams | CLAUDE.md best practices, team configuration sharing, cost control, security considerations and vulnerability review | Deploy and use Claude Code stably, efficiently, and securely in real team environments |
+| 15.1 Getting to Know Claude Code: From Zero to Hands-On | Installation, core interaction modes, common commands and shortcuts, fundamental differences from Copilot/Cursor | Quickly get started with Claude Code and understand how it differs fundamentally from traditional code completion tools as an Agent tool |
+| 15.2 Deep Dive into Core Architecture | Six-layer hierarchical architecture, QueryEngine main loop, React+Ink terminal UI, three-level context compression mechanism | Understand Claude Code's overall design philosophy and how Agent systems maintain stability at the engineering level |
+| 15.3 Source Code Decoded: System Prompt and Permission Engineering | Four module types in the 915-line System Prompt, static/dynamic zone separation, Prompt Cache reducing costs by 90%, 6-stage permission decision pipeline | Master industrial-grade System Prompt design patterns and understand the correct way to model permission systems |
+| 15.4 Advanced Usage: MCP, Hooks, and Skills | MCP server integration with the external world, Hooks event-driven automation (PreToolUse/PostToolUse), Skills reusable capability packages, sub-Agent orchestration | Use extension mechanisms to turn Claude Code into a team-specific workflow engine |
+| 15.5 Production Practice: Using Claude Code Effectively in Teams | CLAUDE.md best practices, team configuration sharing, cost control, security considerations and vulnerability review | Deploy and use Claude Code stably, efficiently, and securely in real team environments |
 
 ---
 
@@ -31,14 +31,14 @@ Through this chapter, you will gain value on two levels: **practical level** —
 
 This chapter is suitable for the following readers:
 
-- ✅ **Engineers looking to boost productivity**: want to truly use AI tools rather than just occasionally asking questions — read from 14.1 in order
-- ✅ **Agent system builders**: building your own Agent systems and want to study the engineering implementation details of top teams as a reference — focus on 14.2 and 14.3
-- ✅ **Team leads/architects**: need to evaluate and promote AI programming tools within a team — focus on 14.4 and 14.5
+- ✅ **Engineers looking to boost productivity**: want to truly use AI tools rather than just occasionally asking questions — read from 15.1 in order
+- ✅ **Agent system builders**: building your own Agent systems and want to study the engineering implementation details of top teams as a reference — focus on 15.2 and 15.3
+- ✅ **Team leads/architects**: need to evaluate and promote AI programming tools within a team — focus on 15.4 and 15.5
 
-**Prerequisite knowledge**: It is recommended to read Chapter 7 (Context Engineering) and Chapter 8 (Harness Engineering) first to have a basic understanding of Agent engineering control before reading the architectural analysis sections of this chapter. Sections 14.1 and 14.4 are relatively independent; readers not interested in source code analysis can start directly with the practical sections.
+**Prerequisite knowledge**: It is recommended to read Chapter 7 (Context Engineering) and Chapter 8 (Harness Engineering) first to have a basic understanding of Agent engineering control before reading the architectural analysis sections of this chapter. Sections 15.1 and 15.4 are relatively independent; readers not interested in source code analysis can start directly with the practical sections.
 
 > 💡 **Special note**: Some content in this chapter is based on community analysis following the accidental source code exposure incident in March 2026. Anthropic fixed the disclosed security vulnerabilities in Claude Code v2.1.90 (April 4, 2026). The security analysis in this chapter is for educational reference only; please do not use it for malicious purposes.
 
 ---
 
-*Next section: [14.1 Getting to Know Claude Code: From Zero to Hands-On](./01_introduction.md)*
+*Next section: [15.1 Getting to Know Claude Code: From Zero to Hands-On](./01_introduction.md)*

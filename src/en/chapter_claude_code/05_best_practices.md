@@ -1,10 +1,10 @@
-# 14.5 Production Practice: Using Claude Code Effectively in Teams
+# 15.5 Production Practice: Using Claude Code Effectively in Teams
 
 > 🏗️ *"The tool itself doesn't matter — what matters is the engineering standards you build around it."*
 
 ---
 
-After studying the previous four sections, you've mastered Claude Code's architectural principles, permission system, extension mechanisms, and multi-Agent capabilities. This section is the conclusion of Chapter 14, focusing on one core question: **How do you use Claude Code reliably in real teams and production environments?**
+After studying the previous four sections, you've mastered Claude Code's architectural principles, permission system, extension mechanisms, and multi-Agent capabilities. This section is the conclusion of Chapter 15, focusing on one core question: **How do you use Claude Code reliably in real teams and production environments?**
 
 This is not theory — it's a summary of experience from engineering practice.
 
@@ -643,7 +643,7 @@ npm update -g @anthropic-ai/claude-code
 
 ## VI. Chapter Summary
 
-### Chapter 14 Knowledge Review
+### Chapter 15 Knowledge Review
 
 | Section | Core Content | Key Insight |
 |---------|-------------|------------|
@@ -676,11 +676,11 @@ Mastering Claude Code is not the end goal — understanding how to **design cons
 
 ---
 
-> 🎉 **Congratulations on completing all of Chapter 14!**  
+> 🎉 **Congratulations on completing all of Chapter 15!**  
 > From Claude Code's architectural principles to production practice, from the permission system to multi-Agent collaboration, you've systematically mastered all the knowledge needed to use Claude Code effectively in production environments.  
 > Now go create your first `CLAUDE.md` in your project — that's where truly mastering the essence of this chapter begins.
 
 ---
 
-*Previous section: [14.4 Advanced Usage: MCP, Hooks, and Skills](./04_advanced_usage.md)*  
-*Back to chapter home: [Chapter 14: Claude Code Deep Dive](./README.md)*
+*Previous section: [15.4 Advanced Usage: MCP, Hooks, and Skills](./04_advanced_usage.md)*  
+*Back to chapter home: [Chapter 15: Claude Code Deep Dive](./README.md)*

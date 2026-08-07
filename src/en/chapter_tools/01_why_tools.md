@@ -1,4 +1,4 @@
-# Why Do Agents Need Tools?
+# 3.1 Why Do Agents Need Tools?
 
 LLMs are powerful on their own, but they have three fundamental limitations: **knowledge cutoff**, **inability to act**, and **inability to access real-time information**. Tools exist precisely to break through these three limitations.
 
@@ -114,8 +114,8 @@ Tools are the key to breaking through LLM limitations for Agents:
 - Tools fall into five categories: information retrieval, computation execution, content generation, interactive operations, and memory storage
 - Powerful tools require accompanying safety mechanisms
 
-> 📖 **Want to dive deeper into the academic frontier of tool learning?** Read [4.6 Paper Readings: Frontier Advances in Tool Learning](./06_paper_readings.md), covering in-depth analysis of three foundational papers: Toolformer, Gorilla, and ToolLLM.
+> 📖 **Want to dive deeper into the academic frontier of tool learning?** Read [3.6 Paper Readings: Frontier Advances in Tool Learning](./06_paper_readings.md), covering in-depth analysis of three foundational papers: Toolformer, Gorilla, and ToolLLM.
 
 ---
 
-*Next section: [4.2 Function Calling Mechanism Explained](./02_function_calling.md)*
+*Next section: [3.2 Function Calling Mechanism Explained](./02_function_calling.md)*

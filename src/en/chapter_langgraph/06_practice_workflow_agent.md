@@ -1,4 +1,4 @@
-# Practice: Workflow Automation Agent
+# 13.6 Practice: Workflow Automation Agent
 
 This section applies all the LangGraph knowledge learned so far — state management, conditional routing, and loop control — to build a complete workflow automation Agent.
 

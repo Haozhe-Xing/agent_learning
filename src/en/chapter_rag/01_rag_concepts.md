@@ -1,4 +1,4 @@
-# RAG Concepts and How It Works
+# 6.1 RAG Concepts and How It Works
 
 RAG (Retrieval-Augmented Generation) is a technical architecture that combines **information retrieval** with **language generation**. It allows LLMs to answer questions based on external knowledge bases, rather than relying solely on knowledge learned during training.
 
@@ -200,7 +200,7 @@ RAG is not a silver bullet. In practice, you may encounter the following challen
 
 Understanding these limitations helps you realistically assess RAG's applicability in real projects and choose the right optimization direction.
 
-> 📖 **Want to dive deeper into the academic frontiers of RAG?** Read [7.6 Paper Readings: Frontiers in RAG](./06_paper_readings.md), covering in-depth analyses of the original RAG paper, Self-RAG, CRAG, GraphRAG, Modular RAG, and more, as well as the complete evolution from Naive RAG to Agentic RAG.
+> 📖 **Want to dive deeper into the academic frontiers of RAG?** Read [6.6 Paper Readings: Frontiers in RAG](./06_paper_readings.md), covering in-depth analyses of the original RAG paper, Self-RAG, CRAG, GraphRAG, Modular RAG, and more, as well as the complete evolution from Naive RAG to Agentic RAG.
 >
 > 💡 **Frontier Trend: Agentic RAG**: Since 2025, RAG has been evolving from a static "retrieve-generate" pipeline to a dynamic **Agentic RAG** paradigm [2] — Agents not only retrieve documents but can also judge when to retrieve, what to retrieve, and automatically rewrite queries or switch data sources when unsatisfied with results. This essentially upgrades RAG from a "pipeline" to a "thinking retrieval Agent".
 
@@ -216,4 +216,4 @@ Understanding these limitations helps you realistically assess RAG's applicabili
 
 ---
 
-*Next: [7.2 Document Loading and Text Splitting](./02_document_loading.md)*
+*Next: [6.2 Document Loading and Text Splitting](./02_document_loading.md)*

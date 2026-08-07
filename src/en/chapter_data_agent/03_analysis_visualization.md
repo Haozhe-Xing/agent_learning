@@ -1,4 +1,4 @@
-# Automated Analysis and Visualization
+# 22.3 Automated Analysis and Visualization
 
 > **Section Goal**: Implement automated data analysis and chart generation capabilities.
 

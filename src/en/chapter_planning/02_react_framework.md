@@ -1,4 +1,4 @@
-# ReAct: Reasoning + Acting Framework
+# 5.2 ReAct: Reasoning + Acting Framework
 
 ReAct (Reasoning + Acting) is one of the most important frameworks in Agent development, originating from the 2022 paper *"ReAct: Synergizing Reasoning and Acting in Language Models"* by Yao et al. from Princeton University and Google Brain. It combines the LLM's reasoning capabilities with tool use to create more reliable and transparent Agent behavior.
 
@@ -258,7 +258,7 @@ The three key elements of the ReAct framework:
 - **Action-Observation loop**: tool calls and reasoning alternate
 - **Natural termination**: the loop ends when a final answer is reached
 
-> 📖 **Want to dive deeper into the academic frontiers of ReAct and planning/reasoning?** Read [6.6 Paper Readings: Frontiers in Planning and Reasoning](./06_paper_readings.md), covering in-depth analyses of key papers including ReAct, MRKL, Plan-and-Solve, Reflexion, and CRITIC.
+> 📖 **Want to dive deeper into the academic frontiers of ReAct and planning/reasoning?** Read [5.7 Paper Readings: Frontiers in Planning and Reasoning](./06_paper_readings.md), covering in-depth analyses of key papers including ReAct, MRKL, Plan-and-Solve, Reflexion, and CRITIC.
 >
 > 💡 **Practical advice**: ReAct is the default architecture in most Agent frameworks (LangChain, LlamaIndex). But it's not a silver bullet — for pure reasoning tasks that don't need tools, CoT is more efficient; for workflows with fixed processes, direct orchestration (LangGraph) is more controllable. Choose the right architecture rather than defaulting to ReAct for everything.
 
@@ -274,4 +274,4 @@ The three key elements of the ReAct framework:
 
 ---
 
-*Next: [6.3 Task Decomposition: Breaking Complex Problems into Subtasks](./03_task_decomposition.md)*
+*Next: [5.3 Task Decomposition: Breaking Complex Problems into Subtasks](./03_task_decomposition.md)*

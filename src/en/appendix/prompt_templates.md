@@ -14,17 +14,17 @@
 | 1.3 | ReAct Reasoning Agent | Agents requiring multi-step reasoning and tool alternation | Chapter 6 |
 | **2. Task Prompts** | | | |
 | 2.1 | Text Summarization | Generate summaries of long texts | Chapter 3 |
-| 2.2 | Code Review | Review code quality and security | Chapter 19 |
-| 2.3 | Data Analysis | Extract insights from data | Chapter 20 |
+| 2.2 | Code Review | Review code quality and security | Chapter 20 |
+| 2.3 | Data Analysis | Extract insights from data | Chapter 21 |
 | **3. Few-shot Examples** | Few-shot learning tasks | Chapter 3 |
 | **4. Structured Output** | | | |
 | 4.1 | JSON Format Output | Requires structured JSON return | Chapter 4 |
-| 4.2 | Markdown Report Output | Generate formatted reports | Chapter 20 |
-| **5. Safety Guard Prompts** | Prompt injection defense | Chapter 17 |
+| 4.2 | Markdown Report Output | Generate formatted reports | Chapter 21 |
+| **5. Safety Guard Prompts** | Prompt injection defense | Chapter 18 |
 | **6. Multi-Agent Coordination** | | | |
-| 6.1 | Task Assignment (Orchestrator) | Multi-Agent task orchestration | Chapter 14 |
-| 6.2 | Expert Agent (Worker) | Expert role definition | Chapter 14 |
-| 6.3 | Inter-Agent Message Passing | Agent collaboration communication | Chapter 15 |
+| 6.1 | Task Assignment (Orchestrator) | Multi-Agent task orchestration | Chapter 15 |
+| 6.2 | Expert Agent (Worker) | Expert role definition | Chapter 15 |
+| 6.3 | Inter-Agent Message Passing | Agent collaboration communication | Chapter 16 |
 | **7. RAG Enhancement** | | | |
 | 7.1 | Context-Based Q&A | Answer based on retrieved results | Chapter 7 |
 | 7.2 | Query Rewriting | Optimize search queries | Chapter 7 |
@@ -38,11 +38,11 @@
 | 9.2 | Error Analysis and Retry | Learn from errors and correct | Chapter 6 |
 | 9.3 | Multi-Perspective Rebuttal | Dialectical analysis of viewpoints | Chapter 6 |
 | **10. Guardrails Protection** | | | |
-| 10.1 | Output Format Enforcement | Strictly control output format | Chapter 16 |
-| 10.2 | Harmful Content Filtering | Safety content review | Chapter 17 |
-| 10.3 | Hallucination Detection | Detect AI-fabricated information | Chapter 17 |
+| 10.1 | Output Format Enforcement | Strictly control output format | Chapter 17 |
+| 10.2 | Harmful Content Filtering | Safety content review | Chapter 18 |
+| 10.3 | Hallucination Detection | Detect AI-fabricated information | Chapter 18 |
 | **11. Domain-Specific** | | | |
-| 11.1 | Financial Analysis | Financial data analysis | Chapter 20 |
+| 11.1 | Financial Analysis | Financial data analysis | Chapter 21 |
 | 11.2 | Educational Tutoring | Teaching guidance | — |
 | 11.3 | Medical Health Consultation | Health information education | — |
 | **12. Multi-Turn Conversation Management** | | | |
@@ -739,4 +739,4 @@ Based on the current status, naturally guide the user to provide the next piece 
 
 ---
 
-> 💡 **Usage Tip**: The templates above are starting points, not endpoints. In real projects, it is recommended to continuously iterate and optimize based on specific scenarios. Good Prompts are "refined" — validated through extensive test cases and gradually adjusted in wording and structure. It is recommended to use the evaluation methods introduced in Chapter 16 to quantitatively measure Prompt effectiveness.
+> 💡 **Usage Tip**: The templates above are starting points, not endpoints. In real projects, it is recommended to continuously iterate and optimize based on specific scenarios. Good Prompts are "refined" — validated through extensive test cases and gradually adjusted in wording and structure. It is recommended to use the evaluation methods introduced in Chapter 17 to quantitatively measure Prompt effectiveness.

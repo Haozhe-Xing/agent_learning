@@ -1,4 +1,4 @@
-# Why Do Agents Need Memory?
+# 4.1 Why Do Agents Need Memory?
 
 Imagine an assistant who completely forgets you every time you come to them — who you are, what your job is, what tasks you assigned last time. Such an assistant cannot provide any real help.
 
@@ -123,8 +123,8 @@ Memory systems are the core of Agent practicality:
 - Working memory: supports complex reasoning tasks
 - Core challenges: token limits, selective memory, accuracy
 
-> 📖 **Want to dive deeper into the academic frontier of memory systems?** Read [5.6 Paper Readings: Frontier Advances in Memory Systems](./06_paper_readings.md), covering in-depth analysis of four core papers: Generative Agents, MemGPT, MemoryBank, and CoALA.
+> 📖 **Want to dive deeper into the academic frontier of memory systems?** Read [4.6 Paper Readings: Frontier Advances in Memory Systems](./06_paper_readings.md), covering in-depth analysis of four core papers: Generative Agents, MemGPT, MemoryBank, and CoALA.
 
 ---
 
-*Next section: [5.2 Short-Term Memory: Conversation History Management](./02_short_term_memory.md)*
+*Next section: [4.2 Short-Term Memory: Conversation History Management](./02_short_term_memory.md)*

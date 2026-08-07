@@ -1,4 +1,4 @@
-# 6.6 Paper Readings: Frontiers in Planning and Reasoning
+# 5.7 Paper Readings: Frontiers in Planning and Reasoning
 
 > 📖 *"An Agent's reasoning ability determines its ceiling, while its planning ability determines the complexity of tasks it can handle."*  
 > *This section provides in-depth analyses of key papers in planning and reasoning.*
@@ -354,4 +354,4 @@ The emergence of reasoning models gives Agent developers new choices:
 
 ---
 
-*Back to: [Chapter 6: Planning and Reasoning](./README.md)*
+*Back to: [Chapter 5: Planning and Reasoning](./README.md)*

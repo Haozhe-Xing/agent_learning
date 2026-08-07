@@ -1,4 +1,4 @@
-# Chapter 20 Project Practice: Intelligent Data Analysis Agent
+# Chapter 22: Project Practice: Intelligent Data Analysis Agent
 
 > Data analysis with natural language — from "help me analyze last month's sales" to a complete analysis report.
 
@@ -28,13 +28,13 @@ Data analysis is one of the most practical application scenarios for Agents. Thi
 
 ## 🔗 Learning Path
 
-> **Core Prerequisites**: [Chapter 4: Tool Calling](../chapter_tools/README.md), [Chapter 6: Planning and Reasoning](../chapter_planning/README.md), [Chapter 12: LangGraph](../chapter_langgraph/README.md)
+> **Core Prerequisites**: [Chapter 3: Tool Calling](../chapter_tools/README.md), [Chapter 5: Planning and Reasoning](../chapter_planning/README.md), [Chapter 13: LangGraph](../chapter_langgraph/README.md)
 > Recommended but not required: [Chapters 16–18: Production Series](../chapter_evaluation/README.md)
 >
 > **Related Projects**:
-> - 🔨 [Chapter 19: AI Coding Assistant](../chapter_coding_agent/README.md)
-> - 🎨 [Chapter 21: Multimodal Agent](../chapter_multimodal/README.md)
+> - 🔨 [Chapter 21: AI Coding Assistant](../chapter_coding_agent/README.md)
+> - 🎨 [Chapter 23: Multimodal Agent](../chapter_multimodal/README.md)
 
 ---
 
-*Next: [20.1 Requirements Analysis and Architecture Design](./01_requirements.md)*
+*Next: [22.1 Requirements Analysis and Architecture Design](./01_requirements.md)*

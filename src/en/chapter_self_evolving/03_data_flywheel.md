@@ -1,4 +1,4 @@
-# 10.9 Agentic Data Flywheel: Letting Agents Improve Themselves
+# 11.3 Agentic Data Flywheel: Letting Agents Improve Themselves
 
 > 🔄 *"The best training data is not manually labeled in isolation; it is the trajectory left behind when Agents succeed, fail, recover, and complete tasks in real environments."*
 
@@ -251,4 +251,6 @@ The key principle is separation: raw traces, filtered data, training sets, and e
 
 ---
 
-*Previous: [10.8 Agent-Specific Fine-Tuning](./08_agent_finetuning.md)*
+*Previous section: [11.2 Self-Evolution Agent](./02_self_evolution_agent.md)*
+
+*Next chapter: [Chapter 12: LangChain In-Depth](../chapter_langchain/README.md)*

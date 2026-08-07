@@ -1,4 +1,4 @@
-# Context Window Management and Attention Budget
+# 7.2 Context Window Management and Attention Budget
 
 > 📖 *"The context window is like a desk — the surface area is fixed, and the number of documents you can spread out at once is limited. The key is not how big the desk is, but which documents you choose to spread out."*
 
@@ -463,4 +463,4 @@ Now that you understand the three context management techniques, a natural quest
 
 ---
 
-*Next: [8.3 Context Strategies for Long-Horizon Tasks](./03_long_horizon.md)*
+*Next: [7.3 Context Strategies for Long-Horizon Tasks](./03_long_horizon.md)*

@@ -1,4 +1,4 @@
-# Chapter 22 Project Practice: Multimodal Agent
+# Chapter 23: Project Practice: Multimodal Agent
 
 > 🎨 *"The real world speaks more than words — images, audio, and video are all languages an Agent needs to understand."*
 
@@ -46,12 +46,12 @@ After completing this chapter, you will be able to:
 
 | Section | Content | Difficulty |
 |---------|---------|-----------|
-| 22.1 Multimodal Capabilities Overview | Capabilities and application scenarios of multimodal models | ⭐⭐ |
-| 22.2 Image Understanding and Generation | GPT-4.1 analyzes images, DALL-E generates images | ⭐⭐⭐ |
-| 22.3 Voice Interaction Integration | Speech recognition and text-to-speech | ⭐⭐⭐ |
-| 22.4 Practice: Multimodal Personal Assistant | Build a complete multimodal Agent | ⭐⭐⭐⭐ |
-| 22.5 Computer Use and GUI Agents | Let Agents operate computers and browsers | ⭐⭐⭐⭐ |
-| 22.6 Video Understanding and Multimodal RAG | Video analysis and hybrid image-text retrieval | ⭐⭐⭐⭐ |
+| 23.1 Multimodal Capabilities Overview | Capabilities and application scenarios of multimodal models | ⭐⭐ |
+| 23.2 Image Understanding and Generation | GPT-4.1 analyzes images, DALL-E generates images | ⭐⭐⭐ |
+| 23.3 Voice Interaction Integration | Speech recognition and text-to-speech | ⭐⭐⭐ |
+| 23.4 Practice: Multimodal Personal Assistant | Build a complete multimodal Agent | ⭐⭐⭐⭐ |
+| 23.5 Computer Use and GUI Agents | Let Agents operate computers and browsers | ⭐⭐⭐⭐ |
+| 23.6 Video Understanding and Multimodal RAG | Video analysis and hybrid image-text retrieval | ⭐⭐⭐⭐ |
 
 ## ⏱️ Estimated Learning Time
 
@@ -65,13 +65,13 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 🔗 Learning Path
 
-> **Core Prerequisites**: [Chapter 3: Tool Use / Function Calling](../chapter_tools/README.md), [Chapter 12: LangGraph](../chapter_langgraph/README.md)
-> Recommended but not required: [Chapter 17: Agent Evaluation and Optimization](../chapter_evaluation/README.md)
+> **Core Prerequisites**: [Chapter 3: Tool Use / Function Calling](../chapter_tools/README.md), [Chapter 13: LangGraph](../chapter_langgraph/README.md)
+> Recommended but not required: [Chapter 18: Agent Evaluation and Optimization](../chapter_evaluation/README.md)
 >
 > **Related Projects**:
-> - 🔨 [Chapter 20: AI Coding Assistant](../chapter_coding_agent/README.md)
-> - 📊 [Chapter 21: Data Analysis Agent](../chapter_data_agent/README.md)
+> - 🔨 [Chapter 21: AI Coding Assistant](../chapter_coding_agent/README.md)
+> - 📊 [Chapter 22: Data Analysis Agent](../chapter_data_agent/README.md)
 
 ---
 
-*Next: [22.1 Multimodal Capabilities Overview](./01_multimodal_overview.md)*
+*Next: [23.1 Multimodal Capabilities Overview](./01_multimodal_overview.md)*

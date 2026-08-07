@@ -1,4 +1,4 @@
-# Voice Interaction Integration
+# 23.3 Voice Interaction Integration
 
 > **Section Goal**: Integrate speech recognition (STT) and text-to-speech (TTS) capabilities into the Agent, and understand real-time voice processing architecture and multilingual support strategies.
 

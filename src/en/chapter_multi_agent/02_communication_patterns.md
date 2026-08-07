@@ -1,4 +1,4 @@
-# Multi-Agent Communication Patterns
+# 16.2 Multi-Agent Communication Patterns
 
 In a multi-Agent system, how Agents exchange information is a core design decision. Different communication patterns suit different scenarios; choosing the wrong one can make the system difficult to maintain or cause performance issues.
 

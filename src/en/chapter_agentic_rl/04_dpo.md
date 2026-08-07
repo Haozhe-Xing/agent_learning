@@ -1,6 +1,6 @@
-# 11.4 DPO: Direct Preference Optimization
+# 10.4 DPO: Direct Preference Optimization
 
-In [Section 11.3](./03_ppo.md), we introduced the PPO algorithm in detail — it requires training a Critic model to estimate the advantage function, and relies on online sampling and a reward model. This makes PPO's training pipeline complex and resource-intensive.
+In [Section 12.3](./03_ppo.md), we introduced the PPO algorithm in detail — it requires training a Critic model to estimate the advantage function, and relies on online sampling and a reward model. This makes PPO's training pipeline complex and resource-intensive.
 
 **DPO (Direct Preference Optimization)** [1] proposes an entirely new approach: **directly optimize the policy from human preference data, without a reward model, without a Critic, without online sampling** — cleverly transforming the RL problem into a simple supervised learning problem.
 

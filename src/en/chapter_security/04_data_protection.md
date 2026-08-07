@@ -1,4 +1,4 @@
-# Sensitive Data Protection
+# 19.4 Sensitive Data Protection
 
 > **Section Goal**: Learn to identify and protect sensitive data in Agent interactions to prevent data leakage.
 

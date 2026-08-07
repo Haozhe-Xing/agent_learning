@@ -1,4 +1,4 @@
-# Chapter 14 Overview of Other Major Frameworks
+# Chapter 14: Overview of Other Major Frameworks
 
 > 🧭 *"Frameworks are just tools; understanding the principles is what matters. This chapter gives a quick tour of major Agent frameworks to help you make informed technology choices."*
 

@@ -39,7 +39,7 @@ Approximately **45–60 minutes** (including thinking exercises)
 
 > **Recommended next steps**:
 > - 👉 [Chapter 2: Development Environment Setup](../chapter_setup/README.md) — Set up your tools and get started
-> - 👉 [Chapter 3: LLM Fundamentals](../chapter_llm/README.md) — Understand the Agent's "brain"
+> - 👉 [Chapter 2: LLM Fundamentals](../chapter_llm/README.md) — Understand the Agent's "brain"
 
 ---
 

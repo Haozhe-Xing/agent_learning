@@ -1,4 +1,4 @@
-# Document Loading and Text Splitting
+# 6.2 Document Loading and Text Splitting
 
 The first step in RAG is loading documents and splitting them into chunks appropriately. This step may seem simple, but it is actually the most underestimated part of the entire RAG pipeline — **the quality of text splitting directly affects retrieval effectiveness, which in turn determines the quality of the final answers.**
 
@@ -404,4 +404,4 @@ Key points for document processing:
 
 ---
 
-*Next: [7.3 Vector Embeddings and Vector Databases](./03_embeddings_vectordb.md)*
+*Next: [6.3 Vector Embeddings and Vector Databases](./03_embeddings_vectordb.md)*

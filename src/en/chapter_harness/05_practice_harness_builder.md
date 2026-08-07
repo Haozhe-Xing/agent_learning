@@ -1,4 +1,4 @@
-# 9.5 Practice: Building Your First Harness System
+# 8.5 Practice: Building Your First Harness System
 
 > 🛠️ *"The best way to learn Harness Engineering is to build one for your existing Agent by hand, then watch it cut the failure rate by 50% within a week."*
 
@@ -1065,4 +1065,4 @@ To further improve your Harness system, consider:
 
 ---
 
-*Next chapter: [Chapter 10 Skill System](../chapter_skill/README.md)*
+*Next chapter: [Chapter 9 Skill System](../chapter_skill/README.md)*

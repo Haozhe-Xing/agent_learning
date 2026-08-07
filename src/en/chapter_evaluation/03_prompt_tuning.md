@@ -1,4 +1,4 @@
-# Prompt Tuning Strategies
+# 18.3 Prompt Tuning Strategies
 
 > **Section Goal**: Master systematic prompt tuning methods and learn how to improve Agent performance through iterative optimization.
 

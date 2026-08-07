@@ -18,4 +18,4 @@ This is the most substantial part of the book, containing 7 chapters that cover 
 
 ---
 
-*Start learning: [Chapter 4: Tool Calling](./chapter_tools/README.md)*
+*Start learning: [Chapter 3: Tool Calling](./chapter_tools/README.md)*

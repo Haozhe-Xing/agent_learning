@@ -1,4 +1,4 @@
-# Chain: Building Processing Pipelines
+# 12.2 Chain: Building Processing Pipelines
 
 A Chain is a core concept in LangChain — it connects multiple processing steps into a reusable pipeline. You can think of a Chain as an assembly line: raw materials (user input) enter from one end, pass through multiple processing stations (prompt templates, LLM, parsers, etc.), and exit from the other end as finished products (structured results).
 

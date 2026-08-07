@@ -1,4 +1,4 @@
-# Agents vs. Traditional Programs
+# 1.4 Agents vs. Traditional Programs
 
 > 📖 *"The evolution of AI is essentially a paradigm shift in software engineering. The best way to understand Agents is to clarify the fundamental contest of 'control' between them and traditional code."*
 

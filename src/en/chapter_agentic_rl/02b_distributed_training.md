@@ -1,4 +1,4 @@
-# 11.2b Distributed Training Fundamentals: DP / TP / PP / SP / ZeRO
+# 10.2b Distributed Training Fundamentals: DP / TP / PP / SP / ZeRO
 
 > 🖥️ *"Training a 70B parameter model — a single A100 (80GB VRAM) simply can't fit it. Even if it could, you'd retire before training finishes. Distributed training isn't a luxury; it's a prerequisite for large models to exist."*
 
@@ -742,5 +742,5 @@ model.gradient_checkpointing_enable()  # One line, saves ~50% memory
 
 ---
 
-*Previous section: [11.2 SFT + LoRA Basic Training](./02_sft_lora.md)*  
-*Next section: [11.3 PPO: Proximal Policy Optimization](./03_ppo.md)*
+*Previous section: [10.2 SFT + LoRA Basic Training](./02_sft_lora.md)*  
+*Next section: [10.3 PPO: Proximal Policy Optimization](./03_ppo.md)*

@@ -1,4 +1,4 @@
-# Model API Basics (OpenAI / Open-Source Models)
+# 2.4 Model API Basics (OpenAI / Open-Source Models)
 
 Enough theory — let's write some code! This section will walk you through your first real model API call and help you master production-essential skills like streaming output and error handling.
 
@@ -422,4 +422,4 @@ In the next section, we'll dive into the key parameters that affect model output
 
 ---
 
-*Next section: [3.5 Tokens, Temperature, and Model Parameters Explained](./05_model_parameters.md)*
+*Next section: [2.5 Tokens, Temperature, and Model Parameters Explained](./05_model_parameters.md)*

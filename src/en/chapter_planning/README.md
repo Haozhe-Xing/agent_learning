@@ -1,4 +1,4 @@
-# Chapter 6: Planning and Reasoning
+# Chapter 5: Planning and Reasoning
 
 > 🧠 *"A truly intelligent Agent doesn't just execute commands — it can independently plan, reason, and complete complex tasks."*
 
@@ -40,13 +40,13 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 4: Tool Use](../chapter_tools/README.md), [Chapter 5: Memory Systems](../chapter_memory/README.md)
+> **Prerequisites**: [Chapter 3: Tool Use](../chapter_tools/README.md), [Chapter 4: Memory Systems](../chapter_memory/README.md)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 7: RAG](../chapter_rag/README.md) — Connect Agents to external knowledge
+> - 👉 [Chapter 6: RAG](../chapter_rag/README.md) — Connect Agents to external knowledge
 > - 👉 [Chapter 12: LangChain](../chapter_langchain/README.md) — Efficiently implement ReAct Agents with a framework
 > - 👉 [Chapter 13: LangGraph](../chapter_langgraph/README.md) — Implement complex reasoning flows with graph structures
 
 ---
 
-*Next: [6.1 How Do Agents "Think"?](./01_how_agents_think.md)*
+*Next: [5.1 How Do Agents "Think"?](./01_how_agents_think.md)*

@@ -1,4 +1,4 @@
-# 9.2 Six Engineering Pillars
+# 8.2 Six Engineering Pillars
 
 > 🏛️ *"Constraints liberate — clear boundaries make Agents more efficient and reliable."*
 
@@ -924,4 +924,4 @@ Level 3 (Production):
 
 ---
 
-*Next: [9.3 AGENTS.md / CLAUDE.md: Agent Constitution Writing Guide](./03_agents_md.md)*
+*Next: [8.3 AGENTS.md / CLAUDE.md: Agent Constitution Writing Guide](./03_agents_md.md)*

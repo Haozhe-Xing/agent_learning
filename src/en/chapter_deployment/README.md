@@ -1,4 +1,4 @@
-# Chapter 18: Deployment and Production
+# Chapter 20: Deployment and Production
 
 > Getting code to run locally is just the first step. The real challenge is making Agents serve users reliably in production.
 
@@ -38,12 +38,12 @@ Approximately **120–150 minutes** (including deployment practice)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 16: Evaluation and Optimization](../chapter_evaluation/README.md), [Chapter 17: Security and Reliability](../chapter_security/README.md)
+> **Prerequisites**: [Chapter 18: Evaluation and Optimization](../chapter_evaluation/README.md), [Chapter 19: Security and Reliability](../chapter_security/README.md)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 19: AI Coding Assistant](../chapter_coding_agent/README.md) — Comprehensive project practice
-> - 👉 [Chapter 20: Data Analysis Agent](../chapter_data_agent/README.md) — Comprehensive project practice
+> - 👉 [Chapter 21: AI Coding Assistant](../chapter_coding_agent/README.md) — Comprehensive project practice
+> - 👉 [Chapter 22: Data Analysis Agent](../chapter_data_agent/README.md) — Comprehensive project practice
 
 ---
 
-*Next: [18.1 Agent Application Deployment Architecture](./01_deployment_architecture.md)*
+*Next: [20.1 Agent Application Deployment Architecture](./01_deployment_architecture.md)*

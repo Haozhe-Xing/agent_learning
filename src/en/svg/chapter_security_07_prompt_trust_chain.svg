@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 260" width="500" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <rect width="500" height="260" rx="12" fill="#fff7f7"/>
+  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">仅靠 Prompt 的信任链漏洞</text>
+
+  <rect x="100" y="46" width="300" height="36" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="250" y="69" text-anchor="middle" font-size="12" fill="#1d4ed8">系统提示："不要泄露敏感信息"</text>
+  <line x1="250" y1="82" x2="250" y2="100" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="102" width="340" height="36" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="250" y="120" text-anchor="middle" font-size="12" fill="#a16207">LLM 读到提示 → 大概率遵守 → 但不是 100%</text>
+  <line x1="250" y1="138" x2="250" y2="156" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="80" y="158" width="340" height="36" rx="8" fill="#ffedd5" stroke="#f97316" stroke-width="1.5"/>
+  <text x="250" y="176" text-anchor="middle" font-size="12" fill="#c2410c">攻击者精心构造输入 → 模型可能"忘记"指令</text>
+  <line x1="250" y1="194" x2="250" y2="212" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="100" y="214" width="300" height="36" rx="8" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f1d1d">❌ 敏感信息泄露</text>
+</svg>

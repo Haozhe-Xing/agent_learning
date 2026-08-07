@@ -1,0 +1,87 @@
+<svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="760" height="460" fill="#F0F3F7" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="380" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1A2340">LLM 架构演进全景：共识堆栈 vs 分化前沿</text>
+
+  <!-- === 左侧：共识堆栈 2024-2025 === -->
+  <rect x="30" y="55" width="330" height="380" rx="10" fill="white" stroke="#2C3E6B" stroke-width="2"/>
+  <!-- 标题栏 -->
+  <rect x="30" y="55" width="330" height="46" rx="10" fill="#2C3E6B"/>
+  <rect x="30" y="89" width="330" height="12" fill="#2C3E6B"/>
+  <text x="195" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="white">🏛️ 共识堆栈</text>
+  <text x="195" y="95" text-anchor="middle" font-size="12" fill="#BDC8E8">2024—2025，几乎所有主流 LLM 采用</text>
+
+  <!-- 组件列表 -->
+  <g transform="translate(50, 118)">
+    <rect x="0" y="0" width="290" height="36" rx="6" fill="#EBF5FB" stroke="#85C1E9" stroke-width="1"/>
+    <text x="22" y="22" font-size="13" fill="#1A5276" font-weight="bold">1. Decoder-Only 架构</text>
+    <text x="22" y="22" font-size="11" fill="#5D6D7E">                              自回归生成，无 Encoder</text>
+
+    <rect x="0" y="46" width="290" height="36" rx="6" fill="#EBF5FB" stroke="#85C1E9" stroke-width="1"/>
+    <text x="22" y="68" font-size="13" fill="#1A5276" font-weight="bold">2. Pre-LayerNorm + RMSNorm</text>
+
+    <rect x="0" y="92" width="290" height="36" rx="6" fill="#E9F7EF" stroke="#82E0AA" stroke-width="1"/>
+    <text x="22" y="114" font-size="13" fill="#1E8449" font-weight="bold">3. RoPE 位置编码 ✅</text>
+    <text x="22" y="114" font-size="11" fill="#5D6D7E">                             外推能力强</text>
+
+    <rect x="0" y="138" width="290" height="36" rx="6" fill="#FEF9E7" stroke="#FAD7A0" stroke-width="1"/>
+    <text x="22" y="160" font-size="13" fill="#7D6608" font-weight="bold">4. SwiGLU 激活函数</text>
+    <text x="22" y="160" font-size="11" fill="#5D6D7E">                       门控机制，效果更好</text>
+
+    <rect x="0" y="184" width="290" height="36" rx="6" fill="#F9EBF8" stroke="#C39BD3" stroke-width="1"/>
+    <text x="22" y="206" font-size="13" fill="#6C3483" font-weight="bold">5. GQA 或 MLA 注意力</text>
+    <text x="22" y="206" font-size="11" fill="#5D6D7E">                          减少 KV Cache 开销</text>
+
+    <rect x="0" y="230" width="290" height="36" rx="6" fill="#FDEDEC" stroke="#F1948A" stroke-width="1"/>
+    <text x="22" y="252" font-size="13" fill="#922B21" font-weight="bold">6. 无偏置（No Bias）</text>
+
+    <rect x="0" y="276" width="290" height="36" rx="6" fill="#EBF5FB" stroke="#85C1E9" stroke-width="1"/>
+    <text x="22" y="298" font-size="13" fill="#1A5276" font-weight="bold">7. 大规模模型 → MoE</text>
+    <text x="22" y="298" font-size="11" fill="#5D6D7E">                          稀疏激活，扩展参数量</text>
+  </g>
+
+  <!-- === 右侧：分化前沿 2026 === -->
+  <rect x="400" y="55" width="330" height="380" rx="10" fill="white" stroke="#E74C3C" stroke-width="2"/>
+  <!-- 标题栏 -->
+  <rect x="400" y="55" width="330" height="46" rx="10" fill="#E74C3C"/>
+  <rect x="400" y="89" width="330" height="12" fill="#E74C3C"/>
+  <text x="565" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="white">🚀 分化前沿</text>
+  <text x="565" y="95" text-anchor="middle" font-size="12" fill="#FADBD8">2026 新突破，架构竞争重燃</text>
+
+  <!-- 创新列表 -->
+  <g transform="translate(420, 118)">
+    <rect x="0" y="0" width="290" height="44" rx="6" fill="#FDEDEC" stroke="#E74C3C" stroke-width="1.5"/>
+    <text x="16" y="18" font-size="12" font-weight="bold" fill="#C0392B">🧠 混合注意力机制</text>
+    <text x="16" y="34" font-size="11" fill="#7B241C">Gated DeltaNet · Kimi Linear · Lightning Attn</text>
+
+    <rect x="0" y="54" width="290" height="44" rx="6" fill="#FEF9E7" stroke="#F39C12" stroke-width="1.5"/>
+    <text x="16" y="72" font-size="12" font-weight="bold" fill="#D35400">🔗 残差连接重写</text>
+    <text x="16" y="88" font-size="11" fill="#7D6608">Attention Residuals · mHC 超连接（DeepSeek V4）</text>
+
+    <rect x="0" y="108" width="290" height="44" rx="6" fill="#E9F7EF" stroke="#27AE60" stroke-width="1.5"/>
+    <text x="16" y="126" font-size="12" font-weight="bold" fill="#1A7A3C">⚙️ 优化器革新</text>
+    <text x="16" y="142" font-size="11" fill="#1E8449">MuonClip 替代 AdamW（Kimi K2 / K2.5）</text>
+
+    <rect x="0" y="162" width="290" height="44" rx="6" fill="#EBF5FB" stroke="#3498DB" stroke-width="1.5"/>
+    <text x="16" y="180" font-size="12" font-weight="bold" fill="#1A5276">💾 知识-推理分离</text>
+    <text x="16" y="196" font-size="11" fill="#2471A3">Engram 内存架构（DeepSeek V4）</text>
+
+    <rect x="0" y="216" width="290" height="44" rx="6" fill="#F9EBF8" stroke="#8E44AD" stroke-width="1.5"/>
+    <text x="16" y="234" font-size="12" font-weight="bold" fill="#6C3483">🎯 多 Token 预测（MTP）</text>
+    <text x="16" y="250" font-size="11" fill="#7D3C98">同时预测多个 Token（DeepSeek V4 / Qwen3.5）</text>
+
+    <rect x="0" y="270" width="290" height="44" rx="6" fill="#FDEDEC" stroke="#E74C3C" stroke-width="1"/>
+    <text x="16" y="288" font-size="12" font-weight="bold" fill="#C0392B">📐 架构竞争重燃</text>
+    <text x="16" y="304" font-size="11" fill="#7B241C">从"数据和规模"竞争转向真正的架构创新</text>
+  </g>
+
+  <!-- 中间关系指示 -->
+  <text x="380" y="250" text-anchor="middle" font-size="28" fill="#BDC3C7">→</text>
+  <text x="380" y="272" text-anchor="middle" font-size="11" fill="#95A5A6">基于</text>
+  <text x="380" y="285" text-anchor="middle" font-size="11" fill="#95A5A6">共识扩展</text>
+
+  <!-- 底部 -->
+  <rect x="30" y="445" width="700" height="10" rx="4" fill="#EBF5FB"/>
+  <text x="380" y="438" text-anchor="middle" font-size="11" fill="#2471A3">差异化竞争正从"训练数据和规模"向架构创新回归——共识堆栈是基础，前沿突破在右侧</text>
+</svg>

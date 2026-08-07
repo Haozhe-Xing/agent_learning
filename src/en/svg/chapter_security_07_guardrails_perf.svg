@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" width="520" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="520" height="260" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Guardrails 性能影响分析</text>
+
+  <!-- 无 Guardrails -->
+  <rect x="16" y="46" width="488" height="44" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="30" y="64" font-size="11" font-weight="bold" fill="#15803d">无 Guardrails</text>
+  <text x="30" y="80" font-size="10" fill="#166534">用户输入 → LLM 推理（~800ms）→ 返回结果</text>
+  <rect x="380" y="54" width="112" height="28" rx="4" fill="#4ade80" stroke="#16a34a" stroke-width="1"/>
+  <text x="436" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">总延迟 ~800ms</text>
+
+  <!-- 有 Guardrails -->
+  <rect x="16" y="102" width="488" height="52" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="30" y="120" font-size="11" font-weight="bold" fill="#a16207">有 Guardrails（单层）</text>
+  <text x="30" y="136" font-size="10" fill="#a16207">用户输入 → [输入 Guardrails ~5ms] → LLM 推理 → [输出 Guardrails ~8ms] → 返回</text>
+  <rect x="380" y="110" width="112" height="28" rx="4" fill="#fef08a" stroke="#facc15" stroke-width="1"/>
+  <text x="436" y="129" text-anchor="middle" font-size="11" font-weight="bold" fill="#a16207">总延迟 ~813ms</text>
+  <text x="436" y="143" text-anchor="middle" font-size="9" fill="#a16207">+1.6%</text>
+
+  <!-- 双层 Guardrails -->
+  <rect x="16" y="166" width="488" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="30" y="184" font-size="11" font-weight="bold" fill="#b91c1c">有双层 Guardrails</text>
+  <text x="30" y="200" font-size="10" fill="#b91c1c">用户输入 → [快速过滤 ~2ms] → [LLM 审查 ~300ms] → LLM 推理 → [输出 Guardrails ~8ms]</text>
+  <rect x="380" y="174" width="112" height="44" rx="4" fill="#fca5a5" stroke="#ef4444" stroke-width="1"/>
+  <text x="436" y="193" text-anchor="middle" font-size="11" font-weight="bold" fill="#7f1d1d">总延迟 ~1110ms</text>
+  <text x="436" y="209" text-anchor="middle" font-size="10" fill="#b91c1c">+38.8% ⚠️</text>
+
+  <!-- 说明 -->
+  <rect x="16" y="238" width="488" height="16" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="260" y="250" text-anchor="middle" font-size="10" fill="#3730a3">💡 优化策略：异步并行检查 / 缓存结果 / 仅对高风险请求启用 LLM 审查</text>
+</svg>

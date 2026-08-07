@@ -1,4 +1,4 @@
-# Paper Readings: Frontier Research in Skill Systems
+# 9.6 Paper Readings: Frontier Research in Skill Systems
 
 This section reviews core papers related to Agent skill systems, covering three directions: skill learning, tool creation, and skill ecosystems.
 
@@ -193,4 +193,4 @@ Skill ecosystem (future, skill marketplace like npm/pip)
 
 *Back to: [Agent Skill System](./README.md)*
 
-*Next chapter: [Chapter 11 Agentic RL: Training Agents with Reinforcement Learning](../chapter_agentic_rl/README.md)*
+*Next chapter: [Chapter 10 Agentic RL: Training Agents with Reinforcement Learning](../chapter_agentic_rl/README.md)*

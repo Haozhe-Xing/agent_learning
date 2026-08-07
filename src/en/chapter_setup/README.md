@@ -47,8 +47,8 @@ After completing this chapter, you will be able to:
 > **Prerequisites**: [Chapter 1: What is an Agent?](../chapter_intro/README.md)
 >
 > **Recommended next steps**:
-> - 👉 [Chapter 3: LLM Fundamentals](../chapter_llm/README.md) — Understand the Agent's core "brain"
-> - 👉 [Chapter 4: Tool Calling](../chapter_tools/README.md) — Let Agents "get things done"
+> - 👉 [Chapter 2: LLM Fundamentals](../chapter_llm/README.md) — Understand the Agent's core "brain"
+> - 👉 [Chapter 3: Tool Calling](../chapter_tools/README.md) — Let Agents "get things done"
 
 ---
 

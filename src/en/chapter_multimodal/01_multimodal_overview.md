@@ -1,4 +1,4 @@
-# Multimodal Capabilities Overview
+# 23.1 Multimodal Capabilities Overview
 
 > **Section Goal**: Understand the capability boundaries and typical application scenarios of multimodal large models.
 

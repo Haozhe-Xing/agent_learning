@@ -1,4 +1,4 @@
-# 11.2 SFT + LoRA: Supervised Fine-Tuning and Parameter-Efficient Training
+# 10.2 SFT + LoRA: Supervised Fine-Tuning and Parameter-Efficient Training
 
 ## Formal Definition of Supervised Fine-Tuning
 
@@ -487,7 +487,7 @@ memory_optimizations = [
 
 ## SFT Graduation Criteria: When to Transition from SFT to RL?
 
-In [Section 11.1](./01_agentic_rl_overview.md) we learned that Agentic-RL follows the **SFT → RL** two-phase paradigm. But a key practical question is: **to what extent should SFT training proceed before it can "graduate" and enter the RL phase?**
+In [Section 12.1](./01_agentic_rl_overview.md) we learned that Agentic-RL follows the **SFT → RL** two-phase paradigm. But a key practical question is: **to what extent should SFT training proceed before it can "graduate" and enter the RL phase?**
 
 This is not a question that can be answered by intuition — entering RL too early means the model's basic format is still unstable, making RL exploration extremely inefficient; **entering RL too late means the model overfits the SFT data, diversity is lost, and RL also cannot explore effectively**. Both situations lead to poor final performance.
 

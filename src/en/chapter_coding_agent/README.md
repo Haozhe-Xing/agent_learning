@@ -1,4 +1,4 @@
-# Chapter 19 Project Practice: AI Coding Assistant
+# Chapter 21: Project Practice: AI Coding Assistant
 
 > Build an AI coding assistant from scratch that can understand code, generate code, write tests, and fix bugs.
 
@@ -28,13 +28,13 @@ This chapter is the first comprehensive hands-on project. We will apply the core
 
 ## 🔗 Learning Path
 
-> **Core Prerequisites**: [Chapter 4: Tool Calling](../chapter_tools/README.md), [Chapter 7: RAG](../chapter_rag/README.md), [Chapter 12: LangGraph](../chapter_langgraph/README.md)
+> **Core Prerequisites**: [Chapter 3: Tool Calling](../chapter_tools/README.md), [Chapter 6: RAG](../chapter_rag/README.md), [Chapter 13: LangGraph](../chapter_langgraph/README.md)
 > Recommended but not required: [Chapters 16–18: Production Series](../chapter_evaluation/README.md)
 >
 > **Related Projects**:
-> - 📊 [Chapter 20: Data Analysis Agent](../chapter_data_agent/README.md)
-> - 🎨 [Chapter 21: Multimodal Agent](../chapter_multimodal/README.md)
+> - 📊 [Chapter 22: Data Analysis Agent](../chapter_data_agent/README.md)
+> - 🎨 [Chapter 23: Multimodal Agent](../chapter_multimodal/README.md)
 
 ---
 
-*Next: [19.1 Project Architecture Design](./01_architecture.md)*
+*Next: [21.1 Project Architecture Design](./01_architecture.md)*

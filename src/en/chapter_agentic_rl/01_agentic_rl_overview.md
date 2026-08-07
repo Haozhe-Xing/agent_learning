@@ -1,4 +1,4 @@
-# 11.1 What Is Agentic-RL
+# 10.1 What Is Agentic-RL
 
 ## The Paradigm Shift from "Prompt Engineering" to "Training Optimization"
 
@@ -166,7 +166,7 @@ What RL learned:   "Analyze problem structure → judge whether step-by-step is 
 > - **SFT data scale**: 500–2,000 manually verified Agent interaction trajectories
 > - **RL compute cost**: approximately 3–10× the SFT phase (due to online sampling requirements)
 > - **Validation strategy**: first validate the training pipeline's correctness on a small 7B model, then scale to larger models
-> - **When does SFT "graduate"?** The goal of SFT is not to "do the best" but to "do well enough" — loss converged + format correctness rate ≥ 90% + output still has diversity. **Over-SFT seriously damages RL effectiveness**, see [Section 11.2's SFT Graduation Criteria](./02_sft_lora.md#sft-graduation-criteria-when-to-transition-from-sft-to-rl)
+> - **When does SFT "graduate"?** The goal of SFT is not to "do the best" but to "do well enough" — loss converged + format correctness rate ≥ 90% + output still has diversity. **Over-SFT seriously damages RL effectiveness**, see [Section 12.2's SFT Graduation Criteria](./02_sft_lora.md#sft-graduation-criteria-when-to-transition-from-sft-to-rl)
 
 ---
 

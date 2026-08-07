@@ -1,4 +1,4 @@
-# 7.6 Paper Readings: Frontiers in RAG
+# 6.6 Paper Readings: Frontiers in RAG
 
 > 📖 *"RAG has been one of the fastest-evolving technology directions over the past two years."*  
 > *From Naive RAG to Agentic RAG, this section provides in-depth analyses of the key papers driving this evolution.*
@@ -278,7 +278,7 @@ Agentic RAG (Agent-driven):
 
 ### Implications for Agent Development
 
-Agentic RAG is one of the most practical architectural patterns in Agent development in 2025. LangGraph is the ideal framework for implementing Agentic RAG (see Chapter 12) — retrieval decisions, query rewriting, quality evaluation, and other steps can be orchestrated as nodes in a state graph.
+Agentic RAG is one of the most practical architectural patterns in Agent development in 2025. LangGraph is the ideal framework for implementing Agentic RAG (see Chapter 13) — retrieval decisions, query rewriting, quality evaluation, and other steps can be orchestrated as nodes in a state graph.
 
 ---
 
@@ -302,4 +302,4 @@ Agentic RAG is one of the most practical architectural patterns in Agent develop
 
 ---
 
-*Back to: [Chapter 7: Retrieval-Augmented Generation](./README.md)*
+*Back to: [Chapter 6: Retrieval-Augmented Generation](./README.md)*

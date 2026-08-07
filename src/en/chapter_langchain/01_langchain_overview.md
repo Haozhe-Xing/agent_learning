@@ -1,4 +1,4 @@
-# LangChain Architecture Overview
+# 12.1 LangChain Architecture Overview
 
 LangChain is a modular LLM application development framework. Its core design philosophy is to **combine various components through standardized interfaces**, allowing developers to focus on business logic.
 

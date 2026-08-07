@@ -1,4 +1,4 @@
-# Prompt Injection Attacks and Defense
+# 19.1 Prompt Injection Attacks and Defense
 
 > **Section Goal**: Understand the principles and common techniques of prompt injection, and master effective defense strategies.
 

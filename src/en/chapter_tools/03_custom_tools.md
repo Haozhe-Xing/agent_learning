@@ -1,4 +1,4 @@
-# Designing and Implementing Custom Tools
+# 3.3 Designing and Implementing Custom Tools
 
 Good tool design is the key to Agent success. If the LLM is the Agent's "brain," then tools are its "hands and feet" — no matter how smart the brain is, clumsy hands and feet will prevent it from doing things well.
 
@@ -404,4 +404,4 @@ Characteristics of high-quality tools:
 
 ---
 
-*Next section: [4.4 Writing Effective Tool Descriptions](./04_tool_description.md)*
+*Next section: [3.4 Writing Effective Tool Descriptions](./04_tool_description.md)*

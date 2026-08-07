@@ -1,4 +1,4 @@
-# MCP (Model Context Protocol) Deep Dive
+# 17.1 MCP (Model Context Protocol) Deep Dive
 
 MCP (Model Context Protocol) is an open protocol launched by Anthropic in November 2024, designed to standardize the way LLMs connect to external tools and data sources. After more than a year of development, MCP has become the de facto standard for Agent tool interfaces, widely supported by mainstream products including Claude Desktop, Cursor, Windsurf, and the OpenAI Agents SDK.
 

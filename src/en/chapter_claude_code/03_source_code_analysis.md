@@ -1,4 +1,4 @@
-# 14.3 Source Code Decoded: System Prompt and Permission Engineering
+# 15.3 Source Code Decoded: System Prompt and Permission Engineering
 
 > 🔐 *"The most interesting thing about the leak wasn't what Claude Code could do — it was seeing the engineering discipline behind how they prevent it from doing the wrong things."*  
 > — A well-known security researcher, commenting on the March 2026 source code leak
@@ -415,5 +415,5 @@ const ANTI_DISTILLATION_CC = true; // Compile-time constant
 
 ---
 
-*Previous section: [14.2 Deep Dive into Core Architecture](./02_architecture.md)*  
-*Next section: [14.4 Advanced Usage: MCP, Hooks, and Skills](./04_advanced_usage.md)*
+*Previous section: [15.2 Deep Dive into Core Architecture](./02_architecture.md)*  
+*Next section: [15.4 Advanced Usage: MCP, Hooks, and Skills](./04_advanced_usage.md)*

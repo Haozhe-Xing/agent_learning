@@ -34,13 +34,13 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 💡 Prerequisites
 
-- Completed Chapter 16 Multi-Agent Collaboration
+- Completed Chapter 17 Multi-Agent Collaboration
 - Familiarity with basic communication protocol concepts like JSON-RPC
 - Basic Python asynchronous programming (`asyncio`)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 16: Multi-Agent Collaboration](../chapter_multi_agent/README.md), [Chapter 4: Tool Calls](../chapter_tools/README.md)
+> **Prerequisites**: [Chapter 16: Multi-Agent Collaboration](../chapter_multi_agent/README.md), [Chapter 3: Tool Calls](../chapter_tools/README.md)
 >
 > **Recommended next steps**:
 > - 👉 [Chapter 18: Evaluation and Optimization](../chapter_evaluation/README.md) — Enter the production chapter

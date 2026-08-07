@@ -1,4 +1,4 @@
-# Cost Control and Performance Optimization
+# 18.4 Cost Control and Performance Optimization
 
 > **Section Goal**: Learn how to effectively control API call costs and improve response speed while maintaining Agent quality.
 

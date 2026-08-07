@@ -1,4 +1,4 @@
-# Image Understanding and Generation
+# 23.2 Image Understanding and Generation
 
 > **Section Goal**: Master the techniques for analyzing images with GPT-4o and generating images with DALL-E, with a deep understanding of the capability boundaries and Prompt techniques for vision models.
 
@@ -22,7 +22,7 @@ Before diving into coding, we need to objectively understand what current Vision
 | **Specialized Domain Recognition** | ⭐⭐⭐ | Medical imaging, circuit diagrams | Accuracy insufficient to replace professionals |
 | **Multi-image Reasoning** | ⭐⭐⭐⭐ | Before/after comparison, spot the difference | Attention disperses with more than 4 images |
 
-> ⚠️ **Key insight**: Vision models are assistants that "can see but may not see accurately." When building Agents, for scenarios requiring precise counting, spatial measurement, or professional diagnosis, treat model output as "reference opinion" rather than "definitive fact," and introduce human confirmation steps when necessary (see Chapter 12 Human-in-the-Loop pattern).
+> ⚠️ **Key insight**: Vision models are assistants that "can see but may not see accurately." When building Agents, for scenarios requiring precise counting, spatial measurement, or professional diagnosis, treat model output as "reference opinion" rather than "definitive fact," and introduce human confirmation steps when necessary (see Chapter 13 Human-in-the-Loop pattern).
 
 ### Multi-Turn Visual Conversations
 

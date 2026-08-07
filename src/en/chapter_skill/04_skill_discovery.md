@@ -1,4 +1,4 @@
-# Skill Discovery and Registration
+# 9.4 Skill Discovery and Registration
 
 In the previous sections, we learned how to define and learn skills. But in multi-Agent systems, there's another key problem to solve: **How does an Agent know what skills other Agents have? How does it find and invoke the right skills?**
 
@@ -225,7 +225,7 @@ results = discovery.discover("I want to see which customers might be about to ch
 
 ## Method 3: MCP and the Skill Ecosystem
 
-Chapter 15 will cover the MCP protocol in detail. Here we first understand how MCP supports the skill ecosystem:
+Chapter 17 will cover the MCP protocol in detail. Here we first understand how MCP supports the skill ecosystem:
 
 ![Relationship Between MCP and Skills](../svg/chapter_skill_04_mcp_skill.svg)
 
@@ -348,4 +348,4 @@ class SkillOrchestrator:
 
 ---
 
-*Next section: [10.5 Practice: Building a Reusable Skill System](./05_practice_skill_system.md)*
+*Next section: [9.5 Practice: Building a Reusable Skill System](./05_practice_skill_system.md)*

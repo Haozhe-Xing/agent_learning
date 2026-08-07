@@ -1,4 +1,4 @@
-# LCEL: LangChain Expression Language
+# 12.4 LCEL: LangChain Expression Language
 
 LCEL (LangChain Expression Language) is LangChain's core construction language. It uses the `|` symbol to connect components into processing pipelines, resulting in concise yet powerful code.
 

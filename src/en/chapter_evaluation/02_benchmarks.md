@@ -1,4 +1,4 @@
-# Benchmarks and Evaluation Metrics
+# 18.2 Benchmarks and Evaluation Metrics
 
 > **Section Goal**: Gain a deep understanding of mainstream Agent benchmarks and their evaluation principles; master the underlying algorithms of BFCL, GAIA, AgentBench, WebArena, SWE-bench, and other benchmarks; and learn how to design your own evaluation system.
 

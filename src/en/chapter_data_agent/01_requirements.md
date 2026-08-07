@@ -1,4 +1,4 @@
-# Requirements Analysis and Architecture Design
+# 22.1 Requirements Analysis and Architecture Design
 
 > **Section Goal**: Design the overall plan for an intelligent data analysis Agent.
 
@@ -169,7 +169,7 @@ class DataAnalysisAgent:
         - This structure info will serve as context when LLM generates SQL
         """
         schemas = {}
-        # Actual implementation in Section 20.2 SafeDatabaseConnector
+        # Actual implementation in Section 21.2 SafeDatabaseConnector
         return schemas
     
     async def analyze(self, request: AnalysisRequest) -> AnalysisResult:

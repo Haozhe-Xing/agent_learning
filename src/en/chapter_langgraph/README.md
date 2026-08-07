@@ -1,4 +1,4 @@
-# Chapter 13 LangGraph: Building Stateful Agents
+# Chapter 13: LangGraph: Building Stateful Agents
 
 > 🕸️ *"LangGraph replaces linear chains with graph structures, giving Agents true state management and complex workflow capabilities."*
 
@@ -36,7 +36,7 @@ Approximately **120–150 minutes** (including hands-on exercises)
 
 ## 💡 Prerequisites
 
-- Completed Chapter 12 LangChain fundamentals
+- Completed Chapter 13 LangChain fundamentals
 - Basic understanding of directed graphs (nodes and edges)
 - Basic Python async programming (`async/await`)
 

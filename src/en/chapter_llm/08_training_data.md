@@ -1,4 +1,4 @@
-# SFT and Reinforcement Learning Training Data Preparation
+# 2.8 SFT and Reinforcement Learning Training Data Preparation
 
 > 📊 *"Data is the most underestimated lever in model training. Algorithms change every year, but the improvements from high-quality data are cross-algorithm."*
 
@@ -333,16 +333,13 @@ RL stage data requirements are completely different from SFT — no "standard an
 
 | Element | Description | Example |
 |---------|-------------|---------|
-| **Question/Prompt** | The question the model needs to answer | "Prove that √2 is irrational" |
+| **Question/Prompt** | The question the model needs to answer | "Prove that $\sqrt{2}$ is irrational" |
 | **Reward Function** | Function that evaluates response quality | Code passes tests → +1, fails → 0 |
 | **Reference Answer (optional)** | Reference used for reward calculation | Standard proof process |
 
 Key difference from SFT:
 
-```
-SFT data:  Question + standard answer → Imitation learning ("do as shown")
-RL data:   Question + reward function → Exploration learning ("find the optimal solution yourself")
-```
+![SFT Data vs RL Data](../svg/chapter_llm_08_sft_vs_rl.svg)
 
 > 💡 **Why doesn't RL need standard answers?** Because RL's goal is to let the model **explore** good strategies on its own. Standard answers would actually limit the exploration space — like teaching a child chess: SFT is showing them grandmaster game records to imitate, RL is letting them play chess themselves, rewarding wins and penalizing losses. The latter may discover unexpectedly new strategies.
 
@@ -475,13 +472,7 @@ The logic for choosing data volume in the RL stage is completely different from 
 
 **The key for RL data is not volume, but the "effective reward range"**:
 
-```
-Ineffective data: reward is always 0 or always 1
-  → Model cannot distinguish good from bad, learns nothing
-
-Effective data: among G responses to the same question, some score high and some score low
-  → Model can learn by comparison: "doing it this way gets +1, that way gets 0"
-```
+![Effective vs Ineffective RL Training Data](../svg/chapter_llm_08_valid_rl_data.svg)
 
 > ⚠️ **Key principle**: If a question is too easy (model gets it right 100% of the time) or too hard (model gets it right 0% of the time), it has **absolutely no value** in RL training. The most valuable data is questions where the model has a 30%–70% pass rate — "just hard enough."
 
@@ -545,19 +536,7 @@ def calibrate_difficulty(
 
 In RL training, the **order of data presentation** also matters. The core idea of Curriculum Learning is:
 
-```
-Stage 1 (Warm-up): Start with easy questions to build basic capability
-    → Questions with 60%–80% pass rate
-    → Help the model establish the basic understanding that "correct answers get rewards"
-
-Stage 2 (Ramp-up): Gradually increase difficulty
-    → Questions with 30%–60% pass rate
-    → Model begins exploring more complex strategies
-
-Stage 3 (Challenge): Challenge high-difficulty questions
-    → Questions with 10%–30% pass rate
-    → Truly creative problem-solving strategies emerge
-```
+![Curriculum Learning: Training Rhythm from Easy to Hard](../svg/chapter_llm_08_curriculum.svg)
 
 > 💡 **Intuitive analogy**: Like learning to swim — first build confidence in the shallow end, then challenge the deep end. Throwing someone who can't swim directly into the deep end will most likely result in drowning (training collapse), not learning to swim.
 
@@ -766,16 +745,111 @@ Before starting training, use the following checklist to review your data prepar
 
 ---
 
-## References
+## 📝 Exercises
 
-1. Zhou et al. "LIMA: Less Is More for Alignment." NeurIPS 2023.
-2. Taori et al. "Stanford Alpaca: An Instruction-following LLaMA model." 2023.
-3. Xu et al. "WizardLM: Empowering Large Language Models to Follow Complex Instructions." 2023.
-4. Liu et al. "What Makes Good Data for Alignment? A Comprehensive Study of Automatic Data Selection in Instruction Tuning (DEITA)." ICLR 2024.
-5. Qwen Team. "Qwen2.5 Technical Report." 2024.
+After reading this chapter, close the book and answer the questions in your own words first, then expand the reference answers to check.
+
+**Exercise 1 (Concept)**: This chapter repeatedly emphasizes "less but better" in the SFT stage — the LIMA paper used 1,000 samples to approach top-tier dialogue quality. Explain: why doesn't SFT need massive amounts of data? If someone insists "more data is better" and collects 100K unreviewed samples, what harm might that bring?
+
+<details>
+<summary>Reference answer</summary>
+
+**Why a small amount is enough:** The essence of SFT is not teaching the model "new knowledge," but teaching **behavioral format**. During pre-training the model has already learned rich world knowledge and language capability from massive text — it "knows everything, it just doesn't know what format or style to use when answering you." What SFT does is more like "teaching etiquette" — teaching an already knowledgeable person how to converse properly naturally doesn't require tens of thousands of lessons. From a probabilistic perspective, SFT only fine-tunes the "shape" of the output distribution (format, style); it doesn't need to change the "core content" of the distribution (knowledge).
+
+**The harm of massive low-quality data:**
+- **Errors get learned directly**: SFT is imitation learning — factual and formatting errors in the data are accepted by the model as "correct demonstrations" wholesale (garbage in, garbage out).
+- **High-quality signal gets diluted**: Mix 90K mediocre samples into 1,000 premium ones, and the average level the model learns is actually dragged down.
+- **Risk of catastrophic forgetting**: Over-fine-tuning erodes the general capabilities learned during pre-training.
+- **Wasted cost**: Spending large annotation resources often yields worse results than 1,000 manually verified samples.
+
+This is the "most counterintuitive but most important rule" stated in this chapter: quality >> quantity.
+
+</details>
+
+**Exercise 2 (Distinguish)**: Judge whether the following statement is correct and explain why — "RL training, like SFT, benefits from more and harder questions, so we should collect those super-hard problems the model can't solve at all to force it to improve." Analyze this in light of the "effective reward range" concept.
+
+<details>
+<summary>Reference answer</summary>
+
+This statement is **wrong**, on two counts.
+
+**First, RL data is not "more is better" — it's about the "effective reward range."** RL learns by contrasting multiple sampled responses to the same question (some good, some bad). If a problem is **100% correct**, all sampled rewards are 1, and after within-group normalization all advantages are 0 — nothing is learned. If it's **0% correct**, all sampled rewards are 0, equally lacking discriminative power. Only problems where the model's **pass rate is 30%–70%** — "just hard enough" — produce a mix of good and bad samples after sampling, forming an effective contrast signal.
+
+**Second, "the more super-hard problems the better" is exactly the counterexample.** A problem the model can't solve at all has a 0% pass rate and belongs to the "completely worthless" data.
+
+An analogy to exam design: a too-easy question gives the whole class full marks, a too-hard one gives everyone zero — neither distinguishes student ability. The most valuable are "moderately difficult questions with discriminative power." So the correct approach is **difficulty calibration** — filter out the too-easy and too-hard, keeping only problems that fall in the model's "zone of proximal development." Note this is completely different from SFT logic: SFT wants high-quality standard answers, while RL wants "just-right difficulty" problems plus a good reward function.
+
+</details>
+
+**Exercise 3 (Hands-on)**: You are doing RL training for a "math problem-solving Agent" and need a reward function. Write a rule-based reward function that scores along **multiple dimensions** (not just final-answer correctness), to reduce the risk of Reward Hacking. Explain why you designed it this way.
+
+<details>
+<summary>Reference answer</summary>
+
+```python
+import re
+
+def math_reward(response: str, ground_truth: str) -> float:
+    """
+    Multi-dimensional reward for math problems, total score roughly [0, 1.2]
+    Design goal: prevent the model from cheating by "guessing answers" or "padding length"
+    """
+    reward = 0.0
+
+    # Dimension 1: answer format correct (must be inside \boxed{}) -- +0.1
+    boxed = re.search(r"\\boxed\{(.+?)\}", response)
+    if boxed:
+        reward += 0.1
+        predicted = boxed.group(1).strip()
+
+        # Dimension 2: answer correct (supports numerical tolerance) -- +1.0
+        try:
+            if abs(float(predicted) - float(ground_truth)) < 1e-6:
+                reward += 1.0
+        except ValueError:
+            if predicted.replace(" ", "") == ground_truth.replace(" ", ""):
+                reward += 1.0
+
+    # Dimension 3: has a proper reasoning process (not just blurting the answer) -- +0.1
+    think = re.search(r"<think>(.*?)</think>", response, re.DOTALL)
+    if think and len(think.group(1).strip()) > 50:
+        reward += 0.1
+
+    return reward
+```
+
+**Why design it this way:**
+
+- **Checking only answer correctness can be "gamed"**: If the reward function only checks the final number, the model learns to skip reasoning and guess directly — a classic case of Reward Hacking.
+- **Adding a format score (`\boxed{}`)**: forces the answer into a fixed location, making automatic extraction easier and the output more standardized.
+- **Adding a reasoning-process score**: encourages the model to "think before answering" rather than bluff. Note we require the think content to have **some length**, otherwise the model would write an empty `<think></think>` to game the points — this adds another line of defense against cheating.
+- **Multi-dimensional combination**: this chapter points out that the key to preventing Reward Hacking is "the reward function must be multi-dimensional (correctness + format + reasoning quality)." A single dimension is too easy to break.
+
+For further improvement: cap the length reward (to prevent padding), regularly manually sample training outputs, and use KL divergence constraints to limit policy drift (built into PPO/GRPO).
+
+</details>
 
 ---
 
-*Previous section: [3.7 Foundation Model Architecture Explained](./07_model_architecture.md)*
+## References
 
-*Next section: [3.9 Automatic Prompt Optimization](./09_automatic_prompt_optimization.md)*
+[1] ZHOU C, LIU P, XU P, et al. LIMA: Less is More for Alignment[C]//NeurIPS. 2023.
+
+[2] TAORI R, GULRAJANI I, ZHANG T, et al. Stanford Alpaca: An Instruction-Following LLaMA Model[EB/OL]. 2023. https://github.com/tatsu-lab/stanford_alpaca.
+
+[3] XU C, SUN Q, ZHENG K, et al. WizardLM: Empowering Large Language Models to Follow Complex Instructions[C]//ICLR. 2024.
+
+[4] LIU W, ZHU W, ZHAO Y, et al. What Makes Good Data for Alignment? A Comprehensive Study of Automatic Data Selection in Instruction Tuning (DEITA)[C]//ICLR. 2024.
+
+[5] QWEN TEAM. Qwen2.5 Technical Report[R]. arXiv preprint arXiv:2412.15115, 2024.
+
+---
+
+> 🔗 **Division of labor with Chapter 10**  
+> This section (2.8) focuses on the **data engineering perspective**: how to prepare high-quality SFT and RL training data, including data format specifications, quality standards, and common pitfalls.  
+> **Chapter 10 Agentic-RL** (starting from Section 10.2) goes deeper into the **algorithm perspective**: LoRA parameter-efficient fine-tuning principles, PPO/DPO/GRPO reinforcement learning algorithms, and the complete training pipeline.  
+> The two chapters are best read together.
+
+*Previous section: [2.7 Foundation Model Architecture Explained](./07_model_architecture.md)*
+
+*Next chapter: [Chapter 3 Tool Use (Tool Use / Function Calling)](../chapter_tools/README.md)*

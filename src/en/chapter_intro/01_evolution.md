@@ -1,4 +1,4 @@
-# From Chatbots to Intelligent Agents: The Evolution
+# 1.1 From Chatbots to Intelligent Agents: The Evolution
 
 > 📖 *"To understand what an Agent is, the best approach is to trace where it came from."*
 

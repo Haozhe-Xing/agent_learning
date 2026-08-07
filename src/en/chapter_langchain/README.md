@@ -1,4 +1,4 @@
-# Chapter 12 LangChain In-Depth
+# Chapter 12: LangChain In-Depth
 
 > 🔗 *"LangChain is currently the most popular Agent development framework. This chapter provides an in-depth look at its core architecture and practical techniques."*
 

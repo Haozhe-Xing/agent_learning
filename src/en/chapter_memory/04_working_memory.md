@@ -1,4 +1,4 @@
-# Working Memory: The Scratchpad Pattern
+# 4.4 Working Memory: The Scratchpad Pattern
 
 Working memory is an Agent's "scratch paper" during complex task execution — recording reasoning steps and intermediate results to help the Agent maintain task state.
 
@@ -294,4 +294,4 @@ The value of working memory (Scratchpad):
 
 ---
 
-*Next: [5.5 Practice: Personal Assistant Agent with Memory](./05_practice_memory_agent.md)*
+*Next: [4.5 Practice: Personal Assistant Agent with Memory](./05_practice_memory_agent.md)*

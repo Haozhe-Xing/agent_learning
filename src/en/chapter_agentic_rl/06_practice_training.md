@@ -1,4 +1,4 @@
-# 11.6 Practice: Complete Agentic-RL Training Pipeline
+# 10.6 Practice: Complete Agentic-RL Training Pipeline
 
 ## Project Overview and Experimental Design
 
@@ -32,6 +32,154 @@ GSM8K is an ideal benchmark dataset for validating Agentic-RL effectiveness, wit
 | **Minimum** | 1× RTX 3090 24GB | 1× RTX 3090 24GB | Requires QLoRA 4-bit quantization |
 | **Recommended** | 1× A100 40GB | 1× A100 40GB | Full precision bfloat16 training |
 | **Training time (minimum)** | ~2–4 hours | ~4–8 hours | 1.5B model, 3 epochs |
+
+---
+
+## Demo 0: Run a Minimal GRPO/RLVR Training in 5 Minutes
+
+Before training a real 1.5B/7B model, it is recommended to first use a **pure-PyTorch toy experiment** to understand the core mechanism of GRPO. This demo does not depend on `transformers`, does not download any model, and runs even on CPU. It simulates the most common scenario in RLVR:
+
+> Given a problem, the policy samples multiple answers in one go; the reward function only judges whether the answer is correct; GRPO uses within-group relative advantage to push up the probability of high-reward answers and push down the probability of low-reward answers.
+
+Although it is not language-model training, it retains the three key structures of GRPO:
+
+| Structure | In real LLM training | In this demo |
+|-----------|----------------------|--------------|
+| **Policy** | LLM outputs a token sequence | A small classifier outputs a candidate-answer distribution |
+| **Group Sampling** | Generate G responses for the same prompt | Sample G candidate answers for the same problem |
+| **Verifiable Reward** | Math answer / unit tests / tool execution results | Whether the candidate number equals the ground-truth answer |
+| **Relative Advantage** | Within-group reward normalization | `A = (r - mean(r)) / std(r)` |
+| **KL Constraint** | Avoid drifting too far from the reference model | Avoid the policy distribution drifting too far from the initial distribution |
+
+```python
+"""
+toy_grpo_rlvr.py
+
+A minimal runnable GRPO/RLVR demo:
+- Task: given a+b, the model selects the answer from candidate numbers
+- Reward: 1 if the correct answer is selected, otherwise 0
+- Training: sample G answers per problem, update with within-group normalized advantage
+
+Run: python toy_grpo_rlvr.py
+"""
+
+import random
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+# For reproducible experiments
+random.seed(42)
+torch.manual_seed(42)
+
+# Candidate answer space: 0~18, covering single-digit addition
+VOCAB_SIZE = 19
+GROUP_SIZE = 8
+KL_COEF = 0.02
+LR = 3e-2
+STEPS = 800
+
+
+class TinyPolicy(nn.Module):
+    """A minimal policy network: takes two numbers as input, outputs a probability distribution over candidate answers"""
+
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(2, 64),
+            nn.Tanh(),
+            nn.Linear(64, VOCAB_SIZE),
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
+def make_batch(batch_size=32):
+    """Randomly generate a batch of single-digit addition problems"""
+    a = torch.randint(0, 10, (batch_size, 1)).float()
+    b = torch.randint(0, 10, (batch_size, 1)).float()
+    x = torch.cat([a / 9.0, b / 9.0], dim=1)
+    y = (a + b).long().squeeze(1)
+    return x, y
+
+
+def evaluate(policy, n=512):
+    """Evaluate accuracy with greedy decoding"""
+    x, y = make_batch(n)
+    with torch.no_grad():
+        pred = policy(x).argmax(dim=-1)
+    return (pred == y).float().mean().item()
+
+
+policy = TinyPolicy()
+# reference policy is fixed and not trained, used for the KL constraint
+ref_policy = TinyPolicy()
+ref_policy.load_state_dict(policy.state_dict())
+for p in ref_policy.parameters():
+    p.requires_grad_(False)
+
+optimizer = torch.optim.AdamW(policy.parameters(), lr=LR)
+
+for step in range(1, STEPS + 1):
+    x, answer = make_batch(batch_size=32)
+
+    logits = policy(x)
+    log_probs = F.log_softmax(logits, dim=-1)
+    probs = log_probs.exp()
+
+    with torch.no_grad():
+        ref_log_probs = F.log_softmax(ref_policy(x), dim=-1)
+
+    # Sample G candidate answers for each problem: [batch, group]
+    sampled = torch.multinomial(probs, num_samples=GROUP_SIZE, replacement=True)
+    chosen_logp = log_probs.gather(1, sampled)
+    chosen_ref_logp = ref_log_probs.gather(1, sampled)
+
+    # Verifiable reward: 1 if the answer is correct, otherwise 0
+    rewards = (sampled == answer[:, None]).float()
+
+    # Core of GRPO: within-group relative advantage
+    group_mean = rewards.mean(dim=1, keepdim=True)
+    group_std = rewards.std(dim=1, keepdim=True).clamp_min(1e-4)
+    advantages = (rewards - group_mean) / group_std
+
+    # Policy-gradient loss: increase probability of high-advantage samples, decrease that of low-advantage samples
+    policy_loss = -(chosen_logp * advantages.detach()).mean()
+
+    # KL constraint: prevent the policy from changing too drastically relative to the reference
+    approx_kl = (chosen_logp - chosen_ref_logp).mean()
+    loss = policy_loss + KL_COEF * approx_kl
+
+    optimizer.zero_grad()
+    loss.backward()
+    nn.utils.clip_grad_norm_(policy.parameters(), max_norm=1.0)
+    optimizer.step()
+
+    if step % 100 == 0:
+        acc = evaluate(policy)
+        avg_reward = rewards.mean().item()
+        print(
+            f"step={step:04d} | loss={loss.item():+.4f} | "
+            f"group_reward={avg_reward:.3f} | greedy_acc={acc:.1%}"
+        )
+
+print("\nTraining complete. Example predictions:")
+for a, b in [(2, 3), (7, 8), (9, 9)]:
+    x = torch.tensor([[a / 9.0, b / 9.0]])
+    pred = policy(x).argmax(dim=-1).item()
+    print(f"{a} + {b} = {pred}")
+```
+
+You should see accuracy gradually rise from random levels. This small experiment corresponds to the key intuition when training a real GRPO model:
+
+- **Rewards need not be differentiable**: answer correctness, passing unit tests, and successful tool execution can all serve as rewards.
+- **No Critic is needed**: advantage comes from the relative comparison of multiple responses to the same problem.
+- **Within-group variance matters**: if all G responses are correct or all are wrong, the advantage is near 0 and there is almost no effective gradient — this is also the problem that new works such as Selective Rollout and UCPO aim to solve.
+- **KL is not a decorative term**: without KL or with too large a learning rate, the policy easily collapses onto a few candidate answers.
+
+> If you want to turn this demo into a real text task, you only need to replace `TinyPolicy` with an LLM, replace `sampled` (candidate numbers) with generated token sequences, and replace `rewards` with a math verifier, code unit tests, or tool execution results.
 
 ---
 
@@ -629,12 +777,12 @@ Through systematic study of this chapter, you have mastered the complete knowled
 
 | Section | Core Knowledge | Key Conclusion |
 |---------|---------------|----------------|
-| **11.1 Overview** | MDP modeling, two-phase paradigm | RL training can emerge reasoning strategies that exceed training data |
-| **11.2 SFT + LoRA** | Supervised fine-tuning, parameter-efficient training | LoRA achieves near full-parameter fine-tuning effect with <1% of parameters |
-| **11.3 PPO** | Policy gradient, importance sampling, advantage function, Clip mechanism | PPO is the classic RLHF algorithm, but Critic causes memory ≈ 3× |
-| **11.4 DPO** | Implicit reward, Bradley-Terry model, closed-form solution | DPO converts RL to supervised learning, minimal but cannot explore online |
-| **11.5 GRPO + Reward Design** | Within-group comparison, multi-dimensional rewards, reward hacking defense | GRPO reduces memory from 3× to 1.5×; reward function is the decisive factor in RL training effectiveness |
-| **11.6 Practice** | Complete pipeline, evaluation comparison | On GSM8K: base ~40% → SFT ~50% → GRPO ~60% |
+| **10.1 Overview** | MDP modeling, two-phase paradigm | RL training can emerge reasoning strategies that exceed training data |
+| **10.2 SFT + LoRA** | Supervised fine-tuning, parameter-efficient training | LoRA achieves near full-parameter fine-tuning effect with <1% of parameters |
+| **10.3 PPO** | Policy gradient, importance sampling, advantage function, Clip mechanism | PPO is the classic RLHF algorithm, but Critic causes memory ≈ 3× |
+| **10.4 DPO** | Implicit reward, Bradley-Terry model, closed-form solution | DPO converts RL to supervised learning, minimal but cannot explore online |
+| **10.5 GRPO + Reward Design** | Within-group comparison, multi-dimensional rewards, reward hacking defense | GRPO reduces memory from 3× to 1.5×; reward function is the decisive factor in RL training effectiveness |
+| **10.6 Practice** | Complete pipeline, evaluation comparison | On GSM8K: base ~40% → SFT ~50% → GRPO ~60% |
 
 Agentic-RL represents an important development direction for LLM applications: **the paradigm shift from "prompt engineering" to "training optimization."** As algorithms continue to evolve and compute costs decrease, this technology will play a key role in an increasing number of high-value Agent scenarios.
 

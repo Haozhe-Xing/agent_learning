@@ -6,9 +6,9 @@ This part contains 2 chapters exploring how to make multiple Agents work togethe
 
 | Chapter | Content | Key Takeaway |
 |---------|---------|-------------|
-| **Chapter 14** Multi-Agent Collaboration | Communication patterns, role assignment, Supervisor architecture | Master multi-agent collaboration design |
-| **Chapter 15** Agent Communication Protocols | MCP, A2A, ANP protocols | Understand inter-agent communication standards |
+| **Chapter 16** Multi-Agent Collaboration | Communication patterns, role assignment, Supervisor architecture | Master multi-agent collaboration design |
+| **Chapter 17** Agent Communication Protocols | MCP, A2A, ANP protocols | Understand inter-agent communication standards |
 
 ---
 
-*Start learning: [Chapter 14: Multi-Agent Collaboration](./chapter_multi_agent/README.md)*
+*Start learning: [Chapter 16: Multi-Agent Collaboration](./chapter_multi_agent/README.md)*

@@ -1,4 +1,4 @@
-# Test Generation and Bug Fixing
+# 21.4 Test Generation and Bug Fixing
 
 > **Section Goal**: Enable the AI coding assistant to automatically generate unit tests, and locate and fix bugs in code.
 

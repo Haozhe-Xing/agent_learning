@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" width="520" height="200" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="520" height="200" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Prefill 与 Decode 阶段对比</text>
+
+  <!-- 表头 -->
+  <rect x="16" y="44" width="120" height="28" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="76" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#3730a3">维度</text>
+  <rect x="140" y="44" width="170" height="28" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="225" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">Prefill</text>
+  <rect x="314" y="44" width="190" height="28" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="409" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">Decode</text>
+
+  <!-- 行1 -->
+  <rect x="16" y="76" width="120" height="24" rx="0" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="76" y="93" text-anchor="middle" font-size="10" fill="#475569">输入</text>
+  <rect x="140" y="76" width="170" height="24" rx="0" fill="#eff6ff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="225" y="93" text-anchor="middle" font-size="10" fill="#1d4ed8">完整 Prompt（并行）</text>
+  <rect x="314" y="76" width="190" height="24" rx="0" fill="#f0fdf4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="409" y="93" text-anchor="middle" font-size="10" fill="#15803d">每次 1 个新 Token</text>
+
+  <!-- 行2 -->
+  <rect x="16" y="100" width="120" height="24" rx="0" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="76" y="117" text-anchor="middle" font-size="10" fill="#475569">计算量</text>
+  <rect x="140" y="100" width="170" height="24" rx="0" fill="#eff6ff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="225" y="117" text-anchor="middle" font-size="10" fill="#1d4ed8">O(N²)，一次性完成</text>
+  <rect x="314" y="100" width="190" height="24" rx="0" fill="#f0fdf4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="409" y="117" text-anchor="middle" font-size="10" fill="#15803d">O(N)，每步极小</text>
+
+  <!-- 行3 -->
+  <rect x="16" y="124" width="120" height="24" rx="0" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="76" y="141" text-anchor="middle" font-size="10" fill="#475569">瓶颈</text>
+  <rect x="140" y="124" width="170" height="24" rx="0" fill="#eff6ff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="225" y="141" text-anchor="middle" font-size="10" fill="#1d4ed8">算力（Compute-bound）</text>
+  <rect x="314" y="124" width="190" height="24" rx="0" fill="#f0fdf4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="409" y="141" text-anchor="middle" font-size="10" fill="#15803d">显存带宽（Memory-bound）</text>
+
+  <!-- 行4 -->
+  <rect x="16" y="148" width="120" height="24" rx="0" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="76" y="165" text-anchor="middle" font-size="10" fill="#475569">KV Cache</text>
+  <rect x="140" y="148" width="170" height="24" rx="0" fill="#eff6ff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="225" y="165" text-anchor="middle" font-size="10" fill="#1d4ed8">初始化（写入）</text>
+  <rect x="314" y="148" width="190" height="24" rx="0" fill="#f0fdf4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="409" y="165" text-anchor="middle" font-size="10" fill="#15803d">追加 + 读取（读写）</text>
+
+  <!-- 行5 -->
+  <rect x="16" y="172" width="120" height="24" rx="0" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="76" y="189" text-anchor="middle" font-size="10" fill="#475569">吞吐量</text>
+  <rect x="140" y="172" width="170" height="24" rx="0" fill="#eff6ff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="225" y="189" text-anchor="middle" font-size="10" fill="#1d4ed8">高（GPU 充分利用）</text>
+  <rect x="314" y="172" width="190" height="24" rx="0" fill="#f0fdf4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="409" y="189" text-anchor="middle" font-size="10" fill="#15803d">低（受限于带宽）</text>
+</svg>

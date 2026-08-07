@@ -1,4 +1,4 @@
-# Vector Embeddings and Vector Databases
+# 6.3 Vector Embeddings and Vector Databases
 
 Vector embeddings and vector databases are the core technologies of a RAG system. This section provides an in-depth look at how to efficiently store and retrieve vectors.
 
@@ -322,4 +322,4 @@ Core technologies for vector storage:
 
 ---
 
-*Next: [7.4 Retrieval Strategies and Reranking](./04_retrieval_strategies.md)*
+*Next: [6.4 Retrieval Strategies and Reranking](./04_retrieval_strategies.md)*

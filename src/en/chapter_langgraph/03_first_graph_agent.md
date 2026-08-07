@@ -1,4 +1,4 @@
-# Build Your First Graph Agent
+# 13.3 Build Your First Graph Agent
 
 This section walks you through building a complete LangGraph Agent step by step, including tool calls and iterative reasoning.
 
@@ -161,7 +161,7 @@ for event in app.stream({"messages": [HumanMessage(content="What is Earth's diam
 
 ## Comparison with LangChain AgentExecutor
 
-If you've used LangChain's `AgentExecutor` (Chapter 12), you might ask: why go through the trouble of building an Agent with a graph? Let's understand the fundamental difference between the two through a comparison:
+If you've used LangChain's `AgentExecutor` (Chapter 13), you might ask: why go through the trouble of building an Agent with a graph? Let's understand the fundamental difference between the two through a comparison:
 
 ```python
 # LangChain AgentExecutor approach (black box)

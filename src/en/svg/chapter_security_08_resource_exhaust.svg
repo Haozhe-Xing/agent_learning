@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" width="480" height="320" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="480" height="320" rx="12" fill="#fff7f7"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">资源耗尽攻击示例</text>
+
+  <!-- 攻击1 -->
+  <rect x="24" y="46" width="432" height="72" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="240" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">① 递归工具调用</text>
+  <text x="240" y="82" text-anchor="middle" font-size="11" fill="#ef4444">"搜索 AI 信息，对每条结果再搜索详细信息，</text>
+  <text x="240" y="98" text-anchor="middle" font-size="11" fill="#ef4444">再对每条详细信息搜索更多内容..."</text>
+  <text x="240" y="112" text-anchor="middle" font-size="10" fill="#b91c1c">→ Agent 可能执行数百次工具调用</text>
+
+  <!-- 攻击2 -->
+  <rect x="24" y="130" width="432" height="72" rx="8" fill="#ffedd5" stroke="#f97316" stroke-width="1.5"/>
+  <text x="240" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="#c2410c">② 长上下文注入</text>
+  <text x="240" y="166" text-anchor="middle" font-size="11" fill="#f97316">"请分析这篇 100 万字的文档..."</text>
+  <text x="240" y="182" text-anchor="middle" font-size="11" fill="#f97316">+ 大量填充内容</text>
+  <text x="240" y="196" text-anchor="middle" font-size="10" fill="#c2410c">→ 消耗大量 Token 和计算资源</text>
+
+  <!-- 攻击3 -->
+  <rect x="24" y="214" width="432" height="72" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="240" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#9d174d">③ 并发请求攻击</text>
+  <text x="240" y="250" text-anchor="middle" font-size="11" fill="#ec4899">同时发送大量请求，</text>
+  <text x="240" y="266" text-anchor="middle" font-size="11" fill="#ec4899">利用 Agent 的工具调用能力</text>
+  <text x="240" y="282" text-anchor="middle" font-size="10" fill="#9d174d">→ 对下游服务造成 DDoS 效果</text>
+
+  <!-- 图标装饰 -->
+  <text x="44" y="64" font-size="16">🔄</text>
+  <text x="44" y="148" font-size="16">📄</text>
+  <text x="44" y="232" font-size="16">⚡</text>
+</svg>

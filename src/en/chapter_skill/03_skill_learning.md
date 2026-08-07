@@ -1,4 +1,4 @@
-# Skill Learning and Acquisition
+# 9.3 Skill Learning and Acquisition
 
 The previous section introduced how to **manually define** skills. But the more exciting question is: **Can Agents autonomously learn new skills?**
 
@@ -393,4 +393,4 @@ Level 5: Self-Evolving Skills
 
 ---
 
-*Next section: [10.4 Skill Discovery and Registration](./04_skill_discovery.md)*
+*Next section: [9.4 Skill Discovery and Registration](./04_skill_discovery.md)*

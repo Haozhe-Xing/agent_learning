@@ -1,4 +1,4 @@
-# 9.6 Structured Output: Engineering Practices for JSON Reliability
+# 8.6 Structured Output: Engineering Practices for JSON Reliability
 
 > 🔩 *"An Agent outputs an unparseable JSON, and the entire downstream pipeline crashes. This isn't a model problem — it means your Harness isn't doing its job."*
 
@@ -1137,5 +1137,5 @@ Local models:      Constrained decoding (Outlines/vLLM)  →  Pydantic validatio
 
 ---
 
-*Previous section: [9.5 Practice: Building Your First Harness System](./05_practice_harness_builder.md)*  
-*Next chapter: [Chapter 10 Skill System](../chapter_skill/README.md)*
+*Previous section: [8.5 Practice: Building Your First Harness System](./05_practice_harness_builder.md)*  
+*Next chapter: [Chapter 9 Skill System](../chapter_skill/README.md)*

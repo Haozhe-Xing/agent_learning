@@ -1,4 +1,4 @@
-# Chapter 11: Agentic-RL: Agent Reinforcement Learning Training
+# Chapter 10: Agentic-RL: Agent Reinforcement Learning Training
 
 > 📖 *"If Prompt Engineering is writing an 'instruction manual' for an Agent, then Agentic-RL is letting the Agent figure out the optimal solution through repeated practice."*
 
@@ -30,12 +30,12 @@ In previous chapters, we built Agents using **prompts + tool calling** — all o
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 3: LLM Fundamentals](../chapter_llm/README.md)
-> Recommended but not required: [Chapter 6: Planning and Reasoning](../chapter_planning/README.md), [Appendix E: KL Divergence Explained](../appendix/kl_divergence.md)
+> **Prerequisites**: [Chapter 2: LLM Fundamentals](../chapter_llm/README.md)
+> Recommended but not required: [Chapter 5: Planning and Reasoning](../chapter_planning/README.md), [Appendix E: KL Divergence Explained](../appendix/kl_divergence.md)
 >
 > **Recommended Next**:
 > - 👉 [Chapter 12: LangChain](../chapter_langchain/README.md) — quickly practice with your trained model using a framework
-> - 👉 [Chapter 17: Evaluation and Optimization](../chapter_evaluation/README.md) — evaluate Agent performance after RL training
+> - 👉 [Chapter 18: Evaluation and Optimization](../chapter_evaluation/README.md) — evaluate Agent performance after RL training
 
 ---
 

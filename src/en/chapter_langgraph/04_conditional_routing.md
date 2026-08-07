@@ -1,4 +1,4 @@
-# Conditional Routing and Loop Control
+# 13.4 Conditional Routing and Loop Control
 
 LangGraph's power lies in its flexible conditional routing and loop control — enabling it to express workflows far more complex than a simple "call a tool."
 

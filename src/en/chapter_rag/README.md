@@ -1,4 +1,4 @@
-# Chapter 7: Retrieval-Augmented Generation (RAG)
+# Chapter 6: Retrieval-Augmented Generation (RAG)
 
 > 📚 *"RAG is the most practical solution to the knowledge limitations of LLMs — it lets Agents 'consult' external knowledge bases and give well-grounded answers."*
 
@@ -40,12 +40,12 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 5: Memory Systems](../chapter_memory/README.md) (especially the vector database section)
+> **Prerequisites**: [Chapter 4: Memory Systems](../chapter_memory/README.md) (especially the vector database section)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 8: Context Engineering](../chapter_context_engineering/README.md) — Systematically manage context retrieved by RAG
+> - 👉 [Chapter 7: Context Engineering](../chapter_context_engineering/README.md) — Systematically manage context retrieved by RAG
 > - 👉 [Chapter 21: AI Coding Assistant](../chapter_coding_agent/README.md) — Apply RAG for code search in a real project
 
 ---
 
-*Next: [7.1 RAG Concepts and How It Works](./01_rag_concepts.md)*
+*Next: [6.1 RAG Concepts and How It Works](./01_rag_concepts.md)*

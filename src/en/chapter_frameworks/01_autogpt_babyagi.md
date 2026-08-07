@@ -1,4 +1,4 @@
-# Lessons from AutoGPT and BabyAGI
+# 14.1 Lessons from AutoGPT and BabyAGI
 
 AutoGPT (March 2023) and BabyAGI (April 2023) were the earliest autonomous Agent projects to attract widespread attention. Although their practical utility in production environments is limited, their design philosophies have had a profound influence on the entire Agent field.
 

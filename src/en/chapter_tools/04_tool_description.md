@@ -1,4 +1,4 @@
-# Writing Effective Tool Descriptions
+# 3.4 Writing Effective Tool Descriptions
 
 Tool descriptions are the key information that tells the LLM "what this tool is, when to use it, and how to use it." Description quality directly determines whether the LLM can correctly select and call tools.
 
@@ -343,4 +343,4 @@ Good tool descriptions can significantly improve Agent reliability.
 
 ---
 
-*Next section: [4.5 Hands-on: Search Engine + Calculator Agent](./05_practice_search_calc.md)*
+*Next section: [3.5 Hands-on: Search Engine + Calculator Agent](./05_practice_search_calc.md)*

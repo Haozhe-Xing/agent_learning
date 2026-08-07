@@ -1,4 +1,4 @@
-# Practice: Personal Assistant Agent with Memory
+# 4.5 Practice: Personal Assistant Agent with Memory
 
 Combining the knowledge from the previous four sections, we'll build a personal assistant that truly "remembers" — one that retains your preferences and continuously learns across sessions.
 
@@ -353,4 +353,4 @@ This framework can serve as the foundation for building personalized Agent appli
 
 ---
 
-*Next chapter: [Chapter 6: Planning and Reasoning](../chapter_planning/README.md)*
+*Next chapter: [Chapter 5: Planning and Reasoning](../chapter_planning/README.md)*

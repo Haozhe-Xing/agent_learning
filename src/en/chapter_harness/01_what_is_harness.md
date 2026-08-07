@@ -1,4 +1,4 @@
-# 9.1 What Is Harness Engineering?
+# 8.1 What Is Harness Engineering?
 
 > 🏇 *"Harness engineering is the idea that anytime you find an agent makes a mistake, you take the time to engineer a solution such that the agent will not make that mistake again in the future."*  
 > — Mitchell Hashimoto, Co-founder of HashiCorp, November 2025
@@ -340,4 +340,4 @@ This shift doesn't mean engineers are "unemployed" — it means a dramatic incre
 
 ---
 
-*Next: [9.2 Six Engineering Pillars](./02_six_pillars.md)*
+*Next: [8.2 Six Engineering Pillars](./02_six_pillars.md)*

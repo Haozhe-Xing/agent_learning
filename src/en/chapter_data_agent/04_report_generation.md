@@ -1,4 +1,4 @@
-# Report Generation and Export
+# 22.4 Report Generation and Export
 
 > **Section Goal**: Automatically integrate analysis results into structured Markdown reports.
 

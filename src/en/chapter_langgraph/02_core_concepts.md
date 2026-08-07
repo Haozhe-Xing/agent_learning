@@ -1,4 +1,4 @@
-# LangGraph Core Concepts: Nodes, Edges, and State
+# 13.2 LangGraph Core Concepts: Nodes, Edges, and State
 
 ![LangGraph Three Core Concepts: State · Node · Edge](../svg/chapter_langgraph_02_state_node_edge.svg)
 

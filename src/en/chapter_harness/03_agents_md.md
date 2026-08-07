@@ -1,4 +1,4 @@
-# 9.3 AGENTS.md / CLAUDE.md: Agent Constitution Writing Guide
+# 8.3 AGENTS.md / CLAUDE.md: Agent Constitution Writing Guide
 
 > 📜 *"The code repository is the single source of truth. All knowledge guiding AI Agent behavior must be stored in the codebase in machine-readable form."*  
 > — OpenAI Codex Team Engineering Practice
@@ -400,4 +400,4 @@ jobs:
 
 ---
 
-*Next: [9.4 Production Case Studies: OpenAI, LangChain, Stripe](./04_production_cases.md)*
+*Next: [8.4 Production Case Studies: OpenAI, LangChain, Stripe](./04_production_cases.md)*

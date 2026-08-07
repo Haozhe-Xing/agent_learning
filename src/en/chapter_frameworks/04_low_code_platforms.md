@@ -1,4 +1,4 @@
-# Low-Code Agent Platforms: Dify, Coze, and More
+# 14.4 Low-Code Agent Platforms: Dify, Coze, and More
 
 Low-code platforms allow non-programmers to build Agent applications, lowering the barrier to AI application development. In 2024–2025, a large number of platforms emerged in this space, with competition intensifying.
 

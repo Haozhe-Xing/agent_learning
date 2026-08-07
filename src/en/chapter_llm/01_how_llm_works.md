@@ -1,4 +1,4 @@
-# How Does an LLM Work? (A Complete Deconstruction of Intuition and Underlying Logic)
+# 2.1 How Does an LLM Work? (A Complete Deconstruction of Intuition and Underlying Logic)
 
 > 🧠 *"You don't need to be an engine engineer to drive well — but understanding how every gear meshes together lets you execute a perfect drift in extreme conditions. Building excellent AI Agents is no different."*
 
@@ -199,4 +199,4 @@ Having understood how LLMs work, we distill the following principles for Agent p
 
 ---
 
-*Next section: [3.2 Prompt Engineering: The Art of Communicating with Models](./02_prompt_engineering.md)*
+*Next section: [2.2 Prompt Engineering: The Art of Communicating with Models](./02_prompt_engineering.md)*

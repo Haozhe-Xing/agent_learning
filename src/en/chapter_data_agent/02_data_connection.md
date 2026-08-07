@@ -1,4 +1,4 @@
-# Data Connection and Querying
+# 22.2 Data Connection and Querying
 
 > **Section Goal**: Implement secure database connections and natural language to SQL conversion, with a deep understanding of the principles and security challenges of Text-to-SQL.
 

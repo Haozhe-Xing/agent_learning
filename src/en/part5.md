@@ -6,10 +6,10 @@ This part contains 3 chapters to help you build Agents into reliable production-
 
 | Chapter | Content | Key Takeaway |
 |---------|---------|-------------|
-| **Chapter 16** Evaluation & Optimization | Benchmarks, Prompt tuning, cost control, observability | Quantify and improve Agent performance |
-| **Chapter 17** Security & Reliability | Prompt injection defense, hallucination governance, permission isolation | Build safe and trustworthy Agents |
-| **Chapter 18** Deployment & Production | API services, containerization, streaming responses | Launch production-grade Agent services |
+| **Chapter 18** Evaluation & Optimization | Benchmarks, Prompt tuning, cost control, observability | Quantify and improve Agent performance |
+| **Chapter 19** Security & Reliability | Prompt injection defense, hallucination governance, permission isolation | Build safe and trustworthy Agents |
+| **Chapter 20** Deployment & Production | API services, containerization, streaming responses | Launch production-grade Agent services |
 
 ---
 
-*Start learning: [Chapter 16: Agent Evaluation & Optimization](./chapter_evaluation/README.md)*
+*Start learning: [Chapter 18: Agent Evaluation & Optimization](./chapter_evaluation/README.md)*

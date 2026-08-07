@@ -33,7 +33,7 @@ Approximately **90–120 minutes**
 
 ## 💡 Prerequisites
 
-- Completed Chapter 18 (Evaluation and Optimization)
+- Completed Chapter 19 (Evaluation and Optimization)
 - Familiarity with common web security concepts (such as injection attacks) is helpful
 
 ## 🔗 Learning Path

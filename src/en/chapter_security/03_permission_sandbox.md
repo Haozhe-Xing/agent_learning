@@ -1,4 +1,4 @@
-# Permission Control and Sandbox Isolation
+# 19.3 Permission Control and Sandbox Isolation
 
 > **Section Goal**: Learn how to design a least-privilege system and a secure execution environment for Agents.
 

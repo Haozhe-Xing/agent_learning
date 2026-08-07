@@ -1,4 +1,4 @@
-# Skill System Overview
+# 9.1 Skill System Overview
 
 ## Skill vs Tool: A Key Distinction
 
@@ -134,4 +134,4 @@ Manages skill registration, discovery, selection, and version control. This is e
 
 ---
 
-*Next section: [10.2 Skill Definition and Encapsulation](./02_skill_definition.md)*
+*Next section: [9.2 Skill Definition and Encapsulation](./02_skill_definition.md)*

@@ -1,4 +1,4 @@
-# Core Concepts and Definition of Agents
+# 1.2 Core Concepts and Definition of Agents
 
 > 📖 *"If you cannot clearly define a concept, you cannot truly understand it."*
 

@@ -1,4 +1,4 @@
-# Code Understanding and Analysis
+# 21.2 Code Understanding and Analysis
 
 > **Section Goal**: Implement code indexing, AST analysis, and semantic search capabilities for the AI coding assistant.
 

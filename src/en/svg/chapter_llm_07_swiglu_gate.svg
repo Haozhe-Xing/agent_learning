@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <marker id="arr-swi" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arr-swi-o" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e67e22"/>
+    </marker>
+    <marker id="arr-swi-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="400" fill="#f8f9fa" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">SwiGLU 门控机制：FFN 的演进</text>
+  <text x="400" y="46" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">从固定截断（ReLU）到智能门控（SwiGLU）</text>
+
+  <!-- ===== 左侧：经典 FFN ===== -->
+  <rect x="20" y="62" width="350" height="200" rx="8" fill="#e74c3c" opacity="0.04" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="195" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">经典 FFN（ReLU）</text>
+
+  <!-- 输入 x -->
+  <rect x="35" y="95" width="50" height="30" rx="5" fill="#9b59b6" opacity="0.8"/>
+  <text x="60" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">x</text>
+
+  <!-- W1 -->
+  <line x1="85" y1="110" x2="110" y2="110" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <rect x="112" y="95" width="55" height="30" rx="5" fill="#3498db" opacity="0.7"/>
+  <text x="139" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">W₁(x)</text>
+
+  <!-- ReLU -->
+  <line x1="167" y1="110" x2="192" y2="110" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <rect x="194" y="95" width="55" height="30" rx="5" fill="#e74c3c" opacity="0.7"/>
+  <text x="221" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">ReLU</text>
+
+  <!-- W2 -->
+  <line x1="249" y1="110" x2="274" y2="110" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <rect x="276" y="95" width="55" height="30" rx="5" fill="#3498db" opacity="0.7"/>
+  <text x="303" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">W₂(·)</text>
+
+  <!-- 输出 -->
+  <line x1="331" y1="110" x2="356" y2="110" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <text x="360" y="114" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">out</text>
+
+  <!-- ReLU 图示 -->
+  <text x="195" y="148" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">ReLU 激活：固定截断</text>
+  <line x1="80" y1="200" x2="200" y2="200" stroke="#bdc3c7" stroke-width="1"/>
+  <line x1="140" y1="240" x2="140" y2="160" stroke="#bdc3c7" stroke-width="1"/>
+  <line x1="80" y1="200" x2="140" y2="200" stroke="#e74c3c" stroke-width="2.5"/>
+  <line x1="140" y1="200" x2="200" y2="160" stroke="#e74c3c" stroke-width="2.5"/>
+  <text x="90" y="215" font-family="Arial, sans-serif" font-size="8" fill="#e74c3c">负数全归零</text>
+  <text x="155" y="175" font-family="Arial, sans-serif" font-size="8" fill="#e74c3c">正数直接通过</text>
+  <text x="140" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ 固定阈值，不依赖输入内容</text>
+
+  <!-- ===== 右侧：SwiGLU ===== -->
+  <rect x="390" y="62" width="390" height="200" rx="8" fill="#27ae60" opacity="0.04" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="585" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">SwiGLU（现代标准）</text>
+
+  <!-- 输入 x -->
+  <rect x="400" y="95" width="50" height="30" rx="5" fill="#9b59b6" opacity="0.8"/>
+  <text x="425" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">x</text>
+
+  <!-- 分叉 -->
+  <line x1="450" y1="110" x2="465" y2="90" stroke="#e67e22" stroke-width="1.5"/>
+  <line x1="450" y1="110" x2="465" y2="130" stroke="#27ae60" stroke-width="1.5"/>
+
+  <!-- 门控路 -->
+  <rect x="468" y="75" width="65" height="28" rx="5" fill="#e67e22" opacity="0.7"/>
+  <text x="500" y="93" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">W_gate(x)</text>
+  <line x1="533" y1="89" x2="558" y2="89" stroke="#e67e22" stroke-width="1.5" marker-end="url(#arr-swi-o)"/>
+  <rect x="560" y="75" width="55" height="28" rx="5" fill="#e67e22" opacity="0.9"/>
+  <text x="587" y="93" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Swish(·)</text>
+  <text x="500" y="68" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">门控路（0~1 信号）</text>
+
+  <!-- 内容路 -->
+  <rect x="468" y="118" width="65" height="28" rx="5" fill="#27ae60" opacity="0.7"/>
+  <text x="500" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">W_up(x)</text>
+  <text x="500" y="155" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">内容路（信息内容）</text>
+
+  <!-- 相乘 ⊙ -->
+  <line x1="615" y1="89" x2="645" y2="110" stroke="#e67e22" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <line x1="533" y1="132" x2="645" y2="115" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <circle cx="655" cy="112" r="12" fill="#f39c12" opacity="0.9"/>
+  <text x="655" y="117" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">⊙</text>
+
+  <!-- W_down -->
+  <line x1="667" y1="112" x2="692" y2="112" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <rect x="694" y="97" width="60" height="28" rx="5" fill="#3498db" opacity="0.7"/>
+  <text x="724" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">W_down(·)</text>
+
+  <!-- 输出 -->
+  <line x1="754" y1="112" x2="775" y2="112" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arr-swi)"/>
+  <text x="778" y="116" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">out</text>
+
+  <!-- Swish 图示 -->
+  <text x="585" y="175" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">Swish 激活：平滑门控</text>
+  <line x1="470" y1="220" x2="590" y2="220" stroke="#bdc3c7" stroke-width="1"/>
+  <line x1="530" y1="255" x2="530" y2="185" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M 470 225 Q 510 225 520 218 Q 530 210 540 200 Q 560 185 590 183" fill="none" stroke="#27ae60" stroke-width="2.5"/>
+  <text x="480" y="240" font-family="Arial, sans-serif" font-size="8" fill="#27ae60">负数轻微保留</text>
+  <text x="550" y="195" font-family="Arial, sans-serif" font-size="8" fill="#27ae60">正数平滑通过</text>
+  <text x="530" y="262" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 可学习的动态门控</text>
+
+  <!-- ===== 底部：参数量对比 ===== -->
+  <rect x="20" y="278" width="760" height="110" rx="8" fill="white" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="400" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">参数量对比：相同参数，更强表达</text>
+
+  <!-- 经典 FFN -->
+  <rect x="35" y="308" width="340" height="68" rx="6" fill="#e74c3c" opacity="0.06" stroke="#e74c3c" stroke-width="1"/>
+  <text x="205" y="326" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#e74c3c">经典 FFN</text>
+  <text x="205" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">2 个矩阵 × d × 4d = 8d² 参数</text>
+  <text x="205" y="360" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">隐藏维度 = 4d（如 d=4096 → 16384）</text>
+  <text x="205" y="372" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">激活函数固定，表达能力有限</text>
+
+  <!-- SwiGLU -->
+  <rect x="425" y="308" width="340" height="68" rx="6" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="1"/>
+  <text x="595" y="326" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#27ae60">SwiGLU FFN</text>
+  <text x="595" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">3 个矩阵 × d × (8/3)d ≈ 8d² 参数</text>
+  <text x="595" y="360" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">隐藏维度 = 2.67d（如 d=4096 → 11008）</text>
+  <text x="595" y="372" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ 参数量相同，但门控更灵活，效果更好</text>
+</svg>

@@ -1,4 +1,4 @@
-# Agent Application Landscape
+# 1.5 Agent Application Landscape
 
 > 📖 *"Agents are not a technology exclusive to any one industry — they are a universal intelligent paradigm."*
 

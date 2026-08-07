@@ -1,4 +1,4 @@
-# Task Decomposition: Breaking Complex Problems into Subtasks
+# 5.3 Task Decomposition: Breaking Complex Problems into Subtasks
 
 Complex tasks often exceed the capacity of a single LLM call. Task decomposition is the process of breaking a large problem into manageable smaller problems and solving them step by step.
 
@@ -228,7 +228,7 @@ Core patterns for task decomposition:
 - **Hierarchical decomposition**: recursively break down until atomic tasks
 - **Dependency management**: execute independent subtasks in parallel
 
-> 📖 **Want to dive deeper into the academic frontiers of task planning?** Read [6.6 Paper Readings: Frontiers in Planning and Reasoning](./06_paper_readings.md), covering in-depth analyses of Plan-and-Solve, HuggingGPT, LLM+P, and more.
+> 📖 **Want to dive deeper into the academic frontiers of task planning?** Read [5.7 Paper Readings: Frontiers in Planning and Reasoning](./06_paper_readings.md), covering in-depth analyses of Plan-and-Solve, HuggingGPT, LLM+P, and more.
 
 ---
 
@@ -242,4 +242,4 @@ Core patterns for task decomposition:
 
 ---
 
-*Next: [6.4 Reflection and Self-Correction Mechanisms](./04_reflection.md)*
+*Next: [5.4 Reflection and Self-Correction Mechanisms](./04_reflection.md)*

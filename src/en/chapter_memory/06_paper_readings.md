@@ -1,4 +1,4 @@
-# 5.6 Paper Readings: Frontiers in Memory Systems
+# 4.6 Paper Readings: Frontiers in Memory Systems
 
 > 📖 *"Memory is not just storage — it is the foundation of understanding and reasoning."*  
 > *Research on Agent memory systems is advancing rapidly. Here are the most influential works.*
@@ -276,4 +276,4 @@ Zep + mem0 (temporal graphs + production-grade memory solutions, 2025)
 
 ---
 
-*Back to: [Chapter 5: Memory Systems](./README.md)*
+*Back to: [Chapter 4: Memory Systems](./README.md)*
