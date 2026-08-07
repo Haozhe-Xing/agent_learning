@@ -442,6 +442,157 @@ GEPA integrates several of these ideas into one coherent loop.
 
 ---
 
+## A Closer Look at the Representative Methods
+
+The comparison table above is necessarily compact. To appreciate why GEPA looks the way it does, it helps to walk through the intellectual lineage: each family below solved one missing piece of the prompt-optimization puzzle.
+
+### APE (ICLR 2023): Let the LLM Write the Prompt
+
+**APE** stands for *Large Language Models Are Human-Level Prompt Engineers*.
+
+> 📄 **Reference**: Zhou et al., **ICLR 2023** | arXiv: [2211.01910](https://arxiv.org/abs/2211.01910)
+
+The idea is disarmingly simple: since LLMs are good at writing text, can we let an LLM write the prompt for a task by itself?
+
+![APE flow: examples → LLM infers instruction → candidates → scoring → evaluation](../svg/chapter_llm_09_ape_paper.png)
+
+*▲ APE paper figure (source: Zhou et al., ICLR 2023, arXiv:2211.01910)*
+
+The flow looks like this:
+
+```text
+Give the LLM a few input/output examples
+   ↓
+Ask the LLM to guess the instruction behind those examples
+   ↓
+Generate many candidate prompts
+   ↓
+Test them on a validation set
+   ↓
+Keep the highest-scoring prompt
+```
+
+For example, given a few cases:
+
+```text
+Input: I love this movie.        Output: positive
+Input: This is terrible.         Output: negative
+```
+
+The model might generate several candidate prompts:
+
+```text
+Candidate 1: Classify whether the sentiment of the sentence is positive or negative.
+Candidate 2: Analyze the sentiment of the text and output positive or negative.
+Candidate 3: Read the sentence and judge whether the speaker's attitude is positive or negative.
+```
+
+It then tests all three on the validation set and keeps the best.
+
+#### Understanding APE with the Customer-Service Example
+
+Returning to our customer-service QA Agent, using APE to optimize it would look like:
+
+```text
+1. Prepare a batch of "question → correct answer" examples:
+   "Can I get a refund 7 days after signing? "      → "Yes, standard products support 7-day no-reason refunds."
+   "Can I get a refund 20 days after signing? "     → "No, it exceeds the 7-day no-reason refund window."
+   "Can I return earphones with static noise? "     → "You can request after-sales; quality issues can be handled within 30 days."
+
+2. Ask the LLM to guess the instruction behind these examples and generate candidate prompts.
+3. Test each candidate prompt on more customer-service questions.
+4. Keep the highest-scoring version.
+```
+
+APE might produce candidates like:
+
+```text
+Candidate A: You are a customer-service assistant. Answer refund-related questions based on the knowledge base. Distinguish no-reason refunds from quality-issue after-sales.
+Candidate B: Answer user questions per these rules: 7-day no-reason refund, 30-day quality-issue after-sales.
+```
+
+As you can see, APE can already help us write a decent prompt from scratch. But it stops there — if Candidate A still fails on some questions, APE will not analyze *why* it failed, nor revise it in a targeted way.
+
+#### Limitations of APE
+
+| Limitation | Explanation |
+|------------|-------------|
+| **Single stage** | Generates candidates and screens them once; no iterative refinement |
+| **Score-only** | Does not know *why* a prompt scored low |
+| **No process analysis** | Does not examine whether the model's intermediate reasoning is sound |
+| **Uncontrolled candidate quality** | The LLM may produce prompts that look plausible but are ineffective |
+
+These limitations are exactly what later methods set out to fix. OPRO adds iteration, ProTeGi adds textual feedback, and GEPA further adds trace reflection and evolutionary search.
+
+---
+
+### OPRO (ICLR 2024): Treat the LLM as an Optimizer
+
+**OPRO** stands for *Large Language Models as Optimizers*.
+
+> 📄 **Reference**: Yang et al. (Google DeepMind), **ICLR 2024** | arXiv: [2309.03409](https://arxiv.org/abs/2309.03409)
+
+Its core idea is to treat the LLM as an optimizer.
+
+![OPRO workflow: LLM as optimizer, generating new candidates from "solution–score pairs" in the meta-prompt](../svg/chapter_llm_09_opro_paper.png)
+
+*▲ OPRO paper figure (source: Yang et al., ICLR 2024, arXiv:2309.03409)*
+
+The approach writes the history of attempts into a meta-prompt, so the LLM can observe "what worked and what didn't," then propose a new candidate:
+
+```text
+You are a prompt optimizer. Below are previous attempts and their scores:
+
+Candidate Prompt A: "Please answer the user's question." → score 62
+Candidate Prompt B: "Please answer based on the given material." → score 70
+Candidate Prompt C: "Please answer only based on the given material; do not fabricate." → score 68
+
+Higher score is better. Based on the history above, propose a new prompt that might score higher.
+```
+
+The LLM observes that B beats A because the "based on material" constraint helps, and that C is slightly below B, suggesting "do not fabricate" may be too strict or poorly worded. It might then generate:
+
+```text
+Candidate Prompt D: "Please answer based on the given material. If the material contains no relevant information, state that it cannot be determined."
+```
+
+This process can iterate: each round appends the new candidate and its score to the history, and the LLM continues optimizing.
+
+#### Understanding OPRO with the Customer-Service Example
+
+If we optimize the customer-service Agent with OPRO:
+
+```text
+Round 1:
+  Candidate A: "You are a customer-service assistant. Answer user questions based on the knowledge base." → score 55
+
+Round 2:
+  Candidate B: "You are a customer-service assistant. Answer user questions based on the knowledge base. Distinguish between different rules." → score 63
+
+Round 3:
+  Candidate C: "You are a customer-service assistant. Before answering, first judge whether the user is asking about a refund or after-sales, then select the matching rule." → score 72
+
+Round 4:
+  Candidate D: "You are a customer-service assistant. Before answering you must first judge the user's inquiry type (no-reason refund or quality-issue after-sales), then select the matching rule. Do not confuse rules of different types." → score 78
+```
+
+OPRO's strength is that it is simple, general, and requires no model training. It shows us that **an LLM can perform black-box optimization from "candidate + score."**
+
+Its weakness is also clear: if it only sees scores, the LLM does not know *where* the error happened. It knows B is better than A, but not why A was wrong — like a student who sees exam scores but not which questions they got wrong. They can grope their way forward, but inefficiently.
+
+#### APE → OPRO: Progress and Remaining Gaps
+
+| Comparison | APE | OPRO |
+|------------|-----|------|
+| **Iteration** | Single stage; screen after generation | Multiple rounds of iteration, continuous improvement |
+| **History** | Only validation-set scores | Writes historical candidates and scores into the meta-prompt |
+| **Optimization direction** | Relies on random generation | LLM observes score trends |
+| **Still missing** | No failure-cause analysis | Also no failure-cause analysis |
+
+OPRO adds iteration over APE, but still looks only at scores. The natural next step: can we tell the LLM not just the score, but *where it went wrong*? That is exactly what ProTeGi does.
+
+---
+
 ## GEPA vs. Reinforcement Learning
 
 Why not just use RL?
