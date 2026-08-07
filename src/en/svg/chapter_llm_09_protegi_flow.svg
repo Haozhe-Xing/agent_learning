@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" width="860" height="400" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="860" height="400" rx="18" fill="#f8fafc"/>
+  <text x="430" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">ProTeGi：文本梯度下降</text>
+  <text x="430" y="58" text-anchor="middle" font-size="13" fill="#64748b">用自然语言批评充当"梯度"，用改写充当"参数更新"</text>
+
+  <!-- 跑样本 -->
+  <rect x="30" y="95" width="145" height="55" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="102" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">跑训练样本</text>
+  <text x="102" y="137" text-anchor="middle" font-size="10" fill="#2563eb">用当前 Prompt 执行</text>
+
+  <!-- 找错例 -->
+  <rect x="210" y="95" width="145" height="55" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="282" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">找出错误样本</text>
+  <text x="282" y="137" text-anchor="middle" font-size="10" fill="#dc2626">哪些答错了？</text>
+
+  <!-- 文本批评 -->
+  <rect x="390" y="85" width="155" height="75" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="467" y="109" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">LLM 批评</text>
+  <text x="467" y="127" text-anchor="middle" font-size="10" fill="#b45309">"Prompt 没有要求</text>
+  <text x="467" y="142" text-anchor="middle" font-size="10" fill="#b45309">区分已知和未知"</text>
+
+  <!-- 文本梯度标签 -->
+  <rect x="390" y="172" width="155" height="32" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="467" y="194" text-anchor="middle" font-size="13" font-weight="bold" fill="#854d0e">这就是"文本梯度"</text>
+
+  <!-- 反方向改写 -->
+  <rect x="585" y="85" width="155" height="75" rx="10" fill="#fdf2f8" stroke="#ec4899" stroke-width="2"/>
+  <text x="662" y="109" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">LLM 改写 Prompt</text>
+  <text x="662" y="127" text-anchor="middle" font-size="10" fill="#db2777">"加入规则：区分</text>
+  <text x="662" y="142" text-anchor="middle" font-size="10" fill="#db2777">已知和未知信息"</text>
+
+  <!-- 生成候选 -->
+  <rect x="585" y="172" width="155" height="32" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="662" y="194" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">生成多个候选 Prompt</text>
+
+  <!-- Beam Search -->
+  <rect x="390" y="230" width="350" height="55" rx="10" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="565" y="254" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">Beam Search + Bandit 策略</text>
+  <text x="565" y="272" text-anchor="middle" font-size="10" fill="#0891b2">保留最有希望的候选，逐步淘汰</text>
+
+  <!-- 保留最优 -->
+  <rect x="390" y="310" width="155" height="50" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="467" y="336" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">保留最优候选</text>
+  <text x="467" y="352" text-anchor="middle" font-size="10" fill="#16a34a">继续迭代</text>
+
+  <!-- 继续迭代 -->
+  <rect x="585" y="310" width="155" height="50" rx="10" fill="#cffafe" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="662" y="336" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">输出优化后 Prompt</text>
+
+  <!-- 箭头 -->
+  <line x1="175" y1="122" x2="205" y2="122" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="355" y1="122" x2="385" y2="122" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="545" y1="122" x2="580" y2="122" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="467" y1="160" x2="467" y2="169" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="662" y1="160" x2="662" y2="169" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="467" y1="204" x2="467" y2="225" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="662" y1="204" x2="662" y2="225" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="565" y1="285" x2="565" y2="305" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="545" y1="335" x2="580" y2="335" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+
+  <!-- 迭代回路 -->
+  <path d="M390 335 L102 335 L102 155" fill="none" stroke="#4f46e5" stroke-width="2.2" stroke-dasharray="6,4" marker-end="url(#arr)"/>
+  <text x="240" y="358" text-anchor="middle" font-size="11" fill="#64748b">继续迭代</text>
+
+  <!-- 类比对比框 -->
+  <rect x="30" y="230" width="330" height="140" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="195" y="256" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">数值梯度 vs 文本梯度</text>
+  <line x1="50" y1="268" x2="340" y2="268" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="195" y="290" text-anchor="middle" font-size="11" fill="#475569">数值梯度：向量，指向参数应调整方向</text>
+  <text x="195" y="310" text-anchor="middle" font-size="11" fill="#475569">文本梯度：文字，指出 Prompt 哪里没说清</text>
+  <text x="195" y="330" text-anchor="middle" font-size="11" fill="#475569">学习率 → LLM 改写力度</text>
+  <text x="195" y="350" text-anchor="middle" font-size="11" fill="#475569">参数更新 → Prompt 改写</text>
+</svg>

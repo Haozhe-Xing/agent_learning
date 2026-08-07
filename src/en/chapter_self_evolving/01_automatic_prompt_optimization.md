@@ -438,6 +438,211 @@ The historical trend is clear:
 LLM generates prompts → LLM optimizes with scores → textual feedback → evolutionary search → multi-module trace reflection → Pareto prompt evolution
 ```
 
+### ProTeGi (EMNLP 2023): "Gradient Descent" in Natural Language
+
+**ProTeGi** stands for *Automatic Prompt Optimization with "Gradient Descent" and Beam Search*.
+
+> 📄 **Publication:** Pryzant et al. (Microsoft), **EMNLP 2023** | arXiv: [2305.03495](https://arxiv.org/abs/2305.03495)
+
+It is one of the most important intellectual ancestors of GEPA.
+
+We know that neural networks can be optimized with gradient descent because the parameters are continuous numbers. But a prompt is a piece of natural language — there is no numerical gradient to compute.
+
+ProTeGi proposes an intuitive idea:
+
+> Can we use natural-language criticism as a "textual gradient"?
+
+![ProTeGi textual gradient descent flow](../svg/chapter_llm_09_protegi_flow.svg)
+
+Below is a complete example from the original ProTeGi paper: starting from an initial prompt, it generates natural-language "gradients" for the error cases, rewrites a new prompt accordingly, and finally selects with a bandit strategy.
+
+![ProTeGi paper example: initial prompt to minibatch errors to textual gradient to new prompt to bandit selection](../svg/chapter_llm_09_protegi_paper.png)
+
+*▲ ProTeGi original paper, Figure 1 (Source: Pryzant et al., EMNLP 2023, arXiv:2305.03495)*
+
+Its flow is as follows:
+
+```text
+Run current prompt on a batch of training samples
+   ↓
+Find the samples that were answered incorrectly
+   ↓
+Ask the LLM to critique what is unclear in the current prompt
+   ↓
+That critique is the "textual gradient"
+   ↓
+Ask the LLM to rewrite the prompt in the opposite direction of the critique
+   ↓
+Generate multiple candidate prompts
+   ↓
+Keep the more promising candidates with beam search and a bandit strategy
+   ↓
+Iterate
+```
+
+For example, suppose the current prompt is:
+
+```text
+Answer the user's question.
+```
+
+Error cases show the model often fabricates answers. The "textual gradient" the LLM might write is:
+
+```text
+The current prompt does not ask the model to distinguish known information
+from unknown information.
+It also does not ask the model to refuse to answer when evidence is insufficient.
+```
+
+So the new prompt might become:
+
+```text
+Answer only based on the given material.
+If the material does not contain sufficient evidence, state clearly that it
+cannot be determined; do not fabricate.
+```
+
+The value of ProTeGi is that it turns "critique" into an actionable optimization signal.
+
+#### Understanding ProTeGi with a Customer-Support Example
+
+When optimizing a customer-support agent with ProTeGi, the flow is more detailed:
+
+```text
+Step 1: Run a batch of support questions with the current prompt
+
+Step 2: Find the questions that were answered incorrectly
+
+  Question: "Can I get a refund 20 days after signing?"
+  Model answer: "Yes, you can request after-sales service within 30 days."
+  Reference answer: "No refund; the 7-day no-questions-asked refund window has passed."
+
+Step 3: Ask the LLM to critique the current prompt
+
+  "The current prompt does not ask the model to distinguish 'no-questions-asked
+   refund' from 'quality-issue after-sales'. The model mixes the two rules and
+   applies the after-sales rule whenever it sees '30 days'. It should require
+   classifying the user's inquiry type first."
+
+Step 4: This critique is the "textual gradient"
+
+Step 5: Ask the LLM to rewrite the prompt in the opposite direction of the critique
+
+  New prompt: "You are a support assistant. Before answering, you must first
+  classify whether the user is asking about a 'no-questions-asked refund' or a
+  'quality-issue after-sales', then apply the corresponding rule."
+
+Step 6: Test the new prompt on more questions
+
+Step 7: Use beam search to keep the best-performing candidates and continue iterating
+```
+
+#### What is Beam Search?
+
+ProTeGi generates not one but several candidate prompts, then prunes them progressively with a beam search strategy:
+
+```text
+Round 1: generate 5 candidates -> test -> keep the top 3 by score
+Round 2: mutate each of the 3 candidates -> ~15 new ones -> test -> keep the best 3
+Round 3: keep mutating -> keep filtering ...
+```
+
+This is like chess: instead of calculating only one move ahead, you consider multiple paths simultaneously and keep the most promising ones to explore further.
+
+#### Analogy: "Textual Gradient" vs. Numerical Gradient
+
+| Analogy | Numerical gradient | Textual gradient |
+|---------|--------------------|------------------|
+| **Form** | A vector indicating which direction parameters should move | A piece of text indicating where the prompt is unclear |
+| **Direction** | Negative-gradient direction = where parameters should decrease | Critique = the direction in which the prompt should be corrected |
+| **Step size** | Learning rate controls how much to adjust | The LLM's rewrite strength controls how much to change |
+| **Iteration** | Gradient descent repeatedly updates parameters | Repeatedly critique and rewrite the prompt |
+
+ProTeGi demonstrates that although a prompt is not a number, as long as you can state clearly *where it goes wrong* in words, you can do gradient-descent-like optimization.
+
+Its relationship to GEPA is very close:
+
+| Comparison | ProTeGi | GEPA |
+|------------|---------|------|
+| Optimization target | Mainly a single prompt | Can be multiple prompts across a multi-module AI system |
+| Feedback source | Error samples and textual critique | Execution traces, scores, evaluator textual feedback |
+| Candidate selection | Beam search, biased toward high-scoring candidates | Pareto frontier, keeps complementary candidates |
+| Focus | Textual gradient | Trajectory reflection + evolutionary search |
+
+One can understand GEPA as: building on ProTeGi's "textual gradient" idea, and further adding multi-module trajectories, evolutionary search, and Pareto selection.
+
+### TextGrad (Nature 2025): Propagating Textual Feedback Like Autodiff
+
+**TextGrad** stands for *TextGrad: Automatic "Differentiation" via Text*.
+
+> 📄 **Publication:** Yuksekgonul et al. (Stanford), arXiv preprint 2024; the formal version, *Optimizing generative AI by backpropagating language model feedback*, appeared in **Nature 2025** (vol. 639, pp. 609-616) | arXiv: [2406.07496](https://arxiv.org/abs/2406.07496)
+
+Its idea is more abstract: since PyTorch can backpropagate numerical gradients along a computation graph, can we organize textual feedback into a similar "backpropagation"?
+
+In TextGrad, the optimization target need not be just a prompt; it can also be:
+
+- An intermediate answer.
+- A piece of explanation.
+- A tool-call plan.
+- A multi-step reasoning chain.
+- Multiple textual variables in a system.
+
+It treats every textual variable as an optimizable object, then lets evaluation feedback propagate backward along the system structure.
+
+![TextGrad backpropagation analogy](../svg/chapter_llm_09_textgrad_flow.svg)
+
+The figure below is the overview from the TextGrad paper: top-left (a) is numerical-gradient backpropagation in neural networks; top-right (b) ports the same idea to "black-box AI systems + natural-language gradients"; the bottom (c)-(g) shows its applications to molecule design, code, radiotherapy planning, prompt optimization, and more.
+
+![TextGrad paper overview: numerical gradient vs. natural-language gradient, and multi-task applications](../svg/chapter_llm_09_textgrad_paper.png)
+
+*▲ TextGrad original paper, Figure 1 (Source: Yuksekgonul et al., arXiv:2406.07496; formal version in Nature 2025, 639:609-616)*
+
+#### Understanding TextGrad's "Backpropagation" with an Example
+
+Suppose we have a two-step reasoning system:
+
+```text
+Step 1: generate a preliminary answer (text variable A)
+Step 2: write a final report based on the preliminary answer (text variable B)
+```
+
+The evaluator gives feedback on the final report:
+
+```text
+The final report's data analysis is wrong, because the preliminary answer
+confused two datasets.
+```
+
+TextGrad "backpropagates" this feedback to text variable A:
+
+```text
+Feedback on variable B: the report's data is confused.
+Feedback on variable A: the preliminary answer confused two datasets and should handle them separately.
+```
+
+Then these feedbacks are used to modify A and B respectively:
+
+```text
+New A: clearly distinguish the two datasets and list them separately.
+New B: reorganize the report based on the corrected preliminary answer.
+```
+
+This is very similar to PyTorch's automatic differentiation, except the gradient changes from "numeric vectors" to "natural-language critiques."
+
+| Analogy | PyTorch | TextGrad |
+|---------|---------|----------|
+| **Computation graph** | Forward pass produces numbers | Forward pass produces text |
+| **Backpropagation** | Chain rule computes numerical gradients | LLM generates textual feedback along dependencies |
+| **Update** | params <- params - lr * gradient | text <- LLM rewrites text based on feedback |
+| **Optimization target** | Weights, biases | Prompts, intermediate answers, reasoning chains, plans, etc. |
+
+The common ground between TextGrad and GEPA is: both believe natural language can carry optimization signals.
+
+The difference is:
+
+- TextGrad is more like a general framework, emphasizing "textual autodiff."
+- GEPA focuses more on prompt optimization, emphasizing "trajectory reflection + evolutionary selection."
+
 GEPA integrates several of these ideas into one coherent loop.
 
 ---

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr-b" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arr-p" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#ec4899"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="470" rx="18" fill="#f8fafc"/>
+  <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">TextGrad：文本自动微分</text>
+  <text x="480" y="58" text-anchor="middle" font-size="13" fill="#64748b">像 PyTorch 反向传播数值梯度一样，沿依赖关系传播文字反馈</text>
+
+  <!-- 左侧：PyTorch -->
+  <rect x="36" y="80" width="390" height="350" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="231" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#1d4ed8">PyTorch 数值微分</text>
+
+  <rect x="72" y="130" width="150" height="50" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="147" y="160" text-anchor="middle" font-size="12" fill="#1d4ed8">权重 w₁</text>
+
+  <rect x="252" y="130" width="150" height="50" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="327" y="160" text-anchor="middle" font-size="12" fill="#1d4ed8">权重 w₂</text>
+
+  <rect x="146" y="218" width="170" height="50" rx="10" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="231" y="248" text-anchor="middle" font-size="12" fill="#1d4ed8">前向计算 → Loss</text>
+
+  <rect x="146" y="300" width="170" height="54" rx="10" fill="#93c5fd" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="231" y="324" text-anchor="middle" font-size="12" fill="#1e3a8a">反向传播梯度</text>
+  <text x="231" y="342" text-anchor="middle" font-size="10" fill="#1e3a8a">∂L/∂w₁, ∂L/∂w₂</text>
+
+  <line x1="147" y1="180" x2="186" y2="214" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-b)"/>
+  <line x1="327" y1="180" x2="276" y2="214" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-b)"/>
+  <line x1="231" y1="268" x2="231" y2="295" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-b)"/>
+
+  <rect x="68" y="374" width="145" height="34" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="140" y="395" text-anchor="middle" font-size="10" fill="#1d4ed8">更新 w₁：沿负梯度</text>
+
+  <rect x="250" y="374" width="145" height="34" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="322" y="395" text-anchor="middle" font-size="10" fill="#1d4ed8">更新 w₂：沿负梯度</text>
+
+  <!-- 中间类比说明 -->
+  <text x="480" y="215" text-anchor="middle" font-size="28" font-weight="bold" fill="#64748b">≈</text>
+  <rect x="441" y="232" width="78" height="50" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="480" y="254" text-anchor="middle" font-size="10" fill="#64748b">思想类似</text>
+  <text x="480" y="270" text-anchor="middle" font-size="10" fill="#64748b">形式不同</text>
+
+  <!-- 右侧：TextGrad -->
+  <rect x="534" y="80" width="390" height="350" rx="14" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="729" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#be185d">TextGrad 文本微分</text>
+
+  <rect x="570" y="130" width="150" height="50" rx="10" fill="#fce7f3" stroke="#ec4899" stroke-width="1.2"/>
+  <text x="645" y="152" text-anchor="middle" font-size="12" fill="#be185d">文本变量 A</text>
+  <text x="645" y="168" text-anchor="middle" font-size="10" fill="#db2777">初步答案</text>
+
+  <rect x="750" y="130" width="150" height="50" rx="10" fill="#fce7f3" stroke="#ec4899" stroke-width="1.2"/>
+  <text x="825" y="152" text-anchor="middle" font-size="12" fill="#be185d">文本变量 B</text>
+  <text x="825" y="168" text-anchor="middle" font-size="10" fill="#db2777">最终报告</text>
+
+  <rect x="644" y="218" width="170" height="50" rx="10" fill="#fbcfe8" stroke="#ec4899" stroke-width="1.2"/>
+  <text x="729" y="248" text-anchor="middle" font-size="12" fill="#be185d">评估 → 文字反馈</text>
+
+  <rect x="644" y="300" width="170" height="54" rx="10" fill="#f9a8d4" stroke="#ec4899" stroke-width="1.2"/>
+  <text x="729" y="324" text-anchor="middle" font-size="12" fill="#831843">反向传播文字反馈</text>
+  <text x="729" y="342" text-anchor="middle" font-size="10" fill="#831843">分别生成修改建议</text>
+
+  <line x1="645" y1="180" x2="684" y2="214" stroke="#ec4899" stroke-width="2" marker-end="url(#arr-p)"/>
+  <line x1="825" y1="180" x2="774" y2="214" stroke="#ec4899" stroke-width="2" marker-end="url(#arr-p)"/>
+  <line x1="729" y1="268" x2="729" y2="295" stroke="#ec4899" stroke-width="2" marker-end="url(#arr-p)"/>
+
+  <rect x="566" y="374" width="145" height="34" rx="8" fill="#fce7f3" stroke="#f9a8d4"/>
+  <text x="638" y="395" text-anchor="middle" font-size="10" fill="#be185d">改写 A：根据反馈</text>
+
+  <rect x="748" y="374" width="145" height="34" rx="8" fill="#fce7f3" stroke="#f9a8d4"/>
+  <text x="820" y="395" text-anchor="middle" font-size="10" fill="#be185d">改写 B：根据反馈</text>
+</svg>
