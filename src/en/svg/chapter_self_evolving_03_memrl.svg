@@ -5,36 +5,36 @@
     </marker>
   </defs>
   <rect width="760" height="340" fill="#f8f9fa" rx="12"/>
-  <text x="380" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">MemRL：检索不只看"像不像"，还看"有没有用"</text>
+  <text x="380" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">MemRL: Retrieval Considers Not Just "Similarity", But Also "Usefulness"</text>
 
-  <text x="200" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#7f8c8d">传统 RAG 检索</text>
+  <text x="200" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#7f8c8d">Traditional RAG Retrieval</text>
   <rect x="60" y="78" width="280" height="70" rx="9" fill="#95a5a6" opacity="0.12" stroke="#7f8c8d" stroke-width="1.4"/>
-  <text x="200" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">只按语义相似度排序</text>
-  <text x="200" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">"像"就召回，不管当年成没成</text>
+  <text x="200" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">Only Ranked by Semantic Similarity</text>
+  <text x="200" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">Recall If "Similar", Regardless of Past Success</text>
 
-  <text x="560" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1d9e75">MemRL 检索（把检索建模成 MDP）</text>
+  <text x="560" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1d9e75">MemRL Retrieval (Models Retrieval as an MDP)</text>
   <rect x="420" y="78" width="280" height="70" rx="9" fill="#1d9e75" opacity="0.12" stroke="#0f6e56" stroke-width="1.4"/>
-  <text x="560" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f6e56">相似度 + 历史成功率联合打分</text>
-  <text x="560" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f6e56">用过、成功过的经验权重更高</text>
+  <text x="560" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f6e56">Joint Scoring by Similarity + Historical Success Rate</text>
+  <text x="560" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f6e56">Experiences That Were Used and Succeeded Get Higher Weights</text>
 
-  <text x="380" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#2c3e50">运行时非参数强化学习循环（LLM 权重全程冻结）</text>
+  <text x="380" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#2c3e50">Runtime Non-Parametric Reinforcement Learning Loop (LLM Weights Frozen Throughout)</text>
 
   <g font-family="Arial, sans-serif">
     <rect x="55" y="205" width="150" height="52" rx="9" fill="#3498db" opacity="0.13" stroke="#2471a3" stroke-width="1.5"/>
-    <text x="130" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#2471a3">检索记忆</text>
-    <text x="130" y="245" text-anchor="middle" font-size="11" fill="#555">按当前状态选经验</text>
+    <text x="130" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#2471a3">Retrieve Memory</text>
+    <text x="130" y="245" text-anchor="middle" font-size="11" fill="#555">Select Experience Based on Current State</text>
 
     <rect x="245" y="205" width="150" height="52" rx="9" fill="#3498db" opacity="0.13" stroke="#2471a3" stroke-width="1.5"/>
-    <text x="320" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#2471a3">执行任务</text>
-    <text x="320" y="245" text-anchor="middle" font-size="11" fill="#555">冻结 LLM 产出动作</text>
+    <text x="320" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#2471a3">Execute Task</text>
+    <text x="320" y="245" text-anchor="middle" font-size="11" fill="#555">Frozen LLM Generates Action</text>
 
     <rect x="435" y="205" width="150" height="52" rx="9" fill="#3498db" opacity="0.13" stroke="#2471a3" stroke-width="1.5"/>
-    <text x="510" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#2471a3">拿到成败</text>
-    <text x="510" y="245" text-anchor="middle" font-size="11" fill="#555">环境返回 reward</text>
+    <text x="510" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#2471a3">Get Success/Failure</text>
+    <text x="510" y="245" text-anchor="middle" font-size="11" fill="#555">Environment Returns Reward</text>
 
     <rect x="605" y="205" width="120" height="52" rx="9" fill="#e67e22" opacity="0.13" stroke="#b9690e" stroke-width="1.5"/>
-    <text x="665" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#b9690e">更新权重</text>
-    <text x="665" y="245" text-anchor="middle" font-size="11" fill="#555">调记忆分值</text>
+    <text x="665" y="227" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#b9690e">Update Weights</text>
+    <text x="665" y="245" text-anchor="middle" font-size="11" fill="#555">Adjust Memory Score</text>
   </g>
 
   <line x1="205" y1="231" x2="239" y2="231" stroke="#7f8c8d" stroke-width="1.6" marker-end="url(#mr_arrow)"/>
@@ -42,7 +42,7 @@
   <line x1="585" y1="231" x2="599" y2="231" stroke="#7f8c8d" stroke-width="1.6" marker-end="url(#mr_arrow)"/>
 
   <path d="M 665 257 L 665 292 L 130 292 L 130 259" fill="none" stroke="#8e44ad" stroke-width="1.8" marker-end="url(#mr_arrow)"/>
-  <text x="397" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11.5" fill="#7d3c98">调的是"记忆条目的价值权重"，不是模型参数——所以不需要微调、不会灾难性遗忘</text>
+  <text x="397" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11.5" fill="#7d3c98">What's Adjusted Is the "Value Weight of Memory Items", Not Model Parameters — So No Fine-Tuning Needed, No Catastrophic Forgetting</text>
 
-  <text x="380" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#95a5a6">类比：给天才（冻结 LLM）配一本会自己打分的笔记本，只优化笔记，不给大脑做手术</text>
+  <text x="380" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#95a5a6">Analogy: Give a Genius (Frozen LLM) a Self-Scoring Notebook — Only Optimize the Notebook, Don't Perform Surgery on the Brain</text>
 </svg>

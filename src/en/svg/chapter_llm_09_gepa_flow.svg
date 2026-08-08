@@ -8,122 +8,122 @@
     </marker>
   </defs>
   <rect width="980" height="1180" rx="18" fill="#f8fafc"/>
-  <text x="490" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">GEPA：完整流程图</text>
-  <text x="490" y="58" text-anchor="middle" font-size="13" fill="#64748b">从种群初始化，到 Pareto 前沿、候选变异、验证筛选，直到预算耗尽</text>
+  <text x="490" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">GEPA: Complete Flow</text>
+  <text x="490" y="58" text-anchor="middle" font-size="13" fill="#64748b">From population initialization to Pareto front, candidate mutation, validation filtering, until budget exhausted</text>
 
-  <!-- 输入 椭圆 -->
+  <!-- Input ellipse -->
   <ellipse cx="320" cy="100" rx="55" ry="22" fill="#cffafe" stroke="#06b6d4" stroke-width="1.5"/>
-  <text x="320" y="106" text-anchor="middle" font-size="14" font-weight="bold" fill="#0e7490">输入</text>
+  <text x="320" y="106" text-anchor="middle" font-size="14" font-weight="bold" fill="#0e7490">Input</text>
 
-  <!-- 初始化候选词 -->
+  <!-- Initialize candidates -->
   <rect x="240" y="150" width="160" height="50" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="320" y="180" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">初始化候选 Prompt</text>
+  <text x="320" y="180" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Initialize Candidate Prompts</text>
 
-  <!-- 评估候选在验证样本上表现 -->
+  <!-- Evaluate candidates on validation samples -->
   <rect x="240" y="225" width="160" height="55" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="320" y="249" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">评估候选在</text>
-  <text x="320" y="267" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">验证样本上的表现</text>
+  <text x="320" y="249" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Evaluate Candidates on</text>
+  <text x="320" y="267" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Validation Samples</text>
 
-  <!-- 红色虚线框：核心循环 -->
+  <!-- Red dashed box: Core loop -->
   <rect x="225" y="310" width="190" height="360" rx="12" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-dasharray="6,4"/>
-  <text x="320" y="302" text-anchor="middle" font-size="11" font-style="italic" fill="#ef4444">GEPA 核心反思-变异循环</text>
+  <text x="320" y="302" text-anchor="middle" font-size="11" font-style="italic" fill="#ef4444">GEPA Core Reflection-Mutation Loop</text>
 
-  <!-- 构造 Pareto 前沿 -->
+  <!-- Construct Pareto front -->
   <rect x="240" y="325" width="160" height="55" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-  <text x="320" y="349" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">构造 Pareto</text>
-  <text x="320" y="367" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">前沿</text>
+  <text x="320" y="349" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">Construct Pareto</text>
+  <text x="320" y="367" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">Front</text>
 
-  <!-- 气泡1：Pareto 前沿解释 -->
+  <!-- Bubble 1: Pareto front explanation -->
   <path d="M420 340 Q435 330 450 335 L720 335 Q740 335 740 355 L740 410 Q740 430 720 430 L450 430 Q435 432 420 440 Q428 415 420 340 Z" fill="#fef9c3" stroke="#eab308" stroke-width="1.2"/>
-  <text x="580" y="358" text-anchor="middle" font-size="11" fill="#713f12">一个 Prompt 候选可能不是平均分最高，但</text>
-  <text x="580" y="375" text-anchor="middle" font-size="11" fill="#713f12">它可能在某些样本上是最好的。找出那些在</text>
-  <text x="580" y="392" text-anchor="middle" font-size="11" fill="#713f12">不同样本上表现突出的候选，组成 Pareto</text>
-  <text x="580" y="409" text-anchor="middle" font-size="11" fill="#713f12">前沿候选集合，保留多方向探索能力更强</text>
+  <text x="580" y="358" text-anchor="middle" font-size="11" fill="#713f12">A prompt candidate may not have the highest average score, but</text>
+  <text x="580" y="375" text-anchor="middle" font-size="11" fill="#713f12">it may be the best on certain samples. Identify those that</text>
+  <text x="580" y="392" text-anchor="middle" font-size="11" fill="#713f12">excel on different samples to form the Pareto front</text>
+  <text x="580" y="409" text-anchor="middle" font-size="11" fill="#713f12">candidate set, retaining stronger multi-directional exploration</text>
 
-  <!-- 选一个候选来变异 -->
+  <!-- Select a candidate to mutate -->
   <rect x="240" y="405" width="160" height="55" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-  <text x="320" y="429" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">选一个候选</text>
-  <text x="320" y="447" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">来变异</text>
+  <text x="320" y="429" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">Select a Candidate</text>
+  <text x="320" y="447" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">to Mutate</text>
 
-  <!-- 气泡2：变异候选选择策略 -->
+  <!-- Bubble 2: Mutation candidate selection strategy -->
   <path d="M420 420 Q435 410 450 415 L720 415 Q740 415 740 435 L740 475 Q740 495 720 495 L450 495 Q435 497 420 505 Q428 480 420 420 Z" fill="#fef9c3" stroke="#eab308" stroke-width="1.2"/>
-  <text x="580" y="440" text-anchor="middle" font-size="11" fill="#713f12">出现次数越多的候选，</text>
-  <text x="580" y="460" text-anchor="middle" font-size="11" fill="#713f12">被选中的概率越高。</text>
-  <text x="580" y="480" text-anchor="middle" font-size="11" fill="#713f12">这样既利用强者，也给弱者机会</text>
+  <text x="580" y="440" text-anchor="middle" font-size="11" fill="#713f12">The more frequently a candidate appears,</text>
+  <text x="580" y="460" text-anchor="middle" font-size="11" fill="#713f12">the higher its probability of being selected.</text>
+  <text x="580" y="480" text-anchor="middle" font-size="11" fill="#713f12">This exploits strong candidates while giving weak ones a chance</text>
 
-  <!-- 跑一个小批量样本 -->
+  <!-- Run a mini-batch of samples -->
   <rect x="240" y="485" width="160" height="65" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
-  <text x="320" y="509" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">跑一个小批量样</text>
-  <text x="320" y="527" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">本，收集完整过程</text>
-  <text x="320" y="543" text-anchor="middle" font-size="10" fill="#ea580c">（trace）</text>
+  <text x="320" y="509" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">Run a Mini-Batch of</text>
+  <text x="320" y="527" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">Samples, Collect Full Trace</text>
+  <text x="320" y="543" text-anchor="middle" font-size="10" fill="#ea580c">(trace)</text>
 
-  <!-- 气泡3：trace 内容 -->
+  <!-- Bubble 3: Trace content -->
   <path d="M420 510 Q435 500 450 505 L720 505 Q740 505 740 525 L740 585 Q740 605 720 605 L450 605 Q435 607 420 615 Q428 580 420 510 Z" fill="#fef9c3" stroke="#eab308" stroke-width="1.2"/>
-  <text x="580" y="528" text-anchor="middle" font-size="11" fill="#713f12">收集：当前 Prompt、模型输入、模型输</text>
-  <text x="580" y="545" text-anchor="middle" font-size="11" fill="#713f12">出、reasoning trace、工具调用过程、工</text>
-  <text x="580" y="562" text-anchor="middle" font-size="11" fill="#713f12">具输出、评估分数、评估器文字反馈</text>
+  <text x="580" y="528" text-anchor="middle" font-size="11" fill="#713f12">Collect: current Prompt, model input, model output,</text>
+  <text x="580" y="545" text-anchor="middle" font-size="11" fill="#713f12">reasoning trace, tool call process, tool output,</text>
+  <text x="580" y="562" text-anchor="middle" font-size="11" fill="#713f12">evaluation score, evaluator textual feedback</text>
 
-  <!-- 气泡右侧：评估详情 -->
+  <!-- Bubble right: Evaluation details -->
   <path d="M760 480 Q775 470 790 475 L940 475 Q960 475 960 495 L960 615 Q960 635 940 635 L790 635 Q775 637 760 645 Q768 610 760 480 Z" fill="#ecfdf5" stroke="#10b981" stroke-width="1.2"/>
-  <text x="860" y="498" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">评估详情</text>
-  <text x="860" y="518" text-anchor="middle" font-size="10" fill="#047857">问答任务：和标准答案比较</text>
-  <text x="860" y="536" text-anchor="middle" font-size="10" fill="#047857">数学任务：检查最终答案</text>
-  <text x="860" y="554" text-anchor="middle" font-size="10" fill="#047857">代码任务：运行单测，算通过率</text>
-  <text x="860" y="572" text-anchor="middle" font-size="10" fill="#047857">格式任务：检查 JSON / schema</text>
-  <text x="860" y="590" text-anchor="middle" font-size="10" fill="#047857">开放任务：LLM-as-judge 打分</text>
+  <text x="860" y="498" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">Evaluation Details</text>
+  <text x="860" y="518" text-anchor="middle" font-size="10" fill="#047857">QA tasks: Compare with ground truth</text>
+  <text x="860" y="536" text-anchor="middle" font-size="10" fill="#047857">Math tasks: Check final answer</text>
+  <text x="860" y="554" text-anchor="middle" font-size="10" fill="#047857">Code tasks: Run unit tests, compute pass rate</text>
+  <text x="860" y="572" text-anchor="middle" font-size="10" fill="#047857">Format tasks: Check JSON / schema</text>
+  <text x="860" y="590" text-anchor="middle" font-size="10" fill="#047857">Open tasks: LLM-as-judge scoring</text>
 
-  <!-- 反思模型改提示词 -->
+  <!-- Reflection model modifies prompt -->
   <rect x="240" y="585" width="160" height="55" rx="10" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
-  <text x="320" y="609" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">反思模型</text>
-  <text x="320" y="627" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">改 Prompt</text>
+  <text x="320" y="609" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">Reflection Model</text>
+  <text x="320" y="627" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">Modifies Prompt</text>
 
-  <!-- 气泡4：反思内容 -->
+  <!-- Bubble 4: Reflection content -->
   <path d="M420 600 Q435 590 450 595 L720 595 Q740 595 740 615 L740 680 Q740 700 720 700 L450 700 Q435 702 420 710 Q428 675 420 600 Z" fill="#fef9c3" stroke="#eab308" stroke-width="1.2"/>
-  <text x="580" y="618" text-anchor="middle" font-size="11" fill="#713f12">找出当前 Prompt 哪里说得不清楚、哪些错</text>
-  <text x="580" y="635" text-anchor="middle" font-size="11" fill="#713f12">误是 Prompt 导致的、哪些成功经验值得保</text>
-  <text x="580" y="652" text-anchor="middle" font-size="11" fill="#713f12">留、哪些规则应该写进新 Prompt，最后生</text>
-  <text x="580" y="669" text-anchor="middle" font-size="11" fill="#713f12">成一个新的 Prompt</text>
+  <text x="580" y="618" text-anchor="middle" font-size="11" fill="#713f12">Identify where the current Prompt is unclear, which errors</text>
+  <text x="580" y="635" text-anchor="middle" font-size="11" fill="#713f12">are caused by the Prompt, which successful patterns are worth</text>
+  <text x="580" y="652" text-anchor="middle" font-size="11" fill="#713f12">retaining, which rules should be encoded into the new Prompt,</text>
+  <text x="580" y="669" text-anchor="middle" font-size="11" fill="#713f12">then generate a new Prompt</text>
 
-  <!-- 小批量验证新旧 Prompt -->
+  <!-- Mini-batch validate old and new Prompt -->
   <rect x="240" y="700" width="160" height="55" rx="10" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
-  <text x="320" y="724" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">小批量验证</text>
-  <text x="320" y="742" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">新旧 Prompt</text>
+  <text x="320" y="724" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">Mini-Batch Validate</text>
+  <text x="320" y="742" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">Old vs New Prompt</text>
 
-  <!-- 新候选是否更好 菱形 -->
+  <!-- Is new candidate better? Diamond -->
   <polygon points="320,780 410,830 320,880 230,830" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
-  <text x="320" y="826" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">新候选是否</text>
-  <text x="320" y="844" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">更好？</text>
+  <text x="320" y="826" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Is New Candidate</text>
+  <text x="320" y="844" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Better?</text>
 
-  <!-- 丢弃新候选 -->
+  <!-- Discard new candidate -->
   <rect x="480" y="805" width="140" height="50" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="550" y="835" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">丢弃新候选</text>
+  <text x="550" y="835" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">Discard New Candidate</text>
 
-  <!-- 否 标签 -->
-  <text x="440" y="823" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">否</text>
-  <!-- 是 标签 -->
-  <text x="335" y="900" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">是</text>
+  <!-- No label -->
+  <text x="440" y="823" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">No</text>
+  <!-- Yes label -->
+  <text x="335" y="900" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">Yes</text>
 
-  <!-- 加入候选池并更新分数矩阵 -->
+  <!-- Add to candidate pool and update score matrix -->
   <rect x="240" y="910" width="160" height="55" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="320" y="934" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">加入候选池并</text>
-  <text x="320" y="952" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">更新分数矩阵</text>
+  <text x="320" y="934" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Add to Candidate Pool</text>
+  <text x="320" y="952" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">and Update Score Matrix</text>
 
-  <!-- 预算是否耗尽 菱形 -->
+  <!-- Budget exhausted? Diamond -->
   <polygon points="320,985 410,1030 320,1075 230,1030" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
-  <text x="320" y="1026" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">预算是否</text>
-  <text x="320" y="1044" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">耗尽？</text>
+  <text x="320" y="1026" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Is Budget</text>
+  <text x="320" y="1044" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Exhausted?</text>
 
-  <!-- 否 -->
-  <text x="135" y="669" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">否</text>
-  <!-- 是 -->
-  <text x="335" y="1095" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">是</text>
+  <!-- No -->
+  <text x="135" y="669" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">No</text>
+  <!-- Yes -->
+  <text x="335" y="1095" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">Yes</text>
 
-  <!-- 返回验证集表现最好的 Prompt -->
+  <!-- Return best prompt on validation set -->
   <rect x="210" y="1105" width="220" height="55" rx="10" fill="#cffafe" stroke="#0891b2" stroke-width="1.8"/>
-  <text x="320" y="1129" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">返回验证集表现</text>
-  <text x="320" y="1147" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">最好的 Prompt 系统</text>
+  <text x="320" y="1129" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">Return Best Prompt</text>
+  <text x="320" y="1147" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">System on Validation Set</text>
 
-  <!-- 箭头：主流程 -->
+  <!-- Arrows: Main flow -->
   <line x1="320" y1="122" x2="320" y2="145" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
   <line x1="320" y1="200" x2="320" y2="220" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
   <line x1="320" y1="280" x2="320" y2="320" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
@@ -136,14 +136,14 @@
   <line x1="320" y1="965" x2="320" y2="985" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
   <line x1="320" y1="1075" x2="320" y2="1100" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
 
-  <!-- 菱形分支箭头：否 → 丢弃 -->
+  <!-- Diamond branch arrow: No → Discard -->
   <line x1="410" y1="830" x2="476" y2="830" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
-  <!-- 丢弃 → 预算是否耗尽（走右侧回到预算判断） -->
+  <!-- Discard → Budget check (right side back to budget decision) -->
   <path d="M550 855 L550 1030 L414 1030" fill="none" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
 
-  <!-- 预算否 -> 回到构造 Pareto 前沿（从左侧绕回） -->
+  <!-- Budget No → Back to Construct Pareto front (wrap around from left) -->
   <path d="M230 1030 L120 1030 L120 352 L236 352" fill="none" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
 
-  <!-- 连接评估详情气泡到 trace 节点 -->
+  <!-- Connect evaluation details bubble to trace node -->
   <line x1="760" y1="555" x2="745" y2="555" stroke="#64748b" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr2)"/>
 </svg>

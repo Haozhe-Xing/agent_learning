@@ -3,35 +3,35 @@
     <marker id="dn" markerWidth="10" markerHeight="10" refX="5" refY="8" orient="auto"><path d="M1,0 L9,0 L5,9 z" fill="#94a3b8"/></marker>
   </defs>
   <rect width="760" height="410" rx="18" fill="#f8fafc"/>
-  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">自我进化的四个层级</text>
-  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">越往下收益越大，但风险与成本也越高</text>
+  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Four Levels of Self-Evolution</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">The Lower You Go, the Greater the Reward, But Also the Higher the Risk and Cost</text>
 
-  <!-- 左侧递进轴 -->
-  <text x="92" y="92" font-size="11" fill="#94a3b8" text-anchor="middle">低</text>
+  <!-- Left Axis -->
+  <text x="92" y="92" font-size="11" fill="#94a3b8" text-anchor="middle">Low</text>
   <line x1="92" y1="104" x2="92" y2="340" stroke="#cbd5e1" stroke-width="2" marker-end="url(#dn)"/>
-  <text x="92" y="364" font-size="11" fill="#94a3b8" text-anchor="middle">高</text>
-  <text x="74" y="222" font-size="11" fill="#94a3b8" text-anchor="middle" transform="rotate(-90 74 222)">收益 / 成本 / 风险</text>
+  <text x="92" y="364" font-size="11" fill="#94a3b8" text-anchor="middle">High</text>
+  <text x="74" y="222" font-size="11" fill="#94a3b8" text-anchor="middle" transform="rotate(-90 74 222)">Benefit / Cost / Risk</text>
 
   <!-- L1 -->
   <rect x="150" y="80" width="430" height="58" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="170" y="104" font-size="14" font-weight="bold" fill="#15803d">L1 记忆进化</text>
-  <text x="170" y="125" font-size="11" fill="#16a34a">把成功策略与失败教训写入长期记忆 · 成本低 · 风险：记忆污染</text>
+  <text x="170" y="104" font-size="14" font-weight="bold" fill="#15803d">L1 Memory Evolution</text>
+  <text x="170" y="125" font-size="11" fill="#16a34a">Write Successful Strategies and Failure Lessons Into Long-Term Memory · Low Cost · Risk: Memory Pollution</text>
 
   <!-- L2 -->
   <rect x="150" y="148" width="470" height="58" rx="10" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
-  <text x="170" y="172" font-size="14" font-weight="bold" fill="#0e7490">L2 Prompt 进化</text>
-  <text x="170" y="193" font-size="11" fill="#0891b2">自动生成更好的指令与约束（System Prompt / 工具说明）· 成本低-中 · 风险：过拟合</text>
+  <text x="170" y="172" font-size="14" font-weight="bold" fill="#0e7490">L2 Prompt Evolution</text>
+  <text x="170" y="193" font-size="11" fill="#0891b2">Auto-Generate Better Instructions and Constraints (System Prompt/Tool Descriptions) · Low-Medium Cost · Risk: Overfitting</text>
 
   <!-- L3 -->
   <rect x="150" y="216" width="510" height="58" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="170" y="240" font-size="14" font-weight="bold" fill="#1d4ed8">L3 Skill 进化</text>
-  <text x="170" y="261" font-size="11" fill="#2563eb">把高频任务封装为可复用技能 / 脚本 / 工作流 · 成本中 · 风险：技能错误被反复复用</text>
+  <text x="170" y="240" font-size="14" font-weight="bold" fill="#1d4ed8">L3 Skill Evolution</text>
+  <text x="170" y="261" font-size="11" fill="#2563eb">Encapsulate High-Frequency Tasks as Reusable Skills/Scripts/Workflows · Medium Cost · Risk: Skill Errors Being Repeatedly Reused</text>
 
   <!-- L4 -->
   <rect x="150" y="284" width="560" height="58" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.8"/>
-  <text x="170" y="308" font-size="14" font-weight="bold" fill="#b91c1c">L4 Model 进化</text>
-  <text x="170" y="329" font-size="11" fill="#dc2626">通过数据飞轮做 SFT / DPO / RL 更新权重 · 成本高 · 风险：灾难性遗忘、难回退</text>
+  <text x="170" y="308" font-size="14" font-weight="bold" fill="#b91c1c">L4 Model Evolution</text>
+  <text x="170" y="329" font-size="11" fill="#dc2626">Update Weights via Data Flywheel With SFT/DPO/RL · High Cost · Risk: Catastrophic Forgetting, Difficult Rollback</text>
 
-  <text x="380" y="376" text-anchor="middle" font-size="12" fill="#475569">生产实践：先从 L1 / L2 起步，轨迹稳定后再进入 L3 技能沉淀与 L4 模型训练</text>
-  <text x="380" y="396" text-anchor="middle" font-size="11" fill="#94a3b8">第一类工作对应 L1–L3（不改权重），第二 / 三类工作对应 L4（改权重）</text>
+  <text x="380" y="376" text-anchor="middle" font-size="12" fill="#475569">Production Practice: Start With L1/L2, Enter L3 Skill Solidification and L4 Model Training After Trajectories Stabilize</text>
+  <text x="380" y="396" text-anchor="middle" font-size="11" fill="#94a3b8">Type 1 Works Maps to L1–L3 (No Weight Change), Type 2/3 Works Maps to L4 (With Weight Change)</text>
 </svg>

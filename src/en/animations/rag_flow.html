@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Workflow — Retrieval-Augmented Generation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+  }
+
+  h1 {
+    margin: 28px 0 6px;
+    font-size: 26px;
+    background: linear-gradient(135deg, #f97316, #eab308, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 16px; }
+
+  .controls {
+    display: flex; gap: 10px; margin-bottom: 14px;
+  }
+  .btn {
+    padding: 7px 20px; border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, #f97316, #eab308); color: #1e1b4b; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(249,115,22,0.3); }
+  .btn-secondary { background: #334155; color: #e2e8f0; }
+  .btn-secondary:hover { background: #475569; }
+
+  /* ── Pipeline ── */
+  .pipeline {
+    width: 840px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  /* ── Stages ── */
+  .stage {
+    display: flex;
+    align-items: stretch;
+    min-height: 90px;
+    opacity: 0.3;
+    transition: opacity 0.5s, transform 0.4s;
+    transform: translateX(-10px);
+  }
+  .stage.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .stage.done {
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+
+  .stage-num {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
+    position: relative;
+  }
+  .stage-num .num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 2;
+    transition: all 0.4s;
+  }
+  .stage-num .line {
+    flex: 1;
+    width: 2px;
+    background: #334155;
+    margin-top: 4px;
+  }
+  .stage:last-child .stage-num .line { display: none; }
+
+  .stage-content {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 4px 0;
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+  .stage.active .stage-content {
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stage-title .emoji { font-size: 18px; }
+  .stage-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  /* ── Visualization Area ── */
+  .visual {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 50px;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  /* Document Chunks */
+  .doc-chunks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chunk {
+    padding: 6px 10px;
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    font-size: 11px;
+    transition: all 0.3s;
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .chunk.highlight {
+    border-color: #f97316;
+    background: rgba(249,115,22,0.15);
+    color: #fb923c;
+  }
+  .chunk.matched {
+    border-color: #22d3ee;
+    background: rgba(34,211,238,0.12);
+    color: #22d3ee;
+  }
+
+  /* Vector Dots */
+  .vector-space {
+    position: relative;
+    height: 160px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .vec-dot {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #475569;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+  }
+  .vec-dot.show { opacity: 1; }
+  .vec-dot.query { background: #f97316; width: 14px; height: 14px; box-shadow: 0 0 10px rgba(249,115,22,0.6); z-index:5; }
+  .vec-dot.near { background: #22d3ee; box-shadow: 0 0 8px rgba(34,211,238,0.5); }
+  .vec-label {
+    position: absolute;
+    font-size: 9px;
+    color: #94a3b8;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .vec-line {
+    position: absolute;
+    height: 1px;
+    background: #f97316;
+    transform-origin: left center;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 3;
+  }
+  .vec-line.show { opacity: 0.6; }
+
+  /* Prompt Build */
+  .prompt-build {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.8;
+    color: #94a3b8;
+  }
+  .prompt-build .p-section {
+    margin: 4px 0;
+    padding: 6px 10px;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.4s;
+  }
+  .prompt-build .p-section.show { opacity: 1; transform: translateY(0); }
+  .p-system { background: rgba(139,92,246,0.1); border-left: 3px solid #8b5cf6; }
+  .p-context { background: rgba(34,211,238,0.1); border-left: 3px solid #22d3ee; }
+  .p-query { background: rgba(249,115,22,0.1); border-left: 3px solid #f97316; }
+
+  /* Answer Generation */
+  .answer-gen {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #e2e8f0;
+  }
+  .answer-gen .token {
+    display: inline;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .answer-gen .token.show { opacity: 1; }
+  .answer-gen .cite {
+    color: #22d3ee;
+    font-size: 11px;
+    vertical-align: super;
+  }
+
+  /* ── Color Schemes ── */
+  .c1 .stage-num .num { background: #7c2d12; color: #fb923c; }
+  .c1.active .stage-content { border-color: #fb923c; }
+  .c2 .stage-num .num { background: #3b0764; color: #c084fc; }
+  .c2.active .stage-content { border-color: #c084fc; }
+  .c3 .stage-num .num { background: #164e63; color: #22d3ee; }
+  .c3.active .stage-content { border-color: #22d3ee; }
+  .c4 .stage-num .num { background: #713f12; color: #fbbf24; }
+  .c4.active .stage-content { border-color: #fbbf24; }
+  .c5 .stage-num .num { background: #14532d; color: #4ade80; }
+  .c5.active .stage-content { border-color: #4ade80; }
+  .c6 .stage-num .num { background: #831843; color: #f472b6; }
+  .c6.active .stage-content { border-color: #f472b6; }
+
+  /* Connecting Arrows */
+  .arrow-down {
+    text-align: center;
+    color: #475569;
+    font-size: 18px;
+    margin: -2px 0;
+    padding-left: 50px;
+    transition: color 0.4s;
+  }
+  .arrow-down.active { color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<h1>📚 RAG Workflow: From Documents to Precise Answers</h1>
+<p class="subtitle">Retrieval-Augmented Generation — Complete Pipeline Animation</p>
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnStart">▶ Start Demo</button>
+  <button class="btn btn-secondary" id="btnReset">↻ Reset</button>
+</div>
+
+<div class="pipeline" id="pipeline">
+
+  <!-- Stage 1: Document Loading & Chunking -->
+  <div class="stage c1" id="s1">
+    <div class="stage-num"><div class="num">1</div><div class="line"></div></div>
+    <div class="stage-content">
+      <div class="stage-title"><span class="emoji">📄</span> Document Loading & Chunking</div>
+      <div class="stage-desc">Split long documents into semantically complete text chunks, 200-500 tokens each, with 10-20% overlap between adjacent chunks</div>
+      <div class="visual">
+        <div class="doc-chunks" id="chunks1"></div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow-down" id="a1">↓</div>
+
+  <!-- Stage 2: Vectorization -->
+  <div class="stage c2" id="s2">
+    <div class="stage-num"><div class="num">2</div><div class="line"></div></div>
+    <div class="stage-content">
+      <div class="stage-title"><span class="emoji">🔢</span> Vectorization (Embedding)</div>
+      <div class="stage-desc">Convert each text chunk into a high-dimensional vector (e.g., 1536 dimensions) via an Embedding model. Semantically similar text is closer in vector space.</div>
+      <div class="visual">
+        <div class="vector-space" id="vecSpace"></div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow-down" id="a2">↓</div>
+
+  <!-- Stage 3: Query Vectorization + Similarity Search -->
+  <div class="stage c3" id="s3">
+    <div class="stage-num"><div class="num">3</div><div class="line"></div></div>
+    <div class="stage-content">
+      <div class="stage-title"><span class="emoji">🔍</span> Query Vectorization + Similarity Search</div>
+      <div class="stage-desc">User question: <strong>"What are the applications of Python in AI?"</strong> → Vectorize → Find the nearest Top-K chunks in vector space</div>
+      <div class="visual">
+        <div class="doc-chunks" id="chunks3"></div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow-down" id="a3">↓</div>
+
+  <!-- Stage 4: Prompt Assembly -->
+  <div class="stage c4" id="s4">
+    <div class="stage-num"><div class="num">4</div><div class="line"></div></div>
+    <div class="stage-content">
+      <div class="stage-title"><span class="emoji">🧩</span> Prompt Assembly</div>
+      <div class="stage-desc">Inject retrieved text chunks into the System Prompt to build a complete augmented context</div>
+      <div class="visual">
+        <div class="prompt-build" id="promptBuild">
+          <div class="p-section p-system" id="ps1">[System] You are a professional assistant. Please answer questions based on the following reference materials.</div>
+          <div class="p-section p-context" id="ps2">[Context] Chunk 3: "Python is widely used in artificial intelligence, including machine learning (TensorFlow, PyTorch), natural language processing (Transformers), computer vision (OpenCV)..."<br>Chunk 7: "Python's scikit-learn library provides rich traditional ML algorithms..."</div>
+          <div class="p-section p-query" id="ps3">[User] What are the applications of Python in AI?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow-down" id="a4">↓</div>
+
+  <!-- Stage 5: LLM Generates Answer -->
+  <div class="stage c5" id="s5">
+    <div class="stage-num"><div class="num">5</div><div class="line"></div></div>
+    <div class="stage-content">
+      <div class="stage-title"><span class="emoji">🤖</span> LLM Generates Answer</div>
+      <div class="stage-desc">The large model generates an answer based on augmented context, ensuring grounded responses and reducing hallucinations</div>
+      <div class="visual">
+        <div class="answer-gen" id="answerGen"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const chunkTexts = [
+  "Python was created by Guido van Rossum...",
+  "Python's design philosophy emphasizes code readability...",
+  "Python is widely used in artificial intelligence, including...",
+  "Python supports multiple programming paradigms, such as OOP...",
+  "Python's standard library provides a rich set of modules...",
+  "Python is widely used in web development...",
+  "Python's scikit-learn library provides ML...",
+  "Python has an active community with a rich PIP ecosystem...",
+  "Python uses Pandas in data science...",
+  "Python's asyncio supports asynchronous programming..."
+];
+
+const matchedIndices = [2, 6, 8]; // AI related chunks
+
+// Vector space positions (simulated)
+const vecPositions = [
+  {x:120, y:45,  label:'Chunk 1 (Creator)'},
+  {x:100, y:70,  label:'Chunk 2 (Philosophy)'},
+  {x:520, y:35,  label:'Chunk 3 (AI Apps)'},    // matched
+  {x:280, y:110, label:'Chunk 4 (Paradigms)'},
+  {x:200, y:90,  label:'Chunk 5 (Std Lib)'},
+  {x:60,  y:125, label:'Chunk 6 (Web Dev)'},
+  {x:550, y:70,  label:'Chunk 7 (ML Libs)'},    // matched
+  {x:310, y:50,  label:'Chunk 8 (Community)'},
+  {x:480, y:100, label:'Chunk 9 (Data Sci)'},    // matched
+  {x:180, y:30,  label:'Chunk 10 (Async)'}
+];
+
+const queryVec = {x: 510, y: 55};
+
+const answerTokens = [
+  'Python', ' has', ' wide', ' applications', ' in', ' AI', '. ',
+  'Key', ' areas', ' include', ':', '\n\n',
+  '1. ', '**Machine Learning**', ': using', ' TensorFlow', ', ', 'PyTorch', ' and other', ' frameworks',
+  '<span class="cite">[Chunk 3]</span>', '.\n',
+  '2. ', '**Traditional ML**', ': scikit-learn', ' provides', ' classification', ', regression', ', clustering', ' algorithms',
+  '<span class="cite">[Chunk 7]</span>', '.\n',
+  '3. ', '**Data Analysis**', ': Pandas', ' is', ' the', ' core', ' tool', ' for', ' data', ' science',
+  '<span class="cite">[Chunk 9]</span>', '.\n',
+  '4. ', '**NLP**', ': Transformers', ' makes', ' text', ' processing', ' simple', ' and', ' efficient', '.\n',
+  '5. ', '**Computer Vision**', ': OpenCV', ' handles', ' images', ' and', ' videos', '.'
+];
+
+const stages = ['s1','s2','s3','s4','s5'];
+const arrows = ['a1','a2','a3','a4'];
+let running = false;
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function reset() {
+  running = false;
+  stages.forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('active', 'done');
+  });
+  arrows.forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById('chunks1').innerHTML = '';
+  document.getElementById('vecSpace').innerHTML = '';
+  document.getElementById('chunks3').innerHTML = '';
+  ['ps1','ps2','ps3'].forEach(id => document.getElementById(id).classList.remove('show'));
+  document.getElementById('answerGen').innerHTML = '';
+}
+
+async function runStage1() {
+  const container = document.getElementById('chunks1');
+  for (let i = 0; i < chunkTexts.length; i++) {
+    if (!running) return;
+    const el = document.createElement('div');
+    el.className = 'chunk';
+    el.textContent = `Chunk ${i+1}: ${chunkTexts[i]}`;
+    el.style.opacity = '0';
+    el.style.transform = 'scale(0.8)';
+    container.appendChild(el);
+    await delay(120);
+    el.style.opacity = '1';
+    el.style.transform = 'scale(1)';
+  }
+  await delay(500);
+  // Highlight AI-related chunks
+  const chunks = container.children;
+  matchedIndices.forEach(i => chunks[i].classList.add('highlight'));
+  await delay(400);
+}
+
+async function runStage2() {
+  const space = document.getElementById('vecSpace');
+  // Place vector dots
+  for (let i = 0; i < vecPositions.length; i++) {
+    if (!running) return;
+    const v = vecPositions[i];
+    const dot = document.createElement('div');
+    dot.className = 'vec-dot';
+    dot.style.left = v.x + 'px';
+    dot.style.top = v.y + 'px';
+    dot.id = `vd${i}`;
+    space.appendChild(dot);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'vec-label';
+    lbl.style.left = (v.x + 12) + 'px';
+    lbl.style.top = (v.y - 2) + 'px';
+    lbl.textContent = v.label;
+    space.appendChild(lbl);
+
+    await delay(100);
+    dot.classList.add('show');
+  }
+  await delay(600);
+}
+
+async function runStage3() {
+  const space = document.getElementById('vecSpace');
+  // Add query vector
+  const qDot = document.createElement('div');
+  qDot.className = 'vec-dot query';
+  qDot.style.left = queryVec.x + 'px';
+  qDot.style.top = queryVec.y + 'px';
+  space.appendChild(qDot);
+
+  const qLbl = document.createElement('div');
+  qLbl.className = 'vec-label';
+  qLbl.style.left = (queryVec.x + 16) + 'px';
+  qLbl.style.top = (queryVec.y - 2) + 'px';
+  qLbl.textContent = '🔍 Query';
+  qLbl.style.color = '#f97316';
+  qLbl.style.fontWeight = '700';
+  space.appendChild(qLbl);
+
+  await delay(200);
+  qDot.classList.add('show');
+  await delay(500);
+
+  // Draw lines to matched dots
+  for (const idx of matchedIndices) {
+    if (!running) return;
+    const v = vecPositions[idx];
+    const dx = v.x - queryVec.x;
+    const dy = v.y - queryVec.y;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+    const line = document.createElement('div');
+    line.className = 'vec-line';
+    line.style.left = (queryVec.x + 7) + 'px';
+    line.style.top = (queryVec.y + 7) + 'px';
+    line.style.width = len + 'px';
+    line.style.transform = `rotate(${angle}deg)`;
+    space.appendChild(line);
+    await delay(200);
+    line.classList.add('show');
+
+    // Highlight matched dots
+    const dot = document.getElementById(`vd${idx}`);
+    if (dot) dot.classList.add('near');
+    await delay(300);
+  }
+
+  // Show matched chunks
+  const container = document.getElementById('chunks3');
+  for (const idx of matchedIndices) {
+    const el = document.createElement('div');
+    el.className = 'chunk matched';
+    el.textContent = `✓ Chunk ${idx+1}: ${chunkTexts[idx]} (Similarity: ${(0.85 + Math.random()*0.1).toFixed(3)})`;
+    el.style.opacity = '0';
+    container.appendChild(el);
+    await delay(200);
+    el.style.opacity = '1';
+  }
+  await delay(400);
+}
+
+async function runStage4() {
+  const ids = ['ps1','ps2','ps3'];
+  for (const id of ids) {
+    if (!running) return;
+    document.getElementById(id).classList.add('show');
+    await delay(600);
+  }
+  await delay(400);
+}
+
+async function runStage5() {
+  const container = document.getElementById('answerGen');
+  for (const token of answerTokens) {
+    if (!running) return;
+    const span = document.createElement('span');
+    span.className = 'token';
+    span.innerHTML = token.replace(/\n/g, '<br>');
+    container.appendChild(span);
+    await delay(60);
+    span.classList.add('show');
+  }
+}
+
+async function run() {
+  const runners = [runStage1, runStage2, runStage3, runStage4, runStage5];
+  for (let i = 0; i < runners.length; i++) {
+    if (!running) return;
+    const el = document.getElementById(stages[i]);
+    // Mark previous stages as done
+    if (i > 0) document.getElementById(stages[i-1]).classList.remove('active');
+    if (i > 0) document.getElementById(stages[i-1]).classList.add('done');
+    el.classList.add('active');
+    if (i > 0) document.getElementById(arrows[i-1]).classList.add('active');
+
+    await runners[i]();
+    await delay(800);
+  }
+}
+
+document.getElementById('btnStart').onclick = () => {
+  if (running) return;
+  reset();
+  running = true;
+  run();
+};
+document.getElementById('btnReset').onclick = reset;
+</script>
+</body>
+</html>

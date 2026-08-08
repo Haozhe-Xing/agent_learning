@@ -1,39 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" width="520" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
   <rect width="520" height="260" rx="12" fill="#f8fafc"/>
-  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">三种分词方案对比："unbelievable"</text>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Three Tokenization Schemes: "unbelievable"</text>
 
-  <!-- 字符级 -->
+  <!-- Character-level -->
   <rect x="16" y="44" width="150" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="91" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">字符级</text>
-  <text x="91" y="78" text-anchor="middle" font-size="10" fill="#ef4444">词表极小（~256）</text>
-  <text x="91" y="92" text-anchor="middle" font-size="10" fill="#ef4444">无 OOV 问题</text>
-  <text x="91" y="106" text-anchor="middle" font-size="10" fill="#b91c1c">❌ 序列太长</text>
+  <text x="91" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">Character-level</text>
+  <text x="91" y="78" text-anchor="middle" font-size="10" fill="#ef4444">Tiny vocab (~256)</text>
+  <text x="91" y="92" text-anchor="middle" font-size="10" fill="#ef4444">No OOV issues</text>
+  <text x="91" y="106" text-anchor="middle" font-size="10" fill="#b91c1c">❌ Long sequences</text>
   <text x="91" y="120" text-anchor="middle" font-size="9" fill="#ef4444">[u,n,b,e,l,i,e,v,a,b,l,e]</text>
-  <text x="91" y="134" text-anchor="middle" font-size="9" fill="#ef4444">→ 12 个 Token</text>
+  <text x="91" y="134" text-anchor="middle" font-size="9" fill="#ef4444">→ 12 tokens</text>
 
-  <!-- 词级 -->
+  <!-- Word-level -->
   <rect x="185" y="44" width="150" height="100" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
-  <text x="260" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#a16207">词级</text>
-  <text x="260" y="78" text-anchor="middle" font-size="10" fill="#a16207">序列短</text>
-  <text x="260" y="92" text-anchor="middle" font-size="10" fill="#a16207">语义完整</text>
-  <text x="260" y="106" text-anchor="middle" font-size="10" fill="#b91c1c">❌ 词表巨大</text>
+  <text x="260" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#a16207">Word-level</text>
+  <text x="260" y="78" text-anchor="middle" font-size="10" fill="#a16207">Short sequences</text>
+  <text x="260" y="92" text-anchor="middle" font-size="10" fill="#a16207">Complete semantics</text>
+  <text x="260" y="106" text-anchor="middle" font-size="10" fill="#b91c1c">❌ Huge vocab</text>
   <text x="260" y="120" text-anchor="middle" font-size="9" fill="#a16207">["unbelievable"]</text>
-  <text x="260" y="134" text-anchor="middle" font-size="9" fill="#a16207">→ 1 个 Token，但新词 [UNK]</text>
+  <text x="260" y="134" text-anchor="middle" font-size="9" fill="#a16207">→ 1 token, but new words → [UNK]</text>
 
   <!-- BPE -->
   <rect x="354" y="44" width="150" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="429" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">BPE（折中）</text>
-  <text x="429" y="78" text-anchor="middle" font-size="10" fill="#22c55e">词表可控（32K~150K）</text>
-  <text x="429" y="92" text-anchor="middle" font-size="10" fill="#22c55e">无 OOV 问题</text>
-  <text x="429" y="106" text-anchor="middle" font-size="10" fill="#15803d">✅ 子词共享语义</text>
+  <text x="429" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">BPE (Compromise)</text>
+  <text x="429" y="78" text-anchor="middle" font-size="10" fill="#22c55e">Controllable vocab (32K~150K)</text>
+  <text x="429" y="92" text-anchor="middle" font-size="10" fill="#22c55e">No OOV issues</text>
+  <text x="429" y="106" text-anchor="middle" font-size="10" fill="#15803d">✅ Subwords share semantics</text>
   <text x="429" y="120" text-anchor="middle" font-size="9" fill="#22c55e">["un", "believ", "able"]</text>
-  <text x="429" y="134" text-anchor="middle" font-size="9" fill="#22c55e">→ 3 个 Token</text>
+  <text x="429" y="134" text-anchor="middle" font-size="9" fill="#22c55e">→ 3 tokens</text>
 
-  <!-- BPE 合并过程 -->
+  <!-- BPE merge process -->
   <rect x="16" y="158" width="488" height="90" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
-  <text x="260" y="176" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">BPE 合并过程（直觉示例）</text>
-  <text x="30" y="194" font-size="10" fill="#4338ca">初始：[u, n, b, e, l, i, e, v, a, b, l, e]</text>
-  <text x="30" y="210" font-size="10" fill="#4338ca">第1次合并："ab" 高频 → [u, n, b, e, l, i, e, v, ab, l, e]</text>
-  <text x="30" y="226" font-size="10" fill="#4338ca">第2次合并："le" 高频 → [u, n, b, e, l, i, e, v, ab, le]</text>
-  <text x="30" y="242" font-size="10" fill="#3730a3">...最终结果：["un", "believ", "able"]  ← 3 个 Token</text>
+  <text x="260" y="176" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">BPE Merge Process (Intuitive Example)</text>
+  <text x="30" y="194" font-size="10" fill="#4338ca">Initial: [u, n, b, e, l, i, e, v, a, b, l, e]</text>
+  <text x="30" y="210" font-size="10" fill="#4338ca">Merge 1: "ab" is frequent → [u, n, b, e, l, i, e, v, ab, l, e]</text>
+  <text x="30" y="226" font-size="10" fill="#4338ca">Merge 2: "le" is frequent → [u, n, b, e, l, i, e, v, ab, le]</text>
+  <text x="30" y="242" font-size="10" fill="#3730a3">...Final result: ["un", "believ", "able"]  ← 3 tokens</text>
 </svg>

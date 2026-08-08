@@ -5,46 +5,46 @@
     </marker>
   </defs>
   <rect width="760" height="390" rx="18" fill="#f8fafc"/>
-  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">DSPy + MIPROv2：编译 LLM 程序</text>
-  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">开发者只写签名，框架自动优化 instruction × few-shot</text>
+  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">DSPy + MIPROv2: Compiling LLM Programs</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">Developers only write signatures; the framework auto-optimizes instruction × few-shot</text>
 
-  <!-- 左：声明式程序 -->
+  <!-- Left: Declarative Program -->
   <rect x="30" y="90" width="230" height="200" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.8"/>
-  <text x="145" y="113" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">声明式程序（开发者写）</text>
+  <text x="145" y="113" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Declarative Program (Dev writes)</text>
   <rect x="50" y="128" width="190" height="44" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
-  <text x="145" y="148" text-anchor="middle" font-size="11" fill="#1d4ed8">签名：question →</text>
+  <text x="145" y="148" text-anchor="middle" font-size="11" fill="#1d4ed8">Signature: question →</text>
   <text x="145" y="164" text-anchor="middle" font-size="11" fill="#1d4ed8">answer, evidence</text>
   <rect x="50" y="180" width="190" height="44" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
-  <text x="145" y="200" text-anchor="middle" font-size="11" fill="#1d4ed8">模块：Retrieve +</text>
+  <text x="145" y="200" text-anchor="middle" font-size="11" fill="#1d4ed8">Modules: Retrieve +</text>
   <text x="145" y="216" text-anchor="middle" font-size="11" fill="#1d4ed8">ChainOfThought</text>
-  <text x="145" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">不手写任何 Prompt</text>
-  <text x="145" y="272" text-anchor="middle" font-size="10" fill="#2563eb">只声明输入输出结构</text>
+  <text x="145" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">No manual Prompt writing</text>
+  <text x="145" y="272" text-anchor="middle" font-size="10" fill="#2563eb">Only declare input/output structure</text>
 
-  <!-- 中：MIPROv2 编译器 -->
+  <!-- Middle: MIPROv2 Compiler -->
   <rect x="290" y="100" width="180" height="180" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="380" y="124" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">MIPROv2 编译器</text>
+  <text x="380" y="124" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">MIPROv2 Compiler</text>
   <rect x="306" y="136" width="148" height="34" rx="7" fill="#ffffff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="380" y="158" text-anchor="middle" font-size="10" fill="#b45309">跑训练集 → 收集成功样例</text>
+  <text x="380" y="158" text-anchor="middle" font-size="10" fill="#b45309">Run training set → Collect wins</text>
   <rect x="306" y="176" width="148" height="34" rx="7" fill="#ffffff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="380" y="198" text-anchor="middle" font-size="10" fill="#b45309">LLM 生成候选 instruction</text>
+  <text x="380" y="198" text-anchor="middle" font-size="10" fill="#b45309">LLM generates candidate instructions</text>
   <rect x="306" y="216" width="148" height="50" rx="7" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.4"/>
-  <text x="380" y="237" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">贝叶斯优化搜索</text>
-  <text x="380" y="254" text-anchor="middle" font-size="10" fill="#b45309">instruction × few-shot 组合</text>
+  <text x="380" y="237" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">Bayesian Optimization Search</text>
+  <text x="380" y="254" text-anchor="middle" font-size="10" fill="#b45309">instruction × few-shot combos</text>
 
-  <!-- 右：优化后程序 -->
+  <!-- Right: Optimized Program -->
   <rect x="500" y="120" width="230" height="140" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.8"/>
-  <text x="615" y="144" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">优化后程序</text>
+  <text x="615" y="144" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Optimized Program</text>
   <rect x="520" y="158" width="190" height="38" rx="7" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <text x="615" y="182" text-anchor="middle" font-size="10" fill="#15803d">每模块自动配好 instruction</text>
+  <text x="615" y="182" text-anchor="middle" font-size="10" fill="#15803d">Each module has auto instruction</text>
   <rect x="520" y="204" width="190" height="38" rx="7" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <text x="615" y="228" text-anchor="middle" font-size="10" fill="#15803d">每模块自动选好 few-shot</text>
+  <text x="615" y="228" text-anchor="middle" font-size="10" fill="#15803d">Each module has auto few-shot</text>
 
-  <!-- 箭头 -->
+  <!-- Arrows -->
   <line x1="260" y1="185" x2="287" y2="185" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
   <line x1="470" y1="185" x2="497" y2="185" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
 
-  <!-- 底部对比 -->
+  <!-- Bottom comparison -->
   <rect x="30" y="312" width="700" height="58" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="380" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">与 GEPA 的区别：MIPROv2 用贝叶斯优化、更依赖最终分数；GEPA 用反思式进化、利用完整 trace 与文本反馈</text>
-  <text x="380" y="356" text-anchor="middle" font-size="10" fill="#64748b">两者不矛盾——GEPA 也可作为一种"更重轨迹反思"的优化器集成进 DSPy 生态</text>
+  <text x="380" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">vs GEPA: MIPROv2 uses Bayesian optimization, relies more on final scores; GEPA uses reflective evolution, leveraging full trace & text feedback</text>
+  <text x="380" y="356" text-anchor="middle" font-size="10" fill="#64748b">They're not contradictory—GEPA could also serve as a "trace-reflection-heavy" optimizer integrated into the DSPy ecosystem</text>
 </svg>

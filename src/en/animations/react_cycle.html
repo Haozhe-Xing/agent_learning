@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReAct Reasoning Cycle — Thought → Action → Observation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    margin: 28px 0 6px;
+    font-size: 26px;
+    background: linear-gradient(135deg, #34d399, #60a5fa, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 18px; }
+
+  /* ── Comparison mode switch ── */
+  .mode-tabs {
+    display: flex;
+    gap: 4px;
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 14px;
+  }
+  .mode-tab {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: #94a3b8;
+    transition: all 0.2s;
+  }
+  .mode-tab.active {
+    background: #334155;
+    color: #f1f5f9;
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .btn {
+    padding: 7px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, #10b981, #3b82f6); color: white; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(16,185,129,0.3); }
+  .btn-secondary { background: #334155; color: #e2e8f0; }
+  .btn-secondary:hover { background: #475569; }
+
+  /* ── Question display ── */
+  .question-box {
+    width: 780px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .question-box .q-icon { font-size: 24px; }
+  .question-box .q-text { font-size: 15px; color: #f1f5f9; }
+  .question-box .q-type { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  /* ── Main area (two-column comparison) ── */
+  .main-area {
+    display: flex;
+    gap: 16px;
+    width: 780px;
+  }
+  .panel {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .panel.single { flex: none; width: 100%; }
+  .panel-header {
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-header .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  .panel-react .panel-header { background: linear-gradient(135deg, #064e3b, #065f46); }
+  .panel-react .panel-header .dot { background: #34d399; }
+  .panel-cot .panel-header { background: linear-gradient(135deg, #1e1b4b, #312e81); }
+  .panel-cot .panel-header .dot { background: #818cf8; }
+  .panel-act .panel-header { background: linear-gradient(135deg, #7c2d12, #9a3412); }
+  .panel-act .panel-header .dot { background: #fb923c; }
+
+  .panel-body {
+    padding: 12px 16px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 450px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ── Step blocks ── */
+  .step-block {
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border-left: 3px solid transparent;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+  .step-block.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .step-block.highlight {
+    background: rgba(255,255,255,0.05);
+  }
+
+  .step-block .step-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  /* Different types */
+  .step-thought  { border-left-color: #34d399; }
+  .step-thought .step-label { color: #34d399; }
+  .step-action   { border-left-color: #60a5fa; }
+  .step-action .step-label { color: #60a5fa; }
+  .step-observation { border-left-color: #fbbf24; }
+  .step-observation .step-label { color: #fbbf24; }
+  .step-answer   { border-left-color: #f472b6; }
+  .step-answer .step-label { color: #f472b6; }
+  .step-cot      { border-left-color: #818cf8; }
+  .step-cot .step-label { color: #818cf8; }
+  .step-blind    { border-left-color: #fb923c; }
+  .step-blind .step-label { color: #fb923c; }
+  .step-error    { border-left-color: #ef4444; }
+  .step-error .step-label { color: #ef4444; }
+
+  .step-block .code {
+    font-family: 'SF Mono', Menlo, monospace;
+    background: #0f172a;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #a5b4fc;
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  /* ── Result comparison ── */
+  .result-bar {
+    width: 780px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 16px;
+  }
+  .result-card {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s;
+  }
+  .result-card.show { opacity: 1; }
+  .result-card .r-label { font-size: 12px; color: #94a3b8; }
+  .result-card .r-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .result-card .r-detail { font-size: 11px; color: #64748b; margin-top: 4px; }
+  .r-correct { color: #34d399; }
+  .r-wrong { color: #ef4444; }
+  .r-partial { color: #fbbf24; }
+
+  /* ── Progress indicator ── */
+  .progress-bar {
+    width: 780px;
+    height: 4px;
+    background: #334155;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #34d399, #3b82f6);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+</style>
+</head>
+<body>
+
+<h1>ReAct: Reasoning + Action = More Reliable Agent</h1>
+<p class="subtitle">Comparison Demo: ReAct vs Pure Thinking (CoT) vs Action-only</p>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" data-mode="compare">Three-way Comparison</button>
+  <button class="mode-tab" data-mode="react-only">ReAct Detail</button>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnStart">Start Demo</button>
+  <button class="btn btn-secondary" id="btnReset">Reset</button>
+  <button class="btn btn-secondary" id="btnStep">Step by Step</button>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="question-box">
+  <span class="q-icon">?</span>
+  <div>
+    <div class="q-text">What is the elevation range of the eastern region reached by the Colorado orogeny?</div>
+    <div class="q-type">Multi-hop QA — requires multiple retrieval steps to answer</div>
+  </div>
+</div>
+
+<div class="main-area" id="mainArea">
+  <!-- Three-column comparison mode -->
+  <div class="panel panel-react" id="panelReact">
+    <div class="panel-header"><span class="dot"></span>ReAct (Reasoning + Action)</div>
+    <div class="panel-body" id="bodyReact"></div>
+  </div>
+  <div class="panel panel-cot" id="panelCot">
+    <div class="panel-header"><span class="dot"></span>Pure CoT (Thinking Only)</div>
+    <div class="panel-body" id="bodyCot"></div>
+  </div>
+  <div class="panel panel-act" id="panelAct">
+    <div class="panel-header"><span class="dot"></span>Act-only (Action Only)</div>
+    <div class="panel-body" id="bodyAct"></div>
+  </div>
+</div>
+
+<div class="result-bar" id="resultBar">
+  <div class="result-card" id="resReact">
+    <div class="r-label">ReAct</div>
+    <div class="r-value r-correct">Correct</div>
+    <div class="r-detail">1,800 ~ 7,000 ft</div>
+  </div>
+  <div class="result-card" id="resCot">
+    <div class="r-label">Pure CoT</div>
+    <div class="r-value r-wrong">Hallucination</div>
+    <div class="r-detail">Fabricated non-existent data</div>
+  </div>
+  <div class="result-card" id="resAct">
+    <div class="r-label">Act-only</div>
+    <div class="r-value r-partial">Inefficient</div>
+    <div class="r-detail">Required 5 searches, wasted Tokens</div>
+  </div>
+</div>
+
+<script>
+const reactSteps = [
+  { type: 'thought', label: 'Thought 1',
+    text: 'I need to first figure out what the "eastern region reached by the Colorado orogeny" is. Let me search for the Colorado orogeny.' },
+  { type: 'action', label: 'Action 1',
+    text: 'Search', code: 'search["Colorado orogeny"]' },
+  { type: 'observation', label: 'Observation 1',
+    text: 'The Colorado orogeny was an orogenic event that formed the main body of the Rocky Mountains, with its influence extending northward to the <strong>High Plains</strong> region.' },
+  { type: 'thought', label: 'Thought 2',
+    text: 'So the eastern extension region is the "High Plains". Now I need to look up the elevation range of the High Plains.' },
+  { type: 'action', label: 'Action 2',
+    text: 'Search', code: 'search["High Plains elevation"]' },
+  { type: 'observation', label: 'Observation 2',
+    text: 'The High Plains elevation is approximately <strong>1,800 to 7,000 feet</strong> (550-2,130 meters).' },
+  { type: 'thought', label: 'Thought 3',
+    text: 'Found it! The elevation range of the High Plains is 1,800 to 7,000 feet. I can now provide the final answer.' },
+  { type: 'answer', label: 'Final Answer',
+    text: 'The eastern region reached by the Colorado orogeny is the High Plains, with an elevation range of approximately <strong>1,800 ~ 7,000 feet</strong>.' }
+];
+
+const cotSteps = [
+  { type: 'cot', label: 'Step 1',
+    text: 'The Colorado orogeny occurred from the Late Cretaceous to the Early Paleogene...' },
+  { type: 'cot', label: 'Step 2',
+    text: 'It formed the Rocky Mountains, and its influence may have extended to the Great Plains region...' },
+  { type: 'cot', label: 'Step 3',
+    text: 'The elevation of the Great Plains is about... hmm... I recall it is around 2,000 to 6,000 feet?' },
+  { type: 'error', label: 'Problem',
+    text: 'The model guesses from memory and cannot verify the data. It actually confuses "Great Plains" with "High Plains", and the values are inaccurate.' },
+  { type: 'answer', label: '(Wrong) Answer',
+    text: '<span style="text-decoration:line-through;">Great Plains elevation approx. 2,000 ~ 6,000 ft</span> Hallucination! Both region name and values are wrong.' }
+];
+
+const actSteps = [
+  { type: 'blind', label: 'Action 1',
+    text: 'Search', code: 'search["Colorado eastern elevation"]' },
+  { type: 'observation', label: 'Observation 1',
+    text: 'Eastern Colorado plains elevation approx. 3,500-6,000 ft... (Irrelevant, this is the state\'s elevation, not the orogeny\'s influence area)' },
+  { type: 'blind', label: 'Action 2',
+    text: 'Search', code: 'search["orogeny elevation range"]' },
+  { type: 'observation', label: 'Observation 2',
+    text: 'Returned introductions to various orogenies, information is mixed... (Not targeted)' },
+  { type: 'blind', label: 'Action 3',
+    text: 'Search', code: 'search["Colorado orogeny extent"]' },
+  { type: 'observation', label: 'Observation 3',
+    text: 'The Colorado orogeny extends to the High Plains region.' },
+  { type: 'blind', label: 'Action 4',
+    text: 'Search', code: 'search["High Plains elevation"]' },
+  { type: 'observation', label: 'Observation 4',
+    text: 'High Plains elevation approx. 1,800 ~ 7,000 ft.' },
+  { type: 'answer', label: 'Answer',
+    text: '1,800 ~ 7,000 ft (Eventually correct, but used 4 searches, relying on luck without reasoning)' }
+];
+
+// ── DOM ──
+const bodyReact = document.getElementById('bodyReact');
+const bodyCot   = document.getElementById('bodyCot');
+const bodyAct   = document.getElementById('bodyAct');
+const progressFill = document.getElementById('progressFill');
+
+let running = false;
+let stepMode = false;
+let stepResolve = null;
+let currentMode = 'compare';
+
+// ── Mode switching ──
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentMode = tab.dataset.mode;
+    reset();
+
+    const panels = [document.getElementById('panelCot'), document.getElementById('panelAct')];
+    if (currentMode === 'react-only') {
+      panels.forEach(p => p.style.display = 'none');
+      document.getElementById('panelReact').classList.add('single');
+    } else {
+      panels.forEach(p => p.style.display = '');
+      document.getElementById('panelReact').classList.remove('single');
+    }
+  });
+});
+
+function createStepEl(step) {
+  const el = document.createElement('div');
+  el.className = `step-block step-${step.type}`;
+  let html = `<div class="step-label">${step.label}</div><div>${step.text}</div>`;
+  if (step.code) html += `<div class="code">${step.code}</div>`;
+  el.innerHTML = html;
+  return el;
+}
+
+function delay(ms) {
+  return new Promise(r => {
+    if (stepMode) {
+      stepResolve = r;
+    } else {
+      setTimeout(r, ms);
+    }
+  });
+}
+
+async function animatePanel(body, steps, color) {
+  for (let i = 0; i < steps.length; i++) {
+    const el = createStepEl(steps[i]);
+    body.appendChild(el);
+    await delay(100);
+    el.classList.add('show');
+    if (i > 0) {
+      const prev = body.children[i - 1];
+      if (prev) prev.classList.remove('highlight');
+    }
+    el.classList.add('highlight');
+    body.scrollTop = body.scrollHeight;
+    await delay(1200);
+  }
+}
+
+async function runCompare() {
+  const maxLen = Math.max(reactSteps.length, cotSteps.length, actSteps.length);
+  for (let i = 0; i < maxLen; i++) {
+    if (!running) return;
+    progressFill.style.width = `${((i + 1) / maxLen) * 100}%`;
+
+    const promises = [];
+    if (i < reactSteps.length) {
+      const el = createStepEl(reactSteps[i]);
+      bodyReact.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show', 'highlight'));
+      if (bodyReact.children.length > 1) bodyReact.children[bodyReact.children.length - 2].classList.remove('highlight');
+      bodyReact.scrollTop = bodyReact.scrollHeight;
+    }
+    if (i < cotSteps.length) {
+      const el = createStepEl(cotSteps[i]);
+      bodyCot.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show', 'highlight'));
+      if (bodyCot.children.length > 1) bodyCot.children[bodyCot.children.length - 2].classList.remove('highlight');
+      bodyCot.scrollTop = bodyCot.scrollHeight;
+    }
+    if (i < actSteps.length) {
+      const el = createStepEl(actSteps[i]);
+      bodyAct.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show', 'highlight'));
+      if (bodyAct.children.length > 1) bodyAct.children[bodyAct.children.length - 2].classList.remove('highlight');
+      bodyAct.scrollTop = bodyAct.scrollHeight;
+    }
+    await delay(1500);
+  }
+
+  // Show results
+  document.querySelectorAll('.result-card').forEach(c => c.classList.add('show'));
+}
+
+async function runReactOnly() {
+  for (let i = 0; i < reactSteps.length; i++) {
+    if (!running) return;
+    progressFill.style.width = `${((i + 1) / reactSteps.length) * 100}%`;
+    const el = createStepEl(reactSteps[i]);
+    bodyReact.appendChild(el);
+    await delay(100);
+    el.classList.add('show', 'highlight');
+    if (bodyReact.children.length > 1) bodyReact.children[bodyReact.children.length - 2].classList.remove('highlight');
+    bodyReact.scrollTop = bodyReact.scrollHeight;
+    await delay(1800);
+  }
+  document.getElementById('resReact').classList.add('show');
+}
+
+function reset() {
+  running = false;
+  stepMode = false;
+  progressFill.style.width = '0%';
+  [bodyReact, bodyCot, bodyAct].forEach(b => b.innerHTML = '');
+  document.querySelectorAll('.result-card').forEach(c => c.classList.remove('show'));
+}
+
+document.getElementById('btnStart').onclick = () => {
+  if (running) return;
+  reset();
+  running = true;
+  stepMode = false;
+  if (currentMode === 'compare') runCompare();
+  else runReactOnly();
+};
+
+document.getElementById('btnReset').onclick = reset;
+
+document.getElementById('btnStep').onclick = () => {
+  if (!running) {
+    reset();
+    running = true;
+    stepMode = true;
+    if (currentMode === 'compare') runCompare();
+    else runReactOnly();
+  } else if (stepMode && stepResolve) {
+    const r = stepResolve;
+    stepResolve = null;
+    r();
+  }
+};
+</script>
+</body>
+</html>

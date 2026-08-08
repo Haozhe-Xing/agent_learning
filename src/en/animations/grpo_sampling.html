@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRPO — Group Relative Policy Optimization</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+  }
+
+  h1 {
+    margin: 28px 0 6px;
+    font-size: 26px;
+    background: linear-gradient(135deg, #f472b6, #a78bfa, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 18px; }
+
+  .controls {
+    display: flex; gap: 10px; margin-bottom: 14px;
+  }
+  .btn {
+    padding: 7px 20px; border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(236,72,153,0.3); }
+  .btn-secondary { background: #334155; color: #e2e8f0; }
+
+  /* ── 主布局 ── */
+  .main {
+    width: 860px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+  .card.active {
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+  .card-header {
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-body { padding: 16px 18px; }
+
+  /* ── 问题卡片 ── */
+  .question-card .card-header { background: linear-gradient(135deg, #1e1b4b, #312e81); color: #a5b4fc; }
+
+  /* ── 采样卡片 ── */
+  .sample-card .card-header { background: linear-gradient(135deg, #3b0764, #6b21a8); color: #d8b4fe; }
+
+  .samples-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .sample {
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: scale(0.9);
+    position: relative;
+  }
+  .sample.show { opacity: 1; transform: scale(1); }
+  .sample .s-id {
+    font-size: 10px; font-weight: 700; color: #94a3b8;
+    margin-bottom: 4px; text-transform: uppercase;
+  }
+  .sample .s-text {
+    font-size: 11px;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+    min-height: 36px;
+  }
+  .sample .s-reward {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.5s;
+  }
+  .sample .s-advantage {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .sample .s-advantage.show { opacity: 1; }
+
+  .sample.reinforce {
+    border-color: #22c55e;
+    background: rgba(34,197,94,0.08);
+  }
+  .sample.reinforce .s-reward { color: #4ade80; background: rgba(34,197,94,0.15); }
+  .sample.reinforce .s-advantage { color: #4ade80; }
+
+  .sample.suppress {
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.08);
+  }
+  .sample.suppress .s-reward { color: #f87171; background: rgba(239,68,68,0.15); }
+  .sample.suppress .s-advantage { color: #f87171; }
+
+  /* 上移/下移箭头动画 */
+  .sample .arrow-indicator {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    opacity: 0;
+    transition: all 0.4s;
+  }
+  .sample.reinforce .arrow-indicator { opacity: 1; color: #4ade80; top: -16px; }
+  .sample.suppress .arrow-indicator { opacity: 1; color: #f87171; top: -16px; }
+
+  /* ── 标准化公式 ── */
+  .norm-card .card-header { background: linear-gradient(135deg, #713f12, #92400e); color: #fcd34d; }
+
+  .formula-box {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 15px;
+    color: #a5b4fc;
+    line-height: 2;
+  }
+  .formula-box .f-label {
+    font-size: 11px;
+    color: #94a3b8;
+    font-family: -apple-system, sans-serif;
+    margin-top: 8px;
+  }
+  .formula-box .highlight-val {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .val-mu { background: rgba(168,85,247,0.2); color: #c084fc; }
+  .val-sigma { background: rgba(59,130,246,0.2); color: #60a5fa; }
+  .val-pos { background: rgba(34,197,94,0.2); color: #4ade80; }
+  .val-neg { background: rgba(239,68,68,0.2); color: #f87171; }
+
+  /* ── 概率分布 ── */
+  .policy-card .card-header { background: linear-gradient(135deg, #14532d, #166534); color: #86efac; }
+
+  .prob-bars {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    height: 180px;
+    padding: 0 20px 10px;
+  }
+  .prob-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+  .prob-bar {
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-height: 4px;
+  }
+  .prob-val {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+    transition: all 0.5s;
+  }
+  .prob-label {
+    font-size: 10px;
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 6px;
+    max-width: 80px;
+    line-height: 1.3;
+  }
+  .prob-arrow {
+    font-size: 14px;
+    margin-bottom: 2px;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .prob-arrow.show { opacity: 1; }
+
+  /* ── 步骤说明 ── */
+  .step-desc {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 13px;
+    line-height: 1.7;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: border-color 0.3s;
+  }
+  .step-desc .sd-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; flex-shrink: 0;
+  }
+
+  /* ── 对比表格 ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .compare-table th {
+    background: #0f172a;
+    padding: 8px 12px;
+    text-align: left;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .compare-table td {
+    padding: 8px 12px;
+    border-top: 1px solid #334155;
+    color: #cbd5e1;
+  }
+  .compare-table tr:nth-child(even) td { background: rgba(15,23,42,0.3); }
+  .td-grpo { color: #c084fc; font-weight: 600; }
+  .td-ppo { color: #60a5fa; }
+</style>
+</head>
+<body>
+
+<h1>🎯 GRPO: Group Relative Policy Optimization</h1>
+<p class="subtitle">DeepSeek's Efficient RL Algorithm — Replace the Critic Model with Within-Group Comparison</p>
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnStart">▶ Start Demo</button>
+  <button class="btn btn-secondary" id="btnReset">↻ Reset</button>
+</div>
+
+<div class="main" id="mainArea">
+
+  <!-- 步骤说明 -->
+  <div class="step-desc" id="stepDesc">
+    <div class="sd-num" style="background:#334155;color:#94a3b8;">?</div>
+    <div class="sd-text" style="color:#94a3b8;">Click "Start Demo" to see how GRPO optimizes policy through within-group sampling and comparison</div>
+  </div>
+
+  <!-- 1. 问题 -->
+  <div class="card question-card" id="card1">
+    <div class="card-header">❓ Input Question x</div>
+    <div class="card-body">
+      <div style="font-size:15px;color:#e0e7ff;">
+        <strong>Math problem:</strong> Compute the exact value of ∫₀¹ x²·eˣ dx
+      </div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px;">
+        Correct answer: e - 2 ≈ 0.7183
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 采样 G 个回答 -->
+  <div class="card sample-card" id="card2">
+    <div class="card-header">🎲 Sample G=8 responses {y₁, y₂, ..., y₈} ~ π_θ(·|x)</div>
+    <div class="card-body">
+      <div class="samples-grid" id="samplesGrid"></div>
+    </div>
+  </div>
+
+  <!-- 3. 标准化 -->
+  <div class="card norm-card" id="card3">
+    <div class="card-header">📐 Within-Group Normalization: Â_i = (r_i - μ) / σ</div>
+    <div class="card-body">
+      <div class="formula-box" id="formulaBox">
+        <div id="fLine1">μ = (1/G) Σ r_i = <span class="highlight-val val-mu" id="fMu">?</span></div>
+        <div id="fLine2">σ = √(Var(r)) = <span class="highlight-val val-sigma" id="fSigma">?</span></div>
+        <div id="fLine3" style="margin-top:8px;">
+          Â > 0 → <span class="highlight-val val-pos">Reinforce ↑</span>&nbsp;&nbsp;
+          Â < 0 → <span class="highlight-val val-neg">Suppress ↓</span>
+        </div>
+        <div class="f-label">Group mean as baseline, replacing PPO's Critic model — zero parameters, zero training error</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 策略更新 -->
+  <div class="card policy-card" id="card4">
+    <div class="card-header">📊 Policy Probability Update π_θ(y|x)</div>
+    <div class="card-body">
+      <div class="prob-bars" id="probBars"></div>
+    </div>
+  </div>
+
+  <!-- PPO 对比 -->
+  <div class="card" id="card5" style="opacity:0;transition:opacity 0.6s;">
+    <div class="card-header" style="background:linear-gradient(135deg,#1e293b,#334155);color:#94a3b8;">⚖️ GRPO vs PPO Comparison</div>
+    <div class="card-body">
+      <table class="compare-table">
+        <tr><th>Dimension</th><th>PPO</th><th>GRPO</th><th>Improvement</th></tr>
+        <tr><td>Model Count</td><td class="td-ppo">Policy + Critic + Ref</td><td class="td-grpo">Policy + Ref</td><td>1 fewer Critic</td></tr>
+        <tr><td>Memory Usage</td><td class="td-ppo">≈ 3× model size</td><td class="td-grpo">≈ 1.5× model size</td><td>Saves ~50%</td></tr>
+        <tr><td>Baseline Source</td><td class="td-ppo">Critic network (estimation error)</td><td class="td-grpo">Group mean (non-parametric statistic)</td><td>More stable</td></tr>
+        <tr><td>Hyperparameters</td><td class="td-ppo">GAE λ, Critic LR, ...</td><td class="td-grpo">clip ε, KL β, G</td><td>Fewer & easier to tune</td></tr>
+        <tr><td>Cost</td><td class="td-ppo">1 response per question</td><td class="td-grpo">G responses per question</td><td>Sampling cost ↑</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+const stepDesc = document.getElementById('stepDesc');
+const samplesGrid = document.getElementById('samplesGrid');
+const probBars = document.getElementById('probBars');
+let running = false;
+
+// 8 个回答
+const samples = [
+  { id: 'y₁', text: 'Integration by parts twice → e - 2 ✓', reward: 1.0, correct: true },
+  { id: 'y₂', text: 'Direct calculation → answered e ✗', reward: 0.0, correct: false },
+  { id: 'y₃', text: 'Integration by parts → e - 2 ✓', reward: 1.0, correct: true },
+  { id: 'y₄', text: 'Series expansion → e - 2 ✓', reward: 0.8, correct: true },
+  { id: 'y₅', text: 'Substitution (wrong direction) ✗', reward: 0.0, correct: false },
+  { id: 'y₆', text: 'Correct process, calculation error → 0.72', reward: 0.3, correct: false },
+  { id: 'y₇', text: 'Full integration by parts → e - 2 ✓', reward: 1.0, correct: true },
+  { id: 'y₈', text: 'Hallucinated answer → 1.5 ✗', reward: 0.0, correct: false }
+];
+
+function showStep(num, bg, color, text) {
+  stepDesc.innerHTML = `<div class="sd-num" style="background:${bg};color:${color};">${num}</div><div class="sd-text">${text}</div>`;
+  stepDesc.style.borderColor = color;
+}
+
+function reset() {
+  running = false;
+  samplesGrid.innerHTML = '';
+  probBars.innerHTML = '';
+  document.getElementById('fMu').textContent = '?';
+  document.getElementById('fSigma').textContent = '?';
+  ['card1','card2','card3','card4'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+  document.getElementById('card5').style.opacity = '0';
+  stepDesc.innerHTML = '<div class="sd-num" style="background:#334155;color:#94a3b8;">?</div><div class="sd-text" style="color:#94a3b8;">Click "Start Demo" to see how GRPO works</div>';
+  stepDesc.style.borderColor = '#334155';
+}
+
+async function run() {
+  // ── Step 1: 显示问题 ──
+  showStep('1', '#312e81', '#a5b4fc',
+    '<strong>Input question</strong>: Give the model a math integration problem, the correct answer is e-2 ≈ 0.7183');
+  document.getElementById('card1').classList.add('active');
+  await delay(1500);
+  document.getElementById('card1').classList.remove('active');
+
+  // ── Step 2: 采样 G=8 个回答 ──
+  showStep('2', '#6b21a8', '#d8b4fe',
+    '<strong>Within-group sampling</strong>: The current policy π_θ generates G=8 different responses for the same question, scored by a reward function');
+  document.getElementById('card2').classList.add('active');
+
+  for (let i = 0; i < samples.length; i++) {
+    if (!running) return;
+    const s = samples[i];
+    const el = document.createElement('div');
+    el.className = 'sample';
+    el.id = `sample${i}`;
+    el.innerHTML = `
+      <div class="arrow-indicator"></div>
+      <div class="s-id">${s.id}</div>
+      <div class="s-text">${s.text}</div>
+      <div class="s-reward">r = ${s.reward.toFixed(1)}</div>
+      <div class="s-advantage" id="adv${i}"></div>
+    `;
+    samplesGrid.appendChild(el);
+    await delay(200);
+    el.classList.add('show');
+  }
+  await delay(1000);
+
+  // ── Step 3: 计算标准化优势 ──
+  showStep('3', '#92400e', '#fcd34d',
+    '<strong>Within-group normalization</strong>: Compute μ (mean) and σ (std dev), convert absolute rewards to relative advantages → Â > 0 reinforce, Â < 0 suppress');
+  document.getElementById('card2').classList.remove('active');
+  document.getElementById('card3').classList.add('active');
+
+  const rewards = samples.map(s => s.reward);
+  const mu = rewards.reduce((a,b) => a+b, 0) / rewards.length;
+  const sigma = Math.sqrt(rewards.reduce((a,r) => a + (r - mu)**2, 0) / rewards.length);
+
+  await delay(600);
+  document.getElementById('fMu').textContent = mu.toFixed(3);
+  await delay(600);
+  document.getElementById('fSigma').textContent = sigma.toFixed(3);
+  await delay(800);
+
+  // 显示每个样本的优势值 + 着色
+  const advantages = rewards.map(r => (r - mu) / (sigma + 1e-8));
+  for (let i = 0; i < samples.length; i++) {
+    if (!running) return;
+    const a = advantages[i];
+    const el = document.getElementById(`sample${i}`);
+    const advEl = document.getElementById(`adv${i}`);
+    advEl.textContent = `Â = ${a >= 0 ? '+' : ''}${a.toFixed(3)}`;
+    advEl.classList.add('show');
+
+    if (a > 0) {
+      el.classList.add('reinforce');
+      el.querySelector('.arrow-indicator').textContent = '⬆️ Reinforce';
+    } else {
+      el.classList.add('suppress');
+      el.querySelector('.arrow-indicator').textContent = '⬇️ Suppress';
+    }
+    await delay(250);
+  }
+  await delay(1200);
+
+  // ── Step 4: 策略概率更新 ──
+  showStep('4', '#166534', '#86efac',
+    '<strong>Policy update</strong>: Responses with advantage > 0 have their corresponding reasoning path probabilities increased; those with advantage < 0 have them decreased. This is GRPO\'s "within-group competition"!');
+  document.getElementById('card3').classList.remove('active');
+  document.getElementById('card4').classList.add('active');
+
+  // 初始概率（均匀）
+  const initProbs = Array(8).fill(12.5);
+  const labels = samples.map(s => s.id);
+
+  // 创建柱状图
+  for (let i = 0; i < 8; i++) {
+    const col = document.createElement('div');
+    col.className = 'prob-col';
+    col.innerHTML = `
+      <div class="prob-arrow" id="pa${i}"></div>
+      <div class="prob-val" id="pv${i}">${initProbs[i].toFixed(1)}%</div>
+      <div class="prob-bar" id="pb${i}" style="height:${initProbs[i] * 1.2}px; background:${advantages[i] > 0 ? '#334155' : '#334155'};"></div>
+      <div class="prob-label">${labels[i]}<br><span style="font-size:9px;color:${samples[i].correct ? '#4ade80' : '#f87171'};">${samples[i].correct ? '✓' : '✗'}</span></div>
+    `;
+    probBars.appendChild(col);
+  }
+  await delay(1000);
+
+  // 动画更新概率
+  const newProbs = advantages.map((a, i) => {
+    let p = 12.5 + a * 6; // 简化的概率更新
+    return Math.max(2, p);
+  });
+  // 归一化
+  const sum = newProbs.reduce((a,b) => a+b, 0);
+  const normProbs = newProbs.map(p => p / sum * 100);
+
+  for (let i = 0; i < 8; i++) {
+    if (!running) return;
+    const bar = document.getElementById(`pb${i}`);
+    const val = document.getElementById(`pv${i}`);
+    const arrow = document.getElementById(`pa${i}`);
+
+    const newP = normProbs[i];
+    bar.style.height = `${newP * 1.5}px`;
+    val.textContent = `${newP.toFixed(1)}%`;
+
+    if (advantages[i] > 0) {
+      bar.style.background = 'linear-gradient(180deg, #22c55e, #16a34a)';
+      val.style.color = '#4ade80';
+      arrow.textContent = '↑';
+      arrow.style.color = '#4ade80';
+    } else {
+      bar.style.background = 'linear-gradient(180deg, #ef4444, #dc2626)';
+      val.style.color = '#f87171';
+      arrow.textContent = '↓';
+      arrow.style.color = '#f87171';
+    }
+    arrow.classList.add('show');
+    await delay(150);
+  }
+
+  await delay(1500);
+
+  // ── 显示对比表 ──
+  showStep('5', '#334155', '#94a3b8',
+    '<strong>Key advantage</strong>: GRPO replaces the Critic model with the group mean → saves 50% memory, more stable training, fewer hyperparameters');
+  document.getElementById('card4').classList.remove('active');
+  document.getElementById('card5').style.opacity = '1';
+}
+
+document.getElementById('btnStart').onclick = () => {
+  if (running) return;
+  reset();
+  running = true;
+  run().then(() => running = false);
+};
+document.getElementById('btnReset').onclick = reset;
+</script>
+</body>
+</html>

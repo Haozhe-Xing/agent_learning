@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PTA Loop — Perceive · Think · Act</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    margin: 30px 0 8px;
+    font-size: 28px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Main Canvas ── */
+  .canvas-wrap {
+    position: relative;
+    width: 720px;
+    height: 520px;
+  }
+
+  /* ── Center Agent ── */
+  .agent-core {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #1e293b 60%, #334155);
+    border: 3px solid #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 10;
+    transition: border-color 0.5s, box-shadow 0.5s;
+  }
+  .agent-core .icon { font-size: 32px; }
+  .agent-core .label { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+
+  /* ── Three Phase Nodes ── */
+  .phase {
+    position: absolute;
+    width: 150px; height: 150px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    z-index: 5;
+  }
+  .phase .icon { font-size: 40px; margin-bottom: 8px; }
+  .phase .name { font-size: 18px; font-weight: 700; }
+  .phase .name-en { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+  .phase .desc {
+    font-size: 11px;
+    margin-top: 8px;
+    text-align: center;
+    line-height: 1.5;
+    opacity: 0;
+    max-height: 0;
+    transition: all 0.4s;
+    padding: 0 8px;
+  }
+  .phase.active .desc { opacity: 1; max-height: 60px; }
+
+  /* Perceive */
+  .phase-perceive {
+    top: 20px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #164e63, #0e7490);
+    border: 2px solid #22d3ee;
+    box-shadow: 0 0 0 rgba(34,211,238,0);
+  }
+  .phase-perceive.active {
+    box-shadow: 0 0 30px rgba(34,211,238,0.4);
+    transform: translateX(-50%) scale(1.08);
+  }
+
+  /* Think */
+  .phase-think {
+    bottom: 30px; left: 40px;
+    background: linear-gradient(135deg, #3b0764, #7e22ce);
+    border: 2px solid #c084fc;
+    box-shadow: 0 0 0 rgba(192,132,252,0);
+  }
+  .phase-think.active {
+    box-shadow: 0 0 30px rgba(192,132,252,0.4);
+    transform: scale(1.08);
+  }
+
+  /* Act */
+  .phase-act {
+    bottom: 30px; right: 40px;
+    background: linear-gradient(135deg, #7c2d12, #ea580c);
+    border: 2px solid #fb923c;
+    box-shadow: 0 0 0 rgba(251,146,60,0);
+  }
+  .phase-act.active {
+    box-shadow: 0 0 30px rgba(251,146,60,0.4);
+    transform: scale(1.08);
+  }
+
+  /* ── SVG Connectors ── */
+  svg.connectors {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .arrow-path {
+    fill: none;
+    stroke: #475569;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    transition: stroke 0.4s, stroke-width 0.4s;
+  }
+  .arrow-path.active {
+    stroke-width: 3.5;
+  }
+  .arrow-path.p2t.active { stroke: #22d3ee; }
+  .arrow-path.t2a.active { stroke: #c084fc; }
+  .arrow-path.a2p.active { stroke: #fb923c; }
+
+  /* ── Flow Particles ── */
+  .particle {
+    r: 5;
+    opacity: 0;
+    transition: fill 0.3s;
+  }
+  .particle.active { opacity: 1; }
+  .particle.p2t { fill: #22d3ee; }
+  .particle.t2a { fill: #c084fc; }
+  .particle.a2p { fill: #fb923c; }
+
+  /* ── Environment Panel ── */
+  .env-panel {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 170px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12px;
+    z-index: 15;
+  }
+  .env-panel .title { color: #94a3b8; font-weight: 600; margin-bottom: 6px; }
+  .env-val {
+    display: flex;
+    justify-content: space-between;
+    margin: 3px 0;
+    color: #cbd5e1;
+  }
+  .env-val span:last-child { color: #38bdf8; font-family: monospace; }
+
+  /* ── Log Panel ── */
+  .log-panel {
+    width: 720px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 10px 0 20px;
+    max-height: 220px;
+    overflow-y: auto;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .log-panel .log-line {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeInUp 0.3s forwards;
+  }
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .log-line .tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .tag-perceive { background: #164e63; color: #22d3ee; }
+  .tag-think    { background: #3b0764; color: #c084fc; }
+  .tag-act      { background: #7c2d12; color: #fb923c; }
+  .tag-memory   { background: #1c1917; color: #a8a29e; }
+  .tag-step     { background: #0f766e; color: #5eead4; }
+
+  /* ── Control Buttons ── */
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .btn {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: white;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
+  .btn-secondary {
+    background: #334155;
+    color: #e2e8f0;
+  }
+  .btn-secondary:hover { background: #475569; }
+
+  .speed-label { color: #94a3b8; font-size: 13px; align-self: center; }
+
+  /* ── Step Info ── */
+  .step-info {
+    width: 720px;
+    background: #1e293b;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.4s;
+  }
+  .step-info .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-info .step-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .step-info .step-text strong { color: #f1f5f9; }
+
+  /* Formula */
+  .formula {
+    font-family: 'SF Mono', Menlo, monospace;
+    background: #0f172a;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #a5b4fc;
+  }
+
+  /* ── Memory Update Pulse ── */
+  @keyframes memoryPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(168,162,158,0.6); }
+    70%  { box-shadow: 0 0 20px 10px rgba(168,162,158,0); }
+    100% { box-shadow: 0 0 0 0 rgba(168,162,158,0); }
+  }
+  .agent-core.memory-update {
+    animation: memoryPulse 0.8s ease-out;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔄 PTA Loop: Perceive → Think → Act</h1>
+<p class="subtitle">The core mechanism of Agent architecture — interactive animation</p>
+
+<div class="controls">
+  <button class="btn btn-primary" id="btnStart">▶ Start Demo</button>
+  <button class="btn btn-secondary" id="btnReset">↻ Reset</button>
+  <span class="speed-label">Speed:</span>
+  <button class="btn btn-secondary" id="btnSlow">Slow</button>
+  <button class="btn btn-secondary" id="btnNormal">Normal</button>
+  <button class="btn btn-secondary" id="btnFast">Fast</button>
+</div>
+
+<div class="step-info" id="stepInfo">
+  <div class="step-num" style="background:#334155; color:#94a3b8;">?</div>
+  <div class="step-text" style="color:#94a3b8;">Click "Start Demo" to watch how the Agent runs the PTA loop in a real-world scenario</div>
+</div>
+
+<div class="canvas-wrap">
+  <!-- SVG Connectors -->
+  <svg class="connectors" viewBox="0 0 720 520">
+    <defs>
+      <marker id="ah-cyan" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#22d3ee"/>
+      </marker>
+      <marker id="ah-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#c084fc"/>
+      </marker>
+      <marker id="ah-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#fb923c"/>
+      </marker>
+      <marker id="ah-gray" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
+      </marker>
+    </defs>
+
+    <!-- Perceive → Think -->
+    <path id="pathP2T" class="arrow-path p2t"
+          d="M 290 185 C 220 280, 160 320, 185 370"
+          marker-end="url(#ah-gray)"/>
+    <circle class="particle p2t" id="particleP2T">
+      <animateMotion dur="1s" fill="freeze" begin="indefinite" id="animP2T">
+        <mpath href="#pathP2T"/>
+      </animateMotion>
+    </circle>
+
+    <!-- Think → Act -->
+    <path id="pathT2A" class="arrow-path t2a"
+          d="M 265 430 C 340 480, 420 480, 470 430"
+          marker-end="url(#ah-gray)"/>
+    <circle class="particle t2a" id="particleT2A">
+      <animateMotion dur="1s" fill="freeze" begin="indefinite" id="animT2A">
+        <mpath href="#pathT2A"/>
+      </animateMotion>
+    </circle>
+
+    <!-- Act → Perceive -->
+    <path id="pathA2P" class="arrow-path a2p"
+          d="M 545 370 C 560 320, 520 280, 430 185"
+          marker-end="url(#ah-gray)"/>
+    <circle class="particle a2p" id="particleA2P">
+      <animateMotion dur="1s" fill="freeze" begin="indefinite" id="animA2P">
+        <mpath href="#pathA2P"/>
+      </animateMotion>
+    </circle>
+  </svg>
+
+  <!-- Agent Core -->
+  <div class="agent-core" id="agentCore">
+    <span class="icon">🤖</span>
+    <span class="label">Agent</span>
+  </div>
+
+  <!-- Three Phases -->
+  <div class="phase phase-perceive" id="phasePerceive">
+    <span class="icon">👁️</span>
+    <span class="name">Perceive</span>
+    <span class="name-en">Perceive</span>
+    <div class="desc">O_t = Observe(E_t, A_{t-1})<br>观察环境 + 获取反馈</div>
+  </div>
+
+  <div class="phase phase-think" id="phaseThink">
+    <span class="icon">🧠</span>
+    <span class="name">Think</span>
+    <span class="name-en">Think</span>
+    <div class="desc">T_t, P_t = LLM(O_t | S_{t-1})<br>推理 + 生成行动计划</div>
+  </div>
+
+  <div class="phase phase-act" id="phaseAct">
+    <span class="icon">⚡</span>
+    <span class="name">Act</span>
+    <span class="name-en">Act</span>
+    <div class="desc">A_t = Execute(P_t)<br>执行工具 → 改变环境</div>
+  </div>
+
+  <!-- Environment Panel -->
+  <div class="env-panel" id="envPanel">
+    <div class="title">🌍 Environment State (E_t)</div>
+    <div class="env-val"><span>Step</span><span id="envStep">t=0</span></div>
+    <div class="env-val"><span>Temperature</span><span id="envTemp">--</span></div>
+    <div class="env-val"><span>Task</span><span id="envTask">Idle</span></div>
+    <div class="env-val"><span>Status</span><span id="envStatus">idle</span></div>
+  </div>
+</div>
+
+<div class="log-panel" id="logPanel"></div>
+
+<script>
+// ── Scenario: Simulate "Weather Query + Send Email" Agent Task ──
+const scenario = [
+  // ── Round 1 ──
+  {
+    phase: 'perceive', step: 1, round: 1,
+    stepInfo: { num: '1', bg: '#164e63', color: '#22d3ee',
+      text: '<strong>Perceive Phase</strong>: User sends message "How\'s the weather in Beijing? If it rains, send me a reminder email", Agent receives this text as observation O₁' },
+    env: { step: 't=1', temp: '--', task: 'Weather+Email', status: 'perceiving' },
+    logs: [
+      { tag: 'step', text: '━━━ Round 1 ━━━' },
+      { tag: 'perceive', text: 'Received user input: "How\'s the weather in Beijing? If it rains, send me a reminder email"' },
+      { tag: 'perceive', text: 'O₁ = { type: "user_message", content: "...", tools_available: ["get_weather", "send_email"] }' }
+    ]
+  },
+  {
+    phase: 'think', step: 2, round: 1,
+    stepInfo: { num: '2', bg: '#3b0764', color: '#c084fc',
+      text: '<strong>Think Phase</strong>: LLM reasons with observation O₁ and memory S₀ — task requires checking weather first, then deciding based on result. Generates action plan P₁' },
+    env: { status: 'thinking' },
+    logs: [
+      { tag: 'think', text: 'Reasoning: User needs a two-step operation → ① Check weather ② Send email based on condition' },
+      { tag: 'think', text: 'Plan P₁ = { action: "get_weather", params: { city: "Beijing" } }' }
+    ]
+  },
+  {
+    phase: 'act', step: 3, round: 1,
+    stepInfo: { num: '3', bg: '#7c2d12', color: '#fb923c',
+      text: '<strong>Action Phase</strong>: Tool execution engine calls get_weather("Beijing"), returns 15°C / Sunny. Environment state updated.' },
+    env: { temp: '15°C Sunny', status: 'acting' },
+    logs: [
+      { tag: 'act', text: 'Execute: get_weather("Beijing") → { temp: "15°C", condition: "Sunny", humidity: "40%" }' },
+      { tag: 'memory', text: 'S₁ = Memory_Update(S₀, O₁, T₁, A₁) — records round 1 observations, thoughts, and actions' }
+    ]
+  },
+  // ── Round 2 ──
+  {
+    phase: 'perceive', step: 4, round: 2,
+    stepInfo: { num: '4', bg: '#164e63', color: '#22d3ee',
+      text: '<strong>Perceive Phase (Round 2)</strong>: Agent observes tool result — Beijing 15°C sunny, as new observation O₂ input' },
+    env: { step: 't=2', status: 'perceiving' },
+    logs: [
+      { tag: 'step', text: '━━━ Round 2 ━━━' },
+      { tag: 'perceive', text: 'O₂ = { type: "tool_result", data: { temp: "15°C", condition: "Sunny" } }' }
+    ]
+  },
+  {
+    phase: 'think', step: 5, round: 2,
+    stepInfo: { num: '5', bg: '#3b0764', color: '#c084fc',
+      text: '<strong>Think Phase</strong>: LLM reasoning — weather is sunny, "rain" condition not met, no need to send email. Generate final answer directly.' },
+    env: { status: 'thinking' },
+    logs: [
+      { tag: 'think', text: 'Reasoning: condition="Sunny" ≠ "Rain" → No email needed → Answer user directly' },
+      { tag: 'think', text: 'Plan P₂ = { action: "final_answer", content: "Beijing is 15°C and sunny today, no reminder needed" }' }
+    ]
+  },
+  {
+    phase: 'act', step: 6, round: 2,
+    stepInfo: { num: '6', bg: '#7c2d12', color: '#fb923c',
+      text: '<strong>Action Phase</strong>: Output final answer to user. PTA loop ends, task complete! ✅' },
+    env: { status: '✅ done' },
+    logs: [
+      { tag: 'act', text: 'Reply to user: "Beijing is 15°C today, sunny. No reminder email needed."' },
+      { tag: 'memory', text: 'S₂ = Memory_Update(S₁, O₂, T₂, A₂) — complete conversation archived to long-term memory' },
+      { tag: 'step', text: '✅ PTA loop complete — 2 rounds, 3 phases × 2 = 6 steps' }
+    ]
+  }
+];
+
+// ── DOM ──
+const phases = {
+  perceive: document.getElementById('phasePerceive'),
+  think:    document.getElementById('phaseThink'),
+  act:      document.getElementById('phaseAct')
+};
+const paths = {
+  p2t: { path: document.getElementById('pathP2T'), particle: document.getElementById('particleP2T'), anim: document.getElementById('animP2T') },
+  t2a: { path: document.getElementById('pathT2A'), particle: document.getElementById('particleT2A'), anim: document.getElementById('animT2A') },
+  a2p: { path: document.getElementById('pathA2P'), particle: document.getElementById('particleA2P'), anim: document.getElementById('animA2P') }
+};
+const stepInfoEl = document.getElementById('stepInfo');
+const logPanel   = document.getElementById('logPanel');
+const agentCore  = document.getElementById('agentCore');
+const envStep    = document.getElementById('envStep');
+const envTemp    = document.getElementById('envTemp');
+const envTask    = document.getElementById('envTask');
+const envStatus  = document.getElementById('envStatus');
+
+let speed = 1800; // ms per step
+let running = false;
+let currentStep = 0;
+
+// ── Speed Buttons ──
+document.getElementById('btnSlow').onclick   = () => speed = 2800;
+document.getElementById('btnNormal').onclick = () => speed = 1800;
+document.getElementById('btnFast').onclick   = () => speed = 900;
+
+// ── Reset ──
+function reset() {
+  running = false;
+  currentStep = 0;
+  Object.values(phases).forEach(p => p.classList.remove('active'));
+  Object.values(paths).forEach(o => {
+    o.path.classList.remove('active');
+    o.particle.classList.remove('active');
+    o.path.setAttribute('marker-end', 'url(#ah-gray)');
+  });
+  agentCore.classList.remove('memory-update');
+  agentCore.style.borderColor = '#475569';
+  logPanel.innerHTML = '';
+  stepInfoEl.innerHTML = '<div class="step-num" style="background:#334155;color:#94a3b8;">?</div><div class="step-text" style="color:#94a3b8;">Click "Start Demo" to watch how the Agent runs the PTA loop</div>';
+  envStep.textContent = 't=0';
+  envTemp.textContent = '--';
+  envTask.textContent = 'Idle';
+  envStatus.textContent = 'idle';
+}
+document.getElementById('btnReset').onclick = reset;
+
+// ── Highlight Phase ──
+function activatePhase(name) {
+  Object.entries(phases).forEach(([k, el]) => {
+    if (k === name) el.classList.add('active');
+    else el.classList.remove('active');
+  });
+
+  const colors = { perceive: '#22d3ee', think: '#c084fc', act: '#fb923c' };
+  agentCore.style.borderColor = colors[name] || '#475569';
+}
+
+// ── Arrow Animation ──
+function animateArrow(key) {
+  return new Promise(resolve => {
+    const o = paths[key];
+    const markers = { p2t: 'ah-cyan', t2a: 'ah-purple', a2p: 'ah-orange' };
+    o.path.classList.add('active');
+    o.path.setAttribute('marker-end', `url(#${markers[key]})`);
+    o.particle.classList.add('active');
+    o.anim.beginElement();
+    setTimeout(() => {
+      o.particle.classList.remove('active');
+      resolve();
+    }, 900);
+  });
+}
+
+// ── Log ──
+function addLog(tag, text) {
+  const tagClasses = {
+    perceive: 'tag-perceive', think: 'tag-think',
+    act: 'tag-act', memory: 'tag-memory', step: 'tag-step'
+  };
+  const tagLabels = {
+    perceive: 'Perceive', think: 'Think',
+    act: 'Act', memory: 'Memory', step: 'Phase'
+  };
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="tag ${tagClasses[tag]}">${tagLabels[tag]}</span>${text}`;
+  logPanel.appendChild(line);
+  logPanel.scrollTop = logPanel.scrollHeight;
+}
+
+// ── Step Info ──
+function showStepInfo(info) {
+  stepInfoEl.innerHTML = `<div class="step-num" style="background:${info.bg};color:${info.color};">${info.num}</div><div class="step-text">${info.text}</div>`;
+  stepInfoEl.style.borderColor = info.color;
+}
+
+// ── Update Environment ──
+function updateEnv(env) {
+  if (env.step)   envStep.textContent   = env.step;
+  if (env.temp)   envTemp.textContent   = env.temp;
+  if (env.task)   envTask.textContent   = env.task;
+  if (env.status) envStatus.textContent = env.status;
+}
+
+// ── Main Loop ──
+async function runStep(idx) {
+  if (!running || idx >= scenario.length) {
+    running = false;
+    return;
+  }
+  const s = scenario[idx];
+  currentStep = idx;
+
+  // Arrow animation
+  const arrowMap = { perceive: null, think: 'p2t', act: 't2a' };
+  if (idx > 0 && s.phase === 'perceive') {
+    await animateArrow('a2p');
+  } else if (arrowMap[s.phase]) {
+    await animateArrow(arrowMap[s.phase]);
+  }
+
+  activatePhase(s.phase);
+  showStepInfo(s.stepInfo);
+  updateEnv(s.env);
+
+  // Log line by line
+  for (const log of s.logs) {
+    addLog(log.tag, log.text);
+    await delay(speed * 0.3);
+  }
+
+  // Memory update pulse
+  if (s.logs.some(l => l.tag === 'memory')) {
+    agentCore.classList.add('memory-update');
+    setTimeout(() => agentCore.classList.remove('memory-update'), 800);
+  }
+
+  await delay(speed * 0.7);
+  runStep(idx + 1);
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+document.getElementById('btnStart').onclick = () => {
+  if (running) return;
+  reset();
+  running = true;
+  runStep(0);
+};
+</script>
+</body>
+</html>

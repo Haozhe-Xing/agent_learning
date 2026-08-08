@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
   <rect width="760" height="400" rx="18" fill="#f8fafc"/>
-  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">"评判者"其实有三层身份，研究热度天差地别</text>
-  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">"优化评判者来提升整体"这个观点，对不同层成立程度不同</text>
+  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">The "Judge" Actually Has Three Layers, With Vastly Different Research Attention</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">The Idea of "Optimizing the Judge to Improve the Whole" Holds to Different Degrees for Different Layers</text>
 
   <!-- 3a -->
   <rect x="40" y="80" width="680" height="68" rx="10" fill="#e1f5ee" stroke="#0f766e" stroke-width="1.5"/>
-  <text x="60" y="104" font-size="14" font-weight="bold" fill="#0f5132">3a. 训练期 Reward Model / Verifier</text>
-  <text x="60" y="125" font-size="11" fill="#0f766e">RLHF、过程奖励 PRM、RLVR、Generative Verifier —— 整个 o1 / R1 路线的核心</text>
+  <text x="60" y="104" font-size="14" font-weight="bold" fill="#0f5132">3a. Training-Phase Reward Model / Verifier</text>
+  <text x="60" y="125" font-size="11" fill="#0f766e">RLHF, Process Reward PRM, RLVR, Generative Verifier — The Core of the o1 / R1 Route</text>
   <text x="690" y="118" font-size="22" text-anchor="end">🔥</text>
-  <text x="60" y="142" font-size="11" font-weight="bold" fill="#0f5132">极热：研究最充分 → 观点在这一层不成立</text>
+  <text x="60" y="142" font-size="11" font-weight="bold" fill="#0f5132">Extremely Hot: Most Thoroughly Researched → The Argument Does NOT Hold at This Layer</text>
 
   <!-- 3b -->
   <rect x="40" y="158" width="680" height="68" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="60" y="182" font-size="14" font-weight="bold" fill="#1d4ed8">3b. 推理 / 评估期 LLM-as-Judge</text>
-  <text x="60" y="203" font-size="11" fill="#2563eb">打分裁判、自我批评、CRITIC 工具验证 —— 有专门评估线</text>
+  <text x="60" y="182" font-size="14" font-weight="bold" fill="#1d4ed8">3b. Inference / Evaluation Phase LLM-as-Judge</text>
+  <text x="60" y="203" font-size="11" fill="#2563eb">Scoring Judge, Self-Criticism, CRITIC Tool Verification — Has a Dedicated Evaluation Line</text>
   <text x="690" y="196" font-size="20" text-anchor="end">🔆</text>
-  <text x="60" y="220" font-size="11" font-weight="bold" fill="#1d4ed8">较热：但多用冻结大模型当裁判，很少"训练"它 → 半成立</text>
+  <text x="60" y="220" font-size="11" font-weight="bold" fill="#1d4ed8">Moderately Hot: But Mostly Uses Frozen LLMs as Judges, Rarely "Trains" Them → Partially Holds</text>
 
   <!-- 3c -->
   <rect x="40" y="236" width="680" height="76" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
-  <text x="60" y="260" font-size="14" font-weight="bold" fill="#92400e">3c. 自进化里的"总结者 / Curator"</text>
-  <text x="60" y="281" font-size="11" fill="#b45309">决定经验怎么提炼、哪条 Skill 入库、怎么增 / 删 / 改</text>
+  <text x="60" y="260" font-size="14" font-weight="bold" fill="#92400e">3c. The "Summarizer / Curator" in Self-Evolution</text>
+  <text x="60" y="281" font-size="11" fill="#b45309">Decides How Experiences Are Refined, Which Skills Are Stored, How to Add/Delete/Modify</text>
   <text x="690" y="272" font-size="20" text-anchor="end">❄️</text>
-  <text x="60" y="299" font-size="11" font-weight="bold" fill="#92400e">几乎空白：11 篇代表工作里专门训练它的只有 SkillOS 一篇 → 完全成立 ✅</text>
+  <text x="60" y="299" font-size="11" font-weight="bold" fill="#92400e">Nearly Blank: Among 11 Representative Works, Only SkillOS Specifically Trains It → Fully Holds ✅</text>
 
-  <!-- 结论条 -->
+  <!-- Conclusion -->
   <rect x="40" y="326" width="680" height="56" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="60" y="349" font-size="12" font-weight="bold" fill="#b91c1c">⚠️ 反向风险：评判者本身不可靠时，越优化它反而越放大偏差（reward hacking）</text>
-  <text x="60" y="370" font-size="11" fill="#dc2626">精确命题：在有可信外部验证（代码执行器 / 单测 / 人工 / 可验证答案）前提下，把"评判-总结"这一环变成可训练对象，是被严重低估的方向</text>
+  <text x="60" y="349" font-size="12" font-weight="bold" fill="#b91c1c">⚠️ Reverse Risk: When the Judge Itself Is Unreliable, Optimizing It Amplifies Bias (Reward Hacking)</text>
+  <text x="60" y="370" font-size="11" fill="#dc2626">Precise Proposition: Under the Premise of Reliable External Verification (Code Executor/Unit Tests/Human/Verifiable Answers), Making the "Judging-Summarizing" Link a Trainable Object Is a Severely Underestimated Direction</text>
 </svg>

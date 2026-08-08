@@ -5,36 +5,36 @@
     </marker>
   </defs>
   <rect width="520" height="280" rx="12" fill="#f8fafc"/>
-  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">普通 Softmax vs 在线 Softmax</text>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Standard Softmax vs Online Softmax</text>
 
-  <!-- 普通 softmax -->
+  <!-- Standard softmax -->
   <rect x="16" y="46" width="230" height="140" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="131" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">普通 Softmax</text>
-  <text x="131" y="80" text-anchor="middle" font-size="11" fill="#ef4444">需要两遍扫描</text>
+  <text x="131" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">Standard Softmax</text>
+  <text x="131" y="80" text-anchor="middle" font-size="11" fill="#ef4444">Requires two passes</text>
   <rect x="28" y="88" width="206" height="22" rx="4" fill="#fca5a5" stroke="#f87171" stroke-width="1"/>
-  <text x="131" y="104" text-anchor="middle" font-size="10" fill="#7f1d1d">第1遍：找最大值 max_s</text>
+  <text x="131" y="104" text-anchor="middle" font-size="10" fill="#7f1d1d">Pass 1: Find max value max_s</text>
   <rect x="28" y="114" width="206" height="22" rx="4" fill="#fca5a5" stroke="#f87171" stroke-width="1"/>
-  <text x="131" y="130" text-anchor="middle" font-size="10" fill="#7f1d1d">第2遍：计算 exp(s_i - max_s) / Σ</text>
+  <text x="131" y="130" text-anchor="middle" font-size="10" fill="#7f1d1d">Pass 2: Compute exp(s_i - max_s) / Σ</text>
   <rect x="28" y="148" width="206" height="30" rx="4" fill="#fecaca" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="131" y="163" text-anchor="middle" font-size="10" font-weight="bold" fill="#b91c1c">⚠️ 必须把所有分数存在内存里</text>
-  <text x="131" y="175" text-anchor="middle" font-size="10" fill="#ef4444">N=1M 时需要 4TB 显存！</text>
+  <text x="131" y="163" text-anchor="middle" font-size="10" font-weight="bold" fill="#b91c1c">⚠️ Must store all scores in memory</text>
+  <text x="131" y="175" text-anchor="middle" font-size="10" fill="#ef4444">N=1M needs 4TB VRAM!</text>
 
-  <!-- 在线 softmax -->
+  <!-- Online softmax -->
   <rect x="274" y="46" width="230" height="140" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="389" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">在线 Softmax</text>
-  <text x="389" y="80" text-anchor="middle" font-size="11" fill="#22c55e">只需一遍扫描</text>
+  <text x="389" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Online Softmax</text>
+  <text x="389" y="80" text-anchor="middle" font-size="11" fill="#22c55e">Only needs one pass</text>
   <rect x="286" y="88" width="206" height="22" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
-  <text x="389" y="104" text-anchor="middle" font-size="10" fill="#166534">维护状态：当前最大值 m，指数和 d</text>
+  <text x="389" y="104" text-anchor="middle" font-size="10" fill="#166534">Maintain state: current max m, sum of exps d</text>
   <rect x="286" y="114" width="206" height="22" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
-  <text x="389" y="130" text-anchor="middle" font-size="10" fill="#166534">新分数 s_new 来时：增量更新 m 和 d</text>
+  <text x="389" y="130" text-anchor="middle" font-size="10" fill="#166534">When new score s_new arrives: incrementally update m and d</text>
   <rect x="286" y="148" width="206" height="30" rx="4" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
-  <text x="389" y="163" text-anchor="middle" font-size="10" font-weight="bold" fill="#14532d">✅ 不需要存储所有分数</text>
-  <text x="389" y="175" text-anchor="middle" font-size="10" fill="#166534">O(1) 内存，支持分块计算！</text>
+  <text x="389" y="163" text-anchor="middle" font-size="10" font-weight="bold" fill="#14532d">✅ No need to store all scores</text>
+  <text x="389" y="175" text-anchor="middle" font-size="10" fill="#166534">O(1) memory, supports tiled computation!</text>
 
-  <!-- FlashAttention 结论 -->
+  <!-- FlashAttention conclusion -->
   <rect x="16" y="198" width="488" height="70" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
-  <text x="260" y="216" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">FlashAttention：在线 Softmax + 分块计算</text>
-  <text x="260" y="234" text-anchor="middle" font-size="11" fill="#4338ca">Q/K/V 分成小块 → 每次只加载一块到 GPU SRAM（快速缓存）</text>
-  <text x="260" y="250" text-anchor="middle" font-size="11" fill="#4338ca">HBM 读写次数从 O(N²) 降至 O(N) → 速度提升 2-4x</text>
-  <text x="260" y="264" text-anchor="middle" font-size="10" fill="#6366f1">内存从 O(N²) 降至 O(N)，支持百万级上下文长度</text>
+  <text x="260" y="216" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">FlashAttention: Online Softmax + Tiled Computation</text>
+  <text x="260" y="234" text-anchor="middle" font-size="11" fill="#4338ca">Split Q/K/V into small tiles → load one tile at a time to GPU SRAM (fast cache)</text>
+  <text x="260" y="250" text-anchor="middle" font-size="11" fill="#4338ca">HBM read/write reduced from O(N²) to O(N) → speedup 2-4x</text>
+  <text x="260" y="264" text-anchor="middle" font-size="10" fill="#6366f1">Memory reduced from O(N²) to O(N), supporting million-token context length</text>
 </svg>

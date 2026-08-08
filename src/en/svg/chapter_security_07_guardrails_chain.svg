@@ -5,19 +5,19 @@
     </marker>
   </defs>
   <rect width="520" height="200" rx="12" fill="#f0fdf4"/>
-  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Guardrails 增强的信任链</text>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Guardrails-Enhanced Trust Chain</text>
 
-  <!-- 用户输入 -->
+  <!-- User Input -->
   <rect x="16" y="50" width="90" height="40" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="61" y="75" text-anchor="middle" font-size="11" fill="#1d4ed8">用户输入</text>
+  <text x="61" y="75" text-anchor="middle" font-size="11" fill="#1d4ed8">User Input</text>
 
   <line x1="106" y1="70" x2="130" y2="70" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
 
-  <!-- 输入 Guardrails -->
+  <!-- Input Guardrails -->
   <rect x="132" y="44" width="110" height="52" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="187" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">输入 Guardrails</text>
-  <text x="187" y="80" text-anchor="middle" font-size="10" fill="#166534">程序化检查</text>
-  <text x="187" y="92" text-anchor="middle" font-size="10" fill="#166534">（不可绕过）</text>
+  <text x="187" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">Input Guardrails</text>
+  <text x="187" y="80" text-anchor="middle" font-size="10" fill="#166534">Programmatic check</text>
+  <text x="187" y="92" text-anchor="middle" font-size="10" fill="#166534">(Unbypassable)</text>
 
   <line x1="242" y1="70" x2="266" y2="70" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
 
@@ -27,25 +27,25 @@
 
   <line x1="348" y1="70" x2="372" y2="70" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
 
-  <!-- 输出 Guardrails -->
+  <!-- Output Guardrails -->
   <rect x="374" y="44" width="110" height="52" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="429" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">输出 Guardrails</text>
-  <text x="429" y="80" text-anchor="middle" font-size="10" fill="#166534">程序化检查</text>
-  <text x="429" y="92" text-anchor="middle" font-size="10" fill="#166534">（不可绕过）</text>
+  <text x="429" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">Output Guardrails</text>
+  <text x="429" y="80" text-anchor="middle" font-size="10" fill="#166534">Programmatic check</text>
+  <text x="429" y="92" text-anchor="middle" font-size="10" fill="#166534">(Unbypassable)</text>
 
   <line x1="484" y1="70" x2="504" y2="70" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
 
-  <!-- 最终输出 -->
+  <!-- Final Output -->
   <rect x="506" y="50" width="8" height="40" rx="2" fill="#4ade80"/>
 
-  <!-- 标注 -->
-  <text x="187" y="118" text-anchor="middle" font-size="10" fill="#15803d">↑ 注入检测 / 话题约束</text>
-  <text x="187" y="132" text-anchor="middle" font-size="10" fill="#15803d">PII 检测 / 格式限制</text>
-  <text x="429" y="118" text-anchor="middle" font-size="10" fill="#15803d">↑ 内容安全 / 格式校验</text>
-  <text x="429" y="132" text-anchor="middle" font-size="10" fill="#15803d">幻觉检测 / 合规审查</text>
+  <!-- Annotations -->
+  <text x="187" y="118" text-anchor="middle" font-size="10" fill="#15803d">↑ Injection detection / Topic constraint</text>
+  <text x="187" y="132" text-anchor="middle" font-size="10" fill="#15803d">PII detection / Format restriction</text>
+  <text x="429" y="118" text-anchor="middle" font-size="10" fill="#15803d">↑ Content safety / Format validation</text>
+  <text x="429" y="132" text-anchor="middle" font-size="10" fill="#15803d">Hallucination detection / Compliance review</text>
 
-  <!-- 说明 -->
+  <!-- Explanation -->
   <rect x="16" y="152" width="488" height="36" rx="8" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
-  <text x="260" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">核心思想：不依赖模型"自觉性"，用代码强制保证安全</text>
-  <text x="260" y="182" text-anchor="middle" font-size="10" fill="#166534">程序化检查 = 可审计 + 可动态调整 + 不可被 Prompt 绕过</text>
+  <text x="260" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">Core idea: Don't rely on model "self-awareness", enforce safety with code</text>
+  <text x="260" y="182" text-anchor="middle" font-size="10" fill="#166534">Programmatic checks = Auditable + Dynamically adjustable + Cannot be bypassed by Prompt</text>
 </svg>

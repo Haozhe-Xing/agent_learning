@@ -5,33 +5,33 @@
     </marker>
   </defs>
   <rect width="500" height="300" rx="12" fill="#f8fafc"/>
-  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">自回归生成：逐步预测下一个 Token</text>
+  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Autoregressive Generation: Predict Next Token Step by Step</text>
 
-  <!-- 输入 -->
+  <!-- Input -->
   <rect x="30" y="50" width="440" height="36" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="250" y="73" text-anchor="middle" font-size="13" fill="#1d4ed8">用户输入："今天天气"</text>
+  <text x="250" y="73" text-anchor="middle" font-size="13" fill="#1d4ed8">User Input: "The weather is"</text>
 
-  <!-- 步骤 -->
+  <!-- Steps -->
   <rect x="30" y="104" width="440" height="32" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
-  <text x="30" y="125" font-size="11" fill="#166534" dx="12">第1步：模型输入 ["今天天气"]</text>
-  <text x="380" y="125" font-size="12" font-weight="bold" fill="#15803d">→ 预测出 "真"</text>
+  <text x="30" y="125" font-size="11" fill="#166534" dx="12">Step 1: Model input ["The weather is"]</text>
+  <text x="380" y="125" font-size="12" font-weight="bold" fill="#15803d">→ predicts "nice"</text>
 
   <rect x="30" y="142" width="440" height="32" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
-  <text x="30" y="163" font-size="11" fill="#166534" dx="12">第2步：模型输入 ["今天天气真"]</text>
-  <text x="380" y="163" font-size="12" font-weight="bold" fill="#15803d">→ 预测出 "好"</text>
+  <text x="30" y="163" font-size="11" fill="#166534" dx="12">Step 2: Model input ["The weather is nice"]</text>
+  <text x="380" y="163" font-size="12" font-weight="bold" fill="#15803d">→ predicts "today"</text>
 
   <rect x="30" y="180" width="440" height="32" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
-  <text x="30" y="201" font-size="11" fill="#166534" dx="12">第3步：模型输入 ["今天天气真好"]</text>
-  <text x="380" y="201" font-size="12" font-weight="bold" fill="#15803d">→ 预测出 "！"</text>
+  <text x="30" y="201" font-size="11" fill="#166534" dx="12">Step 3: Model input ["The weather is nice today"]</text>
+  <text x="380" y="201" font-size="12" font-weight="bold" fill="#15803d">→ predicts "!"</text>
 
   <rect x="30" y="218" width="440" height="32" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
-  <text x="30" y="239" font-size="11" fill="#166534" dx="12">第4步：模型输入 ["今天天气真好！"]</text>
-  <text x="380" y="239" font-size="12" font-weight="bold" fill="#15803d">→ 预测出 [结束]</text>
+  <text x="30" y="239" font-size="11" fill="#166534" dx="12">Step 4: Model input ["The weather is nice today!"]</text>
+  <text x="380" y="239" font-size="12" font-weight="bold" fill="#15803d">→ predicts [END]</text>
 
-  <!-- 结果 -->
+  <!-- Result -->
   <rect x="130" y="264" width="240" height="28" rx="8" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
-  <text x="250" y="283" text-anchor="middle" font-size="13" font-weight="bold" fill="#14532d">最终输出："真好！"</text>
+  <text x="250" y="283" text-anchor="middle" font-size="13" font-weight="bold" fill="#14532d">Final output: "nice today!"</text>
 
-  <!-- 说明 -->
-  <text x="250" y="298" text-anchor="middle" font-size="10" fill="#64748b">每次只生成一个 Token，将其追加到输入后再预测下一个</text>
+  <!-- Note -->
+  <text x="250" y="298" text-anchor="middle" font-size="10" fill="#64748b">Generate one token at a time, append to input, then predict the next</text>
 </svg>
