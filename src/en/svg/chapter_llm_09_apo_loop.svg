@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" rx="18" fill="#f8fafc"/>
+  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Prompt 自动调优闭环</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#64748b">像老师批改错题一样：运行、看错、反思、改说明、再测试</text>
+
+  <rect x="55" y="95" width="150" height="58" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="130" y="119" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">初始 Prompt</text>
+  <text x="130" y="139" text-anchor="middle" font-size="11" fill="#2563eb">人工写的第一版说明</text>
+
+  <rect x="305" y="95" width="150" height="58" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="380" y="119" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">运行任务</text>
+  <text x="380" y="139" text-anchor="middle" font-size="11" fill="#16a34a">在训练样本上试跑</text>
+
+  <rect x="555" y="95" width="150" height="58" rx="12" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="630" y="119" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2410c">收集反馈</text>
+  <text x="630" y="139" text-anchor="middle" font-size="11" fill="#ea580c">分数、错例、文字批评</text>
+
+  <rect x="555" y="225" width="150" height="58" rx="12" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="630" y="249" text-anchor="middle" font-size="14" font-weight="bold" fill="#be185d">反思原因</text>
+  <text x="630" y="269" text-anchor="middle" font-size="11" fill="#db2777">定位哪里没说清楚</text>
+
+  <rect x="305" y="225" width="150" height="58" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="380" y="249" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">改写 Prompt</text>
+  <text x="380" y="269" text-anchor="middle" font-size="11" fill="#4f46e5">加入更明确规则</text>
+
+  <rect x="55" y="225" width="150" height="58" rx="12" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="130" y="249" text-anchor="middle" font-size="14" font-weight="bold" fill="#0e7490">评估新版本</text>
+  <text x="130" y="269" text-anchor="middle" font-size="11" fill="#0891b2">保留更好的 Prompt</text>
+
+  <line x1="205" y1="124" x2="296" y2="124" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="455" y1="124" x2="546" y2="124" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="630" y1="153" x2="630" y2="216" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="555" y1="254" x2="464" y2="254" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="305" y1="254" x2="214" y2="254" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M130 225 C88 200 88 178 130 153" fill="none" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <rect x="190" y="168" width="380" height="44" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="380" y="187" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">核心思想</text>
+  <text x="380" y="204" text-anchor="middle" font-size="11" fill="#64748b">不要只看“得了几分”，还要读懂“为什么错、该怎么改”</text>
+</svg>

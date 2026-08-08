@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="800" height="420" rx="18" fill="#f8fafc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Prompt 过拟合：表现好 ≠ 能用</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" fill="#64748b">训练集分数越来越高，但遇到新问题就崩——和 ML 过拟合一模一样</text>
+
+  <!-- 训练集曲线 -->
+  <rect x="80" y="85" width="640" height="260" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="108" text-anchor="middle" font-size="12" fill="#64748b">优化轮次</text>
+
+  <!-- Y轴标签 -->
+  <text x="60" y="210" text-anchor="middle" font-size="12" fill="#64748b" transform="rotate(-90,60,210)">分数</text>
+
+  <!-- 训练集曲线 - 持续上升 -->
+  <path d="M120 290 C200 280 280 220 360 170 C440 120 520 100 660 95" fill="none" stroke="#3b82f6" stroke-width="3"/>
+  <circle cx="660" cy="95" r="5" fill="#3b82f6"/>
+  <text x="680" y="95" font-size="12" font-weight="bold" fill="#3b82f6">训练集</text>
+  <text x="680" y="112" font-size="10" fill="#3b82f6">持续上升 ✅</text>
+
+  <!-- 验证集曲线 - 先升后降 -->
+  <path d="M120 300 C200 285 280 210 350 175 C420 145 480 155 530 180 C580 210 620 250 660 280" fill="none" stroke="#ef4444" stroke-width="3"/>
+  <circle cx="660" cy="280" r="5" fill="#ef4444"/>
+  <text x="680" y="275" font-size="12" font-weight="bold" fill="#ef4444">验证集</text>
+  <text x="680" y="292" font-size="10" fill="#ef4444">先升后降 ❌</text>
+
+  <!-- 最优点标注 -->
+  <line x1="400" y1="155" x2="400" y2="340" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,4"/>
+  <text x="400" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#22c55e">最优停止点</text>
+
+  <!-- 过拟合区域 -->
+  <rect x="400" y="120" width="270" height="210" rx="0" fill="#fef2f2" opacity="0.3"/>
+  <text x="535" y="138" text-anchor="middle" font-size="11" fill="#ef4444">⚠ 过拟合区域</text>
+
+  <!-- 原因标注 -->
+  <rect x="80" y="355" width="640" height="55" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="400" y="377" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">过拟合的表现</text>
+  <text x="400" y="397" text-anchor="middle" font-size="11" fill="#64748b">Prompt 里出现训练样本的具体内容 · 只对某种问法有效 · 换个表述就答不上来</text>
+</svg>

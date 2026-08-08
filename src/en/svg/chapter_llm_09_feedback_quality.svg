@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" width="880" height="440" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="880" height="440" rx="18" fill="#f8fafc"/>
+  <text x="440" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">反馈质量对比：好反馈 vs 坏反馈</text>
+  <text x="440" y="58" text-anchor="middle" font-size="13" fill="#64748b">好反馈像老师批改作业——具体、因果、可执行、局部化</text>
+
+  <!-- 坏反馈 -->
+  <rect x="30" y="85" width="400" height="310" rx="14" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="230" y="115" text-anchor="middle" font-size="17" font-weight="bold" fill="#b91c1c">坏反馈 ❌</text>
+
+  <rect x="55" y="135" width="350" height="40" rx="8" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="230" y="159" text-anchor="middle" font-size="13" fill="#b91c1c">"格式不对。"</text>
+  <text x="230" y="192" text-anchor="middle" font-size="11" fill="#64748b">→ 不知道哪个字段缺了，怎么改？</text>
+
+  <rect x="55" y="215" width="350" height="40" rx="8" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="230" y="239" text-anchor="middle" font-size="13" fill="#b91c1c">"答案错了。"</text>
+  <text x="230" y="272" text-anchor="middle" font-size="11" fill="#64748b">→ 不知道是哪个步骤出了问题</text>
+
+  <rect x="55" y="295" width="350" height="40" rx="8" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="230" y="319" text-anchor="middle" font-size="13" fill="#b91c1c">"更准确一点。"</text>
+  <text x="230" y="352" text-anchor="middle" font-size="11" fill="#64748b">→ 不知道该加什么约束或规则</text>
+
+  <!-- 好反馈 -->
+  <rect x="450" y="85" width="400" height="310" rx="14" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="650" y="115" text-anchor="middle" font-size="17" font-weight="bold" fill="#15803d">好反馈 ✅</text>
+
+  <rect x="475" y="135" width="350" height="40" rx="8" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+  <text x="650" y="159" text-anchor="middle" font-size="13" fill="#15803d">"JSON 缺少 deadline 字段。"</text>
+  <text x="650" y="192" text-anchor="middle" font-size="11" fill="#64748b">→ 具体：知道缺什么字段</text>
+
+  <rect x="475" y="215" width="350" height="40" rx="8" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+  <text x="650" y="239" text-anchor="middle" font-size="13" fill="#15803d">"模型忽略了包含答案的文档。"</text>
+  <text x="650" y="272" text-anchor="middle" font-size="11" fill="#64748b">→ 因果：知道为什么错</text>
+
+  <rect x="475" y="295" width="350" height="40" rx="8" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+  <text x="650" y="319" text-anchor="middle" font-size="13" fill="#15803d">"回答前必须先列出支持证据。"</text>
+  <text x="650" y="352" text-anchor="middle" font-size="11" fill="#64748b">→ 可执行：知道该加什么规则</text>
+
+  <!-- 四特点标签 -->
+  <rect x="200" y="405" width="480" height="26" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="440" y="423" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">好反馈四特点：具体 · 因果 · 可执行 · 局部化</text>
+</svg>

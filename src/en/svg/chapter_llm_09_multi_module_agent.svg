@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" width="880" height="480" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+    <marker id="arr2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <rect width="880" height="480" rx="18" fill="#f8fafc"/>
+  <text x="440" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">一个文档问答 Agent 的多模块系统</text>
+  <text x="440" y="58" text-anchor="middle" font-size="13" fill="#64748b">每个模块都有自己的 Prompt，修改一个可能影响其他模块</text>
+
+  <!-- 用户输入 -->
+  <ellipse cx="110" cy="120" rx="70" ry="24" fill="#cffafe" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="110" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">用户问题</text>
+
+  <!-- 查询分析器 -->
+  <rect x="60" y="175" width="130" height="70" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="125" y="199" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">查询分析器</text>
+  <text x="125" y="217" text-anchor="middle" font-size="10" fill="#2563eb">理解用户到底想问什么</text>
+  <text x="125" y="233" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 意图判断错误</text>
+
+  <!-- 检索器 -->
+  <rect x="60" y="275" width="130" height="70" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="125" y="299" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">检索器</text>
+  <text x="125" y="317" text-anchor="middle" font-size="10" fill="#16a34a">生成搜索词找文档</text>
+  <text x="125" y="333" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 搜到无关文档</text>
+
+  <!-- 阅读器 -->
+  <rect x="270" y="275" width="130" height="70" rx="12" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="335" y="299" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">阅读器</text>
+  <text x="335" y="317" text-anchor="middle" font-size="10" fill="#ea580c">从文档里抽取证据</text>
+  <text x="335" y="333" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 引用弱证据</text>
+
+  <!-- 推理器 -->
+  <rect x="270" y="175" width="130" height="70" rx="12" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="335" y="199" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">推理器</text>
+  <text x="335" y="217" text-anchor="middle" font-size="10" fill="#db2777">组合证据成答案</text>
+  <text x="335" y="233" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 无证据推理</text>
+
+  <!-- 工具选择器 -->
+  <rect x="480" y="275" width="130" height="70" rx="12" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="545" y="299" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">工具选择器</text>
+  <text x="545" y="317" text-anchor="middle" font-size="10" fill="#7c3aed">决定调用什么工具</text>
+  <text x="545" y="333" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 工具选错</text>
+
+  <!-- 验证器 -->
+  <rect x="480" y="175" width="130" height="70" rx="12" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="545" y="199" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">验证器</text>
+  <text x="545" y="217" text-anchor="middle" font-size="10" fill="#0891b2">检查答案是否可靠</text>
+  <text x="545" y="233" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 没发现幻觉</text>
+
+  <!-- 格式化器 -->
+  <rect x="680" y="175" width="130" height="70" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="745" y="199" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">格式化器</text>
+  <text x="745" y="217" text-anchor="middle" font-size="10" fill="#b45309">输出 JSON / 报告</text>
+  <text x="745" y="233" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 破坏 schema</text>
+
+  <!-- 安全模块 -->
+  <rect x="680" y="275" width="130" height="70" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="745" y="299" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">安全模块</text>
+  <text x="745" y="317" text-anchor="middle" font-size="10" fill="#dc2626">拦截不安全请求</text>
+  <text x="745" y="333" text-anchor="middle" font-size="9" fill="#ef4444">⚠ 规则过松或过严</text>
+
+  <!-- 最终输出 -->
+  <ellipse cx="745" cy="400" rx="70" ry="24" fill="#cffafe" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="745" y="406" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">最终答案</text>
+
+  <!-- 主流程箭头 -->
+  <line x1="110" y1="144" x2="115" y2="170" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="125" y1="245" x2="125" y2="270" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="190" y1="310" x2="265" y2="310" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="335" y1="275" x2="335" y2="250" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="400" y1="210" x2="475" y2="210" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="610" y1="210" x2="675" y2="210" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="745" y1="245" x2="745" y2="372" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 工具选择器分支 -->
+  <line x1="400" y1="310" x2="475" y2="310" stroke="#4f46e5" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 底部问题框 -->
+  <rect x="130" y="388" width="440" height="70" rx="14" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="350" y="412" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">最终答案错了，应该改哪个 Prompt？</text>
+  <text x="350" y="432" text-anchor="middle" font-size="11" fill="#64748b">检索太宽泛？阅读没要求引用证据？推理允许猜测？</text>
+  <text x="350" y="448" text-anchor="middle" font-size="11" fill="#64748b">验证没发现错误？还是格式化把结构弄坏了？</text>
+
+  <!-- 红色虚线从答案到问题框 -->
+  <path d="M675 400 L575 420" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr2)"/>
+</svg>

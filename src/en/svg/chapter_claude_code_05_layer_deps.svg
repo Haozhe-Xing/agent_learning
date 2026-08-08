@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <!-- 背景 -->
+  <rect width="420" height="340" rx="12" fill="#f8fafc"/>
+  <!-- 标题 -->
+  <text x="210" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">分层架构依赖规则</text>
+
+  <!-- 层 4：api/routes -->
+  <rect x="60" y="55" width="300" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="210" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">api/routes/（路由层）</text>
+  <text x="210" y="95" text-anchor="middle" font-size="11" fill="#3b82f6">← 只能被 server.ts 调用</text>
+
+  <!-- 箭头 4→3 -->
+  <line x1="210" y1="107" x2="210" y2="128" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="225" y="121" font-size="10" fill="#64748b">依赖</text>
+
+  <!-- 层 3：services -->
+  <rect x="60" y="130" width="300" height="52" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="210" y="151" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">services/（业务逻辑层）</text>
+  <text x="210" y="170" text-anchor="middle" font-size="11" fill="#22c55e">← 只能被 api/routes 调用</text>
+
+  <!-- 箭头 3→2 -->
+  <line x1="210" y1="182" x2="210" y2="203" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="225" y="196" font-size="10" fill="#64748b">依赖</text>
+
+  <!-- 层 2：lib/db -->
+  <rect x="60" y="205" width="300" height="52" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="210" y="226" text-anchor="middle" font-size="13" font-weight="bold" fill="#a16207">lib/db/（数据访问层）</text>
+  <text x="210" y="245" text-anchor="middle" font-size="11" fill="#eab308">← 只能被 services 调用</text>
+
+  <!-- 箭头 2→1 -->
+  <line x1="210" y1="257" x2="210" y2="278" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="225" y="271" font-size="10" fill="#64748b">依赖</text>
+
+  <!-- 层 1：types -->
+  <rect x="60" y="280" width="300" height="44" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="210" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="#7e22ce">types/（类型定义）</text>
+  <text x="210" y="317" text-anchor="middle" font-size="11" fill="#a855f7">← 不依赖任何内部模块</text>
+
+  <!-- 箭头标记 -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 680" width="920" height="680" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+    <marker id="arr-g" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#22c55e"/>
+    </marker>
+    <marker id="arr-r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arr-o" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="680" rx="18" fill="#f8fafc"/>
+  <text x="460" y="36" text-anchor="middle" font-size="21" font-weight="bold" fill="#0f172a">是否应该使用 Prompt 自动调优？</text>
+  <text x="460" y="61" text-anchor="middle" font-size="13" fill="#64748b">先确认复杂度、评估体系和失败样本，再选择优化方法</text>
+
+  <!-- 起点 -->
+  <rect x="310" y="84" width="300" height="56" rx="15" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="460" y="107" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">从你的 Agent 现状开始判断</text>
+  <text x="460" y="126" text-anchor="middle" font-size="11" fill="#2563eb">不要先问用哪篇论文，先问系统是否值得自动优化</text>
+
+  <!-- Q1 -->
+  <line x1="460" y1="140" x2="460" y2="166" stroke="#4f46e5" stroke-width="2.3" marker-end="url(#arr)"/>
+  <polygon points="460,166 590,226 460,286 330,226" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.6"/>
+  <text x="460" y="214" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Prompt 是否很多、很长</text>
+  <text x="460" y="234" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">或相互影响？</text>
+
+  <!-- Q1 否：先手工 -->
+  <polyline points="330,226 282,226" fill="none" stroke="#f59e0b" stroke-width="2.3" marker-end="url(#arr-o)"/>
+  <text x="302" y="216" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97706">否</text>
+  <rect x="66" y="197" width="210" height="58" rx="13" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+  <text x="171" y="220" text-anchor="middle" font-size="13" font-weight="bold" fill="#b45309">先手工调优</text>
+  <text x="171" y="238" text-anchor="middle" font-size="10.5" fill="#d97706">单 Prompt、短规则，人工更快</text>
+
+  <!-- Q2 -->
+  <line x1="460" y1="286" x2="460" y2="316" stroke="#4f46e5" stroke-width="2.3" marker-end="url(#arr)"/>
+  <text x="478" y="306" font-size="11" font-weight="bold" fill="#4f46e5">是</text>
+  <polygon points="460,316 590,376 460,436 330,376" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.6"/>
+  <text x="460" y="365" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">有没有明确评估指标</text>
+  <text x="460" y="385" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">和回归测试？</text>
+
+  <!-- Q2 否：先建评估 -->
+  <polyline points="330,376 282,376" fill="none" stroke="#ef4444" stroke-width="2.4" marker-end="url(#arr-r)"/>
+  <text x="302" y="366" text-anchor="middle" font-size="11" font-weight="bold" fill="#ef4444">否</text>
+  <rect x="66" y="347" width="210" height="58" rx="13" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="171" y="370" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">先建评估体系</text>
+  <text x="171" y="388" text-anchor="middle" font-size="10.5" fill="#dc2626">没有评估，就无法判断优化是否有效</text>
+
+  <!-- Q3 -->
+  <line x1="460" y1="436" x2="460" y2="466" stroke="#4f46e5" stroke-width="2.3" marker-end="url(#arr)"/>
+  <text x="478" y="456" font-size="11" font-weight="bold" fill="#4f46e5">是</text>
+  <polygon points="460,466 590,526 460,586 330,526" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.6"/>
+  <text x="460" y="515" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">是否已有代表性样本</text>
+  <text x="460" y="535" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">和失败案例？</text>
+
+  <!-- Q3 否：收集数据 -->
+  <polyline points="330,526 282,526" fill="none" stroke="#ef4444" stroke-width="2.4" marker-end="url(#arr-r)"/>
+  <text x="302" y="516" text-anchor="middle" font-size="11" font-weight="bold" fill="#ef4444">否</text>
+  <rect x="66" y="497" width="210" height="58" rx="13" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="171" y="520" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">先收集样本</text>
+  <text x="171" y="538" text-anchor="middle" font-size="10.5" fill="#dc2626">优先收集高频失败和边界情况</text>
+
+  <!-- Q3 是：可引入自动调优 -->
+  <polyline points="590,526 638,526" fill="none" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="618" y="516" text-anchor="middle" font-size="11" font-weight="bold" fill="#22c55e">是</text>
+  <rect x="644" y="489" width="216" height="74" rx="14" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="752" y="514" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">可以引入自动调优 ✅</text>
+  <text x="752" y="533" text-anchor="middle" font-size="10.5" fill="#16a34a">从小批量评估开始，保留人工审核</text>
+  <text x="752" y="549" text-anchor="middle" font-size="10.5" fill="#16a34a">多模块系统优先记录完整 trace</text>
+
+  <!-- 右侧方法建议 -->
+  <rect x="642" y="176" width="218" height="250" rx="15" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="751" y="203" text-anchor="middle" font-size="14" font-weight="bold" fill="#334155">方法选择速查</text>
+
+  <rect x="666" y="224" width="170" height="38" rx="9" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="751" y="248" text-anchor="middle" font-size="10.5" fill="#2563eb">单模块 + 规则评估：ProTeGi</text>
+
+  <rect x="666" y="274" width="170" height="38" rx="9" fill="#f5f3ff" stroke="#ddd6fe"/>
+  <text x="751" y="298" text-anchor="middle" font-size="10.5" fill="#7c3aed">多模块程序：DSPy / MIPROv2</text>
+
+  <rect x="666" y="324" width="170" height="38" rx="9" fill="#fdf2f8" stroke="#fbcfe8"/>
+  <text x="751" y="348" text-anchor="middle" font-size="10.5" fill="#db2777">有文字反馈和 trace：GEPA</text>
+
+  <rect x="666" y="374" width="170" height="38" rx="9" fill="#ecfeff" stroke="#a5f3fc"/>
+  <text x="751" y="398" text-anchor="middle" font-size="10.5" fill="#0891b2">需要经验沉淀：Skill / 反思</text>
+
+  <!-- 底部原则 -->
+  <rect x="66" y="606" width="794" height="48" rx="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="460" y="626" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">核心原则：先有评估，再谈优化；先小范围验证，再扩大到真实 Agent。</text>
+  <text x="460" y="644" text-anchor="middle" font-size="10.5" fill="#64748b">安全规则和输出格式应作为硬约束，不能被自动调优过程删除。</text>
+</svg>

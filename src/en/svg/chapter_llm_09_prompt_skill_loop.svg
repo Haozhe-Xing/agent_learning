@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" width="820" height="420" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+  <rect width="820" height="420" rx="18" fill="#f8fafc"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Prompt 进化 + Skill 进化</text>
+  <text x="410" y="58" text-anchor="middle" font-size="13" fill="#64748b">说明书变清楚，工具箱变丰富，Agent 才能长期变强</text>
+
+  <rect x="335" y="86" width="150" height="58" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="410" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Agent 执行任务</text>
+  <text x="410" y="130" text-anchor="middle" font-size="11" fill="#2563eb">使用 Prompt 和 Skill</text>
+
+  <rect x="600" y="175" width="150" height="58" rx="12" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="675" y="199" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7490">记录轨迹</text>
+  <text x="675" y="219" text-anchor="middle" font-size="11" fill="#0891b2">过程、工具、结果</text>
+
+  <rect x="335" y="285" width="150" height="58" rx="12" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="410" y="309" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">评估反馈</text>
+  <text x="410" y="329" text-anchor="middle" font-size="11" fill="#ea580c">成功、失败、原因</text>
+
+  <rect x="70" y="175" width="150" height="58" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="145" y="199" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">新任务复用</text>
+  <text x="145" y="219" text-anchor="middle" font-size="11" fill="#16a34a">检索相关经验</text>
+
+  <line x1="485" y1="115" x2="620" y2="174" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="675" y1="233" x2="488" y2="300" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="335" y1="314" x2="209" y2="236" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="220" y1="204" x2="330" y2="131" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <rect x="80" y="286" width="210" height="82" rx="14" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="185" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d28d9">GEPA 类方法</text>
+  <text x="185" y="331" text-anchor="middle" font-size="11" fill="#7c3aed">把失败诊断写回 Prompt</text>
+  <text x="185" y="350" text-anchor="middle" font-size="11" fill="#7c3aed">让“说明书”更明确</text>
+  <line x1="291" y1="315" x2="326" y2="315" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="530" y="286" width="210" height="82" rx="14" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="635" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#be185d">Skill 系统</text>
+  <text x="635" y="331" text-anchor="middle" font-size="11" fill="#db2777">沉淀 insight、代码、流程</text>
+  <text x="635" y="350" text-anchor="middle" font-size="11" fill="#db2777">让“工具箱”更丰富</text>
+  <line x1="530" y1="315" x2="494" y2="315" stroke="#ec4899" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="275" y="170" width="270" height="72" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="410" y="194" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">两条线互补</text>
+  <text x="410" y="214" text-anchor="middle" font-size="11" fill="#64748b">Prompt 进化解决“怎么想、怎么说”</text>
+  <text x="410" y="232" text-anchor="middle" font-size="11" fill="#64748b">Skill 进化解决“做过的事怎么复用”</text>
+</svg>

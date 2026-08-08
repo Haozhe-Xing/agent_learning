@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="18" fill="#f8fafc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Prompt 自动调优的四个角色</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" fill="#64748b">执行 → 评估 → 改写 → 选择，像教研组改教材</text>
+
+  <!-- 执行者 -->
+  <rect x="40" y="100" width="155" height="90" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="117" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1d4ed8">执行者</text>
+  <text x="117" y="150" text-anchor="middle" font-size="11" fill="#2563eb">按当前 Prompt 完成任务</text>
+  <text x="117" y="168" text-anchor="middle" font-size="11" fill="#2563eb">产出输出和 trace</text>
+  <text x="117" y="183" text-anchor="middle" font-size="10" fill="#94a3b8">类比：做题的学生</text>
+
+  <!-- 评估者 -->
+  <rect x="230" y="100" width="155" height="90" rx="14" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="307" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#15803d">评估者</text>
+  <text x="307" y="150" text-anchor="middle" font-size="11" fill="#16a34a">判断答案好不好</text>
+  <text x="307" y="168" text-anchor="middle" font-size="11" fill="#16a34a">给分数和文字反馈</text>
+  <text x="307" y="183" text-anchor="middle" font-size="10" fill="#94a3b8">类比：批改作业的老师</text>
+
+  <!-- 改写者 -->
+  <rect x="420" y="100" width="155" height="90" rx="14" fill="#fdf2f8" stroke="#ec4899" stroke-width="2"/>
+  <text x="497" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#be185d">改写者</text>
+  <text x="497" y="150" text-anchor="middle" font-size="11" fill="#db2777">根据反馈修改 Prompt</text>
+  <text x="497" y="168" text-anchor="middle" font-size="11" fill="#db2777">生成新候选版本</text>
+  <text x="497" y="183" text-anchor="middle" font-size="10" fill="#94a3b8">类比：修改讲义的老师</text>
+
+  <!-- 选择器 -->
+  <rect x="610" y="100" width="155" height="90" rx="14" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="687" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#6d28d9">选择器</text>
+  <text x="687" y="150" text-anchor="middle" font-size="11" fill="#7c3aed">决定保留哪个版本</text>
+  <text x="687" y="168" text-anchor="middle" font-size="11" fill="#7c3aed">综合多维度判断</text>
+  <text x="687" y="183" text-anchor="middle" font-size="10" fill="#94a3b8">类比：教研组选教材</text>
+
+  <!-- 箭头 -->
+  <line x1="195" y1="145" x2="225" y2="145" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="385" y1="145" x2="415" y2="145" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="575" y1="145" x2="605" y2="145" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- 底部循环回执行者 -->
+  <path d="M687 190 L687 230 L117 230 L117 195" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- 各角色可由谁扮演 -->
+  <rect x="40" y="260" width="725" height="100" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="400" y="286" text-anchor="middle" font-size="14" font-weight="bold" fill="#334155">四个角色可以由同一个或不同组件扮演</text>
+
+  <text x="117" y="312" text-anchor="middle" font-size="11" fill="#3b82f6">执行者 → 便宜小模型</text>
+  <text x="307" y="312" text-anchor="middle" font-size="11" fill="#22c55e">评估者 → 规则 / 单测 / 人工</text>
+  <text x="497" y="312" text-anchor="middle" font-size="11" fill="#ec4899">改写者 → 更强的模型</text>
+  <text x="687" y="312" text-anchor="middle" font-size="11" fill="#8b5cf6">选择器 → 验证集 + 安全检查</text>
+
+  <text x="400" y="346" text-anchor="middle" font-size="12" font-weight="bold" fill="#64748b">核心流水线：执行 → 观察 → 解释 → 修改 → 验证 → 选择</text>
+</svg>

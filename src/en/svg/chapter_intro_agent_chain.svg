@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 链路与工程体系总览</title>
+  <desc id="desc">以更清晰的分层结构展示 Agent 的主链路、上下文工程、ReAct 执行闭环、工具与 Skill 调用、Agentic RL 反馈学习以及评估沉淀工程。</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#667085" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#16845f" />
+    </marker>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#101828" flood-opacity="0.08" />
+    </filter>
+    <style>
+      .page-title { font: 800 34px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #101828; }
+      .page-subtitle { font: 500 18px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #667085; }
+      .section-title { font: 800 18px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #344054; letter-spacing: 1px; }
+      .title { font: 750 23px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #101828; }
+      .subtitle { font: 500 16px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #667085; }
+      .mini { font: 500 14px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #667085; }
+      .tag { font: 750 14px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #2563eb; }
+      .label { font: 650 13px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #475467; }
+      .note { font: 500 16px -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; fill: #667085; }
+      .box { stroke-width: 1.3; filter: url(#soft-shadow); }
+      .line { fill: none; stroke: #667085; stroke-width: 2.2; marker-end: url(#arrow); }
+      .blue-line { fill: none; stroke: #2563eb; stroke-width: 2.2; stroke-dasharray: 8 8; marker-end: url(#arrow-blue); }
+      .green-line { fill: none; stroke: #16845f; stroke-width: 2.4; marker-end: url(#arrow-green); }
+      .soft-line { fill: none; stroke: #98a2b3; stroke-width: 1.8; stroke-dasharray: 6 7; marker-end: url(#arrow); }
+      .lane { fill: #f8fafc; stroke: #e4e7ec; stroke-width: 1.2; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="900" fill="#ffffff" />
+
+  <text class="page-title" x="700" y="48" text-anchor="middle">Agent 链路与工程体系</text>
+  <text class="page-subtitle" x="700" y="80" text-anchor="middle">主链路看目标如何被完成，工程层看能力如何被注入、调用、评估和沉淀</text>
+
+  <rect class="lane" x="52" y="112" width="1296" height="170" rx="26" />
+  <text class="section-title" x="84" y="146">01 主链路：从目标到结果</text>
+
+  <rect class="box" x="90" y="172" width="175" height="74" rx="18" fill="#fff4df" stroke="#d59b4a" />
+  <text class="title" x="177" y="203" text-anchor="middle">用户目标</text>
+  <text class="mini" x="177" y="228" text-anchor="middle">需求 / 约束 / 偏好</text>
+
+  <rect class="box" x="340" y="152" width="235" height="114" rx="20" fill="#eaf4ff" stroke="#6aa3e8" />
+  <text class="tag" x="457" y="183" text-anchor="middle">上下文工程</text>
+  <text class="title" x="457" y="214" text-anchor="middle">Prompt 组装</text>
+  <text class="mini" x="457" y="241" text-anchor="middle">选择 / 压缩 / 排序 / 注入</text>
+
+  <rect class="box" x="655" y="152" width="235" height="114" rx="20" fill="#e8f6ef" stroke="#66b695" />
+  <text class="tag" x="772" y="183" text-anchor="middle">模型 / 策略工程</text>
+  <text class="title" x="772" y="214" text-anchor="middle">LLM 决策</text>
+  <text class="mini" x="772" y="241" text-anchor="middle">推理 / 规划 / 选择动作</text>
+
+  <rect class="box" x="970" y="172" width="175" height="74" rx="18" fill="#fff0ec" stroke="#df8f79" />
+  <text class="title" x="1057" y="203" text-anchor="middle">执行动作</text>
+  <text class="mini" x="1057" y="228" text-anchor="middle">Tool / Skill</text>
+
+  <rect class="box" x="1210" y="172" width="100" height="74" rx="18" fill="#eef7ff" stroke="#7aa7d9" />
+  <text class="title" x="1260" y="203" text-anchor="middle">结果</text>
+  <text class="mini" x="1260" y="228" text-anchor="middle">输出物</text>
+
+  <path class="line" d="M 265 209 L 331 209" />
+  <path class="line" d="M 575 209 L 646 209" />
+  <path class="line" d="M 890 209 L 961 209" />
+  <path class="line" d="M 1145 209 L 1201 209" />
+
+  <rect class="lane" x="52" y="315" width="366" height="380" rx="26" />
+  <text class="section-title" x="84" y="350">02 能力层：注入或调用</text>
+
+  <rect class="box" x="88" y="382" width="290" height="78" rx="18" fill="#f0efff" stroke="#958be0" />
+  <text class="tag" x="233" y="411" text-anchor="middle">记忆工程</text>
+  <text class="title" x="233" y="438" text-anchor="middle">Memory</text>
+
+  <rect class="box" x="88" y="496" width="290" height="78" rx="18" fill="#f0efff" stroke="#958be0" />
+  <text class="tag" x="233" y="525" text-anchor="middle">RAG / 数据工程</text>
+  <text class="title" x="233" y="552" text-anchor="middle">知识检索</text>
+
+  <rect class="box" x="88" y="610" width="290" height="78" rx="18" fill="#f0efff" stroke="#958be0" />
+  <text class="tag" x="233" y="639" text-anchor="middle">Skill / Workflow 工程</text>
+  <text class="title" x="233" y="666" text-anchor="middle">能力库</text>
+
+  <text class="mini" x="233" y="724" text-anchor="middle">Memory / RAG / Skill 可进入 Prompt</text>
+  <text class="mini" x="233" y="748" text-anchor="middle">Skill 也可在 Action 阶段被直接调用</text>
+
+  <path class="blue-line" d="M 378 421 L 457 421 L 457 275" />
+  <path class="blue-line" d="M 378 535 L 487 535 L 487 275" />
+  <path class="blue-line" d="M 378 649 L 517 649 L 517 275" />
+  <text class="label" x="418" y="390">注入上下文</text>
+
+  <path class="blue-line" d="M 378 649 L 930 649 L 930 500 L 967 500" />
+  <text class="label" x="595" y="634">运行时调用高级能力</text>
+
+  <rect class="lane" x="456" y="315" width="520" height="380" rx="26" />
+  <text class="section-title" x="488" y="350">03 控制层：ReAct 执行闭环</text>
+
+  <rect class="box" x="508" y="385" width="160" height="84" rx="18" fill="#e8f6ef" stroke="#66b695" />
+  <text class="title" x="588" y="420" text-anchor="middle">Reason</text>
+  <text class="subtitle" x="588" y="447" text-anchor="middle">思考规划</text>
+
+  <rect class="box" x="762" y="385" width="160" height="84" rx="18" fill="#fff4df" stroke="#d59b4a" />
+  <text class="title" x="842" y="420" text-anchor="middle">Action</text>
+  <text class="subtitle" x="842" y="447" text-anchor="middle">调用 Tool / Skill</text>
+
+  <rect class="box" x="762" y="548" width="160" height="84" rx="18" fill="#eaf4ff" stroke="#6aa3e8" />
+  <text class="title" x="842" y="583" text-anchor="middle">Observe</text>
+  <text class="subtitle" x="842" y="610" text-anchor="middle">接收反馈</text>
+
+  <rect class="box" x="508" y="548" width="160" height="84" rx="18" fill="#edf8e4" stroke="#8ab96c" />
+  <text class="title" x="588" y="583" text-anchor="middle">Update</text>
+  <text class="subtitle" x="588" y="610" text-anchor="middle">修正策略</text>
+
+  <path class="green-line" d="M 668 427 L 753 427" />
+  <path class="green-line" d="M 842 469 L 842 539" />
+  <path class="green-line" d="M 762 590 L 677 590" />
+  <path class="green-line" d="M 588 548 L 588 478" />
+
+  <rect x="555" y="486" width="310" height="38" rx="19" fill="#ffffff" stroke="#8dc2ad" stroke-width="1.3" />
+  <text class="label" x="710" y="510" text-anchor="middle">Agentic RL / 反馈学习优化策略</text>
+
+  <path class="line" d="M 772 266 L 772 315" />
+  <text class="label" x="785" y="298">进入执行闭环</text>
+
+  <rect class="lane" x="1014" y="315" width="334" height="380" rx="26" />
+  <text class="section-title" x="1046" y="350">04 环境层：工具执行</text>
+
+  <rect class="box" x="1052" y="390" width="258" height="100" rx="20" fill="#fff0ec" stroke="#df8f79" />
+  <text class="tag" x="1181" y="421" text-anchor="middle">工具 / 环境工程</text>
+  <text class="title" x="1181" y="454" text-anchor="middle">Tool Layer</text>
+  <text class="mini" x="1181" y="477" text-anchor="middle">API / 文件 / 数据库 / 代码</text>
+
+  <rect x="1072" y="526" width="218" height="38" rx="13" fill="#ffffff" stroke="#e5a08d" />
+  <text class="mini" x="1181" y="550" text-anchor="middle">Schema 与权限边界</text>
+  <rect x="1072" y="580" width="218" height="38" rx="13" fill="#ffffff" stroke="#e5a08d" />
+  <text class="mini" x="1181" y="604" text-anchor="middle">沙箱、错误处理、重试</text>
+  <rect x="1072" y="634" width="218" height="38" rx="13" fill="#ffffff" stroke="#e5a08d" />
+  <text class="mini" x="1181" y="658" text-anchor="middle">日志、观测、审计</text>
+
+  <path class="line" d="M 922 427 L 1043 427" />
+  <path class="line" d="M 1052 478 L 980 548 L 922 590" />
+  <text class="label" x="965" y="413">调用</text>
+  <text class="label" x="965" y="568">反馈</text>
+
+  <rect class="lane" x="52" y="730" width="1296" height="112" rx="26" />
+  <text class="section-title" x="84" y="765">05 评估与沉淀：把一次成功变成稳定能力</text>
+
+  <rect class="box" x="265" y="780" width="390" height="42" rx="18" fill="#f7f6f1" stroke="#b4b0a7" />
+  <text class="note" x="460" y="807" text-anchor="middle">轨迹日志 / 失败案例 / 用户反馈 / 奖励信号</text>
+
+  <rect class="box" x="745" y="780" width="390" height="42" rx="18" fill="#eef7ff" stroke="#7aa7d9" />
+  <text class="note" x="940" y="807" text-anchor="middle">写回 Memory / Skill / 训练数据 / 评测集</text>
+
+  <path class="soft-line" d="M 842 632 L 842 730" />
+  <path class="line" d="M 655 801 L 736 801" />
+  <path class="soft-line" d="M 745 801 L 233 801 L 233 697" />
+
+  <text class="note" x="700" y="874" text-anchor="middle">读图顺序：先看上方主链路，再看中间 ReAct 如何执行，最后看左侧能力如何注入/调用，以及底部如何沉淀为长期能力。</text>
+</svg>

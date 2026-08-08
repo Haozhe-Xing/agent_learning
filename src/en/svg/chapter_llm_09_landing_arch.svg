@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="900" height="520" rx="18" fill="#f8fafc"/>
+  <text x="450" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Prompt 自动调优：最小可落地架构</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">从三个核心组件开始，渐进式添加功能</text>
+
+  <!-- 核心三件套标签 -->
+  <rect x="40" y="78" width="820" height="36" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="450" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">第一步：核心三件套（必须）</text>
+
+  <!-- 评估器 -->
+  <rect x="40" y="130" width="250" height="120" rx="14" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="165" y="158" text-anchor="middle" font-size="16" font-weight="bold" fill="#15803d">评估器</text>
+  <text x="165" y="180" text-anchor="middle" font-size="12" fill="#16a34a">规则评估（最简单）</text>
+  <line x1="70" y1="195" x2="260" y2="195" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="165" y="215" text-anchor="middle" font-size="11" fill="#15803d">· 关键词匹配</text>
+  <text x="165" y="233" text-anchor="middle" font-size="11" fill="#15803d">· JSON schema 验证</text>
+  <text x="165" y="251" text-anchor="middle" font-size="11" fill="#15803d">· 单测通过率</text>
+
+  <!-- Prompt 候选池 -->
+  <rect x="325" y="130" width="250" height="120" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="450" y="158" text-anchor="middle" font-size="16" font-weight="bold" fill="#1d4ed8">Prompt 候选池</text>
+  <text x="450" y="180" text-anchor="middle" font-size="12" fill="#2563eb">版本管理（核心）</text>
+  <line x1="355" y1="195" x2="545" y2="195" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="450" y="215" text-anchor="middle" font-size="11" fill="#1d4ed8">· 初始版本 + 变异版本</text>
+  <text x="450" y="233" text-anchor="middle" font-size="11" fill="#1d4ed8">· 每个版本绑定评估分数</text>
+  <text x="450" y="251" text-anchor="middle" font-size="11" fill="#1d4ed8">· 验证集表现 + 安全检查</text>
+
+  <!-- 简单选择器 -->
+  <rect x="610" y="130" width="250" height="120" rx="14" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="735" y="158" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d28d9">简单选择器</text>
+  <text x="735" y="180" text-anchor="middle" font-size="12" fill="#7c3aed">贪心 / Bandit</text>
+  <line x1="640" y1="195" x2="830" y2="195" stroke="#ddd6fe" stroke-width="1"/>
+  <text x="735" y="215" text-anchor="middle" font-size="11" fill="#6d28d9">· 贪心：选验证集最高分</text>
+  <text x="735" y="233" text-anchor="middle" font-size="11" fill="#6d28d9">· Bandit：探索和利用平衡</text>
+  <text x="735" y="251" text-anchor="middle" font-size="11" fill="#6d28d9">· 安全门控：拦截危险修改</text>
+
+  <!-- 箭头连接核心三件套 -->
+  <line x1="290" y1="190" x2="320" y2="190" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+  <line x1="575" y1="190" x2="605" y2="190" stroke="#4f46e5" stroke-width="2.2" marker-end="url(#arr)"/>
+
+  <!-- 进阶标签 -->
+  <rect x="40" y="278" width="820" height="36" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="450" y="302" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">第二步：加入反思能力（推荐）</text>
+
+  <!-- 反思改写器 -->
+  <rect x="40" y="330" width="280" height="80" rx="14" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="180" y="358" text-anchor="middle" font-size="15" font-weight="bold" fill="#be185d">反思改写器</text>
+  <text x="180" y="378" text-anchor="middle" font-size="11" fill="#db2777">LLM 看错误 trace，改写 Prompt</text>
+  <text x="180" y="396" text-anchor="middle" font-size="11" fill="#db2777">关键：要求输出具体修改建议</text>
+
+  <!-- 更强评估 -->
+  <rect x="350" y="330" width="230" height="80" rx="14" fill="#ecfeff" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="465" y="358" text-anchor="middle" font-size="15" font-weight="bold" fill="#0e7490">增强评估器</text>
+  <text x="465" y="378" text-anchor="middle" font-size="11" fill="#0891b2">LLM-as-judge</text>
+  <text x="465" y="396" text-anchor="middle" font-size="11" fill="#0891b2">人工抽检 + 规则混合</text>
+
+  <!-- Trace 收集 -->
+  <rect x="610" y="330" width="250" height="80" rx="14" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="735" y="358" text-anchor="middle" font-size="15" font-weight="bold" fill="#c2410c">Trace 收集器</text>
+  <text x="735" y="378" text-anchor="middle" font-size="11" fill="#ea580c">记录完整执行过程</text>
+  <text x="735" y="396" text-anchor="middle" font-size="11" fill="#ea580c">输入/输出/中间步骤/工具调用</text>
+
+  <!-- 高级标签 -->
+  <rect x="40" y="430" width="820" height="36" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="450" y="454" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d28d9">第三步：进阶优化（GEPA 类方法）</text>
+
+  <rect x="40" y="478" width="820" height="30" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="450" y="498" text-anchor="middle" font-size="11" fill="#64748b">Pareto 前沿 · 种群进化 · 多目标评估 · Skill 沉淀 · 自动对抗测试</text>
+</svg>

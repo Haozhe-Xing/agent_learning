@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" width="520" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="520" height="260" rx="12" fill="#f8fafc"/>
+  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">GraphRAG：索引阶段 + 查询阶段</text>
+
+  <!-- 索引阶段 -->
+  <rect x="16" y="44" width="230" height="130" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="131" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">索引阶段（离线）</text>
+  <text x="131" y="78" text-anchor="middle" font-size="10" fill="#3b82f6">① 文本分块 → 常规 Chunk</text>
+  <text x="131" y="94" text-anchor="middle" font-size="10" fill="#3b82f6">② LLM 提取实体和关系</text>
+  <text x="131" y="110" text-anchor="middle" font-size="10" fill="#3b82f6">③ 构建知识图谱（实体=节点，关系=边）</text>
+  <text x="131" y="126" text-anchor="middle" font-size="10" fill="#3b82f6">④ Leiden 算法社区检测</text>
+  <text x="131" y="142" text-anchor="middle" font-size="10" fill="#3b82f6">⑤ 为每个社区生成描述性摘要</text>
+  <text x="131" y="162" text-anchor="middle" font-size="9" fill="#60a5fa">⚠️ 成本高：大量 LLM 调用</text>
+
+  <!-- 查询阶段 -->
+  <rect x="274" y="44" width="230" height="130" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="389" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">查询阶段（在线）</text>
+  <rect x="286" y="70" width="206" height="44" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="389" y="86" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">Local Search</text>
+  <text x="389" y="102" text-anchor="middle" font-size="10" fill="#166534">从相关实体出发，遍历邻居关系</text>
+  <text x="389" y="116" text-anchor="middle" font-size="9" fill="#22c55e">适合：局部具体问题</text>
+  <rect x="286" y="122" width="206" height="44" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="389" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">Global Search</text>
+  <text x="389" y="154" text-anchor="middle" font-size="10" fill="#166534">使用社区摘要（Map-Reduce）</text>
+  <text x="389" y="168" text-anchor="middle" font-size="9" fill="#22c55e">适合：全局分析问题</text>
+
+  <!-- 结论 -->
+  <rect x="16" y="188" width="488" height="60" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="260" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">GraphRAG vs 朴素 RAG</text>
+  <text x="260" y="224" text-anchor="middle" font-size="11" fill="#4338ca">全局性问题（需理解整个文档集合）：GraphRAG 质量提升 30-70%</text>
+  <text x="260" y="240" text-anchor="middle" font-size="11" fill="#4338ca">局部具体问题：朴素 RAG 已足够，GraphRAG 成本过高</text>
+</svg>

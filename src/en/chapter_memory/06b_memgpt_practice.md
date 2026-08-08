@@ -1,271 +1,317 @@
-# 4.7 Practice: MemGPT / Letta Memory Architecture
+# 4.7 Hands-On: MemGPT/Letta Memory Architecture Engineering Practice
 
-> **Goal**: Implement a production-oriented layered-memory Agent based on the core ideas of MemGPT, and understand how the Letta framework turns these ideas into an engineering system.
-
----
-
-## From Paper to Engineering
-
-Section 4.6 introduced the core idea of MemGPT: treat the LLM context window like operating-system memory. The Agent keeps critical information in a small always-visible context, stores less urgent information in external memory, and learns to edit or retrieve memory when needed.
-
-The engineering version of MemGPT was later renamed **Letta**. Letta provides a complete framework for Agent memory management, but understanding the underlying design is still essential when you need custom behavior in production.
+> **Section Goal**: Based on the core ideas of MemGPT, implement a production-grade hierarchical memory Agent and understand how to use the Letta framework.
 
 ---
 
-## Layered Memory Architecture
+## From Paper to Engineering: Key Insights from MemGPT
 
-A practical MemGPT-style Agent usually has three memory layers:
+Section 4.6 introduced the core ideas of the MemGPT paper — treating the LLM's context as analogous to an operating system's memory, using hierarchical storage and self-editing to break through context window limitations. This section turns those core ideas into runnable code.
 
-1. **Core Memory**: always included in the prompt; stores stable user profile, preferences, and active goals.
-2. **Working Memory**: short-term information related to the current task or conversation.
-3. **Archive Memory**: external persistent storage; searched on demand.
+MemGPT's engineered version **Letta** (renamed in 2025) provides a complete Agent memory management framework, but understanding the underlying principles is essential for custom development.
+
+---
+
+## Hierarchical Memory Architecture Implementation
+
+### The Division of Labor in Three-Layer Memory
+
+MemGPT draws an analogy between the LLM's context and an operating system's memory, adopting a "memory hierarchy" approach:
+
+| Layer | What It Stores | OS Analogy | Key Characteristics |
+|---|---|---|---|
+| **Core Memory** | User name, long-term preferences, key facts, current goals | Resident memory / Registers | Always in the Prompt; serves as the model's "common knowledge base" |
+| **Working Memory** | Recent context related to the current task | RAM | Limited capacity; keeps only the most recent entries |
+| **Archive Memory** | Large volumes of historical content, long documents | Disk / External storage | Not in the Prompt; retrieved **on demand** |
+
+**Why Layering Is Necessary**: The context window is a limited and expensive resource. If all history is stuffed into the Prompt, it quickly exceeds the window and becomes full of noise. The core idea of layering is — **keep the most important, most frequently used information resident (Core), temporarily buffer secondary information (Working), and place massive but infrequently used information externally for on-demand retrieval (Archive)**.
+
+### Core Implementation
+
+The key to the entire Agent lies in the `chat` method: auto-manage memory → build Prompt with memory → invoke the LLM → handle memory tool calls.
 
 ```python
-from openai import OpenAI
-import json
-import time
-
-client = OpenAI()
-
-
 class LayeredMemoryAgent:
-    """A layered-memory Agent inspired by MemGPT.
-
-    Memory layers:
-    1. Core Memory: always in context; stores the most important facts.
-    2. Working Memory: short-term task context.
-    3. Archive Memory: external storage retrieved on demand.
-    """
+    """A hierarchical memory Agent with three layers: Core + Working + Archive."""
 
     def __init__(self, model: str = "gpt-4.1"):
         self.model = model
+        # Always in the Prompt: holds user profile and key preferences
         self.core_memory = {
-            "user_name": "",
-            "preferences": [],
-            "key_facts": [],
-            "active_goals": [],
+            "user_name": "", "preferences": [],
+            "key_facts": [], "active_goals": []
         }
+        # Short-term information related to the current task
         self.working_memory = []
-        self.max_working_items = 10
+        # Persistent storage, simulating a vector database
         self.archive_memory = []
+        # Conversation history
         self.conversation = []
-```
 
-The key design principle is that **not all information deserves the same memory level**. Stable, frequently used facts belong in core memory; temporary task details belong in working memory; long-tail historical facts belong in archive memory.
+    def chat(self, user_input: str) -> str:
+        """Main conversation entrypoint: a 5-step pipeline."""
+        # 1. Auto memory management: check if memory needs updating
+        self._auto_manage_memory(user_input)
+        # 2. Build the Prompt with memory
+        messages = self._build_messages(user_input)
+        # 3. Call the LLM
+        response = client.chat.completions.create(
+            model=self.model, messages=messages,
+            max_tokens=2000, tools=self._get_memory_tools()
+        )
+        # 4. Process tool calls (memory self-editing)
+        reply = self._process_response(response)
+        # 5. Save to conversation history
+        self.conversation.append({"role": "user", "content": user_input})
+        self.conversation.append({"role": "assistant", "content": reply})
+        return reply
 
----
-
-## Building Messages With Memory
-
-```python
-class LayeredMemoryAgent(LayeredMemoryAgent):
     def _build_messages(self, user_input: str) -> list[dict]:
-        core_memory_text = json.dumps(self.core_memory, ensure_ascii=False, indent=2)
-        working_memory_text = json.dumps(self.working_memory[-self.max_working_items:], ensure_ascii=False, indent=2)
+        """Inject core memory + recent working memory into the System Prompt at all times."""
+        system = f"""You are an Agent with hierarchical memory capabilities.
+## Core Memory (Always Remember)
+{json.dumps(self.core_memory, ensure_ascii=False, indent=2)}
+## Working Memory (Current Task Related)
+{json.dumps(self.working_memory[-5:], ensure_ascii=False, indent=2)}
+## Memory Management Instructions
+- Information in core memory is your "common knowledge" — always use it as the basis for your answers
+- When asked about archived content, use the search_archive tool to retrieve it
+- When you need to remember new information, use the update_core_memory tool
+- When the current conversation produces content worth long-term storage, use the archive_content tool"""
+        recent = self.conversation[-20:]  # Sliding window: last 10 turns
+        return [{"role": "system", "content": system}] + recent \
+             + [{"role": "user", "content": user_input}]
 
-        system_prompt = f"""
-You are a helpful Agent with a layered memory system.
-
-Core Memory, always visible:
-{core_memory_text}
-
-Working Memory, current task context:
-{working_memory_text}
-
-Memory policy:
-- Save stable user preferences to core memory.
-- Save temporary task details to working memory.
-- Move old but potentially useful information to archive memory.
-- Retrieve archive memory when the current question depends on past context.
-"""
-
-        messages = [{"role": "system", "content": system_prompt}]
-        messages.extend(self.conversation[-8:])
-        messages.append({"role": "user", "content": user_input})
-        return messages
+    # Remaining methods (_auto_manage_memory / _get_memory_tools /
+    # _process_response / _search_archive) — see full implementation in the repo
 ```
 
-This prompt makes the memory structure explicit. The model does not need to guess where memory lives; it sees the boundaries and can use tools to update memory.
+> 📦 **Full code (~250 lines) is available in the repo** at `examples/chapter04/layered_memory_agent.py`, including the auto memory extraction prompt, schemas for 3 memory management tools, and tool call dispatch logic.
+
+### Usage Example
+
+```python
+agent = LayeredMemoryAgent()
+
+# Round 1: User introduces themselves
+agent.chat("Hello! My name is Xiao Ming. I'm a data scientist, and I like using Python")
+
+# Round 2: User expresses a preference
+agent.chat("I prefer concise answers, not too wordy")
+
+# Round 3: User talks about work
+agent.chat("I'm working on a customer churn prediction project using XGBoost")
+
+# Round 4: Verify that memory is retained
+print(agent.chat("What project did I say I was working on?"))
+# The Agent should recall "customer churn prediction project" from core memory
+```
+
+Across these four rounds, **core memory automatically captures** the user's name ("Xiao Ming"), identity ("data scientist"), preference ("concise answers"), and project ("customer churn prediction"). Even if the Agent restarts in the fifth round, as long as core memory is persisted, it can answer correctly.
 
 ---
 
-## Memory Editing Tools
+## Quick Start with the Letta Framework
 
-A MemGPT-style Agent should be able to edit memory through tools rather than by silently changing hidden state.
+Letta (formerly MemGPT) is a commercial framework created by the paper's authors, providing complete hierarchical memory management:
 
 ```python
-class LayeredMemoryAgent(LayeredMemoryAgent):
-    def _get_memory_tools(self) -> list[dict]:
-        return [
-            {
-                "type": "function",
-                "function": {
-                    "name": "update_core_memory",
-                    "description": "Update stable user profile, preferences, key facts, or active goals.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "field": {
-                                "type": "string",
-                                "enum": ["user_name", "preferences", "key_facts", "active_goals"],
-                            },
-                            "value": {"type": "string"},
-                            "operation": {"type": "string", "enum": ["set", "append", "remove"]},
-                        },
-                        "required": ["field", "value", "operation"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "archive_memory",
-                    "description": "Store information in long-term archive memory.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "content": {"type": "string"},
-                            "tags": {"type": "array", "items": {"type": "string"}},
-                        },
-                        "required": ["content"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "search_archive_memory",
-                    "description": "Search long-term archive memory for relevant past information.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {"query": {"type": "string"}, "top_k": {"type": "integer"}},
-                        "required": ["query"],
-                    },
-                },
-            },
-        ]
+# pip install letta
+from letta import create_client
+
+letta_client = create_client()
+
+# Create an Agent with hierarchical memory
+agent = letta_client.create_agent(
+    name="memory_assistant",
+    memory_blocks=[
+        {"label": "persona", "value": "You are a helpful AI assistant skilled at remembering user information."},
+        {"label": "human",   "value": "User information to be filled in"},   # Agent auto-updates this
+    ],
+    llm="gpt-4.1",
+    embedding="text-embedding-3-small",
+)
+
+# Chat with the Agent
+response = letta_client.send_message(
+    agent_id=agent.id,
+    message="Hello! My name is Xiao Hong, and I'm doing NLP research",
+    role="user"
+)
+# The Agent will automatically update "Xiao Hong" and "NLP research" into the human memory block
 ```
 
-The tool interface creates an audit trail: every memory change has a structured reason and can be logged, reviewed, or rolled back.
+> 💡 **When to use Letta instead of building your own**:
+> - Multi-user management, memory persistence, audit logs, model routing — Letta has already done these "non-core" capabilities
+> - If "hierarchical memory" is your project's core innovation, building it yourself gives you more control
+> - For simple prototypes or learning purposes, Letta is recommended (production-grade stability)
 
 ---
 
-## Implementing Memory Operations
+## Memory Decay and Forgetting Engineering
+
+The human brain doesn't remember everything — important things are retained, unimportant things are gradually forgotten. An Agent's memory should work the same way:
 
 ```python
-class LayeredMemoryAgent(LayeredMemoryAgent):
-    def update_core_memory(self, field: str, value: str, operation: str = "append") -> str:
-        if field not in self.core_memory:
-            raise ValueError(f"Unknown core memory field: {field}")
+import math, time
 
-        if operation == "set":
-            self.core_memory[field] = value
-        elif operation == "append":
-            if not isinstance(self.core_memory[field], list):
-                self.core_memory[field] = [self.core_memory[field]] if self.core_memory[field] else []
-            if value not in self.core_memory[field]:
-                self.core_memory[field].append(value)
-        elif operation == "remove":
-            if isinstance(self.core_memory[field], list) and value in self.core_memory[field]:
-                self.core_memory[field].remove(value)
+# Memory types and their decay rates: identity never decays, trivial info decays rapidly
+DECAY_RATES = {
+    "identity": 0.0,    # Never decays
+    "preference": 0.01, # Slow decay
+    "fact": 0.05,       # Medium decay
+    "context": 0.1,     # Fast decay
+    "trivial": 0.3,     # Very fast decay
+}
 
-        return f"Updated core memory: {field}"
+class MemoryWithDecay:
+    """A memory system with decay + access reinforcement."""
 
-    def archive_memory_item(self, content: str, tags: list[str] | None = None) -> str:
-        item = {
-            "id": f"mem_{len(self.archive_memory) + 1}",
-            "content": content,
-            "tags": tags or [],
-            "created_at": time.time(),
-        }
-        self.archive_memory.append(item)
-        return item["id"]
+    def __init__(self):
+        self.memories: list[dict] = []  # Each entry has content/type/importance/created_at/access_count
 
-    def search_archive_memory(self, query: str, top_k: int = 5) -> list[dict]:
-        query_terms = set(query.lower().split())
+    def add(self, content: str, type: str, importance: float = 0.5):
+        self.memories.append({
+            "content": content, "type": type, "importance": importance,
+            "created_at": time.time(), "access_count": 0
+        })
+
+    def retrieve(self, query: str, top_k: int = 5) -> list[dict]:
+        """Comprehensively considers: relevance, time decay, access reinforcement."""
         scored = []
-        for item in self.archive_memory:
-            score = len(query_terms & set(item["content"].lower().split()))
-            score += len(query_terms & set(" ".join(item["tags"]).lower().split()))
-            if score > 0:
-                scored.append((score, item))
-        scored.sort(key=lambda pair: pair[0], reverse=True)
-        return [item for _, item in scored[:top_k]]
+        for mem in self.memories:
+            relevance = self._compute_relevance(query, mem["content"])
+            # Time decay: older memories have lower strength
+            age_hours = (time.time() - mem["created_at"]) / 3600
+            decay = math.exp(-DECAY_RATES.get(mem["type"], 0.05) * age_hours)
+            # Access reinforcement: frequently retrieved memories are harder to forget
+            access_bonus = min(0.2, mem["access_count"] * 0.02)
+            # Composite score
+            score = relevance * 0.4 + mem["importance"] * decay * 0.4 + access_bonus * 0.2
+            scored.append((score, mem))
+
+        scored.sort(key=lambda x: x[0], reverse=True)
+        results = []
+        for score, mem in scored[:top_k]:
+            mem["access_count"] += 1   # Increment access count (reinforce memory)
+            results.append({
+                "content": mem["content"], "score": score,
+                "type": mem["type"], "age_hours": (time.time() - mem["created_at"]) / 3600
+            })
+        return results
+
+    def cleanup(self, threshold: float = 0.01) -> str:
+        """Clean up memories that have decayed below the threshold."""
+        before = len(self.memories)
+        self.memories = [m for m in self.memories if self._current_strength(m) > threshold]
+        return f"Cleaned up {before - len(self.memories)} decayed memories, {len(self.memories)} remaining"
 ```
 
-In production, `archive_memory` should usually be backed by a vector database, a relational database, or a hybrid search engine. The in-memory implementation above is only for understanding the control flow.
+### Three Things Worth Discussing
+
+1. **"Remember everything" is wrong**: Storage cost is a secondary concern — **retrieval quality** is the core issue. Trivial memories crowd out top_k slots, causing important information to be missed.
+2. **Graded decay rates reflect the value difference of information**: Identity information is almost always useful, while trivial information quickly loses value — forgetting is not a flaw, but an active information filtering mechanism.
+3. **Access reinforcement complements pure time-based decay**: Frequently retrieved memories receive a bonus ("the more you recall, the stronger it gets"), simulating the brain's memory consolidation.
 
 ---
 
-## Automatic Memory Management
+## Summary
 
-The Agent can proactively decide whether a user message contains memory-worthy information.
+| Concept | Description |
+|---|---|
+| Hierarchical Memory | Three layers: Core + Working + Archive, corresponding to OS memory hierarchy |
+| Self-Managed Memory | The Agent actively manages its own memory through tool calls (MemGPT's core idea) |
+| Letta Framework | MemGPT's commercial version, providing complete hierarchical memory management |
+| Memory Decay | Different memory types have different decay rates; important memories never decay |
+| Access Reinforcement | Frequently retrieved memories are harder to forget (simulating the brain's "retrieval reinforcement") |
+
+> 📖 **Further Reading**:
+> - Packer et al. "MemGPT: Towards LLMs as Operating Systems." arXiv:2310.08560, 2023.
+> - Letta Documentation. https://docs.letta.com, 2025.
+> - Park et al. "Generative Agents: Interactive Simulacra of Human Behavior." UIST, 2023.
+
+---
+
+## 📝 Chapter Exercises
+
+**Exercise 1 (Concept)**: MemGPT draws an analogy between the LLM's context and an operating system's memory. The hierarchical memory Agent implemented in this section has three layers: Core Memory, Working Memory, and Archive Memory. Please explain in your own words what each layer stores, why this layering is necessary, and what operating system concept each layer corresponds to.
+
+<details>
+<summary>Reference Answer</summary>
+
+The division of labor across the three memory layers:
+
+| Layer | What It Stores | OS Analogy | Key Characteristics |
+|---|---|---|---|
+| **Core Memory** | User name, long-term preferences, key facts, current goals | Resident memory / Registers | **Always** in the Prompt; serves as the model's "common knowledge base" |
+| **Working Memory** | Recent context related to the current task | RAM | Limited capacity; keeps only the most recent entries |
+| **Archive Memory** | Large volumes of historical content, long documents | Disk / External storage | Not in the Prompt; retrieved **on demand** |
+
+**Why Layering Is Necessary:** The context window is a limited and expensive resource. If all history is stuffed into the Prompt, it quickly exceeds the window and becomes full of noise. The core idea of layering is — **keep the most important, most frequently used information resident (Core), temporarily buffer secondary information (Working), and place massive but infrequently used information externally for on-demand retrieval (Archive)**. This is exactly the operating system's "memory hierarchy (registers/RAM/disk)" approach: use limited fast storage for the hottest data, and place cold data in slow, high-capacity storage.
+
+This both breaks through the physical limits of the context window and ensures that critical information (e.g., "the user is working on a customer churn prediction project") is never forgotten.
+
+</details>
+
+**Exercise 2 (Analysis)**: In this section's memory decay mechanism, the "identity" memory type has a decay rate of 0.0 (never decays), while the "trivial" type has a rate of 0.3 (very fast decay). A student says: "Since storage costs keep dropping, why not just never decay anything and remember everything — that seems like the safest approach." Is this idea correct? Please analyze it in terms of retrieval quality.
+
+<details>
+<summary>Reference Answer</summary>
+
+This idea is **incorrect**. The problem is not storage cost, but **retrieval quality and context noise**.
+
+- **"Remembering everything" drowns retrieval in noise**: The number of memories an Agent can place into context at each decision point is limited (top_k). If trivial information like "the user had a cup of coffee today" competes in ranking with critical information like "the user's name is Xiao Ming" or "the current project is customer churn prediction," trivial memories may crowd out valuable slots, causing truly important information to be missed.
+- **The human brain works the same way**: At the beginning of this section, it's stated that "the human brain doesn't remember everything — important things are retained, unimportant things are gradually forgotten." Forgetting is not a flaw, but an **active information filtering mechanism**.
+- **Graded decay rates reflect the value difference of information**: Identity information is almost always useful, so it doesn't decay; trivial information quickly loses value, so letting it decay rapidly and be cleaned up by `cleanup()` maintains the signal-to-noise ratio of the memory store.
+- This section also designed **access reinforcement** (access_count): frequently retrieved memories receive a bonus and are harder to forget — this simulates the brain's "the more you recall, the stronger it gets" property, complementing pure time-based decay.
+
+So the correct approach is **selective forgetting**: keep what's important, eliminate what's trivial, and reinforce what's repeatedly used. This way, what gets retrieved is truly relevant, high-quality memory.
+
+</details>
+
+**Exercise 3 (Hands-On)**: In this section's `MemoryWithDecay`, `_compute_relevance` uses simple "keyword overlap" to calculate relevance, which is very unfriendly to Chinese and synonyms. Please describe its shortcomings and write out the approach and core code for refactoring it to use **vector similarity (Embedding)**.
+
+<details>
+<summary>Reference Answer</summary>
+
+**Shortcomings of keyword overlap:**
+- Only matches **literally identical** words; cannot understand semantics. A query for "project" won't match "customer churn prediction work" because there are no shared words.
+- Particularly unfriendly to Chinese: unlike English, Chinese doesn't use spaces for natural word segmentation, and `content.split()` cannot produce meaningful tokens.
+- Cannot handle synonyms, hypernyms, or hyponyms (e.g., "phone" vs. "smartphone").
+
+**Approach for refactoring with Embedding:** Encode both the query and memory content as vectors, and use **cosine similarity** to measure semantic closeness — semantically similar vectors are close in vector space, even when they share no words in common.
 
 ```python
-class LayeredMemoryAgent(LayeredMemoryAgent):
-    def _auto_manage_memory(self, user_input: str) -> None:
-        """A lightweight heuristic before invoking the model."""
-        lower = user_input.lower()
+from sentence_transformers import SentenceTransformer
+import numpy as np
 
-        if "remember" in lower or "i prefer" in lower or "my name is" in lower:
-            self.working_memory.append({
-                "type": "memory_candidate",
-                "content": user_input,
-                "created_at": time.time(),
-            })
+class MemoryWithDecay:
+    def __init__(self):
+        self.memories = []
+        self.embedder = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
-        if len(self.working_memory) > self.max_working_items:
-            old_items = self.working_memory[:-self.max_working_items]
-            self.working_memory = self.working_memory[-self.max_working_items:]
-            for item in old_items:
-                self.archive_memory_item(
-                    content=json.dumps(item, ensure_ascii=False),
-                    tags=["auto_archived", "working_memory"],
-                )
+    def add(self, content, memory_type, importance=0.5):
+        self.memories.append({
+            "content": content, "type": memory_type, "importance": importance,
+            "created_at": time.time(), "access_count": 0,
+            "embedding": self.embedder.encode(content),   # Cache vector at ingestion time
+        })
+
+    def _compute_relevance(self, query: str, mem: dict) -> float:
+        q_vec = self.embedder.encode(query)
+        m_vec = mem["embedding"]
+        cos = np.dot(q_vec, m_vec) / (np.linalg.norm(q_vec) * np.linalg.norm(m_vec) + 1e-8)
+        return (cos + 1) / 2   # Normalize to [0, 1]
 ```
 
-A production system can replace this heuristic with a classifier that decides:
+**Explanation:**
+- Encode and cache vectors at ingestion time (`add`); during retrieval, only the query needs to be encoded once, avoiding redundant computation.
+- Cosine similarity measures the closeness of direction between two vectors, the standard approach for semantic retrieval; this way, "project" can match "customer churn prediction work."
+- Normalizing to [0, 1] ensures it is on the same scale as `importance × decay` and `access_bonus` in `retrieve`, allowing proper weighted combination.
+- This is essentially applying the idea from Section 4.3, "Long-Term Memory: Vector Databases and Retrieval," to the memory decay system — in real production, Archive Memory is typically implemented using a vector database (e.g., Milvus).
 
-- Should this be remembered?
-- Which memory layer should it enter?
-- Is it sensitive or private?
-- Does it conflict with existing memory?
-- Should the user confirm before saving it?
-
----
-
-## Letta-Style Engineering Principles
-
-Letta turns MemGPT's ideas into a full Agent runtime. The important engineering lessons are:
-
-- **Memory is explicit state**: it should be inspectable, editable, and testable.
-- **Memory operations are tools**: the model should call structured operations rather than mutate hidden state.
-- **Context is managed like a scarce resource**: the Agent must decide what stays visible and what moves out.
-- **Long-term memory needs retrieval**: archive memory is only useful if it can be searched accurately.
-- **Memory requires governance**: user consent, privacy rules, and deletion workflows matter.
+</details>
 
 ---
 
-## Common Pitfalls
-
-| Pitfall | Consequence | Fix |
-|--------|-------------|-----|
-| Saving everything | Memory becomes noisy and expensive | Add memory-worthiness filtering |
-| No deletion path | Incorrect memories keep affecting answers | Support update, remove, and user review |
-| Core memory too large | Prompt becomes bloated | Keep only stable, high-value facts in core memory |
-| No conflict handling | Old facts contradict new facts | Track timestamps and ask for confirmation |
-| No privacy policy | Sensitive information is stored silently | Require consent and redact secrets |
-
----
-
-## Chapter Takeaways
-
-- MemGPT's core idea is to manage LLM context like an operating-system memory hierarchy.
-- Core memory, working memory, and archive memory serve different purposes.
-- Memory editing should be exposed as structured tools for auditability.
-- Letta demonstrates how these ideas become a production Agent runtime.
-- Good memory systems need not only retrieval, but also governance, deletion, and conflict handling.
-
----
-
-*Previous: [4.6 MemGPT: Managing LLM Context Like an Operating System](./06_paper_readings.md)*
+[4.6 Paper Reading: Advances in Memory Systems](./06_paper_readings.md)

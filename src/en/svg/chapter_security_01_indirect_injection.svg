@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 380" width="460" height="380" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <!-- 背景 -->
+  <rect width="460" height="380" rx="12" fill="#fff7f7"/>
+  <!-- 标题 -->
+  <text x="230" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">间接提示注入攻击路径</text>
+
+  <!-- 步骤 1 -->
+  <rect x="50" y="50" width="360" height="46" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="230" y="69" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">① 攻击者控制外部内容</text>
+  <text x="230" y="87" text-anchor="middle" font-size="11" fill="#ef4444">在网页 / 邮件 / PDF / GitHub Issue 中嵌入恶意指令</text>
+
+  <line x1="230" y1="96" x2="230" y2="116" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 步骤 2 -->
+  <rect x="50" y="118" width="360" height="46" rx="8" fill="#ffedd5" stroke="#f97316" stroke-width="1.5"/>
+  <text x="230" y="137" text-anchor="middle" font-size="12" font-weight="bold" fill="#c2410c">② Agent 读取外部内容</text>
+  <text x="230" y="155" text-anchor="middle" font-size="11" fill="#f97316">为完成用户任务，Agent 主动拉取被污染的数据源</text>
+
+  <line x1="230" y1="164" x2="230" y2="184" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 步骤 3 -->
+  <rect x="50" y="186" width="360" height="46" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+  <text x="230" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#a16207">③ 模型误判指令优先级</text>
+  <text x="230" y="223" text-anchor="middle" font-size="11" fill="#eab308">把外部内容里的恶意指令当成更高优先级的系统指令</text>
+
+  <line x1="230" y1="232" x2="230" y2="252" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 步骤 4 -->
+  <rect x="50" y="254" width="360" height="46" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="230" y="273" text-anchor="middle" font-size="12" font-weight="bold" fill="#9d174d">④ Agent 执行恶意操作</text>
+  <text x="230" y="291" text-anchor="middle" font-size="11" fill="#ec4899">发邮件 / 下载文件 / 访问 URL / 提交表单 / 泄露上下文</text>
+
+  <line x1="230" y1="300" x2="230" y2="320" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 步骤 5 -->
+  <rect x="50" y="322" width="360" height="44" rx="8" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+  <text x="230" y="341" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f1d1d">⑤ 攻击完成</text>
+  <text x="230" y="358" text-anchor="middle" font-size="11" fill="#dc2626">攻击者无需直接与 Agent 对话，只需污染数据源</text>
+</svg>

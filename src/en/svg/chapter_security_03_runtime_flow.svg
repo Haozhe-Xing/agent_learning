@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="460" height="420" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="460" height="420" rx="12" fill="#f8fafc"/>
+  <text x="230" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Agent Runtime 架构</text>
+
+  <!-- 用户请求 -->
+  <rect x="155" y="42" width="150" height="38" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="230" y="66" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">用户请求</text>
+  <line x1="230" y1="80" x2="230" y2="98" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 模型决策 -->
+  <rect x="155" y="100" width="150" height="38" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="230" y="124" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca">模型决策</text>
+  <line x1="230" y1="138" x2="230" y2="156" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Agent Runtime 大框 -->
+  <rect x="40" y="158" width="380" height="188" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="230" y="178" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Agent Runtime</text>
+
+  <!-- 5 个控制点 -->
+  <rect x="65" y="188" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="208" text-anchor="middle" font-size="11" fill="#166534">🔧 工具注册与 schema 校验</text>
+
+  <rect x="65" y="224" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="244" text-anchor="middle" font-size="11" fill="#166534">🔐 权限检查与审批</text>
+
+  <rect x="65" y="260" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="280" text-anchor="middle" font-size="11" fill="#166534">📦 沙箱执行与资源限制</text>
+
+  <rect x="65" y="296" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="316" text-anchor="middle" font-size="11" fill="#166534">📋 日志审计与可观测性</text>
+
+  <rect x="65" y="332" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="352" text-anchor="middle" font-size="11" fill="#166534">↩ 结果回传与异常处理</text>
+
+  <line x1="230" y1="346" x2="230" y2="364" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 外部环境 -->
+  <rect x="60" y="366" width="340" height="40" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="230" y="391" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">外部环境：文件 / 网络 / 数据库 / 浏览器 / 代码执行</text>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 280" width="560" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="560" height="280" rx="12" fill="#f8fafc"/>
+  <text x="280" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">管道式 vs Agent 循环架构</text>
+
+  <!-- 管道式 -->
+  <rect x="16" y="46" width="528" height="60" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="280" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">管道式架构（Pipeline）——本章选择</text>
+  <text x="30" y="84" font-size="10" fill="#3b82f6">用户问题</text>
+  <text x="100" y="84" font-size="10" fill="#3b82f6">→ Text-to-SQL</text>
+  <text x="195" y="84" font-size="10" fill="#3b82f6">→ 执行查询</text>
+  <text x="270" y="84" font-size="10" fill="#3b82f6">→ 统计分析</text>
+  <text x="345" y="84" font-size="10" fill="#3b82f6">→ 图表生成</text>
+  <text x="420" y="84" font-size="10" fill="#3b82f6">→ 洞察提取</text>
+  <text x="495" y="84" font-size="10" fill="#3b82f6">→ 报告</text>
+  <text x="280" y="100" text-anchor="middle" font-size="10" fill="#60a5fa">固定顺序 · 可调试 · 延迟可预测</text>
+
+  <!-- Agent 循环 -->
+  <rect x="16" y="118" width="528" height="60" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="280" y="136" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Agent 循环架构（ReAct Loop）</text>
+  <text x="30" y="156" font-size="10" fill="#22c55e">用户问题</text>
+  <text x="100" y="156" font-size="10" fill="#22c55e">→ 思考</text>
+  <text x="150" y="156" font-size="10" fill="#22c55e">→ 选择工具</text>
+  <text x="225" y="156" font-size="10" fill="#22c55e">→ 执行</text>
+  <text x="270" y="156" font-size="10" fill="#22c55e">→ 观察结果</text>
+  <text x="355" y="156" font-size="10" fill="#22c55e">→ 思考</text>
+  <text x="400" y="156" font-size="10" fill="#22c55e">→ ...</text>
+  <text x="440" y="156" font-size="10" fill="#22c55e">→ 最终回答</text>
+  <text x="280" y="172" text-anchor="middle" font-size="10" fill="#4ade80">灵活智能 · 延迟不可控 · 成本更高</text>
+
+  <!-- 对比表 -->
+  <rect x="16" y="190" width="528" height="80" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="280" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">关键对比</text>
+  <text x="30" y="226" font-size="10" fill="#475569">LLM 调用次数：管道式 3 次 vs Agent 循环 5-10+ 次</text>
+  <text x="30" y="242" font-size="10" fill="#475569">单次成本：管道式 ~$0.05 vs Agent 循环 ~$0.15-0.50</text>
+  <text x="30" y="258" font-size="10" fill="#475569">可调试性：管道式每步输出可检查 vs Agent 循环需要完整 trace</text>
+</svg>

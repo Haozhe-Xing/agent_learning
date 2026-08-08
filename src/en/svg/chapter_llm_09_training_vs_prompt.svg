@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 380" width="860" height="380" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L9,4 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="860" height="380" rx="18" fill="#f8fafc"/>
+  <text x="430" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Prompt 调优到底在优化什么？</text>
+  <text x="430" y="58" text-anchor="middle" font-size="13" fill="#64748b">不改模型权重，只改"说明书"——两种完全不同的优化方式</text>
+
+  <!-- 左侧：模型训练 -->
+  <rect x="30" y="80" width="380" height="270" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="220" y="110" text-anchor="middle" font-size="16" font-weight="bold" fill="#1d4ed8">模型训练（改权重）</text>
+
+  <rect x="55" y="125" width="330" height="40" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="220" y="150" text-anchor="middle" font-size="12" fill="#1d4ed8">目标：调整模型内部参数 θ</text>
+
+  <rect x="55" y="180" width="330" height="40" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="220" y="205" text-anchor="middle" font-size="12" fill="#1d4ed8">方法：梯度下降 ∂L/∂θ</text>
+
+  <rect x="55" y="235" width="330" height="40" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="220" y="260" text-anchor="middle" font-size="12" fill="#1d4ed8">代价：GPU × 天，数百万样本</text>
+
+  <rect x="55" y="290" width="330" height="40" rx="8" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="220" y="315" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">效果：模型能力本身变了</text>
+
+  <!-- 右侧：Prompt 调优 -->
+  <rect x="450" y="80" width="380" height="270" rx="14" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="640" y="110" text-anchor="middle" font-size="16" font-weight="bold" fill="#15803d">Prompt 调优（改说明书）</text>
+
+  <rect x="475" y="125" width="330" height="40" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="640" y="150" text-anchor="middle" font-size="12" fill="#15803d">目标：调整 Prompt 文本 P</text>
+
+  <rect x="475" y="180" width="330" height="40" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="640" y="205" text-anchor="middle" font-size="12" fill="#15803d">方法：文本梯度 / 进化搜索</text>
+
+  <rect x="475" y="235" width="330" height="40" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="640" y="260" text-anchor="middle" font-size="12" fill="#15803d">代价：API 调用费，数百样本</text>
+
+  <rect x="475" y="290" width="330" height="40" rx="8" fill="#bbf7d0" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="640" y="315" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">效果：同一模型，更好表现</text>
+
+  <!-- 中间对比 -->
+  <text x="430" y="200" text-anchor="middle" font-size="24" font-weight="bold" fill="#64748b">vs</text>
+
+  <!-- 底部关键区别 -->
+  <rect x="100" y="362" width="660" height="12" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="430" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">类比：模型训练 = 重新培养一个学生，Prompt 调优 = 给同一个学生换更清晰的教材</text>
+</svg>

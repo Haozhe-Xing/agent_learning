@@ -1,41 +1,56 @@
-# Chapter 10: Agentic-RL: Agent Reinforcement Learning Training
+# Chapter 10 Agentic-RL: Agent Reinforcement Learning Training
 
-> 📖 *"If Prompt Engineering is writing an 'instruction manual' for an Agent, then Agentic-RL is letting the Agent figure out the optimal solution through repeated practice."*
+> 📖 *"If Prompt Engineering is writing a 'user manual' for an Agent, then Agentic-RL is letting the Agent figure out the optimal approach through repeated practice."*
 
-## Chapter Overview
+## 🎓 Learning Objectives
 
-In previous chapters, we built Agents using **prompts + tool calling** — all of the Agent's capabilities came from the base model's pre-training knowledge plus carefully designed prompts. This approach is simple and flexible, but has a fundamental bottleneck:
+After completing this chapter, you will be able to:
 
-> **The Agent's capability ceiling = the base model's general capability ceiling.**
+- ✅ Understand the concept and technical pathways of Agentic-RL
+- ✅ Master the implementation of SFT + LoRA supervised fine-tuning
+- ✅ Deeply understand the principles of PPO, DPO, and GRPO reinforcement learning algorithms
+- ✅ Learn about DP / TP / PP / SP / ZeRO distributed training methods
+- ✅ Complete a full SFT + GRPO training pipeline
+- ✅ Understand intra-group sampling, relative advantage, and KL constraints in GRPO/RLVR through minimal runnable demos
+- ✅ Master data construction methods tailored for Agent fine-tuning (tool call trajectories, Gorilla/ToolBench datasets)
+- ✅ Track the latest research developments in the GRPO family, Agent RL, process rewards, and training efficiency optimization from 2025–2026
 
-**Agentic-RL (Agentic Reinforcement Learning)** provides an alternative path: **training models through reinforcement learning to autonomously learn optimal strategies for completing Agent tasks**. Works such as DeepSeek-R1 [1] and DeepSWE [2] have demonstrated that RL-trained models can develop reasoning strategies that never appeared in the training data, significantly surpassing pure prompt approaches in reasoning and tool use capabilities.
-
-## What You'll Learn
-
-| Section | Content | Key Takeaway |
-|---------|---------|-------------|
-| 11.1 | What Is Agentic-RL | Understand the essential difference between Agentic-RL and traditional post-training; master MDP framework modeling |
-| 11.2 | SFT + LoRA Basic Training | Master the formal principles of supervised fine-tuning and LoRA parameter-efficient training |
-| 11.3 | PPO: Proximal Policy Optimization | Starting from policy gradients, systematically understand importance sampling, advantage functions, GAE, and the Clip mechanism |
-| 11.4 | DPO: Direct Preference Optimization | Master the complete mathematical derivation from RLHF to DPO; understand the implicit reward concept |
-| 11.5 | GRPO/GSPO + Reward Function Design | Understand the principle of intra-group comparison replacing the Critic; master GSPO's sequence-level optimization improvements; multi-dimensional reward function design and reward hacking defense |
-| 11.6 | Practice: Complete Training Pipeline | Complete a full Agentic-RL training from data preparation to model deployment based on GSM8K |
-| 11.7 | Latest Research Progress (2025–2026) | Survey frontier work including DeepSeek-R1, DAPO, VAPO, SAR; stay current with the field |
-
-## Prerequisites
-
-- Understanding of basic LLM working principles (Chapter 3)
-- Familiarity with Python and PyTorch basics
-- Basic concepts in machine learning / deep learning
+---
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 2: LLM Fundamentals](../chapter_llm/README.md)
-> Recommended but not required: [Chapter 5: Planning and Reasoning](../chapter_planning/README.md), [Appendix E: KL Divergence Explained](../appendix/kl_divergence.md)
+> **Prerequisites**: [Chapter 2: Large Language Model Foundations](../chapter_llm/README.md)
+> Recommended but not required: [Chapter 5: Planning & Reasoning](../chapter_planning/README.md), [Appendix E: KL Divergence Explained](../appendix/kl_divergence.md)
 >
-> **Recommended Next**:
-> - 👉 [Chapter 12: LangChain](../chapter_langchain/README.md) — quickly practice with your trained model using a framework
-> - 👉 [Chapter 18: Evaluation and Optimization](../chapter_evaluation/README.md) — evaluate Agent performance after RL training
+> **Recommended Next Steps**:
+> - 👉 [Chapter 12: LangChain In-Depth Practice](../chapter_langchain/README.md) — Quickly put your trained model into practice with frameworks
+> - 👉 [Chapter 18: Agent Evaluation and Optimization](../chapter_evaluation/README.md) — Evaluate the effectiveness of RL-trained Agents
+
+---
+
+## Chapter Overview
+
+In previous chapters, we built Agents using **prompts + tool calling** — all of the Agent's capabilities came from the base model's pre-training knowledge combined with carefully designed prompts. This approach is simple and flexible, but it has a fundamental bottleneck:
+
+> **The upper bound of an Agent's capability = the upper bound of the base model's general capability.**
+
+**Agentic-RL (Agentic Reinforcement Learning)** provides an alternative path: **through reinforcement learning training, the model autonomously learns the optimal policy for completing Agent tasks.** Works such as DeepSeek-R1 [1] and DeepSWE [2] have demonstrated that RL-trained models can exhibit reasoning strategies that never appeared in the training data, significantly outperforming pure prompt-based approaches in reasoning and tool-use capabilities.
+
+## 📚 Chapter Structure
+
+| Section | Content | Key Takeaways |
+|---------|---------|--------------|
+| 10.1 | What is Agentic-RL | Understand the essential differences between Agentic-RL and traditional post-training, master the MDP framework modeling approach |
+| 10.2 | SFT + LoRA Basic Training | Master the formal principles of supervised fine-tuning and LoRA parameter-efficient training methods |
+| 10.2b | Distributed Training Fundamentals | DP / TP / PP / SP / ZeRO distributed training methods |
+| 10.3 | PPO: Proximal Policy Optimization | Starting from policy gradients, systematically understand importance sampling, advantage functions, GAE, and the Clip mechanism |
+| 10.4 | DPO: Direct Preference Optimization | Master the complete mathematical derivation from RLHF to DPO, understand the idea of implicit rewards |
+| 10.5 | GRPO/GSPO + Reward Function Design | Understand the principle of intra-group comparison replacing the Critic, along with multi-dimensional reward function design and reward hacking defense |
+| 10.6 | Hands-On: Complete Training Pipeline | First run through the core mechanisms with a minimal GRPO/RLVR demo, then complete the full training from data preparation to model deployment based on GSM8K |
+| 10.7 | Latest Research Developments (2025–2026) | Survey cutting-edge works including DeepSeek-R1, DAPO, VAPO, SAR, T-STAR, UCPO, DelTA, SRPO, GROW, and grasp the technical landscape of the GRPO family and Agent RL |
+| 10.8 | Fine-Tuning Tailored for Agents | Tool call data construction, three major open-source datasets (Gorilla/ToolBench/AgentInstruct), Agent SFT-specific configurations |
+
+> 📌 **Extended Reading**: The original 10.9 Agentic Data Flywheel, original 10.10/10.11 Self-Evolution Agent, and self-evolution frontier content have been independently expanded into [Chapter 11: Self-Evolution and Continual Learning](../chapter_self_evolving/README.md). It is recommended to continue reading after completing this chapter.
 
 ---
 
