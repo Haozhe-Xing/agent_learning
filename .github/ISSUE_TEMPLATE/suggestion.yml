@@ -1,0 +1,46 @@
+name: 💡 Suggestion / 内容建议
+description: Request a new topic, chapter, diagram, or paper / 希望新增主题、章节、图解或论文
+title: "[Suggestion] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The roadmap is reader-driven — requests here genuinely shape what gets written next.
+
+        路线图由读者驱动 —— 这里的请求会真实影响接下来写什么。
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you asking for? / 你希望新增什么
+      options:
+        - A topic that's missing / 缺少某个主题
+        - Deeper coverage of an existing topic / 现有主题讲得不够深
+        - A diagram to explain something / 希望某处配图
+        - A paper worth covering / 值得收录的论文
+        - A runnable example or template / 可运行的示例或模板
+        - Other / 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: Describe it / 具体描述
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it matter? / 为什么重要
+      description: What problem were you trying to solve when you noticed this gap? / 你是在解决什么问题时发现这个缺口的？
+    validations:
+      required: true
+
+  - type: input
+    id: refs
+    attributes:
+      label: Reference links (optional) / 参考链接（可选）
+      description: arXiv, docs, repo, blog post… / 论文、文档、仓库、博客…

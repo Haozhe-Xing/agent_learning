@@ -19,6 +19,7 @@ additional-css = ["theme/custom.css"]
 no-section-label = true
 git-repository-url = "https://github.com/Haozhe-Xing/agent_learning"
 git-repository-icon = "fa-github"
+edit-url-template = "https://github.com/Haozhe-Xing/agent_learning/edit/main/src/zh/{path}"
 
 [output.html.print]
 enable = false

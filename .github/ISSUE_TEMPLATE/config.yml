@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Read the book / 在线阅读
+    url: https://Haozhe-Xing.github.io/agent_learning/
+    about: The full book, bilingual / 完整双语在线书
+  - name: 💬 Ask a question / 提问讨论
+    url: https://github.com/Haozhe-Xing/agent_learning/discussions
+    about: General Agent questions belong in Discussions / 一般性 Agent 问题请到 Discussions

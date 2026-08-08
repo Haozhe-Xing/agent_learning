@@ -1,0 +1,57 @@
+name: 📖 Content issue /内容问题
+description: An explanation is wrong, outdated, or hard to follow /讲解有错、过时或看不懂
+title: "[Content] "
+labels: ["content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the book. **"This chapter is confusing" is a valid bug report** — unclear explanations are defects, not reader failures.
+
+        感谢帮助改进本书。**「这一章看不懂」是有效的问题报告** —— 讲不清楚是缺陷，不是读者的错。
+
+  - type: input
+    id: location
+    attributes:
+      label: Where? / 位置
+      description: Chapter and section, or a URL / 章节号，或直接贴链接
+      placeholder: "e.g. Ch.7 §7.2 Context Window, or https://.../chapter_context_engineering/02_context_window.html"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type / 类型
+      options:
+        - Factually wrong / 事实错误
+        - Outdated (API/model/framework changed) / 已过时
+        - Confusing explanation / 讲解不清
+        - Code does not run / 代码跑不通
+        - Broken link or missing image / 链接或图片失效
+        - Typo / grammar / 错别字或语法
+        - Other / 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: What's wrong? / 问题是什么
+      description: For "confusing", tell us which sentence or step lost you — that's the most useful signal / 如果是「看不懂」，请指出在哪一句或哪一步卡住了，这是最有价值的信息
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix (optional) / 建议的修正（可选）
+
+  - type: checkboxes
+    id: lang
+    attributes:
+      label: Which version? / 哪个版本
+      options:
+        - label: English (`src/en/`)
+        - label: 中文 (`src/zh/`)
+        - label: Both / 两者都有
