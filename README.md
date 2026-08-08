@@ -1,458 +1,404 @@
 <div align="center">
 
-<img src="readme_img.png" width="900" alt="Agent Learning Roadmap">
+<img src="readme_img.png" width="880" alt="Agent Learning">
 
-<br>
+<h1>Learn AI Agents from Scratch</h1>
 
-# 🤖 Agent Learning: Learn Agent Development from Scratch
+<p><b>The missing textbook between "I can call an LLM API" and "I ship Agents to production."</b></p>
 
-**A practical AI Agent book for Python developers — go from a first working Agent in 30 minutes to evaluated, production-ready Agent systems.**
+<p>
+23 chapters · <b>336 original diagrams</b> · 5 interactive animations · runnable reference implementation<br>
+Bilingual (EN / 中文) · <b>actively tracks new arXiv Agent papers</b>
+</p>
 
-> Go beyond calling a chatbot: understand and connect tool use, RAG, memory, planning, LangGraph, MCP, evaluation, safety, and deployment by building a complete mental model.
+<p>
+<a href="https://Haozhe-Xing.github.io/agent_learning/en/"><img src="https://img.shields.io/badge/📖_Read_the_Book-4CAF50?style=for-the-badge" alt="Read online"></a>
+&nbsp;
+<a href="https://Haozhe-Xing.github.io/agent_learning/en/chapter_setup/04_hello_agent.html"><img src="https://img.shields.io/badge/⚡_First_Agent_in_30min-FF6F00?style=for-the-badge" alt="Quickstart"></a>
+&nbsp;
+<a href="#-full-curriculum"><img src="https://img.shields.io/badge/🗺️_Curriculum-2196F3?style=for-the-badge" alt="Curriculum"></a>
+</p>
 
-**23 chapters · 120+ original diagrams · 5 interactive animations · bilingual online book · daily Agent research tracking**
+<p>
+<a href="https://github.com/Haozhe-Xing/agent_learning/stargazers"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=flat-square&logo=github&color=FFD700" alt="Stars"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="MIT"></a>
+<a href="https://github.com/Haozhe-Xing/agent_learning/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></a>
+<img src="https://img.shields.io/badge/arXiv-tracked_weekly-red?style=flat-square&logo=arxiv" alt="arXiv tracking">
+<img src="https://img.shields.io/badge/lang-EN_|_中文-blue?style=flat-square" alt="Bilingual">
+</p>
 
-<br>
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Stars](https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=social)](https://github.com/Haozhe-Xing/agent_learning)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Haozhe-Xing/agent_learning/pulls)
-[![mdBook](https://img.shields.io/badge/built%20with-mdBook-blue)](https://rust-lang.github.io/mdBook/)
-[![Daily arXiv](https://img.shields.io/badge/Daily-arXiv%20Update-red?logo=arxiv)](https://arxiv.org)
-
-<br>
-
-[<img src="https://img.shields.io/badge/📖_Build_your_first_Agent-4CAF50?style=for-the-badge" alt="Start with your first Agent">](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/🗺️_Choose_a_learning_path-2196F3?style=for-the-badge" alt="Choose a learning path">](#-choose-your-outcome)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_Read_online_(English)-673AB7?style=for-the-badge" alt="Read online in English">](https://Haozhe-Xing.github.io/agent_learning/en/)
+<a href="README_ZH.md">🇨🇳 中文版 README</a> · <a href="https://Haozhe-Xing.github.io/agent_learning/zh/">🇨🇳 在线阅读</a>
 
 </div>
 
-## 🎯 Choose your outcome
+---
 
-| Your goal | What you will be able to do | Start here |
+## Why this repo exists
+
+Most Agent learning resources fall into one of three traps:
+
+|  | The problem |
+| --- | --- |
+| **Awesome-lists** | 500 links, zero structure. You don't know what to read first or how pieces connect. |
+| **Framework docs** | Teach you *LangGraph's API*, not *why stateful graphs beat while-loops*. Knowledge dies with the framework version. |
+| **Blog tutorials** | "Build a RAG chatbot in 10 minutes" — then silence on evaluation, cost, prompt injection, context rot, or why it breaks at step 12. |
+
+**This book is the connective tissue.** It builds one coherent mental model — tools → memory → planning → context → harness → skills → RL → multi-agent → production — where every chapter explains *the problem that forced this technique to exist* before showing code.
+
+<table>
+<tr><td width="33%" valign="top">
+
+### 📐 Diagrams that carry the load
+**336 hand-made SVGs.** Not decoration — architecture diagrams, sequence flows, and state machines that make abstract loops concrete. Most are the fastest path to understanding in their chapter.
+
+</td><td width="33%" valign="top">
+
+### 🔬 Papers, digested
+Every core chapter ends with paper deep-dives: the problem at the time, the mechanism, the engineering takeaway, **and the limitation**. ReAct, Reflexion, MemGPT, GRPO, STaR/V-STaR, HippoRAG, and 100+ more.
+
+</td><td width="33%" valign="top">
+
+### 📡 Never goes stale
+New Agent research from arXiv gets digested and folded into the matching chapters on a rolling basis — typically every few days. The frontier sections you read are **weeks old, not years**.
+
+</td></tr>
+</table>
+
+---
+
+## 🎯 Start where you are
+
+| If you… | Read this path | You'll walk away able to |
 | --- | --- | --- |
-| **Build your first Agent in 30 minutes** | Form a concrete intuition for the perceive-think-act loop and tool use | [Chapter 1: Agent Basics](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/) → [Appendix: Hello Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_setup/04_hello_agent.html) |
-| **Build a useful Agent application** | Combine tool calling, RAG, memory, planning, and context engineering | [Chapter 3: Tool Use](https://Haozhe-Xing.github.io/agent_learning/en/chapter_tools/) → [Chapter 6: RAG](https://Haozhe-Xing.github.io/agent_learning/en/chapter_rag/) |
-| **Ship an Agent to production** | Develop an engineering perspective on evaluation, safety, observability, deployment, and cost | [Chapter 17: Evaluation](https://Haozhe-Xing.github.io/agent_learning/en/chapter_evaluation/) → [Chapter 19: Deployment](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deployment/) |
+| **have never built an Agent** | [Ch.1 What is an Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/) → [Ch.2 LLM Basics](https://Haozhe-Xing.github.io/agent_learning/en/chapter_llm/) → [Hello Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_setup/04_hello_agent.html) | Explain the perceive-think-act loop and run your own tool-using Agent |
+| **can prompt, want to build** | [Ch.3 Tools](https://Haozhe-Xing.github.io/agent_learning/en/chapter_tools/) → [Ch.4 Memory](https://Haozhe-Xing.github.io/agent_learning/en/chapter_memory/) → [Ch.5 Planning](https://Haozhe-Xing.github.io/agent_learning/en/chapter_planning/) → [Ch.6 RAG](https://Haozhe-Xing.github.io/agent_learning/en/chapter_rag/) | Assemble a real application from tool calling, retrieval, memory, and planning |
+| **have a demo that breaks in prod** | [Ch.7 Context Engineering](https://Haozhe-Xing.github.io/agent_learning/en/chapter_context_engineering/) → [Ch.8 Harness](https://Haozhe-Xing.github.io/agent_learning/en/chapter_harness/) → [Ch.18 Evaluation](https://Haozhe-Xing.github.io/agent_learning/en/chapter_evaluation/) → [Ch.19 Security](https://Haozhe-Xing.github.io/agent_learning/en/chapter_security/) | Diagnose context rot, add permission gates, build an eval suite, defend against injection |
+| **want to train Agents, not just prompt them** | [Ch.10 Agentic-RL](https://Haozhe-Xing.github.io/agent_learning/en/chapter_agentic_rl/) → [Ch.11 Self-Evolving](https://Haozhe-Xing.github.io/agent_learning/en/chapter_self_evolving/) | Understand SFT/LoRA, PPO vs DPO vs GRPO, and how data flywheels compound |
+| **need to pick a framework** | [Ch.12 LangChain](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langchain/) → [Ch.13 LangGraph](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langgraph/) → [Ch.14 Framework Landscape](https://Haozhe-Xing.github.io/agent_learning/en/chapter_frameworks/) | Choose deliberately instead of by GitHub star count |
 
-> ⭐ If this path saves you research time and avoids common pitfalls, please Star the repository. It helps more developers discover this actively maintained open-source guide.
-
-<div align="center">
-
-[🐛 Report an issue](https://github.com/Haozhe-Xing/agent_learning/issues) · [💡 Suggest an improvement](https://github.com/Haozhe-Xing/agent_learning/issues/new) · [🇨🇳 中文版 README](README_ZH.md)
-
-</div>
+> 💡 **Don't read linearly.** The [learning-path overview](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/) maps three curated routes (5-chapter fast track / 11-chapter engineer / 8-chapter researcher) through the book.
 
 ---
 
-## 🚀 Auto-Tracking Frontier: Daily arXiv Paper Updates
+## 👀 What it actually looks like
 
-<div align="center">
-
-🤖 **This repository automatically searches arXiv for the latest AI Agent-related papers every day and updates the content accordingly — ensuring you always stay at the cutting edge of research!**
-
-</div>
-
-- 📡 **Daily Automated Search**: A scheduled pipeline scans arXiv daily for new papers on Agent architectures, tool use, memory systems, multi-agent collaboration, reinforcement learning for agents, and more.
-- 📝 **Auto-Updated Content**: Relevant findings are automatically integrated into the corresponding chapters, keeping the book's frontier sections fresh and up-to-date.
-- 🔔 **Never Miss a Breakthrough**: No need to manually track dozens of research feeds — this repo does it for you, so you can focus on learning and building.
-
-> 💡 This means the content you read here is **not static** — it evolves continuously with the latest advances in the AI Agent field.
-
----
-
-## 👥 Who Is This For?
-
-- **Developers** who want to build real AI Agent applications instead of only prompting chatbots
-- **Students and beginners** who need a structured path from LLM basics to Agent systems
-- **LLM application engineers** working with RAG, tool calling, memory, LangGraph, MCP, and evaluation
-- **Researchers and builders** who want to connect frontier Agent papers with engineering practice
-- **Product and startup teams** exploring production-ready Agent workflows
-
----
-
-## 🧭 Learning Paths
-
-| Path | Start Here | Goal |
-| ---- | ---------- | ---- |
-| **Beginner Path** | LLM basics → Prompt Engineering → Function Calling → RAG → Memory → ReAct | Understand how an Agent works end to end |
-| **Engineering Path** | Tool Layer → LangGraph → Evaluation → Security → Deployment → Observability | Build production-ready Agent systems |
-| **Research Path** | ReAct → Reflexion → MemGPT → PPO / DPO / GRPO → Agentic RL | Follow and understand frontier Agent research |
-| **Project Path** | Hello Agent → RAG QA Agent → Memory Agent → Data Analysis Agent → Coding Agent | Learn by building complete applications |
-
----
-
-## ✨ Key Features
-
-- 🎯 **Step by Step**: From LLM fundamentals to multi-Agent systems, each chapter has a clear knowledge progression
-- 💻 **Code First**: Every core concept comes with runnable Python code examples
-- 🎨 **Rich Illustrations**: 120+ hand-drawn SVG architecture diagrams / flowcharts / sequence diagrams for intuitive understanding
-- 🎬 **Interactive Animations**: 5 built-in interactive HTML animations (Perceive-Think-Act cycle, ReAct reasoning, Function Calling, RAG flow, GRPO sampling)
-- 🔬 **Paper Reviews**: Key chapters include frontier paper deep-dives (ReAct, Reflexion, MemGPT, GRPO, etc.)
-- 🏗️ **Complete Projects**: 3 comprehensive hands-on projects (AI Coding Assistant, Intelligent Data Analysis Agent, Multimodal Agent)
-- 🛡️ **Production Ready**: Covers security, evaluation, deployment, and other production essentials
-- 🧪 **Cutting Edge**: Covers Context Engineering, Agentic-RL (GRPO/DPO/PPO), MCP/A2A/ANP, and other 2025–2026 latest advances
-- 📐 **Formula Support**: KaTeX-rendered math formulas for clear reading of policy gradient, KL divergence derivations in RL chapters
-- 🔄 **Continuously Updated**: Tracking the latest changes in LangChain, LangGraph, MCP, and other frameworks
-
----
-
-## 📸 Selected Content Preview
-
-> Below are selected showcases from the book's **120+ hand-drawn SVG illustrations**, all original to this book.
-
-### 🧠 Agent Core Architecture
+> A sample of the **336 original SVGs** — every diagram in this book was drawn for it.
 
 <table>
 <tr>
 <td width="50%" align="center">
-
-**Perceive-Think-Act Loop (Chapter 1)**
-
-<img src="src/en/svg/chapter_intro_03_loop.svg" width="420" alt="Perceive-Think-Act Loop">
-
-<sub>Agent's core mechanism: Perceive environment → LLM reasoning → Execute action → Loop until goal achieved</sub>
-
+<b>Perceive → Think → Act</b> · Ch.1<br>
+<img src="src/en/svg/chapter_intro_03_loop.svg" width="410" alt="Perceive-Think-Act Loop"><br>
+<sub>The loop that separates an Agent from a chatbot</sub>
 </td>
 <td width="50%" align="center">
-
-**ReAct Reasoning Framework (Chapter 5)**
-
-<img src="src/en/svg/chapter_planning_02_react_loop.svg" width="420" alt="ReAct Reasoning Framework">
-
-<sub>Thought → Action → Observation alternating loop, enabling Agents to think while acting</sub>
-
+<b>ReAct reasoning</b> · Ch.5<br>
+<img src="src/en/svg/chapter_planning_02_react_loop.svg" width="410" alt="ReAct Framework"><br>
+<sub>Thought → Action → Observation, interleaved</sub>
 </td>
 </tr>
-</table>
-
-### 🛠️ Tool Calling & RAG
-
-<table>
 <tr>
 <td width="50%" align="center">
-
-**Function Calling Complete Flow (Chapter 3)**
-
-<img src="src/en/svg/chapter_tools_02_function_calling.svg" width="480" alt="Function Calling Flow">
-
-<sub>6-step complete flow from user input to tool invocation to final response, with message structure illustration</sub>
-
+<b>Function Calling, end to end</b> · Ch.3<br>
+<img src="src/en/svg/chapter_tools_02_function_calling.svg" width="470" alt="Function Calling Flow"><br>
+<sub>All 6 hops, including the message shapes people get wrong</sub>
 </td>
 <td width="50%" align="center">
-
-**RAG Retrieval-Augmented Generation (Chapter 6)**
-
-<img src="src/en/svg/chapter_rag_01_rag_flow.svg" width="480" alt="RAG Workflow">
-
-<sub>Offline indexing + Online retrieval dual-phase architecture, making LLM answers evidence-based</sub>
-
+<b>RAG: offline index + online retrieve</b> · Ch.6<br>
+<img src="src/en/svg/chapter_rag_01_rag_flow.svg" width="470" alt="RAG Workflow"><br>
+<sub>Where grounding actually happens</sub>
 </td>
 </tr>
-</table>
-
-### 💾 Memory System & Context Engineering
-
-<table>
 <tr>
 <td width="50%" align="center">
-
-**Three-Layer Memory Architecture (Chapter 4)**
-
-<img src="src/en/svg/chapter_memory_01_memory_types.svg" width="480" alt="Three-Layer Memory Architecture">
-
-<sub>Working memory → Short-term memory → Long-term memory, with important info sinking down and semantic retrieval pulling up</sub>
-
+<b>Three-layer memory</b> · Ch.4<br>
+<img src="src/en/svg/chapter_memory_01_memory_types.svg" width="470" alt="Memory Architecture"><br>
+<sub>What sinks to long-term, what gets pulled back up</sub>
 </td>
 <td width="50%" align="center">
-
-**Prompt Engineering vs Context Engineering (Chapter 7)**
-
-<img src="src/en/svg/chapter_context_01_comparison.svg" width="480" alt="Prompt Engineering vs Context Engineering">
-
-<sub>From "how to say it" to "what the LLM sees" — the paradigm shift of the Agent era</sub>
-
+<b>Prompt vs Context Engineering</b> · Ch.7<br>
+<img src="src/en/svg/chapter_context_01_comparison.svg" width="470" alt="Context Engineering"><br>
+<sub>From "how to phrase it" to "what the model sees"</sub>
 </td>
 </tr>
-</table>
-
-### 🤝 Multi-Agent & Communication Protocols
-
-<table>
 <tr>
 <td width="50%" align="center">
-
-**Three Multi-Agent Communication Patterns (Chapter 15)**
-
-<img src="src/en/svg/chapter_multi_agent_02_communication.svg" width="480" alt="Multi-Agent Communication Patterns">
-
-<sub>Message Queue (async decoupling) / Shared Blackboard (data sharing) / Direct Call (real-time collaboration)</sub>
-
+<b>MCP / A2A / ANP protocol stack</b> · Ch.17<br>
+<img src="src/en/svg/chapter_protocol_03_three_protocols.svg" width="470" alt="Protocol Comparison"><br>
+<sub>Discovery → task collaboration → tool invocation</sub>
 </td>
 <td width="50%" align="center">
-
-**MCP / A2A / ANP Protocol Comparison (Chapter 16)**
-
-<img src="src/en/svg/chapter_protocol_03_three_protocols.svg" width="480" alt="Three Protocol Comparison">
-
-<sub>Three-layer protocol stack: ANP for discovery → A2A for task collaboration → MCP for tool invocation</sub>
-
+<b>GRPO training architecture</b> · Ch.10<br>
+<img src="src/en/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="410" alt="GRPO Architecture"><br>
+<sub>No critic model — advantage via in-group normalization</sub>
 </td>
 </tr>
 </table>
 
-### 🧪 Reinforcement Learning & Frameworks
+### Plus 5 interactive animations
 
-<table>
-<tr>
-<td width="50%" align="center">
+| Animation | Chapter | What it makes clickable |
+| --- | --- | --- |
+| 🔄 Perceive-Think-Act cycle | Ch.1 | Step through a full Agent turn |
+| 💡 ReAct reasoning | Ch.5 | Watch thought and action interleave |
+| 🔧 Function Calling | Ch.3 | Trace the tool round-trip |
+| 📚 RAG pipeline | Ch.6 | Chunk → embed → retrieve → generate |
+| 🎯 GRPO sampling | Ch.10 | In-group sampling and reward normalization |
 
-**GRPO Training Architecture (Chapter 10)**
-
-<img src="src/en/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="420" alt="GRPO Training Architecture">
-
-<sub>No Critic model needed, computes advantage via intra-group normalization, only 1.5× model size in VRAM</sub>
-
-</td>
-<td width="50%" align="center">
-
-**LangGraph Three Core Concepts (Chapter 12)**
-
-<img src="src/en/svg/chapter_langgraph_02_state_node_edge.svg" width="480" alt="LangGraph Core Concepts">
-
-<sub>State (shared state) · Node (processing unit) · Edge (execution flow control)</sub>
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-
-📖 **The above is just a selected preview** — For the full 120+ architecture diagrams + 5 interactive animations, please [**read online**](https://Haozhe-Xing.github.io/agent_learning)
-
-</div>
+<div align="center"><sub>Animations run in the <a href="https://Haozhe-Xing.github.io/agent_learning/en/">online book</a> (and any local build).</sub></div>
 
 ---
 
-## 🎬 Interactive Animations
+## 📚 Full curriculum
 
-This book includes **5 interactive HTML animations** to help you intuitively understand the dynamic processes of core concepts:
+<details open>
+<summary><b>Part I — Getting Started</b> · build correct intuitions before writing code</summary>
 
-| Animation                      | Chapter    | Description                                                                 |
-| ------------------------------ | ---------- | --------------------------------------------------------------------------- |
-| 🔄 **Perceive-Think-Act Cycle** | Chapter 1  | Dynamic demonstration of Agent's core loop                                  |
-| 💡 **ReAct Reasoning Process**  | Chapter 5  | Shows the alternating Thought → Action → Observation process              |
-| 🔧 **Function Calling**         | Chapter 3  | Complete tool invocation flow animation                                     |
-| 📚 **RAG Retrieval Flow**       | Chapter 6  | From document chunking to vector retrieval to answer generation             |
-| 🎯 **GRPO Sampling Process**    | Chapter 10 | Visualization of intra-group multi-output sampling and reward normalization |
+| Ch | Title | Highlights |
+| --- | --- | --- |
+| 1 | [What Is an Agent?](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/) | Agent vs chatbot vs traditional program · perceive-think-act loop · history from symbolic AI to LLMs |
+| 2 | [LLM Fundamentals](https://Haozhe-Xing.github.io/agent_learning/en/chapter_llm/) | Tokenizer/BPE · attention derivation · KV cache · RoPE · prompting strategies · model selection |
 
-> 💡 Interactive animations are only available in the [online e-book](https://Haozhe-Xing.github.io/agent_learning). Local builds can also preview them.
+</details>
+
+<details open>
+<summary><b>Part II — Core Capabilities</b> · the eight abilities every serious Agent needs</summary>
+
+| Ch | Title | Highlights |
+| --- | --- | --- |
+| 3 | [Tool Use / Function Calling](https://Haozhe-Xing.github.io/agent_learning/en/chapter_tools/) | The calling mechanism · custom tools · writing descriptions models actually follow |
+| 4 | [Memory Systems](https://Haozhe-Xing.github.io/agent_learning/en/chapter_memory/) | Short/long/working memory · vector retrieval · MemGPT & Letta architecture |
+| 5 | [Planning & Reasoning](https://Haozhe-Xing.github.io/agent_learning/en/chapter_planning/) | ReAct · task decomposition · reflection · Plan-and-Execute · test-time compute scaling |
+| 6 | [RAG](https://Haozhe-Xing.github.io/agent_learning/en/chapter_rag/) | Chunking · embeddings · reranking · **GraphRAG & Agentic RAG** |
+| 7 | [Context Engineering](https://Haozhe-Xing.github.io/agent_learning/en/chapter_context_engineering/) | Attention budget · context rot · long-horizon strategies · build a context manager |
+| 8 | [Harness Engineering](https://Haozhe-Xing.github.io/agent_learning/en/chapter_harness/) | Six engineering pillars · `AGENTS.md` / `CLAUDE.md` · reliable structured output |
+| 9 | [Skill System](https://Haozhe-Xing.github.io/agent_learning/en/chapter_skill/) | Skill definition & discovery · tool vs skill vs sub-agent · `SKILL.md` ecosystem |
+| 10 | [Agentic-RL](https://Haozhe-Xing.github.io/agent_learning/en/chapter_agentic_rl/) | SFT+LoRA · DP/TP/PP/ZeRO · **PPO vs DPO vs GRPO** · fine-tuning for Agents |
+
+</details>
+
+<details>
+<summary><b>Part III — Frameworks & Self-Evolution</b> · pick tools deliberately</summary>
+
+| Ch | Title | Highlights |
+| --- | --- | --- |
+| 11 | [Self-Evolving Agents](https://Haozhe-Xing.github.io/agent_learning/en/chapter_self_evolving/) | Automatic prompt optimization (APE/OPRO/DSPy/GEPA) · **Agentic data flywheel** |
+| 12 | [LangChain In-Depth](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langchain/) | Beyond the quickstart — where the abstractions help and hurt |
+| 13 | [LangGraph](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langgraph/) | State/node/edge · why FSMs beat while-loops for real Agents |
+| 14 | [Framework Landscape](https://Haozhe-Xing.github.io/agent_learning/en/chapter_frameworks/) | CrewAI · AutoGen · Semantic Kernel · how to actually choose |
+| 15 | [Claude Code Deep Dive](https://Haozhe-Xing.github.io/agent_learning/en/chapter_claude_code/) | From usage to internals · best practices for terminal Agents |
+
+</details>
+
+<details>
+<summary><b>Part IV — Multi-Agent Systems</b> · when one Agent isn't enough</summary>
+
+| Ch | Title | Highlights |
+| --- | --- | --- |
+| 16 | [Multi-Agent Collaboration](https://Haozhe-Xing.github.io/agent_learning/en/chapter_multi_agent/) | Supervisor vs decentralized · message queue / blackboard / direct call |
+| 17 | [Communication Protocols](https://Haozhe-Xing.github.io/agent_learning/en/chapter_protocol/) | **MCP · A2A · ANP** — the emerging three-layer protocol stack |
+
+</details>
+
+<details>
+<summary><b>Part V — Production</b> · the part tutorials skip</summary>
+
+| Ch | Title | Highlights |
+| --- | --- | --- |
+| 18 | [Evaluation & Optimization](https://Haozhe-Xing.github.io/agent_learning/en/chapter_evaluation/) | GAIA · SWE-bench · LLM-as-judge calibration · observability · cost |
+| 19 | [Security & Reliability](https://Haozhe-Xing.github.io/agent_learning/en/chapter_security/) | **Prompt injection** (direct & indirect) · permission sandboxing · fail-closed design |
+| 20 | [Deployment](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deployment/) | API services · streaming · containers · scaling |
+
+</details>
+
+<details>
+<summary><b>Part VI — Capstone Projects</b> + appendices</summary>
+
+| Ch | Title | Highlights |
+| --- | --- | --- |
+| 21 | [AI Coding Assistant](https://Haozhe-Xing.github.io/agent_learning/en/chapter_coding_agent/) | Read a repo, edit files, run tests, self-repair loop |
+| 22 | [Data Analysis Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_data_agent/) | Sandboxed code execution · pipeline vs agentic loop |
+| 23 | [Multimodal Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_multimodal/) | Vision + text tool use |
+
+**Appendices:** [Prompt templates](https://Haozhe-Xing.github.io/agent_learning/en/appendix/prompt_templates.html) · [FAQ](https://Haozhe-Xing.github.io/agent_learning/en/appendix/faq.html) · [Resources](https://Haozhe-Xing.github.io/agent_learning/en/appendix/resources.html) · [Glossary](https://Haozhe-Xing.github.io/agent_learning/en/appendix/glossary.html) · [KL divergence explained](https://Haozhe-Xing.github.io/agent_learning/en/appendix/kl_divergence.html) · [Environment setup](https://Haozhe-Xing.github.io/agent_learning/en/chapter_setup/)
+
+</details>
 
 ---
 
-## 🔥 Core Topics at a Glance
+## ⚡ Quick start
 
-<table>
-<tr>
-<td width="50%">
+**Just want to read?** → [**Open the book**](https://Haozhe-Xing.github.io/agent_learning/en/). Nothing to install.
 
-**🧠 Agent Core Architecture**
-- Perceive → Think → Act Loop
-- ReAct Reasoning Framework
-- Task Decomposition & Planning
-- Reflection & Self-Correction
-
-**🛠️ Tools & Skills**
-- Function Calling Mechanism
-- Custom Tool Design
-- Skill System Construction
-- Tool Description Best Practices
-
-**🧪 Reinforcement Learning Training**
-- SFT + LoRA Basic Training
-- PPO / DPO / GRPO Algorithm Deep-Dive
-- Complete Training Pipeline Hands-on
-- 2025–2026 Latest Research Advances
-
-</td>
-<td width="50%">
-
-**💾 Memory, Knowledge & Context**
-- Short-term / Long-term / Working Memory
-- Vector Databases (Chroma / FAISS)
-- RAG Retrieval-Augmented Generation
-- Context Engineering & Attention Budget
-
-**🤝 Multi-Agent Collaboration & Communication**
-- MCP / A2A / ANP Protocol Stack
-- Supervisor vs Decentralized Patterns
-- CrewAI / AutoGen Frameworks
-- LangGraph Stateful Agents
-
-**🛡️ Production Full Pipeline**
-- Evaluation Benchmarks (GAIA / SWE-bench)
-- Security Defense & Sandbox Isolation
-- Containerized Deployment & Streaming
-- Observability & Cost Optimization
-
-</td>
-</tr>
-</table>
-
----
-
-## 🚀 Quick Start
-
-### Local Build
+<details>
+<summary><b>Build it locally</b> (mdBook)</summary>
 
 ```bash
-# Install mdBook (choose one)
-cargo install mdbook
-# Or macOS: brew install mdbook
+# 1. Install mdBook + KaTeX plugin
+cargo install mdbook mdbook-katex
+# macOS alternative: brew install mdbook
 
-# Install mdbook-katex plugin (for math formula rendering)
-cargo install mdbook-katex
-
-# Clone the repository
+# 2. Clone and serve (builds EN + 中文, port 3000)
 git clone https://github.com/Haozhe-Xing/agent_learning.git
 cd agent_learning
-
-# Build both Chinese and English versions and start unified server (default port 3000)
 ./serve.sh
 ```
 
-After starting, visit:
+| URL | Content |
+| --- | --- |
+| `http://localhost:3000` | Language picker |
+| `http://localhost:3000/en/` | English book |
+| `http://localhost:3000/zh/` | 中文版 |
 
-- 🌐 **Language Selection Home**: `http://localhost:3000`
-- 🇨🇳 **Chinese Version**: `http://localhost:3000/zh/`
-- 🇺🇸 **English Version**: `http://localhost:3000/en/`
+</details>
 
-### Environment Setup (For Code Practice)
+<details>
+<summary><b>Run the code</b> (Python 3.11+)</summary>
 
 ```bash
-# Python 3.11+
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install core dependencies
+python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install langchain langchain-openai langgraph openai anthropic
-
-# Configure API Key
-export OPENAI_API_KEY="your-key-here"
+export OPENAI_API_KEY="sk-..."
 ```
 
----
+The repo also ships **`reference-agent/`** — a minimal, dependency-light Agent implementation (loop, tool registry, memory, permission gate) used as the shared baseline across the hands-on chapters. Read it when framework abstractions start feeling like magic.
 
-## 📊 Technology Stack
+</details>
+
+<div align="center">
 
 ![Python](https://img.shields.io/badge/Python_3.11+-3776AB?style=flat&logo=python&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat&logo=langchain&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?style=flat)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat&logo=openai&logoColor=white)
-![Anthropic](https://img.shields.io/badge/Anthropic_(Claude)-191919?style=flat)
+![Anthropic](https://img.shields.io/badge/Anthropic-191919?style=flat)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
 ![Chroma](https://img.shields.io/badge/ChromaDB-FF6B35?style=flat)
 ![FAISS](https://img.shields.io/badge/FAISS-0467DF?style=flat)
 ![mdBook](https://img.shields.io/badge/mdBook-000000?style=flat&logo=rust&logoColor=white)
-![KaTeX](https://img.shields.io/badge/KaTeX-44CC11?style=flat)
+
+</div>
+
+---
+
+## ❓ FAQ
+
+<details>
+<summary><b>Do I need to know machine learning?</b></summary>
+
+No. Chapters 1–9 require only Python. Math appears in Ch.10 (Agentic-RL) with KaTeX-rendered derivations, and even there the intuition comes before the formulas — plus [Appendix E](https://Haozhe-Xing.github.io/agent_learning/en/appendix/kl_divergence.html) explains KL divergence from scratch. Skip Ch.10–11 entirely if you only want to build.
+
+</details>
+
+<details>
+<summary><b>Will this be obsolete when LangChain ships a breaking change?</b></summary>
+
+Mostly no — and that's deliberate. The book teaches *mechanisms* (why memory needs tiers, why context rots, why tool descriptions are prompts) and treats frameworks as implementations of those mechanisms. Framework-specific chapters (12–15) are the ones that need maintenance; the conceptual core doesn't.
+
+</details>
+
+<details>
+<summary><b>How is this different from a paper-reading list?</b></summary>
+
+Papers here are always attached to an engineering question. Each write-up states the problem at the time, the mechanism, **the takeaway for your code**, and the limitation — then a comparison table synthesizes how a group of papers relate. The goal is that you can *use* the idea, not just cite it.
+
+</details>
+
+<details>
+<summary><b>Is the Chinese version a machine translation?</b></summary>
+
+The book is authored bilingually with both versions maintained in sync (`src/zh/` and `src/en/`), including separate diagram sets. Neither is a raw MT dump of the other.
+
+</details>
+
+<details>
+<summary><b>What does "actively tracks arXiv" actually mean?</b></summary>
+
+arXiv is swept for new Agent-related work (architectures, memory, tools, multi-agent, RL for agents, security), and relevant papers are digested into the "latest advances" section of the matching chapter. In practice this lands every few days rather than strictly every 24h — see the [commit history](https://github.com/Haozhe-Xing/agent_learning/commits/main) for the actual cadence. The point is that frontier sections keep growing without waiting for a book revision.
+
+</details>
 
 ---
 
 ## 🤝 Contributing
 
-All forms of contribution are welcome!
+Every kind of contribution is welcome — typo fixes count.
 
-- 🐛 **Found a bug**: [Submit an Issue](https://github.com/Haozhe-Xing/agent_learning/issues)
-- 💡 **Content suggestions**: [Open a suggestion issue](https://github.com/Haozhe-Xing/agent_learning/issues/new)
-- 📝 **Improve content**: Fork → Edit → Submit PR
-- ⭐ **Support the project**: Give this repo a Star!
-
-### Contributing Guide
+| | |
+| --- | --- |
+| 🐛 Found an error | [Open an issue](https://github.com/Haozhe-Xing/agent_learning/issues) |
+| 💡 Chapter is confusing | [Tell us where](https://github.com/Haozhe-Xing/agent_learning/issues/new) — unclear explanations are bugs |
+| 📝 Want to improve content | Fork → edit → PR |
+| 🌍 Translation fixes | Both `src/zh/` and `src/en/` are open for improvement |
 
 ```bash
-# Fork and clone
 git clone https://github.com/YOUR_USERNAME/agent_learning.git
-
-# Create a feature branch
 git checkout -b feature/improve-chapter-3
-
-# Local preview
-./serve.sh
-
-# Commit and push
-git commit -m "feat: improve Chapter 3 tool calling code examples"
-git push origin feature/improve-chapter-3
+./serve.sh                # preview locally
+git commit -m "feat: clarify tool description examples in Ch.3"
 ```
 
-### Content Organization Conventions
+<details>
+<summary><b>Repo conventions</b></summary>
 
-- Each chapter is placed in a separate directory `src/zh/chapter_xxx/` (Chinese) or `src/en/chapter_xxx/` (English)
-- Chapter overview goes in `README.md`, sections are numbered as `01_xxx.md`, `02_xxx.md`
-- Chinese SVG illustrations go in `src/zh/svg/`, English versions in `src/en/svg/`, naming format: `chapter_xxx_description.svg`
-- Chinese interactive animations go in `src/zh/animations/`, English versions in `src/en/animations/`
+- Chapters live in `src/zh/chapter_xxx/` and `src/en/chapter_xxx/`
+- Chapter overview → `README.md`; sections numbered `01_xxx.md`, `02_xxx.md`
+- Diagrams → `src/{zh,en}/svg/`, named `chapter_<name>_<desc>.svg`
+- Animations → `src/{zh,en}/animations/`
+- Add new pages to `SUMMARY.md` in **both** languages
 
-### Paper Reading Template
+</details>
 
-All paper reading and frontier research sections should follow a consistent structure so that readers can quickly understand why a paper matters, what it contributed at the time, and how it connects to real Agent engineering.
+<details>
+<summary><b>Paper write-up template</b></summary>
 
-Use the following template for each representative paper:
+Frontier sections follow one structure so readers can judge relevance fast:
 
 ```markdown
-### Paper Title: one-sentence explanation of the problem it solves
+### Paper Title: the problem it solves, in one sentence
 
 - **Paper link**:
 - **Code / project link**:
 - **Year / organization**:
-- **Problem addressed at the time**:
+- **Problem at the time**:
 - **Core contribution**:
 - **Method breakdown**:
 - **Engineering insight for Agent systems**:
 - **Limitations**:
 ```
 
-Quality requirements:
+Quality bar: link the primary source · explain the *historical* contribution, not just the abstract · connect it to memory/tools/planning/eval/safety/training · state what it does **not** solve · and after several papers, add a synthesis table instead of leaving a list.
 
-- **Link to the original source**: include the arXiv, conference, official blog, GitHub, or project page whenever available.
-- **Explain historical contribution**: describe what problem the work solved when it appeared, not only what it does.
-- **Connect to engineering practice**: explain how the idea affects Agent memory, tools, planning, evaluation, safety, training, or deployment.
-- **State limitations**: clarify what the paper does not solve, where assumptions are strong, or whether the result is mainly benchmark-driven.
-- **Avoid paper lists without synthesis**: after several papers, add a short comparison table or narrative summary explaining how the works relate to each other.
+</details>
 
 ---
 
-## 📄 License
+## 🗺️ Roadmap
 
-This project is open-sourced under the [MIT License](LICENSE).
+**Done** — ✅ Bilingual mdBook · ✅ 336 original diagrams · ✅ Interactive animations · ✅ Paper deep-dives across core chapters · ✅ Agentic-RL (PPO/DPO/GRPO) · ✅ `reference-agent/` teaching baseline · ✅ Rolling arXiv paper tracking
 
----
+**Next** — ⬜ More runnable end-to-end project templates · ⬜ Agent keyword cheat sheet · ⬜ Diagram gallery index · ⬜ Interview questions & self-check exercises · ⬜ Production template with eval + observability wired in
 
-## 🗺️ Project Roadmap
-
-- [x] Chinese / English online book powered by mdBook
-- [x] 120+ original SVG architecture diagrams and flowcharts
-- [x] Interactive animations for core Agent concepts
-- [x] Paper reading sections for key Agent research
-- [x] Agentic RL chapters covering PPO / DPO / GRPO
-- [ ] Runnable Agent example projects and templates
-- [ ] Agent glossary and keyword cheat sheet
-- [ ] Agent architecture diagram gallery
-- [ ] Interview questions and self-check exercises
-- [ ] Production-ready Agent template with evaluation and observability
-
----
-
-## ⭐ Star History
-
-If this project helps you, please give it a Star ⭐ — it's the greatest encouragement for the author!
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Haozhe-Xing/agent_learning&type=Date)](https://www.star-history.com/#Haozhe-Xing/agent_learning&Date)
+Have a request? [Open an issue](https://github.com/Haozhe-Xing/agent_learning/issues/new) — the roadmap is reader-driven.
 
 ---
 
 <div align="center">
 
-**Built with ❤️, so that every developer can master AI Agent development**
+### ⭐ Star it if it saved you time
 
-[⬆ Back to Top](#-learn-agent-development-from-scratch)
+Not for vanity metrics — Stars are how the next engineer stuck on context rot,
+prompt injection, or "which framework?" finds this repo instead of a 500-link awesome-list.
+
+<a href="https://github.com/Haozhe-Xing/agent_learning"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=for-the-badge&logo=github&color=FFD700&label=Star%20this%20repo" alt="Star"></a>
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Haozhe-Xing/agent_learning&type=Date)](https://www.star-history.com/#Haozhe-Xing/agent_learning&Date)
+
+<br>
+
+**[📖 Read the book](https://Haozhe-Xing.github.io/agent_learning/en/)** · **[🇨🇳 中文版](https://Haozhe-Xing.github.io/agent_learning/zh/)** · **[🐛 Issues](https://github.com/Haozhe-Xing/agent_learning/issues)** · **[📄 MIT License](LICENSE)**
+
+<sub>Built so that understanding Agents doesn't require reading 200 papers and 12 framework changelogs.</sub>
 
 </div>

@@ -1,463 +1,404 @@
 <div align="center">
 
-<img src="readme_img.png" width="900" alt="Agent 学习路线图">
+<img src="readme_img.png" width="880" alt="Agent Learning">
 
-<br>
+<h1>从零开始学 AI Agent</h1>
 
-# 🤖 Agent Learning：从零开始学 Agent
+<p><b>一本填补空白的教科书——介于「我会调用 LLM API」和「我能把 Agent 送上生产环境」之间。</b></p>
 
-**面向 Python 开发者的 AI Agent 实战书：从 30 分钟跑通第一个 Agent，到构建可评估、可上线的 Agent 系统。**
+<p>
+23 章 · <b>336 张原创图解</b> · 5 个交互动画 · 可运行的参考实现<br>
+中英双语 · <b>持续追踪 arXiv 最新 Agent 论文</b>
+</p>
 
-> 不只学会调用聊天模型：你将亲手理解并串联工具调用、RAG、记忆、规划、LangGraph、MCP、评估、安全与部署。
+<p>
+<a href="https://Haozhe-Xing.github.io/agent_learning/zh/"><img src="https://img.shields.io/badge/📖_开始阅读-4CAF50?style=for-the-badge" alt="在线阅读"></a>
+&nbsp;
+<a href="https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/04_hello_agent.html"><img src="https://img.shields.io/badge/⚡_30分钟跑通第一个Agent-FF6F00?style=for-the-badge" alt="快速开始"></a>
+&nbsp;
+<a href="#-完整目录"><img src="https://img.shields.io/badge/🗺️_完整目录-2196F3?style=for-the-badge" alt="目录"></a>
+</p>
 
-**23 章系统路径 · 120+ 原创图解 · 5 个交互动画 · 中英双语在线阅读 · 每日追踪 Agent 前沿论文**
+<p>
+<a href="https://github.com/Haozhe-Xing/agent_learning/stargazers"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=flat-square&logo=github&color=FFD700" alt="Stars"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="MIT"></a>
+<a href="https://github.com/Haozhe-Xing/agent_learning/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></a>
+<img src="https://img.shields.io/badge/arXiv-持续追踪-red?style=flat-square&logo=arxiv" alt="arXiv tracking">
+<img src="https://img.shields.io/badge/语言-中文_|_EN-blue?style=flat-square" alt="双语">
+</p>
 
-<br>
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Stars](https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=social)](https://github.com/Haozhe-Xing/agent_learning)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Haozhe-Xing/agent_learning/pulls)
-[![mdBook](https://img.shields.io/badge/built%20with-mdBook-blue)](https://rust-lang.github.io/mdBook/)
-[![Daily arXiv](https://img.shields.io/badge/每日-arXiv%20更新-red?logo=arxiv)](https://arxiv.org)
-
-<br>
-
-[<img src="https://img.shields.io/badge/📖_30分钟理解第一个_Agent-4CAF50?style=for-the-badge" alt="从第一个 Agent 开始">](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/🗺️_查看学习路径-2196F3?style=for-the-badge" alt="查看学习路径">](#-学习路径)&nbsp;&nbsp;&nbsp;[<img src="https://img.shields.io/badge/📖_在线阅读（中文）-673AB7?style=for-the-badge" alt="在线阅读中文版">](https://Haozhe-Xing.github.io/agent_learning/zh/)
+<a href="README.md">🇺🇸 English README</a> · <a href="https://Haozhe-Xing.github.io/agent_learning/en/">🇺🇸 Read in English</a>
 
 </div>
 
-## 你想获得什么？从这里开始
+---
 
-| 目标 | 你会得到的结果 | 建议从这里开始 |
+## 为什么会有这个仓库
+
+现在的 Agent 学习资料，大多掉进三个坑里：
+
+|  | 问题在哪 |
+| --- | --- |
+| **Awesome 列表** | 500 个链接，零结构。你不知道该先读哪个，也不知道这些东西怎么串起来。 |
+| **框架文档** | 教你 *LangGraph 的 API*，不教你*为什么有状态图比 while 循环更适合 Agent*。知识随版本号一起过期。 |
+| **博客教程** | 「10 分钟搭一个 RAG 机器人」——然后对评估、成本、提示注入、上下文腐化、以及它为什么在第 12 步崩掉，集体沉默。 |
+
+**这本书是把它们连起来的结缔组织。** 它构建一条连贯的认知主线——工具 → 记忆 → 规划 → 上下文 → Harness → 技能 → 强化学习 → 多 Agent → 生产化，而且每一章都先讲清楚*是什么问题逼出了这项技术*，再给代码。
+
+<table>
+<tr><td width="33%" valign="top">
+
+### 📐 图解承担讲解主力
+**336 张手工绘制的 SVG。** 不是装饰——架构图、时序流程、状态机，把抽象的循环变具体。很多章节里，看图是理解最快的路径。
+
+</td><td width="33%" valign="top">
+
+### 🔬 论文，嚼碎了喂
+每个核心章节都以论文精读收尾：当时要解决什么问题、机制是什么、对工程的启示，**以及局限在哪**。ReAct、Reflexion、MemGPT、GRPO、STaR/V-STaR、HippoRAG，以及 100+ 篇。
+
+</td><td width="33%" valign="top">
+
+### 📡 内容不会过期
+arXiv 上的新 Agent 研究会被持续消化、并入对应章节——通常每隔几天一批。你读到的前沿部分，**是几周前的，不是几年前的**。
+
+</td></tr>
+</table>
+
+---
+
+## 🎯 从你现在的位置开始
+
+| 如果你… | 走这条路线 | 读完你能 |
 | --- | --- | --- |
-| **30 分钟跑通第一个 Agent** | 建立对感知、推理、工具调用和行动循环的完整直觉 | [第 1 章：Agent 基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/) → [附录：Hello Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/04_hello_agent.html) |
-| **做出一个能用的 Agent 应用** | 掌握 Tool Calling、RAG、Memory、Planning 与 Context Engineering 的组合方式 | [第 3 章：工具调用](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_tools/) → [第 6 章：RAG](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_rag/) |
-| **把 Agent 推到生产环境** | 具备评估、安全、可观测性、部署和成本优化的工程视角 | [第 17 章：评估与优化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_evaluation/) → [第 19 章：部署与生产化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_deployment/) |
+| **从没写过 Agent** | [第1章 什么是 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/) → [第2章 大模型基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_llm/) → [Hello Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/04_hello_agent.html) | 讲清感知-思考-行动循环，并跑通自己的第一个会用工具的 Agent |
+| **会写提示词，想做应用** | [第3章 工具](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_tools/) → [第4章 记忆](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_memory/) → [第5章 规划](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_planning/) → [第6章 RAG](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_rag/) | 把工具调用、检索、记忆、规划组装成一个真实应用 |
+| **Demo 能跑，上线就崩** | [第7章 上下文工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_context_engineering/) → [第8章 Harness](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_harness/) → [第18章 评估](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_evaluation/) → [第19章 安全](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_security/) | 诊断上下文腐化、加权限闸门、搭评估集、防住提示注入 |
+| **想训练 Agent，不只调提示词** | [第10章 Agentic-RL](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_agentic_rl/) → [第11章 自我进化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_self_evolving/) | 搞懂 SFT/LoRA、PPO vs DPO vs GRPO，以及数据飞轮如何复利 |
+| **在纠结选哪个框架** | [第12章 LangChain](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langchain/) → [第13章 LangGraph](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langgraph/) → [第14章 框架全景](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_frameworks/) | 按需求做选择，而不是按 GitHub Star 数 |
 
-> ⭐ 如果这条学习路径帮你节省了查资料和踩坑的时间，欢迎给仓库点个 Star；它能让更多开发者发现这份持续维护的开源教程。
-
-<div align="center">
-
-[🐛 报告问题](https://github.com/Haozhe-Xing/agent_learning/issues) · [💡 提出改进建议](https://github.com/Haozhe-Xing/agent_learning/issues/new) · [🇺🇸 English README](README.md)
-
-</div>
+> 💡 **不必线性读。** [学习路径全景图](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/)给出三条精选路线（5 章快速上手 / 11 章工程师 / 8 章研究者）。
 
 ---
 
-## 🚀 自动追踪前沿：每日 arXiv 论文更新
+## 👀 内容长什么样
 
-<div align="center">
-
-🤖 **本仓库每天自动搜索 arXiv 上最新的 AI Agent 相关论文，并将内容自动更新到对应章节 —— 确保你始终紧跟研究前沿！**
-
-</div>
-
-- 📡 **每日自动检索**：定时流水线每天扫描 arXiv 上关于 Agent 架构、工具使用、记忆系统、多智能体协作、强化学习等方向的最新论文。
-- 📝 **内容自动更新**：相关研究成果自动整合到对应章节，保持前沿内容的时效性与新鲜度。
-- 🔔 **不错过任何突破**：无需手动追踪大量研究源，本仓库自动完成，让你专注于学习和构建。
-
-> 💡 这意味着你在这里阅读的内容**不是静态的** —— 它会随着 AI Agent 领域的最新进展持续演进。
-
----
-
-## 👥 适合谁阅读？
-
-- **开发者**：想真正构建 AI Agent 应用，而不只是写 Prompt 调聊天机器人
-- **学生和初学者**：需要一条从 LLM 基础到 Agent 系统的系统学习路径
-- **LLM 应用工程师**：正在实践 RAG、工具调用、记忆系统、LangGraph、MCP 和评估
-- **研究者和技术创作者**：希望把前沿 Agent 论文和工程实践连接起来
-- **产品和创业团队**：想理解生产级 Agent 工作流如何设计与落地
-
----
-
-## 🧭 学习路径
-
-如果你不知道从哪里开始，可以直接按下面的目标选择阅读顺序。
-
-| 你的目标 | 推荐阅读路线 |
-| -------- | ------------ |
-| **快速理解 Agent 是什么** | 第 1 章 Agent 基础 → 第 2 章大语言模型基础 → 第 3 章工具调用 → 第 5.2 节 ReAct → 附录 F.4 Hello Agent |
-| **了解大模型，并学习使用 Codex、Claude Code 等 AI 编程工具** | 第 2 章大语言模型基础 → 第 2.2 节 Prompt Engineering → 第 2.4 节模型 API 调用入门 → 第 14 章 Claude Code 深度解析 → 第 20 章 AI 编程助手 |
-| **构建一个能用的 Agent 应用** | 第 3 章工具调用 → 第 4 章记忆系统 → 第 5 章规划与推理 → 第 6 章 RAG → 第 7 章上下文工程 → 第 8 章 Harness Engineering |
-| **把 Agent 上线到生产环境** | 第 8 章 Harness Engineering → 第 17 章评估与优化 → 第 18 章安全与可靠性 → 第 19 章部署与生产化 |
-| **掌握 LangChain / LangGraph 等框架** | 第 3 章工具调用 → 第 5 章规划与推理 → 第 6 章 RAG → 第 11 章 LangChain → 第 12 章 LangGraph → 第 13 章框架概览 |
-| **理解 Agent 前沿论文和研究脉络** | 第 5.2 节 ReAct → 第 5.4 节反思机制 → 第 5.7 节规划论文解读 → 第 4.6 节记忆论文解读 → 第 6.6 节 RAG 论文解读 → 第 15.6 节多 Agent 论文解读 |
-| **学习 Agentic-RL 和自我进化** | 第 2.8 节训练数据准备 → 第 10.1 节 Agentic-RL → 第 10.4 节 DPO → 第 10.5 节 GRPO / GSPO → 第 10.8 节 Agent 微调 → 第 10.9 节数据飞轮 → 第 10.10 节 Self-Evolution Agent |
-| **边做项目边学习** | 附录 F 开发环境搭建 → 第 3 章工具调用 → 第 6 章 RAG → 第 12 章 LangGraph → 第 20 章 AI 编程助手 → 第 21 章数据分析 Agent → 第 22 章多模态 Agent |
-
----
-
-## ✨ 本书特色
-
-- 🎯 **循序渐进**：从 LLM 基础到多 Agent 系统，每章都有清晰的知识脉络
-- 💻 **代码优先**：每个核心概念都配有可运行的 Python 代码示例
-- 🎨 **图文并茂**：120+ 手绘 SVG 架构图 / 流程图 / 时序图，直观理解复杂概念
-- 🎬 **交互动画**：内置 5 个交互式 HTML 动画（感知-思考-行动循环、ReAct 推理、Function Calling、RAG 流程、GRPO 采样）
-- 🔬 **论文解读**：关键章节附有前沿论文精读（ReAct、Reflexion、MemGPT、GRPO 等），帮你跟上学术最新进展
-- 🏗️ **完整项目**：3 个综合实战项目（AI 编程助手、智能数据分析 Agent、多模态 Agent）
-- 🛡️ **生产就绪**：涵盖安全、评估、部署等生产环境必备知识
-- 🧪 **前沿技术**：涵盖上下文工程、Agentic-RL（GRPO/DPO/PPO）、MCP/A2A/ANP 等 2025—2026 最新进展
-- 📐 **公式支持**：使用 KaTeX 渲染数学公式，强化学习章节可清晰阅读策略梯度、KL 散度等公式推导
-- 🔄 **持续更新**：跟踪 LangChain、LangGraph、MCP 等框架的最新变化
-
----
-
-## 📸 内容精选预览
-
-> 以下是本书 **120+ 手绘 SVG 插图**中的精选展示，所有图示均为本书原创。
-
-### 🧠 Agent 核心架构
+> 以下是 **336 张原创 SVG** 的抽样——书里每一张图都是为它专门画的。
 
 <table>
 <tr>
 <td width="50%" align="center">
-
-**感知-思考-行动循环（第 1 章）**
-
-<img src="src/zh/svg/chapter_intro_03_loop.svg" width="420" alt="感知-思考-行动循环">
-
-<sub>Agent 的核心运行机制：感知环境 → LLM 推理决策 → 执行行动 → 循环直到目标达成</sub>
-
+<b>感知 → 思考 → 行动</b> · 第1章<br>
+<img src="src/zh/svg/chapter_intro_03_loop.svg" width="410" alt="感知-思考-行动循环"><br>
+<sub>把 Agent 和聊天机器人区分开的那个循环</sub>
 </td>
 <td width="50%" align="center">
-
-**ReAct 推理框架（第 5 章）**
-
-<img src="src/zh/svg/chapter_planning_02_react_loop.svg" width="420" alt="ReAct 推理框架">
-
-<sub>Thought → Action → Observation 交替循环，让 Agent 边思考边行动</sub>
-
+<b>ReAct 推理</b> · 第5章<br>
+<img src="src/zh/svg/chapter_planning_02_react_loop.svg" width="410" alt="ReAct 框架"><br>
+<sub>思考 → 行动 → 观察，交替推进</sub>
 </td>
 </tr>
-</table>
-
-### 🛠️ 工具调用与 RAG
-
-<table>
 <tr>
 <td width="50%" align="center">
-
-**Function Calling 完整流程（第 3 章）**
-
-<img src="src/zh/svg/chapter_tools_02_function_calling.svg" width="480" alt="Function Calling 流程">
-
-<sub>从用户输入到工具调用再到最终回复的 6 步完整流程，附消息结构示意</sub>
-
+<b>Function Calling 完整链路</b> · 第3章<br>
+<img src="src/zh/svg/chapter_tools_02_function_calling.svg" width="470" alt="Function Calling 流程"><br>
+<sub>全部 6 跳，含最容易写错的消息结构</sub>
 </td>
 <td width="50%" align="center">
-
-**RAG 检索增强生成（第 6 章）**
-
-<img src="src/zh/svg/chapter_rag_01_rag_flow.svg" width="480" alt="RAG 工作原理">
-
-<sub>离线建库 + 在线检索双阶段架构，让 LLM 回答有据可查</sub>
-
+<b>RAG：离线索引 + 在线检索</b> · 第6章<br>
+<img src="src/zh/svg/chapter_rag_01_rag_flow.svg" width="470" alt="RAG 工作流"><br>
+<sub>「有据可依」到底发生在哪一步</sub>
 </td>
 </tr>
-</table>
-
-### 💾 记忆系统与上下文工程
-
-<table>
 <tr>
 <td width="50%" align="center">
-
-**记忆系统三层架构（第 4 章）**
-
-<img src="src/zh/svg/chapter_memory_01_memory_types.svg" width="480" alt="记忆系统三层架构">
-
-<sub>工作记忆 → 短期记忆 → 长期记忆，重要信息向下沉淀、语义检索向上提取</sub>
-
+<b>三层记忆架构</b> · 第4章<br>
+<img src="src/zh/svg/chapter_memory_01_memory_types.svg" width="470" alt="记忆架构"><br>
+<sub>什么该沉入长期记忆，什么该被捞回来</sub>
 </td>
 <td width="50%" align="center">
-
-**提示工程 vs 上下文工程（第 7 章）**
-
-<img src="src/zh/svg/chapter_context_01_comparison.svg" width="480" alt="提示工程 vs 上下文工程">
-
-<sub>从"如何说"到"让 LLM 看到什么"——Agent 时代的范式升级</sub>
-
+<b>提示工程 vs 上下文工程</b> · 第7章<br>
+<img src="src/zh/svg/chapter_context_01_comparison.svg" width="470" alt="上下文工程"><br>
+<sub>从「怎么说」到「模型看到了什么」</sub>
 </td>
 </tr>
-</table>
-
-### 🤝 多 Agent 与通信协议
-
-<table>
 <tr>
 <td width="50%" align="center">
-
-**多 Agent 三种通信模式（第 15 章）**
-
-<img src="src/zh/svg/chapter_multi_agent_02_communication.svg" width="480" alt="多 Agent 通信模式">
-
-<sub>消息队列（异步解耦）/ 共享黑板（数据共享）/ 直接调用（实时协作）</sub>
-
+<b>MCP / A2A / ANP 协议栈</b> · 第17章<br>
+<img src="src/zh/svg/chapter_protocol_03_three_protocols.svg" width="470" alt="协议对比"><br>
+<sub>发现 → 任务协作 → 工具调用</sub>
 </td>
 <td width="50%" align="center">
-
-**MCP / A2A / ANP 三协议对比（第 16 章）**
-
-<img src="src/zh/svg/chapter_protocol_03_three_protocols.svg" width="480" alt="三协议对比">
-
-<sub>三层协议栈各司其职：ANP 组网发现 → A2A 任务协作 → MCP 工具调用</sub>
-
+<b>GRPO 训练架构</b> · 第10章<br>
+<img src="src/zh/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="410" alt="GRPO 架构"><br>
+<sub>无需 Critic 模型——用组内归一化算优势</sub>
 </td>
 </tr>
 </table>
 
-### 🧪 强化学习与框架
+### 另有 5 个交互动画
 
-<table>
-<tr>
-<td width="50%" align="center">
+| 动画 | 章节 | 让什么变得可点击 |
+| --- | --- | --- |
+| 🔄 感知-思考-行动循环 | 第1章 | 单步走完一个完整 Agent 回合 |
+| 💡 ReAct 推理过程 | 第5章 | 看思考与行动如何交替 |
+| 🔧 Function Calling | 第3章 | 追踪工具调用的往返 |
+| 📚 RAG 流程 | 第6章 | 切块 → 向量化 → 检索 → 生成 |
+| 🎯 GRPO 采样 | 第10章 | 组内采样与奖励归一化 |
 
-**GRPO 训练架构（第 10 章）**
-
-<img src="src/zh/svg/chapter_agentic_rl_03_grpo_architecture.svg" width="420" alt="GRPO 训练架构">
-
-<sub>无需 Critic 模型，通过组内标准化计算优势值，显存仅需 1.5× 模型大小</sub>
-
-</td>
-<td width="50%" align="center">
-
-**LangGraph 三大核心概念（第 12 章）**
-
-<img src="src/zh/svg/chapter_langgraph_02_state_node_edge.svg" width="480" alt="LangGraph 核心概念">
-
-<sub>State（共享状态）· Node（处理单元）· Edge（执行流控制）</sub>
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-
-📖 **以上仅为精选预览** — 完整的 120+ 张架构图 + 5 个交互动画，请 [**在线阅读**](https://Haozhe-Xing.github.io/agent_learning) 体验
-
-</div>
+<div align="center"><sub>动画在<a href="https://Haozhe-Xing.github.io/agent_learning/zh/">在线书</a>（以及任何本地构建）中运行。</sub></div>
 
 ---
 
-## 🎬 交互式动画
+## 📚 完整目录
 
-本书内置了 **5 个可交互的 HTML 动画**，帮助你直观理解核心概念的动态过程：
+<details open>
+<summary><b>第一部分 — 入门篇</b> · 先建立正确直觉，再写代码</summary>
 
-| 动画 | 对应章节 | 说明 |
-|------|----------|------|
-| 🔄 **感知-思考-行动循环** | 第 1 章 | 动态演示 Agent 的核心运行循环 |
-| 💡 **ReAct 推理过程** | 第 5 章 | 展示 Thought → Action → Observation 的交替过程 |
-| 🔧 **Function Calling** | 第 3 章 | 工具调用的完整流程动画 |
-| 📚 **RAG 检索流程** | 第 6 章 | 从文档切分到向量检索再到生成回答 |
-| 🎯 **GRPO 采样过程** | 第 10 章 | 组内多输出采样与奖励标准化的可视化 |
+| 章 | 标题 | 重点 |
+| --- | --- | --- |
+| 1 | [什么是 Agent？](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/) | Agent vs 聊天机器人 vs 传统程序 · 感知-思考-行动循环 · 从符号主义到大模型的历史 |
+| 2 | [大语言模型基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_llm/) | Tokenizer/BPE · Attention 完整推导 · KV Cache · RoPE · 提示策略 · 模型选型 |
 
-> 💡 交互动画仅在 [在线电子书](https://Haozhe-Xing.github.io/agent_learning) 中可体验，本地构建也可预览。
+</details>
+
+<details open>
+<summary><b>第二部分 — 核心能力篇</b> · 严肃 Agent 必需的八项能力</summary>
+
+| 章 | 标题 | 重点 |
+| --- | --- | --- |
+| 3 | [工具调用 / Function Calling](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_tools/) | 调用机制 · 自定义工具 · 写出模型真会遵守的工具描述 |
+| 4 | [记忆系统](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_memory/) | 短期/长期/工作记忆 · 向量检索 · MemGPT & Letta 架构 |
+| 5 | [规划与推理](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_planning/) | ReAct · 任务分解 · 反思 · Plan-and-Execute · Test-time Compute Scaling |
+| 6 | [RAG 检索增强生成](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_rag/) | 切块 · 向量嵌入 · 重排 · **GraphRAG & Agentic RAG** |
+| 7 | [上下文工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_context_engineering/) | 注意力预算 · 上下文腐化 · 长程任务策略 · 手写上下文管理器 |
+| 8 | [Harness 工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_harness/) | 六大工程支柱 · `AGENTS.md` / `CLAUDE.md` · 可靠的结构化输出 |
+| 9 | [技能系统](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_skill/) | 技能定义与发现 · 工具 vs 技能 vs 子 Agent · `SKILL.md` 生态 |
+| 10 | [Agentic-RL](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_agentic_rl/) | SFT+LoRA · DP/TP/PP/ZeRO · **PPO vs DPO vs GRPO** · 专为 Agent 的微调 |
+
+</details>
+
+<details>
+<summary><b>第三部分 — 框架实战与自我进化</b> · 有意识地选工具</summary>
+
+| 章 | 标题 | 重点 |
+| --- | --- | --- |
+| 11 | [自我进化 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_self_evolving/) | 自动提示优化（APE/OPRO/DSPy/GEPA）· **Agentic 数据飞轮** |
+| 12 | [LangChain 深入](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langchain/) | 超越快速上手——抽象在哪帮你、在哪碍事 |
+| 13 | [LangGraph](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langgraph/) | State/Node/Edge · 为什么状态机比 while 循环更适合真实 Agent |
+| 14 | [主流框架全景](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_frameworks/) | CrewAI · AutoGen · Semantic Kernel · 到底该怎么选 |
+| 15 | [Claude Code 深度解析](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_claude_code/) | 从使用到内部机制 · 终端 Agent 最佳实践 |
+
+</details>
+
+<details>
+<summary><b>第四部分 — 多 Agent 系统篇</b> · 当一个 Agent 不够用</summary>
+
+| 章 | 标题 | 重点 |
+| --- | --- | --- |
+| 16 | [多 Agent 协作](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_multi_agent/) | Supervisor vs 去中心化 · 消息队列 / 黑板 / 直接调用 |
+| 17 | [通信协议](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_protocol/) | **MCP · A2A · ANP** —— 正在形成的三层协议栈 |
+
+</details>
+
+<details>
+<summary><b>第五部分 — 生产化篇</b> · 教程们跳过的那部分</summary>
+
+| 章 | 标题 | 重点 |
+| --- | --- | --- |
+| 18 | [评估与优化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_evaluation/) | GAIA · SWE-bench · LLM-as-Judge 校准 · 可观测性 · 成本 |
+| 19 | [安全与可靠性](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_security/) | **提示注入**（直接与间接）· 权限沙箱 · fail-closed 设计 |
+| 20 | [部署与生产化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_deployment/) | API 服务 · 流式输出 · 容器化 · 扩缩容 |
+
+</details>
+
+<details>
+<summary><b>第六部分 — 综合项目篇</b> + 附录</summary>
+
+| 章 | 标题 | 重点 |
+| --- | --- | --- |
+| 21 | [AI 编程助手](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_coding_agent/) | 读仓库、改文件、跑测试、自修复循环 |
+| 22 | [智能数据分析 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_data_agent/) | 沙箱代码执行 · Pipeline vs Agentic 循环 |
+| 23 | [多模态 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_multimodal/) | 视觉 + 文本的工具使用 |
+
+**附录：**[提示词模板](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/prompt_templates.html) · [FAQ](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/faq.html) · [学习资源](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/resources.html) · [术语表](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/glossary.html) · [KL 散度详解](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/kl_divergence.html) · [环境搭建](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/)
+
+</details>
 
 ---
 
-## 🔥 核心知识点速览
+## ⚡ 快速开始
 
-<table>
-<tr>
-<td width="50%">
+**只想读？** → [**打开在线书**](https://Haozhe-Xing.github.io/agent_learning/zh/)，什么都不用装。
 
-**🧠 Agent 核心架构**
-- 感知 → 思考 → 行动循环
-- ReAct 推理框架
-- 任务分解与规划
-- 反思与自我纠错
-
-**🛠️ 工具与技能**
-- Function Calling 机制
-- 自定义工具设计
-- 技能系统构建
-- 工具描述最佳实践
-
-**🧪 强化学习训练**
-- SFT + LoRA 基础训练
-- PPO / DPO / GRPO 算法详解
-- 完整训练 Pipeline 实战
-- 2025—2026 最新研究进展
-
-</td>
-<td width="50%">
-
-**💾 记忆、知识与上下文**
-- 短期 / 长期 / 工作记忆
-- 向量数据库（Chroma / FAISS）
-- RAG 检索增强生成
-- 上下文工程与注意力预算
-
-**🤝 多 Agent 协作 & 通信**
-- MCP / A2A / ANP 三协议栈
-- Supervisor vs 去中心化模式
-- CrewAI / AutoGen 框架
-- LangGraph 有状态 Agent
-
-**🛡️ 生产化全链路**
-- 评估基准（GAIA / SWE-bench）
-- 安全防御与沙箱隔离
-- 容器化部署与流式响应
-- 可观测性与成本优化
-
-</td>
-</tr>
-</table>
-
----
-
-## 🚀 快速开始
-
-### 本地构建
+<details>
+<summary><b>本地构建</b>（mdBook）</summary>
 
 ```bash
-# 安装 mdBook（二选一）
-cargo install mdbook
-# 或 macOS：brew install mdbook
+# 1. 安装 mdBook + KaTeX 插件
+cargo install mdbook mdbook-katex
+# macOS 也可以：brew install mdbook
 
-# 安装 mdbook-katex 插件（用于数学公式渲染）
-cargo install mdbook-katex
-
-# 克隆仓库
+# 2. 克隆并启动（同时构建中英双版，端口 3000）
 git clone https://github.com/Haozhe-Xing/agent_learning.git
 cd agent_learning
-
-# 构建中英文版本并启动统一服务（默认端口 3000）
 ./serve.sh
 ```
 
-启动后访问：
-- 🌐 **语言选择首页**：`http://localhost:3000`
-- 🇨🇳 **中文版**：`http://localhost:3000/zh/`
-- 🇺🇸 **English**：`http://localhost:3000/en/`
+| 地址 | 内容 |
+| --- | --- |
+| `http://localhost:3000` | 语言选择页 |
+| `http://localhost:3000/zh/` | 中文版 |
+| `http://localhost:3000/en/` | English |
 
-### 环境准备（跟随代码实践）
+</details>
+
+<details>
+<summary><b>跑代码</b>（Python 3.11+）</summary>
 
 ```bash
-# Python 3.11+
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 安装核心依赖
+python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install langchain langchain-openai langgraph openai anthropic
-
-# 配置 API Key
-export OPENAI_API_KEY="your-key-here"
+export OPENAI_API_KEY="sk-..."
 ```
 
----
+仓库里还有 **`reference-agent/`**——一个依赖极少的最小 Agent 实现（主循环、工具注册表、记忆、权限闸门），作为实战章节共用的教学底座。当框架抽象开始像魔法时，来读它。
 
-## 📊 涵盖技术栈
+</details>
+
+<div align="center">
 
 ![Python](https://img.shields.io/badge/Python_3.11+-3776AB?style=flat&logo=python&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat&logo=langchain&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?style=flat)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat&logo=openai&logoColor=white)
-![Anthropic](https://img.shields.io/badge/Anthropic_(Claude)-191919?style=flat)
+![Anthropic](https://img.shields.io/badge/Anthropic-191919?style=flat)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
 ![Chroma](https://img.shields.io/badge/ChromaDB-FF6B35?style=flat)
 ![FAISS](https://img.shields.io/badge/FAISS-0467DF?style=flat)
 ![mdBook](https://img.shields.io/badge/mdBook-000000?style=flat&logo=rust&logoColor=white)
-![KaTeX](https://img.shields.io/badge/KaTeX-44CC11?style=flat)
+
+</div>
+
+---
+
+## ❓ 常见问题
+
+<details>
+<summary><b>需要机器学习背景吗？</b></summary>
+
+不需要。第 1–9 章只要会 Python。数学出现在第 10 章（Agentic-RL），配 KaTeX 渲染的推导，而且即便在那里也是先讲直觉再上公式——另有[附录 E](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/kl_divergence.html) 从零讲 KL 散度。如果你只想做应用，第 10–11 章可以整章跳过。
+
+</details>
+
+<details>
+<summary><b>LangChain 一改 API，这书是不是就废了？</b></summary>
+
+基本不会——这是刻意设计的。书讲的是*机制*（为什么记忆要分层、为什么上下文会腐化、为什么工具描述本身就是提示词），框架只被当作这些机制的实现。需要维护的是框架章节（12–15），概念主干不需要。
+
+</details>
+
+<details>
+<summary><b>和论文清单有什么区别？</b></summary>
+
+这里的论文永远挂在一个工程问题上。每篇都写清当时的问题、机制、**对你代码的启示**、以及局限——然后用对比表把一组论文综合起来。目标是让你能*用*这个想法，不只是引用它。
+
+</details>
+
+<details>
+<summary><b>英文版是机器翻译的吗？</b></summary>
+
+本书是双语撰写、两版同步维护（`src/zh/` 与 `src/en/`），包含各自独立的图解。两者都不是对方的原始机翻。
+
+</details>
+
+<details>
+<summary><b>「持续追踪 arXiv」具体是什么意思？</b></summary>
+
+扫描 arXiv 上新的 Agent 相关工作（架构、记忆、工具、多 Agent、Agent 强化学习、安全），把相关论文消化后写入对应章节的「最新进展」小节。实际节奏是每隔几天一批，而非严格每 24 小时——具体可看[提交历史](https://github.com/Haozhe-Xing/agent_learning/commits/main)。重点在于前沿部分会持续生长，不必等改版。
+
+</details>
 
 ---
 
 ## 🤝 参与贡献
 
-欢迎任何形式的贡献！
+各种形式的贡献都欢迎——改错别字也算。
 
-- 🐛 **发现错误**：[提交 Issue](https://github.com/Haozhe-Xing/agent_learning/issues)
-- 💡 **内容建议**：[提交建议 Issue](https://github.com/Haozhe-Xing/agent_learning/issues/new)
-- 📝 **改进内容**：Fork → 修改 → 提交 PR
-- ⭐ **支持项目**：给本仓库点个 Star！
-
-### 贡献指南
+| | |
+| --- | --- |
+| 🐛 发现错误 | [提 Issue](https://github.com/Haozhe-Xing/agent_learning/issues) |
+| 💡 某章看不懂 | [告诉我们在哪](https://github.com/Haozhe-Xing/agent_learning/issues/new) —— 讲不清楚也是 bug |
+| 📝 想改进内容 | Fork → 编辑 → PR |
+| 🌍 修订译文 | `src/zh/` 和 `src/en/` 都欢迎改进 |
 
 ```bash
-# Fork 并克隆
 git clone https://github.com/YOUR_USERNAME/agent_learning.git
-
-# 创建特性分支
 git checkout -b feature/improve-chapter-3
-
-# 本地预览
-./serve.sh
-
-# 提交并推送
-git commit -m "feat: 改进第3章工具调用示例代码"
-git push origin feature/improve-chapter-3
+./serve.sh                # 本地预览
+git commit -m "feat: 优化第3章工具描述示例"
 ```
 
-### 内容组织约定
+<details>
+<summary><b>仓库约定</b></summary>
 
-- 每章内容放在独立目录 `src/zh/chapter_xxx/`（中文）或 `src/en/chapter_xxx/`（英文）下
-- 章节概述放在 `README.md`，各小节按 `01_xxx.md`、`02_xxx.md` 编号
-- 中文版 SVG 插图放在 `src/zh/svg/`，英文版放在 `src/en/svg/`，命名格式 `chapter_xxx_描述.svg`
-- 中文版交互动画放在 `src/zh/animations/`，英文版放在 `src/en/animations/`
+- 章节放在 `src/zh/chapter_xxx/` 和 `src/en/chapter_xxx/`
+- 章节概览写进 `README.md`；小节按 `01_xxx.md`、`02_xxx.md` 编号
+- 图解放 `src/{zh,en}/svg/`，命名 `chapter_<名称>_<描述>.svg`
+- 动画放 `src/{zh,en}/animations/`
+- 新增页面要在**两种语言**的 `SUMMARY.md` 里都登记
 
-### 论文解读模板
+</details>
 
-所有论文解读和前沿进展章节应采用统一结构，帮助读者快速理解一篇论文为什么重要、当时解决了什么问题，以及它如何影响真实 Agent 工程。
+<details>
+<summary><b>论文解读模板</b></summary>
 
-每篇代表性论文建议使用以下模板：
+前沿小节统一结构，让读者能快速判断相关性：
 
 ```markdown
-### 论文名：一句话说明它解决什么问题
+### 论文标题：一句话说清它解决的问题
 
 - **论文链接**：
 - **代码 / 项目链接**：
-- **发表时间 / 机构**：
-- **当时解决的问题**：
+- **年份 / 机构**：
+- **当时要解决的问题**：
 - **核心贡献**：
 - **方法拆解**：
-- **对 Agent 工程的启发**：
-- **局限性**：
+- **对 Agent 工程的启示**：
+- **局限**：
 ```
 
-质量要求：
+质量要求：链到一手来源 · 讲清*历史*贡献而非复述摘要 · 关联到记忆/工具/规划/评估/安全/训练 · 说明它**没**解决什么 · 几篇之后要加综合对比表，而不是留一串清单。
 
-- **链接到原始来源**：优先提供 arXiv、会议页面、官方博客、GitHub 或项目主页。
-- **说明历史贡献**：不要只说论文做了什么，还要说明它在发表时解决了什么关键问题。
-- **连接工程实践**：说明该工作对 Agent 记忆、工具、规划、评估、安全、训练或部署有什么启发。
-- **写清局限性**：说明论文没有解决什么、依赖哪些强假设，或者是否主要是 benchmark 驱动。
-- **避免只堆论文列表**：多篇论文之后，应补充对比表或脉络小结，说明这些工作之间的关系。
+</details>
 
 ---
 
-## 📄 许可证
+## 🗺️ 路线图
 
-本项目采用 [MIT License](LICENSE) 开源协议。
+**已完成** — ✅ 中英双语 mdBook · ✅ 336 张原创图解 · ✅ 交互动画 · ✅ 核心章节论文精读 · ✅ Agentic-RL（PPO/DPO/GRPO）· ✅ `reference-agent/` 教学底座 · ✅ 持续追踪 arXiv 论文
 
----
+**下一步** — ⬜ 更多可运行的端到端项目模板 · ⬜ Agent 关键词速查表 · ⬜ 图解画廊索引 · ⬜ 面试题与自测练习 · ⬜ 接好评估与可观测性的生产模板
 
-## 🗺️ 项目路线图
-
-- [x] 基于 mdBook 的中英文在线书
-- [x] 120+ 原创 SVG 架构图和流程图
-- [x] Agent 核心概念交互式动画
-- [x] 关键 Agent 论文精读章节
-- [x] 覆盖 PPO / DPO / GRPO 的 Agentic RL 内容
-- [ ] 可运行 Agent 示例项目和模板
-- [ ] Agent 术语表与关键词速查表
-- [ ] Agent 架构图合集
-- [ ] 面试题和自测题
-- [ ] 带评估与可观测性的生产级 Agent 模板
-
----
-
-## ⭐ Star History
-
-如果这个项目对你有帮助，请给个 Star ⭐，这是对作者最大的鼓励！
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Haozhe-Xing/agent_learning&type=Date)](https://www.star-history.com/#Haozhe-Xing/agent_learning&Date)
+有需求？[提个 Issue](https://github.com/Haozhe-Xing/agent_learning/issues/new) —— 路线图由读者驱动。
 
 ---
 
 <div align="center">
 
-**用 ❤️ 构建，为了让每个开发者都能掌握 AI Agent 开发**
+### ⭐ 如果它帮你省了时间，点个 Star
 
-[⬆ 回到顶部](#-从零开始学-agent)
+不是为了虚荣指标——Star 决定了下一个卡在上下文腐化、
+提示注入、或者「到底选哪个框架」的工程师，能找到这个仓库，而不是一份 500 链接的 awesome 列表。
+
+<a href="https://github.com/Haozhe-Xing/agent_learning"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=for-the-badge&logo=github&color=FFD700&label=Star%20this%20repo" alt="Star"></a>
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Haozhe-Xing/agent_learning&type=Date)](https://www.star-history.com/#Haozhe-Xing/agent_learning&Date)
+
+<br>
+
+**[📖 开始阅读](https://Haozhe-Xing.github.io/agent_learning/zh/)** · **[🇺🇸 English](https://Haozhe-Xing.github.io/agent_learning/en/)** · **[🐛 Issues](https://github.com/Haozhe-Xing/agent_learning/issues)** · **[📄 MIT License](LICENSE)**
+
+<sub>写它，是为了让理解 Agent 不必先读 200 篇论文和 12 份框架变更日志。</sub>
 
 </div>
