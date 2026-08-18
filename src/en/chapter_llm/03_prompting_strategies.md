@@ -422,7 +422,7 @@ The prompting strategies in this section all have solid academic research founda
 
 > 💡 **Frontier Developments**: Since 2024–2025, reasoning models have become the core direction of LLM development. OpenAI's o1/o3/o4-mini series, Anthropic's Claude 4 Extended Thinking, DeepSeek-R2, and other models have "internalized" CoT reasoning into the model itself (rather than relying on prompts), demonstrating astonishing capabilities in math, programming competitions, and scientific reasoning. Google's Gemini 2.5 Pro also introduced a "Thinking Mode." This shows that CoT has evolved from a "prompting trick" into a core paradigm of model training — future LLMs will increasingly "know how to think." For Agent developers, reasoning models dramatically improve planning capabilities in complex multi-step tasks.
 
-> 📖 **More Paper Analysis**: For a deep dive into ReAct, see [5.7 Paper Readings: Frontiers in Planning and Reasoning](../chapter_planning/06_paper_readings.md). For Self-Consistency's application in hallucination mitigation, see [19.6 Paper Readings: Frontiers in Safety and Reliability](../chapter_security/06_paper_readings.md).
+> 📖 **More Paper Analysis**: For a deep dive into ReAct, see [5.7 Paper Readings: Frontiers in Planning and Reasoning](../chapter_planning/06_paper_readings.md). For Self-Consistency's application in hallucination mitigation, see [19.6 Paper Readings: Frontiers in Safety and Reliability](../chapter_21_security/06_paper_readings.md).
 
 ---
 

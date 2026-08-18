@@ -1052,11 +1052,7 @@ This is the Compaction pattern actually adopted by production-grade Agents like 
 
 **Core Problem**: AI systems are evolving from stateless chatbots to autonomous multi-step Agents. Single-point Prompt Engineering (PE) is necessary but far from sufficient — the quality of an Agent's decisions depends on how its entire information environment is designed, organized, and managed, which until now lacked an independently disciplinized framework.
 
-**Method**: This paper establishes **Context Engineering (CE)** as an independent discipline, integrating vendor architectures (Google ADK, Anthropic, LangChain), academic work (ACE framework, DeepMind's intelligent delegation), enterprise surveys (Deloitte/KPMG 2026), and the authors' own multi-agent system experiences. It proposes five production-grade context quality criteria — **Relevance, Sufficiency, Isolation, Economy, Traceability** — and frames context as the Agent's "operating system." The overall discipline pyramid is shown below:
-
-![Context Engineering Discipline Pyramid: Prompt Engineering → Context Engineering → Intent Engineering → Specification Engineering](../svg/chapter_context_paper_2603.09619.png)
-
-> Image source: The paper (Source: 2026, arXiv:2603.09619)
+**Method**: This paper establishes **Context Engineering (CE)** as an independent discipline, integrating vendor architectures (Google ADK, Anthropic, LangChain), academic work (ACE framework, DeepMind's intelligent delegation), enterprise surveys (Deloitte/KPMG 2026), and the authors' own multi-agent system experiences. It proposes five production-grade context quality criteria — **Relevance, Sufficiency, Isolation, Economy, Traceability** — and frames context as the Agent's "operating system," progressing hierarchically from Prompt Engineering to Context Engineering, then Intent Engineering, and finally Specification Engineering.
 
 **Key Results**: Survey finds 75% of enterprises plan to deploy Agent AI within two years, but there is a widespread "context deficit" and "intent deficit" — models receive information but lack the organizational goals and constraint context needed for decision-making.
 

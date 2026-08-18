@@ -214,4 +214,4 @@ The core value of LangGraph:
 
 ---
 
-*Next chapter: [Chapter 14 Overview of Other Major Frameworks](../chapter_frameworks/README.md)*
+*Next chapter: [Chapter 14: OpenClaw](../chapter_openclaw/README.md)*

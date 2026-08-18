@@ -6,10 +6,10 @@ This part contains 3 complete hands-on projects, each combining multiple techniq
 
 | Chapter | Project | Technologies Involved |
 |---------|---------|----------------------|
-| **Chapter 21** AI Coding Assistant | Code understanding, generation, testing, bug fixing | Tool Calling + RAG + Planning |
-| **Chapter 22** Intelligent Data Analysis Agent | Data connection, analysis, visualization, reporting | Text-to-SQL + Tools + Memory |
-| **Chapter 23** Multimodal Agent | Image understanding/generation, voice interaction | Multimodal + Tool Calling + Memory |
+| **Chapter 23** AI Coding Assistant | Code understanding, generation, testing, bug fixing | Tool Calling + RAG + Planning |
+| **Chapter 24** Intelligent Data Analysis Agent | Data connection, analysis, visualization, reporting | Text-to-SQL + Tools + Memory |
+| **Chapter 25** Multimodal Agent | Image understanding/generation, voice interaction | Multimodal + Tool Calling + Memory |
 
 ---
 
-*Start learning: [Chapter 21: Project: AI Coding Assistant](./chapter_coding_agent/README.md)*
+*Start learning: [Chapter 23: Project: AI Coding Assistant](./chapter_23_coding_agent/README.md)*

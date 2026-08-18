@@ -44,7 +44,7 @@ Approximately **120–150 minutes** (including hands-on exercises)
 >
 > **Recommended Next**:
 > - 👉 [Chapter 13 LangGraph](../chapter_langgraph/README.md) — upgrade from linear Chains to graph structures
-> - 👉 [Chapter 14 Other Frameworks](../chapter_frameworks/README.md) — compare design trade-offs across different frameworks
+> - 👉 [Part III Framework Selection Matrix](../part3.md) — compare design trade-offs across different frameworks
 
 ---
 

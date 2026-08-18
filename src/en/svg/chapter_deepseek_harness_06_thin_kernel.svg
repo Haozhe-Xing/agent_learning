@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="680" height="300" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Thin Kernel, Wild Business: Swappability to the Extreme</text>
+
+  <rect x="40" y="52" width="600" height="110" rx="10" fill="#2c3e50"/>
+  <text x="60" y="78" font-size="14" font-weight="bold" fill="white">Kernel (thin)</text>
+  <text x="60" y="100" font-size="11" fill="#bdc3c7">message routing · config loading · error recovery · startup/shutdown</text>
+  <text x="60" y="122" font-size="11" fill="#95a5a6">only schedules plugins; carries no business capability</text>
+  <text x="60" y="146" font-size="10" fill="#f1c40f">criterion: swap LLM / DB / UI / sandbox with 0 lines of code (config only)</text>
+
+  <rect x="40" y="172" width="600" height="100" rx="10" fill="#3498db"/>
+  <text x="60" y="198" font-size="14" font-weight="bold" fill="white">Business (wild) — all plugins</text>
+  <text x="60" y="220" font-size="11" fill="#d6eaf8">LLM adapters · tool implementations · memory backends · skill loading</text>
+  <text x="60" y="240" font-size="11" fill="#d6eaf8">sub-agents · sandbox · UI — each independently swappable</text>
+  <text x="60" y="260" font-size="10" fill="#aed6f1">capability swappable · interface stable · dependency explicit · observability pluggable</text>
+</svg>

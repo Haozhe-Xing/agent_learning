@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" width="560" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="560" height="360" rx="14" fill="#f0f4f8"/>
+  <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">系统化红队测试流程（6 步）</text>
+  <text x="280" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">攻击面识别 → 攻击树建模 → 场景库构建 → 自动化执行 → 结果评估 → 修复与验证</text>
+
+  <g transform="translate(20, 60)">
+    <!-- Step 1: 攻击面识别 -->
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#3498db"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">① 攻击面识别</text>
+    <text x="120" y="22" font-size="10" fill="#d6eaf8">—— 识别 Agent 的所有入口、权限、数据流</text>
+  </g>
+  <line x1="270" y1="102" x2="270" y2="120" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 124)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#e67e22"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">② 攻击树建模</text>
+    <text x="120" y="22" font-size="10" fill="#fdebd0">—— 系统化建模所有可能的攻击路径（AND/OR 节点）</text>
+  </g>
+  <line x1="270" y1="166" x2="270" y2="184" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 188)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#9b59b6"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">③ 场景库构建</text>
+    <text x="120" y="22" font-size="10" fill="#e8daef">—— 基于攻击树生成具体可执行的测试场景（注入/越权/泄露）</text>
+  </g>
+  <line x1="270" y1="230" x2="270" y2="248" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 252)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#16a085"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">④ 自动化执行</text>
+    <text x="120" y="22" font-size="10" fill="#d1f2eb">—— 用工具批量跑场景（如 Promptfoo / PyRIT）</text>
+  </g>
+  <line x1="270" y1="294" x2="270" y2="312" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 316)">
+    <rect x="0" y="0" width="240" height="36" rx="6" fill="#27ae60"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">⑤ 结果评估</text>
+    <text x="100" y="22" font-size="9" fill="#d5f5e3">—— 攻击成功率 + 影响范围</text>
+  </g>
+  <g transform="translate(280, 316)">
+    <rect x="0" y="0" width="240" height="36" rx="6" fill="#c0392b"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">⑥ 修复与验证</text>
+    <text x="116" y="22" font-size="9" fill="#fadbd8">—— 修 + 回归测试</text>
+  </g>
+  <line x1="140" y1="316" x2="140" y2="316"/>
+  <line x1="400" y1="316" x2="400" y2="316"/>
+</svg>

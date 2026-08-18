@@ -38,7 +38,11 @@ harness_demo/
 
 ---
 
+![Harness 系统架构：Agent 主体 + 5 个治理模块](../svg/chapter_harness_05_architecture.svg)
+
 ## Step 1：编写 AGENTS.md
+
+> **这一步解决什么问题**：在写任何代码前，先定"宪法"。`AGENTS.md` 声明了强制工作流、架构约束和禁止操作，后面 5 个模块都按它执行——它是"人机对齐"的第一道防线。
 
 首先为演示项目编写 `AGENTS.md`：
 
@@ -74,6 +78,8 @@ harness_demo/
 ---
 
 ## Step 2：上下文管理器
+
+> **这一步解决什么问题**：上下文窗口是有限的，Agent 聊久了会"忘事"或"焦虑"。这个模块实时监控 token 利用率，超阈值自动压缩——让 Agent 在长任务中始终"记住该记的、忘掉该忘的"。
 
 ```python
 # harness/context_manager.py
@@ -201,6 +207,8 @@ class HarnessContextManager:
 ---
 
 ## Step 3：工具注册表
+
+> **这一步解决什么问题**：工具是 Agent 的"手"，但不是每只手都该随便伸。这个模块给每个工具打上"只读 / 写入 / 危险"标签，危险操作（rm、删除、执行任意命令）会被拦截——把安全边界交给代码，而不是靠 LLM 自觉。
 
 ```python
 # harness/tool_registry.py
@@ -521,6 +529,8 @@ class HarnessToolRegistry:
 
 ## Step 4：验证门控
 
+> **这一步解决什么问题**：Agent 生成的代码可能"语法对但逻辑错"。这个模块实现 Plan-Build-Verify-Fix 自验证循环：改完代码 → 自动跑测试 → 失败就自动修复重试——让"提交的代码真的能跑"，而不是"看起来能跑"。
+
 ```python
 # harness/validation_gate.py
 
@@ -623,6 +633,8 @@ class HarnessValidationGate:
 
 ## Step 5：死循环检测
 
+> **这一步解决什么问题**：Agent 偶尔会在两个错误方案之间反复横跳，烧掉大量 token。这个模块记录每一步的"指纹"，检测到重复动作就自动切换策略——避免死循环烧钱。
+
 ```python
 # harness/loop_detector.py
 
@@ -704,6 +716,8 @@ class HarnessLoopDetector:
 ---
 
 ## Step 6：整合 Harness Agent
+
+> **这一步解决什么问题**：前 5 个模块是"零件"，这一步把它们组装进 Agent 主循环——每个 iteration 都先过上下文管理、再过权限检查、最后验证 + 检测死循环，形成完整的治理闭环。读到这里你就能看懂"Harness 到底管了什么"。
 
 ```python
 # agent.py

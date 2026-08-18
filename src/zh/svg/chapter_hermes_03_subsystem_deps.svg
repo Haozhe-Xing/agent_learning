@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="440" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Hermes 子系统依赖关系</text>
+
+  <!-- Channels -->
+  <rect x="260" y="44" width="160" height="40" rx="8" fill="#27ae60"/>
+  <text x="340" y="69" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Channels（渠道）</text>
+  <line x1="340" y1="84" x2="340" y2="104" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Gateway -->
+  <rect x="260" y="106" width="160" height="40" rx="8" fill="#2c3e50"/>
+  <text x="340" y="131" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gateway（网关）</text>
+  <line x1="340" y1="146" x2="340" y2="166" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Engine (big box with 5 subsystems) -->
+  <rect x="140" y="168" width="400" height="150" rx="8" fill="#34495e"/>
+  <text x="340" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Engine（5 个子系统）</text>
+
+  <rect x="165" y="202" width="110" height="30" rx="6" fill="#16a085"/>
+  <text x="220" y="222" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Agent Loop</text>
+
+  <rect x="165" y="238" width="110" height="30" rx="6" fill="#16a085"/>
+  <text x="220" y="258" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Context Mgr</text>
+
+  <rect x="165" y="274" width="110" height="30" rx="6" fill="#16a085"/>
+  <text x="220" y="294" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Self-Evolving</text>
+
+  <rect x="405" y="202" width="110" height="30" rx="6" fill="#16a085"/>
+  <text x="460" y="222" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Nudge Engine</text>
+
+  <rect x="405" y="238" width="110" height="30" rx="6" fill="#16a085"/>
+  <text x="460" y="258" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Honcho</text>
+
+  <!-- arrows from subsystems to plugins -->
+  <line x1="275" y1="253" x2="345" y2="253" stroke="#7f8c8d" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="310" y="246" font-size="9" fill="#7f8c8d">→</text>
+  <line x1="275" y1="289" x2="345" y2="289" stroke="#7f8c8d" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="405" y1="253" x2="345" y2="253" stroke="#7f8c8d" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- Plugin boxes on right -->
+  <rect x="520" y="238" width="140" height="30" rx="6" fill="#8e44ad"/>
+  <text x="590" y="258" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Memory Store</text>
+  <rect x="520" y="274" width="140" height="30" rx="6" fill="#8e44ad"/>
+  <text x="590" y="294" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Skill Format</text>
+  <rect x="520" y="202" width="140" height="30" rx="6" fill="#8e44ad"/>
+  <text x="590" y="222" text-anchor="middle" font-size="11" font-weight="bold" fill="white">User Model</text>
+
+  <text x="590" y="318" text-anchor="middle" font-size="9" fill="#7f8c8d">（Plugin，可换）</text>
+
+  <line x1="340" y1="318" x2="340" y2="342" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Plugins -->
+  <rect x="120" y="344" width="440" height="72" rx="8" fill="#8e44ad"/>
+  <text x="340" y="368" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Plugins（可替换）</text>
+  <text x="340" y="388" text-anchor="middle" font-size="11" fill="#e8daef">LLM Provider · Tool Backend · Voice · Scheduler · 等</text>
+  <text x="340" y="404" text-anchor="middle" font-size="10" fill="#d2b4de">任何能力都能在不改源码的情况下被替换</text>
+</svg>

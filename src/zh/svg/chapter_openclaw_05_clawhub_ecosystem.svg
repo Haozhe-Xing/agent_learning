@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" width="680" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="380" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">ClawHub 三层技能生态</text>
+
+  <!-- 核心层 -->
+  <rect x="40" y="55" width="600" height="80" rx="10" fill="#2c3e50"/>
+  <text x="60" y="82" font-size="14" font-weight="bold" fill="white">① 核心 Skill（官方内置）</text>
+  <text x="60" y="106" font-size="12" fill="#bdc3c7">邮件 / 日历 / 航班 / 笔记 / 搜索 —— 由 OpenClaw 团队维护</text>
+  <text x="60" y="126" font-size="11" fill="#95a5a6">贡献者：OpenClaw 核心团队 · 质量把关最严</text>
+
+  <line x1="340" y1="135" x2="340" y2="155" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 社区层 -->
+  <rect x="40" y="158" width="600" height="80" rx="10" fill="#3498db"/>
+  <text x="60" y="185" font-size="14" font-weight="bold" fill="white">② 社区 Skill（ClawHub 上架）</text>
+  <text x="60" y="209" font-size="12" fill="#d6eaf8">ClawHub 市场：openclaw skills search / install / publish</text>
+  <text x="60" y="229" font-size="11" fill="#aed6f1">贡献者：社区开发者 · 覆盖长尾需求（翻译 / 文档 / 行业工具）</text>
+
+  <line x1="340" y1="238" x2="340" y2="258" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 私有层 -->
+  <rect x="40" y="261" width="600" height="80" rx="10" fill="#27ae60"/>
+  <text x="60" y="288" font-size="14" font-weight="bold" fill="white">③ 私有 Skill（本地）</text>
+  <text x="60" y="312" font-size="12" fill="#d5f5e3">~/.openclaw/skills/ —— 只属于你，不上架</text>
+  <text x="60" y="332" font-size="11" fill="#a9dfbf">贡献者：你自己 · 隐私 / 定制 / 未公开能力</text>
+
+  <!-- 右侧说明 -->
+  <rect x="60" y="352" width="560" height="22" rx="6" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="367" text-anchor="middle" font-size="11" fill="#9a7d0a">三层共享同一套 SKILL.md 契约，可逐层下沉复用：核心 → 社区 → 私有</text>
+</svg>

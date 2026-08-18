@@ -54,8 +54,8 @@ Approximately **90–120 minutes** (including hands-on exercises)
 > **Prerequisites**: [Chapter 3 Tool Calling](../chapter_tools/README.md)
 >
 > **Recommended Next**:
-> - 👉 [Chapter 16 Multi-Agent Collaboration](../chapter_multi_agent/README.md) — sharing and discovering skills in multi-Agent systems
-> - 👉 [Chapter 17 Communication Protocols](../chapter_protocol/README.md) — skill declaration mechanisms in MCP/A2A
+> - 👉 [Chapter 16 Multi-Agent Collaboration](../chapter_18_multi_agent/README.md) — sharing and discovering skills in multi-Agent systems
+> - 👉 [Chapter 17 Communication Protocols](../chapter_19_protocol/README.md) — skill declaration mechanisms in MCP/A2A
 
 ---
 

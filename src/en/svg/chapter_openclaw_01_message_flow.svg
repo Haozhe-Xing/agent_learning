@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+    <marker id="arrowD" markerWidth="8" markerHeight="8" refX="3" refY="6" orient="auto">
+      <path d="M0,0 L6,0 L3,8 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="420" rx="14" fill="#f0f4f8"/>
+
+  <text x="360" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OpenClaw Message Flow: From 5 Chat Apps to Tool Execution</text>
+  <text x="360" y="50" text-anchor="middle" font-size="11" fill="#7f8c8d">channels flatten to IncomingMessage → unified gateway → same Agent Loop → tool sandbox execution</text>
+
+  <!-- 1. Channels group (5 platforms) -->
+  <rect x="30" y="78" width="140" height="200" rx="10" fill="#ecf0f1" stroke="#34495e" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="100" y="98" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">Channels (5 platforms)</text>
+  <text x="100" y="113" text-anchor="middle" font-size="9" fill="#7f8c8d">adapter layer</text>
+
+  <rect x="46" y="124" width="108" height="24" rx="5" fill="#27ae60"/>
+  <text x="100" y="141" text-anchor="middle" font-size="11" font-weight="bold" fill="white">WhatsApp</text>
+  <rect x="46" y="154" width="108" height="24" rx="5" fill="#3498db"/>
+  <text x="100" y="171" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Telegram</text>
+  <rect x="46" y="184" width="108" height="24" rx="5" fill="#9b59b6"/>
+  <text x="100" y="201" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Discord</text>
+  <rect x="46" y="214" width="108" height="24" rx="5" fill="#e67e22"/>
+  <text x="100" y="231" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Slack</text>
+  <rect x="46" y="244" width="108" height="24" rx="5" fill="#16a085"/>
+  <text x="100" y="261" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Signal</text>
+
+  <!-- 2. Gateway -->
+  <rect x="220" y="148" width="140" height="60" rx="8" fill="#2c3e50"/>
+  <text x="290" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="white">OpenClaw Gateway</text>
+  <text x="290" y="190" text-anchor="middle" font-size="10" fill="#bdc3c7">message hub + cross-channel identity</text>
+
+  <!-- 3. Agent Loop -->
+  <rect x="410" y="148" width="140" height="60" rx="8" fill="#34495e"/>
+  <text x="480" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Agent Loop</text>
+  <text x="480" y="190" text-anchor="middle" font-size="10" fill="#bdc3c7">ReAct · streaming · tool result write-back</text>
+
+  <!-- 4. Toolbox -->
+  <rect x="600" y="148" width="90" height="60" rx="8" fill="#c0392b"/>
+  <text x="645" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Toolbox</text>
+  <text x="645" y="190" text-anchor="middle" font-size="10" fill="#fadbd8">sandbox</text>
+
+  <!-- Main flow arrows -->
+  <line x1="170" y1="178" x2="216" y2="178" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowR)"/>
+  <line x1="360" y1="178" x2="406" y2="178" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowR)"/>
+  <line x1="550" y1="178" x2="596" y2="178" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Reply path -->
+  <path d="M 600 200 L 600 230 L 100 230 L 100 275" fill="none" stroke="#95a5a6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowD)"/>
+  <text x="350" y="226" text-anchor="middle" font-size="9" fill="#95a5a6" font-style="italic">reply path: Toolbox output → Agent Loop wrap → Gateway → original channel</text>
+
+  <!-- Session Memory (under Gateway) -->
+  <rect x="220" y="300" width="140" height="56" rx="8" fill="#ecf0f1" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="290" y="324" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">Session Memory</text>
+  <text x="290" y="342" text-anchor="middle" font-size="10" fill="#7f8c8d">SQLite + summarization</text>
+  <line x1="290" y1="208" x2="290" y2="296" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowD)"/>
+  <text x="298" y="252" font-size="9" fill="#7f8c8d">read/write session</text>
+
+  <!-- Permission / Hooks (under Agent Loop) -->
+  <rect x="410" y="300" width="140" height="56" rx="8" fill="#ecf0f1" stroke="#34495e" stroke-width="1.5"/>
+  <text x="480" y="324" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">Permission / Hooks</text>
+  <text x="480" y="342" text-anchor="middle" font-size="10" fill="#7f8c8d">two-stage gate before each tool call</text>
+  <line x1="480" y1="208" x2="480" y2="296" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowD)"/>
+  <text x="488" y="252" font-size="9" fill="#7f8c8d">before each tool</text>
+
+  <!-- Legend -->
+  <line x1="40" y1="380" x2="58" y2="380" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="64" y="383" font-size="9" fill="#2c3e50">main data flow</text>
+  <line x1="140" y1="380" x2="158" y2="380" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowD)"/>
+  <text x="164" y="383" font-size="9" fill="#2c3e50">side read/check</text>
+  <line x1="260" y1="380" x2="278" y2="380" stroke="#95a5a6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowD)"/>
+  <text x="284" y="383" font-size="9" fill="#2c3e50">reply path</text>
+
+  <text x="360" y="408" text-anchor="middle" font-size="10" fill="#2c3e50" font-style="italic">per-message lifecycle: channel parse → session archive → reasoning loop → permission check → tool execution → reply to channel</text>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 240" width="680" height="240">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="240" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Model + Harness = Agent</text>
+
+  <rect x="100" y="44" width="480" height="40" rx="8" fill="#2c3e50"/>
+  <text x="340" y="69" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Agent = Model + Harness</text>
+
+  <line x1="340" y1="84" x2="340" y2="104" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="340" y1="104" x2="200" y2="104" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="340" y1="104" x2="480" y2="104" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="200" y1="104" x2="200" y2="122" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="480" y1="104" x2="480" y2="122" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="130" y="124" width="140" height="72" rx="8" fill="#3498db"/>
+  <text x="200" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Model</text>
+  <text x="200" y="166" text-anchor="middle" font-size="11" fill="#d6eaf8">V4-Pro / V4-Flash</text>
+  <text x="200" y="184" text-anchor="middle" font-size="12" fill="#d6eaf8">"thinks"</text>
+
+  <rect x="410" y="124" width="140" height="72" rx="8" fill="#e67e22"/>
+  <text x="480" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Harness</text>
+  <text x="480" y="166" text-anchor="middle" font-size="11" fill="#fdebd0">dsh (DeepSeek Harness)</text>
+  <text x="480" y="184" text-anchor="middle" font-size="12" fill="#fdebd0">"acts"</text>
+
+  <text x="340" y="222" text-anchor="middle" font-size="11" fill="#2c3e50">The model thinks; the Harness reads/writes files, runs commands, calls tools, spawns sub-tasks, and finishes long tasks within authorization</text>
+</svg>

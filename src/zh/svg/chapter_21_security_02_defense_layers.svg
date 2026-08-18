@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 520" width="540" height="520">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="540" height="520" rx="14" fill="#f0f4f8"/>
+  <text x="270" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">多层事实性防线（4 层递进）</text>
+  <text x="270" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">用户提问 → 检索 → 推理 → 结构化 → 验证链 → 最终回答（带置信度）</text>
+
+  <!-- 用户提问 -->
+  <rect x="150" y="60" width="240" height="40" rx="6" fill="#2c3e50"/>
+  <text x="270" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="white">用户提问</text>
+  <line x1="270" y1="100" x2="270" y2="120" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 第一层：检索 -->
+  <rect x="60" y="124" width="420" height="68" rx="8" fill="#3498db"/>
+  <text x="270" y="146" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第一层 · 实时检索增强（策略 10）</text>
+  <text x="270" y="166" text-anchor="middle" font-size="11" fill="#d6eaf8">判断是否需要实时信息 → 搜索 / RAG 检索</text>
+  <text x="270" y="182" text-anchor="middle" font-size="10" fill="#aed6f1" font-style="italic">最关键：给模型"事实来源"，让幻觉没有空间</text>
+  <line x1="270" y1="192" x2="270" y2="212" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 第二层：推理 -->
+  <rect x="60" y="216" width="420" height="68" rx="8" fill="#e67e22"/>
+  <text x="270" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第二层 · 推理模型生成（策略 5）</text>
+  <text x="270" y="258" text-anchor="middle" font-size="11" fill="#fdebd0">用推理模型 + 检索结果生成回答</text>
+  <text x="270" y="274" text-anchor="middle" font-size="10" fill="#fadbd8" font-style="italic">推理模型比通用模型更不易幻觉（思考+自检）</text>
+  <line x1="270" y1="284" x2="270" y2="304" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 第三层：结构化 -->
+  <rect x="60" y="308" width="420" height="68" rx="8" fill="#9b59b6"/>
+  <text x="270" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第三层 · 结构化输出（策略 8）</text>
+  <text x="270" y="350" text-anchor="middle" font-size="11" fill="#e8daef">强制模型输出结构化字段（含置信度、来源）</text>
+  <text x="270" y="366" text-anchor="middle" font-size="10" fill="#d2b4de" font-style="italic">结构化让下游校验更便宜（不需再做语义判断）</text>
+  <line x1="270" y1="376" x2="270" y2="396" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 第四层：验证链 -->
+  <rect x="60" y="400" width="420" height="68" rx="8" fill="#27ae60"/>
+  <text x="270" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第四层 · 验证链修正（CoVe / 策略 7）</text>
+  <text x="270" y="442" text-anchor="middle" font-size="11" fill="#d5f5e3">自动生成验证问题 → 让模型自己答 → 比对修正</text>
+  <text x="270" y="458" text-anchor="middle" font-size="10" fill="#a9dfbf" font-style="italic">"让它自己挑自己错"——对简单事实最有效</text>
+  <line x1="270" y1="468" x2="270" y2="486" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 最终回答 -->
+  <rect x="150" y="488" width="240" height="26" rx="13" fill="#16a085"/>
+  <text x="270" y="506" text-anchor="middle" font-size="12" font-weight="bold" fill="white">最终回答（带置信度标注）</text>
+</svg>

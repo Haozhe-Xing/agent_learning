@@ -22,26 +22,17 @@ client = OpenAI()
 # ============================
 # OpenAI Embedding 模型
 # ============================
+```
 
-# 可用模型对比
-EMBEDDING_MODELS = {
-    "text-embedding-3-small": {
-        "dimensions": 1536,
-        "price_per_1m": 0.02,  # 美元
-        "performance": "good"
-    },
-    "text-embedding-3-large": {
-        "dimensions": 3072,
-        "price_per_1m": 0.13,
-        "performance": "best"
-    },
-    "text-embedding-ada-002": {
-        "dimensions": 1536,
-        "price_per_1m": 0.10,
-        "performance": "legacy"
-    }
-}
+OpenAI 三个嵌入模型的对比（价格随时间变化，以官方定价为准）：
 
+| 模型 | 维度 | 性能 | 定位 |
+|------|------|------|------|
+| `text-embedding-3-small` | 1536 | 好 | **性价比首选**——性能接近 large，价格低得多 |
+| `text-embedding-3-large` | 3072 | 最好 | 精度要求高的场景 |
+| `text-embedding-ada-002` | 1536 | 旧版 | 遗留项目，建议迁移到 3 代 |
+
+```python
 def get_embedding(text: str, model: str = "text-embedding-3-small") -> List[float]:
     """获取单个文本的嵌入向量"""
     # 清理文本

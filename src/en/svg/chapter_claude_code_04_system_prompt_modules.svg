@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="680" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">The 4 Modules of Claude Code's System Prompt (~915 lines)</text>
+
+  <rect x="40" y="52" width="600" height="56" rx="8" fill="#2c3e50"/>
+  <text x="60" y="76" font-size="13" font-weight="bold" fill="white">M1: Identity</text>
+  <text x="60" y="95" font-size="11" fill="#bdc3c7">role · long-term identity · scope constraints · user authority</text>
+  <text x="620" y="85" text-anchor="end" font-size="11" fill="#f1c40f">~80 lines</text>
+
+  <rect x="40" y="116" width="600" height="56" rx="8" fill="#3498db"/>
+  <text x="60" y="140" font-size="13" font-weight="bold" fill="white">M2: Tool Use Spec</text>
+  <text x="60" y="159" font-size="11" fill="#d6eaf8">JSON-first · retry limits · dangerous-command blacklist · write protection</text>
+  <text x="620" y="149" text-anchor="end" font-size="11" fill="#f1c40f">~280 lines</text>
+
+  <rect x="40" y="180" width="600" height="56" rx="8" fill="#e67e22"/>
+  <text x="60" y="204" font-size="13" font-weight="bold" fill="white">M3: Behavioral Contracts</text>
+  <text x="60" y="223" font-size="11" fill="#fdebd0">read before edit · concise first · no fake success · disclose risk</text>
+  <text x="620" y="213" text-anchor="end" font-size="11" fill="#f1c40f">~320 lines (longest)</text>
+
+  <rect x="40" y="244" width="600" height="56" rx="8" fill="#9b59b6"/>
+  <text x="60" y="268" font-size="13" font-weight="bold" fill="white">M4: Workflow Contracts</text>
+  <text x="60" y="287" font-size="11" fill="#e8daef">plan before act · when to spawn sub-agents · when to interrupt · long-command timeout</text>
+  <text x="620" y="277" text-anchor="end" font-size="11" fill="#f1c40f">~235 lines</text>
+</svg>

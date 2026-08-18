@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 320" width="620" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="620" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="310" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Agent 服务的 K8s 架构</text>
+  <text x="310" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">Ingress → API Service（无状态，多副本）→ Inference / Redis / Vector DB（StatefulSet）</text>
+
+  <!-- Ingress -->
+  <rect x="220" y="60" width="180" height="40" rx="6" fill="#2c3e50"/>
+  <text x="310" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Ingress / API Gateway</text>
+  <text x="310" y="92" text-anchor="middle" font-size="9" fill="#bdc3c7">流量入口 · 限流 · TLS 终止</text>
+  <line x1="310" y1="100" x2="310" y2="118" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- API Service 集群（2 个副本示意） -->
+  <text x="180" y="135" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">Deployment（多副本，水平扩展）</text>
+  <rect x="60" y="124" width="180" height="48" rx="6" fill="#3498db"/>
+  <text x="150" y="146" text-anchor="middle" font-size="12" font-weight="bold" fill="white">API Service #1</text>
+  <text x="150" y="164" text-anchor="middle" font-size="10" fill="#d6eaf8">无状态 Agent 循环</text>
+
+  <rect x="270" y="124" width="180" height="48" rx="6" fill="#3498db"/>
+  <text x="360" y="146" text-anchor="middle" font-size="12" font-weight="bold" fill="white">API Service #2</text>
+  <text x="360" y="164" text-anchor="middle" font-size="10" fill="#d6eaf8">无状态 Agent 循环</text>
+
+  <rect x="480" y="124" width="100" height="48" rx="6" fill="#3498db" stroke-dasharray="4,3"/>
+  <text x="530" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="white">#N</text>
+  <text x="530" y="164" text-anchor="middle" font-size="9" fill="#d6eaf8">N 个副本</text>
+
+  <!-- 汇聚到下层 -->
+  <line x1="150" y1="172" x2="150" y2="190" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="360" y1="172" x2="360" y2="190" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="530" y1="172" x2="530" y2="190" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="150" y1="190" x2="530" y2="190" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="340" y1="190" x2="340" y2="210" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <text x="310" y="206" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">↓ 调用有状态依赖</text>
+
+  <!-- 三个 StatefulSet 组件 -->
+  <rect x="60" y="216" width="160" height="64" rx="6" fill="#e67e22"/>
+  <text x="140" y="238" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Inference Service</text>
+  <text x="140" y="256" text-anchor="middle" font-size="10" fill="#fdebd0">GPU Pod（模型推理）</text>
+  <text x="140" y="270" text-anchor="middle" font-size="9" fill="#fadbd8" font-style="italic">vLLM / TGI</text>
+
+  <rect x="240" y="216" width="160" height="64" rx="6" fill="#27ae60"/>
+  <text x="320" y="238" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Redis</text>
+  <text x="320" y="256" text-anchor="middle" font-size="10" fill="#d5f5e3">会话 / 短期记忆 / 队列</text>
+  <text x="320" y="270" text-anchor="middle" font-size="9" fill="#a9dfbf" font-style="italic">StatefulSet + PVC</text>
+
+  <rect x="420" y="216" width="160" height="64" rx="6" fill="#8e44ad"/>
+  <text x="500" y="238" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Vector DB</text>
+  <text x="500" y="256" text-anchor="middle" font-size="10" fill="#e8daef">长期记忆 / RAG 索引</text>
+  <text x="500" y="270" text-anchor="middle" font-size="9" fill="#d2b4de" font-style="italic">Qdrant / Milvus</text>
+
+  <text x="310" y="298" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">无状态服务用 Deployment（可任意扩缩），有状态用 StatefulSet（稳定网络标识 + 持久卷）</text>
+</svg>

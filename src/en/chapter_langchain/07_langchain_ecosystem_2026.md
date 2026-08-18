@@ -41,18 +41,7 @@ A typical Agent application faces the following deployment difficulties:
 
 LangGraph Platform uses a three-layer architecture:
 
-```
-┌─────────────────────────────────────────┐
-│            API Server                   │  ← REST API entry point
-│   (deployed on Kubernetes / Cloud Run)  │
-├─────────────────────────────────────────┤
-│          State Server                   │  ← state persistence layer
-│   (Redis / PostgreSQL / in-memory)      │
-├─────────────────────────────────────────┤
-│         Worker Pool                     │  ← where Agents actually run
-│   (async Workers, horizontally scalable)│
-└─────────────────────────────────────────┘
-```
+![LangGraph Platform three-layer architecture](../svg/chapter_langchain_07_platform_three_layers.svg)
 
 ### Usage Example
 
@@ -342,7 +331,7 @@ Commonly used templates:
 
 MCP (Model Context Protocol) is a standardized protocol proposed by Anthropic that lets LLMs connect to external tools and data sources in a uniform way. The LangChain community already provides MCP integration.
 
-> 📌 For a detailed introduction to MCP, see [Chapter 17: Agent Communication Protocols](../chapter_protocol/README.md).
+> 📌 For a detailed introduction to MCP, see [Chapter 17: Agent Communication Protocols](../chapter_19_protocol/README.md).
 
 ### Using MCP Tools
 
@@ -609,8 +598,8 @@ The core direction of the LangChain ecosystem's evolution in 2025–2026 is **mo
 
 > 💡 **How this relates to other chapters in the book**:
 > - [Chapter 13: LangGraph — Building Stateful Agents](../chapter_langgraph/README.md) explains graph orchestration with LangGraph in depth
-> - [Chapter 17: Agent Communication Protocols](../chapter_protocol/README.md) covers the MCP protocol in detail
-> - [Chapter 20: Deployment and Productionization](../chapter_deployment/README.md) discusses more complete deployment solutions
+> - [Chapter 17: Agent Communication Protocols](../chapter_19_protocol/README.md) covers the MCP protocol in detail
+> - [Chapter 20: Deployment and Productionization](../chapter_22_deployment/README.md) discusses more complete deployment solutions
 
 ---
 

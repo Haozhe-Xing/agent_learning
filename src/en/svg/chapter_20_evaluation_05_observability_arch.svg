@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 460" width="680" height="460">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="460" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Production-Grade Observability Architecture</text>
+  <text x="340" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">logs · traces · metrics → multi-backend export → unified Grafana dashboard</text>
+
+  <rect x="40" y="58" width="600" height="170" rx="8" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
+  <text x="60" y="76" font-size="13" font-weight="bold" fill="#2c3e50">Agent application layer</text>
+
+  <rect x="60" y="86" width="160" height="50" rx="6" fill="#3498db"/>
+  <text x="140" y="106" text-anchor="middle" font-size="12" font-weight="bold" fill="white">LLM call</text>
+  <text x="140" y="124" text-anchor="middle" font-size="10" fill="#d6eaf8">prompt · tokens · latency</text>
+
+  <rect x="240" y="86" width="160" height="50" rx="6" fill="#e67e22"/>
+  <text x="320" y="106" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tool execution</text>
+  <text x="320" y="124" text-anchor="middle" font-size="10" fill="#fdebd0">tool · args · result · err</text>
+
+  <rect x="420" y="86" width="200" height="50" rx="6" fill="#9b59b6"/>
+  <text x="520" y="106" text-anchor="middle" font-size="12" font-weight="bold" fill="white">RAG / memory</text>
+  <text x="520" y="124" text-anchor="middle" font-size="10" fill="#e8daef">query · hits · writes</text>
+
+  <line x1="140" y1="136" x2="140" y2="166" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="320" y1="136" x2="320" y2="166" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="520" y1="136" x2="520" y2="166" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="140" y1="166" x2="520" y2="166" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="330" y1="166" x2="330" y2="186" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="240" y="188" width="200" height="32" rx="6" fill="#16a085"/>
+  <text x="340" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="white">OTel Collector</text>
+
+  <line x1="340" y1="220" x2="340" y2="240" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <text x="340" y="256" text-anchor="middle" font-size="10" font-weight="bold" fill="#7f8c8d">↓ three backends in parallel</text>
+
+  <rect x="60" y="270" width="170" height="60" rx="6" fill="#27ae60"/>
+  <text x="145" y="290" text-anchor="middle" font-size="12" font-weight="bold" fill="white">LangFuse</text>
+  <text x="145" y="308" text-anchor="middle" font-size="10" fill="#d5f5e3">LLM tracing (prompt/answer/cost)</text>
+  <text x="145" y="322" text-anchor="middle" font-size="9" fill="#a9dfbf" font-style="italic">LLM-focused</text>
+
+  <rect x="255" y="270" width="170" height="60" rx="6" fill="#8e44ad"/>
+  <text x="340" y="290" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Jaeger</text>
+  <text x="340" y="308" text-anchor="middle" font-size="10" fill="#e8daef">service tracing (trace/spans)</text>
+  <text x="340" y="322" text-anchor="middle" font-size="9" fill="#d2b4de" font-style="italic">OpenTelemetry standard</text>
+
+  <rect x="450" y="270" width="170" height="60" rx="6" fill="#c0392b"/>
+  <text x="535" y="290" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Prometheus</text>
+  <text x="535" y="308" text-anchor="middle" font-size="10" fill="#fadbd8">metrics (time series)</text>
+  <text x="535" y="322" text-anchor="middle" font-size="9" fill="#f5b7b1" font-style="italic">pull mode · alerting</text>
+
+  <line x1="145" y1="330" x2="145" y2="370" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="340" y1="330" x2="340" y2="370" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="535" y1="330" x2="535" y2="370" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="145" y1="370" x2="535" y2="370" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="340" y1="370" x2="340" y2="388" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="240" y="390" width="200" height="44" rx="22" fill="#2c3e50"/>
+  <text x="340" y="410" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Grafana</text>
+  <text x="340" y="426" text-anchor="middle" font-size="10" fill="#bdc3c7">unified dashboards + alerts</text>
+
+  <text x="340" y="450" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">3 backends are not "pick one" — each covers a slice: LLM chain / service calls / metrics</text>
+</svg>

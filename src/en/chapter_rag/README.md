@@ -44,7 +44,7 @@ Approximately **90–120 minutes** (including hands-on exercises)
 >
 > **Recommended Next Steps**:
 > - 👉 [Chapter 7: Context Engineering](../chapter_context_engineering/README.md) — Systematically manage context retrieved by RAG
-> - 👉 [Chapter 21: AI Coding Assistant](../chapter_coding_agent/README.md) — Apply RAG for code search in a real project
+> - 👉 [Chapter 21: AI Coding Assistant](../chapter_23_coding_agent/README.md) — Apply RAG for code search in a real project
 
 ---
 

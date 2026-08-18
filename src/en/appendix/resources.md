@@ -75,8 +75,8 @@ The following are core academic papers referenced in this book, organized by tec
 > - Memory Systems → [4.6 Paper Readings: Frontiers in Memory Systems](../chapter_memory/06_paper_readings.md)
 > - Planning & Reasoning → [5.7 Paper Readings: Frontiers in Planning and Reasoning](../chapter_planning/06_paper_readings.md)
 > - RAG → [6.6 Paper Readings: Frontiers in RAG](../chapter_rag/06_paper_readings.md)
-> - Multi-Agent → [16.6 Paper Readings: Frontiers in Multi-Agent Systems](../chapter_multi_agent/06_paper_readings.md)
-> - Safety & Reliability → [19.6 Paper Readings: Frontiers in Safety and Reliability](../chapter_security/06_paper_readings.md)
+> - Multi-Agent → [16.6 Paper Readings: Frontiers in Multi-Agent Systems](../chapter_18_multi_agent/06_paper_readings.md)
+> - Safety & Reliability → [19.6 Paper Readings: Frontiers in Safety and Reliability](../chapter_21_security/06_paper_readings.md)
 
 ### Prompting Strategies and Reasoning
 

@@ -24,7 +24,7 @@ After completing this chapter, you will be able to:
 >
 > **Recommended Next Steps**:
 > - 👉 [Chapter 12: LangChain In-Depth Practice](../chapter_langchain/README.md) — Quickly put your trained model into practice with frameworks
-> - 👉 [Chapter 18: Agent Evaluation and Optimization](../chapter_evaluation/README.md) — Evaluate the effectiveness of RL-trained Agents
+> - 👉 [Chapter 18: Agent Evaluation and Optimization](../chapter_20_evaluation/README.md) — Evaluate the effectiveness of RL-trained Agents
 
 ---
 

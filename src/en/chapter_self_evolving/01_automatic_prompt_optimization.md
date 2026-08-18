@@ -14,7 +14,7 @@ These methods help us write better Prompts, but in real Agent systems, the probl
 
 Thus, a new direction emerged: **Automatic Prompt Optimization (APO)**.
 
-> 📌 **Connecting to Section 2.3**: The end of [2.3 Prompting Strategies](./03_prompting_strategies.md) provided a conceptual preview of APO. This section is its full expansion — systematically mapping out the method lineage, GEPA's reflective evolution, feedback function design, and overfitting prevention.
+> 📌 **Connecting to Section 2.3**: The end of [2.3 Prompting Strategies](../chapter_llm/03_prompting_strategies.md) provided a conceptual preview of APO. This section is its full expansion — systematically mapping out the method lineage, GEPA's reflective evolution, feedback function design, and overfitting prevention.
 
 It aims to solve a very direct problem:
 

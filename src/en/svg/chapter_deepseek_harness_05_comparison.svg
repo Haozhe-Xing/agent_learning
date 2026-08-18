@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="680" height="430">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="430" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Four Harnesses: Architecture Routes Compared</text>
+  <text x="340" y="47" text-anchor="middle" font-size="11" fill="#7f8c8d">Core question: who owns the Agent's capabilities?</text>
+
+  <rect x="30" y="65" width="145" height="180" rx="10" fill="#c0392b"/>
+  <text x="102" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Claude Code</text>
+  <rect x="42" y="100" width="121" height="28" rx="5" fill="#7b241c"/>
+  <text x="102" y="118" text-anchor="middle" font-size="10" fill="white">Agent Loop (closed)</text>
+  <rect x="42" y="134" width="121" height="28" rx="5" fill="#7b241c"/>
+  <text x="102" y="152" text-anchor="middle" font-size="10" fill="white">Tools (vendor built-in)</text>
+  <rect x="42" y="168" width="121" height="28" rx="5" fill="#7b241c"/>
+  <text x="102" y="186" text-anchor="middle" font-size="10" fill="white">Skills / MCP / Hooks</text>
+  <text x="102" y="215" text-anchor="middle" font-size="10" fill="#f5b7b1">Capability: closed</text>
+  <text x="102" y="232" text-anchor="middle" font-size="10" fill="#f5b7b1">stable but locked</text>
+
+  <rect x="185" y="65" width="145" height="180" rx="10" fill="#e67e22"/>
+  <text x="257" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="white">OpenClaw</text>
+  <rect x="197" y="100" width="121" height="28" rx="5" fill="#9c4d10"/>
+  <text x="257" y="118" text-anchor="middle" font-size="10" fill="white">Agent Loop (core)</text>
+  <rect x="197" y="134" width="121" height="28" rx="5" fill="#9c4d10"/>
+  <text x="257" y="152" text-anchor="middle" font-size="10" fill="white">Tools (built-in)</text>
+  <rect x="197" y="168" width="121" height="28" rx="5" fill="#9c4d10"/>
+  <text x="257" y="186" text-anchor="middle" font-size="10" fill="white">Community Skills</text>
+  <text x="257" y="215" text-anchor="middle" font-size="10" fill="#fdebd0">Capability: community</text>
+  <text x="257" y="232" text-anchor="middle" font-size="10" fill="#fdebd0">ecosystem but scattered</text>
+
+  <rect x="340" y="65" width="145" height="180" rx="10" fill="#8e44ad"/>
+  <text x="412" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Hermes</text>
+  <rect x="352" y="100" width="121" height="28" rx="5" fill="#5b2c6f"/>
+  <text x="412" y="118" text-anchor="middle" font-size="10" fill="white">Agent Loop (core)</text>
+  <rect x="352" y="134" width="121" height="28" rx="5" fill="#5b2c6f"/>
+  <text x="412" y="152" text-anchor="middle" font-size="10" fill="white">Tools (built-in)</text>
+  <rect x="352" y="168" width="121" height="28" rx="5" fill="#5b2c6f"/>
+  <text x="412" y="186" text-anchor="middle" font-size="10" fill="white">Self-Evolving Skills</text>
+  <text x="412" y="215" text-anchor="middle" font-size="10" fill="#e8daef">Capability: self-evolving</text>
+  <text x="412" y="232" text-anchor="middle" font-size="10" fill="#e8daef">personal but hard to audit</text>
+
+  <rect x="495" y="65" width="155" height="180" rx="10" fill="#2980b9"/>
+  <text x="572" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="white">DeepSeek Harness</text>
+  <rect x="507" y="100" width="131" height="28" rx="5" fill="#1f618d"/>
+  <text x="572" y="118" text-anchor="middle" font-size="10" fill="white">Agent Loop (plugin)</text>
+  <rect x="507" y="134" width="131" height="28" rx="5" fill="#1f618d"/>
+  <text x="572" y="152" text-anchor="middle" font-size="10" fill="white">Tools (plugin)</text>
+  <rect x="507" y="168" width="131" height="28" rx="5" fill="#1f618d"/>
+  <text x="572" y="186" text-anchor="middle" font-size="10" fill="white">Community Plugins</text>
+  <text x="572" y="215" text-anchor="middle" font-size="10" fill="#d6eaf8">Capability: pluginized</text>
+  <text x="572" y="232" text-anchor="middle" font-size="10" fill="#d6eaf8">free but DIY</text>
+
+  <line x1="340" y1="255" x2="340" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="283" width="600" height="56" rx="10" fill="#2c3e50"/>
+  <text x="340" y="307" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Key Difference: Swappable Kernel</text>
+  <text x="340" y="327" text-anchor="middle" font-size="11" fill="#bdc3c7">Only DeepSeek Harness makes the Agent loop itself a plugin — the other three hard-code the core</text>
+
+  <rect x="40" y="350" width="600" height="52" rx="10" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="372" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a7d0a">Use an Agent: channels→OpenClaw · self-evolve→Hermes · IDE→Claude Code</text>
+  <text x="340" y="392" text-anchor="middle" font-size="11" fill="#5d6d7e">Build a platform: full control + model-agnostic → DeepSeek Harness</text>
+</svg>

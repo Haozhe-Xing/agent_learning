@@ -423,7 +423,7 @@ for strategy, data in results.items():
 
 > 💡 **前沿进展**：2024-2025 年以来，推理模型成为 LLM 发展的核心方向。OpenAI 的 o1/o3/o4-mini 系列模型、Anthropic 的 Claude 4 Extended Thinking、DeepSeek-R1 等模型将 CoT 推理"内化"到了模型本身（而非依赖提示词），在数学、编程竞赛和科学推理中展现了惊人的能力。Google 的 Gemini 2.5 Pro 也引入了"Thinking Mode"。这表明 CoT 已从一种"提示技巧"演变为模型训练的核心范式——未来的 LLM 将越来越"会想"。对于 Agent 开发者而言，推理模型让 Agent 在复杂多步任务中的规划能力大幅提升。
 
-> 📖 **更多论文解读**：ReAct 的深度解读请见 [5.7 论文解读：规划与推理前沿研究](../chapter_planning/06_paper_readings.md)，Self-Consistency 在幻觉缓解中的应用请见 [19.6 论文解读：安全与可靠性前沿研究](../chapter_security/06_paper_readings.md)。
+> 📖 **更多论文解读**：ReAct 的深度解读请见 [5.7 论文解读：规划与推理前沿研究](../chapter_planning/06_paper_readings.md)，Self-Consistency 在幻觉缓解中的应用请见 [19.6 论文解读：安全与可靠性前沿研究](../chapter_21_security/06_paper_readings.md)。
 
 ---
 

@@ -720,9 +720,9 @@ Before shipping a LangChain application, walk through the following list item by
 | **Checklist** | Five dimensions: reliability, performance, observability, security, deployment |
 
 > 💡 **How this relates to other chapters of the book**:
-> - Chapter 18 [Agent Evaluation and Optimization](../chapter_evaluation/README.md) discusses performance optimization and cost control in more detail
-> - Chapter 19 [Security and Reliability](../chapter_security/README.md) covers Prompt injection defense and sandbox isolation in depth
-> - Chapter 20 [Deployment and Productionization](../chapter_deployment/README.md) covers containerization, K8s, Serverless, and other deployment options
+> - Chapter 18 [Agent Evaluation and Optimization](../chapter_20_evaluation/README.md) discusses performance optimization and cost control in more detail
+> - Chapter 19 [Security and Reliability](../chapter_21_security/README.md) covers Prompt injection defense and sandbox isolation in depth
+> - Chapter 20 [Deployment and Productionization](../chapter_22_deployment/README.md) covers containerization, K8s, Serverless, and other deployment options
 
 ---
 

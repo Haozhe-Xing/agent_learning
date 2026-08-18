@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="680" height="430">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="430" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OpenClaw 四种部署方式的取舍</text>
+  <text x="340" y="50" text-anchor="middle" font-size="11" fill="#7f8c8d">横轴 = 隔离性（从左到右增强）　纵轴 = 上手成本（从上到下增加）</text>
+
+  <!-- 坐标象限示意（四个卡片） -->
+  <!-- A npx -->
+  <rect x="40" y="70" width="285" height="150" rx="10" fill="#e8f6e8" stroke="#27ae60"/>
+  <text x="55" y="95" font-size="14" font-weight="bold" fill="#1e8449">A · npx 一键</text>
+  <text x="55" y="118" font-size="12" fill="#2c3e50">npx @openclaw/cli onboard</text>
+  <text x="55" y="140" font-size="11" fill="#5d6d7e">上手最快（当场试用）</text>
+  <text x="55" y="160" font-size="11" fill="#5d6d7e">无隔离 / 每次联网拉包</text>
+  <text x="55" y="180" font-size="11" fill="#c0392b">⚠️ 不适合 24/7 常驻</text>
+  <text x="55" y="205" font-size="11" fill="#1e8449">→ 适合：尝鲜、demo</text>
+
+  <!-- B 安装脚本 -->
+  <rect x="355" y="70" width="285" height="150" rx="10" fill="#eaf2f8" stroke="#2980b9"/>
+  <text x="370" y="95" font-size="14" font-weight="bold" fill="#1f618d">B · 官方安装脚本</text>
+  <text x="370" y="118" font-size="12" fill="#2c3e50">curl -fsSL openclaw.ai/install.sh | bash</text>
+  <text x="370" y="140" font-size="11" fill="#5d6d7e">装到本地 / 三个 channel</text>
+  <text x="370" y="160" font-size="11" fill="#5d6d7e">stable·beta·dev 可切换</text>
+  <text x="370" y="180" font-size="11" fill="#5d6d7e">无隔离 / 需进程守护</text>
+  <text x="370" y="205" font-size="11" fill="#1f618d">→ 适合：日常 24/7 个人用</text>
+
+  <!-- C 源码 -->
+  <rect x="40" y="240" width="285" height="150" rx="10" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="55" y="265" font-size="14" font-weight="bold" fill="#9a7d0a">C · 源码构建</text>
+  <text x="55" y="288" font-size="12" fill="#2c3e50">git clone + pnpm install</text>
+  <text x="55" y="310" font-size="11" fill="#5d6d7e">pnpm workspace 结构清晰</text>
+  <text x="55" y="330" font-size="11" fill="#5d6d7e">可读源码 / 改功能</text>
+  <text x="55" y="350" font-size="11" fill="#5d6d7e">无隔离 / 需手动管理</text>
+  <text x="55" y="375" font-size="11" fill="#9a7d0a">→ 适合：二次开发、贡献者</text>
+
+  <!-- D Docker -->
+  <rect x="355" y="240" width="285" height="150" rx="10" fill="#fdedec" stroke="#c0392b"/>
+  <text x="370" y="265" font-size="14" font-weight="bold" fill="#922b21">D · Docker 沙箱</text>
+  <text x="370" y="288" font-size="12" fill="#2c3e50">docker run -v ... gateway</text>
+  <text x="370" y="310" font-size="11" fill="#5d6d7e">容器隔离 / volume 持久化</text>
+  <text x="370" y="330" font-size="11" fill="#5d6d7e">WhatsApp session 必须持久化</text>
+  <text x="370" y="350" font-size="11" fill="#5d6d7e">✅ 隔离最强 / 成本稍高</text>
+  <text x="370" y="375" font-size="11" fill="#922b21">→ 适合：生产、团队、隔离</text>
+
+  <!-- 底部结论 -->
+  <rect x="40" y="400" width="600" height="24" rx="6" fill="#2c3e50"/>
+  <text x="340" y="416" text-anchor="middle" font-size="12" font-weight="bold" fill="white">上手成本 A &lt; B &lt; C &lt; D　　隔离性 A = B = C &lt; D</text>
+</svg>

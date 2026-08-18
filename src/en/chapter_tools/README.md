@@ -44,7 +44,7 @@ Approximately **90–120 minutes** (including hands-on exercises)
 > **Recommended Next Steps**:
 > - 👉 [Chapter 4: Memory Systems](../chapter_memory/README.md) — Give your Agent "memories"
 > - 👉 [Chapter 9: Skill Systems](../chapter_skill/README.md) — Upgrade from individual tools to complete skills
-> - 👉 [Chapter 17: Communication Protocols](../chapter_protocol/README.md) — Standardized tool protocols like MCP
+> - 👉 [Chapter 17: Communication Protocols](../chapter_19_protocol/README.md) — Standardized tool protocols like MCP
 
 ---
 

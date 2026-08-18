@@ -14,7 +14,7 @@
 
 于是，一个新的方向出现了：**Prompt 自动调优（Automatic Prompt Optimization）**。
 
-> 📌 **承接 2.3**：[2.3 提示策略](./03_prompting_strategies.md) 末尾已对 APO 做过概念性预告，本节是它的完整展开——系统梳理方法谱系、GEPA 反思式进化、反馈函数设计与过拟合防治。
+> 📌 **承接 2.3**：[2.3 提示策略](../chapter_llm/03_prompting_strategies.md) 末尾已对 APO 做过概念性预告，本节是它的完整展开——系统梳理方法谱系、GEPA 反思式进化、反馈函数设计与过拟合防治。
 
 它想解决的问题很直接：
 

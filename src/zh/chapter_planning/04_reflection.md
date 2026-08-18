@@ -14,6 +14,8 @@
 
 ## 基础反思循环
 
+> **核心思想**：让 Agent 生成答案后，**再让同一个 LLM 扮演"批评者"审一遍自己的答案**，发现问题就改进。最简实现就是"生成 → 自我批评 → 改进"三段式（Self-Refine 思路），不需要额外模型，只需换一个 prompt 角色。
+
 ```python
 from openai import OpenAI
 

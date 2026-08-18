@@ -58,7 +58,7 @@ Context engineering is the systematic methodology for solving these problems. It
 >
 > **Recommended Next Steps**:
 > - 👉 [Chapter 12: LangChain](../chapter_langchain/README.md) — Implement context management strategies with a framework
-> - 👉 [Chapter 18: Evaluation and Optimization](../chapter_evaluation/README.md) — Evaluate the effectiveness of context strategies
+> - 👉 [Chapter 18: Evaluation and Optimization](../chapter_20_evaluation/README.md) — Evaluate the effectiveness of context strategies
 
 ---
 

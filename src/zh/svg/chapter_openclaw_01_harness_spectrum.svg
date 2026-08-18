@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="680" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="340" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">行动型 Agent Harness 谱系（2026）</text>
+
+  <!-- 根 -->
+  <rect x="240" y="52" width="200" height="40" rx="8" fill="#2c3e50"/>
+  <text x="340" y="77" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Action-Oriented Harness</text>
+
+  <!-- 4 分支 -->
+  <line x1="340" y1="92" x2="340" y2="115" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="80" y1="115" x2="600" y2="115" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="80" y1="115" x2="80" y2="132" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="253" y1="115" x2="253" y2="132" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="427" y1="115" x2="427" y2="132" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="600" y1="115" x2="600" y2="132" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Hermes -->
+  <rect x="20" y="136" width="120" height="140" rx="8" fill="#8e44ad"/>
+  <text x="80" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Hermes</text>
+  <text x="80" y="176" text-anchor="middle" font-size="9" fill="#e8daef">多渠道 · 自进化</text>
+  <text x="80" y="194" text-anchor="middle" font-size="9" fill="#e8daef">会自己写技能</text>
+  <text x="80" y="216" text-anchor="middle" font-size="9" fill="#f1c40f">Ch.15</text>
+
+  <!-- OpenClaw -->
+  <rect x="193" y="136" width="120" height="140" rx="8" fill="#e67e22"/>
+  <text x="253" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="white">OpenClaw</text>
+  <text x="253" y="176" text-anchor="middle" font-size="9" fill="#fdebd0">多渠道 · 消费级</text>
+  <text x="253" y="194" text-anchor="middle" font-size="9" fill="#fdebd0">Skill 生态</text>
+  <text x="253" y="216" text-anchor="middle" font-size="9" fill="#f1c40f">Ch.14</text>
+
+  <!-- Claude Code -->
+  <rect x="367" y="136" width="120" height="140" rx="8" fill="#c0392b"/>
+  <text x="427" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Claude Code</text>
+  <text x="427" y="176" text-anchor="middle" font-size="9" fill="#f5b7b1">终端 IDE · 工业级</text>
+  <text x="427" y="194" text-anchor="middle" font-size="9" fill="#f5b7b1">source-available</text>
+  <text x="427" y="216" text-anchor="middle" font-size="9" fill="#f1c40f">Ch.16</text>
+
+  <!-- DeepSeek -->
+  <rect x="540" y="136" width="120" height="140" rx="8" fill="#2980b9"/>
+  <text x="600" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DeepSeek Harness</text>
+  <text x="600" y="176" text-anchor="middle" font-size="9" fill="#d6eaf8">终端+Web · 工坊</text>
+  <text x="600" y="194" text-anchor="middle" font-size="9" fill="#d6eaf8">一切皆插件</text>
+  <text x="600" y="216" text-anchor="middle" font-size="9" fill="#f1c40f">Ch.17</text>
+
+  <!-- 底部说明 -->
+  <rect x="40" y="296" width="600" height="32" rx="8" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="316" text-anchor="middle" font-size="11" fill="#9a7d0a">四者的"用户键"不同：聊天 App / CLI / Web UI —— 但共享同一套最小 Agent 模型</text>
+</svg>

@@ -8,7 +8,7 @@
 
 ### 项目定位
 
-[obra/superpowers](https://github.com/obra/superpowers) 是一套专为 Claude Code 设计的 **Agent Skills 集合**，在 GitHub 上积累了 70k+ Stars。它的目标不是给 AI 添加新功能，而是给 AI 的行为模式加上**工程纪律**——覆盖软件开发完整生命周期，从需求探索到分支收尾。
+[obra/superpowers](https://github.com/obra/superpowers) 是一套专为 Claude Code 设计的 **Agent Skills 集合**，是 GitHub 上广受欢迎的 Agent Skills 项目之一（Star 数以仓库为准）。它的目标不是给 AI 添加新功能，而是给 AI 的行为模式加上**工程纪律**——覆盖软件开发完整生命周期，从需求探索到分支收尾。
 
 ### 核心设计理念：SKILL.md 按需加载
 

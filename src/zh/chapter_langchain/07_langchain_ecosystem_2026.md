@@ -41,18 +41,7 @@ LangGraph Platform 是 LangGraph 的托管运行环境，解决了 Agent 应用�
 
 LangGraph Platform 采用三层架构：
 
-```
-┌─────────────────────────────────────────┐
-│            API Server                    │  ← REST API 入口
-│   (部署在 Kubernetes / Cloud Run)        │
-├─────────────────────────────────────────┤
-│          State Server                    │  ← 状态持久化层
-│   (Redis / PostgreSQL / 内存)            │
-├─────────────────────────────────────────┤
-│         Worker Pool                      │  ← 实际执行 Agent
-│   (异步 Worker，可水平扩展)               │
-└─────────────────────────────────────────┘
-```
+![LangGraph Platform 三层架构](../svg/chapter_langchain_07_platform_three_layers.svg)
 
 ### 使用示例
 
@@ -201,9 +190,10 @@ add_routes(app, chain, path="/chat")
 
 ### 完整的 Agent API 示例
 
+在"一行部署"基础上加**会话历史**即可发布有状态的 Agent——核心是把 `AgentExecutor` 包进 `RunnableWithMessageHistory`，再交给 `add_routes`：
+
 ```python
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from langserve import add_routes
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
@@ -213,18 +203,6 @@ from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
 app = FastAPI(title="Customer Service Agent API")
-
-# CORS 配置
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# ============================
-# 工具定义
-# ============================
 
 @tool
 def search_faq(query: str) -> str:
@@ -236,10 +214,6 @@ def check_order(order_id: str) -> str:
     """查询订单状态。"""
     return f"订单 {order_id}：已发货"
 
-# ============================
-# Agent 构建
-# ============================
-
 tools = [search_faq, check_order]
 llm = ChatOpenAI(model="gpt-4.1", temperature=0)
 prompt = ChatPromptTemplate.from_messages([
@@ -249,33 +223,22 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder("agent_scratchpad"),
 ])
 
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
+agent_executor = AgentExecutor(
+    agent=create_openai_tools_agent(llm, tools, prompt), tools=tools, verbose=False)
 
-# 会话历史
+# 用内存会话历史包装，使 Agent 能记住多轮对话
 store = {}
-def get_history(session_id: str):
-    if session_id not in store:
-        store[session_id] = InMemoryChatMessageHistory()
-    return store[session_id]
-
 agent_with_history = RunnableWithMessageHistory(
     agent_executor,
-    get_history,
-    input_messages_key="input",
-    history_messages_key="chat_history",
+    lambda sid: store.setdefault(sid, InMemoryChatMessageHistory()),
+    input_messages_key="input", history_messages_key="chat_history",
 )
 
-# 添加路由
-add_routes(app, agent_with_history, path="/agent")
-
-# 健康检查
-@app.get("/health")
-async def health():
-    return {"status": "ok"}
-
-# 启动：uvicorn server:app --host 0.0.0.0 --port 8000 --workers 4
+add_routes(app, agent_with_history, path="/agent")  # 自动获得 /agent/invoke 等端点
+# 启动：uvicorn server:app --host 0.0.0.0 --port 8000
 ```
+
+> 该写法与 [12.5](./05_practice_customer_service.md) 的客服 Agent 一脉相承，区别仅在于多了 `add_routes` 这层 API 暴露。需要生产级状态持久化时，改用 `LangGraph Platform`（见上文）。
 
 ### 客户端调用
 
@@ -342,7 +305,7 @@ langchain app new my-rag-app --template rag-conversational
 
 MCP（Model Context Protocol）是 Anthropic 提出的标准化协议，让 LLM 能以统一的方式连接外部工具和数据源。LangChain 社区已经提供了 MCP 集成。
 
-> 📌 关于 MCP 的详细介绍，请参考第 16 章 [第17章 Agent 通信协议](../chapter_protocol/README.md)。
+> 📌 关于 MCP 的详细介绍，请参考 [第19章 Agent 通信协议](../chapter_19_protocol/README.md)。
 
 ### 使用 MCP 工具
 
@@ -485,59 +448,22 @@ chain = prompt | llm | StrOutputParser()  # LCEL
 
 ### 迁移对照表
 
+**旧版 AgentExecutor（已废弃，仅作对照）**：
+
 ```python
-# ========================================
-# 旧版：AgentExecutor
-# ========================================
-
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-@tool
-def search(query: str) -> str:
-    """搜索信息"""
-    return f"结果：{query}"
-
-@tool
-def calculate(expression: str) -> str:
-    """计算数学表达式"""
-    return f"结果：{eval(expression)}"
-
-tools = [search, calculate]
-llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "你是助手，使用工具帮助用户。"),
-    MessagesPlaceholder("chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder("agent_scratchpad"),
-])
-
+# 旧范式：固定的 observe→act→observe 循环，难以表达分支/审批/并行
 agent = create_openai_tools_agent(llm, tools, prompt)
-
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    max_iterations=5,
-    handle_parsing_errors=True,
-)
-
-result = agent_executor.invoke({
-    "input": "搜索 Python 最新版本",
-    "chat_history": [],
-})
+agent_executor = AgentExecutor(agent=agent, tools=tools,
+                               max_iterations=5, handle_parsing_errors=True)
+result = agent_executor.invoke({"input": "...", "chat_history": []})
 ```
 
-```python
-# ========================================
-# 新版：LangGraph
-# ========================================
+**新版 LangGraph（官方推荐）**——同样的工具，改成图编排后，循环、分支、人机协作都成了图的原生能力：
 
+```python
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
-from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.graph import StateGraph, MessagesState, START
 from langgraph.prebuilt import ToolNode, tools_condition
 
 @tool
@@ -553,26 +479,18 @@ def calculate(expression: str) -> str:
 tools = [search, calculate]
 llm = ChatOpenAI(model="gpt-4.1", temperature=0).bind_tools(tools)
 
-# 定义 Agent 节点
 def agent_node(state: MessagesState):
-    response = llm.invoke(state["messages"])
-    return {"messages": [response]}
+    return {"messages": [llm.invoke(state["messages"])]}
 
-# 构建图
 graph = StateGraph(MessagesState)
 graph.add_node("agent", agent_node)
 graph.add_node("tools", ToolNode(tools))
-
 graph.add_edge(START, "agent")
 graph.add_conditional_edges("agent", tools_condition)  # 自动判断是否调用工具
-graph.add_edge("tools", "agent")  # 工具执行后回到 Agent
+graph.add_edge("tools", "agent")                        # 工具执行后回到 Agent
 
 app = graph.compile()
-
-# 调用
-result = app.invoke({
-    "messages": [{"role": "user", "content": "搜索 Python 最新版本"}]
-})
+result = app.invoke({"messages": [{"role": "user", "content": "搜索 Python 最新版本"}]})
 print(result["messages"][-1].content)
 ```
 
@@ -608,9 +526,9 @@ LangChain 生态在 2025-2026 年的核心演进方向是**从"框架"走向"平
 | **架构稳定** | v0.3 移除废弃 API，LCEL 成为标准范式 |
 
 > 💡 **与本书其他章节的关系**：
-> - 第 12 章 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 深入讲解 LangGraph 图编排
-> - 第 16 章 [第17章 Agent 通信协议](../chapter_protocol/README.md) 详解 MCP 协议
-> - 第 19 章 [第20章 部署与生产化](../chapter_deployment/README.md) 讨论更完整的部署方案
+> - [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 深入讲解 LangGraph 图编排
+> - [第19章 Agent 通信协议](../chapter_19_protocol/README.md) 详解 MCP 协议
+> - [第22章 部署与生产化](../chapter_22_deployment/README.md) 讨论更完整的部署方案
 
 ---
 

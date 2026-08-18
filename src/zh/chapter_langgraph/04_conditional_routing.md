@@ -1,276 +1,91 @@
 # 13.4 条件路由与循环控制
 
-LangGraph 的强大之处在于灵活的条件路由和循环控制——这让它能够表达比简单的"调用工具"更复杂的工作流。
+LangGraph 的强大之处，在于灵活的条件路由与循环控制——这让它能表达比"调用工具"复杂得多的流程。上一节用内置的 `tools_condition` 判断"是否要工具"；真实 Agent 往往需要更丰富的决策：根据代码审查结果决定通过还是打回、按用户意图分流到不同处理线、按质量评分决定是否迭代优化。
 
-在上一节中，我们用 `tools_condition` 这个内置的条件函数来判断"是否需要工具"。但现实中的 Agent 往往需要更复杂的决策逻辑：根据代码审查的结果决定是通过还是打回修改、根据用户的意图路由到不同的处理流程、根据质量评分决定是否需要迭代优化……
-
-这些都可以用**条件路由**来实现——你定义一个条件函数，它检查当前状态，返回一个字符串来标识应该走哪条路。然后用 `add_conditional_edges` 将这些字符串映射到不同的目标节点。
+这些都能用**条件路由**实现：你写一个条件函数，检查当前状态，返回一个字符串指明走哪条路，再用 `add_conditional_edges` 把字符串映射到目标节点。
 
 ### 循环的力量与风险
 
-条件路由最强大的用法是构造**循环**——让某个节点的输出可以回到之前的节点。比如"代码审查 → 修复 → 再审查 → 再修复"这样的迭代流程。但循环也带来了无限循环的风险：如果条件判断逻辑有 bug，Agent 可能永远在循环中出不来。因此，**设置最大迭代次数是必须的安全措施。**
+条件路由最强大的用法是构造**循环**——让某节点的输出指回更早的节点，比如"审查 → 修复 → 再审查 → 再修复"。但循环也带来无限循环风险：条件逻辑若有 bug，Agent 可能永远出不了环。因此**设置最大迭代次数是必须的安全措施**。
 
-下面我们用一个"代码审查 Agent"来演示条件路由和循环控制。这个 Agent 会分析代码、发现问题、修复代码，然后重新审查——直到代码通过审查或达到最大迭代次数。
+下面用一个"代码审查 Agent"演示：分析代码、发现问题、修复、再审查，直到通过或达到上限。
 
 ![条件路由与循环控制——代码审查Agent示例](../svg/chapter_langgraph_04_review_loop.svg)
 
 ```python
 from langgraph.graph import StateGraph, END, START
-from typing import TypedDict, Optional, Literal
+from typing import TypedDict, Optional
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
 from pydantic import BaseModel, Field
 
 llm = ChatOpenAI(model="gpt-4.1-mini")
+# 用 Pydantic + with_structured_output 让模型直接返回结构化对象，
+# 而非需要正则去抠的 JSON 文本——字段类型在编码期即可校验。
+class CodeReview(BaseModel):
+    issues: list[str] = Field(description="发现的问题；无则空列表")
+    severity: str = Field(description="high/medium/low")
+    approved: bool = Field(description="是否可直接通过")
 
-# ============================
-# 带循环的代码审查 Agent
-# ============================
+review_llm = llm.with_structured_output(CodeReview)
 
 class CodeReviewState(TypedDict):
     code: str
-    review_result: Optional[str]
     issues: list
     iteration: int
     max_iterations: int
     approved: bool
 
-# 用 Pydantic 描述"审查结果"的结构，让 LLM 直接返回结构化对象，
-# 而不是一段需要靠正则去抠的 JSON 文本。
-class CodeReview(BaseModel):
-    """一次代码审查的结构化结论"""
-    issues: list[str] = Field(description="发现的问题列表；没问题则为空列表")
-    severity: Literal["high", "medium", "low"] = Field(description="整体严重度")
-    approved: bool = Field(description="是否可以直接通过、无需修复")
+def analyze_code(s: CodeReviewState) -> dict:
+    r = review_llm.invoke([HumanMessage(f"审查代码：\n{s['code']}")])
+    return {"issues": r.issues, "iteration": s.get("iteration", 0) + 1}
 
-# with_structured_output 会让底层模型以受控格式输出，
-# 返回的 review 已经是 CodeReview 实例，无需再 json.loads / 正则解析。
-structured_llm = llm.with_structured_output(CodeReview)
+def fix_code(s: CodeReviewState) -> dict:
+    # 把问题列表交给模型修复，只回纯代码
+    return {"code": llm.invoke([HumanMessage(f"修复：\n{s['code']}\n问题：{s['issues']}")]).content}
 
-def analyze_code(state: CodeReviewState) -> CodeReviewState:
-    """分析代码质量，返回结构化审查结论"""
-    review = structured_llm.invoke([
-        HumanMessage(content=(
-            "你是资深代码审查员。审查下面的代码，列出所有问题。\n"
-            "只关注真实缺陷（bug、安全漏洞、明显性能问题、语法错误），"
-            "不要对风格吹毛求疵。\n\n"
-            f"```python\n{state['code']}\n```"
-        ))
-    ])
-    return {
-        "issues": review.issues,
-        "review_result": review.model_dump_json(),
-        "iteration": state.get("iteration", 0) + 1,
-    }
+def route(s: CodeReviewState) -> str:
+    """循环控制核心：安全阀 + 达标判定"""
+    if s["iteration"] >= s["max_iterations"]:
+        return "approve"          # 上限兜底，强制结束
+    if not s["issues"]:
+        return "approve"          # 无问题直接通过
+    return "fix"                  # 否则继续修复循环
 
-def fix_code(state: CodeReviewState) -> CodeReviewState:
-    """修复代码问题"""
-    issues_text = "\n".join([f"- {issue}" for issue in state["issues"]])
-    
-    response = llm.invoke([
-        HumanMessage(content=f"""修复以下代码中的问题：
-
-代码：
-```python
-{state['code']}
-```
-
-问题列表：
-{issues_text}
-
-只返回修复后的纯 Python 代码：""")
-    ])
-    
-    fixed_code = response.content
-    if "```python" in fixed_code:
-        fixed_code = fixed_code.split("```python")[1].split("```")[0].strip()
-    elif "```" in fixed_code:
-        fixed_code = fixed_code.split("```")[1].split("```")[0].strip()
-    
-    return {"code": fixed_code}
-
-def should_fix_or_approve(state: CodeReviewState) -> Literal["fix", "approve", "max_reached"]:
-    """条件路由：决定继续修复还是通过
-    
-    这个函数是整个循环的核心控制逻辑：
-    - 检查迭代次数上限（安全阀，防止无限循环）
-    - 如果没有问题则直接通过
-    - 只有存在严重问题（如 bug、安全漏洞）才触发修复循环
-    """
-    
-    if state["iteration"] >= state["max_iterations"]:
-        return "max_reached"
-    
-    if not state["issues"]:
-        return "approve"
-    
-    # 只有严重问题才继续修复。结构化输出让我们直接读 severity，
-    # 不必再用关键词去猜——这里以 high/medium 视为需要修复。
-    critical_keywords = ["bug", "错误", "安全漏洞", "性能问题", "语法错误"]
-    has_critical = any(
-        any(kw in issue.lower() for kw in critical_keywords)
-        for issue in state["issues"]
-    )
-    
-    return "fix" if has_critical else "approve"
-
-def mark_approved(state: CodeReviewState) -> CodeReviewState:
-    """标记代码已通过审查"""
-    return {"approved": True}
-
-# 构建图
 graph = StateGraph(CodeReviewState)
 graph.add_node("analyze", analyze_code)
 graph.add_node("fix", fix_code)
-graph.add_node("approve", mark_approved)
-
+graph.add_node("approve", lambda s: {"approved": True})
 graph.add_edge(START, "analyze")
-graph.add_conditional_edges(
-    "analyze",
-    should_fix_or_approve,
-    {
-        "fix": "fix",
-        "approve": "approve",
-        "max_reached": "approve"
-    }
-)
-graph.add_edge("fix", "analyze")  # 修复后重新分析（循环！）
+graph.add_conditional_edges("analyze", route, {"fix": "fix", "approve": "approve"})
+graph.add_edge("fix", "analyze")     # 修复后重新分析（循环！）
 graph.add_edge("approve", END)
-
 app = graph.compile()
-
-# 测试
-initial_code = """
-def divide(a, b):
-    return a / b
-
-result = divide(10, 0)
-print(result)
-"""
-
-result = app.invoke({
-    "code": initial_code,
-    "review_result": None,
-    "issues": [],
-    "iteration": 0,
-    "max_iterations": 3,
-    "approved": False
-})
-
-print(f"最终代码：\n{result['code']}")
-print(f"通过审查：{result['approved']}")
-print(f"迭代次数：{result['iteration']}")
 ```
 
-## 高级路由模式
+> 💡 **直觉理解**：`route` 函数是整个循环的大脑——它用"迭代次数上限"做安全阀，用"是否还有问题"决定继续还是放行。把"策略参数"（max_iterations）放进 State 而非写死，是让图可复用、可测试的常用技巧。
 
-上面的代码审查示例展示了基本的条件路由。在真实的 Agent 系统中，你可能需要更复杂的路由逻辑：
+## 三种可复用的路由模式
 
-**模式 1：多路分发（Fan-out）**
+| 模式 | 思路 | 典型场景 |
+|------|------|---------|
+| **多路分发（Fan-out）** | 按意图把请求路由到不同专业节点 | 客服按"技术/业务/投诉"分流 |
+| **质量门控（Quality Gate）** | 输出前做质量检查，不达标回退重做 | 内容生成质量分 < 阈值则重写 |
+| **并行汇聚（Map-Reduce）** | 用 `Send()` 动态创建并行分支，各自处理后汇聚 | 把大任务拆成子任务并行处理 |
 
-根据用户意图将请求路由到不同的专业处理流程：
+这些模式都是"条件函数返回字符串 → 映射到节点"这一机制的变体。复杂的条件函数**先用单元测试覆盖每种输入组合**，再集成进图，能省掉大量调试时间。
 
-```python
-def intent_router(state: dict) -> str:
-    """根据用户意图路由到不同处理节点"""
-    intent = state.get("detected_intent", "unknown")
-    
-    routing_map = {
-        "code_review": "code_analyzer",
-        "bug_fix": "debugger",
-        "feature_request": "planner",
-        "documentation": "doc_writer",
-    }
-    
-    return routing_map.get(intent, "general_handler")
+## 调试路由
 
-graph.add_conditional_edges("intent_detector", intent_router, {
-    "code_analyzer": "code_analyzer",
-    "debugger": "debugger",
-    "planner": "planner",
-    "doc_writer": "doc_writer",
-    "general_handler": "general_handler",
-})
-```
-
-**模式 2：质量门控（Quality Gate）**
-
-在 Agent 输出之前添加质量检查，不合格的回退重做：
-
-```python
-def quality_gate(state: dict) -> str:
-    """检查输出质量，决定是通过还是重做"""
-    score = state.get("quality_score", 0)
-    retries = state.get("retry_count", 0)
-    
-    if score >= 0.8:
-        return "publish"      # 质量合格，发布
-    elif retries >= 3:
-        return "manual_review" # 重试次数用尽，交给人工
-    else:
-        return "regenerate"    # 重新生成
-```
-
-**模式 3：并行汇聚（Map-Reduce）**
-
-LangGraph 2.0 引入了 `Send()` API，支持动态创建并行分支：
-
-```python
-from langgraph.constants import Send
-
-def route_to_parallel(state: dict) -> list[Send]:
-    """将任务动态分发给多个并行节点"""
-    subtasks = state.get("subtasks", [])
-    
-    # 每个子任务创建一个独立的 Send
-    return [
-        Send("worker", {"task": subtask, "task_id": i})
-        for i, subtask in enumerate(subtasks)
-    ]
-
-graph.add_conditional_edges("planner", route_to_parallel)
-```
-
-## 调试条件路由
-
-当条件路由的行为不符合预期时，最有效的调试方法是**追踪每一步的路由决策**：
-
-```python
-# 方法 1：在条件函数中添加日志
-import logging
-logger = logging.getLogger("agent.routing")
-
-def route_with_logging(state: dict) -> str:
-    """带日志的条件路由"""
-    decision = state.get("review_result")
-    iteration = state.get("iteration", 0)
-    
-    if decision == "pass":
-        result = "approve"
-    elif iteration >= state.get("max_iterations", 3):
-        result = "approve"  # 超过最大次数，强制通过
-    else:
-        result = "fix"
-    
-    logger.info(f"路由决策: iteration={iteration}, decision={decision} → {result}")
-    return result
-
-# 方法 2：使用 stream 追踪完整执行路径
-for event in app.stream(initial_state):
-    for node_name, output in event.items():
-        print(f"  节点 [{node_name}] → iteration={output.get('iteration', '?')}")
-```
-
-> 💡 **最佳实践**：复杂的条件路由函数应该**先用单元测试验证**，确保每种输入组合都能返回正确的路由目标，再集成到图中。
+路由行为不符预期时，最有效的办法是**追踪每一步的路由决策**：在条件函数里打日志，或用 `app.stream()` 打印每个节点与迭代次数，确认分支走向。
 
 ---
 
 ## 小结
 
-条件路由的关键技巧：
-- **条件函数**：返回字符串标识下一个节点
-- **循环控制**：必须设置最大迭代次数，防止无限循环
-- **状态跟踪**：在 State 中记录迭代次数和完成标志
+条件路由关键技巧：
+- **条件函数**返回字符串，标识下一个节点
+- **循环控制**必须设最大迭代次数，防无限循环
+- **状态跟踪**在 State 中记录迭代次数与完成标志
 
 ---
 

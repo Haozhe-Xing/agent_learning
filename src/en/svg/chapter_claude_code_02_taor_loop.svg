@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 460" width="500" height="460">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 500" width="520" height="500">
   <defs>
-    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
     </marker>
@@ -11,51 +11,39 @@
       <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
     </marker>
   </defs>
-  <rect width="500" height="460" rx="14" fill="#f0f4f8"/>
-  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#2c3e50">TAOR Agent Loop Core Cycle</text>
+  <rect width="520" height="500" rx="14" fill="#f0f4f8"/>
+  <text x="260" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">TAOR Agent Loop</text>
 
-  <!--User Inputs Task-->
-  <rect x="175" y="45" width="150" height="36" rx="18" fill="#2c3e50"/>
-  <text x="250" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="white">User Inputs Task</text>
-  <line x1="250" y1="81" x2="250" y2="105" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="185" y="44" width="150" height="34" rx="17" fill="#2c3e50"/>
+  <text x="260" y="66" text-anchor="middle" font-size="12" font-weight="bold" fill="white">User task input</text>
+  <line x1="260" y1="78" x2="260" y2="100" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!--Think-->
-  <rect x="100" y="108" width="300" height="60" rx="10" fill="#3498db"/>
-  <text x="250" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Think</text>
-  <text x="250" y="148" text-anchor="middle" font-size="11" fill="#d6eaf8">Claude Analyzes Current State, Decides Next Action</text>
-  <text x="250" y="162" text-anchor="middle" font-size="10" fill="#aed6f1">(May Use thinking Tag for Deep Reasoning)</text>
-  <text x="250" y="175" text-anchor="middle" font-size="10" fill="#aed6f1" font-style="italic">Output Tool Call Request</text>
-  <line x1="250" y1="168" x2="250" y2="195" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="100" y="102" width="320" height="74" rx="10" fill="#3498db"/>
+  <text x="260" y="126" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Think</text>
+  <text x="260" y="146" text-anchor="middle" font-size="11" fill="#d6eaf8">Claude analyzes state and decides the next action</text>
+  <text x="260" y="162" text-anchor="middle" font-size="10" fill="#aed6f1">may use thinking tags · emits tool-call requests</text>
+  <line x1="260" y1="176" x2="260" y2="200" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!--Act-->
-  <rect x="100" y="198" width="300" height="52" rx="10" fill="#e67e22"/>
-  <text x="250" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Act</text>
-  <text x="250" y="238" text-anchor="middle" font-size="11" fill="#fdebd0">Tool System Executes Tool</text>
-  <text x="250" y="252" text-anchor="middle" font-size="10" fill="#fdebd0" font-style="italic">Read / Bash / Write / Edit / ...</text>
-  <text x="250" y="256" text-anchor="middle" font-size="10" fill="#fdebd0" font-style="italic">Tool Returns Result</text>
-  <line x1="250" y1="250" x2="250" y2="275" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="100" y="202" width="320" height="66" rx="10" fill="#e67e22"/>
+  <text x="260" y="226" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Act</text>
+  <text x="260" y="246" text-anchor="middle" font-size="11" fill="#fdebd0">Tool System runs tools (Read / Bash / Write / Edit …)</text>
+  <text x="260" y="262" text-anchor="middle" font-size="10" fill="#fdebd0" font-style="italic">tool returns results</text>
+  <line x1="260" y1="268" x2="260" y2="292" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!--Observe-->
-  <rect x="100" y="278" width="300" height="52" rx="10" fill="#9b59b6"/>
-  <text x="250" y="300" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Observe</text>
-  <text x="250" y="318" text-anchor="middle" font-size="11" fill="#e8daef">Inject Tool Result into Context</text>
-  <text x="250" y="332" text-anchor="middle" font-size="10" fill="#d7bde2">Update Task State Understanding</text>
-  <line x1="250" y1="330" x2="250" y2="355" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="100" y="294" width="320" height="66" rx="10" fill="#9b59b6"/>
+  <text x="260" y="318" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Observe</text>
+  <text x="260" y="338" text-anchor="middle" font-size="11" fill="#e8daef">inject tool results into context, update task-state awareness</text>
+  <line x1="260" y1="360" x2="260" y2="380" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!---->
-  <polygon points="250,357 310,382 250,407 190,382" fill="#f39c12" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="250" y="386" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Task Complete?</text>
+  <polygon points="260,382 322,408 260,434 198,408" fill="#f39c12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="260" y="412" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Done?</text>
 
-  <!--→   Think-->
-  <line x1="190" y1="382" x2="60" y2="382" stroke="#e74c3c" stroke-width="1.8" stroke-dasharray="5,3"/>
-  <line x1="60" y1="382" x2="60" y2="138" stroke="#e74c3c" stroke-width="1.8" stroke-dasharray="5,3"/>
-  <line x1="60" y1="138" x2="98" y2="138" stroke="#e74c3c" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#arrow-red)"/>
-  <text x="38" y="270" text-anchor="middle" font-size="11" fill="#e74c3c" font-weight="bold" transform="rotate(-90, 38, 270)">No, Continue Loop</text>
+  <path d="M 198 408 L 60 408 L 60 139 L 96 139" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-red)"/>
+  <text x="44" y="278" text-anchor="middle" font-size="11" fill="#e74c3c" font-weight="bold" transform="rotate(-90, 44, 278)">No · loop</text>
 
-  <!--Yes → OutputFinal Response-->
-  <line x1="310" y1="382" x2="400" y2="382" stroke="#27ae60" stroke-width="1.8" marker-end="url(#arrow-green)"/>
-  <text x="355" y="375" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">Yes</text>
-  <rect x="402" y="362" width="80" height="40" rx="8" fill="#27ae60"/>
-  <text x="442" y="380" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Output</text>
-  <text x="442" y="395" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Final Response</text>
+  <line x1="322" y1="408" x2="396" y2="408" stroke="#27ae60" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="360" y="400" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">Yes</text>
+  <rect x="400" y="388" width="90" height="42" rx="8" fill="#27ae60"/>
+  <text x="445" y="406" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Output</text>
+  <text x="445" y="421" text-anchor="middle" font-size="11" font-weight="bold" fill="white">final response</text>
 </svg>

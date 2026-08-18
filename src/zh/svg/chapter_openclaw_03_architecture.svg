@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 520" width="680" height="520">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="520" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OpenClaw 四层架构：消息生命周期</text>
+
+  <!-- Channel Adapters -->
+  <rect x="140" y="48" width="400" height="56" rx="8" fill="#2c3e50"/>
+  <text x="340" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Channel Adapters（渠道适配器）</text>
+  <text x="340" y="92" text-anchor="middle" font-size="10" fill="#bdc3c7">WhatsApp / Telegram / Discord / Slack / Signal · 输出 IncomingMessage</text>
+  <line x1="340" y1="104" x2="340" y2="124" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="120" font-size="9" fill="#7f8c8d">IncomingMessage { from, text, threadId, mentions }</text>
+
+  <!-- Gateway -->
+  <rect x="140" y="128" width="400" height="56" rx="8" fill="#3498db"/>
+  <text x="340" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gateway（消息中枢 / Router）</text>
+  <text x="340" y="172" text-anchor="middle" font-size="10" fill="#d6eaf8">统一协议 + 路由 + 用户身份解析 · 挂到 Session</text>
+  <line x1="340" y1="184" x2="340" y2="204" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="200" font-size="9" fill="#7f8c8d">SessionEvent { sessionId, userId, channel, message }</text>
+
+  <!-- Agent Loop -->
+  <rect x="140" y="208" width="400" height="56" rx="8" fill="#9b59b6"/>
+  <text x="340" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Agent Loop（推理主循环）</text>
+  <text x="340" y="252" text-anchor="middle" font-size="10" fill="#e8daef">流式推理 + 工具调用 + 上下文管理 · 模型无关</text>
+  <line x1="340" y1="264" x2="340" y2="284" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="280" font-size="9" fill="#7f8c8d">ToolCall { name, args } / final Answer { text }</text>
+
+  <!-- Toolbox -->
+  <rect x="140" y="288" width="400" height="56" rx="8" fill="#e67e22"/>
+  <text x="340" y="312" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Toolbox &amp; Sandbox（工具箱与沙箱）</text>
+  <text x="340" y="332" text-anchor="middle" font-size="10" fill="#fdebd0">file / shell / web / memory · 权限检查 + Hooks 拦截</text>
+  <line x1="340" y1="344" x2="340" y2="364" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="360" font-size="9" fill="#7f8c8d">ToolResult { ok, output, error }</text>
+
+  <!-- Skills Registry -->
+  <rect x="140" y="368" width="400" height="56" rx="8" fill="#27ae60"/>
+  <text x="340" y="392" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Skills Registry（技能注册中心）</text>
+  <text x="340" y="412" text-anchor="middle" font-size="10" fill="#d5f5e3">运行时加载 SKILL.md · 查找匹配 + 注入上下文</text>
+  <line x1="340" y1="424" x2="340" y2="444" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 回包 -->
+  <rect x="140" y="448" width="400" height="48" rx="8" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a7d0a">回复（出站消息）→ Gateway → Channel Adapter</text>
+  <text x="340" y="488" text-anchor="middle" font-size="10" fill="#5d6d7e">OutgoingMessage 原路返回</text>
+</svg>

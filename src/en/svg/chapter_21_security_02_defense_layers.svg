@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 520" width="540" height="520">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="540" height="520" rx="14" fill="#f0f4f8"/>
+  <text x="270" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Multi-Layer Factuality Defense (4 layers)</text>
+  <text x="270" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">question → retrieval → reasoning → structured → verification chain → answer (with confidence)</text>
+
+  <rect x="150" y="60" width="240" height="40" rx="6" fill="#2c3e50"/>
+  <text x="270" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="white">User question</text>
+  <line x1="270" y1="100" x2="270" y2="120" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="124" width="420" height="68" rx="8" fill="#3498db"/>
+  <text x="270" y="146" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 1 · Real-time retrieval (strategy 10)</text>
+  <text x="270" y="166" text-anchor="middle" font-size="11" fill="#d6eaf8">judge if real-time info is needed → search / RAG</text>
+  <text x="270" y="182" text-anchor="middle" font-size="10" fill="#aed6f1" font-style="italic">most critical: give the model a factual source, leave no room for hallucination</text>
+  <line x1="270" y1="192" x2="270" y2="212" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="216" width="420" height="68" rx="8" fill="#e67e22"/>
+  <text x="270" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 2 · Reasoning model (strategy 5)</text>
+  <text x="270" y="258" text-anchor="middle" font-size="11" fill="#fdebd0">generate the answer with a reasoning model + retrieved context</text>
+  <text x="270" y="274" text-anchor="middle" font-size="10" fill="#fadbd8" font-style="italic">reasoning models hallucinate less (think + self-check)</text>
+  <line x1="270" y1="284" x2="270" y2="304" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="308" width="420" height="68" rx="8" fill="#9b59b6"/>
+  <text x="270" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 3 · Structured output (strategy 8)</text>
+  <text x="270" y="350" text-anchor="middle" font-size="11" fill="#e8daef">force structured fields (confidence, sources)</text>
+  <text x="270" y="366" text-anchor="middle" font-size="10" fill="#d2b4de" font-style="italic">structure makes downstream validation cheaper</text>
+  <line x1="270" y1="376" x2="270" y2="396" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="400" width="420" height="68" rx="8" fill="#27ae60"/>
+  <text x="270" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 4 · Verification chain (CoVe / strategy 7)</text>
+  <text x="270" y="442" text-anchor="middle" font-size="11" fill="#d5f5e3">auto-generate verification questions → self-answer → compare &amp; fix</text>
+  <text x="270" y="458" text-anchor="middle" font-size="10" fill="#a9dfbf" font-style="italic">"let it find its own errors" — best for simple facts</text>
+  <line x1="270" y1="468" x2="270" y2="486" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="150" y="488" width="240" height="26" rx="13" fill="#16a085"/>
+  <text x="270" y="506" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Final answer (with confidence)</text>
+</svg>

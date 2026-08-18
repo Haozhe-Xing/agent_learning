@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 260" width="680" height="260">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="680" height="260" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Working Memory 的组成</text>
+  <text x="340" y="46" text-anchor="middle" font-size="11" fill="#7f8c8d">当前 session 的「活跃上下文」：存在于 RAM、SQLite session 表、每次 LLM 调用的请求体里</text>
+
+  <!-- Segment 1: system prompt -->
+  <rect x="60" y="64" width="560" height="44" rx="8" fill="#3498db"/>
+  <text x="340" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="white">系统提示（System Prompt）</text>
+  <text x="340" y="100" text-anchor="middle" font-size="10" fill="#d6eaf8">注入 USER.md / MEMORY.md 摘要</text>
+
+  <line x1="340" y1="108" x2="340" y2="126" stroke="#7f8c8d" stroke-width="1.5"/>
+
+  <!-- Segment 2: history -->
+  <rect x="60" y="128" width="560" height="44" rx="8" fill="#27ae60"/>
+  <text x="340" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="white">历史对话（截断）</text>
+  <text x="340" y="164" text-anchor="middle" font-size="10" fill="#d5f5e3">滑动窗口 + 摘要压缩</text>
+
+  <line x1="340" y1="172" x2="340" y2="190" stroke="#7f8c8d" stroke-width="1.5"/>
+
+  <!-- Segment 3: tool history -->
+  <rect x="60" y="192" width="560" height="44" rx="8" fill="#e67e22"/>
+  <text x="340" y="212" text-anchor="middle" font-size="13" font-weight="bold" fill="white">工具调用历史</text>
+  <text x="340" y="228" text-anchor="middle" font-size="10" fill="#fdebd0">仅保留当前步最近 N 个（防止上下文爆炸）</text>
+</svg>

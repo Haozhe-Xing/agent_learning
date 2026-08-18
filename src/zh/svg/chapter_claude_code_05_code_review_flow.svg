@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 360" width="700" height="360">
   <defs>
     <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
@@ -11,63 +11,56 @@
       <path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/>
     </marker>
   </defs>
-  <rect width="680" height="300" rx="14" fill="#f0f4f8"/>
-  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#2c3e50">代码审查流程集成</text>
+  <rect width="700" height="360" rx="14" fill="#f0f4f8"/>
+  <text x="350" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">代码审查流程集成（Claude Code + 人工）</text>
 
-  <!-- 开发者提交 PR -->
-  <rect x="20" y="50" width="120" height="52" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="80" y="72" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">👨‍💻 开发者</text>
-  <text x="80" y="88" text-anchor="middle" font-size="11" fill="#3b82f6">提交 PR</text>
-  <line x1="140" y1="76" x2="165" y2="76" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <!-- ===== 顶部主线：提交 → 审查 → 报告 → 人工 ===== -->
+  <!-- 1. 开发者 -->
+  <rect x="20" y="56" width="120" height="56" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="80" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">👨‍💻 开发者</text>
+  <text x="80" y="98" text-anchor="middle" font-size="11" fill="#3b82f6">提交 PR</text>
+  <line x1="140" y1="84" x2="166" y2="84" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!-- Claude Code 自动审查 -->
-  <rect x="168" y="50" width="140" height="52" rx="10" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
-  <text x="238" y="72" text-anchor="middle" font-size="11" font-weight="bold" fill="#7e22ce">🤖 Claude Code</text>
-  <text x="238" y="88" text-anchor="middle" font-size="11" fill="#9333ea">自动审查（CI）</text>
-  <line x1="308" y1="76" x2="333" y2="76" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <!-- 2. Claude Code 审查 -->
+  <rect x="170" y="56" width="150" height="56" rx="10" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
+  <text x="245" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#7e22ce">🤖 Claude Code</text>
+  <text x="245" y="98" text-anchor="middle" font-size="11" fill="#9333ea">自动审查（CI）</text>
+  <line x1="320" y1="84" x2="346" y2="84" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!-- 生成报告 -->
-  <rect x="336" y="50" width="160" height="52" rx="10" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
-  <text x="416" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#7e22ce">📋 生成结构化报告</text>
-  <text x="416" y="83" text-anchor="middle" font-size="10" fill="#9333ea">🔴 必须修复</text>
-  <text x="416" y="96" text-anchor="middle" font-size="10" fill="#9333ea">🟡 建议改进 / 🟢 称赞</text>
-  <line x1="496" y1="76" x2="521" y2="76" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <!-- 3. 生成报告 -->
+  <rect x="350" y="56" width="160" height="56" rx="10" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
+  <text x="430" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#7e22ce">📋 生成结构化报告</text>
+  <text x="430" y="98" text-anchor="middle" font-size="10" fill="#9333ea">🔴 必须修复 · 🟡 建议 · 🟢 称赞</text>
+  <line x1="510" y1="84" x2="536" y2="84" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!-- 人工审查 -->
-  <rect x="524" y="50" width="136" height="52" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="592" y="72" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">👀 人工审查员</text>
-  <text x="592" y="88" text-anchor="middle" font-size="11" fill="#3b82f6">聚焦于 🔴 问题</text>
+  <!-- 4. 人工审查 -->
+  <rect x="540" y="56" width="140" height="56" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="610" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">👀 人工审查员</text>
+  <text x="610" y="98" text-anchor="middle" font-size="11" fill="#3b82f6">聚焦 🔴 问题</text>
 
-  <!-- 向下箭头 -->
-  <line x1="592" y1="102" x2="592" y2="130" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <!-- ===== 人工审查 → 判断 ===== -->
+  <line x1="610" y1="112" x2="610" y2="146" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+  <polygon points="610,148 660,176 610,204 560,176" fill="#f39c12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="610" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="white">需要验证？</text>
 
-  <!-- 讨论修复 -->
-  <rect x="524" y="133" width="136" height="40" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="592" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">💬 讨论并修复</text>
+  <!-- ===== 否 → 直接合并（向右下）===== -->
+  <line x1="660" y1="176" x2="688" y2="176" stroke="#16a34a" stroke-width="2"/>
+  <line x1="688" y1="176" x2="688" y2="290" stroke="#16a34a" stroke-width="2"/>
+  <line x1="688" y1="290" x2="402" y2="290" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="678" y="240" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">否</text>
 
-  <!-- 菱形判断 -->
-  <line x1="592" y1="173" x2="592" y2="193" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
-  <polygon points="592,195 632,215 592,235 552,215" fill="#f39c12" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="592" y="213" text-anchor="middle" font-size="10" font-weight="bold" fill="white">需要</text>
-  <text x="592" y="227" text-anchor="middle" font-size="10" font-weight="bold" fill="white">验证？</text>
+  <!-- ===== 是 → Claude Code 验证修复 ===== -->
+  <line x1="560" y1="176" x2="400" y2="176" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="480" y="168" text-anchor="middle" font-size="11" fill="#9333ea" font-weight="bold">是</text>
+  <rect x="280" y="156" width="118" height="42" rx="8" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
+  <text x="339" y="174" text-anchor="middle" font-size="11" font-weight="bold" fill="#7e22ce">🤖 Claude Code</text>
+  <text x="339" y="190" text-anchor="middle" font-size="11" fill="#9333ea">验证修复</text>
 
-  <!-- 是 → Claude Code 验证 -->
-  <line x1="552" y1="215" x2="430" y2="215" stroke="#9333ea" stroke-width="1.8" marker-end="url(#arrow-purple)"/>
-  <text x="491" y="208" text-anchor="middle" font-size="11" fill="#9333ea" font-weight="bold">是</text>
-  <rect x="310" y="195" width="118" height="40" rx="8" fill="#f3e8ff" stroke="#9333ea" stroke-width="1.5"/>
-  <text x="369" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="#7e22ce">🤖 Claude Code</text>
-  <text x="369" y="228" text-anchor="middle" font-size="11" fill="#9333ea">验证修复</text>
+  <!-- 验证修复 → 回到人工审查（回环）-->
+  <path d="M 280 177 L 130 177 L 130 84 L 536 84" fill="none" stroke="#9333ea" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrow-purple)"/>
+  <text x="150" y="130" text-anchor="middle" font-size="10" fill="#9333ea" font-weight="bold">验证后重新提交审查</text>
 
-  <!-- 否 → 直接 Approve -->
-  <line x1="632" y1="215" x2="660" y2="215" stroke="#16a34a" stroke-width="1.8"/>
-  <text x="648" y="208" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">否</text>
-  <line x1="660" y1="215" x2="660" y2="260" stroke="#16a34a" stroke-width="1.8"/>
-  <line x1="660" y1="260" x2="430" y2="260" stroke="#16a34a" stroke-width="1.8" marker-end="url(#arrow-green)"/>
-
-  <!-- Claude Code 验证 → 合并 -->
-  <line x1="369" y1="235" x2="369" y2="260" stroke="#16a34a" stroke-width="1.8" marker-end="url(#arrow-green)"/>
-
-  <!-- 合并 -->
-  <rect x="180" y="243" width="180" height="36" rx="18" fill="#16a34a"/>
-  <text x="270" y="266" text-anchor="middle" font-size="12" font-weight="bold" fill="white">✅ 人工 Approve → 合并</text>
+  <!-- ===== 合并 ===== -->
+  <rect x="180" y="272" width="220" height="40" rx="20" fill="#16a34a"/>
+  <text x="290" y="297" text-anchor="middle" font-size="13" font-weight="bold" fill="white">✅ 人工 Approve → 合并</text>
 </svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent 长任务的异步队列架构</text>
+
+  <!-- 第一层：API 网关 -->
+  <rect x="300" y="48" width="200" height="54" rx="8" fill="#3498db"/>
+  <text x="400" y="70" text-anchor="middle" font-size="12" fill="white" font-weight="bold">API 网关（FastAPI）</text>
+  <text x="400" y="90" text-anchor="middle" font-size="10" fill="#d6eaf8">接收请求 → 投递任务 → 立即返回</text>
+
+  <!-- 队列层 -->
+  <rect x="300" y="128" width="200" height="54" rx="8" fill="#e8f4fd" stroke="#3498db" stroke-width="2"/>
+  <text x="400" y="150" text-anchor="middle" font-size="12" fill="#3498db" font-weight="bold">消息队列（Redis/RabbitMQ）</text>
+  <text x="400" y="170" text-anchor="middle" font-size="10" fill="#555">任务持久化 · 削峰填谷 · 失败重试</text>
+  <line x1="400" y1="102" x2="400" y2="126" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Worker 池 -->
+  <rect x="60" y="218" width="680" height="100" rx="10" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="80" y="240" font-size="11" fill="#27ae60" font-weight="bold">Worker 池（异步消费）</text>
+
+  <rect x="80" y="252" width="150" height="52" rx="7" fill="#27ae60"/>
+  <text x="155" y="274" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Worker 1</text>
+  <text x="155" y="292" text-anchor="middle" font-size="9" fill="#d5f5e3">调 LLM + 工具执行</text>
+
+  <rect x="245" y="252" width="150" height="52" rx="7" fill="#27ae60"/>
+  <text x="320" y="274" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Worker 2</text>
+  <text x="320" y="292" text-anchor="middle" font-size="9" fill="#d5f5e3">调 LLM + 工具执行</text>
+
+  <rect x="410" y="252" width="150" height="52" rx="7" fill="#27ae60"/>
+  <text x="485" y="274" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Worker 3</text>
+  <text x="485" y="292" text-anchor="middle" font-size="9" fill="#d5f5e3">调 LLM + 工具执行</text>
+
+  <rect x="575" y="252" width="150" height="52" rx="7" fill="#27ae60"/>
+  <text x="650" y="274" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Worker N</text>
+  <text x="650" y="292" text-anchor="middle" font-size="9" fill="#d5f5e3">横向扩展</text>
+
+  <line x1="400" y1="182" x2="400" y2="248" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="400" y1="216" x2="155" y2="250" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="400" y1="216" x2="320" y2="250" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="400" y1="216" x2="485" y2="250" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="400" y1="216" x2="650" y2="250" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 结果存储 + 监控 -->
+  <rect x="130" y="336" width="240" height="32" rx="7" fill="#8e44ad" opacity="0.9"/>
+  <text x="250" y="357" text-anchor="middle" font-size="11" fill="white" font-weight="bold">结果存储（DB/Redis）</text>
+
+  <rect x="430" y="336" width="240" height="32" rx="7" fill="#e67e22" opacity="0.9"/>
+  <text x="550" y="357" text-anchor="middle" font-size="11" fill="white" font-weight="bold">监控（成本 / 延迟 / 错误率）</text>
+
+  <line x1="320" y1="304" x2="250" y2="334" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="650" y1="304" x2="550" y2="334" stroke="#2c3e50" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 图例说明 -->
+  <text x="400" y="372" text-anchor="middle" font-size="9.5" fill="#7f8c8d">核心价值：API 立即返回 → 队列持久化防丢失 → Worker 池横向扩展 → 结果落库 + 全程监控</text>
+</svg>

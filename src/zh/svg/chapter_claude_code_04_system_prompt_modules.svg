@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="680" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Claude Code System Prompt 的 4 个模块（约 915 行）</text>
+
+  <!-- M1 -->
+  <rect x="40" y="52" width="600" height="56" rx="8" fill="#2c3e50"/>
+  <text x="60" y="76" font-size="13" font-weight="bold" fill="white">M1: Identity（身份）</text>
+  <text x="60" y="95" font-size="11" fill="#bdc3c7">角色定位 · Agent 长期身份 · 范围约束 · 用户权威</text>
+  <text x="620" y="85" text-anchor="end" font-size="11" fill="#f1c40f">~80 行</text>
+
+  <!-- M2 -->
+  <rect x="40" y="116" width="600" height="56" rx="8" fill="#3498db"/>
+  <text x="60" y="140" font-size="13" font-weight="bold" fill="white">M2: Tool Use Spec（工具使用规范）</text>
+  <text x="60" y="159" font-size="11" fill="#d6eaf8">JSON 优先 · 重试上限 · 危险命令黑名单 · 写保护</text>
+  <text x="620" y="149" text-anchor="end" font-size="11" fill="#f1c40f">~280 行</text>
+
+  <!-- M3 -->
+  <rect x="40" y="180" width="600" height="56" rx="8" fill="#e67e22"/>
+  <text x="60" y="204" font-size="13" font-weight="bold" fill="white">M3: Behavioral Contracts（行为契约）</text>
+  <text x="60" y="223" font-size="11" fill="#fdebd0">先读再改 · 简洁优先 · 不谎报成功 · 风险披露</text>
+  <text x="620" y="213" text-anchor="end" font-size="11" fill="#f1c40f">~320 行（最长）</text>
+
+  <!-- M4 -->
+  <rect x="40" y="244" width="600" height="56" rx="8" fill="#9b59b6"/>
+  <text x="60" y="268" font-size="13" font-weight="bold" fill="white">M4: Workflow Contracts（工作流契约）</text>
+  <text x="60" y="287" font-size="11" fill="#e8daef">先规划再行动 · 何时用子 Agent · 何时打断 · 长命令超时</text>
+  <text x="620" y="277" text-anchor="end" font-size="11" fill="#f1c40f">~235 行</text>
+</svg>

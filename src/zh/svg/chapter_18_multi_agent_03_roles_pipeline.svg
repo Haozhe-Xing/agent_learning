@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 340" width="700" height="340">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="700" height="340" rx="14" fill="#f0f4f8"/>
+  <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">软件开发团队的角色分工流水线</text>
+  <text x="350" y="48" text-anchor="middle" font-size="10" fill="#7f8c8d">5 个角色按流水线协作，每个角色只做自己专业范围内的事（MECE 互斥）</text>
+
+  <!-- 5 个角色横排 -->
+  <rect x="20" y="90" width="120" height="80" rx="8" fill="#3498db"/>
+  <text x="80" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="white">产品经理</text>
+  <text x="80" y="132" text-anchor="middle" font-size="10" fill="#d6eaf8">需求分析</text>
+  <text x="80" y="148" text-anchor="middle" font-size="10" fill="#d6eaf8">用户故事</text>
+  <text x="80" y="162" text-anchor="middle" font-size="9" fill="#aed6f1" font-style="italic">→ 需求文档</text>
+
+  <line x1="140" y1="130" x2="158" y2="130" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="162" y="90" width="120" height="80" rx="8" fill="#e67e22"/>
+  <text x="222" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="white">架构师</text>
+  <text x="222" y="132" text-anchor="middle" font-size="10" fill="#fdebd0">系统设计</text>
+  <text x="222" y="148" text-anchor="middle" font-size="10" fill="#fdebd0">技术选型</text>
+  <text x="222" y="162" text-anchor="middle" font-size="9" fill="#fadbd8" font-style="italic">→ 设计方案</text>
+
+  <line x1="282" y1="130" x2="300" y2="130" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="304" y="90" width="120" height="80" rx="8" fill="#9b59b6"/>
+  <text x="364" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="white">开发工程师</text>
+  <text x="364" y="132" text-anchor="middle" font-size="10" fill="#e8daef">代码实现</text>
+  <text x="364" y="148" text-anchor="middle" font-size="10" fill="#e8daef">单元测试</text>
+  <text x="364" y="162" text-anchor="middle" font-size="9" fill="#d2b4de" font-style="italic">→ 代码</text>
+
+  <line x1="424" y1="130" x2="442" y2="130" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="446" y="90" width="120" height="80" rx="8" fill="#16a085"/>
+  <text x="506" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="white">QA 工程师</text>
+  <text x="506" y="132" text-anchor="middle" font-size="10" fill="#d1f2eb">测试用例</text>
+  <text x="506" y="148" text-anchor="middle" font-size="10" fill="#d1f2eb">边界/安全测试</text>
+  <text x="506" y="162" text-anchor="middle" font-size="9" fill="#a3e4d7" font-style="italic">→ 测试报告</text>
+
+  <line x1="566" y1="130" x2="584" y2="130" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="588" y="90" width="92" height="80" rx="8" fill="#27ae60"/>
+  <text x="634" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DevOps</text>
+  <text x="634" y="132" text-anchor="middle" font-size="10" fill="#d5f5e3">CI/CD</text>
+  <text x="634" y="148" text-anchor="middle" font-size="10" fill="#d5f5e3">部署监控</text>
+  <text x="634" y="162" text-anchor="middle" font-size="9" fill="#a9dfbf" font-style="italic">→ 上线</text>
+
+  <!-- 关键设计点 -->
+  <rect x="60" y="200" width="580" height="110" rx="8" fill="#fff" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="80" y="222" font-size="12" font-weight="bold" fill="#2c3e50">关键设计点（对照 5 大原则）</text>
+  <text x="80" y="244" font-size="10" fill="#2c3e50">① MECE：每个角色职责互斥——架构师不写业务代码，QA 不做部署</text>
+  <text x="80" y="262" font-size="10" fill="#2c3e50">② 明确契约：每个角色的输入/输出/质量门禁必须可验证（如"测试覆盖率 > 80%"）</text>
+  <text x="80" y="280" font-size="10" fill="#2c3e50">③ 容错降级：架构师挂了 → 高级开发兼任；QA 挂了 → 开发自测兜底</text>
+  <text x="80" y="298" font-size="10" fill="#2c3e50">④ 上下文隔离：每个角色只见自己需要的上下文，交接时只传关键决策</text>
+</svg>

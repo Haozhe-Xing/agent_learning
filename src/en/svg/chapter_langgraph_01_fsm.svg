@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="760" height="320" fill="#f8f9fa" rx="12"/>
+  <text x="380" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#2c3e50">Agent as a Finite State Machine (FSM)</text>
+
+  <rect x="40" y="120" width="110" height="56" rx="10" fill="#95a5a6" opacity="0.15" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="95" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#5f6a6a">START</text>
+
+  <rect x="240" y="120" width="130" height="56" rx="10" fill="#3498db" opacity="0.14" stroke="#3498db" stroke-width="1.8"/>
+  <text x="305" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2471a3">Thinking</text>
+  <text x="305" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">LLM reasoning</text>
+
+  <rect x="540" y="120" width="130" height="56" rx="10" fill="#e67e22" opacity="0.14" stroke="#e67e22" stroke-width="1.8"/>
+  <text x="605" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#b9690e">Execute Tool</text>
+  <text x="605" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Tool / Function</text>
+
+  <rect x="240" y="240" width="130" height="56" rx="10" fill="#27ae60" opacity="0.14" stroke="#27ae60" stroke-width="1.8"/>
+  <text x="305" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e8449">End</text>
+
+  <line x1="150" y1="148" x2="234" y2="148" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="370" y1="140" x2="534" y2="140" stroke="#e67e22" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="452" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#b9690e">has tool call</text>
+
+  <path d="M 605 120 L 605 80 L 305 80 L 305 116" fill="none" stroke="#8e44ad" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="455" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7d3c98">return observation → keep reasoning (loop!)</text>
+
+  <line x1="305" y1="176" x2="305" y2="234" stroke="#27ae60" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="315" y="210" text-anchor="start" font-family="Arial, sans-serif" font-size="11" fill="#1e8449">no tool call (direct answer)</text>
+</svg>

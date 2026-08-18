@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 420" width="580" height="420">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="580" height="420" rx="14" fill="#f0f4f8"/>
+  <text x="290" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Three-Layer Guardrails Architecture</text>
+  <text x="290" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">input (prevent) → dialogue (process) → output (fallback) — all three gates needed</text>
+
+  <rect x="50" y="68" width="480" height="88" rx="8" fill="#3498db"/>
+  <text x="290" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 1 · Input Guardrails (prevent)</text>
+  <text x="60" y="112" font-size="10" fill="#d6eaf8">· injection detection · topic constraints · PII detect &amp; redact · length/format limits</text>
+  <text x="60" y="132" font-size="10" fill="#aed6f1" font-style="italic">cheapest: block bad data before it enters the system</text>
+  <line x1="290" y1="156" x2="290" y2="176" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="50" y="180" width="480" height="88" rx="8" fill="#e67e22"/>
+  <text x="290" y="204" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 2 · Dialogue Guardrails (process)</text>
+  <text x="60" y="224" font-size="10" fill="#fdebd0">· dialogue flow control · topic-switch constraints · multi-turn state tracking</text>
+  <text x="60" y="244" font-size="10" fill="#fadbd8" font-style="italic">dynamic: when the user tries to steer off-topic or induce jailbreak</text>
+  <line x1="290" y1="268" x2="290" y2="288" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="50" y="292" width="480" height="100" rx="8" fill="#27ae60"/>
+  <text x="290" y="316" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 3 · Output Guardrails (fallback)</text>
+  <text x="60" y="336" font-size="10" fill="#d5f5e3">· sensitive-info filter · factuality check · topic-consistency · format validation</text>
+  <text x="60" y="356" font-size="10" fill="#a9dfbf" font-style="italic">last gate: holds the final line before anything leaves the system</text>
+  <text x="290" y="378" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">three gates combined: what can't be blocked is expensive, what can is simple</text>
+</svg>

@@ -276,7 +276,7 @@ DeepSeek-R1 (RL + distillation) builds upon R1-Zero: first "cold-starting" with 
 
 OpenAI o1 was the first commercial model to **internalize Chain-of-Thought into the model training process**, marking the birth of the new "reasoning model" category:
 
-![Traditional LLM vs Reasoning Model (Hallucination Mitigation)](../svg/chapter_security_02_reasoning_model.svg)
+![Traditional LLM vs Reasoning Model (Hallucination Mitigation)](../svg/chapter_21_security_02_reasoning_model.svg)
 
 ### Subsequent Developments
 

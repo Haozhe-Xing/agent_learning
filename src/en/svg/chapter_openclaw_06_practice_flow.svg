@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="680" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="400" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Practice: One Telegram Message Through OpenClaw</text>
+
+  <rect x="40" y="55" width="150" height="60" rx="8" fill="#2c3e50"/>
+  <text x="115" y="80" text-anchor="middle" font-size="13" font-weight="bold" fill="white">You on Telegram</text>
+  <text x="115" y="100" text-anchor="middle" font-size="11" fill="#bdc3c7">"What's in today's email?"</text>
+
+  <line x1="190" y1="85" x2="235" y2="85" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="238" y="55" width="150" height="60" rx="8" fill="#3498db"/>
+  <text x="313" y="80" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Telegram Adapter</text>
+  <text x="313" y="100" text-anchor="middle" font-size="11" fill="#d6eaf8">IncomingMessage</text>
+
+  <line x1="388" y1="85" x2="433" y2="85" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="436" y="55" width="150" height="60" rx="8" fill="#9b59b6"/>
+  <text x="511" y="80" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gateway Routing</text>
+  <text x="511" y="100" text-anchor="middle" font-size="11" fill="#e8daef">Session + permissions</text>
+
+  <line x1="511" y1="115" x2="511" y2="145" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="436" y="148" width="150" height="60" rx="8" fill="#e67e22"/>
+  <text x="511" y="173" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Agent Loop</text>
+  <text x="511" y="193" text-anchor="middle" font-size="11" fill="#fdebd0">Streaming + tools</text>
+
+  <line x1="511" y1="208" x2="511" y2="238" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="436" y="241" width="150" height="60" rx="8" fill="#27ae60"/>
+  <text x="511" y="266" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Toolbox Executes</text>
+  <text x="511" y="286" text-anchor="middle" font-size="11" fill="#d5f5e3">email-summary Skill</text>
+
+  <line x1="436" y1="271" x2="270" y2="271" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,3"/>
+  <text x="300" y="263" text-anchor="middle" font-size="11" fill="#7f8c8d">write result back (loop)</text>
+
+  <line x1="586" y1="271" x2="600" y2="271" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="40" y="318" width="600" height="56" rx="8" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="342" text-anchor="middle" font-size="13" font-weight="bold" fill="#9a7d0a">Outbound reply (auto-chunked to fit platform limits)</text>
+  <text x="340" y="362" text-anchor="middle" font-size="11" fill="#5d6d7e">OutgoingMessage → Telegram Adapter → your phone receives the summary</text>
+
+  <rect x="40" y="128" width="150" height="46" rx="8" fill="#fdedec" stroke="#c0392b"/>
+  <text x="115" y="147" text-anchor="middle" font-size="11" font-weight="bold" fill="#922b21">Permission Gate</text>
+  <text x="115" y="164" text-anchor="middle" font-size="10" fill="#922b21">shell allow-list / Hooks</text>
+  <line x1="115" y1="174" x2="436" y2="256" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+</svg>

@@ -14,19 +14,7 @@ LangGraph's design is directly inspired by two classic concepts in computer scie
 
 Agent behavior is fundamentally a **finite state machine** — transitioning between a finite number of states based on inputs and conditions [1]:
 
-```
-                ┌──────────────────────────┐
-                ▼                          │
-         ┌──────────┐    has tool call  ┌──────────┐
-START ──▶│ Thinking  │ ────────────────▶ │ Execute  │
-         └──────────┘                   │  Tool    │
-              │                         └──────────┘
-              │ no tool call (direct answer)
-              ▼
-         ┌──────────┐
-         │   End    │
-         └──────────┘
-```
+![Agent as a finite state machine: thinking–execute loop](../svg/chapter_langgraph_01_fsm.svg)
 
 In the FSM model:
 - **State**: the current phase the Agent is in (e.g., "thinking," "executing tool," "waiting for human approval")

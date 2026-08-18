@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" width="680" height="420">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="420" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">DeepSeek Harness: Four Plugin Interfaces</text>
+
+  <rect x="250" y="50" width="180" height="54" rx="10" fill="#2c3e50"/>
+  <text x="340" y="73" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Cordis microkernel</text>
+  <text x="340" y="92" text-anchor="middle" font-size="10" fill="#bdc3c7">only loads / unloads / communicates plugins</text>
+
+  <line x1="300" y1="104" x2="170" y2="150" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="380" y1="104" x2="510" y2="150" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="300" y1="104" x2="170" y2="270" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="380" y1="104" x2="510" y2="270" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="155" width="220" height="92" rx="10" fill="#3498db"/>
+  <text x="170" y="180" text-anchor="middle" font-size="13" font-weight="bold" fill="white">tool plugin</text>
+  <text x="170" y="200" text-anchor="middle" font-size="11" fill="#d6eaf8">mounts ctx.tools</text>
+  <text x="170" y="220" text-anchor="middle" font-size="10" fill="#aed6f1">schema + description + run</text>
+  <text x="170" y="236" text-anchor="middle" font-size="10" fill="#aed6f1">e.g. weather / shell / fs</text>
+
+  <rect x="400" y="155" width="220" height="92" rx="10" fill="#9b59b6"/>
+  <text x="510" y="180" text-anchor="middle" font-size="13" font-weight="bold" fill="white">llm plugin</text>
+  <text x="510" y="200" text-anchor="middle" font-size="11" fill="#e8daef">mounts ctx.llm</text>
+  <text x="510" y="220" text-anchor="middle" font-size="10" fill="#d2b4de">stream / complete</text>
+  <text x="510" y="236" text-anchor="middle" font-size="10" fill="#d2b4de">e.g. openai / anthropic / ollama</text>
+
+  <rect x="60" y="275" width="220" height="92" rx="10" fill="#27ae60"/>
+  <text x="170" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="white">skill plugin</text>
+  <text x="170" y="320" text-anchor="middle" font-size="11" fill="#d5f5e3">mounts ctx.skillRegistry</text>
+  <text x="170" y="340" text-anchor="middle" font-size="10" fill="#a9dfbf">points to SKILL.md</text>
+  <text x="170" y="356" text-anchor="middle" font-size="10" fill="#a9dfbf">e.g. code-review</text>
+
+  <rect x="400" y="275" width="220" height="92" rx="10" fill="#e67e22"/>
+  <text x="510" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="white">subagent plugin</text>
+  <text x="510" y="320" text-anchor="middle" font-size="11" fill="#fdebd0">mounts ctx.subagent</text>
+  <text x="510" y="340" text-anchor="middle" font-size="10" fill="#f5cba7">isolated context (isolate)</text>
+  <text x="510" y="356" text-anchor="middle" font-size="10" fill="#f5cba7">e.g. research sub-agent</text>
+
+  <rect x="250" y="388" width="180" height="20" rx="6" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="402" text-anchor="middle" font-size="11" fill="#9a7d0a">add capability = write a plugin, no core change</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 360" width="680" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="360" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">视频理解的三层能力（自下而上递进）</text>
+  <text x="340" y="48" text-anchor="middle" font-size="10" fill="#7f8c8d">每一层建立在前一层之上：帧 → 片段 → 整段</text>
+
+  <!-- 第一层：帧级（最宽，最基础）-->
+  <rect x="60" y="70" width="560" height="66" rx="8" fill="#3498db"/>
+  <text x="340" y="94" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第一层 · 帧级理解 ⭐⭐</text>
+  <text x="340" y="114" text-anchor="middle" font-size="11" fill="#d6eaf8">识别单帧中的物体、文字、场景</text>
+  <text x="340" y="130" text-anchor="middle" font-size="10" fill="#aed6f1" font-style="italic">技术：截帧 + 图像理解模型 · 例：第 15 秒出现了红色汽车</text>
+
+  <!-- 第二层：片段级（中等宽度）-->
+  <rect x="130" y="156" width="420" height="66" rx="8" fill="#e67e22"/>
+  <text x="340" y="180" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第二层 · 片段级理解 ⭐⭐⭐</text>
+  <text x="340" y="200" text-anchor="middle" font-size="11" fill="#fdebd0">理解连续几秒内的动作和事件</text>
+  <text x="340" y="216" text-anchor="middle" font-size="10" fill="#fadbd8" font-style="italic">技术：多帧联合推理 · 例：这个人从坐姿站起，走向门口</text>
+
+  <!-- 第三层：视频级（最窄，最高级）-->
+  <rect x="200" y="242" width="280" height="66" rx="8" fill="#9b59b6"/>
+  <text x="340" y="266" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第三层 · 视频级理解 ⭐⭐⭐⭐</text>
+  <text x="340" y="286" text-anchor="middle" font-size="11" fill="#e8daef">理解整段视频的主题、叙事和因果</text>
+  <text x="340" y="302" text-anchor="middle" font-size="10" fill="#d2b4de" font-style="italic">技术：长视频编码 + 层次化摘要 · 例：这是红烧肉教学视频</text>
+
+  <!-- 向上的箭头 -->
+  <line x1="340" y1="136" x2="340" y2="152" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="340" y1="222" x2="340" y2="238" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <text x="340" y="336" text-anchor="middle" font-size="10" fill="#2c3e50" font-style="italic">难度递增、信息抽象度递增：帧级最具体，视频级最抽象</text>
+</svg>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="680" height="430">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="430" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Hermes Self-Evolving Skills 自进化闭环</text>
+
+  <!-- 阶段1 任务完成 -->
+  <rect x="40" y="55" width="200" height="70" rx="10" fill="#2c3e50"/>
+  <text x="140" y="82" text-anchor="middle" font-size="13" font-weight="bold" fill="white">① 任务完成</text>
+  <text x="140" y="102" text-anchor="middle" font-size="11" fill="#bdc3c7">记录执行轨迹</text>
+  <text x="140" y="116" text-anchor="middle" font-size="10" fill="#95a5a6">step / tool / result</text>
+
+  <line x1="240" y1="90" x2="290" y2="90" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 阶段2 评估 -->
+  <rect x="293" y="55" width="160" height="70" rx="10" fill="#3498db"/>
+  <text x="373" y="82" text-anchor="middle" font-size="13" font-weight="bold" fill="white">② 评估</text>
+  <text x="373" y="102" text-anchor="middle" font-size="11" fill="#d6eaf8">步数≥5？重复？</text>
+  <text x="373" y="116" text-anchor="middle" font-size="10" fill="#aed6f1">显式反馈？成功？</text>
+
+  <!-- 否 分支向下 -->
+  <line x1="373" y1="125" x2="373" y2="160" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="383" y="148" font-size="10" fill="#c0392b">否 → 结束</text>
+
+  <!-- 阶段3 提炼 -->
+  <line x1="453" y1="90" x2="500" y2="90" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="478" y="78" font-size="10" fill="#27ae60">是</text>
+  <rect x="503" y="55" width="140" height="70" rx="10" fill="#9b59b6"/>
+  <text x="573" y="82" text-anchor="middle" font-size="13" font-weight="bold" fill="white">③ 提炼</text>
+  <text x="573" y="102" text-anchor="middle" font-size="11" fill="#e8daef">LLM 生成 SKILL.md</text>
+  <text x="573" y="116" text-anchor="middle" font-size="10" fill="#d2b4de">frontmatter + 流程</text>
+
+  <line x1="573" y1="125" x2="573" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 阶段4 落盘 -->
+  <rect x="433" y="183" width="280" height="60" rx="10" fill="#e67e22"/>
+  <text x="573" y="208" text-anchor="middle" font-size="13" font-weight="bold" fill="white">④ 落盘为草稿</text>
+  <text x="573" y="228" text-anchor="middle" font-size="11" fill="#fdebd0">~/.hermes/skills/xxx/ · status: draft · 待确认</text>
+
+  <line x1="573" y1="243" x2="573" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 阶段5 使用中迭代 -->
+  <rect x="433" y="283" width="280" height="60" rx="10" fill="#27ae60"/>
+  <text x="573" y="308" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⑤ 使用中迭代（离线）</text>
+  <text x="573" y="328" text-anchor="middle" font-size="11" fill="#d5f5e3">DSPy / GEPA：成功强化、失败弱化</text>
+
+  <!-- 迭代回环 -->
+  <line x1="433" y1="313" x2="300" y2="313" stroke="#27ae60" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <rect x="120" y="290" width="165" height="46" rx="8" fill="#e8f6e8" stroke="#27ae60"/>
+  <text x="202" y="308" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e8449">每次调用记录结果</text>
+  <text x="202" y="326" text-anchor="middle" font-size="10" fill="#27ae60">回写 → 强化 / 弱化</text>
+  <line x1="202" y1="336" x2="202" y2="380" stroke="#27ae60" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 阶段6 淘汰/强化 -->
+  <rect x="70" y="383" width="265" height="38" rx="8" fill="#fdedec" stroke="#c0392b"/>
+  <text x="202" y="407" text-anchor="middle" font-size="12" font-weight="bold" fill="#922b21">⑥ 每周 Review：保留 / 优化 / 淘汰</text>
+
+  <!-- 安全闸说明 -->
+  <rect x="470" y="360" width="170" height="60" rx="8" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="555" y="378" text-anchor="middle" font-size="11" font-weight="bold" fill="#9a7d0a">四道安全闸</text>
+  <text x="555" y="394" text-anchor="middle" font-size="10" fill="#5d6d7e">草稿 / 审计 / 回滚 / 否决</text>
+  <text x="555" y="410" text-anchor="middle" font-size="10" fill="#5d6d7e">hermes skills approve/rollback</text>
+</svg>

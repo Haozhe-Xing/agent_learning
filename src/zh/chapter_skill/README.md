@@ -20,7 +20,7 @@
 
 > **后续推荐**：
 > - 👉 [第10章 Agentic-RL：智能体强化学习训练](../chapter_agentic_rl/README.md)
-> - 👉 [第16章 多 Agent 协作](../chapter_multi_agent/README.md)
+> - 👉 [第18章 多 Agent 协作](../chapter_18_multi_agent/README.md)
 
 ---
 

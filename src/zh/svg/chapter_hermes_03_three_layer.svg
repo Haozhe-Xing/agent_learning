@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="680" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="400" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Hermes 三层架构</text>
+
+  <!-- Layer 1 Gateway -->
+  <rect x="40" y="50" width="600" height="90" rx="10" fill="#2c3e50"/>
+  <text x="60" y="75" font-size="14" font-weight="bold" fill="white">Layer 1: Gateway（消息中枢）</text>
+  <text x="60" y="98" font-size="11" fill="#bdc3c7">15+ 渠道适配器 · 跨渠道用户身份解析</text>
+  <text x="60" y="118" font-size="11" fill="#95a5a6">人格融合（cross-session persona）</text>
+
+  <line x1="340" y1="140" x2="340" y2="165" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2 Engine -->
+  <rect x="40" y="168" width="600" height="110" rx="10" fill="#e67e22"/>
+  <text x="60" y="193" font-size="14" font-weight="bold" fill="white">Layer 2: Engine（核心引擎）</text>
+  <text x="60" y="216" font-size="11" fill="#fdebd0">Agent Loop（流式推理 + 工具调用） · Context Manager（三层记忆）</text>
+  <text x="60" y="236" font-size="11" fill="#fdebd0">Self-Evolving Loop（自进化技能） · Nudge Engine（主动反思）</text>
+  <text x="60" y="256" font-size="11" fill="#fdebd0">Honcho Dialectic（用户建模）</text>
+
+  <line x1="340" y1="278" x2="340" y2="303" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 3 Plugin -->
+  <rect x="40" y="306" width="600" height="80" rx="10" fill="#9b59b6"/>
+  <text x="60" y="331" font-size="14" font-weight="bold" fill="white">Layer 3: Plugin Subsystems（可换子系统）</text>
+  <text x="60" y="354" font-size="11" fill="#e8daef">LLM Provider (200+) · Tool Backend (6 执行环境) · Memory Store (SQLite + FTS5)</text>
+  <text x="60" y="374" font-size="11" fill="#e8daef">Skill Format (agentskills.io) · Voice Transcriber · Scheduler (cron) · …</text>
+
+  <!-- 右侧说明 -->
+  <text x="655" y="245" text-anchor="end" font-size="10" fill="#7f8c8d">依赖方向始终自上而下</text>
+  <text x="655" y="262" text-anchor="end" font-size="10" fill="#7f8c8d">下层不反向调用上层</text>
+</svg>

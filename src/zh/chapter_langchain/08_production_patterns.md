@@ -358,70 +358,26 @@ print(result)
 
 ### 自定义重试逻辑
 
+LangChain 的 `ChatOpenAI` 已内置 `max_retries`，多数场景直接用即可；`with_fallbacks` 还能在重试耗尽后切换到备用模型（见上节）。只有当你需要**非 LLM 调用**（如自写工具里的 HTTP 请求）的细粒度退避时，才需要自己写装饰器。一个最小可用的同步版本：
+
 ```python
 import time
-import logging
 from functools import wraps
 
-logger = logging.getLogger("agent_retry")
-
-def retry_with_backoff(
-    max_retries: int = 3,
-    base_delay: float = 1.0,
-    max_delay: float = 60.0,
-    exceptions: tuple = (Exception,),
-):
-    """指数退避重试装饰器"""
+def retry_with_backoff(max_retries: int = 3, base_delay: float = 1.0, max_delay: float = 60.0):
+    """指数退避重试装饰器：第 n 次失败后等待 min(base_delay * 2**n, max_delay) 秒"""
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             for attempt in range(max_retries + 1):
                 try:
                     return func(*args, **kwargs)
-                except exceptions as e:
+                except Exception as e:
                     if attempt == max_retries:
-                        logger.error(f"重试 {max_retries} 次后仍失败: {e}")
                         raise
-
-                    delay = min(base_delay * (2 ** attempt), max_delay)
-                    logger.warning(
-                        f"第 {attempt + 1} 次重试，{delay:.1f}s 后重试。错误: {e}"
-                    )
-                    time.sleep(delay)
-
-        @wraps(func)
-        async def async_wrapper(*args, **kwargs):
-            for attempt in range(max_retries + 1):
-                try:
-                    return await func(*args, **kwargs)
-                except exceptions as e:
-                    if attempt == max_retries:
-                        logger.error(f"重试 {max_retries} 次后仍失败: {e}")
-                        raise
-
-                    delay = min(base_delay * (2 ** attempt), max_delay)
-                    logger.warning(
-                        f"第 {attempt + 1} 次重试，{delay:.1f}s 后重试。错误: {e}"
-                    )
-                    await asyncio.sleep(delay)
-
-        import asyncio
-        if asyncio.iscoroutinefunction(func):
-            return async_wrapper
+                    time.sleep(min(base_delay * (2 ** attempt), max_delay))
         return wrapper
     return decorator
-
-
-# 使用示例
-from langchain_openai import ChatOpenAI
-
-llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
-
-@retry_with_backoff(max_retries=3, base_delay=2.0)
-def call_llm(prompt_text: str) -> str:
-    """带重试的 LLM 调用"""
-    response = llm.invoke(prompt_text)
-    return response.content
 
 # 在工具中使用
 from langchain_core.tools import tool
@@ -435,6 +391,8 @@ def search_api(query: str) -> str:
     resp.raise_for_status()
     return resp.json().get("results", "")
 ```
+
+> 异步版本只需把 `time.sleep` 换成 `await asyncio.sleep`、函数声明为 `async def` 即可。重点是**退避而非立即重试**——连续打满请求会触发更严格的限流。
 
 ### Agent 级错误处理
 
@@ -720,9 +678,9 @@ asyncio.run(process_with_semaphore(inputs, max_concurrency=5))
 | **Checklist** | 可靠性、性能、可观测性、安全、部署五维检查 |
 
 > 💡 **与本书其他章节的关系**：
-> - 第 17 章 [第18章 Agent 的评估与优化](../chapter_evaluation/README.md) 讨论了性能优化和成本控制的更多细节
-> - 第 18 章 [第19章 安全与可靠性](../chapter_security/README.md) 深入讲解了 Prompt 注入防御和沙箱隔离
-> - 第 19 章 [第20章 部署与生产化](../chapter_deployment/README.md) 涵盖了容器化、K8s、Serverless 等部署方案
+> - [第20章 Agent 的评估与优化](../chapter_20_evaluation/README.md) 讨论了性能优化和成本控制的更多细节
+> - [第21章 安全与可靠性](../chapter_21_security/README.md) 深入讲解了 Prompt 注入防御和沙箱隔离
+> - [第22章 部署与生产化](../chapter_22_deployment/README.md) 涵盖了容器化、K8s、Serverless 等部署方案
 
 ---
 

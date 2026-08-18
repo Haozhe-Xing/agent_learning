@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Hybrid Setup: One SKILL.md Across Four Harnesses</text>
+
+  <rect x="240" y="44" width="200" height="44" rx="8" fill="#2c3e50"/>
+  <text x="340" y="66" text-anchor="middle" font-size="13" font-weight="bold" fill="white">DeepSeek Harness</text>
+  <text x="340" y="82" text-anchor="middle" font-size="10" fill="#bdc3c7">primary dev foundation</text>
+
+  <line x1="340" y1="88" x2="340" y2="108" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="340" y1="108" x2="120" y2="108" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="340" y1="108" x2="340" y2="108" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="340" y1="108" x2="560" y2="108" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="120" y1="108" x2="120" y2="128" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="340" y1="108" x2="340" y2="128" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="560" y1="108" x2="560" y2="128" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="130" width="130" height="52" rx="8" fill="#c0392b"/>
+  <text x="125" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Claude Code</text>
+  <text x="125" y="170" text-anchor="middle" font-size="10" fill="#fadbd8">coding IDE</text>
+
+  <rect x="280" y="130" width="130" height="52" rx="8" fill="#27ae60"/>
+  <text x="345" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">OpenClaw</text>
+  <text x="345" y="170" text-anchor="middle" font-size="10" fill="#d5f5e3">message channels</text>
+
+  <rect x="500" y="130" width="130" height="52" rx="8" fill="#8e44ad"/>
+  <text x="565" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Hermes</text>
+  <text x="565" y="170" text-anchor="middle" font-size="10" fill="#e8daef">self-evolving memory</text>
+
+  <line x1="125" y1="182" x2="125" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="345" y1="182" x2="345" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="565" y1="182" x2="565" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="125" y1="200" x2="565" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="345" y1="200" x2="345" y2="220" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="245" y="222" width="200" height="44" rx="8" fill="#16a085"/>
+  <text x="345" y="244" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Same SKILL.md</text>
+  <text x="345" y="260" text-anchor="middle" font-size="10" fill="#d1f2eb">interchangeable · write once, run anywhere</text>
+
+  <text x="340" y="292" text-anchor="middle" font-size="11" fill="#2c3e50">They divide labor, not exclude: DSH = foundation, Claude Code = IDE, OpenClaw = channels, Hermes = memory</text>
+  <text x="340" y="310" text-anchor="middle" font-size="10" fill="#7f8c8d">Since SKILL.md format is consistent, skills flow freely across all four harnesses</text>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">四大 Harness 混合方案：一套 SKILL.md 互通</text>
+
+  <!-- Top: DeepSeek Harness -->
+  <rect x="240" y="44" width="200" height="44" rx="8" fill="#2c3e50"/>
+  <text x="340" y="66" text-anchor="middle" font-size="13" font-weight="bold" fill="white">DeepSeek Harness</text>
+  <text x="340" y="82" text-anchor="middle" font-size="10" fill="#bdc3c7">主开发底座</text>
+
+  <line x1="340" y1="88" x2="340" y2="108" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- three branches -->
+  <line x1="340" y1="108" x2="120" y2="108" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="340" y1="108" x2="340" y2="108" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="340" y1="108" x2="560" y2="108" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="120" y1="108" x2="120" y2="128" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="340" y1="108" x2="340" y2="128" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="560" y1="108" x2="560" y2="128" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Claude Code -->
+  <rect x="60" y="130" width="130" height="52" rx="8" fill="#c0392b"/>
+  <text x="125" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Claude Code</text>
+  <text x="125" y="170" text-anchor="middle" font-size="10" fill="#fadbd8">编程 IDE</text>
+
+  <!-- OpenClaw -->
+  <rect x="280" y="130" width="130" height="52" rx="8" fill="#27ae60"/>
+  <text x="345" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">OpenClaw</text>
+  <text x="345" y="170" text-anchor="middle" font-size="10" fill="#d5f5e3">消息渠道</text>
+
+  <!-- Hermes -->
+  <rect x="500" y="130" width="130" height="52" rx="8" fill="#8e44ad"/>
+  <text x="565" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Hermes</text>
+  <text x="565" y="170" text-anchor="middle" font-size="10" fill="#e8daef">自进化记忆</text>
+
+  <!-- merge -->
+  <line x1="125" y1="182" x2="125" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="345" y1="182" x2="345" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="565" y1="182" x2="565" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="125" y1="200" x2="565" y2="200" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="345" y1="200" x2="345" y2="220" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- shared SKILL.md -->
+  <rect x="245" y="222" width="200" height="44" rx="8" fill="#16a085"/>
+  <text x="345" y="244" text-anchor="middle" font-size="13" font-weight="bold" fill="white">同一份 SKILL.md</text>
+  <text x="345" y="260" text-anchor="middle" font-size="10" fill="#d1f2eb">技能格式互通 · 一次编写四处可用</text>
+
+  <!-- note -->
+  <text x="340" y="292" text-anchor="middle" font-size="11" fill="#2c3e50">四者不是「互斥」，而是「分工」：DSH 做底座，Claude Code 做 IDE，OpenClaw 做渠道，Hermes 做记忆</text>
+  <text x="340" y="310" text-anchor="middle" font-size="10" fill="#7f8c8d">由于 SKILL.md 格式一致，技能资产可在四个 Harness 间自由流动</text>
+</svg>

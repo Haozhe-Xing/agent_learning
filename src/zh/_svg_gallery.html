@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第14-17章 SVG 图库审查</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #eef1f5; margin: 0; padding: 24px; color: #2c3e50; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: #7f8c8d; font-size: 13px; margin-bottom: 20px; }
+  .chap { font-size: 17px; margin: 28px 0 12px; padding-left: 10px; border-left: 4px solid #3498db; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  .card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.08); display: flex; flex-direction: column; }
+  .imgwrap { background: #f7f9fb; padding: 10px; display: flex; align-items: center; justify-content: center; min-height: 200px; border-bottom: 1px solid #eee; }
+  .imgwrap img { max-width: 100%; height: auto; display: block; }
+  .meta { padding: 10px 12px; }
+  .fname { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; color: #e74c3c; word-break: break-all; }
+  .alt { font-size: 12px; color: #2c3e50; margin: 4px 0; }
+  .src { font-size: 11px; color: #95a5a6; }
+  .missing { color:#c0392b; font-weight:bold; }
+</style>
+</head>
+<body>
+<h1>第14-17章 SVG 图库审查</h1>
+<div class="sub">共 44 张图（去重后）。缺文件 0 个：无。滚动查看，找出有问题的图。</div>
+<h2 class="chap">第14章 OpenClaw</h2><div class="grid">
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_01_harness_spectrum.svg" alt="行动型 Agent Harness 谱系"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_01_harness_spectrum.svg</div>
+            <div class="alt">行动型 Agent Harness 谱系</div>
+            <div class="src">来源：01_history_and_positioning.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_01_message_flow.svg" alt="OpenClaw 消息流：从 5 个聊天 App 到工具执行"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_01_message_flow.svg</div>
+            <div class="alt">OpenClaw 消息流：从 5 个聊天 App 到工具执行</div>
+            <div class="src">来源：01_history_and_positioning.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_02_deploy_modes.svg" alt="四种部署方式的取舍"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_02_deploy_modes.svg</div>
+            <div class="alt">四种部署方式的取舍</div>
+            <div class="src">来源：02_install_and_deploy.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_03_architecture.svg" alt="OpenClaw 四层架构"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_03_architecture.svg</div>
+            <div class="alt">OpenClaw 四层架构</div>
+            <div class="src">来源：03_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_04_whatsapp_qr.svg" alt="OpenClaw WhatsApp QR 扫码示意图"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_04_whatsapp_qr.svg</div>
+            <div class="alt">OpenClaw WhatsApp QR 扫码示意图</div>
+            <div class="src">来源：04_channels.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_04_session_merge.svg" alt="跨渠道身份统一：Session 合并"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_04_session_merge.svg</div>
+            <div class="alt">跨渠道身份统一：Session 合并</div>
+            <div class="src">来源：04_channels.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_05_clawhub_ecosystem.svg" alt="ClawHub 三层生态"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_05_clawhub_ecosystem.svg</div>
+            <div class="alt">ClawHub 三层生态</div>
+            <div class="src">来源：05_skills_and_plugins.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_openclaw_06_instance_architecture.svg" alt="你的 OpenClaw 实例：架构总览"/></div>
+          <div class="meta">
+            <div class="fname">chapter_openclaw_06_instance_architecture.svg</div>
+            <div class="alt">你的 OpenClaw 实例：架构总览</div>
+            <div class="src">来源：06_practice.md</div>
+          </div>
+        </div></div><h2 class="chap">第15章 Hermes</h2><div class="grid">
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_hermes_03_three_layer.svg" alt="Hermes 三层架构"/></div>
+          <div class="meta">
+            <div class="fname">chapter_hermes_03_three_layer.svg</div>
+            <div class="alt">Hermes 三层架构</div>
+            <div class="src">来源：03_three_layer_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_hermes_03_subsystem_deps.svg" alt="Hermes 子系统依赖关系"/></div>
+          <div class="meta">
+            <div class="fname">chapter_hermes_03_subsystem_deps.svg</div>
+            <div class="alt">Hermes 子系统依赖关系</div>
+            <div class="src">来源：03_three_layer_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_hermes_04_self_evolving_loop.svg" alt="自进化闭环"/></div>
+          <div class="meta">
+            <div class="fname">chapter_hermes_04_self_evolving_loop.svg</div>
+            <div class="alt">自进化闭环</div>
+            <div class="src">来源：04_self_evolving_skills.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_hermes_05_memory_architecture.svg" alt="Hermes 三层记忆架构"/></div>
+          <div class="meta">
+            <div class="fname">chapter_hermes_05_memory_architecture.svg</div>
+            <div class="alt">Hermes 三层记忆架构</div>
+            <div class="src">来源：05_memory.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_hermes_05_working_memory.svg" alt="Working Memory 的组成"/></div>
+          <div class="meta">
+            <div class="fname">chapter_hermes_05_working_memory.svg</div>
+            <div class="alt">Working Memory 的组成</div>
+            <div class="src">来源：05_memory.md</div>
+          </div>
+        </div></div><h2 class="chap">第16章 Claude Code</h2><div class="grid">
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_01_lineage.svg" alt="从 AutoGPT 到 Claude Code 的演化脉络"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_01_lineage.svg</div>
+            <div class="alt">从 AutoGPT 到 Claude Code 的演化脉络</div>
+            <div class="src">来源：01_industry_history.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_01_paradigm_comparison.svg" alt="Agent范式 vs 补全范式"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_01_paradigm_comparison.svg</div>
+            <div class="alt">Agent范式 vs 补全范式</div>
+            <div class="src">来源：02_introduction.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_01_react_loop.svg" alt="Claude Code 执行流程（ReAct 循环）"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_01_react_loop.svg</div>
+            <div class="alt">Claude Code 执行流程（ReAct 循环）</div>
+            <div class="src">来源：02_introduction.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_02_six_layer_arch.svg" alt="Claude Code 六层分层架构"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_02_six_layer_arch.svg</div>
+            <div class="alt">Claude Code 六层分层架构</div>
+            <div class="src">来源：03_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_02_request_flow.svg" alt="运行主链路：一次请求的完整旅程"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_02_request_flow.svg</div>
+            <div class="alt">运行主链路：一次请求的完整旅程</div>
+            <div class="src">来源：03_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_02_taor_loop.svg" alt="TAOR Agent Loop 核心循环"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_02_taor_loop.svg</div>
+            <div class="alt">TAOR Agent Loop 核心循环</div>
+            <div class="src">来源：03_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_02_tool_lifecycle.svg" alt="工具调用生命周期"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_02_tool_lifecycle.svg</div>
+            <div class="alt">工具调用生命周期</div>
+            <div class="src">来源：03_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_system_prompt_modules.svg" alt="System Prompt 的 4 个模块"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_system_prompt_modules.svg</div>
+            <div class="alt">System Prompt 的 4 个模块</div>
+            <div class="src">来源：04_system_prompt_and_permissions.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_prompt_cache_zones.svg" alt="Prompt Cache 三段分区"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_prompt_cache_zones.svg</div>
+            <div class="alt">Prompt Cache 三段分区</div>
+            <div class="src">来源：04_system_prompt_and_permissions.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_permission_pipeline.svg" alt="六阶段权限判定流水线"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_permission_pipeline.svg</div>
+            <div class="alt">六阶段权限判定流水线</div>
+            <div class="src">来源：04_system_prompt_and_permissions.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_mcp_connections.svg" alt="MCP 连接外部世界"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_mcp_connections.svg</div>
+            <div class="alt">MCP 连接外部世界</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_hook_events.svg" alt="Hook 事件触发时机与用途"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_hook_events.svg</div>
+            <div class="alt">Hook 事件触发时机与用途</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_skills_decision.svg" alt="Skills vs /commands vs Prompt Template 选择决策"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_skills_decision.svg</div>
+            <div class="alt">Skills vs /commands vs Prompt Template 选择决策</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_subagents_parallel.svg" alt="Sub-agents 并行任务执行"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_subagents_parallel.svg</div>
+            <div class="alt">Sub-agents 并行任务执行</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_serial_vs_parallel.svg" alt="串行 vs Sub-agents 并行代码审查"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_serial_vs_parallel.svg</div>
+            <div class="alt">串行 vs Sub-agents 并行代码审查</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_research_parallel.svg" alt="复杂研究任务并行拆分"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_research_parallel.svg</div>
+            <div class="alt">复杂研究任务并行拆分</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_context_compression.svg" alt="三级上下文压缩策略"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_context_compression.svg</div>
+            <div class="alt">三级上下文压缩策略</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_04_memdir.svg" alt="长期记忆机制（memdir）"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_04_memdir.svg</div>
+            <div class="alt">长期记忆机制（memdir）</div>
+            <div class="src">来源：05_advanced_usage.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_claude_md_injection.svg" alt="CLAUDE.md 注入机制"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_claude_md_injection.svg</div>
+            <div class="alt">CLAUDE.md 注入机制</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_layer_deps.svg" alt="分层架构依赖规则"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_layer_deps.svg</div>
+            <div class="alt">分层架构依赖规则</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_config_sharing.svg" alt="团队配置共享策略"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_config_sharing.svg</div>
+            <div class="alt">团队配置共享策略</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_code_review_flow.svg" alt="代码审查流程集成"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_code_review_flow.svg</div>
+            <div class="alt">代码审查流程集成</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_prompt_caching.svg" alt="Prompt Caching 缓存机制"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_prompt_caching.svg</div>
+            <div class="alt">Prompt Caching 缓存机制</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_model_selection.svg" alt="模型选择策略"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_model_selection.svg</div>
+            <div class="alt">模型选择策略</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_mixed_strategy.svg" alt="混合使用策略（推荐）"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_mixed_strategy.svg</div>
+            <div class="alt">混合使用策略（推荐）</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_claude_code_05_engineer_value.svg" alt="AI 时代工程师价值转变"/></div>
+          <div class="meta">
+            <div class="fname">chapter_claude_code_05_engineer_value.svg</div>
+            <div class="alt">AI 时代工程师价值转变</div>
+            <div class="src">来源：06_production_and_team.md</div>
+          </div>
+        </div></div><h2 class="chap">第17章 DeepSeek Harness</h2><div class="grid">
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_deepseek_harness_03_cordis_topology.svg" alt="DeepSeek Harness 插件拓扑"/></div>
+          <div class="meta">
+            <div class="fname">chapter_deepseek_harness_03_cordis_topology.svg</div>
+            <div class="alt">DeepSeek Harness 插件拓扑</div>
+            <div class="src">来源：03_cordis_architecture.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_deepseek_harness_04_plugin_interfaces.svg" alt="四类插件接口"/></div>
+          <div class="meta">
+            <div class="fname">chapter_deepseek_harness_04_plugin_interfaces.svg</div>
+            <div class="alt">四类插件接口</div>
+            <div class="src">来源：04_plugin_development.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_deepseek_harness_05_hybrid.svg" alt="四大 Harness 混合方案"/></div>
+          <div class="meta">
+            <div class="fname">chapter_deepseek_harness_05_hybrid.svg</div>
+            <div class="alt">四大 Harness 混合方案</div>
+            <div class="src">来源：05_comparison.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_deepseek_harness_06_thin_kernel.svg" alt="薄内核 · 野业务"/></div>
+          <div class="meta">
+            <div class="fname">chapter_deepseek_harness_06_thin_kernel.svg</div>
+            <div class="alt">薄内核 · 野业务</div>
+            <div class="src">来源：06_lessons_philosophy.md</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="imgwrap"><img src="svg/chapter_deepseek_harness_model_harness.svg" alt="Model + Harness = Agent"/></div>
+          <div class="meta">
+            <div class="fname">chapter_deepseek_harness_model_harness.svg</div>
+            <div class="alt">Model + Harness = Agent</div>
+            <div class="src">来源：README.md</div>
+          </div>
+        </div></div>
+</body>
+</html>

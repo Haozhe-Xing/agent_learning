@@ -24,7 +24,7 @@
 >
 > **后续推荐**：
 > - 👉 [第12章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架快速实践你训练出的模型
-> - 👉 [第18章 Agent 的评估与优化](../chapter_evaluation/README.md) — 评估 RL 训练后的 Agent 效果
+> - 👉 [第20章 Agent 的评估与优化](../chapter_20_evaluation/README.md) — 评估 RL 训练后的 Agent 效果
 
 ---
 

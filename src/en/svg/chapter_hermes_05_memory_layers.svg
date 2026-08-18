@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="680" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="400" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Hermes Three-Layer Memory System</text>
+
+  <rect x="40" y="55" width="600" height="95" rx="10" fill="#2c3e50"/>
+  <text x="60" y="82" font-size="14" font-weight="bold" fill="white">① Long-Term Semantic Memory (cross-session)</text>
+  <text x="60" y="106" font-size="12" fill="#bdc3c7">MEMORY.md (facts) + USER.md (user model) · FTS5 + BM25 search + LLM summary</text>
+  <text x="60" y="126" font-size="11" fill="#95a5a6">Example: "user prefers concise replies; Q3-plan uses pnpm build" · persistent, recallable</text>
+  <text x="60" y="143" font-size="11" fill="#f1c40f">⏱ Lifetime: permanent (unless forgotten/vetoed)</text>
+
+  <line x1="340" y1="150" x2="340" y2="172" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="175" width="600" height="95" rx="10" fill="#3498db"/>
+  <text x="60" y="202" font-size="14" font-weight="bold" fill="white">② Working Memory (current session)</text>
+  <text x="60" y="226" font-size="12" fill="#d6eaf8">Current dialogue + unfinished tasks · RAM + SQLite session table</text>
+  <text x="60" y="246" font-size="11" fill="#aed6f1">Example: "user just asked me to read 3 files and compare" · most relevant, freshest</text>
+  <text x="60" y="263" font-size="11" fill="#fdebd0">⏱ Lifetime: cleared at session end (key parts summarized into long-term)</text>
+
+  <line x1="340" y1="270" x2="340" y2="292" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="295" width="600" height="80" rx="10" fill="#9b59b6"/>
+  <text x="60" y="322" font-size="14" font-weight="bold" fill="white">③ Episodic Log</text>
+  <text x="60" y="346" font-size="12" fill="#e8daef">"what happened" per task (event stream) · SQLite append-only event table</text>
+  <text x="60" y="366" font-size="11" fill="#d2b4de">Use: replay / audit / self-evolution material · lowest retrieval priority</text>
+
+  <rect x="40" y="386" width="600" height="8" rx="4" fill="#e0e0e0"/>
+  <text x="340" y="402" text-anchor="middle" font-size="11" fill="#5d6d7e">Retrieval priority: working &gt; long-term &gt; episodic (most-relevant → most-complete)</text>
+</svg>

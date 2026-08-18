@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 560" width="680" height="560">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="560" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">DeepSeek Harness 插件拓扑（standard profile）</text>
+
+  <!-- 微内核 -->
+  <rect x="250" y="45" width="180" height="44" rx="8" fill="#2c3e50"/>
+  <text x="340" y="63" text-anchor="middle" font-size="13" font-weight="bold" fill="white">core.kernel</text>
+  <text x="340" y="80" text-anchor="middle" font-size="10" fill="#bdc3c7">Cordis 微内核（只做插件调度）</text>
+
+  <!-- 三条分支线 -->
+  <line x1="200" y1="67" x2="120" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="340" y1="89" x2="340" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="67" x2="560" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 第二层：LLM / Tool / Context -->
+  <rect x="30" y="112" width="180" height="88" rx="8" fill="#3498db"/>
+  <text x="120" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="white">LLM 层</text>
+  <text x="120" y="154" text-anchor="middle" font-size="10" fill="#d6eaf8">llm.openai</text>
+  <text x="120" y="170" text-anchor="middle" font-size="10" fill="#d6eaf8">llm.anthropic</text>
+  <text x="120" y="186" text-anchor="middle" font-size="10" fill="#d6eaf8">llm.deepseek / llm.local</text>
+
+  <rect x="250" y="112" width="180" height="88" rx="8" fill="#3498db"/>
+  <text x="340" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tool 层</text>
+  <text x="340" y="154" text-anchor="middle" font-size="10" fill="#d6eaf8">tool.shell / tool.fs</text>
+  <text x="340" y="170" text-anchor="middle" font-size="10" fill="#d6eaf8">tool.edit / tool.web</text>
+  <text x="340" y="186" text-anchor="middle" font-size="10" fill="#d6eaf8">tool.lsp</text>
+
+  <rect x="470" y="112" width="180" height="88" rx="8" fill="#3498db"/>
+  <text x="560" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Context 层</text>
+  <text x="560" y="154" text-anchor="middle" font-size="10" fill="#d6eaf8">context.window</text>
+  <text x="560" y="170" text-anchor="middle" font-size="10" fill="#d6eaf8">context.summary</text>
+  <text x="560" y="186" text-anchor="middle" font-size="10" fill="#d6eaf8">context.token</text>
+
+  <!-- 汇聚到 agent.loop -->
+  <line x1="120" y1="200" x2="200" y2="232" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="340" y1="200" x2="340" y2="232" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="560" y1="200" x2="480" y2="232" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="200" y1="232" x2="480" y2="232" stroke="#7f8c8d" stroke-width="1.5"/>
+  <line x1="340" y1="232" x2="340" y2="250" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- agent.loop -->
+  <rect x="110" y="254" width="460" height="50" rx="8" fill="#e67e22"/>
+  <text x="340" y="276" text-anchor="middle" font-size="13" font-weight="bold" fill="white">core.agent.loop　（Agent 循环本身也是插件）</text>
+  <text x="340" y="294" text-anchor="middle" font-size="10" fill="#fdebd0">可替换 · 可并行运行多个 · 可移除</text>
+
+  <!-- 分叉到 Skill / Sub-Agent -->
+  <line x1="220" y1="304" x2="220" y2="330" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="460" y1="304" x2="460" y2="330" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="334" width="240" height="60" rx="8" fill="#9b59b6"/>
+  <text x="200" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Skill 层</text>
+  <text x="200" y="374" text-anchor="middle" font-size="10" fill="#e8daef">skill.loader / skill.registry</text>
+  <text x="200" y="388" text-anchor="middle" font-size="10" fill="#e8daef">SKILL.md 工作流</text>
+
+  <rect x="360" y="334" width="240" height="60" rx="8" fill="#9b59b6"/>
+  <text x="480" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Sub-Agent 层</text>
+  <text x="480" y="374" text-anchor="middle" font-size="10" fill="#e8daef">subagent.spawn</text>
+  <text x="480" y="388" text-anchor="middle" font-size="10" fill="#e8daef">subagent.isolate（隔离上下文）</text>
+
+  <!-- Skill → Schedule, Sub-agent → Session -->
+  <line x1="200" y1="394" x2="200" y2="420" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="394" x2="480" y2="420" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="424" width="240" height="56" rx="8" fill="#27ae60"/>
+  <text x="200" y="446" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Schedule 层</text>
+  <text x="200" y="464" text-anchor="middle" font-size="10" fill="#d5f5e3">scheduler.cron / scheduler.delay</text>
+
+  <rect x="360" y="424" width="240" height="56" rx="8" fill="#27ae60"/>
+  <text x="480" y="446" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Session 层</text>
+  <text x="480" y="464" text-anchor="middle" font-size="10" fill="#d5f5e3">session.sqlite / session.memory</text>
+
+  <!-- Session → Sandbox → UI -->
+  <line x1="480" y1="480" x2="480" y2="498" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="360" y="502" width="240" height="44" rx="8" fill="#c0392b"/>
+  <text x="480" y="521" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Sandbox 层（隔离）</text>
+  <text x="480" y="537" text-anchor="middle" font-size="10" fill="#f5b7b1">sandbox.local / sandbox.docker</text>
+
+  <!-- 右下角：UI -->
+  <rect x="80" y="502" width="240" height="44" rx="8" fill="#7f8c8d"/>
+  <text x="200" y="521" text-anchor="middle" font-size="12" font-weight="bold" fill="white">UI 层</text>
+  <text x="200" y="537" text-anchor="middle" font-size="10" fill="#ecf0f1">tui.ink（终端）/ web.react（浏览器）</text>
+
+  <!-- 顶部标注 -->
+  <text x="660" y="245" text-anchor="end" font-size="10" fill="#7f8c8d">全部能力皆为插件</text>
+</svg>

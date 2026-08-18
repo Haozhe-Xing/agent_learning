@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="440" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Claude Code 六阶段权限判定流水线</text>
+
+  <!-- 请求 -->
+  <rect x="260" y="48" width="160" height="36" rx="8" fill="#2c3e50"/>
+  <text x="340" y="71" text-anchor="middle" font-size="12" font-weight="bold" fill="white">工具调用请求</text>
+  <line x1="340" y1="84" x2="340" y2="104" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 1 -->
+  <rect x="140" y="108" width="400" height="40" rx="8" fill="#3498db"/>
+  <text x="160" y="133" font-size="12" font-weight="bold" fill="white">1. Tool allow-list 检查</text>
+  <text x="460" y="133" text-anchor="end" font-size="10" fill="#d6eaf8">系统级硬黑名单</text>
+  <line x1="340" y1="148" x2="340" y2="162" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 2 -->
+  <rect x="140" y="166" width="400" height="40" rx="8" fill="#3498db"/>
+  <text x="160" y="191" font-size="12" font-weight="bold" fill="white">2. Workspace 路径白名单检查</text>
+  <text x="460" y="191" text-anchor="end" font-size="10" fill="#d6eaf8">是否在用户授权目录</text>
+  <line x1="340" y1="206" x2="340" y2="220" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 3 -->
+  <rect x="140" y="224" width="400" height="40" rx="8" fill="#9b59b6"/>
+  <text x="160" y="249" font-size="12" font-weight="bold" fill="white">3. PreToolUse Hooks</text>
+  <text x="460" y="249" text-anchor="end" font-size="10" fill="#e8daef">自定义事件拦截</text>
+  <line x1="340" y1="264" x2="340" y2="278" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 4 -->
+  <rect x="140" y="282" width="400" height="40" rx="8" fill="#e67e22"/>
+  <text x="160" y="307" font-size="12" font-weight="bold" fill="white">4. 用户确认（交互模式）</text>
+  <text x="460" y="307" text-anchor="end" font-size="10" fill="#fdebd0">弹窗或默认行为</text>
+  <line x1="340" y1="322" x2="340" y2="336" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 5 -->
+  <rect x="140" y="340" width="400" height="40" rx="8" fill="#27ae60"/>
+  <text x="160" y="365" font-size="12" font-weight="bold" fill="white">5. 沙箱执行</text>
+  <text x="460" y="365" text-anchor="end" font-size="10" fill="#d5f5e3">Docker / sandbox-fs</text>
+  <line x1="340" y1="380" x2="340" y2="394" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 6 -->
+  <rect x="140" y="398" width="400" height="40" rx="8" fill="#c0392b"/>
+  <text x="160" y="423" font-size="12" font-weight="bold" fill="white">6. PostToolUse Hooks</text>
+  <text x="460" y="423" text-anchor="end" font-size="10" fill="#f5b7b1">执行后审计</text>
+
+  <!-- 拒绝分支 -->
+  <text x="555" y="260" text-anchor="start" font-size="10" fill="#c0392b">任一阶段 deny → 终止</text>
+  <text x="555" y="278" text-anchor="start" font-size="10" fill="#c0392b">回写 error 给 LLM</text>
+</svg>

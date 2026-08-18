@@ -643,8 +643,8 @@ LangSmith gives LangChain applications a complete observability solution:
 
 > 💡 **How this relates to other chapters**:
 > - The graph Agents built in Chapter 13 [LangGraph: Building Stateful Agents](../chapter_langgraph/README.md) can also be traced with LangSmith
-> - Chapter 18 [Agent Evaluation and Optimization](../chapter_evaluation/README.md) digs into Agent evaluation methodology
-> - Chapter 20 [Deployment and Productionization](../chapter_deployment/README.md) covers a more complete monitoring system
+> - Chapter 18 [Agent Evaluation and Optimization](../chapter_20_evaluation/README.md) digs into Agent evaluation methodology
+> - Chapter 20 [Deployment and Productionization](../chapter_22_deployment/README.md) covers a more complete monitoring system
 
 ---
 

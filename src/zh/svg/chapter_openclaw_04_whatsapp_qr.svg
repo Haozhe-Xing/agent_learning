@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 360" width="680" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="360" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">绑定 WhatsApp 渠道：扫码流程</text>
+
+  <!-- 手机 -->
+  <rect x="40" y="60" width="180" height="240" rx="16" fill="#2c3e50"/>
+  <rect x="50" y="74" width="160" height="212" rx="8" fill="white"/>
+  <text x="130" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">WhatsApp 设置</text>
+  <text x="130" y="120" text-anchor="middle" font-size="11" fill="#5d6d7e">链接设备</text>
+  <!-- 手机上的 QR 预览 -->
+  <rect x="60" y="132" width="140" height="140" rx="6" fill="#f0f4f8" stroke="#7f8c8d"/>
+  <text x="130" y="196" text-anchor="middle" font-size="10" fill="#7f8c8d">（相机扫下方二维码）</text>
+  <text x="130" y="212" text-anchor="middle" font-size="10" fill="#7f8c8d">WhatsApp &gt; 已链接设备</text>
+
+  <!-- 箭头：手机 → 终端 -->
+  <line x1="220" y1="180" x2="300" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 终端 QR -->
+  <rect x="303" y="80" width="150" height="180" rx="10" fill="#1a1a1a"/>
+  <text x="378" y="105" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">$ openclaw onboard</text>
+  <text x="378" y="128" text-anchor="middle" font-size="10" fill="#95a5a6">Configuring WhatsApp …</text>
+  <!-- 二维码占位 -->
+  <rect x="333" y="140" width="90" height="90" rx="4" fill="white"/>
+  <!-- 简易二维码图案 -->
+  <g fill="#1a1a1a">
+    <rect x="340" y="148" width="10" height="10"/>
+    <rect x="360" y="148" width="10" height="10"/>
+    <rect x="380" y="148" width="10" height="10"/>
+    <rect x="400" y="148" width="10" height="10"/>
+    <rect x="340" y="168" width="10" height="10"/>
+    <rect x="380" y="168" width="10" height="10"/>
+    <rect x="410" y="168" width="6" height="6"/>
+    <rect x="340" y="188" width="10" height="10"/>
+    <rect x="360" y="188" width="10" height="10"/>
+    <rect x="400" y="188" width="10" height="10"/>
+    <rect x="340" y="208" width="10" height="10"/>
+    <rect x="380" y="208" width="10" height="10"/>
+    <rect x="400" y="208" width="10" height="10"/>
+    <rect x="420" y="208" width="4" height="4"/>
+  </g>
+  <text x="378" y="248" text-anchor="middle" font-size="10" fill="#95a5a6">Scan this QR with</text>
+  <text x="378" y="262" text-anchor="middle" font-size="10" fill="#95a5a6">phone's Linked Devices</text>
+
+  <!-- 箭头：终端 → 结果 -->
+  <line x1="453" y1="180" x2="520" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 结果 -->
+  <rect x="523" y="95" width="140" height="120" rx="10" fill="#27ae60"/>
+  <text x="593" y="122" text-anchor="middle" font-size="12" font-weight="bold" fill="white">✓ 链接成功</text>
+  <text x="593" y="146" text-anchor="middle" font-size="11" fill="#d5f5e3">WhatsApp linked</text>
+  <text x="593" y="164" text-anchor="middle" font-size="11" fill="#d5f5e3">as +1-555-0123</text>
+  <text x="593" y="186" text-anchor="middle" font-size="10" fill="#a9dfbf">→ 从另一台手机</text>
+  <text x="593" y="202" text-anchor="middle" font-size="10" fill="#a9dfbf">发消息测试</text>
+
+  <!-- 底部提示 -->
+  <rect x="40" y="316" width="600" height="30" rx="8" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="336" text-anchor="middle" font-size="11" fill="#9a7d0a">⚠️ session 必须持久化（Docker 用 -v 挂载 ~/.openclaw），否则容器重启要重新扫码</text>
+</svg>

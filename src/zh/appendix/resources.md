@@ -77,8 +77,8 @@
 > - 记忆系统 → [4.6 论文解读：记忆系统前沿进展](../chapter_memory/06_paper_readings.md)
 > - 规划与推理 → [5.7 论文解读：规划与推理前沿研究](../chapter_planning/06_paper_readings.md)
 > - RAG → [6.6 论文解读：RAG 前沿进展](../chapter_rag/06_paper_readings.md)
-> - 多 Agent → [16.6 论文解读：多 Agent 系统前沿研究](../chapter_multi_agent/06_paper_readings.md)
-> - 安全与可靠性 → [19.6 论文解读：安全与可靠性前沿研究](../chapter_security/06_paper_readings.md)
+> - 多 Agent → [16.6 论文解读：多 Agent 系统前沿研究](../chapter_18_multi_agent/06_paper_readings.md)
+> - 安全与可靠性 → [19.6 论文解读：安全与可靠性前沿研究](../chapter_21_security/06_paper_readings.md)
 
 ### 提示策略与推理
 

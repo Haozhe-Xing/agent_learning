@@ -21,7 +21,7 @@
 
 > **后续推荐**：
 > - 👉 [第9章 Skill System](../chapter_skill/README.md)
-> - 👉 [第15章 Claude Code 深度解析：从使用到源码](../chapter_claude_code/README.md)
+> - 👉 [第16章 Claude Code 深度解析：工业级 Harness 的原理](../chapter_claude_code/README.md)
 
 ---
 

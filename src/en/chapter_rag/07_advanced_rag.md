@@ -347,7 +347,7 @@ class HybridRAGSystem:
 | **Agentic RAG** | Dynamic retrieval decisions, adapts to complex and varied problems | ✅ Requires LangGraph |
 | **All three combined** | Covers all RAG scenarios | ⚠️ High complexity; combine as needed |
 
-> 💡 **Further Reading**: For the three multimodal RAG architectures (text-first / multimodal embedding / native multimodal) and CLIP cross-modal retrieval, see [23.6 Video Understanding and Multimodal RAG](../chapter_multimodal/06_video_and_multimodal_rag.md).
+> 💡 **Further Reading**: For the three multimodal RAG architectures (text-first / multimodal embedding / native multimodal) and CLIP cross-modal retrieval, see [23.6 Video Understanding and Multimodal RAG](../chapter_25_multimodal/06_video_and_multimodal_rag.md).
 
 ## Exercises
 

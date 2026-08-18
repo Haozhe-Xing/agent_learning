@@ -276,7 +276,7 @@ DeepSeek-R1（RL + 蒸馏）在 R1-Zero 的基础上：先用少量高质量 SFT
 
 OpenAI o1 是第一个将 **"链式思考"内化到模型训练过程中** 的商业模型，标志着"推理模型"这一全新品类的诞生：
 
-![传统 LLM vs 推理模型（幻觉缓解）](../svg/chapter_security_02_reasoning_model.svg)
+![传统 LLM vs 推理模型（幻觉缓解）](../svg/chapter_21_security_02_reasoning_model.svg)
 
 ### 后续发展
 

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="300" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">LangGraph Platform 三层架构</text>
+
+  <!-- Layer 1: API Server -->
+  <rect x="60" y="48" width="560" height="62" rx="8" fill="#3498db"/>
+  <text x="340" y="72" text-anchor="middle" font-size="14" font-weight="bold" fill="white">API Server（REST API 入口）</text>
+  <text x="340" y="92" text-anchor="middle" font-size="11" fill="#d6eaf8">部署在 Kubernetes / Cloud Run · 接收请求、鉴权、路由</text>
+
+  <line x1="340" y1="110" x2="340" y2="132" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2: State Server -->
+  <rect x="60" y="134" width="560" height="62" rx="8" fill="#27ae60"/>
+  <text x="340" y="158" text-anchor="middle" font-size="14" font-weight="bold" fill="white">State Server（状态持久化层）</text>
+  <text x="340" y="178" text-anchor="middle" font-size="11" fill="#d5f5e3">Redis / PostgreSQL / 内存 · 保存 graph state 与检查点</text>
+
+  <line x1="340" y1="196" x2="340" y2="218" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 3: Worker Pool -->
+  <rect x="60" y="220" width="560" height="62" rx="8" fill="#e67e22"/>
+  <text x="340" y="244" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Worker Pool（异步 Worker）</text>
+  <text x="340" y="264" text-anchor="middle" font-size="11" fill="#fdebd0">实际执行 Agent · 可水平扩展 · 消费队列中的任务</text>
+</svg>

@@ -45,8 +45,8 @@ Approximately **120–150 minutes** (including hands-on exercises)
 > **Prerequisites**: [Chapter 12 LangChain](../chapter_langchain/README.md)
 >
 > **Recommended Next**:
-> - 👉 [Chapter 16 Multi-Agent Collaboration](../chapter_multi_agent/README.md) — build multi-Agent systems with LangGraph
-> - 👉 [Chapters 21–23 Capstone Projects](../chapter_coding_agent/README.md) — apply LangGraph comprehensively in hands-on projects
+> - 👉 [Chapter 16 Multi-Agent Collaboration](../chapter_18_multi_agent/README.md) — build multi-Agent systems with LangGraph
+> - 👉 [Chapters 21–23 Capstone Projects](../chapter_23_coding_agent/README.md) — apply LangGraph comprehensively in hands-on projects
 
 ---
 

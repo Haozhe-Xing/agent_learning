@@ -285,4 +285,4 @@ The three layers of abstraction are closely related to the communication protoco
 
 ---
 
-*Related chapters: [Chapter 3 Tool Calling](../chapter_tools/README.md) · [Chapter 9 Skill System](./README.md) · [Chapter 16 Multi-Agent Collaboration](../chapter_multi_agent/README.md) · [Chapter 17 Agent Communication Protocols](../chapter_protocol/README.md)*
+*Related chapters: [Chapter 3 Tool Calling](../chapter_tools/README.md) · [Chapter 9 Skill System](./README.md) · [Chapter 16 Multi-Agent Collaboration](../chapter_18_multi_agent/README.md) · [Chapter 17 Agent Communication Protocols](../chapter_19_protocol/README.md)*

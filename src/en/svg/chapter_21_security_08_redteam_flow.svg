@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" width="560" height="360">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="560" height="360" rx="14" fill="#f0f4f8"/>
+  <text x="280" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Systematic Red-Teaming Flow (6 steps)</text>
+  <text x="280" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">attack surface → attack tree → scenario library → automated run → evaluation → fix &amp; verify</text>
+
+  <g transform="translate(20, 60)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#3498db"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">① Attack surface identification</text>
+    <text x="190" y="22" font-size="9" fill="#d6eaf8">—— all entries, permissions, data flows</text>
+  </g>
+  <line x1="270" y1="102" x2="270" y2="120" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 124)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#e67e22"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">② Attack tree modeling</text>
+    <text x="160" y="22" font-size="9" fill="#fdebd0">—— all attack paths (AND/OR nodes)</text>
+  </g>
+  <line x1="270" y1="166" x2="270" y2="184" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 188)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#9b59b6"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">③ Scenario library build</text>
+    <text x="170" y="22" font-size="9" fill="#e8daef">—— concrete test scenarios (injection / privilege / leakage)</text>
+  </g>
+  <line x1="270" y1="230" x2="270" y2="248" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 252)">
+    <rect x="0" y="0" width="500" height="36" rx="6" fill="#16a085"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">④ Automated execution</text>
+    <text x="160" y="22" font-size="9" fill="#d1f2eb">—— run in batch (Promptfoo / PyRIT)</text>
+  </g>
+  <line x1="270" y1="294" x2="270" y2="312" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(20, 316)">
+    <rect x="0" y="0" width="240" height="36" rx="6" fill="#27ae60"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">⑤ Result evaluation</text>
+    <text x="140" y="22" font-size="9" fill="#d5f5e3">—— success rate + impact</text>
+  </g>
+  <g transform="translate(280, 316)">
+    <rect x="0" y="0" width="240" height="36" rx="6" fill="#c0392b"/>
+    <text x="14" y="22" font-size="12" font-weight="bold" fill="white">⑥ Fix &amp; verify</text>
+    <text x="120" y="22" font-size="9" fill="#fadbd8">—— patch + regression</text>
+  </g>
+</svg>

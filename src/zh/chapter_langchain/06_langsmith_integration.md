@@ -84,97 +84,28 @@ print(result)
 
 ### 追踪 Agent 的完整执行过程
 
-对于 Agent 应用，追踪的价值更大——你能看到每一步的推理过程：
+对于 Agent 应用，追踪的价值更大——你能看到每一步的推理过程。复用 [12.3](./03_langchain_agents.md) 的 `AgentExecutor` + 两个工具（`search_database` / `generate_chart`），**设置好环境变量后直接 `invoke`，无需任何额外埋点**：
 
 ```python
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-# ============================
-# 工具定义
-# ============================
-
-@tool
-def search_database(query: str) -> str:
-    """在内部数据库中搜索信息。"""
-    # 模拟数据库查询
-    db = {
-        "销售额": "2024年Q4总销售额为 1,250 万元，同比增长 18%",
-        "用户数": "当前月活用户 52 万，日活 12 万",
-        "转化率": "注册到付费转化率 3.2%，较上月提升 0.3%",
-    }
-    for keyword, value in db.items():
-        if keyword in query:
-            return value
-    return "未找到相关数据"
-
-@tool
-def generate_chart(data_description: str) -> str:
-    """根据数据描述生成图表。输入：数据描述文本。"""
-    return f"图表已生成：{data_description} — 已保存为 chart_{hash(data_description) % 10000}.png"
-
-# ============================
-# Agent 构建
-# ============================
-
-tools = [search_database, generate_chart]
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """你是一个数据分析助手。
-你可以使用工具查询数据库和生成图表。
-请先查询数据，再根据结果回答用户问题。"""),
-    MessagesPlaceholder(variable_name="chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder(variable_name="agent_scratchpad"),
-])
-
-llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True,
-    max_iterations=5,
-)
-
-# 执行 —— 自动追踪到 LangSmith
 result = agent_executor.invoke({
     "input": "帮我查一下最近的销售额，然后生成一个图表",
-    "chat_history": []
+    "chat_history": [],
 })
 print(result["output"])
 ```
 
-在 LangSmith 的 Trace 视图中，你会看到：
+在 LangSmith 的 Trace 视图里，你会看到一条分层链路——每一步的 Token 消耗与工具输入输出都清晰可见：
 
 ```
-Trace: "帮我查一下最近的销售额，然后生成一个图表"
-├── Run: ChatPromptTemplate (format)
-├── Run: ChatOpenAI (invoke)           ← 第一次 LLM 调用
-│   ├── Input: system + user messages
-│   ├── Output: tool_call(search_database, query="销售额")
-│   └── Tokens: 156 in / 28 out, $0.0023
-├── Run: search_database (invoke)      ← 工具执行
-│   ├── Input: {"query": "销售额"}
-│   └── Output: "2024年Q4总销售额为 1,250 万元..."
-├── Run: ChatOpenAI (invoke)           ← 第二次 LLM 调用
-│   ├── Input: 带工具结果的对话
-│   ├── Output: tool_call(generate_chart, ...)
-│   └── Tokens: 234 in / 45 out, $0.0041
-├── Run: generate_chart (invoke)       ← 工具执行
-│   └── Output: "图表已生成..."
-└── Run: ChatOpenAI (invoke)           ← 最终 LLM 回复
-    ├── Output: "根据查询结果..."
-    └── Tokens: 189 in / 67 out, $0.0056
+Trace: "查销售额并生成图表"
+├── ChatOpenAI          → tool_call(search_database)   156 in / 28 out, $0.0023
+├── search_database     → "2024 Q4 总销售额 1,250 万元…"
+├── ChatOpenAI          → tool_call(generate_chart)    234 in / 45 out, $0.0041
+├── generate_chart      → "图表已生成…"
+└── ChatOpenAI          → 最终文本回复                   189 in / 67 out, $0.0056
 ```
 
-> 💡 **关键洞察**：通过 Trace，你可以清楚地看到 Agent 执行了几步、每步的 Token 消耗、工具的输入输出——这些信息对于调试和成本优化至关重要。
+> 💡 **关键洞察**：通过 Trace，你能清楚看到 Agent 走了几步、每步的 Token 消耗、工具的输入输出——这些信息是调试与成本优化的关键。
 
 ### 自定义追踪信息
 
@@ -493,139 +424,27 @@ os.environ["LANGCHAIN_PROJECT"] = f"data-agent-{os.getenv('DEPLOY_ENV', 'dev')}"
 
 ### 2. 采样策略
 
-生产环境流量大时，不需要追踪每一次调用。可以配置采样率：
+生产环境流量大时，不需要追踪每一次调用。最简单的方式是按概率或按条件决定是否传 `callbacks`：
 
 ```python
-from langchain_core.runnables import ConfigurableField
-
-# 方法1：基于概率的采样
 import random
-
-def should_trace() -> bool:
-    """1% 的请求被追踪"""
-    return random.random() < 0.01
-
-# 方法2：基于条件的追踪
-# 只追踪特定用户的请求
-def should_trace_user(user_id: str) -> bool:
-    premium_users = {"user_vip_001", "user_vip_002"}
-    return user_id in premium_users
-
-# 在调用时动态控制
-result = chain.invoke(
-    {"question": "你好"},
-    config={
-        "callbacks": [] if not should_trace() else None,  # 不追踪时传空列表
-        "tags": ["sampled"] if should_trace() else [],
-    }
-)
+def should_trace(user_id: str) -> bool:
+    # 1% 采样，或只对 VIP 用户全量追踪
+    return random.random() < 0.01 or user_id in {"user_vip_001"}
+# 不追踪时：config={"callbacks": []}；追踪时传 None 走默认
 ```
 
 ### 3. 成本监控与告警
 
-```python
-from langsmith import Client
-
-client = Client()
-
-def check_daily_cost(project_name: str, budget_limit: float = 50.0):
-    """检查今日成本是否超预算"""
-    from datetime import datetime, timedelta
-
-    today = datetime.now().replace(hour=0, minute=0, second=0)
-    runs = client.list_runs(
-        project_name=project_name,
-        filter=f'and(gt(start_time, "{today.isoformat()}"), eq(status, "success"))',
-    )
-
-    total_cost = sum(run.total_cost or 0 for run in runs)
-
-    if total_cost > budget_limit:
-        # 发送告警（接入你的告警系统）
-        print(f"⚠️ 今日成本 ${total_cost:.2f} 已超过预算 ${budget_limit:.2f}")
-
-    return total_cost
-
-# 定时执行
-cost = check_daily_cost("data-agent-prod")
-print(f"今日成本: ${cost:.4f}")
-```
+用 `langsmith.Client` 的 `list_runs` 按 `project_name` + `total_cost` 汇总当日花费，超预算即告警。关键不是写一段脚本，而是**把 Token 成本纳入常规监控**，别等账单异常才发现。
 
 ### 4. 评估驱动的发布流程
 
-> 代码变更 → 运行评估数据集 → 对比与 baseline 的得分 → 得分不降才发布
-
-```python
-from langsmith import Client
-
-client = Client()
-
-def compare_experiments(baseline: str, candidate: str) -> dict:
-    """对比两个实验的评估结果"""
-    baseline_runs = list(client.list_runs(
-        project_name=baseline, is_root=True
-    ))
-    candidate_runs = list(client.list_runs(
-        project_name=candidate, is_root=True
-    ))
-
-    # 汇总对比
-    comparison = {
-        "baseline": {
-            "total": len(baseline_runs),
-            "avg_feedback": sum(
-                r.feedback_stats.get("helpfulness", 0) if r.feedback_stats else 0
-                for r in baseline_runs
-            ) / max(len(baseline_runs), 1),
-        },
-        "candidate": {
-            "total": len(candidate_runs),
-            "avg_feedback": sum(
-                r.feedback_stats.get("helpfulness", 0) if r.feedback_stats else 0
-                for r in candidate_runs
-            ) / max(len(candidate_runs), 1),
-        },
-    }
-
-    # 判断是否可以发布
-    can_deploy = (
-        comparison["candidate"]["avg_feedback"]
-        >= comparison["baseline"]["avg_feedback"]
-    )
-
-    comparison["can_deploy"] = can_deploy
-    return comparison
-```
+核心闭环：**代码变更 → 跑评估数据集 → 与 baseline 对比得分 → 不降才发布**。用 `client.list_runs` 取两个实验的 run，按 `feedback_stats`（如 helpfulness）算均值对比，候选得分 ≥ baseline 才允许上线——把"凭感觉发版"变成"数据驱动发版"。
 
 ### 5. 与现有监控系统集成
 
-LangSmith 不是孤立存在的，它应该和你的整体可观测性体系协同工作：
-
-```python
-import logging
-from langsmith import Client
-
-# 将 LangSmith Trace ID 记录到应用日志
-logger = logging.getLogger("agent_service")
-
-class TracingMiddleware:
-    """FastAPI 中间件：将 LangSmith Trace ID 注入请求上下文"""
-
-    def __init__(self, app):
-        self.app = app
-
-    async def __call__(self, scope, receive, send):
-        if scope["type"] == "http":
-            # 在请求处理中记录 Trace ID
-            trace_id = scope.get("langsmith_trace_id")
-            if trace_id:
-                logger.info(f"langsmith_trace_id={trace_id}")
-        await self.app(scope, receive, send)
-
-# 接入 OpenTelemetry（LangSmith 支持 OTel 导出）
-# LANGSMITH_OTEL_ENABLED=true
-# OTEL_EXPORTER_OTLP_ENDPOINT=http://your-collector:4317
-```
+LangSmith 不是孤岛：把 Trace ID 记进应用日志便于串联；并通过 OpenTelemetry 导出（设 `LANGSMITH_OTEL_ENABLED=true` 与 `OTEL_EXPORTER_OTLP_ENDPOINT=http://your-collector:4317`）汇入既有链路追踪。
 
 ---
 
@@ -643,8 +462,8 @@ LangSmith 为 LangChain 应用提供了完整的可观测性解决方案：
 
 > 💡 **与本书其他章节的关系**：
 > - 第 12 章 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 中构建的图 Agent 同样可以通过 LangSmith 追踪
-> - 第 17 章 [第18章 Agent 的评估与优化](../chapter_evaluation/README.md) 深入讨论了 Agent 评估方法论
-> - 第 19 章 [第20章 部署与生产化](../chapter_deployment/README.md) 涵盖了更完整的监控体系
+> - [第20章 Agent 的评估与优化](../chapter_20_evaluation/README.md) 深入讨论了 Agent 评估方法论
+> - [第22章 部署与生产化](../chapter_22_deployment/README.md) 涵盖了更完整的监控体系
 
 ---
 

@@ -1,214 +1,85 @@
 # 12.5 实战：多功能客服 Agent
 
-综合 LangChain 所有特性，构建一个完整的多功能客服 Agent 系统。
+把前几节的能力综合起来，构建一个能查 FAQ、查订单、提交投诉、做推荐的多功能客服 Agent。这一节的重点不是"把代码抄会",而是理解**把一个真实业务场景拆解成 Agent 架构**的套路。
 
 ![多功能客服 Agent 系统架构](../svg/chapter_langchain_05_customer_service.svg)
 
-## 完整实现
+## 设计思路：把业务拆成"工具 + 编排"
+
+客服场景看似复杂，拆解后只有两层：
+
+1. **工具层（Tool Layer）**：每个业务能力封装成一个 `@tool` 函数——`search_faq`（查知识库）、`check_order`（查订单）、`submit_complaint`（提交工单）、`recommend_products`（推荐）。工具内部是确定性的业务代码（查数据库、调 API），**不依赖 LLM**。
+2. **编排层（Agent Layer）**：一个 Agent 根据对话，自主决定"此刻该调哪个工具"。模型只负责"决策"，不负责"执行业务逻辑"。
+
+> 💡 **直觉理解**：好的 Agent 架构，是让**模型做它擅长的（理解意图、决定下一步），让代码做它擅长的（精确、可审计的业务逻辑）**。工具函数就是"模型的手脚"——模型决定伸手去拿哪个工具，但真正执行动作的是代码。这就是为什么工具的描述（docstring）如此重要：模型靠它来"认手"。
+
+## 关键片段：Agent 的构建
+
+整个系统的"胶水"只有这一段——工具列表 + 系统提示 + 执行器：
 
 ```python
-# customer_service_agent.py
-from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
+from langchain.agents import AgentExecutor, create_openai_tools_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.agents import AgentExecutor, create_openai_tools_agent  # legacy，新项目推荐 LangGraph
-from langchain_core.messages import HumanMessage, AIMessage
-from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from rich.console import Console
-from dotenv import load_dotenv
-import json
-
-load_dotenv()
-console = Console()
-
-# ============================
-# 工具定义
-# ============================
 
 @tool
 def search_faq(query: str) -> str:
     """搜索常见问题解答库。适合回答产品使用、政策、流程等问题。"""
-    faq_data = {
-        "退款": "退款政策：7天内无理由退款，需要原包装。申请退款请联系客服。",
-        "发货": "一般1-3个工作日发货，节假日顺延。急需可选顺丰加急。",
-        "保修": "正规渠道购买享有官方1年保修，屏幕损坏不在保修范围内。",
-        "优惠": "新用户首单8折优惠，会员用户积分可抵扣货款。",
-        "支付": "支持微信、支付宝、银行卡，不支持货到付款。",
-    }
-    
-    for keyword, answer in faq_data.items():
-        if keyword in query:
-            return answer
-    
-    return "未找到相关FAQ，建议联系在线客服获取更多帮助。"
+    # ... 内部查知识库（确定性逻辑）...
 
 @tool
 def check_order(order_id: str) -> str:
-    """
-    查询订单状态和物流信息。
-    输入订单编号（如 ORD-12345678），返回订单详情。
-    """
-    orders = {
-        "ORD-12345678": {
-            "status": "已发货",
-            "items": "Python编程书 × 1",
-            "amount": 89.9,
-            "shipping": "顺丰：SF1234567890，预计明天到达"
-        },
-        "ORD-87654321": {
-            "status": "待发货",
-            "items": "AI开发课程 × 1",
-            "amount": 299.0,
-            "shipping": "预计明天发货"
-        }
-    }
-    
-    order = orders.get(order_id)
-    if order:
-        return json.dumps(order, ensure_ascii=False)
-    return f"订单 {order_id} 不存在，请确认订单号是否正确。"
-
-@tool
-def submit_complaint(
-    order_id: str,
-    complaint_type: str,
-    description: str
-) -> str:
-    """
-    提交售后投诉或申请。
-    complaint_type: 退款申请/质量问题/物流问题/其他
-    """
-    import datetime
-    ticket_id = f"TKT-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
-    
-    return (f"投诉已受理！工单编号：{ticket_id}\n"
-            f"类型：{complaint_type}\n"
-            f"相关订单：{order_id}\n"
-            f"预计24小时内客服跟进处理。")
-
-@tool
-def recommend_products(user_need: str) -> str:
-    """根据用户需求推荐适合的产品。"""
-    catalog = [
-        {"name": "Python入门到精通", "price": 89, "tag": "编程 Python 初学者"},
-        {"name": "AI Agent实战课程", "price": 299, "tag": "AI 机器学习 Agent"},
-        {"name": "LangChain实战教程", "price": 199, "tag": "LangChain Python AI"},
-        {"name": "数据分析全攻略", "price": 159, "tag": "数据分析 pandas Excel"},
-    ]
-    
-    # 简单的关键词匹配
-    results = []
-    for item in catalog:
-        if any(keyword in user_need for keyword in item["tag"].split()):
-            results.append(f"• {item['name']} - ¥{item['price']}")
-    
-    if results:
-        return "根据您的需求，为您推荐：\n" + "\n".join(results)
-    return "暂无完全匹配的推荐，请描述更多您的需求。"
-
-
-# ============================
-# Agent 构建
-# ============================
+    """查询订单状态和物流信息。输入订单编号如 ORD-12345678。"""
+    # ... 内部查订单系统 ...
 
 tools = [search_faq, check_order, submit_complaint, recommend_products]
 
 system_message = """你是"小慧"，一位热心、专业的客服助手。
-
-## 你的职责
-- 解答用户的产品和服务相关问题
-- 查询订单状态和物流信息
-- 处理售后申请和投诉
-- 根据用户需求推荐合适的产品
-
 ## 服务准则
-1. 始终保持热情、耐心、专业的态度
-2. 先理解用户需求，再给出帮助
-3. 使用工具前先思考哪个工具最合适
-4. 如果无法解决，礼貌地转接人工客服（告知用户联系 400-123-4567）
-5. 用友好的语气，避免生硬的机器人感
-
+1. 先理解用户需求，再给帮助
+2. 用工具前先想清楚哪个工具最合适
+3. 无法解决时礼貌转人工（400-123-4567）
 ## 权限限制
-- 不能修改订单金额
-- 不能直接执行退款，只能提交申请
+- 不能修改订单金额；不能直接执行退款，只能提交申请
 """
 
 prompt = ChatPromptTemplate.from_messages([
     ("system", system_message),
-    MessagesPlaceholder(variable_name="chat_history"),
+    MessagesPlaceholder("chat_history"),
     ("human", "{input}"),
-    MessagesPlaceholder(variable_name="agent_scratchpad"),
+    MessagesPlaceholder("agent_scratchpad"),
 ])
-
 llm = ChatOpenAI(model="gpt-4.1", temperature=0.3)
-agent = create_openai_tools_agent(llm, tools, prompt)
-
 agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=False,
-    max_iterations=5,
-    handle_parsing_errors=True
+    agent=create_openai_tools_agent(llm, tools, prompt),
+    tools=tools, max_iterations=5, handle_parsing_errors=True,
 )
-
-# 会话历史管理
-store = {}
-
-def get_session_history(session_id: str) -> ChatMessageHistory:
-    if session_id not in store:
-        store[session_id] = ChatMessageHistory()
-    return store[session_id]
-
-agent_with_history = RunnableWithMessageHistory(
-    agent_executor,
-    get_session_history,
-    input_messages_key="input",
-    history_messages_key="chat_history"
-)
-
-# ============================
-# 主程序
-# ============================
-
-def main():
-    session_id = "customer_001"
-    
-    console.print("\n[bold cyan]小慧：[/bold cyan]您好！我是小慧，很高兴为您服务！"
-                  "请问有什么可以帮助您的？😊")
-    
-    while True:
-        user_input = input("\n[你]：").strip()
-        
-        if not user_input:
-            continue
-        if user_input.lower() in ["quit", "exit", "退出"]:
-            console.print("[bold cyan]小慧：[/bold cyan]感谢您的光临，再见！👋")
-            break
-        
-        result = agent_with_history.invoke(
-            {"input": user_input},
-            config={"configurable": {"session_id": session_id}}
-        )
-        
-        console.print(f"\n[bold cyan]小慧：[/bold cyan]{result['output']}")
-
-
-if __name__ == "__main__":
-    main()
 ```
+
+> 📌 完整可运行代码（含交互式 CLI、会话历史管理）见本书配套仓库 `examples/` 目录。本节重在架构套路，交互细节留给读者按上面的模式自行补全。
+
+## 设计要点（可迁移的经验）
+
+| 要点 | 说明 |
+|------|------|
+| **工具粒度适中** | 一个工具做一件事；太粗难复用，太细模型决策成本高 |
+| **描述即接口** | docstring 写清"何时用、参数含义"，比换模型更影响效果 |
+| **权限边界前置** | 在 system prompt 显式声明"不能做什么"，降低越权风险 |
+| **失败优雅降级** | 工具内部捕获异常，返回错误信息而非崩溃，让 Agent 自我纠正 |
+| **有状态会话** | 用 `RunnableWithMessageHistory` 把历史注入 `chat_history`，但生产环境建议换成 LangGraph 的 checkpointer（第 13 章） |
+
+> ⚠️ **生产化提醒**：`AgentExecutor` 的会话历史在多轮、长程、需中断恢复时力不从心。正式客服系统应迁移到 LangGraph（有状态、可 interrupt/resume、可审计），详见第 13 章与 12.8 节。
+
+---
 
 ## 小结
 
-本章通过构建一个多功能客服 Agent，综合运用了 LangChain 的核心能力。系统的设计思路是：**将客服场景拆解为独立的工具函数**（订单查询、退换货处理、常见问题解答），然后让 LLM Agent 根据用户意图自主选择合适的工具来响应。这种"工具驱动"的架构模式在实际项目中非常常见，也是 LangChain Agent 最典型的使用方式。
-
-通过本章，我们掌握了 LangChain 的核心技能：
+本章通过多功能客服 Agent，综合运用了 LangChain 的核心能力。系统的核心套路是：**把业务拆成独立工具函数，再让 LLM Agent 按用户意图自主选工具响应**——这种"工具驱动"架构在实际项目中极其常见，也是 LangChain Agent 最典型的使用方式。
 
 | 技能 | 要点 |
 |------|------|
-| 模型调用 | `ChatOpenAI` + 提示词模板 |
-| 工具定义 | `@tool` 装饰器快速定义 |
-| LCEL 链 | `\|` 管道语法，可读性强 |
+| 工具定义 | `@tool` 装饰器，docstring 即描述 |
+| LCEL 链 | `\|` 管道，可读性强 |
 | Agent | `create_openai_tools_agent` + `AgentExecutor` |
 | 会话历史 | `RunnableWithMessageHistory` |
 

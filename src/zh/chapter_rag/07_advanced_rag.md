@@ -347,7 +347,7 @@ class HybridRAGSystem:
 | **Agentic RAG** | 动态检索决策，适应复杂多变问题 | ✅ 需配合 LangGraph |
 | **三者组合** | 覆盖所有 RAG 场景 | ⚠️ 复杂度高，按需组合 |
 
-> 💡 **延伸阅读**：关于多模态 RAG 的三种架构（文本优先/多模态 Embedding/原生多模态）和 CLIP 跨模态检索，详见 [23.6 视频理解与多模态 RAG](../chapter_multimodal/06_video_and_multimodal_rag.md)。
+> 💡 **延伸阅读**：关于多模态 RAG 的三种架构（文本优先/多模态 Embedding/原生多模态）和 CLIP 跨模态检索，详见 [23.6 视频理解与多模态 RAG](../chapter_25_multimodal/06_video_and_multimodal_rag.md)。
 
 ## 练习题
 

@@ -38,9 +38,9 @@
 
 ## 🚀 扩展项目
 
-| 项目 | 简介 | Stars |
-|------|------|-------|
-| [supermemory](https://github.com/supermemoryai/supermemory) | AI 时代的记忆与上下文引擎。支持自动事实提取、用户画像构建、遗忘曲线式记忆衰减、混合搜索（RAG + Memory）。在 LongMemEval、LoCoMo、ConvoMem 三大基准测试中均排名第一。提供 API、MCP 服务及 LangChain/LangGraph 集成。 | 18.5k+ |
+| 项目 | 简介 |
+|------|------|
+| [supermemory](https://github.com/supermemoryai/supermemory) | AI 时代的记忆与上下文引擎。支持自动事实提取、用户画像构建、遗忘曲线式记忆衰减、混合搜索（RAG + Memory）。在 LongMemEval、LoCoMo、ConvoMem 三大基准测试中均排名第一。提供 API、MCP 服务及 LangChain/LangGraph 集成。 |
 
 ---
 

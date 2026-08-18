@@ -35,7 +35,7 @@ LangChain 通过提供标准化的抽象层，大大简化了 LLM 应用开发�
 >
 > **后续推荐**：
 > - 👉 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) — 从线性 Chain 升级到图结构
-> - 👉 [第14章 其他主流框架概览](../chapter_frameworks/README.md) — 对比不同框架的设计取舍
+> - 👉 [第三部分框架选型矩阵](../part3.md) — 对比 6 大框架的设计取舍
 
 ---
 

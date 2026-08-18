@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 400" width="700" height="400">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="700" height="400" rx="14" fill="#f0f4f8"/>
+  <text x="350" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Agent 评估自动化流水线：A/B 测试 → 回归测试 → CI/CD</text>
+  <text x="350" y="48" text-anchor="middle" font-size="10" fill="#7f8c8d">每次改 Prompt / 工具 / 模型，都要先证明"改得更好了"才能合并</text>
+
+  <!-- A/B 测试 -->
+  <rect x="30" y="70" width="200" height="110" rx="8" fill="#3498db"/>
+  <text x="130" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">① A/B 测试</text>
+  <text x="130" y="112" text-anchor="middle" font-size="10" fill="#d6eaf8">Prompt 变体 A vs B</text>
+  <text x="130" y="128" text-anchor="middle" font-size="10" fill="#d6eaf8">各跑 N 次 → 统计对比</text>
+  <text x="130" y="144" text-anchor="middle" font-size="10" fill="#d6eaf8">成功率 / 质量分 / 成本</text>
+  <text x="130" y="164" text-anchor="middle" font-size="9" fill="#aed6f1" font-style="italic">回答"改得更好还是更差？"</text>
+
+  <line x1="230" y1="125" x2="260" y2="125" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 回归测试 -->
+  <rect x="264" y="70" width="200" height="110" rx="8" fill="#e67e22"/>
+  <text x="364" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">② 回归测试</text>
+  <text x="364" y="112" text-anchor="middle" font-size="10" fill="#fdebd0">固定基线测试集</text>
+  <text x="364" y="128" text-anchor="middle" font-size="10" fill="#fdebd0">改 Prompt → 跑全部</text>
+  <text x="364" y="144" text-anchor="middle" font-size="10" fill="#fdebd0">检测已有能力退化</text>
+  <text x="364" y="164" text-anchor="middle" font-size="9" fill="#fadbd8" font-style="italic">回答"有没有搞坏别的？"</text>
+
+  <line x1="464" y1="125" x2="494" y2="125" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- CI/CD -->
+  <rect x="498" y="70" width="172" height="110" rx="8" fill="#27ae60"/>
+  <text x="584" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">③ CI/CD 集成</text>
+  <text x="584" y="112" text-anchor="middle" font-size="10" fill="#d5f5e3">git push 触发</text>
+  <text x="584" y="128" text-anchor="middle" font-size="10" fill="#d5f5e3">自动评估 + 门禁</text>
+  <text x="584" y="144" text-anchor="middle" font-size="10" fill="#d5f5e3">通过 → 合并 / 打回</text>
+  <text x="584" y="164" text-anchor="middle" font-size="9" fill="#a9dfbf" font-style="italic">把评估固化成流程</text>
+
+  <!-- 底部：三层关系 -->
+  <rect x="60" y="210" width="580" height="150" rx="8" fill="#fff" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="80" y="234" font-size="12" font-weight="bold" fill="#2c3e50">三层的关系（不是"三选一"，是递进）</text>
+  <text x="80" y="258" font-size="10" fill="#2c3e50">A/B 测试 = 开发期验证"这次改动有没有用"（离线、手动触发）</text>
+  <text x="80" y="278" font-size="10" fill="#2c3e50">回归测试 = 保护期验证"有没有破坏已有能力"（基线测试集，防止退化）</text>
+  <text x="80" y="298" font-size="10" fill="#2c3e50">CI/CD = 把前两者接进 git 流程（push 自动跑，不达标打回）</text>
+  <text x="80" y="322" font-size="10" fill="#7f8c8d" font-style="italic">三者共享同一套"评估 + 质量门禁"基础设施，只是触发时机和目的不同</text>
+  <text x="80" y="344" font-size="10" fill="#7f8c8d" font-style="italic">核心成本在"构造高质量测试集"——评估框架本身几十行就能搭</text>
+</svg>

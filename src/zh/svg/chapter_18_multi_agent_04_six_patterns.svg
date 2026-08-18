@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470" width="800" height="470">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  <rect width="800" height="470" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">六大多 Agent 协作模式全景</text>
+
+  <!-- ===== 模式1：Sequential 流水线 ===== -->
+  <rect x="16" y="48" width="248" height="188" rx="10" fill="#3498db" opacity="0.07" stroke="#3498db" stroke-width="1.5"/>
+  <text x="140" y="70" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#3498db">① Sequential 流水线</text>
+  <rect x="30" y="95" width="52" height="34" rx="6" fill="#3498db"/>
+  <text x="56" y="117" text-anchor="middle" font-size="10" fill="white" font-weight="bold">A</text>
+  <rect x="104" y="95" width="52" height="34" rx="6" fill="#3498db"/>
+  <text x="130" y="117" text-anchor="middle" font-size="10" fill="white" font-weight="bold">B</text>
+  <rect x="178" y="95" width="52" height="34" rx="6" fill="#3498db"/>
+  <text x="204" y="117" text-anchor="middle" font-size="10" fill="white" font-weight="bold">C</text>
+  <line x1="82" y1="112" x2="102" y2="112" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="156" y1="112" x2="176" y2="112" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="140" y="158" text-anchor="middle" font-size="9.5" fill="#555">固定顺序，前输出=后输入</text>
+  <text x="140" y="176" text-anchor="middle" font-size="9" fill="#7f8c8d">线性 DAG · 无动态路由</text>
+  <text x="140" y="210" text-anchor="middle" font-size="9.5" fill="#2c3e50">最易调试 · 可流式/缓存</text>
+
+  <!-- ===== 模式2：Parallel 并行 ===== -->
+  <rect x="276" y="48" width="248" height="188" rx="10" fill="#27ae60" opacity="0.07" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="400" y="70" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#27ae60">② Parallel 并行</text>
+  <rect x="290" y="90" width="52" height="30" rx="6" fill="#27ae60"/>
+  <text x="316" y="110" text-anchor="middle" font-size="10" fill="white" font-weight="bold">入口</text>
+  <rect x="290" y="135" width="52" height="30" rx="6" fill="#27ae60"/>
+  <text x="316" y="155" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">任务1</text>
+  <rect x="372" y="135" width="52" height="30" rx="6" fill="#27ae60"/>
+  <text x="398" y="155" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">任务2</text>
+  <rect x="454" y="135" width="52" height="30" rx="6" fill="#27ae60"/>
+  <text x="480" y="155" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">任务3</text>
+  <rect x="372" y="180" width="52" height="30" rx="6" fill="#27ae60"/>
+  <text x="398" y="200" text-anchor="middle" font-size="10" fill="white" font-weight="bold">汇合</text>
+  <line x1="316" y1="120" x2="316" y2="133" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="342" y1="120" x2="398" y2="133" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="316" y1="120" x2="480" y2="133" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="316" y1="165" x2="398" y2="178" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="398" y1="165" x2="398" y2="178" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="480" y1="165" x2="398" y2="178" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="400" y="228" text-anchor="middle" font-size="9.5" fill="#2c3e50">独立子任务并发 · 汇聚合并</text>
+
+  <!-- ===== 模式3：Supervisor 层级 ===== -->
+  <rect x="536" y="48" width="248" height="188" rx="10" fill="#e67e22" opacity="0.07" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="660" y="70" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#e67e22">③ Supervisor 层级</text>
+  <rect x="620" y="88" width="80" height="34" rx="6" fill="#e67e22"/>
+  <text x="660" y="110" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Supervisor</text>
+  <rect x="550" y="150" width="52" height="30" rx="6" fill="#e67e22"/>
+  <text x="576" y="170" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">A</text>
+  <rect x="634" y="150" width="52" height="30" rx="6" fill="#e67e22"/>
+  <text x="660" y="170" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">B</text>
+  <rect x="718" y="150" width="52" height="30" rx="6" fill="#e67e22"/>
+  <text x="744" y="170" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">C</text>
+  <line x1="640" y1="122" x2="580" y2="148" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="660" y1="122" x2="660" y2="148" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="680" y1="122" x2="740" y2="148" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="660" y="205" text-anchor="middle" font-size="9.5" fill="#555">中央协调者分解·分派·汇总</text>
+  <text x="660" y="228" text-anchor="middle" font-size="9.5" fill="#2c3e50">星形 · 单点控制（可分层）</text>
+
+  <!-- ===== 模式4：Handoff 交接 ===== -->
+  <rect x="16" y="248" width="248" height="200" rx="10" fill="#8e44ad" opacity="0.07" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="140" y="270" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#8e44ad">④ Handoff 交接（Swarm）</text>
+  <rect x="30" y="295" width="52" height="34" rx="6" fill="#8e44ad"/>
+  <text x="56" y="317" text-anchor="middle" font-size="10" fill="white" font-weight="bold">分诊</text>
+  <rect x="104" y="295" width="52" height="34" rx="6" fill="#8e44ad"/>
+  <text x="130" y="317" text-anchor="middle" font-size="10" fill="white" font-weight="bold">账单</text>
+  <rect x="178" y="295" width="52" height="34" rx="6" fill="#8e44ad"/>
+  <text x="204" y="317" text-anchor="middle" font-size="10" fill="white" font-weight="bold">技术</text>
+  <line x1="82" y1="312" x2="102" y2="312" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <line x1="156" y1="312" x2="176" y2="312" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <path d="M 82 329 Q 140 358 178 329" fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+  <text x="140" y="378" text-anchor="middle" font-size="9.5" fill="#555">控制权=移动令牌 · 中途自我交接</text>
+  <text x="140" y="396" text-anchor="middle" font-size="9" fill="#c0392b">⚠️ 防无限交接环</text>
+  <text x="140" y="424" text-anchor="middle" font-size="9.5" fill="#2c3e50">去中心化图 · 省路由调用</text>
+
+  <!-- ===== 模式5：Routing 路由 ===== -->
+  <rect x="276" y="248" width="248" height="200" rx="10" fill="#16a085" opacity="0.07" stroke="#16a085" stroke-width="1.5"/>
+  <text x="400" y="270" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#16a085">⑤ Routing 路由</text>
+  <rect x="290" y="300" width="52" height="34" rx="6" fill="#16a085"/>
+  <text x="316" y="322" text-anchor="middle" font-size="10" fill="white" font-weight="bold">输入</text>
+  <rect x="290" y="350" width="52" height="34" rx="6" fill="#16a085"/>
+  <text x="316" y="372" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">分类器</text>
+  <rect x="372" y="300" width="52" height="34" rx="6" fill="#16a085"/>
+  <text x="398" y="322" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">专家A</text>
+  <rect x="372" y="350" width="52" height="34" rx="6" fill="#16a085"/>
+  <text x="398" y="372" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">专家B</text>
+  <rect x="372" y="400" width="52" height="34" rx="6" fill="#16a085"/>
+  <text x="398" y="422" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">专家C</text>
+  <line x1="342" y1="367" x2="370" y2="322" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="342" y1="367" x2="370" y2="367" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="342" y1="367" x2="370" y2="412" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="316" y1="334" x2="316" y2="348" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="400" y="447" text-anchor="middle" font-size="9.5" fill="#2c3e50">一对一选择 · 各走各的 prompt</text>
+
+  <!-- ===== 模式6：Debate/投票 ===== -->
+  <rect x="536" y="248" width="248" height="200" rx="10" fill="#c0392b" opacity="0.07" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="660" y="270" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#c0392b">⑥ Debate/投票 协商</text>
+  <rect x="550" y="300" width="52" height="34" rx="6" fill="#c0392b"/>
+  <text x="576" y="322" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Agent1</text>
+  <rect x="718" y="300" width="52" height="34" rx="6" fill="#c0392b"/>
+  <text x="744" y="322" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Agent2</text>
+  <rect x="634" y="380" width="52" height="34" rx="6" fill="#c0392b"/>
+  <text x="660" y="402" text-anchor="middle" font-size="9.5" fill="white" font-weight="bold">裁判</text>
+  <line x1="602" y1="317" x2="716" y2="317" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="716" y1="334" x2="602" y2="334" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <line x1="576" y1="334" x2="646" y2="378" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="744" y1="334" x2="674" y2="378" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="660" y="437" text-anchor="middle" font-size="9.5" fill="#555">对等攻防 · 多数表决 / 裁判收口</text>
+</svg>

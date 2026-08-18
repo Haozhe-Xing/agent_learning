@@ -31,8 +31,8 @@ LangGraph 是 LangChain 团队推出的下一代 Agent 框架。相比于线性�
 > **前置知识**：[第12章 LangChain 深入实战](../chapter_langchain/README.md)
 >
 > **后续推荐**：
-> - 👉 [第16章 多 Agent 协作](../chapter_multi_agent/README.md) — 用 LangGraph 构建多 Agent 系统
-> - 👉 [第21章 项目实战：AI 编程助手](../chapter_coding_agent/README.md) — 在实战项目中综合运用 LangGraph
+> - 👉 [第18章 多 Agent 协作](../chapter_18_multi_agent/README.md) — 用 LangGraph 构建多 Agent 系统
+> - 👉 [第23章 项目实战：AI 编程助手](../chapter_23_coding_agent/README.md) — 在实战项目中综合运用 LangGraph
 
 ---
 

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 380" width="540" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="540" height="380" rx="14" fill="#f0f4f8"/>
+  <text x="270" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">Computer Use Loop</text>
+  <text x="270" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">感知（截图）→ 思考（视觉模型）→ 行动（鼠标/键盘）→ 循环直到任务完成</text>
+
+  <!-- 用户指令 -->
+  <rect x="120" y="60" width="300" height="36" rx="6" fill="#2c3e50"/>
+  <text x="270" y="83" text-anchor="middle" font-size="12" font-weight="bold" fill="white">用户指令：帮我打开浏览器搜索今天的天气</text>
+  <line x1="270" y1="96" x2="270" y2="114" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ① 截屏 -->
+  <rect x="60" y="120" width="160" height="48" rx="8" fill="#3498db"/>
+  <text x="140" y="142" text-anchor="middle" font-size="13" font-weight="bold" fill="white">① 截屏</text>
+  <text x="140" y="158" text-anchor="middle" font-size="10" fill="#d6eaf8">Screenshot</text>
+  <line x1="140" y1="168" x2="140" y2="186" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ② 视觉理解 -->
+  <rect x="320" y="120" width="160" height="48" rx="8" fill="#e67e22"/>
+  <text x="400" y="142" text-anchor="middle" font-size="13" font-weight="bold" fill="white">② 视觉模型理解</text>
+  <text x="400" y="158" text-anchor="middle" font-size="10" fill="#fdebd0">屏幕内容 → 元素坐标 / 文字</text>
+  <line x1="400" y1="168" x2="400" y2="186" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 回到 ①（从 ② 跳到 ① 上方）-->
+  <path d="M 320 144 L 270 144 L 270 105" fill="none" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="295" y="100" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">循环</text>
+
+  <!-- ③ 规划下一步 -->
+  <rect x="60" y="192" width="160" height="48" rx="8" fill="#9b59b6"/>
+  <text x="140" y="214" text-anchor="middle" font-size="13" font-weight="bold" fill="white">③ 规划下一步</text>
+  <text x="140" y="230" text-anchor="middle" font-size="10" fill="#e8daef">点击 / 输入 / 滚动</text>
+  <line x1="220" y1="216" x2="320" y2="216" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ④ 执行操作 -->
+  <rect x="320" y="192" width="160" height="48" rx="8" fill="#27ae60"/>
+  <text x="400" y="214" text-anchor="middle" font-size="13" font-weight="bold" fill="white">④ 执行操作</text>
+  <text x="400" y="230" text-anchor="middle" font-size="10" fill="#d5f5e3">鼠标 / 键盘 / 滚动</text>
+  <line x1="400" y1="240" x2="400" y2="260" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ⑤ 回到 ① -->
+  <rect x="120" y="262" width="300" height="44" rx="8" fill="#8e44ad"/>
+  <text x="270" y="284" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⑤ 任务完成？</text>
+  <text x="270" y="298" text-anchor="middle" font-size="10" fill="#e8daef">是 → 结束 | 否 → 回到 ① 截屏</text>
+  <path d="M 120 284 L 90 284 L 90 144 L 60 144" fill="none" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+
+  <text x="270" y="338" text-anchor="middle" font-size="10" fill="#2c3e50" font-style="italic">本质：Perceive → Think → Act 循环，输入是截图，输出是鼠标/键盘事件</text>
+  <text x="270" y="354" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">安全性：每步操作都受 sandbox + 权限约束（不能让 Agent 真的"删除文件"）</text>
+</svg>

@@ -1,201 +1,88 @@
 # 13.6 实战：工作流自动化 Agent
 
-本节综合运用前面学到的 LangGraph 知识——状态管理、条件路由、循环控制，构建一个完整的工作流自动化 Agent。
+综合运用状态管理、条件路由、循环控制，构建一个"内容创作工作流" Agent。它天然包含**线性流程**（分析 → 大纲 → 写作）和**循环流程**（审查 → 修改 → 再审查），正好展示图结构的两大优势。
 
-## 场景：内容创作工作流
+工作流步骤：①主题分析 → ②大纲生成 → ③内容撰写 → ④质量审查 → ⑤若质量不达标（< 8 分）则修改并重审，直到达标或达到最大修改次数。
 
-我们选择"内容创作"这个贴近实际的场景。这个工作流很适合用 LangGraph 来实现，因为它天然包含了**线性流程**（分析 → 大纲 → 写作）和**循环流程**（审查 → 修改 → 再审查），完美地展示了图结构的两大优势。
-
-工作流包含以下步骤：
-
-1. **主题分析**：解析创作需求，提取关键要素（受众、风格、结构）
-2. **大纲生成**：基于分析结果，自动生成文章大纲
-3. **内容撰写**：按大纲逐段撰写正文
-4. **质量审查**：自动评分并给出改进建议
-5. **迭代修改**：如果质量不达标（< 8分），根据建议修改内容并重新审查
-
-这个工作流展示了 LangGraph 最强大的特性——**循环**：审查不通过时，内容会在"修改 → 审查"之间循环迭代，直到质量达标或达到最大修改次数。
-
-### 状态设计
-
-`ContentState` 的设计体现了一个重要原则：**状态应该包含工作流中每个阶段需要的所有数据，以及控制流程走向的元数据。** 其中 `quality_score` 和 `revision_count` 是控制循环的关键——前者决定是否需要修改，后者防止无限循环。
+> 💡 这个工作流最有力的地方就是**循环**：审查不通过时，内容在"修改 ↔ 审查"间迭代，直至达标或触顶。
 
 ![内容创作工作流](../svg/chapter_langgraph_06_content_workflow.svg)
 
+## 状态设计原则
+
+`ContentState` 体现一条重要原则：**状态应包含工作流每个阶段所需的数据，以及控制流程走向的元数据**。`quality_score` 与 `revision_count` 是控制循环的关键——前者决定是否需要修改，后者防止无限循环。
+
 ```python
-# content_workflow.py
 from langgraph.graph import StateGraph, END, START
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
-from typing import TypedDict, Optional, List
 from pydantic import BaseModel, Field
 
 llm = ChatOpenAI(model="gpt-4.1")
 
-# 用 Pydantic 描述模型应返回的"结构"，通过 with_structured_output 在协议层
-# 保证格式，避免再去用正则从文本里抠 JSON。
-class TopicAnalysis(BaseModel):
-    """主题分析结果"""
-    key_points: list[str] = Field(description="文章的 3-5 个核心要点")
-
 class ContentReview(BaseModel):
-    """文章质量审查的结构化结论"""
-    score: int = Field(description="质量评分，1-10 的整数")
+    score: int = Field(description="质量评分，1-10")
     issues: list[str] = Field(description="发现的问题")
     suggestions: list[str] = Field(description="改进建议")
 
-analyze_llm = llm.with_structured_output(TopicAnalysis)
-review_llm = llm.with_structured_output(ContentReview)
+review_llm = llm.with_structured_output(ContentReview)  # 结构化输出，协议层保证格式
 
-# 质量达标线：分数 ≥ 该值即视为通过。这是需要结合评测校准的超参数，
-# 不是"写死 8 分就够"——上线前应用人评 / LLM-as-Judge 校验 8 分对应的真实质量。
-QUALITY_PASS_SCORE = 8
+QUALITY_PASS_SCORE = 8   # 质量达标线（需用评测校准，非写死就够）
 MAX_REVISIONS = 2
 
 class ContentState(TypedDict):
     topic: str
     target_audience: str
     word_count: int
-    outline: Optional[List[str]]
-    content: Optional[str]
-    review_feedback: Optional[str]
+    outline: list
+    content: str
+    review_feedback: str
     quality_score: int
     revision_count: int
-    final_content: Optional[str]
 
-def analyze_topic(state: ContentState) -> dict:
-    """分析主题，提取关键要素（结构化输出）"""
-    analysis = analyze_llm.invoke([HumanMessage(
-        content=f"""分析以下内容创作需求：
-主题：{state['topic']}
-受众：{state['target_audience']}
-字数：{state['word_count']}"""
-    )])
-    # analysis 已是 TopicAnalysis 实例，直接取字段，无需正则解析
-    key_points = analysis.key_points or [f"主题 '{state['topic']}' 分析完成"]
-    return {"outline": key_points}
+def analyze_topic(s): return {"outline": analyze_llm.invoke(...).key_points}
+def generate_outline(s): ...          # 基于分析生成大纲
+def write_content(s): ...             # 按大纲撰写正文
+def review_content(s):                # 返回 score / review_feedback / revision_count+1
+    r = review_llm.invoke([HumanMessage(f"审查：\n{s['content'][:800]}")])
+    return {"quality_score": r.score, "review_feedback": "\n".join(r.suggestions),
+            "revision_count": s.get("revision_count", 0) + 1}
+def revise_content(s): ...            # 按建议修改
 
-def generate_outline(state: ContentState) -> dict:
-    """生成文章大纲"""
-    response = llm.invoke([HumanMessage(
-        content=f"为文章'{state['topic']}'生成5个章节大纲，面向{state['target_audience']}。"
-                f"请直接返回章节标题列表，每行一个，不要编号。"
-    )])
-    # 解析 LLM 返回的大纲内容
-    lines = [line.strip() for line in response.content.strip().split('\n') if line.strip()]
-    # 过滤掉空行和纯数字行，取前 5 个有效章节
-    outline = [line.lstrip('0123456789.-、） ') for line in lines if len(line) > 2][:5]
-    if not outline:
-        # 兜底方案：如果解析失败，使用默认大纲
-        outline = [f"章节{i+1}" for i in range(5)]
-    return {"outline": outline}
-
-def write_content(state: ContentState) -> dict:
-    """撰写文章内容"""
-    outline_text = "\n".join([f"{i+1}. {section}" for i, section in enumerate(state["outline"] or [])])
-    
-    response = llm.invoke([HumanMessage(
-        content=f"""根据以下大纲，为'{state['target_audience']}'撰写约{state['word_count']}字的文章。
-
-大纲：
-{outline_text}
-
-主题：{state['topic']}"""
-    )])
-    return {"content": response.content}
-
-def review_content(state: ContentState) -> dict:
-    """质量审查（结构化输出）"""
-    review = review_llm.invoke([HumanMessage(
-        content=f"""审查以下文章质量（给出 1-10 分）：
-
-{state.get('content', '')[:800]}"""
-    )])
-    # review 已是 ContentReview 实例，直接读字段，无需正则解析 JSON
-    feedback = "\n".join(review.suggestions) if review.suggestions else "内容需要改进"
-    return {
-        "quality_score": review.score,
-        "review_feedback": feedback,
-        "revision_count": state.get("revision_count", 0) + 1,
-    }
-
-def revise_content(state: ContentState) -> dict:
-    """根据反馈修改内容"""
-    response = llm.invoke([HumanMessage(
-        content=f"""根据以下建议修改文章：
-
-当前内容：
-{state.get('content', '')[:1000]}
-
-改进建议：
-{state.get('review_feedback', '')}"""
-    )])
-    return {"content": response.content}
-
-def finalize(state: ContentState) -> dict:
-    """最终处理"""
-    return {"final_content": state.get("content", "")}
-
-def route_after_review(state: ContentState) -> str:
-    """路由：质量分数决定是否修改"""
-    score = state.get("quality_score", 0)
-    revisions = state.get("revision_count", 0)
-    
-    if score >= QUALITY_PASS_SCORE or revisions >= MAX_REVISIONS:
+def route_after_review(s) -> str:
+    """双重保障：达标 或 达修改上限，任一满足即结束循环"""
+    if s["quality_score"] >= QUALITY_PASS_SCORE or s["revision_count"] >= MAX_REVISIONS:
         return "finalize"
     return "revise"
 
-# 构建图
 graph = StateGraph(ContentState)
 graph.add_node("analyze", analyze_topic)
 graph.add_node("outline", generate_outline)
 graph.add_node("write", write_content)
 graph.add_node("review", review_content)
 graph.add_node("revise", revise_content)
-graph.add_node("finalize", finalize)
-
+graph.add_node("finalize", lambda s: {"final_content": s["content"]})
 graph.add_edge(START, "analyze")
 graph.add_edge("analyze", "outline")
 graph.add_edge("outline", "write")
 graph.add_edge("write", "review")
-graph.add_conditional_edges("review", route_after_review, {
-    "finalize": "finalize",
-    "revise": "revise"
-})
-graph.add_edge("revise", "review")
+graph.add_conditional_edges("review", route_after_review,
+                           {"finalize": "finalize", "revise": "revise"})
+graph.add_edge("revise", "review")     # 修改后重新审查（循环！）
 graph.add_edge("finalize", END)
-
 app = graph.compile()
-
-# 运行
-result = app.invoke({
-    "topic": "Python 在人工智能开发中的应用",
-    "target_audience": "Python 初学者",
-    "word_count": 800,
-    "outline": None,
-    "content": None,
-    "review_feedback": None,
-    "quality_score": 0,
-    "revision_count": 0,
-    "final_content": None
-})
-
-print(f"质量分数：{result['quality_score']}/10")
-print(f"修改次数：{result['revision_count']}")
-print(f"\n最终内容（前500字）：\n{result['final_content'][:500]}")
 ```
 
-### 代码解读
+> 📌 完整可运行代码（含各节点实现）见本书配套仓库 `examples/`。本节重在"图如何表达线性+循环混合流程"这一套路。
 
-上面的代码有几个值得关注的设计要点：
+## 三个值得记牢的设计点
 
-**路由函数 `route_after_review`**：这是循环控制的核心。它同时检查两个条件：质量分数 ≥ 8 分（达标）或修改次数 ≥ 2 次（上限）。任一条件满足就结束循环。这种"双重保障"避免了模型对自己的作品永远不满意导致的无限迭代。
+1. **路由函数 `route_after_review` 的双重保障**：同时检查"分数 ≥ 8"与"修改次数 ≥ 2"。任一满足就结束循环——避免模型对自己的作品永远不满意导致无限迭代。
+2. **节点间数据传递**：每个节点只返回需更新的状态字段（如 `write_content` 只回 `{"content": ...}`），LangGraph 自动合并进当前状态。节点无需关心 `topic`、`outline` 等无关字段。
+3. **结构化输出而非正则解析**：`review_content` 用 `with_structured_output(Pydantic)` 让模型直接返回对象，省掉脆弱的"文本里抠 JSON + 兜底值"代码。但**这不等于模型不会犯错**——质量阈值（如 `QUALITY_PASS_SCORE=8`）仍需用评测校准，详见 [第20章 Agent 评估](../chapter_20_evaluation/README.md)。
 
-**节点间的数据传递**：每个节点函数只返回需要更新的状态字段，而不是整个状态。LangGraph 会自动将返回值合并到当前状态中。比如 `write_content` 只返回 `{"content": response.content}`，不需要关心 `topic`、`outline` 等其他字段。
+> 💡 **延伸阅读**：Plan-and-Execute 模式的完整实现与 Test-time Compute Scaling 策略，详见 [5.6 Plan-and-Execute](../chapter_planning/07_plan_and_execute.md)。
 
-**结构化输出而非正则解析**：`review_content` 和 `analyze_topic` 改用 `with_structured_output(Pydantic)` 让模型直接返回结构化对象。相比"用正则从文本里抠 JSON + 兜底值"，结构化输出由推理接口在协议层保证格式，既省掉脆弱的解析代码，也让字段类型（如 `score: int`）在编码阶段就可校验。这**不**等于"模型一定不会犯错"——质量阈值（如 `QUALITY_PASS_SCORE = 8`）仍需用评测来校准，详见 [第18章 Agent 评估](../chapter_evaluation/README.md)。
-
-> 💡 **延伸阅读**：关于 Plan-and-Execute 模式的完整实现和 Test-time Compute Scaling 策略，详见 [5.6 Plan-and-Execute 与 Test-time Compute Scaling](../chapter_planning/07_plan_and_execute.md)。
+---
 
 ## 小结
 
@@ -203,12 +90,12 @@ LangGraph 的核心价值：
 
 | 特性 | 实现方式 |
 |------|---------|
-| 状态管理 | TypedDict 定义共享 State |
-| 循环控制 | 节点可以指向之前的节点 |
+| 状态管理 | `TypedDict` 定义共享 State |
+| 循环控制 | 节点可指回之前的节点 |
 | 条件分支 | `add_conditional_edges` |
 | 人机协作 | `interrupt_before/after` + Checkpointer |
-| 持久化 | MemorySaver / SqliteSaver |
+| 持久化 | `MemorySaver` / `SqliteSaver` / `PostgresSaver` |
 
 ---
 
-*下一章：[第14章 其他主流框架概览](../chapter_frameworks/README.md)*
+*下一章：[第14章 OpenClaw：跨平台个人 AI 助理](../chapter_openclaw/README.md)*

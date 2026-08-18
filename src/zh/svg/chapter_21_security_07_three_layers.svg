@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 420" width="580" height="420">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="580" height="420" rx="14" fill="#f0f4f8"/>
+  <text x="290" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">三层 Guardrails 架构</text>
+  <text x="290" y="46" text-anchor="middle" font-size="10" fill="#7f8c8d">输入（预防）→ 对话流（过程）→ 输出（兜底）—— 三道闸门缺一不可</text>
+
+  <rect x="50" y="68" width="480" height="88" rx="8" fill="#3498db"/>
+  <text x="290" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第一层 · 输入 Guardrails（预防）</text>
+  <text x="60" y="112" font-size="10" fill="#d6eaf8">· 注入检测 · 话题约束 · PII 检测与脱敏 · 输入长度/格式限制</text>
+  <text x="60" y="132" font-size="10" fill="#aed6f1" font-style="italic">成本最低：坏数据进系统前就拦下</text>
+  <text x="510" y="148" text-anchor="end" font-size="10" fill="white" font-weight="bold">→</text>
+  <line x1="290" y1="156" x2="290" y2="176" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="50" y="180" width="480" height="88" rx="8" fill="#e67e22"/>
+  <text x="290" y="204" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第二层 · 对话流 Guardrails（过程）</text>
+  <text x="60" y="224" font-size="10" fill="#fdebd0">· 对话流程控制 · 话题切换约束 · 多轮对话状态追踪</text>
+  <text x="60" y="244" font-size="10" fill="#fadbd8" font-style="italic">动态约束：用户中途"拐跑话题"或诱导越界时</text>
+  <line x1="290" y1="268" x2="290" y2="288" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="50" y="292" width="480" height="100" rx="8" fill="#27ae60"/>
+  <text x="290" y="316" text-anchor="middle" font-size="13" font-weight="bold" fill="white">第三层 · 输出 Guardrails（兜底）</text>
+  <text x="60" y="336" font-size="10" fill="#d5f5e3">· 敏感信息过滤 · 事实性验证 · 话题一致性检查 · 格式校验</text>
+  <text x="60" y="356" font-size="10" fill="#a9dfbf" font-style="italic">最后一道闸：把住"发出系统外"的最后一关</text>
+  <text x="290" y="378" text-anchor="middle" font-size="9" fill="#7f8c8d" font-style="italic">3 道闸门组合：挡不住的成本高、挡得住的简单</text>
+</svg>

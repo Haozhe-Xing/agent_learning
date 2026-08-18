@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="440" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">你的 OpenClaw 实例：架构总览</text>
+
+  <!-- User channels -->
+  <rect x="200" y="46" width="280" height="40" rx="8" fill="#27ae60"/>
+  <text x="340" y="71" text-anchor="middle" font-size="12" font-weight="bold" fill="white">你在 WhatsApp / Telegram / Discord</text>
+  <line x1="340" y1="86" x2="340" y2="106" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Gateway -->
+  <rect x="260" y="108" width="160" height="40" rx="8" fill="#2c3e50"/>
+  <text x="340" y="133" text-anchor="middle" font-size="13" font-weight="bold" fill="white">OpenClaw Gateway</text>
+
+  <!-- Three branches -->
+  <line x1="200" y1="148" x2="200" y2="170" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="340" y1="148" x2="340" y2="170" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="480" y1="148" x2="480" y2="170" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="200" y1="170" x2="480" y2="170" stroke="#7f8c8d" stroke-width="1.6"/>
+  <line x1="200" y1="170" x2="200" y2="186" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="340" y1="170" x2="340" y2="186" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="480" y1="170" x2="480" y2="186" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Agent Loop -->
+  <rect x="120" y="188" width="160" height="46" rx="8" fill="#34495e"/>
+  <text x="200" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Agent Loop</text>
+  <text x="200" y="224" text-anchor="middle" font-size="10" fill="#ecf0f1">主循环</text>
+
+  <!-- Session -->
+  <rect x="300" y="188" width="80" height="46" rx="8" fill="#34495e"/>
+  <text x="340" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Session</text>
+  <text x="340" y="224" text-anchor="middle" font-size="9" fill="#ecf0f1">SQLite 记忆</text>
+
+  <!-- Skills Registry -->
+  <rect x="400" y="188" width="160" height="46" rx="8" fill="#34495e"/>
+  <text x="480" y="208" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Skills Registry</text>
+  <text x="480" y="224" text-anchor="middle" font-size="10" fill="#ecf0f1">技能注册中心</text>
+
+  <!-- Arrow from Agent Loop down to toolbox -->
+  <line x1="200" y1="234" x2="200" y2="254" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Toolbox -->
+  <rect x="80" y="256" width="240" height="40" rx="8" fill="#e67e22"/>
+  <text x="200" y="281" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Toolbox（内置工具）</text>
+
+  <!-- Tool list -->
+  <text x="200" y="316" text-anchor="middle" font-size="10" fill="#7f8c8d">read_file · shell · web · memory · send_message</text>
+
+  <!-- Skills list on right -->
+  <text x="480" y="254" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">5 个 Skill：</text>
+  <rect x="380" y="262" width="200" height="26" rx="6" fill="#8e44ad"/>
+  <text x="480" y="280" text-anchor="middle" font-size="10" fill="white">gmail-summary（邮件摘要）</text>
+  <rect x="380" y="292" width="200" height="26" rx="6" fill="#8e44ad"/>
+  <text x="480" y="310" text-anchor="middle" font-size="10" fill="white">calendar-today（今日日程）</text>
+  <rect x="380" y="322" width="200" height="26" rx="6" fill="#8e44ad"/>
+  <text x="480" y="340" text-anchor="middle" font-size="10" fill="white">note-quick（快速笔记）</text>
+  <rect x="380" y="352" width="200" height="26" rx="6" fill="#8e44ad"/>
+  <text x="480" y="370" text-anchor="middle" font-size="10" fill="white">shell-safe（受限 shell 白名单）</text>
+  <rect x="380" y="382" width="200" height="26" rx="6" fill="#8e44ad"/>
+  <text x="480" y="400" text-anchor="middle" font-size="10" fill="white">daily-digest（22:00 自动推送）</text>
+
+  <!-- bottom arrow -->
+  <line x1="340" y1="416" x2="340" y2="428" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="340" y="440" text-anchor="middle" font-size="10" fill="#2c3e50" font-weight="bold">你的私人渠道（回包 → Telegram private 给你自己）</text>
+</svg>
