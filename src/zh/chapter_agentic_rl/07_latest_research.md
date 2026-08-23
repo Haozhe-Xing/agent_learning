@@ -814,7 +814,7 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 
 ## 📰 最新论文速递
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 8 月 22 日**
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 8 月 23 日**
 
 ### [T-STAR：推理走链、学习构树——多轮 Agent 策略优化新框架（2026）](https://arxiv.org/abs/2604.07165)
 
@@ -1233,6 +1233,16 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 **核心贡献**：Agent RL 后训练的瓶颈从"缺算法"转向"缺可交互、难度合适的环境"——手工构建慢、静态合成池被模型迅速刷完。SPADE 让同一个 LLM 交替扮演**环境设计者（Environment Designer）**与**推理 Agent（Reasoning Agent）**：设计者以 OpenAI Gym 风格输出完整可执行 Python 环境（含状态转移、奖励函数和验证代码），Agent 在其中训练；设计者的奖励是"有提示回报与无提示回报之差（hint-based regret）"，确保生成的环境始终对准 Agent 当前能力边缘——"有提示能做、没提示不会"的前沿任务。Qwen3-30B-A3B 在 8 个未见推理/代码基准上均值提升 **+8.1 分**，优于最强固定环境基线 **+5.3 分**；多步工具调用场景下 ACEBench-Agent 提升 **+13.9 分**，增益随模型规模扩大。
 
 **与本章关系**：直接对应本章「Agentic RL 训练环境」与「自进化 Agent」知识点，SPADE 将训练环境从静态资产变为可学习组件，打通了"环境生成 → Agent 训练 → 环境更新"的闭环，是继 EnvHarness（将已有静态环境改造为可交互训练环境）同方向的最新突破——SPADE 侧重从零生成并自适应更新课程，代表 Agentic RL 可扩展性研究的前沿方向。
+
+---
+
+### [LEGO-RL：Coding Agent 的原生 Harness 强化学习框架（2026）](https://arxiv.org/abs/2608.17393)
+
+**发表**：2026 年 8 月 18 日 | [arXiv:2608.17393](https://arxiv.org/abs/2608.17393)
+
+**核心贡献**：对 Coding Agent 做强化学习训练时，现有框架需要重新实现 Agent 的执行环境，导致训练环境与部署环境之间出现严重的行为偏差（train-inference discrepancy）——Harness 侧的历史改写、上下文压缩等操作会破坏 rollout 与策略更新之间的概率对齐，而奖励伪造（reward hacking）更会污染训练信号。LEGO-RL 提出**无需修改 Harness 内部控制流**的解决方案：通过进程内 LLM 代理（in-process LLM proxy）拦截模型 API 层的原始 token 流，捕获精确的 token ID、mask 和对数概率，确保 rollout-training 概率相关性保持在 0.99 以上；同时通过镜像缓存和分阶段防伪造机制提供可靠的沙盒执行。支持 PPO/GRPO/GSPO 算法，兼容 OpenHands、Claude Code、OpenCode 三种主流 Coding Agent Harness。在 SWE-bench Verified 上训练 Qwen3.5-35B-A3B：OpenHands SDK 64.0%→**70.4%**，Claude Code 62.4%→**68.2%**，OpenCode 57.2%→**66.6%**。
+
+**与本章关系**：直接对应本章「Agentic RL 训练框架」与「策略梯度算法工程实现」知识点，LEGO-RL 解决了在真实 Coding Agent Harness 中做 RL 训练的关键工程挑战——train-inference 偏差与奖励伪造，是将 GRPO/GSPO 等算法应用到实际软件工程 Agent 的重要基础设施，与已收录的 SPADE（训练环境生成）和 LEGO-RL（Harness 侧对齐）共同指向"如何让 Agentic RL 在真实复杂环境中可靠运转"这一核心工程问题。
 
 ---
 ---
