@@ -814,7 +814,7 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 
 ## 📰 最新论文速递
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 8 月 23 日**
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 8 月 27 日**
 
 ### [T-STAR：推理走链、学习构树——多轮 Agent 策略优化新框架（2026）](https://arxiv.org/abs/2604.07165)
 
@@ -1245,4 +1245,23 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 **与本章关系**：直接对应本章「Agentic RL 训练框架」与「策略梯度算法工程实现」知识点，LEGO-RL 解决了在真实 Coding Agent Harness 中做 RL 训练的关键工程挑战——train-inference 偏差与奖励伪造，是将 GRPO/GSPO 等算法应用到实际软件工程 Agent 的重要基础设施，与已收录的 SPADE（训练环境生成）和 LEGO-RL（Harness 侧对齐）共同指向"如何让 Agentic RL 在真实复杂环境中可靠运转"这一核心工程问题。
 
 ---
+---
+### [Agent Lightning v1.0：无需重实现 Agent 循环的 Harnessed Agentic RL 框架（2026）](https://arxiv.org/abs/2608.17528)
+
+**发表**：2026 年 8 月 18 日 | [arXiv:2608.17528](https://arxiv.org/abs/2608.17528)
+
+**核心贡献**：现有 RL 训练框架（verl、OpenRLHF 等）要求把整个 Agent 循环搬进训练器重新实现，导致 OpenHands、LangChain 等成熟 Agent Harness 无法直接复用，且训练环境与部署环境之间产生行为偏差。Agent Lightning v1.0（Microsoft）提出 **Harnessed Agentic RL** 范式：在 Harness 与推理服务之间插入一个 OpenAI 兼容代理（agl-server），将每次模型调用记录为训练事件并聚合成"call sequence → training row"；Rollout Controller 管理并发任务调度，Customized Trainer 在 verl 后端上实现基于 GRPO 的策略优化，整个 Harness 无需任何改动。在 SWE-bench Verified 上训练 mini-SWE-agent 验证，支持 GRPO 及异步/分离式 rollout。
+
+**与本章关系**：直接对应本章「Agentic RL 训练框架」与「Harness 架构」知识点，Agent Lightning v1.0 的核心创新是把"训练引擎"与"Agent Harness"解耦——通过 API 代理层而非代码侵入实现 RL 闭环，与已收录的 LEGO-RL（进程内代理拦截）形成互补，共同指向"在真实 Harness 上做 RL 训练"的工程方向。
+
+---
+
+### [BPCO：用精心设计的 Critic 替代 GRPO 多采样的稳定 RL 配方（2026）](https://arxiv.org/abs/2608.23566)
+
+**发表**：2026 年 8 月 24 日 | [arXiv:2608.23566](https://arxiv.org/abs/2608.23566)
+
+**核心贡献**：GRPO 通过对同一 prompt 采样多个回复来估计基线，规避了 Critic 训练不稳定的问题，但每步需要多次 forward pass，成本高昂。BPCO（Best Practice Critic Optimization）研究 Critic 不稳定的根因，提出五个关键设计选择组合：将 value 预测钳制到奖励范围内、使用 Monte Carlo 价值目标、不归一化策略优势、长度自适应 GAE，以及在训练时让 Critic 额外接收参考答案或评分细则（policy 看不到）。在 1.5B 到 30B-A3B MoE 的数学推理任务上，BPCO 单采样回复就能匹配或超过 GRPO 多采样基线，同时支持基于评分细则的奖励。
+
+**与本章关系**：直接对应本章「GRPO 算法原理」与「价值函数估计」知识点，BPCO 从工程视角揭示了让 Critic 在 LLM RL 训练中稳定运作的关键设计空间，为"一次采样即可训练"提供了可靠实现路径，是理解 PPO/GRPO 权衡的重要参照。
+
 ---

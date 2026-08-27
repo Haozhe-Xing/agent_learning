@@ -393,7 +393,7 @@ def select_model(requirements: dict) -> str:
 
 ## 📰 最新论文速递
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 7 月 14 日**
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 8 月 27 日**
 
 ### [Cola DLM：连续隐空间扩散语言模型——非自回归文本生成新范式（2026）](https://arxiv.org/abs/2605.06548)
 
@@ -430,5 +430,14 @@ def select_model(requirements: dict) -> str:
 **核心贡献**：Soofi S 30B-A3B 是面向德语和英语的主权开源 MoE 混合 Mamba Transformer 基座模型。其混合设计每 token 仅激活 30B 参数中的 3B，且推理缓存在上下文增长时保持**近恒定**，在长上下文、高并发部署场景下相比密集模型具有显著吞吐优势。在约 27 万亿 token 上预训练，刻意提升德语权重，在英语和德语综合基准上匹配密集 14–27B 模型，在两个语言的代码聚合指标上领先 17 个开源基座模型，并超越所有欧洲主权基线。在完全开源模型中取得最高英德评估分数，超越 Olmo 3 32B 和 Apertus 70B。权重、中间检查点、完整数据来源清单、超参数和训练/评估代码均以宽松条款开源。
 
 **与本章关系**：对应 2.7 基座模型架构详解，Soofi S 代表了 Mamba-Transformer 混合架构在 MoE 配置下的最新大规模验证——近恒定推理缓存特性对长上下文 Agent 部署具有直接工程价值，与 Cola DLM（扩散范式）共同展示自回归之外基座模型架构的多样化探索方向。
+
+---
+### [GLM-5.3-Flash：Z.ai 首款原生多模态开源 MoE 模型，MIT 许可、百万上下文（2026）](https://arxiv.org/abs/2602.15763)
+
+**发表**：2026 年 8 月 26 日正式发布 | 技术报告 [arXiv:2602.15763](https://arxiv.org/abs/2602.15763)
+
+**核心贡献**：Z.ai 于 2026 年 8 月 26 日发布 GLM-5.3-Flash，是 GLM-5 系列首款原生多模态模型。关键参数：320B 总参数 / 18B 激活参数（MoE），首次采用**混合稀疏注意力 + 线性注意力**架构（业界首个在前沿开源模型中使用此设计），搭配 Manifold-Constrained Hyper-Connections（mHC），最大上下文 **1,048,576 tokens**，MIT 许可开放权重。Z.ai 自测显示相比 GLM-5.2 在 Agent 基准上提升显著：DeepSWE v1.1 +17.2pp（63.4 vs 46.2）、AutomationBench v1.0.6 +22.6pp（48.8 vs 26.2）、Toolathlon Verified +18.5pp。正式发布前以"Ox Alpha"名义在 OpenRouter 运行约一周，期间处理约 23.2 万亿 token。通过 SGLang/vLLM/TokenSpeed/KTransformers 支持本地部署。
+
+**与本章关系**：直接对应本章「基座模型图谱」与「模型架构创新」知识点，GLM-5.3-Flash 的混合 Sparse+Linear Attention 架构在长上下文推理缓存开销上具有理论优势，其 MIT 许可 + 百万上下文 + 强 Agent 基准表现的组合，使其成为目前最值得关注的开源 Agent 基座模型之一。
 
 ---
