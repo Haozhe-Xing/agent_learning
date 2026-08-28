@@ -1,4 +1,4 @@
-git<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420" width="500" height="420">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420" width="500" height="420">
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
@@ -45,7 +45,7 @@ git<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420" width="500" hei
   <text x="355" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#27ae60">Yes</text>
   <rect x="403" y="190" width="80" height="50" rx="8" fill="#d3f9d8" stroke="#27ae60" stroke-width="1.5"/>
   <text x="443" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">✅ Agent</text>
-  <text x="443" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Customer service/Q&A</text>
+  <text x="443" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Customer service QA</text>
 
   <!-- No branch Q3 -->
   <path d="M 250 237 L 250 260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
