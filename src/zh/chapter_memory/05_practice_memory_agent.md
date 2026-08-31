@@ -218,4 +218,4 @@ def fibonacci(n: int) -> list[int]:
 
 ---
 
-*下一章：[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)*
+_下一章：[4.6 论文解读：记忆系统前沿进展](./06_paper_readings.md)_
