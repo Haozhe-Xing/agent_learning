@@ -353,4 +353,4 @@ This framework can serve as the foundation for building personalized Agent appli
 
 ---
 
-*Next chapter: [Chapter 5: Planning and Reasoning](../chapter_planning/README.md)*
+_Next chapter: [4.6 Paper Readings: Frontiers in Agent Memory Systems](./06_paper_readings.md)_
