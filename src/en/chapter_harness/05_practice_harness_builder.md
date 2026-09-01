@@ -123,9 +123,20 @@ class HarnessContextManager:
         self.messages: list[dict] = []
         self._compression_count = 0
     
-    def add_message(self, role: str, content: str) -> None:
+    def add_message(
+        self,
+        role: str,
+        content: str | None = None,
+        tool_calls: list[dict] | None = None,
+        tool_call_id: str | None = None,
+    ) -> None:
         """Add a message, triggering compression if necessary"""
-        self.messages.append({"role": role, "content": content})
+        message: dict = {"role": role, "content": content}
+        if tool_calls is not None:
+            message["tool_calls"] = tool_calls
+        if tool_call_id is not None:
+            message["tool_call_id"] = tool_call_id
+        self.messages.append(message)
         
         stats = self.get_stats()
         if stats.utilization >= self.COMPRESSION_THRESHOLD:
@@ -134,7 +145,7 @@ class HarnessContextManager:
     def get_stats(self) -> ContextStats:
         """Get current context statistics"""
         total = sum(
-            count_tokens(m.get("content", ""))
+            count_tokens(m.get("content") or "")
             for m in self.messages
         )
         util = total / self.max_tokens
@@ -847,8 +858,13 @@ Use read_file to read AGENTS.md to understand project conventions.
             
             # Check for tool calls
             if message.tool_calls:
-                self.context_manager.add_message("assistant", 
-                    json.dumps([tc.model_dump() for tc in message.tool_calls]))
+                # Write the assistant message (with tool_calls structure) into context as-is,
+                # preserving each tool_call's id so subsequent tool messages can reference it
+                self.context_manager.add_message(
+                    "assistant",
+                    content=message.content,
+                    tool_calls=[tc.model_dump() for tc in message.tool_calls],
+                )
                 
                 # Execute tool calls
                 for tool_call in message.tool_calls:
@@ -876,8 +892,12 @@ Use read_file to read AGENTS.md to understand project conventions.
                     except Exception as e:
                         result = f"Tool execution error: {str(e)}"
                     
-                    # Add result to context
-                    self.context_manager.add_message("tool", str(result)[:2000])
+                    # Add result to context, including tool_call_id to associate with the tool call
+                    self.context_manager.add_message(
+                        "tool",
+                        str(result)[:2000],
+                        tool_call_id=tool_call.id,
+                    )
                 
             else:
                 # No tool calls — Agent is outputting a text response

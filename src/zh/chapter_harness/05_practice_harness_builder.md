@@ -129,9 +129,20 @@ class HarnessContextManager:
         self.messages: list[dict] = []
         self._compression_count = 0
     
-    def add_message(self, role: str, content: str) -> None:
+    def add_message(
+        self,
+        role: str,
+        content: str | None = None,
+        tool_calls: list[dict] | None = None,
+        tool_call_id: str | None = None,
+    ) -> None:
         """添加消息，并在必要时触发压缩"""
-        self.messages.append({"role": role, "content": content})
+        message: dict = {"role": role, "content": content}
+        if tool_calls is not None:
+            message["tool_calls"] = tool_calls
+        if tool_call_id is not None:
+            message["tool_call_id"] = tool_call_id
+        self.messages.append(message)
         
         stats = self.get_stats()
         if stats.utilization >= self.COMPRESSION_THRESHOLD:
@@ -140,7 +151,7 @@ class HarnessContextManager:
     def get_stats(self) -> ContextStats:
         """获取当前上下文统计"""
         total = sum(
-            count_tokens(m.get("content", ""))
+            count_tokens(m.get("content") or "")
             for m in self.messages
         )
         util = total / self.max_tokens
@@ -861,8 +872,13 @@ class HarnessAgent:
             
             # 检查是否有工具调用
             if message.tool_calls:
-                self.context_manager.add_message("assistant", 
-                    json.dumps([tc.model_dump() for tc in message.tool_calls]))
+                # 将 assistant 消息（含 tool_calls 结构）原样写入上下文，
+                # 保留每个 tool_call 的 id，供后续 tool 消息关联
+                self.context_manager.add_message(
+                    "assistant",
+                    content=message.content,
+                    tool_calls=[tc.model_dump() for tc in message.tool_calls],
+                )
                 
                 # 执行工具调用
                 for tool_call in message.tool_calls:
@@ -890,8 +906,12 @@ class HarnessAgent:
                     except Exception as e:
                         result = f"工具执行错误：{str(e)}"
                     
-                    # 将结果添加到上下文
-                    self.context_manager.add_message("tool", str(result)[:2000])
+                    # 将结果添加到上下文，并带上 tool_call_id 以关联对应的工具调用
+                    self.context_manager.add_message(
+                        "tool",
+                        str(result)[:2000],
+                        tool_call_id=tool_call.id,
+                    )
                 
             else:
                 # 没有工具调用——Agent 在输出文本响应

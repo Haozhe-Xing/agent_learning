@@ -17,13 +17,13 @@
   <text x="460" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🧭 Orient</text>
   <text x="460" y="180" text-anchor="middle" font-size="11" fill="#d5f5e3">Understand situation in knowledge framework</text>
 
-  <rect x="220" y="230" width="160" height="50" rx="10" fill="#8e44ad"/>
-  <text x="300" y="252" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⚡ Act</text>
-  <text x="300" y="270" text-anchor="middle" font-size="11" fill="#e8daef">Execute plan, generate response</text>
+  <rect x="220" y="230" width="160" height="50" rx="10" fill="#e67e22"/>
+  <text x="300" y="252" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🎯 Decide</text>
+  <text x="300" y="270" text-anchor="middle" font-size="11" fill="#fdebd0">Formulate a concrete action plan</text>
 
-  <rect x="60" y="140" width="160" height="50" rx="10" fill="#e67e22"/>
-  <text x="140" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🎯 Decide</text>
-  <text x="140" y="180" text-anchor="middle" font-size="11" fill="#fdebd0">Formulate a concrete action plan</text>
+  <rect x="60" y="140" width="160" height="50" rx="10" fill="#8e44ad"/>
+  <text x="140" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⚡ Act</text>
+  <text x="140" y="180" text-anchor="middle" font-size="11" fill="#e8daef">Execute plan, generate response</text>
 
   <!-- Loop arrows -->
   <line x1="340" y1="100" x2="400" y2="140" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>

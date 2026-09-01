@@ -1,0 +1,71 @@
+name: Build check
+
+# Catches broken builds on PRs before they reach main /在 PR 合入前拦截构建失败
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'theme/**'
+      - 'book.toml'
+      - 'book-en.toml'
+      - '.github/workflows/build-check.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mdBook
+        run: |
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.52/mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz | tar -xz
+          mv mdbook /usr/local/bin/
+
+      - name: Cache cargo bin
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-bin-mdbook-katex
+
+      - name: Install mdbook-katex
+        run: |
+          command -v mdbook-katex >/dev/null || cargo install mdbook-katex --locked
+
+      - name: Build Chinese version
+        run: mdbook build
+
+      - name: Build English version
+        run: |
+          cp book.toml book.toml.zh_bak
+          cp book-en.toml book.toml
+          mdbook build
+          cp book.toml.zh_bak book.toml
+          rm -f book.toml.zh_bak
+
+      - name: Check SUMMARY parity (zh vs en)
+        run: |
+          zh=$(grep -cE '^\s*-\s*\[' src/zh/SUMMARY.md)
+          en=$(grep -cE '^\s*-\s*\[' src/en/SUMMARY.md)
+          echo "SUMMARY entries — zh: $zh, en: $en"
+          if [ "$zh" -ne "$en" ]; then
+            echo "::error::SUMMARY.md entry count differs (zh=$zh, en=$en). Add new pages to BOTH languages."
+            exit 1
+          fi
+
+      - name: Check for missing images
+        run: |
+          fail=0
+          for lang in zh en; do
+            # Collect every ../svg/... reference used by that language's markdown
+            grep -roh '\.\./svg/[A-Za-z0-9._-]*' "src/$lang" --include='*.md' 2>/dev/null \
+              | sort -u | sed 's|\.\./svg/||' > "/tmp/refs_$lang.txt"
+            while read -r img; do
+              [ -z "$img" ] && continue
+              if [ ! -f "src/$lang/svg/$img" ]; then
+                echo "::warning::[$lang] missing image: src/$lang/svg/$img"
+                fail=1
+              fi
+            done < "/tmp/refs_$lang.txt"
+          done
+          [ "$fail" -eq 0 ] && echo "All referenced images resolve." || true
