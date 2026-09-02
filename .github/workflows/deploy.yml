@@ -32,14 +32,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cargo/bin
-          key: ${{ runner.os }}-cargo-bin-mdbook-katex
+          key: ${{ runner.os }}-cargo-bin-mdbook-katex-0.9.4
 
       - name: Install mdbook-katex
         run: |
-          if ! command -v mdbook-katex &> /dev/null; then
-            cargo install mdbook-katex --locked
+          if ! mdbook-katex --version 2>/dev/null | grep -q "0.9.4"; then
+            cargo install mdbook-katex --version 0.9.4 --locked
           else
-            echo "mdbook-katex already cached"
+            echo "mdbook-katex 0.9.4 already cached"
           fi
 
       - name: Build with mdBook
