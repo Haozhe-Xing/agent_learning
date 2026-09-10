@@ -172,7 +172,7 @@ pytest -q
 
 欢迎联系作者
 
-<img src="https://assets.with.tencent.com/default/2c33d85d-16ed-4f7c-9f4f-cbd2009a5adf/image-019fe985c3d974bab5dec953f66565d0-01a08b32-ddaf-7b40-938a-f8a97b569432.png" width="360" alt="微信二维码">
+<img src="https://assets.with.tencent.com/default/f497918d-1726-441b-9cf2-e7931218bfaa/image-019fe985c3d974bab5dec953f66565d0-01a08b38-41e7-7d63-a565-7b31fdebfc52.png" width="220" alt="微信二维码">
 
 </div>
 
