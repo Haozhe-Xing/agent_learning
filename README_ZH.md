@@ -166,6 +166,18 @@ pytest -q
 
 ---
 
+## 微信
+
+<div align="center">
+
+欢迎联系作者
+
+<img src="https://assets.with.tencent.com/default/2c33d85d-16ed-4f7c-9f4f-cbd2009a5adf/image-019fe985c3d974bab5dec953f66565d0-01a08b32-ddaf-7b40-938a-f8a97b569432.png" width="360" alt="微信二维码">
+
+</div>
+
+---
+
 ## 快速定位内容
 
 下面的索引同时服务于读者、IDE 搜索和大模型代码检索，尽量让主题、关键词与目录直接对应。

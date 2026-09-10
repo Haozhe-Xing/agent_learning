@@ -126,6 +126,17 @@ pytest -q
 
 The implementation is intentionally small enough to read. It is a teaching baseline, not a claim of production completeness.
 
+---
+
+## WeChat
+
+<div align="center">
+
+Feel free to contact the author on WeChat.
+
+<img src="https://assets.with.tencent.com/default/2c33d85d-16ed-4f7c-9f4f-cbd2009a5adf/image-019fe985c3d974bab5dec953f66565d0-01a08b32-ddaf-7b40-938a-f8a97b569432.png" width="360" alt="WeChat QR code">
+
+</div>
 
 ---
 
