@@ -19,12 +19,12 @@
 
 ## 🔗 学习路径
 
-> **前置知识**：[第2章 大语言模型基础](../chapter_llm/README.md)
-> 推荐但非必须：[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)、[附录 E：KL 散度详解](../appendix/kl_divergence.md)
+> **前置知识**：[第2章 大语言模型基础](../chapter_llm/)
+> 推荐但非必须：[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/)、[附录 E：KL 散度详解](../appendix/kl_divergence.md)
 >
 > **后续推荐**：
-> - 👉 [第12章 LangChain 深入实战](../chapter_langchain/README.md) — 用框架快速实践你训练出的模型
-> - 👉 [第20章 Agent 的评估与优化](../chapter_20_evaluation/README.md) — 评估 RL 训练后的 Agent 效果
+> - 👉 [第12章 LangChain 深入实战](../chapter_langchain/) — 用框架快速实践你训练出的模型
+> - 👉 [第20章 Agent 的评估与优化](../chapter_20_evaluation/) — 评估 RL 训练后的 Agent 效果
 
 ---
 
@@ -50,7 +50,7 @@
 | 10.7 | 最新研究进展（2025—2026） | 纵览 DeepSeek-R1、DAPO、VAPO、SAR、T-STAR、UCPO、DelTA、SRPO、GROW 等前沿工作，掌握 GRPO 家族与 Agent RL 的技术脉络 |
 | 10.8 | 专为 Agent 的微调 | 工具调用数据构建、三大开源数据集（Gorilla/ToolBench/AgentInstruct）、Agent SFT 专项配置 |
 
-> 📌 **延伸阅读**：原 10.9 Agentic 数据飞轮、原 10.10/10.11 Self-Evolution Agent 与自进化前沿内容已独立扩展为 [第11章 自我进化与持续学习](../chapter_self_evolving/README.md)，建议学完本章后继续阅读。
+> 📌 **延伸阅读**：原 10.9 Agentic 数据飞轮、原 10.10/10.11 Self-Evolution Agent 与自进化前沿内容已独立扩展为 [第11章 自我进化与持续学习](../chapter_self_evolving/)，建议学完本章后继续阅读。
 
 ---
 
