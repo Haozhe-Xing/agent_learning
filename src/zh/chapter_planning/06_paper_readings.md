@@ -408,7 +408,7 @@ def coding_agent_with_critic(task, llm, run_tests, max_rounds=3):
 
 ## 📰 最新论文速递
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 9 月 26 日**
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 9 月 27 日**
 
 ### [Agentic World Modeling：基础、能力、规律与未来展望（2026）](https://arxiv.org/abs/2604.22748)
 
@@ -667,6 +667,16 @@ def coding_agent_with_critic(task, llm, run_tests, max_rounds=3):
 **核心贡献**：阿里 Qwen 团队提出 Qwen-Planner-Agent，一个移动端长时程任务规划的闭环自建框架，三部分协同：① **AI for Data**——专业 Agent 构建任务、采集轨迹并重平衡训练集，用训练反馈决定下一轮数据生成方向（人工门控数据飞轮）；② **AI for Training**——监督冷启动后转为混合环境在线 Agentic RL，配合新奖励方案 CARE 削减推理与工具调用成本同时保持性能；③ **模型-Harness 协同演化**——运行时执行证据循环将失败轨迹同时写回模型训练和 Harness 配置。在 MobilePA-Bench 上取得所有系统的最优综合成绩，工具调用、记忆、技能、子 Agent 协调四维均超越基座，跨域通用能力基本无退化。
 
 **与本章关系**：直接对应本章「Agent 规划训练范式」与「模型-Harness 协同演化」知识点，Qwen-Planner-Agent 的核心洞见是"Harness 不是模型的外壳，而是与模型同步训练的系统组件"——失败轨迹同时流入模型和 Harness 两端，是 Long-Horizon 规划能力从实验室迁移到生产的关键工程节点，与已收录的 PILOT（实时重定向）和 Auto-RecSys（双循环自进化）形成从在线执行纠偏到离线训练强化的完整 Harness 演化图谱。
+
+---
+
+### [AgentRewind：面向长时程 LLM Agent 的运行时检查点回退与恢复框架（2026）](https://arxiv.org/abs/2608.14380)
+
+**发表**：2026 年 8 月 | [arXiv:2608.14380](https://arxiv.org/abs/2608.14380)
+
+**核心贡献**：中国科学院大学与清华大学联合提出 AgentRewind——一个部署在 Agent 与受控执行环境之间的非侵入式运行时中间层，无需修改 Agent 的推理逻辑即可提供检查点记录与回退能力。当 Agent 判断当前轨迹已难以推进时，可选择回退到更早的检查点，AgentRewind 同步恢复上下文与工作区状态，并将对失败尝试的摘要（rewind memory）注入后继续执行。作者同时构建了 MettleBench：82 个真实长时程工程任务，每任务附带有序验收清单。以 GPT-5.4 为例，AgentRewind 将任务成功率从基线约 62% 提升到约 **88%**，平均清单完成进度从约 81% 升至约 **94%**，在多个 Harness 和 Terminal-Bench 2.0 上均优于"强制继续"和"整任务重启"两种对比策略。
+
+**与本章关系**：直接对应本章「长时程规划中的错误传播与恢复」知识点，AgentRewind 将"运行时检查点"这一分布式系统经典机制迁移到 LLM Agent 场景——早期计划失误或环境状态污染（删错文件、改坏配置）可在同一次执行中原地修复，而非全局重启；与已收录的 AEWM（上下文层错误信念编辑）形成分层互补：AEWM 修复推理层的错误，AgentRewind 恢复环境层的物理状态。
 
 ---
 
