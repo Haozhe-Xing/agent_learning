@@ -1425,3 +1425,13 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 **与本章关系**：直接对应本章「信用分配（Credit Assignment）」与「奖励信号粒度」知识点，V-Rubrics 将"答案对了就全部奖励"的粗粒度标量奖励升级为"逐项检查视觉推理链"——与已收录的 SLCA-GRPO（结构段级信用解耦）在思路上高度互补：前者解决的是"哪个推理步骤做对了"，后者解决的是"哪类 token 该得多少梯度"，共同构成 GRPO 信用分配的多维优化视角。
 
 ---
+
+### [iCoder-27B：Agent 主导的前沿工业代码模型递归自建（2026）](https://arxiv.org/abs/2609.29626)
+
+**发表**：2026 年 9 月 25 日 | [arXiv:2609.29626](https://arxiv.org/abs/2609.29626)
+
+**核心贡献**：来自上海 AI Lab 与上海交通大学联合团队（Yang、Lyu、Liu、Zhang、Yan 等）提出 iCoder，一个将人工输入压缩为可复用"研究技能（Research Skills）"的递归自建框架。人类仅编写规则：目标、阶段脚手架、权限边界和操作程序，打包为 Skill 文件；Agent 全权负责其余工作——演化训练数据、运行 SFT、在线自蒸馏和带可验证奖励的 RL、读取实验结果并调整计划。最终产出 iCoder-27B，专注 RTL 硬件设计和 GPU 核心优化：在 RTLLM 七项基准上整体领先，在 KernelBench L2 上超越 GPT-5.5 **16 分**，TritonBench 与 Claude Opus 4.8 并列最优。
+
+**与本章关系**：直接对应本章「Agentic RL 自进化」与「Agent 主导训练循环」知识点，iCoder 将"Harness 即研究规范、Agent 即实验员"的模式推进到工业规模——人在循环的接口从每小时调参变为高层级可复用 Skill 文件；是本章 RLVR 训练范式在"AI for AI"场景下的最新具体实例，与已收录的 DSec（DeepSeek 300 万沙盒/天 RL 基础设施）共同指向"Agent 自主扩大 RL 训练基础设施"这一前沿趋势。
+
+---
