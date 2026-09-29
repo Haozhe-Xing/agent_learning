@@ -814,7 +814,7 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 
 ## 📰 最新论文速递
 
-> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 9 月 28 日**
+> 🗓️ 本节由每日自动更新任务维护，最近更新：**2026 年 9 月 29 日**
 
 ### [T-STAR：推理走链、学习构树——多轮 Agent 策略优化新框架（2026）](https://arxiv.org/abs/2604.07165)
 
@@ -1433,5 +1433,15 @@ Google Research 发布 **TurboQuant** 算法，将 KV Cache 内存需求降低 *
 **核心贡献**：来自上海 AI Lab 与上海交通大学联合团队（Yang、Lyu、Liu、Zhang、Yan 等）提出 iCoder，一个将人工输入压缩为可复用"研究技能（Research Skills）"的递归自建框架。人类仅编写规则：目标、阶段脚手架、权限边界和操作程序，打包为 Skill 文件；Agent 全权负责其余工作——演化训练数据、运行 SFT、在线自蒸馏和带可验证奖励的 RL、读取实验结果并调整计划。最终产出 iCoder-27B，专注 RTL 硬件设计和 GPU 核心优化：在 RTLLM 七项基准上整体领先，在 KernelBench L2 上超越 GPT-5.5 **16 分**，TritonBench 与 Claude Opus 4.8 并列最优。
 
 **与本章关系**：直接对应本章「Agentic RL 自进化」与「Agent 主导训练循环」知识点，iCoder 将"Harness 即研究规范、Agent 即实验员"的模式推进到工业规模——人在循环的接口从每小时调参变为高层级可复用 Skill 文件；是本章 RLVR 训练范式在"AI for AI"场景下的最新具体实例，与已收录的 DSec（DeepSeek 300 万沙盒/天 RL 基础设施）共同指向"Agent 自主扩大 RL 训练基础设施"这一前沿趋势。
+
+---
+
+### [BATON：贝叶斯反馈归因 + 轨迹质量归一化，同步修复 GRPO 的两类信号病灶（2026）](https://arxiv.org/abs/2609.19830)
+
+**发表**：2026 年 9 月 17 日 | [arXiv:2609.19830](https://arxiv.org/abs/2609.19830)
+
+**核心贡献**：浙江大学与上海 AI Lab 联合团队（Zhuang、Yu、Yang、Sun 等）将 LLM Agent RL 训练的优化问题拆解为两个独立维度：**轨迹内反馈归因**（哪些步骤真正导致了成功/失败？）与**轨迹间目标聚合**（不同轨迹对 batch 梯度的贡献应当相等吗？）。提出 **BATON（Bayesian Attribution and Trajectory Objective Normalization）**：第一轴用贝叶斯反馈归因，以环境结果为条件为每个采样动作构建后验，将信用精准分配给"关键决策步骤"；第二轴用**轨迹质量归一化（TMN）**，让每条完整轨迹获得等权优化话语权，防止"又长又失败"的轨迹（占 25% 却消耗 60.3% 聚合质量）主导梯度方向。两者即插即用于 GRPO/GiGPO。在 ALFWorld 上，GRPO 成功率从 72.9% 提升至 **85.6%**，GiGPO 从 86.8% 提升至 **94.1%**；WebShop 和 SearchQA 同向增益；消融证实双轴独立有效。
+
+**与本章关系**：直接对应本章「信用分配（Credit Assignment）」与「GRPO 在 Agent 训练中的局限」知识点，BATON 从两个正交的维度（步骤级归因 + 轨迹级归一化）系统诊断了 GRPO 的梯度信号失真问题——25% 轨迹占 60% 聚合质量的测量结果，是工程实践中判断"何时应该加 TMN"最直接的诊断指标；与已收录的 GRPO-MA（树状多答案采样降低方差）和 V-Rubrics（细粒度奖励分配）共同构成 GRPO 信用分配的多维优化图谱。
 
 ---
