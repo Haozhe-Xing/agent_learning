@@ -179,6 +179,8 @@
 | The Rise and Potential of Large Language Model Based Agents: A Survey | Xi et al. | 2023 | Agent 的崛起与潜力综述 | [arXiv:2309.07864](https://arxiv.org/abs/2309.07864) |
 | LLM Powered Autonomous Agents | Lilian Weng (OpenAI) | 2023 | 优秀的技术博客，适合入门 | [lilianweng.github.io](https://lilianweng.github.io/posts/2023-06-23-agent/) |
 | Multi-Agent Collaboration Mechanisms: A Survey of LLMs | Nguyen et al. | 2025 | 多 Agent 协作机制综述 | [arXiv:2501.06322](https://arxiv.org/abs/2501.06322) |
+| LLM Agents: A Survey | Jungseob Lee | 2026 | 按功能组织的 Agent 综述：规划、记忆、工具使用、多 Agent、环境、评估与安全 | [Preprints.org](https://www.preprints.org/manuscript/202608.0265/v1) |
+| The Agent Loop: A Survey of Control Strategies, Skills, and Harnesses for LLM Agents | Lee & Park | 2026 | Agent 循环综述：控制策略、Agentic RL、Skills 与 Harness | [SSRN](https://ssrn.com/abstract=7186738) |
 
 > 💡 **阅读建议**：如果时间有限，优先阅读以下 7 篇"必读"论文：① ReAct（Agent 基本范式）② Generative Agents（记忆系统设计）③ RAG 原始论文（知识增强）④ Reflexion（自我改进）⑤ DeepSeek-R1（推理模型，2025）⑥ Magentic-One（通用多 Agent 系统，2024）⑦ A Survey on LLM based Autonomous Agents（全景综述）。
 
