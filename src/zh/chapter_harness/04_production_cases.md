@@ -572,6 +572,8 @@ class TraceAnalyzer:
 Meta 自动化（+0.5%）   ▓▓
 ```
 
+> 💡 **延伸阅读：Harness 的复用与托管**：优化执行质量之外，Harness 也可以成为可复用的工程底座。LangChain 的 Deep Agents 组合了文件系统、上下文管理和子 Agent 等能力，Managed Deep Agents 则在同一 Harness 之上提供托管运行。二者的职责划分详见 [12.7 LangChain 生态 2026](../chapter_langchain/07_langchain_ecosystem_2026.md)；这里的基准优化数据不用于评价托管产品的效果。
+
 ---
 
 ## 案例三：Stripe Minions——每周 1000+ PR

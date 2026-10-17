@@ -1,6 +1,6 @@
 # 12.7 LangChain Ecosystem 2026
 
-> **Goal**: Understand the latest developments in the LangChain ecosystem, master core tools such as LangGraph Platform, LangServe, and MCP integration, and learn the migration path from the legacy AgentExecutor to LangGraph.
+> **Goal**: Understand the latest developments in the LangChain ecosystem and the relationship between the Deep Agents Harness and managed execution, master core tools such as LangGraph Platform, LangServe, and MCP integration, and learn the migration path from the legacy AgentExecutor to LangGraph.
 
 ---
 
@@ -12,12 +12,51 @@ LangChain has grown from a single framework into a complete ecosystem. As of 202
 |------|-------------|------------|
 | **LangChain** | Core orchestration framework | Component abstractions + the LCEL expression language |
 | **LangGraph** | Stateful Agent framework | Graph-based orchestration, loops, human-in-the-loop |
+| **Deep Agents** | Reusable Agent Harness | Filesystem, context management, subagents, and optional planning and Skills |
+| **Managed Deep Agents** | Managed delivery of the Harness | Declare Agent behavior and let LangSmith host execution |
 | **LangGraph Platform** | Managed runtime service | Deployment, scaling, persistence |
 | **LangServe** | API deployment tool | Publish a Chain as a REST API in one line of code |
-| **LangSmith** | Observability platform | Tracing, evaluation, prompt management |
+| **LangSmith** | Agent engineering platform | Tracing, evaluation, prompt management, and deployment |
 | **LangChain CLI** | Project scaffolding | Templates for quickly bootstrapping a project |
 
-> 💡 **Evolution logic**: LangChain is responsible for "defining components", LangGraph for "orchestrating flows", LangServe / LangGraph Platform for "deploying and running", and LangSmith for "monitoring and evaluation" — these four layers together cover the complete lifecycle of an Agent application.
+> 💡 **Evolution logic**: LangChain provides components, LangGraph supports stateful orchestration and execution, and Deep Agents combines ready-made Harness capabilities. You can run the Agent yourself or choose a managed path such as Managed Deep Agents; LangSmith covers tracing, evaluation, and deployment. Understanding these responsibilities matters more than memorizing product names.
+
+---
+
+## Deep Agents and Managed Deep Agents: From Harness to Managed Execution
+
+Chapters 7–9 covered context engineering, Harnesses, and Skills separately. A research assistant, for example, may need to save findings, manage growing context, and delegate some work to subagents alongside its search tool. **Deep Agents combines these capabilities into a reusable Harness**. It builds on LangChain's Agent components and uses the LangGraph runtime for durable execution, streaming, and human-in-the-loop.[5]
+
+### What Does Managed Execution Add?
+
+**Managed Deep Agents (MDA) reuses the open-source Deep Agents Harness** and runs it on LangSmith Agent Server. Developers define the model, instructions, tools, and business behavior; the platform assembles the Harness and runtime infrastructure. The change is in engineering responsibilities: developers define Agent behavior, while the platform manages its runtime lifecycle.[6]
+
+| Concern | Deep Agents: Run It Yourself | Managed Deep Agents: Managed Execution |
+|---------|-----------------------------|---------------------------------------|
+| Agent definition | `create_deep_agent` returns a compiled Agent | `define_deep_agent` returns a definition that the platform compiles |
+| Business behavior | Configure the model, instructions, tools, and optional capabilities | Declare the model, instructions, tools, and optional capabilities in project files |
+| Runtime infrastructure | Configure your own backend, store, checkpointer, and server | The managed runtime supplies these components and manages their lifecycle |
+| Selection criterion | You need to run it yourself or customize underlying components | You want the ready-made Harness with less infrastructure work |
+
+### Organizing Agent Behavior as Project Files
+
+A research assistant can start with a small directory, adding only the capabilities its task needs:
+
+```text
+research-assistant/
+├── agent.py          # Model and core configuration
+├── instructions.md   # Behavioral instructions
+├── tools/            # Business tools such as search
+└── skills/           # Research workflows loaded on demand
+```
+
+`agent.py` declares the Agent definition, with tool implementations in `tools/`. Instructions describe how to complete research tasks, while Skills package reusable procedures. After the project is uploaded, the managed runtime assembles the definition into a runnable Agent.[6]
+
+This follows the capability boundaries introduced earlier: **Tools provide actions, Skills describe procedures, the Harness manages execution, and the managed runtime supplies runtime infrastructure**. With these boundaries in mind, add capabilities as the task requires them; see the official documentation for complete configuration and deployment steps.[6]
+
+> 💡 **Selection tip**: First decide whether you need Deep Agents' ready-made capabilities, then decide whether to use managed execution. Simple tool calling can continue to use a LangChain Agent; explicit control flow can use a custom LangGraph workflow. With MDA, developers still design business tool correctness, permission boundaries, and outcome evaluation. See [22.1 Agent Application Deployment Architecture](../chapter_22_deployment/01_deployment_architecture.md) for deployment choices.
+
+> **Version note**: As of October 7, 2026, the official documentation labels MDA as Beta. This section focuses on responsibilities and project organization; consult the official documentation for current APIs and deployment requirements.[5][6]
 
 ---
 
@@ -592,6 +631,7 @@ The core direction of the LangChain ecosystem's evolution in 2025–2026 is **mo
 |------------------------|------------------------|
 | **Orchestration evolves** | AgentExecutor → LangGraph graph orchestration |
 | **Deployment simplifies** | LangServe one-line deployment → LangGraph Platform managed runtime |
+| **Harness reuse and hosting** | Deep Agents combines engineering capabilities; MDA provides a managed execution path |
 | **Protocols open up** | MCP integration; tools are no longer confined to the LangChain ecosystem |
 | **Observability** | LangSmith expands from "tracing" into an "evaluation + management" platform |
 | **Architecture stabilizes** | v0.3 removes deprecated APIs; LCEL becomes the standard paradigm |
@@ -616,3 +656,7 @@ The core direction of the LangChain ecosystem's evolution in 2025–2026 is **mo
 [3] LangChain Team. LangChain MCP Adapters. https://github.com/langchain-ai/langchain-mcp-adapters, 2025.
 
 [4] LangChain Team. Migration Guide: AgentExecutor to LangGraph. https://python.langchain.com/docs/migration, 2025.
+
+[5] LangChain Team. [Deep Agents Overview](https://docs.langchain.com/oss/python/deepagents/overview). Accessed 2026-10-07.
+
+[6] LangChain Team. [Managed Deep Agents Overview](https://docs.langchain.com/langsmith/python/managed-deep-agents-overview). Accessed 2026-10-07.

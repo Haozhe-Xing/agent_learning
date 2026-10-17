@@ -584,6 +584,8 @@ Doom loop detection (+1.4%)       ▓▓▓▓▓
 Meta automation (+0.5%)           ▓▓
 ```
 
+> 💡 **Further reading: Harness reuse and managed execution**: Beyond improving execution quality, a Harness can become a reusable engineering foundation. LangChain's Deep Agents combines filesystem, context management, and subagent capabilities, while Managed Deep Agents hosts the same Harness. See [12.7 LangChain Ecosystem 2026](../chapter_langchain/07_langchain_ecosystem_2026.md) for their division of responsibilities; the benchmark improvements above do not measure the managed product's effectiveness.
+
 ---
 
 ## Case 3: Stripe Minions — 1,000+ PRs Per Week

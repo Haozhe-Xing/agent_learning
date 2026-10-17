@@ -106,6 +106,17 @@ Use cloud functions (AWS Lambda, Cloudflare Workers) for on-demand execution wit
 
 > 💡 **Recommended path**: Most Agent projects should start with **monolithic architecture**, then migrate to microservices after validating product value. Premature architectural decomposition is a common over-engineering trap.
 
+### Self-Hosted or Managed: Who Owns Runtime Infrastructure?
+
+Monolithic, microservices, and Serverless patterns describe how a system is organized; self-hosted or managed execution determines who operates its runtime infrastructure. These are separate selection dimensions. For example, Managed Deep Agents, introduced in [Section 12.7](../chapter_langchain/07_langchain_ecosystem_2026.md), lets developers define Agent behavior through project files while LangSmith hosts the Deep Agents Harness and runtime environment.
+
+| Choice | Suitable Requirements | Remaining Developer Responsibilities |
+|--------|-----------------------|--------------------------------------|
+| **Run Deep Agents yourself** | Custom backend, store, checkpointer, or operating your own server | State persistence, service operations, business tools, and permissions |
+| **Managed Deep Agents** | Use the ready-made Harness with less runtime infrastructure work | Business tool correctness, permission boundaries, outcome evaluation, and usage costs |
+
+Managed execution can reduce service setup work, but business behavior and operating costs still need validation before launch. The following sections cover general requirements such as observability and state management, which also help assess managed options.
+
 ---
 
 ## Agent Observability Requirements
