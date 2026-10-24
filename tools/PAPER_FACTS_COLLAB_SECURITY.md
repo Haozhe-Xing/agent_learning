@@ -37,7 +37,7 @@
 
 ## 原文保留与未核范围
 
-修订前四原稿逐字节副本见 `editorial_archive/2026-10-22/multi_agent_readings/` 与 `security_readings/` 的MANIFEST；记录原路径、字节和SHA-256。归档是编辑材料，不能作为事实来源。未选条目尚未逐篇核验，不因移出即被判假，也不能从快照直接恢复为已核内容。
+修订前四原稿及记录原路径、字节和SHA-256的MANIFEST保存在Git历史中的[多Agent快照](https://github.com/Haozhe-Xing/agent_learning/tree/19846ad1dc45dcc9112aacc136b93dfc9a8b7a16/editorial_archive/2026-10-22/multi_agent_readings)与[安全论文快照](https://github.com/Haozhe-Xing/agent_learning/tree/19846ad1dc45dcc9112aacc136b93dfc9a8b7a16/editorial_archive/2026-10-22/security_readings)，工作目录中的重复归档已移除。归档是编辑材料，不能作为事实来源。未选条目尚未逐篇核验，不因移出即被判假，也不能从快照直接恢复为已核内容。
 
 本轮核读限于上表方法、实验设置/结论边界及元数据；没有逐行审核研究代码、核验所有原文引用、安装研究框架、重跑论文实验、验证现有产品修复或核查当前报价。2026新文已读取其固定原文，仍以预印本选读处理。全书其他论文页和主线安全工程的就绪性由各自审校/验证记录负责。
 
