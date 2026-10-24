@@ -419,7 +419,7 @@ class ReasoningBudgetStrategy:
 
 #### 改进 3：环境上下文注入（贡献：+1.9%）
 
-````python
+```python
 class EnvironmentContextInjector:
     """
     启动时注入环境上下文
@@ -462,7 +462,7 @@ class EnvironmentContextInjector:
 - 代码格式化：`ruff format .`
 - 类型检查：`mypy src/`
 """
-````
+```
 
 #### 改进 4：死循环检测中间件（贡献：+1.4%）
 
@@ -572,7 +572,7 @@ class TraceAnalyzer:
 Meta 自动化（+0.5%）   ▓▓
 ```
 
-> 💡 **延伸阅读：Harness 的复用与托管**：优化执行质量之外，Harness 也可以成为可复用的工程底座。LangChain 的 Deep Agents 组合了文件系统、上下文管理和子 Agent 等能力，Managed Deep Agents 则在同一 Harness 之上提供托管运行。二者的职责划分详见 [10.7 LangChain 生态 2026](../chapter_langchain/07_langchain_ecosystem_2026.md)；这里的基准优化数据不用于评价托管产品的效果。
+> 💡 **延伸阅读：Harness 的复用与托管**：优化执行质量之外，Harness 也可以成为可复用的工程底座。LangChain 的 Deep Agents 组合了文件系统、上下文管理和子 Agent 等能力，Managed Deep Agents 则在同一 Harness 之上提供托管运行。二者的职责划分详见 [12.7 LangChain 生态 2026](../chapter_langchain/07_langchain_ecosystem_2026.md)；这里的基准优化数据不用于评价托管产品的效果。
 
 ---
 

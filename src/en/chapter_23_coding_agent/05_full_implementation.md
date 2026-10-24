@@ -1,12 +1,12 @@
-# 21.5 Integration Design: From Components to Assistant
+# 23.5 Integration Design: From Components to Assistant
 
-> **Section Objective**: Assemble the components from 21.2–21.4 by responsibility into an AI coding assistant, and explain how it actually runs within the repository.
+> **Section Objective**: Assemble the components from 23.2–23.4 by responsibility into an AI coding assistant, and explain how it actually runs within the repository.
 
 ![Complete AI Coding Assistant Component Integration Architecture](../svg/chapter_coding_05_full.svg)
 
-> ⚠️ **Honest Note (On Runnability)**：The `CodeIndexer`, `CodeSearchEngine`, `CodeGenerator`, `CodeValidator`, `TestGenerator`, and `BugFixer` from sections 21.2–21.4 are reference implementations provided in **code snippet form** within the book. They depend on `langchain_openai` and your API Key, and are not packages you can directly `import` from this repository. To actually run them, you need to save each section's code as independent modules (e.g., `code_indexer.py`, etc.) and install the dependencies yourself — this section demonstrates the **assembly logic**, not "ready-to-run" files.
+> ⚠️ **Honest Note (On Runnability)**：The `CodeIndexer`, `CodeSearchEngine`, `CodeGenerator`, `CodeValidator`, `TestGenerator`, and `BugFixer` from sections 23.2–23.4 are reference implementations provided in **code snippet form** within the book. They depend on `langchain_openai` and your API Key, and are not packages you can directly `import` from this repository. To actually run them, you need to save each section's code as independent modules (e.g., `code_indexer.py`, etc.) and install the dependencies yourself — this section demonstrates the **assembly logic**, not "ready-to-run" files.
 >
-> If you want a **tested, offline-ready minimal Agent base** that runs out of the box, use the repository's root-level `reference-agent/` (which includes tool invocation, permission guards, FastAPI service, evaluation, and MCP examples). It supplies shared execution, evaluation, and guardrail components rather than this domain application.
+> If you want a **tested, offline-ready minimal Agent base** that runs out of the box, use the repository's root-level `reference-agent/` (which includes tool invocation, permission guards, FastAPI service, evaluation, and MCP examples). The "hands-on" sections in Chapters 12–23 all use it as their reference.
 
 ---
 
@@ -17,9 +17,9 @@ Below, each component is combined into `AICodeAssistant`. It depends on the clas
 ```python
 """
 AI Coding Assistant (Assembly Logic)
-Dependencies: 21.2 CodeIndexer / CodeSearchEngine
-              21.3 CodeGenerator / CodeValidator
-              21.4 TestGenerator / BugFixer
+Dependencies: 23.2 CodeIndexer / CodeSearchEngine
+              23.3 CodeGenerator / CodeValidator
+              23.4 TestGenerator / BugFixer
 Prerequisites: Save the above classes as independent modules and run pip install langchain-openai
 """
 import asyncio
@@ -176,41 +176,41 @@ Design highlights: ① Each round feeds the **actual error message** back to the
 
 After reading this chapter, first close the book and answer the following questions in your own words, then expand the reference answers to compare.
 
-**Exercise 1 (Concept)**: Section 21.2 uses Python's `ast` (Abstract Syntax Tree) to index code, extracting function names, signatures, and docstrings. Why does this project use AST parsing instead of simply "searching code text by keywords"? Explain the advantages of the AST approach in the context of a Coding Agent's actual requirements.
+**Exercise 1 (Concept)**: Section 23.2 uses Python's `ast` (Abstract Syntax Tree) to index code, extracting function names, signatures, and docstrings. Why does this project use AST parsing instead of simply "searching code text by keywords"? Explain the advantages of the AST approach in the context of a Coding Agent's actual requirements.
 
 <details>
 <summary>Reference Answer</summary>
 
 **Limitations of keyword-based text search**: If you just treat code as plain text to search (e.g., `grep "def login"`), the machine doesn't really "understand" the code's structure. It can't tell whether a `login` is a function name, a variable name, or a word appearing in a comment; nor can it determine which line range the function spans, what parameters it takes, what type it returns, or whether it has documentation.
 
-**Advantages of AST parsing** (see 21.2): `ast.parse` parses source code into a "syntax tree," allowing the Agent to precisely extract structured information:
+**Advantages of AST parsing** (see 23.2): `ast.parse` parses source code into a "syntax tree," allowing the Agent to precisely extract structured information:
 
 1. **Accurately identify entity types**: It knows whether something is a `FunctionDef` (function) or `ClassDef` (class), and won't mistake a homonymous word in a comment or string for a function.
 2. **Obtain precise location and range**: `node.lineno` and `end_lineno` give the entity's start and end lines, facilitating precise reading, modification, or bug localization.
-3. **Extract structured metadata**: Function signatures (parameters + type annotations + return values) and docstrings can all be cleanly extracted — these are high-quality material for building "code indexes / semantic search descriptions" (21.2's `CodeSearchEngine` uses these descriptions to generate vectors).
+3. **Extract structured metadata**: Function signatures (parameters + type annotations + return values) and docstrings can all be cleanly extracted — these are high-quality material for building "code indexes / semantic search descriptions" (23.2's `CodeSearchEngine` uses these descriptions to generate vectors).
 4. **Lay the foundation for reliable modification**: A Coding Agent does more than "read" — it also needs to "edit." With AST-based precise line numbers, modifications land in the correct position instead of accidentally affecting identically named text elsewhere.
 
-In one sentence: **A Coding Agent needs to "understand code structure," not just "match strings" — AST is the tool that elevates code from text to structured data.** This is also why products mentioned in 21.1 such as Devin, SWE-Agent, Cursor, etc., universally adopt AST/LSP for code understanding.
+In one sentence: **A Coding Agent needs to "understand code structure," not just "match strings" — AST is the tool that elevates code from text to structured data.** This is also why products mentioned in 23.1 such as Devin, SWE-Agent, Cursor, etc., universally adopt AST/LSP for code understanding.
 
 </details>
 
-**Exercise 2 (Discernment)**: In Section 21.3, `CodeGenerator` uses `with_structured_output(GeneratedCode)` to make the LLM produce structured results, and after generation, the output still passes through a `CodeValidator`. A fellow student says: "The LLM is so powerful — the generated code can be used directly, and the validator is redundant." Refute this viewpoint.
+**Exercise 2 (Discernment)**: In Section 23.3, `CodeGenerator` uses `with_structured_output(GeneratedCode)` to make the LLM produce structured results, and after generation, the output still passes through a `CodeValidator`. A fellow student says: "The LLM is so powerful — the generated code can be used directly, and the validator is redundant." Refute this viewpoint.
 
 <details>
 <summary>Reference Answer</summary>
 
-This viewpoint ignores what Section 21.3 emphasizes from the start — **generating code is much harder than generating plain text**: code must be syntactically correct, logically correct, stylistically consistent, and handle edge cases. No matter how powerful an LLM is, it is still "probabilistic generation" and cannot guarantee correctness every time. The validator is not redundant — it is a necessary "safety net":
+This viewpoint ignores what Section 23.3 emphasizes from the start — **generating code is much harder than generating plain text**: code must be syntactically correct, logically correct, stylistically consistent, and handle edge cases. No matter how powerful an LLM is, it is still "probabilistic generation" and cannot guarantee correctness every time. The validator is not redundant — it is a necessary "safety net":
 
 1. **Syntax may simply be wrong**: An LLM occasionally misses a bracket or misaligns indentation. `CodeValidator._check_python_syntax` uses `ast.parse` to check whether the code compiles — something invisible at the text level.
 2. **Security risks may be introduced**: An LLM might generate dangerous calls like `eval()`, `os.system()`, `pickle.loads()`. The validator's `_check_security` specifically intercepts these — this is consistent with Chapter 19's "code sandbox performs AST security checks before execution."
 3. **Structured output ≠ correct content**: `with_structured_output` only guarantees the returned JSON has complete fields (code, explanation, dependencies), but it does not guarantee that the code in the `code` field actually runs or is actually safe. The structure may be correct, but the content still needs verification.
-4. **In production, "trust but verify"**: As stated in 21.4's best practices, AI-generated code "must undergo human review before merging." The validator is the first automated checkpoint before human review, quickly filtering out obviously problematic output and improving efficiency.
+4. **In production, "trust but verify"**: As stated in 23.4's best practices, AI-generated code "must undergo human review before merging." The validator is the first automated checkpoint before human review, quickly filtering out obviously problematic output and improving efficiency.
 
 So the correct workflow is **generate → auto-validate (syntax/style/security) → human review → merge**. The validator is an indispensable link in this quality chain.
 
 </details>
 
-**Exercise 3 (Hands-on)**: The current chapter's bug fixing is "fix once and hand it over." Drawing from the "test-diagnose-fix closed loop" thinking in 21.4, design and write an **auto-fix loop with verification** called `auto_fix_loop`: have the Agent automatically run tests after a fix, and if they still don't pass, feed the new error message back for another fix — up to N attempts. Pseudocode or simplified code expressing the core logic is sufficient.
+**Exercise 3 (Hands-on)**: The current chapter's bug fixing is "fix once and hand it over." Drawing from the "test-diagnose-fix closed loop" thinking in 23.4, design and write an **auto-fix loop with verification** called `auto_fix_loop`: have the Agent automatically run tests after a fix, and if they still don't pass, feed the new error message back for another fix — up to N attempts. Pseudocode or simplified code expressing the core logic is sufficient.
 
 <details>
 <summary>Reference Answer</summary>
@@ -219,7 +219,7 @@ The core idea: turn "diagnose → fix → verify" into a **loop with an upper li
 
 ```python
 async def auto_fix_loop(
-    bug_fixer,          # 21.4's BugFixer
+    bug_fixer,          # 23.4's BugFixer
     run_tests,          # Function to run tests: returns (passed, error_message)
     code: str,
     test_code: str,
@@ -270,8 +270,8 @@ async def auto_fix_loop(
 **Key design points**:
 
 1. **Feed actual errors each round**: Don't fix blindly — feed the `error_msg` from the previous round's test run back to the Agent so it "sees" what wasn't fixed last time. This is the soul of the closed loop.
-2. **Must set a maximum number of attempts `max_attempts`**: Otherwise the Agent might oscillate between two incorrect versions, entering an infinite loop and burning massive tokens (this also echoes Chapter 18's cost control and Chapter 18's budget governance).
-3. **Always run regression tests after fixing**: As emphasized in 21.4's best practices, "After automatic fixes, the full test suite must be run to prevent the fix from introducing new issues" — don't just check "this bug is gone," also confirm "nothing else was broken."
+2. **Must set a maximum number of attempts `max_attempts`**: Otherwise the Agent might oscillate between two incorrect versions, entering an infinite loop and burning massive tokens (this also echoes Chapter 18's cost control and Chapter 20's budget governance).
+3. **Always run regression tests after fixing**: As emphasized in 23.4's best practices, "After automatic fixes, the full test suite must be run to prevent the fix from introducing new issues" — don't just check "this bug is gone," also confirm "nothing else was broken."
 4. **Must degrade gracefully to manual intervention on failure**: Not being able to fix doesn't mean crashing — return a clear status for human review. This aligns with this chapter's and Chapter 19's repeated emphasis that "AI output must have human oversight."
 
 </details>

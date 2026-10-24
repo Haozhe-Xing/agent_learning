@@ -1,4 +1,4 @@
-# 21.4 测试生成与 Bug 修复
+# 23.4 测试生成与 Bug 修复
 
 > **本节目标**：让 AI 编程助手自动生成单元测试，并能定位和修复代码中的 Bug。
 
@@ -20,7 +20,7 @@ AI 编程助手在测试领域可以发挥三个层次的作用：
 
 ## 自动生成测试
 
-````python
+```python
 class TestGenerator:
     """自动测试生成器"""
     
@@ -89,13 +89,13 @@ class TestGenerator:
         response = await self.llm.ainvoke(prompt)
         import json
         return json.loads(response.content)
-````
+```
 
 ---
 
 ## Bug 定位与修复
 
-````python
+```python
 class BugFixer:
     """Bug 定位和修复器"""
     
@@ -157,7 +157,7 @@ class BugFixer:
 """
         response = await self.llm.ainvoke(prompt)
         return response.content.strip().split('\n')
-````
+```
 
 ---
 
@@ -236,4 +236,4 @@ best_practices = {
 
 ---
 
-[21.5 完整项目实现](./05_full_implementation.md)
+[23.5 完整项目实现](./05_full_implementation.md)

@@ -1,4 +1,4 @@
-# 23.1 Multimodal Capabilities Overview
+# 25.1 Multimodal Capabilities Overview
 
 > **Section Goal**: Understand the capability boundaries and typical application scenarios of multimodal large models.
 
@@ -370,4 +370,4 @@ def analyze_with_detail_control(
 
 ---
 
-[Next: 23.2 Image Understanding and Generation →](./02_image_understanding.md)
+[Next: 21.2 Image Understanding and Generation →](./02_image_understanding.md)

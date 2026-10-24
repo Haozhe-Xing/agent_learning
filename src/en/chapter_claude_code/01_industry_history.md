@@ -1,4 +1,4 @@
-# 14.1 The Prehistory of Industrial Harnesses: From AutoGPT to Claude Code
+# 16.1 The Prehistory of Industrial Harnesses: From AutoGPT to Claude Code
 
 > 🛠️ *"Claude Code didn't appear out of thin air — it stands on the shoulders of AutoGPT, BabyAGI, and OpenHands."*
 
@@ -138,4 +138,4 @@ BabyAGI   Aider       protocol  Hermes     DeepSeek Harness
 
 ---
 
-*Next section: [14.2 Getting to Know Claude Code: From Zero to Hands-On](./02_introduction.md)*
+*Next section: [16.2 Getting to Know Claude Code: From Zero to Hands-On](./02_introduction.md)*

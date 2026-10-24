@@ -1,8 +1,8 @@
-"""Bounded regex screening, not a general prompt-injection safety decision.
+"""Runtime guardrails with FAIL-CLOSED defaults.
 
-A match blocks the request. A non-match only passes this lexical screen;
-service authorization and downstream resource permissions remain separate.
-Malformed/oversized input is rejected. There is no semantic reviewer here.
+The previous book draft shipped a "LLM reviewer" that returned "safe" when
+parsing failed — i.e. fail-OPEN. That is the wrong default for security.
+Here every check raises on uncertainty instead of letting input through.
 """
 
 from __future__ import annotations
@@ -30,31 +30,22 @@ class GuardrailError(Exception):
 
 class InjectionGuard:
     def __init__(self, patterns: list[str] | None = None, fail_closed: bool = True):
-        # Keep the old keyword for compatible callers, without suggesting that
-        # unknown attacks can be detected. Disabling validation is unsupported.
-        if fail_closed is not True:
-            raise ValueError("fail_closed must be True; this is a lexical screen")
-        selected = INJECTION_PATTERNS if patterns is None else patterns
-        self.patterns = tuple(re.compile(pattern, re.IGNORECASE) for pattern in selected)
+        self.patterns = patterns or INJECTION_PATTERNS
+        self.fail_closed = fail_closed
 
     def check_input(self, text: str) -> str:
-        """Return a bounded string with no pattern match, or raise.
+        """Return the text if safe; raise GuardrailError if blocked.
 
-        Passing this screen is not evidence of semantic safety or authority.
-        Explicitly empty patterns disable lexical matching only, not bounds.
+        fail_closed=True means uncertain input is blocked, never passed.
         """
-        if type(text) is not str:
-            raise GuardrailError("input must be text")
-        try:
-            size = len(text.encode("utf-8"))
-        except UnicodeEncodeError as exc:
-            raise GuardrailError("invalid input encoding") from exc
-        if size > 16384:
-            raise GuardrailError("input exceeds lexical screen limit")
-        if any(pattern.search(text) for pattern in self.patterns):
-            raise GuardrailError("input matched a lexical screening pattern")
+        for pattern in self.patterns:
+            if re.search(pattern, text, re.IGNORECASE):
+                raise GuardrailError(f"blocked input matching /{pattern}/")
         return text
 
     def check_tool_result(self, text: str) -> str:
-        """Apply the same bounded lexical screen to untrusted tool text."""
-        return self.check_input(text)
+        """Tool outputs can carry injected instructions (data exfiltration)."""
+        for pattern in self.patterns:
+            if re.search(pattern, text, re.IGNORECASE):
+                raise GuardrailError("tool result contained injection-like content")
+        return text

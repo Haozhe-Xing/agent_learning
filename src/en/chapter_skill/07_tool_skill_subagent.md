@@ -2,7 +2,7 @@
 
 > 🎯 *"Tools are hands, Skills are abilities, Sub Agents are team members — understanding the relationship between the three is key to designing good Agent architectures."*
 
-This book covers tool calling (Chapter 3), skill systems (Chapter 9), and multi-Agent collaboration (later in Chapter 16). This section brings them together for a **unified comparison and review** — helping you make the right architectural choices in real development.
+In previous chapters, we learned about tool calling (Chapter 3), skill systems (Chapter 9), and multi-Agent collaboration (Chapter 16). This section brings them together for a **unified comparison and review** — helping you make the right architectural choices in real development.
 
 ![Tool · Skill · Sub Agent Three-Layer Capability Abstraction](../svg/chapter_skill_07_three_layers.svg)
 
@@ -213,7 +213,7 @@ class OverEngineeredSearchAgent:
 
 ### ❌ Pitfall 2: Stuffing Complex Logic into a Single Tool
 
-```text
+```python
 # Anti-pattern: a "tool" containing too much logic
 def analyze_and_report(data_path, output_format, language, chart_type, ...):
     """This is not a Tool — it should be a Skill or Sub Agent! Tools should be atomic operations with single responsibility"""

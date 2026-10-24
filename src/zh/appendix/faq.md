@@ -283,7 +283,7 @@ class TeamState(TypedDict):
 2. **效率**：用了多少步？消耗了多少 Token？延迟多少？
 3. **安全性**：是否遵循了安全边界？是否拒绝了不合理的请求？
 
-具体可以参考第18章介绍的 AgentBench、SWE-bench、GAIA 等基准测试。
+具体可以参考第20章介绍的 AgentBench、SWE-bench、GAIA 等基准测试。
 
 ### Q27：Agent 的输出不稳定，每次结果都不一样怎么办？
 
@@ -311,7 +311,7 @@ class TeamState(TypedDict):
 1. **长期记忆**：将成功的经验存储为记忆条目（参考第4章）
 2. **Skill 系统**：将验证过的工作流封装为可复用技能（参考第9章）
 3. **Prompt 自适应**：根据用户反馈动态调整 Prompt
-4. **微调**：收集 Agent 的成功对话数据，用 SFT/RLHF 训练专用模型（参考第24章）
+4. **微调**：收集 Agent 的成功对话数据，用 SFT/RLHF 训练专用模型（参考第10章）
 
 ### Q30：Agent 开发最常犯的错误是什么？
 

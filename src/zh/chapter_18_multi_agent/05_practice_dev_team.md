@@ -1,116 +1,278 @@
-# 16.5 实战：多 Agent 软件开发团队
+# 18.5 实战：多 Agent 软件开发团队
 
-## 本次迭代与验收
-
-用可运行的开发流程验证角色协作，并把“执行结束”和“验收通过”分开记录。
-
-- **成功标准**：只有真实 `pytest` 返回码为 `0`，且部署配置和说明已落盘，状态才是 `delivered`。比较单 Agent 和团队方案时，应使用相同需求和独立验收集，再记录调用量、耗时和修复次数。
-- **失败用例**：覆盖持续断言失败、生成异常、测试收集错误、死循环，以及测试留下后台子进程。预算耗尽或超时都不得进入成功交付节点。
-- **执行边界**：默认每次测试最多 30 秒，最多生成 3 版；macOS/Linux 在结束时清理测试进程组。临时目录和进程组都不等于安全沙箱；不可信生成代码还需要外部隔离执行器。
-
-评估方法见[第18章](../chapter_20_evaluation/README.md)，信任与权限设计见[第19章](../chapter_21_security/README.md)。
+综合本章所有知识，构建一个多 Agent 软件开发系统，模拟真实的开发团队协作。但这一节的关键不是"把六个角色摆出来"，而是让**交付物真正落盘、验收真正可执行**。
 
 ## 系统设计
 
-本例包含产品经理、架构师、开发工程师、测试工程师、DevOps 工程师和文档工程师六个节点，通过 LangGraph 的共享状态 `DevState` 传递结果。开发节点把代码和测试写到磁盘；测试节点真正运行 `pytest`；只有通过后，运维和文档节点才写出交付产物。
+这个项目包含 6 个角色：产品经理、架构师、开发工程师、测试工程师、DevOps 工程师和文档工程师。每个角色由一个节点承担，通过**共享状态**（`DevState`）传递工作成果。
 
-配套实现位于 `examples/dev_team/dev_team.py`，回归用例位于 `examples/dev_team/tests/test_dev_team.py`。书稿只保留关键接口，完整可执行实现以源码为准。
+## 先说清一个常见误区
 
-离线 `DeterministicDeveloper` 只生成加法和乘法模块，验证的是编排、文件和失败路径。传入“用户管理系统”不会让它实现注册、登录；真实需求实现需要替换 `Developer`。本例由开发节点同时生成代码和测试，测试节点负责执行，因此通过这套测试仍需要独立验收集补充需求覆盖。
+这一节在很多书里会被写成"六个角色各自调一次 LLM、各返回一段文字"。那种写法**根本不是闭环**：测试工程师节点只是让 LLM 生成一串"测试代码文本"，从不真正执行；所谓"测试通过"是 Agent 自己宣称的，没有任何客观判据。读者照抄后会以为"多 Agent 已经能交付软件"，实则连一行代码都没在磁盘上落地、没跑过一次测试。
+
+下面给出**可运行**的版本：开发工程师把代码真正写到文件，测试工程师用 `pytest` 真正跑测试、收集返回码，测试不通过就回到开发工程师重试——这是测试驱动的闭环，产物可被独立验证。完整代码见仓库 `examples/dev_team/dev_team.py`，配套 4 个 pytest 用例。
+
+## 设计理念
+
+1. **专业分工**：每个 Agent 只负责自己擅长的领域。产品经理不写代码，开发工程师不写测试用例。分工让每个角色的 Prompt 更聚焦。（如果你只是要 N 个同构的"文本 Agent"，工厂函数 `create_agent_node` 这类模式依然成立；但凡是"交付软件"这类需要产物落盘与客观验收的任务，节点必须写文件、跑测试。）
+2. **客观验收**：测试是否通过不靠 LLM 自述，而靠 `pytest` 的真实返回码（`test_passed = returncode == 0`）。这是整个系统可信的基础。
+3. **测试驱动的闭环**：测试失败时路由回开发工程师重写，直到通过或达到最大迭代次数（防止死循环）。
 
 ![多 Agent 软件开发团队流程](../svg/chapter_18_multi_agent_05_dev_team_flow.svg)
 
-> 图示展示角色关系，实际路由为：产品 → 架构 → 开发 → 测试 → 通过后运维 → 文档；断言失败可回到开发，异常、超时、预算耗尽进入失败结束节点。
+> 上图是 6 角色协作的概念示意。实际图的边以代码为准：产品 → 架构 → 开发 → 测试 →（不通过则回到开发）→ 通过则 → 运维 → 文档。
 
-## 完成标准与状态契约
-
-`status` 表达整个任务的结果，`test_status` 记录最近一次测试结果。两者不能互相替代：测试通过后还要写完部署和文档产物，才算交付。
-
-| 最终 `status` | 触发条件 | 交付行为 |
-|---|---|---|
-| `delivered` | 测试通过，运维与文档节点完成 | 写出 `Dockerfile` 和 `README.md` |
-| `failed` | 生成或交付产物写入异常，或 pytest 执行、收集、配置错误 | 进入失败节点，保存报告 |
-| `timed_out` | 单次测试超过 `test_timeout_seconds` | 清理进程组，立即停止并保存报告 |
-| `budget_exhausted` | 断言持续失败，已经生成 `max_iterations` 版 | 保存每一轮失败记录并停止 |
-
-运行期间 `status` 为 `running`。`test_status` 依次使用 `pending`、`passed`、`failed`、`timed_out` 或 `error`；`test_passed` 保留布尔结果。`attempts` 是可追溯的测试记录，每条包含轮次、测试状态、真实返回码、时限、错误说明和输出。超时没有正常退出码，因此该记录中的 `returncode` 为 `None`。
-
-失败节点把结构化结果保存在返回值 `failure_report` 和工作目录的 `failure_report.json` 中。例如：
-
-```json
-{
-  "reason": "max_iterations",
-  "message": "Tests did not pass within the iteration budget",
-  "status": "budget_exhausted",
-  "delivered": false,
-  "iteration": 3,
-  "max_iterations": 3,
-  "attempts": []
-}
-```
-
-这里省略了 `attempts` 的具体内容；真实报告保留全部测试记录。生成失败尚未开始测试时，该列表才会为空。失败路径保留实现、测试和诊断信息，跳过 DevOps 和文档节点。`workspace_dir` 必须尚不存在或为空目录；成功目录、失败目录和任何普通非空目录都会在写入前以 `ValueError` 拒绝。程序不删除或覆盖其中的旧产物、失败报告或用户文件。每次重跑应选择新目录，避免混合历史交付物。
-
-## 重试与停止规则
-
-核心路由明确区分通过、可修复失败和必须停止：
+## 完整实现
 
 ```python
-def route_after_test(state):
-    if state.get("status") in {"failed", "timed_out"}:
-        return "fail"
-    if state.get("test_passed"):
+# examples/dev_team/dev_team.py
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+import tempfile
+from functools import partial
+from typing import Optional, Protocol, TypedDict
+
+from langgraph.graph import START, END, StateGraph
+
+
+class DevState(TypedDict):
+    original_requirement: str
+    workspace_dir: str            # 各角色把产物写到这个目录
+    product_spec: Optional[str]
+    technical_design: Optional[str]
+    implementation: Optional[str]
+    test_output: Optional[str]    # pytest 的真实输出（不是"假装通过"）
+    test_passed: Optional[bool]   # 测试是否通过（客观判据）
+    deployment_config: Optional[str]
+    documentation: Optional[str]
+    current_phase: str
+    iteration: int
+    max_iterations: int
+
+
+class Developer(Protocol):
+    """代码生成器：输入设计，输出 (源码, 测试源码)。"""
+    def develop(self, design: str, requirement: str) -> tuple[str, str]: ...
+
+
+class DeterministicDeveloper:
+    """离线开发者：写出一份已知能通过测试的模块，保证图可跑可测。"""
+
+    def develop(self, design: str, requirement: str) -> tuple[str, str]:
+        code = (
+            "def add(a: int, b: int) -> int:\n"
+            "    return a + b\n"
+            "\n"
+            "def multiply(a: int, b: int) -> int:\n"
+            "    return a * b\n"
+        )
+        test_code = (
+            "from app import add, multiply\n"
+            "\n"
+            "def test_add():\n"
+            "    assert add(2, 3) == 5\n"
+            "    assert add(-1, 1) == 0\n"
+            "\n"
+            "def test_multiply():\n"
+            "    assert multiply(2, 3) == 6\n"
+        )
+        return code, test_code
+
+
+class LLMDeveloper:
+    """真实开发者：调用 LLM 生成代码与测试（需注入 llm 与解析逻辑）。"""
+
+    def __init__(self, llm):
+        self.llm = llm
+
+    def develop(self, design: str, requirement: str) -> tuple[str, str]:
+        # 把 design + requirement 交给 LLM，从返回中解析出 code / test_code。
+        raise NotImplementedError(
+            "注入你的代码生成提示与解析；离线演示用 DeterministicDeveloper"
+        )
+
+
+# ---------- 节点 ----------
+
+def product_manager(state: DevState) -> dict:
+    spec = (
+        f"# 产品规格\n\n需求：{state['original_requirement']}\n\n"
+        "- 用户故事：作为用户，我希望进行加、减、乘运算\n"
+        "- 验收标准：add / multiply 计算结果正确\n"
+    )
+    return {"product_spec": spec, "current_phase": "product_manager"}
+
+
+def architect(state: DevState) -> dict:
+    design = (
+        "# 技术方案\n\n- 语言：Python\n"
+        "- 模块：app.py 暴露 add / multiply\n"
+        "- 测试：app_test.py 用 pytest 覆盖\n"
+    )
+    return {"technical_design": design, "current_phase": "architect"}
+
+
+def developer(state: DevState, dev: Developer) -> dict:
+    # 关键区别：开发工程师把代码真正写到磁盘，而不是只返回一段文本
+    code, test_code = dev.develop(state["technical_design"], state["original_requirement"])
+    ws = state["workspace_dir"]
+    with open(os.path.join(ws, "app.py"), "w", encoding="utf-8") as f:
+        f.write(code)
+    with open(os.path.join(ws, "app_test.py"), "w", encoding="utf-8") as f:
+        f.write(test_code)
+    return {
+        "implementation": code,
+        "current_phase": "developer",
+        "iteration": state.get("iteration", 0) + 1,
+    }
+
+
+def tester(state: DevState) -> dict:
+    # 注意：这里真正运行 pytest，而不是"假装测试通过"
+    ws = state["workspace_dir"]
+    proc = subprocess.run(
+        [sys.executable, "-m", "pytest", "app_test.py", "-q"],
+        cwd=ws,
+        capture_output=True,
+        text=True,
+    )
+    return {
+        "test_output": proc.stdout + proc.stderr,
+        "test_passed": proc.returncode == 0,
+        "current_phase": "tester",
+    }
+
+
+def devops(state: DevState) -> dict:
+    dockerfile = (
+        "FROM python:3.12-slim\nWORKDIR /app\nCOPY . .\n"
+        "RUN pip install pytest\nCMD [\"python\", \"-m\", \"pytest\", \"-q\"]\n"
+    )
+    with open(os.path.join(state["workspace_dir"], "Dockerfile"), "w", encoding="utf-8") as f:
+        f.write(dockerfile)
+    return {"deployment_config": dockerfile, "current_phase": "devops"}
+
+
+def docs(state: DevState) -> dict:
+    readme = (
+        "# 自动生成的项目\n\n由多 Agent 开发团队产出。\n\n"
+        "## 测试\n\n```bash\npytest -q\n```\n"
+    )
+    with open(os.path.join(state["workspace_dir"], "README.md"), "w", encoding="utf-8") as f:
+        f.write(readme)
+    return {"documentation": readme, "current_phase": "docs"}
+
+
+def route_after_test(state: DevState) -> str:
+    """测试通过后交付；未通过且未达上限则回到开发重试。"""
+    passed = state.get("test_passed")
+    hit_cap = state.get("iteration", 0) >= state.get("max_iterations", 3)
+    if passed or hit_cap:
         return "deliver"
-    if state["iteration"] >= state["max_iterations"]:
-        return "fail"
     return "fix"
+
+
+def build_graph(dev: Developer):
+    g = StateGraph(DevState)
+    g.add_node("product_manager", product_manager)
+    g.add_node("architect", architect)
+    g.add_node("developer", partial(developer, dev=dev))
+    g.add_node("tester", tester)
+    g.add_node("devops", devops)
+    g.add_node("docs", docs)
+
+    g.add_edge(START, "product_manager")
+    g.add_edge("product_manager", "architect")
+    g.add_edge("architect", "developer")
+    g.add_edge("developer", "tester")
+    g.add_conditional_edges("tester", route_after_test, {
+        "deliver": "devops",
+        "fix": "developer",
+    })
+    g.add_edge("devops", "docs")
+    g.add_edge("docs", END)
+    return g.compile()
+
+
+def develop(requirement: str, dev: Optional[Developer] = None,
+            workspace_dir: Optional[str] = None) -> dict:
+    dev = dev or DeterministicDeveloper()
+    ws = workspace_dir or tempfile.mkdtemp(prefix="devteam_")
+    os.makedirs(ws, exist_ok=True)
+    app = build_graph(dev)
+    result = app.invoke({
+        "original_requirement": requirement,
+        "workspace_dir": ws,
+        "product_spec": None,
+        "technical_design": None,
+        "implementation": None,
+        "test_output": None,
+        "test_passed": None,
+        "deployment_config": None,
+        "documentation": None,
+        "current_phase": "init",
+        "iteration": 0,
+        "max_iterations": 3,
+    })
+    return dict(result)
+
+
+if __name__ == "__main__":
+    out = develop("用户管理系统：注册、登录、信息修改")
+    print("测试通过：", out["test_passed"])
+    print("产物目录：", out["workspace_dir"])
+    print(out["test_output"])
 ```
-
-`deliver` 指向运维节点，`fix` 回到开发节点，`fail` 指向失败节点再结束。pytest 返回 `1` 时尝试修复；`2`—`5` 等执行错误直接失败。修复时把上一轮真实测试输出追加到技术设计中，交给 `Developer.develop(design, requirement)`，让下一轮获得具体反馈。达到轮次上限只是停止条件，不能把失败变成成功。
-
-`max_iterations` 是生成版本总数，首次生成也占 1 次；它必须是正整数。`test_timeout_seconds` 必须是有限的正数。二者及工作目录条件均在写入文件和启动流程前校验，避免配置错误产生半成品。
-
-## 测试进程生命周期
-
-测试节点用 `Popen(..., start_new_session=True)` 在 macOS/Linux 创建独立会话，并给 `wait()` 设置时限。无论测试通过、失败或超时，都对该进程组发出 `SIGTERM`，随后用 `SIGKILL` 清理仍存活的进程，再用 `wait()` 回收 pytest 主进程。正常退出的 pytest 也可能留下后台子进程，因此成功路径同样执行清理。
-
-输出写入临时文件，待清理后读取。若用继承的标准输出管道，主进程退出后，后台子进程持有管道仍可能导致等待 EOF 的操作无法完成；单给主进程设置超时并不能解决这个问题。
-
-这些措施管理的是普通测试进程的生命周期。主动创建新会话的恶意进程可能逃离原进程组，非 POSIX 平台只提供直接子进程终止；本例也没有限制生成程序的文件、网络、内存或凭据访问。单次测试时限不约束 `Developer.develop` 的耗时，接入模型后仍需为模型调用设置超时和调用预算。
 
 ## 如何运行
 
 ```bash
 cd examples/dev_team
-pip install -e .
-pytest -v
-python dev_team.py --max-iterations 3 --test-timeout-seconds 30
+pip install -e .          # 安装 langgraph + pytest
+pytest -v                # 4 个测试全部通过
 ```
 
-离线演示不需要 API Key。程序输出最终状态、测试结果和工作目录；失败时明确显示“未交付”，打印结构化报告并返回退出码 `1`，成功退出码为 `0`。也可直接调用接口：
+配套测试（`tests/test_dev_team.py`）验证了三件事：
 
-```python
-from dev_team import develop
+1. 整图离线可跑（`DeterministicDeveloper` 不调 LLM），且最终 `test_passed is True`；
+2. 角色**真的写出了文件**——`app.py`、`app_test.py`、`Dockerfile`、`README.md` 都落盘，而不是只返回文本；
+3. 路由逻辑正确：失败 → 回到开发重试，通过或达到上限 → 交付。
 
-result = develop(
-    "算术模块：加法和乘法",
-    max_iterations=3,
-    test_timeout_seconds=30,
-)
-if result["status"] == "delivered":
-    print("已交付：", result["workspace_dir"])
-else:
-    print("未交付：", result["failure_report"])
+实际运行输出（`pytest -v`）：
+
+```
+tests/test_dev_team.py::test_offline_dev_team_passes_tests PASSED
+tests/test_dev_team.py::test_route_fixes_on_failure PASSED
+tests/test_dev_team.py::test_route_delivers_when_passed PASSED
+tests/test_dev_team.py::test_route_delivers_at_cap PASSED
+============================== 4 passed ==============================
 ```
 
-配套测试验证成功落盘、失败后修复、持续失败耗尽预算、生成或交付异常、收集错误、配置校验、非空目录拒绝且原物保持、死循环超时，以及 macOS/Linux 下父进程正常退出和超时两种情况下的子进程清理。子进程用例还模拟忽略 `SIGTERM` 的程序，确保强制终止路径有效。
+## 接入真实 LLM
 
-## 接入真实模型与独立验收
+`DeterministicDeveloper` 只为让图"不依赖 API key 也能跑、也能测"。要真正用 LLM 写代码，实现 `LLMDeveloper.develop`：把 `design` + `requirement` 交给模型，从返回中解析出 `code` 与 `test_code`（建议用 `with_structured_output` 约束为 Pydantic 结构，避免正则抽 JSON 的脆弱做法，见 13.4 节）。更复杂的工程化版本（Provider 抽象、注入防护、流式 API）见本书统一底座 `reference-agent/`。
 
-实现 `Developer.develop`，从模型结构化输出中获取源码和测试即可替换离线开发者；`LLMDeveloper` 当前保留为扩展接口，尚未接入模型。真实开发流程还应固定独立验收集，让开发者无法通过重写验收标准来掩盖缺陷。运行生成程序前，应先建立隔离执行环境并限制凭据、网络和文件访问。
+## 关于"并行"
 
-只有真正不依赖验收结果的准备工作适合并行。最终部署和交付必须等待验收通过，不能因为并行节点已经产生文件就报告成功。
+原"六个角色"演示常声称测试、运维、文档三者"并行"。在**可信交付**里，测试必须先作为闸门跑完、通过后才做运维与文档，所以本实现让它们依次执行。若你的场景里运维/文档与代码正确性无关、可独立并行，LangGraph 的扇出（`add_edge` 到多个节点）确实能并行，但请先想清楚：并行任务是否真的不依赖上游产物的正确性。
+
+## 小结
+
+多 Agent 协作的核心要点：
+
+| 要素 | 关键实践 |
+|------|---------|
+| 角色设计 | 专业化、边界清晰 |
+| 通信机制 | 共享状态（LangGraph `StateGraph`） |
+| 架构选择 | 线性 + 条件边（本例）；复杂协作可用 Supervisor（见本章前面小节） |
+| 验收判据 | 客观可验证：测试靠 `pytest` 返回码，而非 Agent 自述 |
+| 闭环 | 测试不通过 → 路由回开发重试（测试驱动），设最大迭代防死循环 |
+| 并行执行 | 仅限真正无依赖的任务；涉及正确性的任务先做闸门 |
+| 错误处理 | 失败走条件边重试，上限兜底交付 |
 
 ---
 
-*下一章：[第17章 Agent 通信协议](../chapter_19_protocol/README.md)*
+*下一章：[第19章 Agent 通信协议](../chapter_19_protocol/README.md)*

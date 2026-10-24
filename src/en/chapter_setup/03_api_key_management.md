@@ -1,4 +1,4 @@
-# F.3 API Key Management & Security Best Practices
+# API Key Management & Security Best Practices
 
 API Keys are credentials for accessing LLM services. If leaked, they can result in serious financial losses. This section explains how to manage API Keys securely.
 
@@ -302,4 +302,4 @@ Before each code commit, confirm the following:
 
 ---
 
-*Next section: [F.4 Your First Agent: Hello Agent!](./04_hello_agent.md)*
+*Next section: [2.4 Your First Agent: Hello Agent!](./04_hello_agent.md)*

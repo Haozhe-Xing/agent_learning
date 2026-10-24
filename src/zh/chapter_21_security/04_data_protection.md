@@ -1,68 +1,196 @@
-# 19.4 敏感数据保护
+# 21.4 敏感数据保护
 
-本节沿“获取→传入模型→调用工具→记忆→日志→删除”的链条检查资料。目标是让必要的数据进入必要的位置，而不是先把全部信息传出去，再靠正则掩码补救。
+> **本节目标**：学会识别和保护 Agent 交互中的敏感数据，防止数据泄露。
 
-![字段投影、主体分区与删除范围](../svg/chapter_21_security_04_data_protection.svg)
+![Agent 敏感数据保护流程](../svg/chapter_21_security_04_data_protection.svg)
 
-## 先减少数据，再讨论检测
+---
 
-按任务定义允许字段，并校验字段的实际类型与大小。未知任务拒绝，不能退回到“除了几个黑名单字段以外全部发送”。密钥也不应进入模型可读文档或系统提示；放进system角色不会使其成为秘密存储。
+## Agent 面临的数据风险
 
-```python
-from reference_code.security_boundary import Rejected, project_record
+Agent 在与用户交互和执行任务的过程中，可能会接触到各种敏感数据：
 
-record = {'order_id':'ORD-DEMO', 'status':'shipped',
-          'api_key':'SYNTHETIC_KEY', 'customer_name':'Alice'}
-minimal = project_record('order_status', record)
-assert minimal == {'order_id':'ORD-DEMO', 'status':'shipped'}
-try:
-    project_record('unknown_task', record)
-except Rejected as exc:
-    assert str(exc) == 'unknown_projection'
-else:
-    raise AssertionError('Unknown tasks must not receive all fields.')
-print(minimal)
-```
+| 数据类型 | 示例 | 风险 |
+|---------|------|------|
+| 个人身份信息（PII） | 姓名、身份证号、手机号 | 隐私泄露 |
+| 认证凭据 | API Key、密码、Token | 账号被盗 |
+| 金融数据 | 银行卡号、交易记录 | 财务损失 |
+| 业务机密 | 内部文档、代码、策略 | 商业损失 |
 
-这里的字段名与内容均为夹具。允许字段中的自由文本仍可能包含隐私，所以投影不等于通用脱敏。真实接入要根据字段用途、来源和接收方继续检查，避免把整个嵌套对象放进一个“summary”字段绕过最小化。
+---
 
-正则可以找到部分电话、邮箱或凭据形态，却会漏掉新格式、上下文秘密、编码与分段内容，也会误识别普通数字。检测结果应保留类型、位置与理由；面向日志的结果不应再带原始命中值。多种规则重叠时，应先合并替换区间，避免按旧偏移反复修改造成残留。
-
-## 写入同意和读取归属都由宿主提供
-
-`ScopedNotes`只是有界的内存便签：写入必须得到严格布尔`True`，读取和删除按宿主传入的主体分区。它不接受模型指定另一个用户的身份。
+## PII 检测与脱敏
 
 ```python
-from reference_code.security_boundary import Rejected, ScopedNotes
+import re
+from dataclasses import dataclass
 
-notes = ScopedNotes()
-try:
-    notes.put('alice', 'n1', 'Fictional preference.', consent='yes')
-except Rejected as exc:
-    assert str(exc) == 'consent_required'
-else:
-    raise AssertionError('Truthy text is not consent.')
-notes.put('alice', 'n1', 'Fictional preference.', consent=True)
-assert notes.get('bob', 'n1') is None
-assert notes.delete('alice', 'n1') is True
-assert notes.get('alice', 'n1') is None
-print('Explicit consent, owner scope and local deletion checked.')
+@dataclass
+class PIIEntity:
+    """个人身份信息实体"""
+    type: str       # 类型
+    value: str      # 原始值
+    masked: str     # 脱敏后的值
+    start: int      # 在文本中的起始位置
+    end: int        # 结束位置
+
+
+class PIIDetector:
+    """PII 检测器"""
+    
+    PATTERNS = {
+        "phone": {
+            "regex": r"1[3-9]\d{9}",
+            "mask": lambda m: m[:3] + "****" + m[-4:]
+        },
+        "id_card": {
+            "regex": r"\d{17}[\dXx]",
+            "mask": lambda m: m[:6] + "********" + m[-4:]
+        },
+        "email": {
+            "regex": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+            "mask": lambda m: m[0] + "***@" + m.split("@")[1]
+        },
+        "bank_card": {
+            "regex": r"\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}",
+            "mask": lambda m: re.sub(r'\d', '*', m[:-4]) + m[-4:]
+        },
+        "api_key": {
+            "regex": r"(sk|pk|api)[_-][a-zA-Z0-9]{20,}",
+            "mask": lambda m: m[:6] + "*" * (len(m) - 10) + m[-4:]
+        }
+    }
+    
+    def detect(self, text: str) -> list[PIIEntity]:
+        """检测文本中的 PII"""
+        entities = []
+        
+        for pii_type, config in self.PATTERNS.items():
+            for match in re.finditer(config["regex"], text):
+                entities.append(PIIEntity(
+                    type=pii_type,
+                    value=match.group(),
+                    masked=config["mask"](match.group()),
+                    start=match.start(),
+                    end=match.end()
+                ))
+        
+        return entities
+    
+    def mask(self, text: str) -> tuple[str, list[PIIEntity]]:
+        """检测并脱敏文本中的 PII"""
+        entities = self.detect(text)
+        
+        # 从后向前替换，避免位置偏移
+        masked_text = text
+        for entity in sorted(entities, key=lambda e: e.start, reverse=True):
+            masked_text = (
+                masked_text[:entity.start] + 
+                entity.masked + 
+                masked_text[entity.end:]
+            )
+        
+        return masked_text, entities
+
+
+# 使用示例
+detector = PIIDetector()
+
+text = "用户张三的手机号是13812345678，邮箱是zhangsan@example.com"
+masked, entities = detector.mask(text)
+
+print(masked)
+# 用户张三的手机号是138****5678，邮箱是z***@example.com
+
+print(f"发现 {len(entities)} 个 PII：")
+for e in entities:
+    print(f"  [{e.type}] {e.value} → {e.masked}")
 ```
 
-宿主必须从真实会话得到主体与同意；上面直接传字符串仅用于可复现夹具。共享同一主体的多个会话是否允许访问，是另一项业务策略，不能用随机`session_id`替代身份。持久记忆及索引隔离另见[4.3](../chapter_memory/03_long_term_memory.md)。
+---
 
-## 输出和日志也要列出允许字段
+## Agent 对话数据保护
 
-`LocalBackend.read`返回文档ID与摘录，内部私有字段不进入结果。`Runtime.audit`只记录运行ID、尝试序号、工具、状态与固定原因码，不保存正文、参数、审批凭据或原始异常。测试既查正常结果，也查合成秘密标记是否流入结果/审计。
+```python
+class SecureConversationManager:
+    """安全的对话管理器 —— 在存储前脱敏"""
+    
+    def __init__(self):
+        self.pii_detector = PIIDetector()
+        self.conversations = {}  # session_id -> messages
+    
+    def add_message(self, session_id: str, role: str, content: str):
+        """添加消息（自动脱敏后存储）"""
+        
+        # 脱敏处理
+        masked_content, entities = self.pii_detector.mask(content)
+        
+        if entities:
+            print(f"⚠️ 检测到 {len(entities)} 个敏感信息，已脱敏")
+        
+        if session_id not in self.conversations:
+            self.conversations[session_id] = []
+        
+        self.conversations[session_id].append({
+            "role": role,
+            "content": masked_content,  # 存储脱敏后的内容
+            "has_pii": len(entities) > 0,
+            "pii_types": list(set(e.type for e in entities))
+        })
+    
+    def get_history(self, session_id: str) -> list[dict]:
+        """获取对话历史（已脱敏）"""
+        return self.conversations.get(session_id, [])
+```
 
-合成标记缺席只证明这个固定字段未流出，不证明任意隐私已识别。审计ID、次数、时间和资源名称也可能敏感；真实服务还需要日志访问权限、保留期限、检索授权及故障转储策略。调试时临时加的`print(arguments)`同样属于数据流。
+---
 
-## 加密与删除各自的合同
+## 数据最小化原则
 
-本练习不落盘、不实现加密。需要持久存储时，应使用经过维护的认证加密库，并将密钥、数据库和访问控制分别管理。[Fernet文档（50.0.2）](https://cryptography.io/en/50.0.2/fernet/)说明其密钥持有者可读取并创建有效消息，令牌的创建时间可见；加密不替代主体授权。
+只收集和处理完成任务所必需的数据：
 
-应另验密钥获取/轮换、错误密钥与篡改拒绝、主体和记录标识绑定、缓存/备份/副本及恢复权限。不要把Base64或自制异或算法命名为加密。存储删除后还要定义索引、缓存、日志和备份的处理周期；`ScopedNotes.delete`只删除当前对象的一条内存记录，不声称安全擦除或完整生命周期删除。
+```python
+class DataMinimizer:
+    """数据最小化处理器"""
+    
+    @staticmethod
+    def minimize_for_llm(data: dict, task: str) -> dict:
+        """根据任务类型，只向 LLM 传递必要的数据字段"""
+        
+        # 不同任务需要的字段
+        task_fields = {
+            "order_query": ["order_id", "status", "create_time"],
+            "product_recommend": ["preferences", "budget"],
+            "complaint": ["issue_type", "description"],
+        }
+        
+        # 不应传递给 LLM 的字段
+        sensitive_fields = {
+            "password", "credit_card", "id_number",
+            "bank_account", "ssn", "api_key"
+        }
+        
+        allowed = task_fields.get(task, list(data.keys()))
+        
+        return {
+            k: v for k, v in data.items()
+            if k in allowed and k not in sensitive_fields
+        }
+```
 
-练习：给正常订单加上一个未知字段和一个嵌套对象，证明投影没有扩大；再用Alice/Bob同名便签验证读取与删除互不干扰。提交实际输出字段、审计字段和每类副本的保留计划，避免用“已脱敏”一个标签概括所有风险。
+---
 
-*下一节：[19.5 Agent行为的可控性与对齐](./05_alignment.md)*
+## 小结
+
+| 概念 | 说明 |
+|------|------|
+| PII 检测 | 用正则等方式识别敏感信息 |
+| 数据脱敏 | 替换敏感信息为掩码形式 |
+| 对话保护 | 存储前自动脱敏处理 |
+| 数据最小化 | 只传递完成任务所需的最少数据 |
+
+> **下一节预告**：最后，我们来讨论如何确保 Agent 的行为符合人类的期望和价值观。
+
+---
+
+[21.5 Agent 行为的可控性与对齐](./05_alignment.md)

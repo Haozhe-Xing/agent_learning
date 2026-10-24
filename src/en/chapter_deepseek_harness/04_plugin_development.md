@@ -1,4 +1,4 @@
-# 15.4 Plugin Development: tool / llm / skill / subagent
+# 17.4 Plugin Development: tool / llm / skill / subagent
 
 > 🐋 *"Add a capability = write a plugin, not touch the core."*
 
@@ -18,8 +18,6 @@
 ---
 
 ## Writing a Tool Plugin
-
-The following is a teaching interface illustration, not a verified installable plugin for the pinned DSH version. For the result-write-back loop, see [12.3](../chapter_openclaw/03_architecture.md). Check actual parameters, permissions, and unloading against the selected source.
 
 ```typescript
 import { Context } from 'cordis';
@@ -86,7 +84,7 @@ The main Agent dispatches it via the `Task` tool; the sub-agent runs in an isola
 ctx.plugin(weatherPlugin, { apiKey: 'xxx', before: ['core.llm'], after: ['core.kernel'] });
 ```
 
-For dependency analysis, see [section 15.3](./03_cordis_architecture.md). Verify ordering and missing-dependency failures in the selected version.
+Explicit dependency graph → correct load order + early missing-dependency errors (see 17.3).
 
 ## The `create` Profile Loop
 
@@ -110,4 +108,4 @@ Edit → save → live, no restart.
 
 ---
 
-*Next section: [15.5 Comparison: DSH vs Claude Code / OpenClaw / Hermes](./05_comparison.md)*
+*Next section: [17.5 Comparison: DSH vs Claude Code / OpenClaw / Hermes](./05_comparison.md)*

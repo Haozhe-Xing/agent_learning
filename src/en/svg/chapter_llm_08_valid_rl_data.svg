@@ -1,33 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 414" width="720" height="414" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif" role="img" aria-labelledby="rl-title rl-description">
-  <title id="rl-title">Sampled Rewards: Centering and Advantage Limits</title>
-  <desc id="rl-description">Conditions: current group for one prompt · binary outcome rewards · group-relative outcome term only. A sampled group does not establish the true success probability for this prompt. Dividing by group std: skip zero variance, or guard it with ε &gt; 0. Other rewards, KL / entropy terms depend on the actual training configuration. No universal difficulty or pass-rate sweet spot follows from this example.</desc>
-  <rect width="720" height="414" rx="12" fill="#f8fafc"/>
-  <text x="360" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Sampled Rewards: Centering and Advantage Limits</text>
-  <text x="360" y="53" text-anchor="middle" font-size="11.5" fill="#475569">Conditions: current group for one prompt · binary outcome rewards · group-relative outcome term only</text>
-  <text x="360" y="76" text-anchor="middle" font-size="12" fill="#334155">Centering: d_i = r_i − mean(r); advantage scaling follows the training configuration</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" width="480" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="480" height="260" rx="12" fill="#f8fafc"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Valid vs Invalid RL Training Data</text>
 
-  <!-- Equal rewards in the current sampled group; no global data-quality verdict. -->
-  <rect x="24" y="94" width="324" height="186" rx="10" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
-  <text x="186" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">All rewards in this group are equal</text>
-  <text x="186" y="146" text-anchor="middle" font-family="monospace" font-size="12" fill="#1e3a8a">r = (0,0,0,0), mean(r) = 0</text>
-  <text x="186" y="171" text-anchor="middle" font-family="monospace" font-size="12" fill="#1e3a8a">r = (1,1,1,1), mean(r) = 1</text>
-  <rect x="40" y="195" width="292" height="64" rx="6" fill="#dbeafe" stroke="#93c5fd"/>
-  <text x="186" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">Centered reward: d = (0, 0, 0, 0)</text>
-  <text x="186" y="243" text-anchor="middle" font-size="11.5" fill="#1e3a8a">ε &gt; 0 guard: normalized advantage = 0</text>
+  <!-- Invalid data -->
+  <rect x="20" y="48" width="205" height="180" rx="10" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+  <text x="122" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#be123c">❌ Invalid Data</text>
+  <text x="122" y="88" text-anchor="middle" font-size="11" fill="#f43f5e">Reward always 0 or always 1</text>
 
-  <!-- Mixed binary rewards provide differences in this term, not assured improvement. -->
-  <rect x="372" y="94" width="324" height="186" rx="10" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.5"/>
-  <text x="534" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">This group contains both 0 and 1</text>
-  <text x="534" y="146" text-anchor="middle" font-family="monospace" font-size="12" fill="#166534">r = (0,1,0,1), mean(r) = 0.5</text>
-  <text x="534" y="171" text-anchor="middle" font-family="monospace" font-size="12" fill="#166534">d = (−0.5,+0.5,−0.5,+0.5)</text>
-  <rect x="388" y="195" width="292" height="64" rx="6" fill="#dcfce7" stroke="#86efac"/>
-  <text x="534" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">This term distinguishes group members</text>
-  <text x="534" y="243" text-anchor="middle" font-size="11.5" fill="#14532d">No guarantee of improvement or success</text>
+  <rect x="36" y="100" width="173" height="50" rx="6" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
+  <text x="122" y="120" text-anchor="middle" font-size="11" fill="#9f1239">All answers score the same</text>
+  <text x="122" y="138" text-anchor="middle" font-size="11" fill="#9f1239">(all 0 or all 1)</text>
 
-  <!-- Scope limits apply to both columns. -->
-  <rect x="24" y="296" width="672" height="104" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
-  <text x="40" y="318" font-size="11.5" fill="#334155">A sampled group does not establish the true success probability for this prompt.</text>
-  <text x="40" y="340" font-size="11.5" fill="#334155">Dividing by group std: skip zero variance, or guard it with ε &gt; 0.</text>
-  <text x="40" y="362" font-size="11.5" fill="#334155">Other rewards, KL / entropy terms depend on the actual training configuration.</text>
-  <text x="40" y="384" font-size="11.5" fill="#334155">No universal difficulty or pass-rate sweet spot follows from this example.</text>
+  <rect x="36" y="162" width="173" height="52" rx="6" fill="#fca5a5" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="122" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#7f1d1d">Model cannot differentiate</text>
+  <text x="122" y="198" text-anchor="middle" font-size="11" fill="#b91c1c">Learns nothing</text>
+
+  <!-- Valid data -->
+  <rect x="255" y="48" width="205" height="180" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="357" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">✅ Valid Data</text>
+  <text x="357" y="88" text-anchor="middle" font-size="11" fill="#22c55e">Same question has both high and low scores</text>
+
+  <rect x="271" y="100" width="173" height="50" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="357" y="120" text-anchor="middle" font-size="11" fill="#166534">Among G answers</text>
+  <text x="357" y="138" text-anchor="middle" font-size="11" fill="#166534">scores vary (high and low)</text>
+
+  <rect x="271" y="162" width="173" height="52" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="357" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">Model learns contrastively</text>
+  <text x="357" y="198" text-anchor="middle" font-size="11" fill="#14532d">"This approach +1, that approach 0"</text>
+
+  <!-- Pass rate note -->
+  <rect x="20" y="238" width="440" height="16" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="240" y="250" text-anchor="middle" font-size="10" fill="#3730a3">💡 Sweet spot: pass rate 20%~80% for the same problem → model gets effective learning signal</text>
 </svg>

@@ -1,52 +1,269 @@
-# 20.5 实战：部署 Agent 服务的最小基线
+# 22.5 实战：部署一个生产级 Agent 服务
 
-本节使用实际存在的 `reference-agent/`，把第3章的工具循环、固定评估和基础输入检查接成 FastAPI 服务。它提供本地验证起点；上线前还需鉴权、限流、资源隔离、日志与恢复机制。
+> **本节目标**：综合运用本章所学知识，完成一个 Agent 服务从开发到部署的完整流程。
 
-## 安装并运行
+---
 
-从仓库根目录运行：
+## 项目结构
 
-```bash
-pip install -e "./reference-agent[dev]"
-uvicorn reference_agent.service.app:app --host 127.0.0.1 --port 8000
+```
+agent-service/
+├── app/
+│   ├── __init__.py
+│   ├── main.py          # FastAPI 入口
+│   ├── agent.py          # Agent 核心逻辑
+│   ├── config.py         # 配置管理
+│   └── middleware.py     # 中间件
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── .env.example
+└── tests/
+    └── test_api.py
 ```
 
-默认使用 `FakeProvider`，无需模型 Key。另开终端：
+---
 
-```bash
-curl -X POST http://127.0.0.1:8000/chat \
-  -H 'Content-Type: application/json' \
-  -d '{"message":"12*8"}'
+## 核心代码
+
+### config.py —— 配置管理
+
+```python
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    openai_api_key: str
+    model_name: str = "gpt-4.1"
+    redis_url: str = "redis://localhost:6379"
+    api_keys: str = ""  # 逗号分隔的有效 API Key
+    max_concurrent: int = 50
+    request_timeout: int = 30
+    
+    class Config:
+        env_file = ".env"
+        env_prefix = "AGENT_"
+
+settings = Settings()
 ```
 
-响应应包含 96。只有显式设置 `AGENT_REAL=1` 才连接真实模型；同时配置 `OPENAI_API_KEY`，可按需设置 `AGENT_MODEL` 和 `OPENAI_BASE_URL`。不要在日志或共享命令中写入真实 Key。
+### agent.py —— Agent 核心
 
-## 两个接口的实际行为
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.messages import HumanMessage, AIMessage
+from app.config import settings
 
-| 接口 | 行为 | 应检查的结果 |
-|---|---|---|
-| `/chat` | 完整执行 Agent 后返回 JSON | 成功输出来自工具；输入拒绝返回 400；执行失败返回 500 |
-| `/stream` | 先生成完整答案，再按空白切成 SSE 数据块 | `text/event-stream` 与数据格式正确；执行错误明确返回 |
+class ProductionAgent:
+    """生产级 Agent"""
+    
+    def __init__(self):
+        self.llm = ChatOpenAI(
+            model=settings.model_name,
+            api_key=settings.openai_api_key,
+            streaming=True
+        )
+        
+        self.prompt = ChatPromptTemplate.from_messages([
+            ("system", "你是一个专业的AI助手。请准确、简洁地回答问题。"),
+            MessagesPlaceholder("history"),
+            ("human", "{input}")
+        ])
+        
+        self.chain = self.prompt | self.llm
+    
+    async def run(self, message: str, history: list[dict] = None):
+        """执行 Agent（非流式）"""
+        chat_history = self._build_history(history or [])
+        response = await self.chain.ainvoke({
+            "input": message,
+            "history": chat_history
+        })
+        return response.content
+    
+    async def stream(self, message: str, history: list[dict] = None):
+        """执行 Agent（流式）"""
+        chat_history = self._build_history(history or [])
+        async for chunk in self.chain.astream({
+            "input": message,
+            "history": chat_history
+        }):
+            if chunk.content:
+                yield chunk.content
+    
+    def _build_history(self, history: list[dict]):
+        """构建对话历史"""
+        messages = []
+        for msg in history:
+            if msg["role"] == "user":
+                messages.append(HumanMessage(content=msg["content"]))
+            elif msg["role"] == "assistant":
+                messages.append(AIMessage(content=msg["content"]))
+        return messages
 
-`/stream` 演示的是 SSE 传输，不能据此声称实现了模型 token 的实时生成。真正的生成流式需要继续接入模型的流式接口、工具调用事件和取消传播，见本章前面的流式专题。
-
-## 固定评估与接口验收
-
-```bash
-cd reference-agent
-python -m pytest tests -q
+# 全局单例
+agent = ProductionAgent()
 ```
 
-测试覆盖离线工具结果、输入检查、SSE、JSON-RPC 和固定评估任务。固定任务集随包保存在 `reference-agent/src/reference_agent/data/eval_samples.jsonl`，可用于回归，不代表真实业务已达到相同成功率。模型调用链还需保留 assistant 的工具请求和对应 `tool_call_id`；配套 SDK 测试检查了这一协议约束。
+### main.py —— API 入口
 
-## 容器入口
+```python
+import uuid
+import json
+import asyncio
 
-```bash
-cd reference-agent
-docker build -f docker/Dockerfile -t agent-learning-demo .
-docker run --rm -p 127.0.0.1:8000:8000 agent-learning-demo
+from fastapi import FastAPI, HTTPException, Header, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel, Field
+from typing import Optional
+
+from app.config import settings
+from app.agent import agent
+
+app = FastAPI(title="Agent Service", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 并发控制
+semaphore = asyncio.Semaphore(settings.max_concurrent)
+
+# ===== 模型 =====
+
+class ChatRequest(BaseModel):
+    message: str = Field(..., min_length=1, max_length=5000)
+    session_id: Optional[str] = None
+
+class ChatResponse(BaseModel):
+    reply: str
+    session_id: str
+
+# ===== 认证 =====
+
+async def verify_key(x_api_key: str = Header(...)):
+    valid = settings.api_keys.split(",")
+    if x_api_key not in valid:
+        raise HTTPException(401, "无效的 API Key")
+
+# ===== 端点 =====
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
+
+@app.post("/chat", response_model=ChatResponse)
+async def chat(req: ChatRequest, _=Depends(verify_key)):
+    session_id = req.session_id or str(uuid.uuid4())
+    
+    async with semaphore:
+        try:
+            reply = await asyncio.wait_for(
+                agent.run(req.message),
+                timeout=settings.request_timeout
+            )
+        except asyncio.TimeoutError:
+            raise HTTPException(504, "请求超时")
+    
+    return ChatResponse(reply=reply, session_id=session_id)
+
+@app.post("/chat/stream")
+async def chat_stream(req: ChatRequest, _=Depends(verify_key)):
+    async def generate():
+        async with semaphore:
+            async for token in agent.stream(req.message):
+                yield f"data: {json.dumps({'token': token})}\n\n"
+            yield f"data: {json.dumps({'done': True})}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, workers=4)
 ```
 
-Dockerfile 从同一份 `pyproject.toml` 安装包，避免只安装依赖却找不到 `reference_agent`。容器构建与部署环境须另外验证；本地接口测试通过不等于完成生产上线验收。
+---
 
-上线前至少复核宿主身份、工具许可、任务预算、敏感数据日志和故障恢复。继续在综合项目中替换业务工具时，重跑相同的成功与失败用例。
+## 部署步骤
+
+### 1. 准备环境变量
+
+```bash
+# ⚠️ 以下是 .env.example 文件的模板
+# 请复制为 .env 并填入真实值：cp .env.example .env
+# 🔒 安全提醒：.env 文件必须加入 .gitignore，切勿提交到版本控制！
+
+AGENT_OPENAI_API_KEY=sk-your-key-here
+AGENT_API_KEYS=key1,key2,key3
+AGENT_MODEL_NAME=gpt-4.1
+AGENT_REDIS_URL=redis://redis:6379
+```
+
+### 2. 构建并启动
+
+```bash
+# 构建镜像并启动
+docker compose up -d --build
+
+# 检查服务状态
+docker compose ps
+
+# 验证健康检查
+curl http://localhost:8000/health
+```
+
+### 3. 测试 API
+
+![测试金字塔](../svg/chapter_22_deployment_05_test_pyramid.svg)
+
+```bash
+# 普通对话
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: key1" \
+  -d '{"message": "你好，请介绍一下 Python"}'
+
+# 流式对话
+curl -X POST http://localhost:8000/chat/stream \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: key1" \
+  -d '{"message": "讲一个简短的故事"}' \
+  --no-buffer
+```
+
+---
+
+## 部署检查清单
+
+| 检查项 | 说明 | ✅ |
+|--------|------|---|
+| 环境变量 | API Key 等敏感信息不硬编码 | |
+| 健康检查 | /health 端点正常返回 | |
+| 认证 | API Key 验证生效 | |
+| 限流 | Nginx 限流配置正确 | |
+| 日志 | 请求日志正常记录 | |
+| 监控 | 错误率、延迟可观测 | |
+| 备份 | Redis 数据持久化 | |
+| SSL | HTTPS 证书配置 | |
+
+---
+
+## 小结
+
+| 概念 | 说明 |
+|------|------|
+| 项目结构 | 清晰分层：配置、核心、API、中间件 |
+| 配置管理 | Pydantic Settings + 环境变量 |
+| 并发控制 | Semaphore + 超时机制 |
+| 流式响应 | SSE 实时推送生成过程 |
+| 容器部署 | Docker Compose 一键启动 |
+
+> 🎓 **本章总结**：从 API 封装到容器化部署，从流式响应到并发处理，我们走完了 Agent 从"能运行的脚本"到"生产级服务"的完整路径。下一步，让我们进入综合项目篇，构建真实的 Agent 应用！
+
+---
+
+[第23章 项目实战：AI 编程助手](../chapter_23_coding_agent/README.md)

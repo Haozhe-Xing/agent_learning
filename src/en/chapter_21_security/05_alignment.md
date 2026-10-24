@@ -1,72 +1,262 @@
-# 19.5 Controllability and Alignment
+# 21.5 Agent Behavior Controllability and Alignment
 
-Alignment concerns how models learn objectives, whose intent a system accepts and whether behavior meets human requirements. This section implements the parts observable in a small project: host scope, specific approval, task acceptance and stopping. They do not establish that value alignment is solved.
+> **Section Goal**: Understand the importance of Agent alignment, and learn how to design behavioral boundaries and fallback mechanisms.
 
-![Evaluate training objectives, host policy and task outcomes separately](../svg/chapter_21_security_05_alignment.svg)
+![Agent Behavior Alignment and Boundary Control](../svg/chapter_21_security_05_alignment.svg)
 
-## Keep three levels distinct
+---
 
-| Level | Main question | Corresponding practice |
-|---|---|---|
-| Model training/preferences | How do rewards/preferences shape behavior, and does it overfit? | Chapter 24, with independent data and training evaluation |
-| Product authorization | What may this actor do in this task? | Host policy, approval and resource scope here |
-| Task acceptance | Is the actual result supported and complete? | Chapter 6 QA and independent mainline specifications |
+## What is Alignment?
 
-Passing an authorization check does not make an answer complete. A complete answer does not authorize reading its sources. A model declaring an action compliant cannot grant tool permissions. Refusal text helps communication, but an enforced refusal also prevents the operation.
+Alignment means ensuring that an Agent's behavior conforms to the intentions and values of its designers and users. A well-aligned Agent:
 
-## Translate broad intent into concrete action scope
+- ✅ Does what users truly need, not just what they literally asked for
+- ✅ Proactively confirms when uncertain, rather than acting unilaterally
+- ✅ Stops and waits for approval when actions may have irreversible consequences
+- ✅ Refuses to execute unethical or harmful requests
 
-For a local notice, the host first determines actor, allowed destinations, content limits and actions already authorized. Approval should show exact content and destination and honor existing valid authorization; it should not mechanically ask again for each repeated read. Missing scope or an action beyond existing authorization calls for the relevant clarification or approval.
+---
 
-The fixture represents an explicit approval with a host function. It does not interpret user chat, provide an approval UI or authenticate real people. Only the literal boolean `True` is accepted:
-
-```python
-from reference_code.security_boundary import Rejected
-from reference_code.security_boundary.regression import new_lab, NOTICE
-
-runtime = new_lab()
-for decision in [False, 1, 'yes', {'approved': True}]:
-    try:
-        runtime.approvals.issue('alice', NOTICE, approved=decision)
-    except Rejected as exc:
-        assert str(exc) == 'approval_not_granted'
-    else:
-        raise AssertionError('Only literal True may represent host approval.')
-token = runtime.approvals.issue('alice', NOTICE, approved=True)
-assert runtime.execute(NOTICE, approval_token=token)['status'] == 'succeeded'
-assert runtime.backend.notices == [{'principal':'alice', 'destination':'board',
-                                    'text':'Approved fictional notice.'}]
-print('The exact local action has one recorded effect.')
-```
-
-Changed arguments require a new decision; the old proof no longer applies. Revocation also overrides earlier approval. A sequence of successful interactions cannot automatically promote someone to administrator or remove approval requirements. Expanding autonomy is a host governance decision with explicit functionality, resources, duration, rollback conditions and independent evidence.
-
-## A retry is neither new authority nor a new effect
-
-The same request ID and complete payload return an existing receipt; changed content under the same ID conflicts. Even receipt retrieval checks current permission first. This handles a completed local action whose response was lost:
+## Behavioral Boundary Design
 
 ```python
-from reference_code.security_boundary.regression import new_lab, NOTICE
+from enum import Enum
+from dataclasses import dataclass
 
-runtime = new_lab()
-token = runtime.approvals.issue('alice', NOTICE, approved=True)
-first = runtime.execute(NOTICE, approval_token=token)
-second = runtime.execute(NOTICE)
-assert first == second
-assert runtime.backend.publish_calls == 1
-assert len(runtime.backend.notices) == 1
-assert runtime.attempts == 2
-print(first)
+class ActionRisk(Enum):
+    """Action risk levels"""
+    LOW = "low"          # Read-only operations, no side effects
+    MEDIUM = "medium"    # Has side effects but reversible
+    HIGH = "high"        # Irreversible operations
+    CRITICAL = "critical"  # May cause significant impact
+
+@dataclass
+class ActionBoundary:
+    """Behavioral boundary definition"""
+    action: str
+    risk_level: ActionRisk
+    requires_confirmation: bool
+    max_daily_count: int = None
+    description: str = ""
+
+class BehaviorGuard:
+    """Behavior guard — ensures Agent acts within safe boundaries"""
+    
+    def __init__(self):
+        self.boundaries = {}
+        self.action_counts = {}  # Action counters
+        
+        # Register default behavioral boundaries
+        self._register_defaults()
+    
+    def _register_defaults(self):
+        """Register default behavioral boundaries"""
+        defaults = [
+            ActionBoundary("search", ActionRisk.LOW, False,
+                          description="Search for information"),
+            ActionBoundary("read_file", ActionRisk.LOW, False,
+                          description="Read file"),
+            ActionBoundary("write_file", ActionRisk.MEDIUM, False,
+                          max_daily_count=100,
+                          description="Write file"),
+            ActionBoundary("send_email", ActionRisk.HIGH, True,
+                          max_daily_count=20,
+                          description="Send email"),
+            ActionBoundary("delete_data", ActionRisk.CRITICAL, True,
+                          max_daily_count=5,
+                          description="Delete data"),
+            ActionBoundary("execute_code", ActionRisk.HIGH, True,
+                          max_daily_count=50,
+                          description="Execute code"),
+        ]
+        
+        for boundary in defaults:
+            self.boundaries[boundary.action] = boundary
+    
+    def check_action(self, action: str) -> dict:
+        """Check if an action is allowed"""
+        boundary = self.boundaries.get(action)
+        
+        if boundary is None:
+            return {
+                "allowed": False,
+                "reason": f"Unregistered action: {action}"
+            }
+        
+        # Check daily limit
+        if boundary.max_daily_count:
+            count = self.action_counts.get(action, 0)
+            if count >= boundary.max_daily_count:
+                return {
+                    "allowed": False,
+                    "reason": f"Daily limit reached ({boundary.max_daily_count})"
+                }
+        
+        # Actions requiring human confirmation
+        if boundary.requires_confirmation:
+            return {
+                "allowed": True,
+                "needs_confirmation": True,
+                "risk_level": boundary.risk_level.value,
+                "message": f"Action '{boundary.description}' requires your confirmation"
+            }
+        
+        # Update counter
+        self.action_counts[action] = self.action_counts.get(action, 0) + 1
+        
+        return {
+            "allowed": True,
+            "needs_confirmation": False,
+            "risk_level": boundary.risk_level.value
+        }
 ```
 
-This is in-process receipt reuse; restart loses state. Remote services need durable idempotency keys, transactions/compensation, status queries and reconciliation. This example does not prove network exactly-once execution. Retries still consume attempts, preventing an unbounded receipt loop.
+---
 
-## Evaluate improvement with independent evidence
+## Refusal Policy
 
-Freeze benign tasks, unauthorized actions and indeterminate cases before running a candidate. Report task coverage, false refusals, unauthorized effects, unknown/errors and cost separately. Optimizing refusal alone harms legitimate tasks; optimizing completion alone may increase unauthorized effects. A candidate's high self-score is not an independent stopping criterion.
+Agents need to know when to say "no":
 
-The mainline exercise retains an insufficient-evidence question and independent required points. A free task without a specification remains `unknown`. Preserve evidence and reasons for conflicts, then follow the host's review process; another generation should not hide the conflict. Fairness, value conflicts and stakeholder requirements require explicit scenarios, participants and evaluation designs beyond this small notice lab.
+```python
+REFUSAL_GUIDELINES = """
+## When to Refuse
 
-Exercise: freeze a new notice requirement, then inject omitted content, an unauthorized destination, changed approved text, a tool error and exhausted total attempts. Submit authorization, actual effect, requirement coverage and stopping reason as separate columns. Explain which failures require corrected arguments, new authorization or review.
+### Must Refuse
+- User requests potentially illegal operations
+- User requests disclosure of other users' private information
+- User requests bypassing security checks
 
-*Continue: [19.6 Selected Papers](./06_paper_readings.md); runtime implementation: [19.7](./07_guardrails_runtime.md).*
+### Should Confirm Before Executing
+- Irreversible operations (delete data, send email)
+- Operations involving money (place order, transfer)
+- Large-scale operations (mass messaging, bulk modifications)
+
+### Should Warn But Can Execute
+- User's request may have a better alternative
+- Operation result may not match user's expectation
+
+## How to Refuse
+- Politely but firmly
+- Explain the reason
+- Provide alternatives if possible
+"""
+
+class RefusalHandler:
+    """Graceful refusal handler"""
+    
+    TEMPLATES = {
+        "security": (
+            "Sorry, for security reasons I cannot perform this operation. "
+            "{reason}. If you have special requirements, please contact the administrator."
+        ),
+        "scope": (
+            "This request is beyond my capabilities. "
+            "{reason}. I suggest you {suggestion}."
+        ),
+        "confirmation": (
+            "This operation {description}. "
+            "To ensure safety, your explicit confirmation is required. Continue? (Yes/No)"
+        ),
+        "alternative": (
+            "I understand your need, however {reason}. "
+            "As an alternative, I can {alternative}. What do you think?"
+        )
+    }
+    
+    @classmethod
+    def refuse(
+        cls,
+        refusal_type: str,
+        **kwargs
+    ) -> str:
+        """Generate a polite refusal message"""
+        template = cls.TEMPLATES.get(refusal_type, cls.TEMPLATES["security"])
+        return template.format(**kwargs)
+```
+
+---
+
+## Progressive Autonomy
+
+Gradually increase Agent autonomy based on trust level:
+
+```python
+class TrustLevel(Enum):
+    """Trust levels"""
+    NEW_USER = 1        # New user: all operations require confirmation
+    REGULAR = 2         # Regular user: only high-risk operations require confirmation
+    TRUSTED = 3         # Trusted user: only critical operations require confirmation
+    ADMIN = 4           # Admin: fully autonomous
+
+class ProgressiveAutonomy:
+    """Progressive autonomy management"""
+    
+    def __init__(self, initial_trust: TrustLevel = TrustLevel.NEW_USER):
+        self.trust_level = initial_trust
+        self.interaction_count = 0
+        self.error_count = 0
+    
+    def needs_confirmation(self, action_risk: ActionRisk) -> bool:
+        """Determine if confirmation is needed based on trust level"""
+        confirmation_matrix = {
+            TrustLevel.NEW_USER: {
+                ActionRisk.LOW: False,
+                ActionRisk.MEDIUM: True,
+                ActionRisk.HIGH: True,
+                ActionRisk.CRITICAL: True,
+            },
+            TrustLevel.REGULAR: {
+                ActionRisk.LOW: False,
+                ActionRisk.MEDIUM: False,
+                ActionRisk.HIGH: True,
+                ActionRisk.CRITICAL: True,
+            },
+            TrustLevel.TRUSTED: {
+                ActionRisk.LOW: False,
+                ActionRisk.MEDIUM: False,
+                ActionRisk.HIGH: False,
+                ActionRisk.CRITICAL: True,
+            },
+            TrustLevel.ADMIN: {
+                ActionRisk.LOW: False,
+                ActionRisk.MEDIUM: False,
+                ActionRisk.HIGH: False,
+                ActionRisk.CRITICAL: False,
+            },
+        }
+        
+        return confirmation_matrix[self.trust_level][action_risk]
+    
+    def update_trust(self, success: bool):
+        """Update trust level based on interaction results"""
+        self.interaction_count += 1
+        
+        if not success:
+            self.error_count += 1
+        
+        # Upgrade condition: enough successful interactions, low error rate
+        error_rate = self.error_count / max(self.interaction_count, 1)
+        
+        if (self.interaction_count >= 50 
+            and error_rate < 0.05 
+            and self.trust_level.value < TrustLevel.TRUSTED.value):
+            self.trust_level = TrustLevel(self.trust_level.value + 1)
+            print(f"🆙 Trust level upgraded to: {self.trust_level.name}")
+```
+
+---
+
+## Summary
+
+| Concept | Description |
+|---------|-------------|
+| Alignment | Ensuring Agent behavior conforms to human intentions and values |
+| Behavioral Boundaries | Define risk levels and restrictions for each type of operation |
+| Refusal Policy | Politely but firmly refuse inappropriate requests |
+| Progressive Autonomy | Gradually increase autonomy based on trust level |
+
+> 🎓 **Chapter Summary**: Security and reliability are the key step from an Agent being "usable" to "trustworthy". Prompt injection defense, hallucination control, permission management, data protection, and behavioral alignment form the five lines of defense for Agent security.
+
+---
+
+[Next Chapter: Chapter 21 Deployment and Production →](../chapter_22_deployment/README.md)

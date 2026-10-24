@@ -166,7 +166,7 @@ Anthropic Skills 的最大贡献是**降低了技能创建的门槛**——你�
 
 *返回：[第9章 Skill System](./README.md)*
 
-*下一章：[第10章 LangChain 深入实战](../chapter_langchain/README.md)*
+*下一章：[第10章 Agentic-RL：智能体强化学习训练](../chapter_agentic_rl/README.md)*
 
 ---
 

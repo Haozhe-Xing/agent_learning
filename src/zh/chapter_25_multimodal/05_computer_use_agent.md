@@ -1,4 +1,4 @@
-# 23.5 Computer Use 与 GUI Agent
+# 25.5 Computer Use 与 GUI Agent
 
 > **本节目标**：掌握 Computer Use Agent 的核心架构与实现，理解 GUI 自动化在 2025-2026 年的最新进展。
 
@@ -528,7 +528,7 @@ Action 类型：
 """
 
 # OpenHands 的文件编辑策略（Search-Replace Pattern）
-SEARCH_REPLACE_EXAMPLE = '''
+SEARCH_REPLACE_EXAMPLE = """
 <<< SEARCH
  def calculate_sum(numbers):
      total = 0
@@ -540,7 +540,7 @@ SEARCH_REPLACE_EXAMPLE = '''
      """计算列表中所有数字的总和"""
      return sum(numbers)
 >>> REPLACE
-'''
+"""
 # 这种 Search-Replace 编辑模式比行号编辑更鲁棒
 # Claude Code 也采用了类似的编辑策略
 ```
@@ -703,4 +703,4 @@ SANDBOX_OPTIONS = {
 
 ---
 
-[23.6 视频理解与多模态 RAG](./06_video_and_multimodal_rag.md)
+[25.6 视频理解与多模态 RAG](./06_video_and_multimodal_rag.md)

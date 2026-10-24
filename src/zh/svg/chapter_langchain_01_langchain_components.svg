@@ -1,5 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520" role="img" aria-label="组件能做什么，宿主还要负责什么">
-<title>组件能做什么，宿主还要负责什么</title><desc>本章锁定 LangChain 1.4.6；以下是接口职责图，不是部署拓扑。</desc>
-<rect width="800" height="520" rx="16" fill="#f8fafc"/>
-<g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
-<text x="28" y="37" font-size="22" fill="#1e293b" font-weight="600" text-anchor="start">组件能做什么，宿主还要负责什么</text><text x="28" y="63" font-size="13" fill="#475569" font-weight="400" text-anchor="start">本章锁定 LangChain 1.4.6；以下是接口职责图，不是部署拓扑。</text><rect x="28" y="88" width="360" height="133" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="46" y="117" font-size="16" fill="#2563eb" font-weight="600" text-anchor="start">langchain-core</text><text x="46" y="143" font-size="14" fill="#475569" font-weight="400" text-anchor="start">提示模板 / 消息 / 解析器</text><text x="46" y="166" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Runnable：顺序、分支、并行</text><text x="46" y="189" font-size="14" fill="#475569" font-weight="400" text-anchor="start">相同接口仍需检查输入输出类型</text><rect x="412" y="88" width="360" height="133" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="430" y="117" font-size="16" fill="#2563eb" font-weight="600" text-anchor="start">langchain</text><text x="430" y="143" font-size="14" fill="#475569" font-weight="400" text-anchor="start">create_agent：模型与工具循环</text><text x="430" y="166" font-size="14" fill="#475569" font-weight="400" text-anchor="start">middleware：明确配置的拦截点</text><text x="430" y="189" font-size="14" fill="#475569" font-weight="400" text-anchor="start">循环结束不代表业务验收通过</text><rect x="28" y="242" width="360" height="133" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="46" y="271" font-size="16" fill="#2563eb" font-weight="600" text-anchor="start">提供者适配包</text><text x="46" y="297" font-size="14" fill="#475569" font-weight="400" text-anchor="start">langchain-openai 1.7.2 等</text><text x="46" y="320" font-size="14" fill="#475569" font-weight="400" text-anchor="start">真实调用需要凭据及请求边界</text><text x="46" y="343" font-size="14" fill="#475569" font-weight="400" text-anchor="start">本节用固定消息提供者离线练习</text><rect x="412" y="242" width="360" height="133" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="430" y="271" font-size="16" fill="#2563eb" font-weight="600" text-anchor="start">可选运行与观察</text><text x="430" y="297" font-size="14" fill="#475569" font-weight="400" text-anchor="start">LangGraph：显式状态与路由</text><text x="430" y="320" font-size="14" fill="#475569" font-weight="400" text-anchor="start">LangSmith：自愿配置外部追踪</text><text x="430" y="343" font-size="14" fill="#475569" font-weight="400" text-anchor="start">按任务缺口选择，不是必经升级</text><rect x="28" y="397" width="744" height="94" rx="12" fill="#eff6ff" stroke="#93c5fd"/><text x="46" y="425" font-size="16" fill="#2563eb" font-weight="600" text-anchor="start">宿主责任：来源与权限、预算、失败状态、独立验收</text><text x="46" y="451" font-size="14" fill="#475569" font-weight="400" text-anchor="start">配置并实测这些边界；框架接口本身不提供完整业务保证。</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" width="820" height="480">
+  <defs>
+    <style>
+      text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }
+    </style>
+  </defs>
+  <!-- 背景 -->
+  <rect width="820" height="480" rx="16" fill="#f8f9fa"/>
+  <!-- 标题 -->
+  <text x="410" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#2c3e50">LangChain 核心组件体系</text>
+
+  <!-- 根节点 -->
+  <rect x="300" y="55" width="220" height="44" rx="10" fill="#2c3e50"/>
+  <text x="410" y="82" text-anchor="middle" font-size="14" font-weight="bold" fill="white">LangChain Core</text>
+
+  <!-- 连接线到5个子节点 -->
+  <line x1="410" y1="99" x2="410" y2="118" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="410" y1="118" x2="90" y2="118" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="410" y1="118" x2="730" y2="118" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="90" y1="118" x2="90" y2="138" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="250" y1="118" x2="250" y2="138" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="410" y1="118" x2="410" y2="138" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="570" y1="118" x2="570" y2="138" stroke="#95a5a6" stroke-width="1.5"/>
+  <line x1="730" y1="118" x2="730" y2="138" stroke="#95a5a6" stroke-width="1.5"/>
+
+  <!-- 5个主模块 -->
+  <!-- Model I/O -->
+  <rect x="20" y="138" width="140" height="40" rx="8" fill="#3498db"/>
+  <text x="90" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Model I/O</text>
+  <text x="90" y="169" text-anchor="middle" font-size="10" fill="#d6eaf8">模型交互层</text>
+
+  <!-- Data Connection -->
+  <rect x="180" y="138" width="140" height="40" rx="8" fill="#27ae60"/>
+  <text x="250" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Data Connection</text>
+  <text x="250" y="169" text-anchor="middle" font-size="10" fill="#d5f5e3">数据连接层</text>
+
+  <!-- Chains -->
+  <rect x="340" y="138" width="140" height="40" rx="8" fill="#8e44ad"/>
+  <text x="410" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Chains</text>
+  <text x="410" y="169" text-anchor="middle" font-size="10" fill="#e8daef">处理链</text>
+
+  <!-- Agents -->
+  <rect x="500" y="138" width="140" height="40" rx="8" fill="#e67e22"/>
+  <text x="570" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Agents</text>
+  <text x="570" y="169" text-anchor="middle" font-size="10" fill="#fdebd0">智能体</text>
+
+  <!-- Memory -->
+  <rect x="660" y="138" width="140" height="40" rx="8" fill="#e74c3c"/>
+  <text x="730" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Memory</text>
+  <text x="730" y="169" text-anchor="middle" font-size="10" fill="#fadbd8">记忆</text>
+
+  <!-- 子项连接线 -->
+  <line x1="90" y1="178" x2="90" y2="200" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="250" y1="178" x2="250" y2="200" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="410" y1="178" x2="410" y2="200" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="570" y1="178" x2="570" y2="200" stroke="#95a5a6" stroke-width="1.2"/>
+  <line x1="730" y1="178" x2="730" y2="200" stroke="#95a5a6" stroke-width="1.2"/>
+
+  <!-- Model I/O 子项 -->
+  <rect x="18" y="200" width="144" height="100" rx="6" fill="white" stroke="#3498db" stroke-width="1.2"/>
+  <text x="90" y="218" text-anchor="middle" font-size="10" fill="#2980b9">LLMs / Chat Models</text>
+  <text x="90" y="218" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="16">调用各种语言模型</text>
+  <line x1="30" y1="242" x2="150" y2="242" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="90" y="258" text-anchor="middle" font-size="10" fill="#2980b9">Prompts</text>
+  <text x="90" y="258" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">提示词模板管理</text>
+  <line x1="30" y1="280" x2="150" y2="280" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="90" y="294" text-anchor="middle" font-size="10" fill="#2980b9">Output Parsers</text>
+
+  <!-- Data Connection 子项 -->
+  <rect x="178" y="200" width="144" height="130" rx="6" fill="white" stroke="#27ae60" stroke-width="1.2"/>
+  <text x="250" y="218" text-anchor="middle" font-size="10" fill="#1e8449">Document Loaders</text>
+  <text x="250" y="218" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">加载各种文档</text>
+  <line x1="190" y1="240" x2="310" y2="240" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="250" y="254" text-anchor="middle" font-size="10" fill="#1e8449">Text Splitters</text>
+  <text x="250" y="254" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">文本分割</text>
+  <line x1="190" y1="276" x2="310" y2="276" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="250" y="290" text-anchor="middle" font-size="10" fill="#1e8449">Embedding Models</text>
+  <text x="250" y="290" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">向量嵌入</text>
+  <line x1="190" y1="312" x2="310" y2="312" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="250" y="322" text-anchor="middle" font-size="10" fill="#1e8449">Vector Stores</text>
+
+  <!-- Chains 子项 -->
+  <rect x="338" y="200" width="144" height="100" rx="6" fill="white" stroke="#8e44ad" stroke-width="1.2"/>
+  <text x="410" y="218" text-anchor="middle" font-size="10" fill="#7d3c98">LLMChain</text>
+  <text x="410" y="218" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">最基础的链</text>
+  <line x1="350" y1="240" x2="470" y2="240" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="410" y="254" text-anchor="middle" font-size="10" fill="#7d3c98">ConversationChain</text>
+  <text x="410" y="254" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">对话链</text>
+  <line x1="350" y1="276" x2="470" y2="276" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="410" y="290" text-anchor="middle" font-size="10" fill="#7d3c98">LCEL Chains</text>
+  <text x="410" y="290" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">新式声明语法</text>
+
+  <!-- Agents 子项 -->
+  <rect x="498" y="200" width="144" height="100" rx="6" fill="white" stroke="#e67e22" stroke-width="1.2"/>
+  <text x="570" y="218" text-anchor="middle" font-size="10" fill="#ca6f1e">Tools</text>
+  <text x="570" y="218" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">工具定义</text>
+  <line x1="510" y1="240" x2="630" y2="240" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="570" y="254" text-anchor="middle" font-size="10" fill="#ca6f1e">AgentExecutor</text>
+  <text x="570" y="254" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">执行环境</text>
+  <line x1="510" y1="276" x2="630" y2="276" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="570" y="290" text-anchor="middle" font-size="10" fill="#ca6f1e">Agent Types</text>
+  <text x="570" y="290" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">ReAct, OpenAI等</text>
+
+  <!-- Memory 子项 -->
+  <rect x="658" y="200" width="144" height="80" rx="6" fill="white" stroke="#e74c3c" stroke-width="1.2"/>
+  <text x="730" y="218" text-anchor="middle" font-size="10" fill="#c0392b">ConversationBuffer</text>
+  <text x="730" y="218" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">对话历史记忆</text>
+  <line x1="670" y1="240" x2="790" y2="240" stroke="#ecf0f1" stroke-width="1"/>
+  <text x="730" y="254" text-anchor="middle" font-size="10" fill="#c0392b">VectorStoreMemory</text>
+  <text x="730" y="254" text-anchor="middle" font-size="10" fill="#7f8c8d" dy="14">向量记忆</text>
+
+  <!-- LCEL 说明 -->
+  <rect x="200" y="380" width="420" height="50" rx="10" fill="#eaf4fb" stroke="#3498db" stroke-width="1.5"/>
+  <text x="410" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">💡 LCEL 管道语法（推荐）</text>
+  <text x="410" y="420" text-anchor="middle" font-size="11" fill="#5d6d7e">chain = prompt | llm | output_parser  （| 符号连接各组件）</text>
+</svg>

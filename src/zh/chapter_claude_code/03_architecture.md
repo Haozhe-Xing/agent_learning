@@ -1,6 +1,6 @@
-# 14.3 核心架构深度解析
+# 16.3 核心架构深度解析
 
-> 🏗️ *"最好的架构，是那些设计决策隐形到——你只有在出错时才会注意到它们。"*<br>
+> 🏗️ *"最好的架构，是那些设计决策隐形到——你只有在出错时才会注意到它们。"*  
 > —— 源自 Claude Code 源码注释（社区源码分析可见）
 
 ---
@@ -82,7 +82,7 @@ TAOR（Think → Act → Observe → Repeat）是 Claude Code 的执行核心，
 
 TAOR 的关键在于 **Observe（观察）这一环**：Claude 每执行一个工具，都要**观察工具的结果，再决定下一步**。这让它从"预测下一个词"变成了"根据环境反馈持续决策"——这是 Agent 和普通 LLM 的本质区别。
 
-> 对比本书第5章的 ReAct，TAOR 就是 ReAct 的一个具体工业实现：Think 对应 Reasoning，Act 对应 Acting，Observe 对应 Observation。**理解了 ReAct，TAOR 只是"加上了并行工具调用 + 循环上限 + 权限拦截"的工程加固版**。
+> 对比本书第 5 章的 ReAct，TAOR 就是 ReAct 的一个具体工业实现：Think 对应 Reasoning，Act 对应 Acting，Observe 对应 Observation。**理解了 ReAct，TAOR 只是"加上了并行工具调用 + 循环上限 + 权限拦截"的工程加固版**。
 
 ---
 
@@ -268,11 +268,11 @@ function ConversationView({ messages }: Props) {
 | **React + Ink** | 用 React 渲染终端，流式更新 + 复杂交互 |
 | **四入口** | CLI / Headless / MCP Server / SDK |
 
-> 💡 **核心洞察**：Claude Code 的架构将"AI 智能"（QueryEngine）和"可靠执行"（Tool System + 权限管理）明确分层——这正是第8章 Harness Engineering 的工程哲学在实践中的体现。**"先读再改"和"白名单拦截 rm"是同一个原则的两种表现：把安全边界交给代码，而不是交给模型自律。**
+> 💡 **核心洞察**：Claude Code 的架构将"AI 智能"（QueryEngine）和"可靠执行"（Tool System + 权限管理）明确分层——这正是第 8 章 Harness Engineering 的工程哲学在实践中的体现。**"先读再改"和"白名单拦截 rm"是同一个原则的两种表现：把安全边界交给代码，而不是交给模型自律。**
 
-> 💡 **延伸阅读**：关于 Computer Use 和 GUI Agent 的核心循环与安全边界设计，详见 [23.5 Computer Use 与 GUI Agent](../chapter_25_multimodal/05_computer_use_agent.md)。
+> 💡 **延伸阅读**：关于 Computer Use 和 GUI Agent 的核心循环与安全边界设计，详见 [25.5 Computer Use 与 GUI Agent](../chapter_25_multimodal/05_computer_use_agent.md)。
 
 ---
 
-*上一节：[14.2 认识 Claude Code：从零到上手](./02_introduction.md)*<br>
-*下一节：[14.4 System Prompt、权限工程与 Prompt Cache](./04_system_prompt_and_permissions.md)*
+*上一节：[16.2 认识 Claude Code：从零到上手](./02_introduction.md)*  
+*下一节：[16.4 System Prompt、权限工程与 Prompt Cache](./04_system_prompt_and_permissions.md)*

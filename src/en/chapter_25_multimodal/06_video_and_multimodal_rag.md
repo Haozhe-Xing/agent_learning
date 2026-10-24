@@ -1,4 +1,4 @@
-# 23.6 Video Understanding and Multimodal RAG
+# 25.6 Video Understanding and Multimodal RAG
 
 > **Goal of this section**: Master how to implement video-understanding Agents, and understand the architecture design and engineering practice of multimodal RAG.
 

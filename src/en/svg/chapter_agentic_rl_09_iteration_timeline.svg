@@ -35,7 +35,7 @@
   <rect x="235" y="150" width="95" height="28" rx="8" fill="#27AE60"/>
   <rect x="235" y="166" width="95" height="12" fill="#27AE60"/>
   <text x="282" y="169" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Week 2</text>
-  <text x="282" y="194" text-anchor="middle" font-size="11" fill="#1E8449">Filter &amp; selection</text>
+  <text x="282" y="194" text-anchor="middle" font-size="11" fill="#1E8449">Filter & selection</text>
   <text x="282" y="212" text-anchor="middle" font-size="12" fill="#1A5276" font-weight="bold">~3,000</text>
   <text x="282" y="227" text-anchor="middle" font-size="11" fill="#5D6D7E">high-quality samples</text>
   <text x="282" y="247" text-anchor="middle" font-size="11" fill="#1E8449">↓ SFT fine-tuning</text>
@@ -61,7 +61,7 @@
   <rect x="465" y="100" width="95" height="28" rx="8" fill="#8E44AD"/>
   <rect x="465" y="116" width="95" height="12" fill="#8E44AD"/>
   <text x="512" y="119" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Weeks 5-6</text>
-  <text x="512" y="144" text-anchor="middle" font-size="11" fill="#6C3483">Filter &amp; selection</text>
+  <text x="512" y="144" text-anchor="middle" font-size="11" fill="#6C3483">Filter & selection</text>
   <text x="512" y="162" text-anchor="middle" font-size="11" fill="#6C3483">+ DPO comparison</text>
   <text x="512" y="181" text-anchor="middle" font-size="11" fill="#5D6D7E">Add failure trajectories</text>
   <text x="512" y="199" text-anchor="middle" font-size="11" fill="#5D6D7E">Positive/negative contrastive training</text>

@@ -1,4 +1,4 @@
-# Appendix F: Development Environment Setup
+# Chapter 2: Development Environment Setup
 
 > A well-sharpened tool makes the work easier. A well-configured development environment will make your Agent development twice as efficient.
 
@@ -21,14 +21,14 @@ After completing this chapter, you will be able to:
 
 | Section | Content | Estimated Time |
 |---------|---------|---------------|
-| F.1 Python Environment & Dependency Management | venv, conda, uv comparison and usage | 20 min |
-| F.2 Key Library Installation | LangChain, OpenAI SDK, etc. | 15 min |
-| F.3 API Key Management | .env files, environment variable best practices | 10 min |
-| F.4 Hello Agent! | Your first complete Agent | 30 min |
+| 2.1 Python Environment & Dependency Management | venv, conda, uv comparison and usage | 20 min |
+| 2.2 Key Library Installation | LangChain, OpenAI SDK, etc. | 15 min |
+| 2.3 API Key Management | .env files, environment variable best practices | 10 min |
+| 2.4 Hello Agent! | Your first complete Agent | 30 min |
 
 ## Prerequisites
 
-- Python 3.11 or higher installed
+- Python 3.10 or higher installed
 - Basic command-line experience
 - An OpenAI account registered (or another LLM service)
 
@@ -52,4 +52,4 @@ After completing this chapter, you will be able to:
 
 ---
 
-*Next section: [F.1 Python Environment & Dependency Management](./01_python_setup.md)*
+*Next section: [2.1 Python Environment & Dependency Management](./01_python_setup.md)*

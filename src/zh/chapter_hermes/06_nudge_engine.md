@@ -1,4 +1,4 @@
-# 13.6 Nudge Engine 与跨会话学习
+# 15.6 Nudge Engine 与跨会话学习
 
 > ☤ *"最聪明的 Agent 不是反应最快，而是会主动想'我学到了什么'的那个。"*
 
@@ -6,7 +6,7 @@
 
 ## 一、Nudge Engine 是什么
 
-[13.4节讨论的技能候选流程](./04_self_evolving_skills.md)是"被动"的——它只在每次任务完成后评估。Nudge Engine 是**主动**的：每隔一段时间，Hermes 会**自己**问自己：
+Hermes 的 Self-Evolving（15.4）是"被动"的——它只在每次任务完成后评估。Nudge Engine 是**主动**的：每隔一段时间，Hermes 会**自己**问自己：
 
 - 我最近学到了什么值得沉淀的？
 - 我对用户的理解有变化吗？
@@ -262,4 +262,4 @@ Hermes 的 Nudge Engine 在产品层做了 Reflexion / Self-Refine 的事——�
 
 ---
 
-*下一节：[13.7 借鉴哲学：从 Hermes 学到的"自进化"工程原则](./07_lessons_philosophy.md)*
+*下一节：[15.7 借鉴哲学：从 Hermes 学到的"自进化"工程原则](./07_lessons_philosophy.md)*

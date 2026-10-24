@@ -1,38 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="920" height="460" viewBox="0 0 920 460" role="img" aria-labelledby="title desc">
-  <title id="title">OODA: public state and responsibilities</title>
-  <desc id="desc">Public observations, requirement comparison, bounded decisions and feedback; acceptance is checked independently.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320">
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#64748b" />
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
     </marker>
   </defs>
-  <rect width="920" height="460" fill="#f8fafc" />
-  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <text x="460" y="35" font-size="22" fill="#0f172a" font-weight="bold" text-anchor="middle">OODA: public state and responsibilities</text>
-    <text x="460" y="68" font-size="15" fill="#334155" font-weight="normal" text-anchor="middle">Release brief: approval record, budget and rollback condition</text>
-    <rect x="24" y="108" width="200" height="122" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
-    <text x="124.0" y="136" font-size="17" fill="#2563eb" font-weight="bold" text-anchor="middle">Observe</text>
-    <text x="124.0" y="163" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Read three source records</text>
-    <text x="124.0" y="186" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Keep value and source</text>
-    <path d="M 226 169 L 246 169" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
-    <rect x="248" y="108" width="200" height="122" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
-    <text x="348.0" y="136" font-size="17" fill="#2563eb" font-weight="bold" text-anchor="middle">Orient</text>
-    <text x="348.0" y="163" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Compare frozen requirements</text>
-    <text x="348.0" y="186" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Identify gaps and conflicts</text>
-    <path d="M 450 169 L 470 169" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
-    <rect x="472" y="108" width="200" height="122" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
-    <text x="572.0" y="136" font-size="17" fill="#2563eb" font-weight="bold" text-anchor="middle">Decide</text>
-    <text x="572.0" y="163" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Choose a registered action</text>
-    <text x="572.0" y="186" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Check the remaining budget</text>
-    <path d="M 674 169 L 694 169" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
-    <rect x="696" y="108" width="200" height="122" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
-    <text x="796.0" y="136" font-size="17" fill="#2563eb" font-weight="bold" text-anchor="middle">Act</text>
-    <text x="796.0" y="163" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Run load / compose</text>
-    <text x="796.0" y="186" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Record results or errors</text>
-    <path d="M 820 232 L 820 278 L 124 278 L 124 234" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
-    <text x="460" y="270" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">New results update state; errors or exhausted budgets can end the loop</text>
-    <rect x="24" y="310" width="872" height="72" rx="9" fill="#e8eef7" />
-    <text x="460" y="335" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Independent acceptance: source support + all three requirements must pass</text>
-    <text x="460" y="359" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">These are responsibilities, not four required model calls or a private reasoning log.</text>
-  </g>
+  <rect width="600" height="320" rx="14" fill="#f0f4f8"/>
+  <text x="300" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OODA Decision Loop</text>
+
+  <!-- 4 nodes -->
+  <rect x="220" y="50" width="160" height="50" rx="10" fill="#3498db"/>
+  <text x="300" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="white">👁 Observe</text>
+  <text x="300" y="90" text-anchor="middle" font-size="11" fill="#d6eaf8">Gather and organize current environment info</text>
+
+  <rect x="380" y="140" width="160" height="50" rx="10" fill="#27ae60"/>
+  <text x="460" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🧭 Orient</text>
+  <text x="460" y="180" text-anchor="middle" font-size="11" fill="#d5f5e3">Understand situation in knowledge framework</text>
+
+  <rect x="220" y="230" width="160" height="50" rx="10" fill="#e67e22"/>
+  <text x="300" y="252" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🎯 Decide</text>
+  <text x="300" y="270" text-anchor="middle" font-size="11" fill="#fdebd0">Formulate a concrete action plan</text>
+
+  <rect x="60" y="140" width="160" height="50" rx="10" fill="#8e44ad"/>
+  <text x="140" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⚡ Act</text>
+  <text x="140" y="180" text-anchor="middle" font-size="11" fill="#e8daef">Execute plan, generate response</text>
+
+  <!-- Loop arrows -->
+  <line x1="340" y1="100" x2="400" y2="140" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="460" y1="190" x2="380" y2="230" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="260" y1="230" x2="200" y2="190" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <line x1="140" y1="140" x2="260" y2="100" stroke="#2c3e50" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- Feedback loop label -->
+  <text x="300" y="175" text-anchor="middle" font-size="12" fill="#e74c3c" font-weight="bold">↺ Feedback Loop</text>
+  <text x="300" y="192" text-anchor="middle" font-size="11" fill="#7f8c8d">Each action result</text>
+  <text x="300" y="207" text-anchor="middle" font-size="11" fill="#7f8c8d">re-triggers observation</text>
+
+  <!-- Bottom note -->
+  <text x="300" y="300" text-anchor="middle" font-size="11" fill="#95a5a6">The agent's decision process is fundamentally a continuous OODA loop</text>
 </svg>

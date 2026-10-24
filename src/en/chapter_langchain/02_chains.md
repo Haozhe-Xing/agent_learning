@@ -1,99 +1,217 @@
-# 10.2 Chains: Building Processing Pipelines
+# 12.2 Chain: Building Processing Pipelines
 
-The previous section exercised one model-message interface. This section adds normalization, one classification, routing, and result gathering. The task is an **offline customer-service intake exercise**: English return/refund substrings are supported; other requests ask for clarification. The fixed provider supplies neither real intent recognition nor retrieval. Chinese questions, negation, and ambiguous keywords are outside this rule's quality claims.
+A Chain is a core concept in LangChain — it connects multiple processing steps into a reusable pipeline. You can think of a Chain as an assembly line: raw materials (user input) enter from one end, pass through multiple processing stations (prompt templates, LLM, parsers, etc.), and exit from the other end as finished products (structured results).
 
-Use the [10.1 environment](./01_langchain_overview.md). Complete code is in `reference_code/langchain_patterns/workflows.py`.
+In LangChain, Chains are built using **LCEL (LangChain Expression Language)** syntax. The core symbol of LCEL is `|` (the pipe operator), which works similarly to pipes in Unix command lines — the output of the previous component automatically becomes the input of the next.
 
-## Start with Data Flow
+This section walks you through four common Chain patterns to master the core usage of LCEL.
 
-![LCEL sequence, preserved input, parallel, and conditional patterns](../svg/chapter_langchain_02_chain_patterns.svg)
+![LCEL Four Chain Patterns](../svg/chapter_langchain_02_chain_patterns.svg)
 
-| Composition | Input → output | Exercise responsibility |
-|---|---|---|
-| `A | B` | A's value becomes B's input | Normalize before classification |
-| `RunnablePassthrough.assign` | Preserve dictionary fields and add others | Classify once and retain `intent` |
-| `RunnableBranch` | First matching branch or default | Distinguish supported work from clarification |
-| `RunnableParallel` | Same input → dictionary of branch outputs | Retain question, intent, and answer |
+## LCEL: Modern Chain Syntax
 
-These are real control-flow operators. A Chain is not limited to a linear sequence. Graph adoption depends on state lifetimes, recovery, and human decisions, rather than the presence of an `if`. The [official Runnable entry](https://reference.langchain.com/python/langchain-core/runnables) lists these primitives.
+### Basic Setup
 
-## A Complete Runnable Intake Flow
-
-`normalize_request` accepts a nonempty `question` and rejects extra fields. `classify_fixture` is an explicit English substring rule. Both are short ordinary Python functions in the companion file; read them before replacing classification.
+First, import the necessary modules. The core building blocks of LCEL include: `ChatPromptTemplate` (prompt template), `ChatOpenAI` (LLM), `StrOutputParser` (string parser), and various `Runnable` components.
 
 ```python
-from langchain_core.runnables import (
-    RunnableLambda, RunnablePassthrough, RunnableParallel, RunnableBranch,
-)
-from langsmith import tracing_context
-from reference_code.langchain_patterns import FIXTURE_ANSWER, build_answer_chain
-from reference_code.langchain_patterns.workflows import normalize_request, classify_fixture
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.runnables import RunnableParallel, RunnableLambda, RunnablePassthrough
+from operator import itemgetter
 
-policy = RunnableLambda(lambda x: {
-    "fact": FIXTURE_ANSWER, "question": x["question"],
-}) | build_answer_chain()
-route = RunnableBranch(
-    (lambda x: x["intent"] == "policy", policy),
-    RunnableLambda(lambda _: "Unsupported fixture question; clarify the task."),
-)
-flow = (
-    RunnableLambda(normalize_request)
-    | RunnablePassthrough.assign(intent=RunnableLambda(classify_fixture))
-    | RunnableParallel(
-        question=RunnableLambda(lambda x: x["question"]),
-        intent=RunnableLambda(lambda x: x["intent"]), answer=route,
-    )
-)
-with tracing_context(enabled=False):
-    result = flow.invoke({"question": "  Refund policy?  "})
-assert result == {"question": "Refund policy?", "intent": "policy", "answer": FIXTURE_ANSWER}
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+# ============================
+# Basic Chain: Prompt → LLM → Parse
+# ============================
+
+# Translation chain
+translate_prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a professional translator. Translate the text into {target_lang}."),
+    ("human", "{text}")
+])
+
+translate_chain = translate_prompt | llm | StrOutputParser()
+
+result = translate_chain.invoke({
+    "target_lang": "French",
+    "text": "Artificial intelligence is changing the world"
+})
 print(result)
-```
 
-The result retains the normalized question. Conditions do not call the model again; the default branch states the fixture's limitation. A future model classifier would be a budgeted, fallible call requiring independent misclassification cases. Retaining `_intent` does not create a cross-request cache.
+# ============================
+# Sequential Chain: Step-by-step processing
+# ============================
 
-`RunnableParallel` can run independent branches concurrently; it must not run a report before the statistics that report needs. No latency gain or real concurrent model requests were measured here. If one parallel branch raises, default `invoke` does not return a complete success dictionary. External side effects that already happened are not automatically rolled back.
+# A sequential chain connects multiple steps — the output of one step becomes the input of the next.
+# This example is a two-step process: "first extract keywords, then generate a summary combining the original text."
+# Key challenge: subsequent steps need to access both the previous step's result and the original input.
+# Solution: use RunnableParallel to simultaneously execute extraction and pass the original input.
+keyword_prompt = ChatPromptTemplate.from_messages([
+    ("system", "Extract 3 keywords from the text, separated by commas. Output only the keywords."),
+    ("human", "{text}")
+])
 
-## Keep Per-Input Batch Failures
+summary_prompt = ChatPromptTemplate.from_messages([
+    ("system", "Based on the following keywords and original text, generate a concise summary."),
+    ("human", "Keywords: {keywords}\nOriginal text: {original_text}")
+])
 
-```python
-from langsmith import tracing_context
-from reference_code.langchain_patterns import build_intake_flow
-
-with tracing_context(enabled=False):
-    results = build_intake_flow().batch(
-        [{"question": "refund policy?"}, {"question": ""}],
-        config={"max_concurrency": 2}, return_exceptions=True,
+# Approach: use RunnablePassthrough to pass the original input
+analysis_chain = (
+    RunnableParallel(
+        keywords=keyword_prompt | llm | StrOutputParser(),
+        original_text=RunnablePassthrough()
     )
-assert results[0]["intent"] == "policy"
-assert isinstance(results[1], ValueError)
-print([type(item).__name__ for item in results])
+    | RunnableLambda(lambda x: {
+        "keywords": x["keywords"],
+        "original_text": x["original_text"]["text"]
+    })
+    | summary_prompt | llm | StrOutputParser()
+)
+
+result = analysis_chain.invoke({"text": "Python is a powerful programming language widely used in AI development"})
+print(result)
+
+# ============================
+# Parallel Chain: Execute multiple tasks simultaneously
+# ============================
+
+# RunnableParallel allows multiple chains to run simultaneously, ideal for scenarios
+# where you need to perform multiple independent analyses on the same input.
+# Each branch executes independently without interfering with others,
+# and the final results are merged into a dictionary. This is much faster than sequential calls.
+
+def analyze_text_parallel(text: str) -> dict:
+    """Perform sentiment analysis and summary generation simultaneously"""
+    
+    sentiment_prompt = ChatPromptTemplate.from_messages([
+        ("system", "Perform sentiment analysis on the text. Return only: positive/negative/neutral"),
+        ("human", "{text}")
+    ])
+    
+    summary_prompt = ChatPromptTemplate.from_messages([
+        ("system", "Summarize the main content of the text in one sentence."),
+        ("human", "{text}")
+    ])
+    
+    keywords_prompt = ChatPromptTemplate.from_messages([
+        ("system", "Extract 5 keywords from the text, separated by commas."),
+        ("human", "{text}")
+    ])
+    
+    # Execute in parallel
+    parallel_chain = RunnableParallel(
+        sentiment=sentiment_prompt | llm | StrOutputParser(),
+        summary=summary_prompt | llm | StrOutputParser(),
+        keywords=keywords_prompt | llm | StrOutputParser()
+    )
+    
+    return parallel_chain.invoke({"text": text})
+
+result = analyze_text_parallel("The new version released today fixed many bugs and significantly improved performance!")
+print(f"Sentiment: {result['sentiment']}")
+print(f"Summary: {result['summary']}")
+print(f"Keywords: {result['keywords']}")
+
+# ============================
+# Conditional Chain: Route based on conditions
+# ============================
+
+# A conditional chain (RunnableBranch) selects different processing branches based on input characteristics.
+# Typical scenario: a customer service system routes to different specialized chains
+# based on user intent (technical issue, business inquiry, complaint, etc.).
+#
+# ⚠️ Performance note: RunnableBranch checks each condition function sequentially.
+# If a condition function calls an LLM, you should classify once and cache the result
+# to avoid repeated LLM calls for each condition branch (see the optimized implementation below).
+
+from langchain_core.runnables import RunnableBranch
+
+def classify_intent(input_dict: dict) -> str:
+    """Classify user intent"""
+    text = input_dict.get("text", "")
+    
+    classify_prompt = ChatPromptTemplate.from_messages([
+        ("system", "Determine the intent type of the following text. Return only: technical issue/business inquiry/complaint/other"),
+        ("human", "{text}")
+    ])
+    
+    intent = (classify_prompt | llm | StrOutputParser()).invoke({"text": text})
+    return intent.strip()
+
+# Different intents map to different processing chains
+tech_chain = ChatPromptTemplate.from_messages([
+    ("system", "You are a technical support engineer. Provide detailed technical answers."),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+business_chain = ChatPromptTemplate.from_messages([
+    ("system", "You are a business consultant. Provide professional business advice."),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+complaint_chain = ChatPromptTemplate.from_messages([
+    ("system", "You are a customer relations manager. Handle complaints with patience and empathy."),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+default_chain = ChatPromptTemplate.from_messages([
+    ("system", "You are a general customer service assistant."),
+    ("human", "{text}")
+]) | llm | StrOutputParser()
+
+# Routing chain
+# Note: classify once with RunnableLambda and cache the result in the dict to avoid multiple LLM calls
+branch_chain = (
+    RunnableLambda(lambda x: {**x, "_intent": classify_intent(x)})
+    | RunnableBranch(
+        (lambda x: "technical issue" in x["_intent"], tech_chain),
+        (lambda x: "business inquiry" in x["_intent"], business_chain),
+        (lambda x: "complaint" in x["_intent"], complaint_chain),
+        default_chain  # Default branch
+    )
+)
+
+# Test
+response = branch_chain.invoke({"text": "The API is returning a 500 error, what should I do?"})
+print(response)
 ```
 
-The first result is a dictionary and the second is a `ValueError`. `return_exceptions=True` lets the caller handle each input; it does not turn errors into accepted answers. `max_concurrency` limits this batch, not a service-wide quota or requests per second.
+## Streaming Output Chains
 
-A script can use the asynchronous interface as follows:
+In real applications, users don't want to wait for the LLM to generate a complete response before seeing any content. Streaming output lets responses appear character by character (similar to ChatGPT's typing effect), greatly improving user experience. All chains built with LCEL natively support streaming output without any additional code changes.
 
 ```python
+# LCEL natively supports streaming output
+async def stream_response(question: str):
+    """Streaming output"""
+    chain = ChatPromptTemplate.from_messages([
+        ("system", "You are a helpful assistant."),
+        ("human", "{question}")
+    ]) | llm | StrOutputParser()
+    
+    print("Answer: ", end="", flush=True)
+    async for chunk in chain.astream({"question": question}):
+        print(chunk, end="", flush=True)
+    print()  # New line
+
 import asyncio
-from langsmith import tracing_context
-from reference_code.langchain_patterns import build_intake_flow
-
-async def main():
-    with tracing_context(enabled=False):
-        return await build_intake_flow().ainvoke({"question": "refund"})
-
-assert asyncio.run(main())["intent"] == "policy"
+asyncio.run(stream_response("What is quantum entanglement?"))
 ```
 
-Inside an existing notebook/service event loop, `await main()` instead of nesting `asyncio.run`. An `ainvoke` name does not establish native asynchronous I/O; a default Runnable implementation may run synchronous work in a thread.
+---
 
-## When Does the Workflow End?
+## Summary
 
-A scripted response is an execution result. Business acceptance still requires the question scope, factual evidence, and required points. The `unsupported` route requests clarification; it is distinct from generation failure and an answered question. See [10.5](./05_practice_customer_service.md) for actual fixture order facts and write permissions.
+LCEL (`|` pipe syntax) is LangChain's core construction method:
+- **Sequential chain**: pass results between steps
+- **Parallel chain**: `RunnableParallel` executes simultaneously
+- **Conditional chain**: `RunnableBranch` routes by condition
+- **Streaming output**: all LCEL chains support `.stream()` and `.astream()`
 
-Exercise: submit a blank question, an unsupported question, and an extra `permissions` field. Record where each ends. Then make a parallel branch raise `PermissionError` and confirm that remaining fields are not packaged as complete success. Do not remove validation to make a case pass.
+---
 
-*Previous: [10.1 Architecture Overview](./01_langchain_overview.md)*
-
-*Next: [10.3 Building Agents with LangChain](./03_langchain_agents.md)*
+*Next section: [12.3 Building Agents with LangChain](./03_langchain_agents.md)*

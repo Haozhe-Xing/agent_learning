@@ -18,10 +18,8 @@ class Agent:
     """
 
     def __init__(self, provider, tools: list[Tool] | None = None, max_iterations: int = 5):
-        if max_iterations < 1:
-            raise ValueError("max_iterations must be positive")
         self.provider = provider
-        self.tools = {t.name: t for t in (DEFAULT_TOOLS if tools is None else tools)}
+        self.tools = {t.name: t for t in (tools or DEFAULT_TOOLS)}
         self.max_iterations = max_iterations
 
     def _tool_specs(self) -> list[dict]:
@@ -33,17 +31,15 @@ class Agent:
             completion = self.provider.complete(messages, tools=self._tool_specs())
             if not completion.tool_calls:
                 return completion.content
-            calls = [{**call, "id": call.get("id", f"call-{len(messages)}-{index}")}
-                     for index, call in enumerate(completion.tool_calls)]
-            messages.append(Message("assistant", completion.content, tool_calls=calls))
-            for tc in calls:
+            for tc in completion.tool_calls:
                 tool = self.tools.get(tc["name"])
                 if tool is None:
-                    messages.append(Message("tool", f"unknown tool: {tc['name']}", tool_call_id=tc["id"]))
+                    messages.append(Message("tool", f"unknown tool: {tc['name']}"))
                     continue
                 try:
                     result = tool.run(**tc["arguments"])
                 except Exception as exc:  # noqa: BLE001 - surfaced to the model
                     result = f"error: {exc}"
-                messages.append(Message("tool", str(result), tool_call_id=tc["id"]))
-        return "Agent iteration budget exhausted; task incomplete."
+                messages.append(Message("tool", str(result)))
+        # Budget exhausted: ask the model for a final summary.
+        return self.provider.complete(messages, tools=self._tool_specs()).content

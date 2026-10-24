@@ -1,30 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 590" role="img" aria-labelledby="title desc" font-family="Arial, PingFang SC, sans-serif">
-<title id="title">Generative Agents: Information Flow</title><desc id="desc">Observations enter a memory stream. Retrieval informs planning. Reflection reads memories and writes inferences back; these are not three storage tiers.</desc>
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8Z" fill="#475569"/></marker></defs>
-<rect width="560" height="590" rx="12" fill="#fff"/>
-<text x="280" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">Generative Agents: Information Flow</text>
-<rect x="40" y="60" width="480" height="75" rx="9" fill="#eff6ff" stroke="#64748b"/>
-<text x="280.0" y="88" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Observations</text>
-<text x="280.0" y="115" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Events, conversations, and actions</text>
-<path d="M280,135 L280,163" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-<rect x="40" y="165" width="480" height="95" rx="9" fill="#eff6ff" stroke="#64748b"/>
-<text x="280.0" y="193" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Memory stream</text>
-<text x="280.0" y="220" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Observations, reflections, and plans</text>
-<text x="280.0" y="244" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Times and source links</text>
-<path d="M155,260 L155,300" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-<path d="M405,260 L405,300" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
-<rect x="30" y="302" width="250" height="110" rx="9" fill="#eff6ff" stroke="#64748b"/>
-<text x="155.0" y="330" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Retrieval</text>
-<text x="155.0" y="357" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Recency and importance</text>
-<text x="155.0" y="381" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Situational relevance</text>
-<rect x="305" y="302" width="225" height="110" rx="9" fill="#f5f3ff" stroke="#64748b"/>
-<text x="417.5" y="330" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Reflection</text>
-<text x="417.5" y="357" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Derive inferences</text>
-<text x="417.5" y="381" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Write back to memory</text>
-<path d="M155,412 L155,450" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-<rect x="40" y="452" width="480" height="75" rx="9" fill="#ecfdf5" stroke="#64748b"/>
-<text x="280.0" y="480" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Planning and reaction</text>
-<text x="280.0" y="507" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Use retrieved content to generate behavior</text>
-<text x="280" y="556" text-anchor="middle" font-size="16" font-weight="normal" fill="#1e293b">A reflection is not a verified fact.</text>
-<text x="280" y="580" text-anchor="middle" font-size="14" font-weight="normal" fill="#475569">Book diagram after Park et al., v2 §4 (2023)</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 340" width="520" height="340">
+  <rect width="520" height="340" fill="#f8f9fa" rx="12"/>
+  <text x="260" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Generative Agents — Three-Layer Memory Architecture</text>
+
+  <!-- Layer 1: Memory Stream -->
+  <rect x="30" y="48" width="460" height="80" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="2"/>
+  <text x="50" y="70" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3498db">📝 1. Memory Stream</text>
+  <text x="50" y="88" font-family="Arial, sans-serif" font-size="10" fill="#555">├── Records all agent experiences (observations, conversations, actions)</text>
+  <text x="50" y="104" font-family="Arial, sans-serif" font-size="10" fill="#555">├── Each memory entry has a timestamp and importance score</text>
+  <text x="50" y="120" font-family="Arial, sans-serif" font-size="10" fill="#888">└── Serves as the "raw data layer" of the memory system</text>
+
+  <!-- Layer 2: Reflection -->
+  <rect x="30" y="138" width="460" height="80" rx="10" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="2"/>
+  <text x="50" y="160" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#9b59b6">🧠 2. Reflection</text>
+  <text x="50" y="178" font-family="Arial, sans-serif" font-size="10" fill="#555">├── Triggered periodically (when accumulated importance exceeds threshold)</text>
+  <text x="50" y="194" font-family="Arial, sans-serif" font-size="10" fill="#555">├── Distills higher-level insights from recent memories</text>
+  <text x="50" y="210" font-family="Arial, sans-serif" font-size="10" fill="#888">└── Reflection results are stored back in the memory stream (hierarchical)</text>
+
+  <!-- Example -->
+  <rect x="310" y="164" width="170" height="40" rx="6" fill="#9b59b6" opacity="0.08"/>
+  <text x="395" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#9b59b6">Observed "Klaus is painting" multiple times</text>
+  <text x="395" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#9b59b6">→ "Klaus is passionate about art"</text>
+
+  <!-- Layer 3: Retrieval -->
+  <rect x="30" y="228" width="460" height="100" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="2"/>
+  <text x="50" y="250" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">🔍 3. Retrieval</text>
+  <text x="50" y="268" font-family="Arial, sans-serif" font-size="10" fill="#555">├── When the agent needs to make a decision, relevant memories are retrieved</text>
+  <text x="50" y="284" font-family="Arial, sans-serif" font-size="10" fill="#555">└── Retrieval uses a weighted combination of three dimensions:</text>
+
+  <!-- Three dimensions -->
+  <rect x="70" y="292" width="130" height="28" rx="6" fill="#e74c3c" opacity="0.1" stroke="#e74c3c" stroke-width="1"/>
+  <text x="135" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c">⏱️ Recency</text>
+
+  <rect x="210" y="292" width="130" height="28" rx="6" fill="#f39c12" opacity="0.1" stroke="#f39c12" stroke-width="1"/>
+  <text x="275" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e67e22">⭐ Importance</text>
+
+  <rect x="350" y="292" width="130" height="28" rx="6" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1"/>
+  <text x="415" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3498db">🎯 Relevance</text>
 </svg>

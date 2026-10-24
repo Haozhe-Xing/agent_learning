@@ -1,4 +1,4 @@
-# 24.2b 分布式训练基础：DP / TP / PP / SP / ZeRO
+# 10.2b 分布式训练基础：DP / TP / PP / SP / ZeRO
 
 > 🖥️ *"训练一个 70B 参数模型，单卡 A100（80GB 显存）根本放不下——即便放得下，等你训到退休也没训完。分布式训练不是锦上添花，而是大模型存在的前提。"*
 
@@ -424,7 +424,7 @@ class RingAttention:
 
 在标准 DDP 中，每个 GPU 存储**完整**的：
 - 模型参数（Parameters）：FP16，2 byte/param
-- 梯度（Gradients）：FP32，4 byte/param<br>
+- 梯度（Gradients）：FP32，4 byte/param  
 - 优化器状态（Optimizer states）：Adam 需要 m + v，FP32，8 byte/param
 
 总计约 **16 byte/param**。对 70B 模型 = **1120 GB**，即使 1000 张 A100 仍需每卡 > 1GB，但实际问题是**每张卡存储了完全相同的优化器状态**——这是巨大的冗余！
@@ -720,8 +720,8 @@ model.gradient_checkpointing_enable()  # 一行代码，节省 ~50% 显存
 | **CP / Ring Attn** | 超长序列 | 百万 token 注意力 | 注意力计算切分 |
 | **EP** | MoE 专家 | 专家参数分布 | AllToAll 动态路由 |
 
-> 💡 **Agent 开发者的核心收获**：<br>
-> 如果你在用 LLaMA-Factory 或 Axolotl 微调模型，**FSDP（ZeRO-3）+ Gradient Checkpointing** 是小团队的最优选择——支持 8 卡以内训练 70B 模型。<br>
+> 💡 **Agent 开发者的核心收获**：  
+> 如果你在用 LLaMA-Factory 或 Axolotl 微调模型，**FSDP（ZeRO-3）+ Gradient Checkpointing** 是小团队的最优选择——支持 8 卡以内训练 70B 模型。  
 > 如果你在设计从零预训练，需要认真规划 3D 并行（TP × PP × DP）的组合。
 
 ---
@@ -742,5 +742,5 @@ model.gradient_checkpointing_enable()  # 一行代码，节省 ~50% 显存
 
 ---
 
-*上一节：[24.2 SFT + LoRA 基础训练](./02_sft_lora.md)*<br>
-*下一节：[24.3 PPO：近端策略优化](./03_ppo.md)*
+*上一节：[10.2 SFT + LoRA 基础训练](./02_sft_lora.md)*  
+*下一节：[10.3 PPO：近端策略优化](./03_ppo.md)*

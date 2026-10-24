@@ -1,14 +1,4 @@
-# 11.6 实战：工作流自动化 Agent
-
-## 本次迭代与验收
-
-将规划与反思变成有状态、可停止的流程。
-
-- **成功标准**：固定审查序列：首次通过、修改一次后通过、始终不通过；检查修改次数和最终状态，不只检查是否生成正文。
-- **失败用例**：始终低分时必须在两次修改后停止，并标记未达标；节点异常不得被当成质量通过。
-- **安全边界**：审查分数只是代理指标，人工核对事实与引用；达到修改上限不能触发自动发布。
-
-先保留输入、预期和实际结果，再继续扩展。评估方法见[第18章](../chapter_20_evaluation/README.md)，信任与权限设计见[第19章](../chapter_21_security/README.md)。
+# 13.6 实战：工作流自动化 Agent
 
 综合运用状态管理、条件路由、循环控制，构建一个"内容创作工作流" Agent。它天然包含**线性流程**（分析 → 大纲 → 写作）和**循环流程**（审查 → 修改 → 再审查），正好展示图结构的两大优势。
 
@@ -23,30 +13,76 @@
 `ContentState` 体现一条重要原则：**状态应包含工作流每个阶段所需的数据，以及控制流程走向的元数据**。`quality_score` 与 `revision_count` 是控制循环的关键——前者决定是否需要修改，后者防止无限循环。
 
 ```python
-from examples.chapter13.content_workflow import build_workflow
+from langgraph.graph import StateGraph, END, START
+from langchain_openai import ChatOpenAI
+from pydantic import BaseModel, Field
 
-scores = iter([4, 9])
-app = build_workflow(
-    review=lambda content: next(scores),
-    revise=lambda content: content + " [revised]",
-    max_revisions=2,
-)
-result = app.invoke({"topic": "Tool use"}, config={"recursion_limit": 12})
-assert result["revision_count"] == 1
-assert result["accepted"] is True
+llm = ChatOpenAI(model="gpt-4.1")
+
+class ContentReview(BaseModel):
+    score: int = Field(description="质量评分，1-10")
+    issues: list[str] = Field(description="发现的问题")
+    suggestions: list[str] = Field(description="改进建议")
+
+review_llm = llm.with_structured_output(ContentReview)  # 结构化输出，协议层保证格式
+
+QUALITY_PASS_SCORE = 8   # 质量达标线（需用评测校准，非写死就够）
+MAX_REVISIONS = 2
+
+class ContentState(TypedDict):
+    topic: str
+    target_audience: str
+    word_count: int
+    outline: list
+    content: str
+    review_feedback: str
+    quality_score: int
+    revision_count: int
+
+def analyze_topic(s): return {"outline": analyze_llm.invoke(...).key_points}
+def generate_outline(s): ...          # 基于分析生成大纲
+def write_content(s): ...             # 按大纲撰写正文
+def review_content(s):                # 返回 score / review_feedback / revision_count+1
+    r = review_llm.invoke([HumanMessage(f"审查：\n{s['content'][:800]}")])
+    return {"quality_score": r.score, "review_feedback": "\n".join(r.suggestions),
+            "revision_count": s.get("revision_count", 0) + 1}
+def revise_content(s): ...            # 按建议修改
+
+def route_after_review(s) -> str:
+    """双重保障：达标 或 达修改上限，任一满足即结束循环"""
+    if s["quality_score"] >= QUALITY_PASS_SCORE or s["revision_count"] >= MAX_REVISIONS:
+        return "finalize"
+    return "revise"
+
+graph = StateGraph(ContentState)
+graph.add_node("analyze", analyze_topic)
+graph.add_node("outline", generate_outline)
+graph.add_node("write", write_content)
+graph.add_node("review", review_content)
+graph.add_node("revise", revise_content)
+graph.add_node("finalize", lambda s: {"final_content": s["content"]})
+graph.add_edge(START, "analyze")
+graph.add_edge("analyze", "outline")
+graph.add_edge("outline", "write")
+graph.add_edge("write", "review")
+graph.add_conditional_edges("review", route_after_review,
+                           {"finalize": "finalize", "revise": "revise"})
+graph.add_edge("revise", "review")     # 修改后重新审查（循环！）
+graph.add_edge("finalize", END)
+app = graph.compile()
 ```
 
-完整状态图在 `examples/chapter13/content_workflow.py` 中，包含初稿、审查、修改与结束四个节点。默认注入固定评分序列，便于复现三条路径：首次通过、修改后通过、预算耗尽仍未通过。运行 `python examples/chapter13/content_workflow.py --always-low` 可验证最后一条路径。
+> 📌 完整可运行代码（含各节点实现）见本书配套仓库 `examples/`。本节重在"图如何表达线性+循环混合流程"这一套路。
 
-初次审查不计入修改次数；只有实际完成修改才增加计数。最后同时返回 `final_content` 和 `accepted`，因此有正文不等于通过验收。评分必须是 1–10 的整数，节点异常会直接暴露。真实模型模式加 `--real`，但模型评分仍需用人工样本校准。
+## 三个值得记牢的设计点
 
-节点、边和编译方式依据 [LangGraph 官方 Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api)。
+1. **路由函数 `route_after_review` 的双重保障**：同时检查"分数 ≥ 8"与"修改次数 ≥ 2"。任一满足就结束循环——避免模型对自己的作品永远不满意导致无限迭代。
+2. **节点间数据传递**：每个节点只返回需更新的状态字段（如 `write_content` 只回 `{"content": ...}`），LangGraph 自动合并进当前状态。节点无需关心 `topic`、`outline` 等无关字段。
+3. **结构化输出而非正则解析**：`review_content` 用 `with_structured_output(Pydantic)` 让模型直接返回对象，省掉脆弱的"文本里抠 JSON + 兜底值"代码。但**这不等于模型不会犯错**——质量阈值（如 `QUALITY_PASS_SCORE=8`）仍需用评测校准，详见 [第20章 Agent 评估](../chapter_20_evaluation/README.md)。
 
-## 控制流程为什么这样写
+> 💡 **延伸阅读**：Plan-and-Execute 模式的完整实现与 Test-time Compute Scaling 策略，详见 [5.6 Plan-and-Execute](../chapter_planning/07_plan_and_execute.md)。
 
-`review` 只更新分数，`revise` 才更新正文和修改次数。路由检查分数与剩余修改预算，`finish` 明确记录验收结果。三类状态分别承担质量判断、资源控制和交付说明，不能用“图已经结束”替代“内容已经合格”。
-
-继续接入检查点与持久化时，应为任务生成独立会话标识，并测试恢复后不会重复发布或重复写入。这个示例不包含发布工具。
+---
 
 ## 小结
 
@@ -62,4 +98,4 @@ LangGraph 的核心价值：
 
 ---
 
-*下一章：[第12章 OpenClaw：跨平台个人 AI 助理](../chapter_openclaw/README.md)*
+*下一章：[第14章 OpenClaw：跨平台个人 AI 助理](../chapter_openclaw/README.md)*

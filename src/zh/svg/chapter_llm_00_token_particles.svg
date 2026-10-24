@@ -20,5 +20,5 @@
     <rect x="750" y="210" width="76" height="42" rx="14" fill="#E7F0FF"/><text x="788" y="237" fill="#385FA8">文章</text>
     <rect x="842" y="210" width="50" height="42" rx="14" fill="#E7F0FF"/><text x="867" y="237" fill="#385FA8">。</text>
   </g>
-  <text x="490" y="294" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" fill="#5E6D82">分块仅为示意，实际边界由模型分词器决定；输入输出越长，一般消耗越多</text>
+  <text x="490" y="294" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" fill="#5E6D82">不需要精确计算，只要记住：输入越长、输出越长，token 越多</text>
 </svg>

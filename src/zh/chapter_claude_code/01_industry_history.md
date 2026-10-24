@@ -1,4 +1,4 @@
-# 14.1 工业级 Harness 的前世：从 AutoGPT 到 Claude Code
+# 16.1 工业级 Harness 的前世：从 AutoGPT 到 Claude Code
 
 > 🛠️ *"Claude Code 不是凭空冒出来的，它站在 AutoGPT、BabyAGI、OpenHands 这一连串项目的肩膀上。"*
 
@@ -69,7 +69,7 @@ BabyAGI 的核心创新是**"任务分解 + 任务队列"**——它把 AutoGPT 
 1. **Task as first-class citizen**——任务不再只是 prompt 里的字符串，而是数据结构（包含 description / status / result）；
 2. **Re-prioritization loop**——让 LLM 在每次循环中重排任务优先级。
 
-这两个抽象后来在 LangChain 的 PlanAndExecute（第5章）、AutoGen 的 Task 抽象、Claude Code 的 Sub-Agent 里都有体现。
+这两个抽象后来在 LangChain 的 PlanAndExecute（第 5 章）、AutoGen 的 Task 抽象、Claude Code 的 Sub-Agent 里都有体现。
 
 ---
 
@@ -156,7 +156,7 @@ Claude Code 没有"采纳" AutoGen 的代码，但**继承了**它的几个思�
 
 ### 5.3 AutoGen 在本书的位置
 
-AutoGen 的"对话编排"思想后来在第17章"Agent 通信协议"里会和 MCP / A2A / ANP 协议联系起来。本章只是铺垫。
+AutoGen 的"对话编排"思想后来在第 19 章"Agent 通信协议"里会和 MCP / A2A / ANP 协议联系起来。本章只是铺垫。
 
 ---
 
@@ -193,7 +193,7 @@ CrewAI 让"角色扮演"成为 Agent 协作的一种产品化路径。Claude Cod
 
 ### 7.1 为什么提 MCP？
 
-Claude Code 在 2025 年 H2 大力推广 **MCP**（Model Context Protocol），让"Agent 接入外部工具"成为开放协议。本书第17章（Agent 通信协议）会专章讲。本节**先**把它当作"Claude Code 之前就有的'Agent 互操作'思路"。
+Claude Code 在 2025 年 H2 大力推广 **MCP**（Model Context Protocol），让"Agent 接入外部工具"成为开放协议。本书第 17 章（Agent 通信协议）会专章讲。本节**先**把它当作"Claude Code 之前就有的'Agent 互操作'思路"。
 
 MCP 的核心思想其实早就散见在 OpenHands 的"工具注册"、LangChain 的"ToolGroup"、AutoGen 的"Function Schema"里——**Claude Code 把它们标准化为协议**，并让生态做出来。
 
@@ -201,7 +201,7 @@ MCP 的核心思想其实早就散见在 OpenHands 的"工具注册"、LangChain
 
 MCP 的核心抽象是：**LLM 驱动的 Agent 不再直接调用外部工具，而是通过 ToolRegistry 走一个「协议层」，由协议层转发给外部工具（MCP Server）**。协议层的价值在于——它让"工具"和"Agent"解耦：Agent 不需要知道工具的实现在哪、用什么语言写的，只要会讲 MCP 协议就行。
 
-这一点在第17章会展开。这里只需要知道：**Claude Code 没有发明互操作，但把互操作标准化了**。
+这一点在第 17 章会展开。这里只需要知道：**Claude Code 没有发明互操作，但把互操作标准化了**。
 
 ---
 
@@ -231,4 +231,4 @@ MCP 的核心抽象是：**LLM 驱动的 Agent 不再直接调用外部工具，
 
 ---
 
-*下一节：[14.2 认识 Claude Code：从零到上手](./02_introduction.md)*
+*下一节：[16.2 认识 Claude Code：从零到上手](./02_introduction.md)*

@@ -1,4 +1,4 @@
-# 14.5 Advanced Usage: MCP, Hooks, and Skills
+# 16.5 Advanced Usage: MCP, Hooks, and Skills
 
 > 🔧 *"Tools are not obstacles — tools are leverage. The truly skilled engineer isn't the one who runs fastest, but the one who configures their Agent best."*
 
@@ -493,8 +493,6 @@ Whenever you find yourself telling Claude the same things across multiple projec
 | **Best for** | Cross-project general workflows (Code Review, deployment process) | Project-specific operations (run tests, update version number) |
 | **Trigger method** | Skill tool automatically recognizes and calls | User manually types `/command-name` |
 
-> **Cross-Harness migration checks**: A shared `SKILL.md` filename does not establish compatibility. Record exact source and target versions; check metadata parsing, tool dependencies, state and paths, credentials, and permission enforcement. Run identical success, refusal, and failure cases. Keep untested combinations unknown and preserve original files for rollback.
-
 ### 3.2 Creating Your Own Skill
 
 Using a "standardized Code Review" Skill as an example, the complete directory structure is:
@@ -690,6 +688,6 @@ Claude Code manages **long-term memory** and **session state** separately, preve
 
 ---
 
-*Previous section: [14.4 System Prompt, Permission Engineering & Prompt Cache](./04_system_prompt_and_permissions.md)*
+*Previous section: [16.4 System Prompt, Permission Engineering & Prompt Cache](./04_system_prompt_and_permissions.md)*
 
-*Next section: [14.6 Production Practice: Using Claude Code Effectively in Teams](./06_production_and_team.md)*
+*Next section: [16.6 Production Practice: Using Claude Code Effectively in Teams](./06_production_and_team.md)*

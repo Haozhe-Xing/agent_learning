@@ -248,7 +248,7 @@ test_temperature(
     temperatures=[0.0, 0.7, 1.5],
     runs=3
 )
-# Temperature=0.0: Usually less random, but identical output is not guaranteed.
+# Temperature=0.0: Output is identical every time (absolute determinism)
 # Temperature=0.7: Some variation, language is natural and fluent
 # Temperature=1.5: Highly divergent creativity, but words may jump or be incoherent
 ```

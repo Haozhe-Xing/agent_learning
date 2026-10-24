@@ -173,11 +173,11 @@ While GraphRAG (Microsoft) improves global question answering through knowledge 
 
 LightRAG significantly reduces costs while preserving the graph-enhanced advantages:
 
-> **GraphRAG's cost**: Indexing 1,000 documents → may require USD 50-100 in LLM call fees; adding 10 documents → requires rebuilding the entire community structure
+> **GraphRAG's cost**: Indexing 1,000 documents → may require $50-100 in LLM call fees; adding 10 documents → requires rebuilding the entire community structure
 >
 > **LightRAG's improvements**: Simplified entity/relationship extraction (reducing LLM calls) + Dual-layer retrieval (low-level precise retrieval + high-level abstract retrieval) + Incremental updates (new documents only need new entities extracted and merged)
 >
-> **Cost comparison**: GraphRAG USD 100+ / 1M Token indexing vs LightRAG USD 5-10 / 1M Token indexing (10-20x reduction)
+> **Cost comparison**: GraphRAG $100+ / 1M Token indexing vs LightRAG $5-10 / 1M Token indexing (10-20x reduction)
 
 ### Key Findings
 
@@ -215,7 +215,7 @@ Agentic RAG upgrades RAG from a "passive pipeline" to "Agent-directed intelligen
 
 ### Implications for Agent Development
 
-Agentic RAG is one of the most practical architectural patterns in Agent development for 2025. LangGraph is the ideal framework for implementing Agentic RAG (see Chapter 11 for details) — it can orchestrate retrieval decisions, query rewriting, quality evaluation, and other steps as nodes in a state graph.
+Agentic RAG is one of the most practical architectural patterns in Agent development for 2025. LangGraph is the ideal framework for implementing Agentic RAG (see Chapter 12 for details) — it can orchestrate retrieval decisions, query rewriting, quality evaluation, and other steps as nodes in a state graph.
 
 ---
 

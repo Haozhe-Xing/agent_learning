@@ -1,18 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" role="img" aria-labelledby="title desc">
-<title id="title">Host boundary before an operation</title><desc id="desc">Host-selected actor and resources; this is not an OS sandbox</desc>
-<rect width="960" height="250" rx="16" fill="#f6f8fc"/>
-<g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
-<text x="480" y="42" font-size="24" font-weight="700" fill="#172c4f">Host boundary before an operation</text>
-<rect x="24" y="81" width="207" height="80" rx="12" fill="#dbeafe" stroke="#91a2bb"/>
-<text x="127.5" y="129" font-size="20" fill="#172c4f">Closed schema</text>
-<path d="M236 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="259" y="81" width="207" height="80" rx="12" fill="#e0e7ff" stroke="#91a2bb"/>
-<text x="362.5" y="129" font-size="20" fill="#172c4f">Current scope</text>
-<path d="M471 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="494" y="81" width="207" height="80" rx="12" fill="#d1fae5" stroke="#91a2bb"/>
-<text x="597.5" y="129" font-size="20" fill="#172c4f">Bound approval</text>
-<path d="M706 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="729" y="81" width="207" height="80" rx="12" fill="#fef3c7" stroke="#91a2bb"/>
-<text x="832.5" y="129" font-size="20" fill="#172c4f">Reauthorize</text>
-<text x="480" y="208" font-size="18" fill="#3c506e">Host-selected actor and resources; this is not an OS sandbox</text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="460" height="420" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <rect width="460" height="420" rx="12" fill="#f8fafc"/>
+  <text x="230" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Agent Runtime Architecture</text>
+
+  <!-- User Request -->
+  <rect x="155" y="42" width="150" height="38" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="230" y="66" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">User Request</text>
+  <line x1="230" y1="80" x2="230" y2="98" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Model Decision -->
+  <rect x="155" y="100" width="150" height="38" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="230" y="124" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca">Model Decision</text>
+  <line x1="230" y1="138" x2="230" y2="156" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Agent Runtime box -->
+  <rect x="40" y="158" width="380" height="188" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="230" y="178" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Agent Runtime</text>
+
+  <!-- 5 control points -->
+  <rect x="65" y="188" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="208" text-anchor="middle" font-size="11" fill="#166534">🔧 Tool Registration &amp; Schema Validation</text>
+
+  <rect x="65" y="224" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="244" text-anchor="middle" font-size="11" fill="#166534">🔐 Permission Check &amp; Approval</text>
+
+  <rect x="65" y="260" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="280" text-anchor="middle" font-size="11" fill="#166534">📦 Sandbox Execution &amp; Resource Limits</text>
+
+  <rect x="65" y="296" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="316" text-anchor="middle" font-size="11" fill="#166534">📋 Log Audit &amp; Observability</text>
+
+  <rect x="65" y="332" width="330" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="230" y="352" text-anchor="middle" font-size="11" fill="#166534">↩ Result Return &amp; Exception Handling</text>
+
+  <line x1="230" y1="346" x2="230" y2="364" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- External Environment -->
+  <rect x="60" y="366" width="340" height="40" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="230" y="391" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">External Environment: Files / Network / Database / Browser / Code Execution</text>
+</svg>

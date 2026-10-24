@@ -1,14 +1,5 @@
 # Chapter 7: Context Engineering
 
-**Reading level**: Core.
-
-## This chapter's iteration
-
-- **Previous limitation**: Retrieval found `100 km`, but concatenating history, memories, and documents may truncate the distance or the request for milliseconds. A retrieval hit has not become a correct model input.
-- **This chapter adds**: Allocate budget and positions to rules, task state, and required evidence for the same task. Record deduplication, compression, retention, or rejection decisions, and consume evidence from the messages actually constructed.
-- **How to verify**: Run `python examples/chapter07/gssc_pipeline.py` and `python -m unittest reference_code.evidence_assistant.tests.test_learning_path.ContextTests reference_code.evidence_assistant.tests.test_project_contracts.ProjectContractTests.test_constructed_context_is_actually_consumed` for complete-message measurement, required-evidence preservation, and actual message consumption. Deliver a message snapshot and selection record. The minimal implementation budgets UTF-8 bytes, not model tokens; integrating a tokenizer is a reader extension.
-- **Next step**: Correct context still cannot prevent unauthorized tool calls or incorrect artifacts. In [chapter 8](../chapter_harness/README.md), the host enforces permissions, budgets, and acceptance. Selecting what the model sees does not determine what it may execute.
-
 > 📖 *"Prompt engineering teaches you how to talk to an LLM; context engineering teaches you how to help an LLM see the whole world."*
 
 ---
@@ -34,11 +25,10 @@ After completing this chapter, you will be able to:
 
 | Section | Content | Key Takeaways | Difficulty |
 |---------|---------|--------------|-----------|
-| 7.1 From Prompt Engineering to Context Engineering | Define context engineering, compare the two | Six-source information model + three design principles | ⭐⭐ |
-| 7.2 Context Window Management and Attention Budget | Context corruption, attention distribution, management techniques | Attention budget allocation + three management techniques | ⭐⭐⭐ |
-| 7.3 Context Strategies for Long-Horizon Tasks | Compression, structured notes, sub-agent architecture | Principles and combined use of three strategies | ⭐⭐⭐ |
-| 7.4 Practice: Building a Context Manager | Complete GSSC pipeline implementation | Reusable context management infrastructure | ⭐⭐⭐⭐ |
-| 7.5 Context Engineering Research | Long context, JIT, structured output | Optional research directions | ⭐⭐⭐⭐⭐ |
+| 8.1 From Prompt Engineering to Context Engineering | Define context engineering, compare the two | Six-source information model + three design principles | ⭐⭐ |
+| 8.2 Context Window Management and Attention Budget | Context corruption, attention distribution, management techniques | Attention budget allocation + three management techniques | ⭐⭐⭐ |
+| 8.3 Context Strategies for Long-Horizon Tasks | Compression, structured notes, sub-agent architecture | Principles and combined use of three strategies | ⭐⭐⭐ |
+| 8.4 Practice: Building a Context Manager | Complete GSSC pipeline implementation | Reusable context management infrastructure | ⭐⭐⭐⭐ |
 
 ## ⏱️ Estimated Study Time
 
@@ -57,17 +47,17 @@ Context engineering is the systematic methodology for solving these problems. It
 
 ## 💡 Prerequisites
 
-- Completed chapter 2 (LLM Fundamentals), understanding how LLMs work
-- Completed chapters 3–6 (tools, memory, planning, RAG), understanding the Agent's information sources
+- Completed Chapter 3 (LLM Fundamentals), understanding how LLMs work
+- Completed Chapters 4–7 (tool calling, memory systems, planning and reasoning, RAG), understanding the core information sources of Agents
 - Understanding of the basic concepts of tokens and context windows
 - Familiarity with Python dataclasses and basic data structures
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 2: LLM Fundamentals](../chapter_llm/README.md), [Chapters 3–6: Core Capabilities](../chapter_tools/README.md)
+> **Prerequisites**: [Chapter 2: LLM Fundamentals](../chapter_llm/README.md), [Chapters 4–7: Core Capabilities](../chapter_tools/README.md)
 >
 > **Recommended Next Steps**:
-> - 👉 [Chapter 8: Harness Engineering](../chapter_harness/README.md) — Enforce execution limits beyond context selection
+> - 👉 [Chapter 12: LangChain](../chapter_langchain/README.md) — Implement context management strategies with a framework
 > - 👉 [Chapter 18: Evaluation and Optimization](../chapter_20_evaluation/README.md) — Evaluate the effectiveness of context strategies
 
 ---

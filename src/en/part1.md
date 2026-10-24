@@ -1,11 +1,5 @@
 # Part 1: Getting Started
 
-## Handoff from This Part
-
-Chapter 1 produces a task card: evidence, output unit, allowed tools, success and failure conditions. Chapter 2 records model inputs, outputs and failures. A proposed action is not evidence of completion; tool results and independent acceptance are. Continue to [chapter 3](./chapter_tools/README.md) to replace direct numeric answers with replayable tools. Environment setup is in [Appendix F](./chapter_setup/README.md); sections 2.6–2.8 on model selection, architecture and training data are optional reference material.
-
-Establish the basics of tasks, models, and tool use. Finish by distinguishing a model answer from tool execution and writing expected results for the first exercise.
-
 ## Getting Started with Large Models: How Should Non-Programmers Begin Using AI?
 
 > 🌱 *"The first step to using LLMs well is not understanding every technical detail, but knowing what they can do, what they can't, and how to articulate your tasks clearly."*

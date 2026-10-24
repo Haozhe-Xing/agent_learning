@@ -1,4 +1,4 @@
-# 14.4 System Prompt、权限工程与 Prompt Cache
+# 16.4 System Prompt、权限工程与 Prompt Cache
 
 > 🛠️ *"Claude Code 的 915 行 System Prompt，是 Anthropic 工程师把'如何约束一个会写代码的 AI'这件事做到极致的标本。"*
 
@@ -349,4 +349,4 @@ print(r2.usage)   # 看 cache_read_input_tokens（应该 > 0）
 
 ---
 
-*下一节：[14.5 高级用法：MCP、Hooks 与 Skills](./05_advanced_usage.md)*
+*下一节：[16.5 高级用法：MCP、Hooks 与 Skills](./05_advanced_usage.md)*

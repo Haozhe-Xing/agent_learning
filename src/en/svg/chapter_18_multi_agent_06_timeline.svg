@@ -1,30 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
-<title id="title">Multi-Agent Readings: Three Sets of Questions</title>
-<desc id="desc">Book reading map: 2308.00352v7; 2307.07924v5; 2308.08155v2; 2411.04468v1; 2503.01935v1; 2503.13657v3; 2609.19759v2.</desc>
-<metadata>Original illustration created for this book; no paper artwork or screenshot reproduced. Repository MIT license applies to this illustration.</metadata>
-<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
-<rect width="960" height="500" rx="14" fill="#f1f5f9"/>
-<text x="480" y="43" text-anchor="middle" font-size="23" font-weight="bold" fill="#22384c">Multi-Agent Readings: Three Sets of Questions</text>
-<rect x="30" y="95" width="280" height="255" rx="12" fill="#2d4965"/>
-<text x="170" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Design · 2023–2024</text>
-<text x="170" y="177" text-anchor="middle" font-size="14" fill="white">MetaGPT / ChatDev</text>
-<text x="170" y="216" text-anchor="middle" font-size="14" fill="white">Artifacts, clarification, dependencies</text>
-<text x="170" y="255" text-anchor="middle" font-size="14" fill="white">AutoGen / Magentic-One</text>
-<text x="170" y="294" text-anchor="middle" font-size="14" fill="white">Conversation control and ledgers</text>
-<rect x="340" y="95" width="280" height="255" rx="12" fill="#287598"/>
-<text x="480" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Evaluate · 2025</text>
-<text x="480" y="177" text-anchor="middle" font-size="14" fill="white">MultiAgentBench</text>
-<text x="480" y="216" text-anchor="middle" font-size="14" fill="white">Outputs, milestones, coordination</text>
-<text x="480" y="255" text-anchor="middle" font-size="14" fill="white">MAST</text>
-<text x="480" y="294" text-anchor="middle" font-size="14" fill="white">Design, misalignment, verification</text>
-<rect x="650" y="95" width="280" height="255" rx="12" fill="#72608a"/>
-<text x="790" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Applicability · 2026</text>
-<text x="790" y="177" text-anchor="middle" font-size="14" fill="white">SAIGE (optional preprint)</text>
-<text x="790" y="216" text-anchor="middle" font-size="14" fill="white">Delegate by dependency structure</text>
-<text x="790" y="255" text-anchor="middle" font-size="14" fill="white">Count every actor’s context and calls</text>
-<text x="790" y="294" text-anchor="middle" font-size="14" fill="white">More agents do not ensure gains</text>
-<rect x="30" y="385" width="900" height="83" rx="9" fill="#fff3e9" stroke="#be8156"/>
-<text x="480" y="414" text-anchor="middle" font-size="14" fill="#754325">Reading groups, not a ranking or required upgrade path.</text>
-<text x="480" y="442" text-anchor="middle" font-size="14" fill="#754325">Compare single agents and teams on fixed tasks, sources and total budgets.</text>
-<text x="480" y="490" text-anchor="middle" font-size="11" fill="#58667a">Original book illustration; fixed sources and evidence scope are cited in the text.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 350" width="560" height="350">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="560" height="350" fill="#f8f9fa" rx="12"/>
+  <text x="280" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Multi-Agent System Timeline (2023–2025)</text>
+
+  <!-- 2023 early -->
+  <text x="35" y="62" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#888">Early 2023</text>
+  <rect x="100" y="46" width="280" height="30" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="240" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e74c3c">AutoGPT / BabyAGI (single-agent autonomous loop)</text>
+
+  <path d="M 180 78 L 140 100" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 300 78 L 360 100" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 2023 mid -->
+  <text x="35" y="122" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#888">2023</text>
+  <rect x="50" y="103" width="175" height="30" rx="8" fill="#3498db" opacity="0.15" stroke="#3498db" stroke-width="1.5"/>
+  <text x="137" y="123" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3498db">ChatDev (chat-driven)</text>
+
+  <rect x="290" y="103" width="175" height="30" rx="8" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="377" y="123" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#9b59b6">MetaGPT (SOP-driven)</text>
+
+  <path d="M 137 135 L 137 160" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 377 135 L 377 160" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 2023 late -->
+  <rect x="50" y="163" width="175" height="30" rx="8" fill="#27ae60" opacity="0.15" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="137" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">AutoGen (flexible dialogue)</text>
+
+  <rect x="290" y="163" width="175" height="30" rx="8" fill="#f39c12" opacity="0.15" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="377" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">AgentVerse (emergent behavior)</text>
+
+  <path d="M 137 195 L 137 220" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 377 195 L 377 220" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 2024 -->
+  <text x="35" y="240" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#888">2024</text>
+  <rect x="50" y="223" width="175" height="30" rx="8" fill="#4dabf7" opacity="0.15" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="137" y="243" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2980b9">Swarm (minimal handoff)</text>
+
+  <rect x="290" y="223" width="195" height="30" rx="8" fill="#4dabf7" opacity="0.15" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="387" y="243" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2980b9">Magentic-One (general system)</text>
+
+  <path d="M 137 255 L 137 278" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 387 255 L 387 278" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 2025 -->
+  <rect x="50" y="281" width="175" height="28" rx="8" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="137" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9b59b6">OpenAI Agents SDK</text>
+
+  <rect x="290" y="281" width="195" height="28" rx="8" fill="#9b59b6" opacity="0.12" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="387" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9b59b6">AutoGen 0.4 event-driven</text>
+
+  <!-- Converge -->
+  <path d="M 137 311 L 260 325" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <path d="M 387 311 L 310 325" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- 2025 standard -->
+  <text x="35" y="342" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#888">2025</text>
+  <rect x="140" y="324" width="300" height="22" rx="6" fill="#27ae60" opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="290" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#27ae60">🚀 A2A + MCP standardize agent interoperability</text>
 </svg>

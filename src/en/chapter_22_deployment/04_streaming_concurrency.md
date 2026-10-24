@@ -1,4 +1,4 @@
-# 20.4 Streaming Responses and Concurrency Handling
+# 22.4 Streaming Responses and Concurrency Handling
 
 > **Section Goal**: Master streaming output and high-concurrency handling techniques for Agent services.
 
@@ -228,4 +228,4 @@ class LLMConnectionPool:
 
 ---
 
-[Next: 20.5 Practice: Deploying a Production-Grade Agent Service →](./05_practice_production_agent.md)
+[Next: 18.5 Practice: Deploying a Production-Grade Agent Service →](./05_practice_production_agent.md)

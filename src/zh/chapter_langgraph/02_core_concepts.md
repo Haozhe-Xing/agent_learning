@@ -1,122 +1,336 @@
-# 11.2 LangGraph 核心概念：节点、边、状态
+# 13.2 LangGraph 核心概念：节点、边、状态
 
-本节用一个离线的“发布资料检查”练习理解状态流转：版本/负责人检查与回退说明检查并行执行，汇聚后才作出验收结论。节点不必调用模型，图也不会替你证明业务正确。
+![LangGraph三大核心概念：State·Node·Edge](../svg/chapter_langgraph_02_state_node_edge.svg)
 
-![LangGraph状态、部分更新与路由](../svg/chapter_langgraph_02_state_node_edge.svg)
+## 状态（State）
 
-## 先运行，再读三个概念
-
-本章核对环境为 Python 3.11+、`langgraph==1.2.16`，依赖锁定在仓库的 `examples/requirements.txt`。官方页面可能更新，本节以该锁定版本和离线测试界定可复现范围。从仓库根目录运行：
-
-```bash
-python -m pip install -r examples/requirements.txt
-python -m reference_code.langgraph_patterns core
-python -m unittest examples.integration_tests.test_langgraph_chapter -v
-```
-
-完整实现位于 `reference_code/langgraph_patterns/`，其中 `core.py` 对应本节，`review.py` 和 `approval.py` 分别对应11.4、11.5。默认无模型、Key和网络；这些是生命周期练习，不测模型理解能力。11.3的模型/工具消息循环继续使用共享的 `examples/framework_fixture.py`。
-
-## State定义字段，Node返回部分更新
-
-`TypedDict`表达字段契约，不自动校验所有外部输入。节点读取本步状态，返回需要更新的字段；不要直接修改传入列表或假设另一个并行节点已经写入结果。下面导入的三个检查函数均有真实实现，返回 `checks` 或 `accepted` 的部分更新：
+State 是 LangGraph 的数据中心，所有节点都从 State 读取数据并写入数据。
 
 ```python
-from typing import Annotated, TypedDict
+from typing import TypedDict, Annotated, Optional
+from langgraph.graph import MessagesState
 import operator
-from langgraph.graph import START, END, StateGraph
-from reference_code.langgraph_patterns.core import (
-    audit_input, check_metadata, check_rollback, summarize,
-)
 
-class AuditState(TypedDict):
-    draft: dict[str, str]
-    checks: Annotated[list[dict], operator.add]
-    accepted: bool
+# 方式1：使用内置的 MessagesState（推荐）
+# 已内置 messages: Annotated[list, add_messages]
+class MyState(MessagesState):
+    # 在基础上添加额外字段
+    user_name: Optional[str]
+    task_complete: bool
 
-builder = StateGraph(AuditState)
-builder.add_node("metadata", check_metadata)
-builder.add_node("rollback", check_rollback)
-builder.add_node("summarize", summarize)
-builder.add_edge(START, "metadata")
-builder.add_edge(START, "rollback")
-builder.add_edge(["metadata", "rollback"], "summarize")
-builder.add_edge("summarize", END)
-app = builder.compile()
+# 方式2：完全自定义
+from langchain_core.messages import BaseMessage
 
-result = app.invoke(audit_input({"version": "1.0", "owner": "team"}))
-assert len(result["checks"]) == 2
-assert result["accepted"] is False  # missing rollback
-print(sorted(result["checks"], key=lambda check: check["name"]))
+class CustomState(TypedDict):
+    # 使用 Annotated + operator.add 表示"追加"语义
+    messages: Annotated[list[BaseMessage], operator.add]
+    
+    # 普通字段（每次更新会覆盖）
+    current_step: str
+    error_count: int
+    result: Optional[str]
 ```
 
-`check_metadata`只检查版本和负责人字段非空，`check_rollback`只检查回退说明非空；`summarize`核对两个检查名齐全且均通过。这是明确的小型验收契约，不是对发布方案质量的完整证明。把 `rollback` 加入资料后再运行，可以观察 `accepted=True`。
+### State Reducer 的高级用法
 
-## Reducer决定合并，并发不是最后写入者获胜
-
-| 字段规则 | 顺序更新 | 同一super-step多个节点写入 |
-|---|---|---|
-| 未声明reducer | 通常替换该字段 | 普通单值字段会触发 `InvalidUpdateError`，不是悄悄覆盖 |
-| `Annotated[list, operator.add]` | 拼接旧列表与新列表 | 合并各分支的更新，不按业务完成先后作排序承诺 |
-| `add_messages` / `MessagesState` | 按消息ID添加或替换 | 仍需正确的消息ID与应用自己的业务合并规则 |
-
-本例为 `checks` 指定列表拼接；两个分支只提交自己的一个检查结果，避免把完整旧列表重复追加。汇总依据检查名，不依赖并行结果顺序。列表拼接不去重，也不是可交换的通用合并策略；重试、重复业务事件或同名结果冲突需另定规则。不存在适用于所有字典的“自动深合并”。无reducer的并发冲突有[官方错误说明](https://docs.langchain.com/oss/python/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE)。
-
-消息列表通常使用LangGraph的 `add_messages`，而非无条件 `operator.add`。同ID表示替换原消息，不代表自动发现内容相同的业务事件：
+Reducer 是 LangGraph 中容易被忽视但极其强大的机制。当多个节点同时更新 State 的同一个字段时，Reducer 决定了**如何合并这些更新**。
 
 ```python
-from langchain_core.messages import HumanMessage
+from typing import Annotated
+import operator
+
+# Reducer 示例 1：追加（最常用）
+# messages 字段使用 operator.add 作为 Reducer
+# 效果：新消息追加到列表末尾，而非替换整个列表
+class ChatState(TypedDict):
+    messages: Annotated[list, operator.add]  # 追加语义
+
+# Reducer 示例 2：自定义 Reducer 函数
+def merge_results(existing: dict, new: dict) -> dict:
+    """自定义合并策略：深度合并两个字典"""
+    merged = {**existing}
+    for key, value in new.items():
+        if key in merged and isinstance(merged[key], list):
+            merged[key] = merged[key] + value  # 列表追加
+        else:
+            merged[key] = value  # 其他类型覆盖
+    return merged
+
+class AnalysisState(TypedDict):
+    # 使用自定义 Reducer：多个分析节点的结果会被合并而非覆盖
+    analysis_results: Annotated[dict, merge_results]
+    step_count: int
+
+# Reducer 示例 3：使用 add_messages（LangChain 内置）
 from langgraph.graph import add_messages
 
-messages = add_messages(
-    [HumanMessage(content="draft", id="request-1")],
-    [HumanMessage(content="corrected", id="request-1")],
-)
-assert len(messages) == 1
-assert messages[0].content == "corrected"
+class AgentState(TypedDict):
+    # add_messages 比 operator.add 更智能：
+    # - 自动处理消息去重（基于 message ID）
+    # - 支持消息更新（同 ID 的新消息会替换旧消息）
+    messages: Annotated[list, add_messages]
 ```
 
-## Edge安排执行，compile建立可调用图
+> ⚠️ **常见陷阱**：如果你忘记给列表类型的字段添加 Reducer，每次节点返回 `{"messages": [new_msg]}` 时会**替换**而非**追加**消息列表。这是新手最常遇到的 bug。
 
-两个 `START` 出边使检查节点在同一super-step被调度；这不保证CPU加速，也不表示每个分支能立即读到另一个分支的更新。`add_edge(["metadata", "rollback"], "summarize")` 是显式汇聚屏障：两者完成后才汇总。`START/END` 是入口/终止标记；到 `END` 只说明本次图执行结束。
+### Checkpoint 持久化
 
-`compile()`检查并建立图，之后才有 `invoke/stream/get_state` 等运行接口。它不自动安装持久化、授予工具权限或验证任务结果。若某个必需分支抛出异常，不能因为另一个分支完成就宣称整体通过。节点与边的接口见[官方Graph API说明](https://docs.langchain.com/oss/python/langgraph/graph-api)。
-
-## Checkpoint的范围取决于保存器
-
-下面真实检查同一保存器重建图后能读到快照，而新建内存保存器没有旧状态：
+Checkpoint 是 LangGraph 实现「断点恢复」和「会话持久化」的核心机制。每次状态转换时，LangGraph 可以自动保存一个 Checkpoint（快照），后续可以从任意 Checkpoint 恢复执行。
 
 ```python
-from langgraph.checkpoint.memory import InMemorySaver
-from reference_code.langgraph_patterns.core import audit_input, build_audit_graph
+# 内存 Checkpoint（开发/测试用）
+from langgraph.checkpoint.memory import MemorySaver
 
-saver = InMemorySaver()
-app = build_audit_graph(checkpointer=saver)
-config = {"configurable": {"thread_id": "audit-1"}}
-app.invoke(audit_input({"version": "1.0", "owner": "team"}), config)
-snapshot = app.get_state(config)
-assert snapshot.values["accepted"] is False
-assert snapshot.next == ()  # ended, not waiting for approval
+memory_checkpointer = MemorySaver()
+app = graph.compile(checkpointer=memory_checkpointer)
 
-rebuilt = build_audit_graph(checkpointer=saver)
-assert rebuilt.get_state(config).values == snapshot.values
-fresh = build_audit_graph(checkpointer=InMemorySaver())
-assert fresh.get_state(config).values == {}
+# 使用 thread_id 标识一个独立的执行会话
+config = {"configurable": {"thread_id": "user-session-001"}}
+
+# 第一轮对话
+result1 = app.invoke(
+    {"messages": [HumanMessage(content="我叫张伟")]},
+    config=config
+)
+
+# 第二轮对话——自动恢复之前的状态
+result2 = app.invoke(
+    {"messages": [HumanMessage(content="我叫什么名字？")]},
+    config=config
+)
+# Agent 能记住"张伟"，因为状态通过 Checkpoint 持久化了
+
+# SQLite Checkpoint（生产环境推荐）
+from langgraph.checkpoint.sqlite import SqliteSaver
+
+# 数据持久化到磁盘，重启后不丢失
+db_checkpointer = SqliteSaver.from_conn_string("checkpoints.db")
+app = graph.compile(checkpointer=db_checkpointer)
+
+# PostgreSQL Checkpoint（分布式生产环境）
+# pip install langgraph-checkpoint-postgres
+# from langgraph.checkpoint.postgres import PostgresSaver
+# pg_checkpointer = PostgresSaver.from_conn_string("postgresql://...")
 ```
 
-本版本 `MemorySaver` 是 `InMemorySaver` 的别名。快照按执行super-step边界保存，不是在函数内每一行存盘；`thread_id`定位一条执行历史，缺少必要配置会报错。复用thread可能继续累积reducer字段；新业务任务应使用新thread，不能把 `checks=[]` 当成列表reducer的清空操作。
+**Checkpoint 的典型应用场景**：
 
-| 数据 | 本练习实际保存在哪里 | 重启或重新创建对象后 |
-|---|---|---|
-| `InMemorySaver`图检查点 | 当前保存器的进程内存 | 丢失；同一个thread名称不能重新生成旧状态 |
-| 11.5的SQLite收据 | 应用自己的本地数据库 | 文件仍在时可重新读取，但它不是图检查点 |
-| 磁盘/服务型checkpointer | 另装并锁定的对应保存器及存储 | 需验证连接生命周期、序列化、权限和恢复流程后才能声明可恢复 |
+| 场景 | 说明 |
+|------|------|
+| 多轮对话持久化 | 用户关闭浏览器后再回来，对话状态不丢失 |
+| Human-in-the-Loop | 暂停执行等待人类审批，审批后从暂停点恢复 |
+| 长时间任务 | 数据分析可能运行几分钟，中途可以断点续传 |
+| 错误恢复 | 某个节点执行失败，修复后从失败点重试而非从头开始 |
+| 时间旅行调试 | 回溯到之前的 Checkpoint，检查当时的 State 状态 |
 
-本锁定练习没有安装 `langgraph-checkpoint-sqlite`，不把SQLite保存器当成现成能力。若扩展使用 `SqliteSaver.from_conn_string`，需按[官方上下文管理接口](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver/from_conn_string)使用并让连接覆盖整个图运行；应增加两个独立进程的暂停/恢复测试。选用数据库并不自动满足多进程并发、权限或生产部署要求。[官方持久化说明](https://docs.langchain.com/oss/python/langgraph/persistence)区分了内存保存器与持久化后端。
+---
 
-## 错误与预算留到应用契约中
+## 节点（Node）
 
-可预期的业务“不通过”可以保留在状态中；已知的适配器异常可以转为结构化失败。编程错误、授权拒绝和取消不能一律包装成“让模型再试一次”。`recursion_limit`限制图super-step数，既不是墙钟超时，也不是工具调用/token预算；11.4会增加独立业务次数限制，并测试耗尽时不放行。
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from langgraph.graph import StateGraph, END, START, MessagesState
 
-运行上面的集成测试，可核对并发冲突、消息ID替换、汇聚和内存快照边界。它们证明此小型契约及接口可执行，不证明通用审查质量。
+llm = ChatOpenAI(model="gpt-4.1")
 
-*下一节：[11.3 构建你的第一个 Graph Agent](./03_first_graph_agent.md)*
+# 节点就是普通的 Python 函数
+def agent_node(state: MessagesState) -> dict:
+    """
+    Agent 节点：调用 LLM 处理消息
+    
+    接收：当前 State
+    返回：State 的更新部分（字典）
+    """
+    messages = state["messages"]
+    
+    # 调用 LLM
+    response = llm.invoke(messages)
+    
+    # 返回更新（只返回变化的部分）
+    return {"messages": [response]}
+
+def tool_node(state: MessagesState) -> dict:
+    """工具节点：执行工具调用"""
+    import json
+    
+    last_message = state["messages"][-1]
+    tool_results = []
+    
+    for tool_call in last_message.tool_calls:
+        # 执行工具（这里模拟）
+        result = f"工具 {tool_call['name']} 的结果"
+        
+        from langchain_core.messages import ToolMessage
+        tool_results.append(ToolMessage(
+            content=result,
+            tool_call_id=tool_call["id"]
+        ))
+    
+    return {"messages": tool_results}
+```
+
+## 边（Edge）
+
+```python
+# 普通边：固定指向
+graph.add_edge("node_a", "node_b")  # A 总是指向 B
+
+# 条件边：动态决定
+def route_after_agent(state: MessagesState) -> str:
+    """根据 Agent 输出决定下一步"""
+    last_message = state["messages"][-1]
+    
+    # 如果有工具调用 → 执行工具
+    if hasattr(last_message, "tool_calls") and last_message.tool_calls:
+        return "tool_node"
+    
+    # 否则 → 结束
+    return END
+
+graph.add_conditional_edges(
+    "agent_node",
+    route_after_agent,
+    {
+        "tool_node": "tool_node",
+        END: END
+    }
+)
+```
+
+## 完整的 ReAct Graph
+
+```python
+from langchain_core.tools import tool
+import math
+
+@tool
+def calculate(expression: str) -> str:
+    """计算数学表达式"""
+    try:
+        result = eval(expression, {"__builtins__": {}}, 
+                     {k: getattr(math, k) for k in dir(math)})
+        return str(result)
+    except Exception as e:
+        return f"错误：{e}"
+
+tools = [calculate]
+llm_with_tools = llm.bind_tools(tools)
+
+def agent_node(state: MessagesState) -> dict:
+    response = llm_with_tools.invoke(state["messages"])
+    return {"messages": [response]}
+
+def tool_executor(state: MessagesState) -> dict:
+    from langchain_core.messages import ToolMessage
+    import json
+    
+    last_msg = state["messages"][-1]
+    results = []
+    
+    for tool_call in last_msg.tool_calls:
+        if tool_call["name"] == "calculate":
+            result = calculate.invoke(tool_call["args"])
+        else:
+            result = "未知工具"
+        
+        results.append(ToolMessage(
+            content=str(result),
+            tool_call_id=tool_call["id"]
+        ))
+    
+    return {"messages": results}
+
+def should_use_tools(state: MessagesState) -> str:
+    last_msg = state["messages"][-1]
+    if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
+        return "tools"
+    return END
+
+# 构建图
+graph = StateGraph(MessagesState)
+graph.add_node("agent", agent_node)
+graph.add_node("tools", tool_executor)
+graph.add_edge(START, "agent")
+graph.add_conditional_edges("agent", should_use_tools)
+graph.add_edge("tools", "agent")  # 工具执行后回到 agent
+
+app = graph.compile()
+
+# 运行
+result = app.invoke({"messages": [HumanMessage(content="计算 sqrt(2) * pi")]})
+print(result["messages"][-1].content)
+```
+
+---
+
+## 错误处理与重试策略
+
+生产环境中，Agent 的节点（特别是调用外部 API 的节点）随时可能失败。LangGraph 提供了多种错误处理模式：
+
+```python
+import time
+from langchain_core.runnables import RunnableConfig
+
+# 模式 1：节点内部 try-except（最灵活）
+def resilient_tool_node(state: MessagesState) -> dict:
+    """带错误处理的工具节点"""
+    last_msg = state["messages"][-1]
+    results = []
+    
+    for tool_call in last_msg.tool_calls:
+        try:
+            result = execute_tool(tool_call)
+            results.append(ToolMessage(
+                content=str(result),
+                tool_call_id=tool_call["id"]
+            ))
+        except Exception as e:
+            # 工具失败时，返回错误信息而非抛出异常
+            # 让 Agent 有机会自我纠正
+            results.append(ToolMessage(
+                content=f"工具执行失败：{str(e)}。请尝试其他方法。",
+                tool_call_id=tool_call["id"]
+            ))
+    
+    return {"messages": results}
+
+# 模式 2：带重试计数的条件路由
+class RetryState(MessagesState):
+    retry_count: int
+    max_retries: int
+
+def should_retry(state: RetryState) -> str:
+    """重试决策：失败次数未超限则重试"""
+    last_msg = state["messages"][-1]
+    
+    if "失败" in last_msg.content and state["retry_count"] < state["max_retries"]:
+        return "retry"
+    elif "失败" in last_msg.content:
+        return "fallback"  # 超过重试次数，走降级路径
+    else:
+        return "success"
+
+# 模式 3：超时控制
+# LangGraph 支持通过 RunnableConfig 设置超时
+config = RunnableConfig(
+    recursion_limit=25,  # 最大递归次数（防止无限循环）
+    # 其他配置...
+)
+result = app.invoke(input_data, config=config)
+```
+
+> 💡 **最佳实践**：在 Agent 的工具节点中，永远不要让异常直接抛出导致整个图崩溃。捕获异常后将错误信息作为 ToolMessage 返回给 Agent，让 LLM 根据错误信息自行决定下一步（重试、换方案、或告知用户）。这种「优雅降级」模式是生产级 Agent 的标志。
+
+---
+
+## 小结
+
+LangGraph 三要素：
+- **State**：共享数据容器，TypedDict 定义结构
+- **Node**：处理函数，接收 State，返回部分更新
+- **Edge**：连接关系，普通边或条件边
+
+---
+
+*下一节：[13.3 构建你的第一个 Graph Agent](./03_first_graph_agent.md)*

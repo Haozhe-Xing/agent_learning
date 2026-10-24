@@ -1,4 +1,4 @@
-# 14.2 认识 Claude Code：从零到上手
+# 16.2 认识 Claude Code：从零到上手
 
 > 🖥️ *"We didn't set out to build a coding assistant. We set out to build a trusted, capable colleague who happens to work entirely in the terminal."*  
 > —— Anthropic 工程团队，2024 年
@@ -230,7 +230,7 @@ Claude Code 的核心配置机制是 `CLAUDE.md` 文件——它是 Claude Code 
 - pnpm test:unit / pnpm lint / pnpm type-check
 ```
 
-> 关于 CLAUDE.md 的完整写法、五个维度与五大陷阱，见 [14.6 生产实践与团队配置](./06_production_and_team.md)。
+> 关于 CLAUDE.md 的完整写法、五个维度与五大陷阱，见 [16.6 生产实践与团队配置](./06_production_and_team.md)。
 
 这个文件会在每次会话开始时被自动读取，确保 Claude Code 始终了解项目的上下文和约束。
 
@@ -265,7 +265,7 @@ results = db.execute(sql, {"pattern": f"%{query}%"})
 
 **整个过程你不需要手动定位问题、改代码、跑测试**——Claude Code 自己跑 `pytest`、发现原有测试未覆盖特殊字符、主动补上 `'` / `"; DROP TABLE` 等边界用例，直到全绿。这正是 Agent 范式（主动规划 + 全局感知 + 自我验证）与补全范式（被动、单步）的分水岭。
 
-> 💡 想看完整的源码分析与权限工程细节，见 [14.4 System Prompt、权限工程与 Prompt Cache](./04_system_prompt_and_permissions.md)。
+> 💡 想看完整的源码分析与权限工程细节，见 [16.4 System Prompt、权限工程与 Prompt Cache](./04_system_prompt_and_permissions.md)。
 
 ---
 
@@ -316,4 +316,4 @@ Claude Code 的能力覆盖软件开发全生命周期。下表按"能做什么 
 
 ---
 
-*下一节：[14.3 Claude Code 核心架构](./03_architecture.md)*
+*下一节：[16.3 Claude Code 核心架构](./03_architecture.md)*

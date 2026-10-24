@@ -431,7 +431,7 @@ class ReasoningBudgetStrategy:
 
 #### Improvement 3: Environment Context Injection (Contribution: +1.9%)
 
-````python
+```python
 class EnvironmentContextInjector:
     """
     Inject environment context at startup.
@@ -474,7 +474,7 @@ class EnvironmentContextInjector:
 - Code formatting: `ruff format .`
 - Type checking: `mypy src/`
 """
-````
+```
 
 #### Improvement 4: Doom Loop Detection Middleware (Contribution: +1.4%)
 
@@ -584,7 +584,7 @@ Doom loop detection (+1.4%)       ▓▓▓▓▓
 Meta automation (+0.5%)           ▓▓
 ```
 
-> 💡 **Further reading: Harness reuse and managed execution**: Beyond improving execution quality, a Harness can become a reusable engineering foundation. LangChain's Deep Agents combines filesystem, context management, and subagent capabilities, while Managed Deep Agents hosts the same Harness. See [10.7 LangChain Ecosystem 2026](../chapter_langchain/07_langchain_ecosystem_2026.md) for their division of responsibilities; the benchmark improvements above do not measure the managed product's effectiveness.
+> 💡 **Further reading: Harness reuse and managed execution**: Beyond improving execution quality, a Harness can become a reusable engineering foundation. LangChain's Deep Agents combines filesystem, context management, and subagent capabilities, while Managed Deep Agents hosts the same Harness. See [12.7 LangChain Ecosystem 2026](../chapter_langchain/07_langchain_ecosystem_2026.md) for their division of responsibilities; the benchmark improvements above do not measure the managed product's effectiveness.
 
 ---
 

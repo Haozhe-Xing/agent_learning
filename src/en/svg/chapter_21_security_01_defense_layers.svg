@@ -1,18 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" role="img" aria-labelledby="title desc">
-<title id="title">Separate content and authority</title><desc id="desc">Detection is a signal; source content cannot grant authority</desc>
-<rect width="960" height="250" rx="16" fill="#f6f8fc"/>
-<g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
-<text x="480" y="42" font-size="24" font-weight="700" fill="#172c4f">Separate content and authority</text>
-<rect x="24" y="81" width="207" height="80" rx="12" fill="#dbeafe" stroke="#91a2bb"/>
-<text x="127.5" y="129" font-size="20" fill="#172c4f">External data</text>
-<path d="M236 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="259" y="81" width="207" height="80" rx="12" fill="#e0e7ff" stroke="#91a2bb"/>
-<text x="362.5" y="129" font-size="20" fill="#172c4f">Model proposal</text>
-<path d="M471 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="494" y="81" width="207" height="80" rx="12" fill="#d1fae5" stroke="#91a2bb"/>
-<text x="597.5" y="129" font-size="20" fill="#172c4f">Host policy</text>
-<path d="M706 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="729" y="81" width="207" height="80" rx="12" fill="#fef3c7" stroke="#91a2bb"/>
-<text x="832.5" y="129" font-size="20" fill="#172c4f">Actual tool</text>
-<text x="480" y="208" font-size="18" fill="#3c506e">Detection is a signal; source content cannot grant authority</text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <rect width="760" height="400" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Agent Security Defense Layered Architecture</text>
+
+  <!-- Outer layer: Input Filtering -->
+  <rect x="40" y="50" width="680" height="310" rx="14" fill="#e74c3c" opacity="0.08" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="60" y="75" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">🛡️ Layer 1: Input Filtering</text>
+  <text x="60" y="93" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Prompt injection detection · Sensitive word filtering · Length limit · Format validation</text>
+
+  <!-- Middle layer: Permission Control -->
+  <rect x="80" y="110" width="600" height="225" rx="14" fill="#e67e22" opacity="0.08" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="100" y="135" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e67e22">🔒 Layer 2: Permission Control</text>
+  <text x="100" y="153" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Tool whitelist · Sandbox isolation · Operation approval · Rate limiting</text>
+
+  <!-- Inner layer: Model Alignment -->
+  <rect x="120" y="170" width="520" height="140" rx="14" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="140" y="195" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">🧠 Layer 3: Model Alignment</text>
+  <text x="140" y="213" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">System Prompt constraints · Output validation · Hallucination detection · Fact checking</text>
+
+  <!-- Core: Agent Logic -->
+  <rect x="200" y="230" width="360" height="60" rx="14" fill="#3498db"/>
+  <text x="380" y="258" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="white">🤖 Agent Core Logic</text>
+  <text x="380" y="278" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="white">Perceive → Reason → Act</text>
+
+  <!-- Right annotations -->
+  <text x="660" y="80" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#e74c3c">← Outermost defense</text>
+  <text x="660" y="268" text-anchor="end" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#3498db">← Protected core</text>
+
+  <!-- Bottom note -->
+  <text x="380" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#95a5a6">Defense in depth: attackers must breach all layers to influence Agent behavior</text>
+</svg>

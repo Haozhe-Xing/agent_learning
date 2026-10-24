@@ -293,7 +293,7 @@ print("\nEvaluation & Recommendation:\n", result["evaluation"])
 
 ## ReAct: Interweaving Reasoning and Action
 
-**ReAct (Reasoning + Acting)** is one of the most important prompting strategies in Agent development (covered in depth in Chapter 5).
+**ReAct (Reasoning + Acting)** is one of the most important prompting strategies in Agent development (covered in depth in Chapter 6).
 
 > 📄 **Paper Source**: *"ReAct: Synergizing Reasoning and Acting in Language Models"* (Yao et al., 2022). ReAct's core insight is: **pure reasoning (CoT) and pure action (tool calling) are both insufficient — interweaving the two achieves the best results.** On the HotpotQA multi-hop reasoning task, ReAct outperformed pure CoT by 6 percentage points; on the ALFWorld interactive task, it outperformed pure action mode by 34 percentage points. This paper directly established the foundational architecture of modern Agents.
 
@@ -324,7 +324,7 @@ Observation: 59.0
 Answer: New York's temperature today is 15°C, which is 59.0°F.
 """
 
-# This pattern will be implemented in detail in Chapter 5
+# This pattern will be implemented in detail in Chapter 6
 ```
 
 ## Prompting Strategy Selection Guide
@@ -422,7 +422,7 @@ The prompting strategies in this section all have solid academic research founda
 
 > 💡 **Frontier Developments**: Since 2024–2025, reasoning models have become the core direction of LLM development. OpenAI's o1/o3/o4-mini series, Anthropic's Claude 4 Extended Thinking, DeepSeek-R2, and other models have "internalized" CoT reasoning into the model itself (rather than relying on prompts), demonstrating astonishing capabilities in math, programming competitions, and scientific reasoning. Google's Gemini 2.5 Pro also introduced a "Thinking Mode." This shows that CoT has evolved from a "prompting trick" into a core paradigm of model training — future LLMs will increasingly "know how to think." For Agent developers, reasoning models dramatically improve planning capabilities in complex multi-step tasks.
 
-> 📖 **More Paper Analysis**: For a deep dive into ReAct, see [5.7 Paper Readings: Frontiers in Planning and Reasoning](../chapter_planning/06_paper_readings.md). For the distinction between sampling consistency and factual support, see [19.6 Paper Readings: Frontiers in Safety and Reliability](../chapter_21_security/06_paper_readings.md).
+> 📖 **More Paper Analysis**: For a deep dive into ReAct, see [5.7 Paper Readings: Frontiers in Planning and Reasoning](../chapter_planning/06_paper_readings.md). For Self-Consistency's application in hallucination mitigation, see [19.6 Paper Readings: Frontiers in Safety and Reliability](../chapter_21_security/06_paper_readings.md).
 
 ---
 

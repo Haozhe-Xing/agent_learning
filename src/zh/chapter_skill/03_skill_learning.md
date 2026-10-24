@@ -185,8 +185,8 @@ CRAFT 方法：
        return sum(x for x in arr if is_prime(x))
    
 2. 验证阶段（Verify）
-   在隔离运行器中，用独立维护的输入和预期检验候选工具
-   sum_of_primes([1,2,3,4,5]) == 10 是一个测试，不是完整正确性证明
+   用测试用例验证工具的正确性
+   sum_of_primes([1,2,3,4,5]) == 10  ✅
    
 3. 存储阶段（Store）
    将验证通过的工具保存到工具库
@@ -197,23 +197,14 @@ CRAFT 方法：
    → 参考其结构创建 sum_of_evens
 ```
 
-### CRAFT 的教学接口片段：隔离执行与独立验收
-
-下面展示算法流程与拒绝边界，未提供可直接运行的CRAFT系统。检索、响应解析、存储和问题求解方法仍需实现；新建和已存工具的所有执行都必须走同一隔离运行器。模型生成的 `test_cases` 只是候选自测，不能决定验收预期。`acceptance_cases` 由任务维护者另外提供，格式为 `{"input": [位置参数], "expected": JSON值}`，不从候选工具中读取。
-
-`runner.run_candidate` 是待实现的受信执行接口：接收源码、函数名、输入与资源策略，返回每组输入对应的JSON结果列表。预期结果留在宿主验证器，不传给候选程序。真实运行器须在执行前落实独立进程/容器权限、无宿主秘密与可写共享目录、禁网、墙钟超时、CPU/内存/输出上限及进程清理；策略参数本身不证明隔离已生效。本仓库未提供任意Python代码的这种运行器。没有运行器、没有独立用例、执行失败或返回异常形态时，下面的验证器一律拒绝；测试里的替身只验证接口分支。
+### CRAFT 的 Python 实现
 
 ```python
-import json
-import keyword
-
 class CRAFTSystem:
-    """教学流程片段；runner的隔离执行实现由宿主另行提供。"""
+    """CRAFT：创建和检索专用工具集"""
     
-    def __init__(self, llm, runner=None, acceptance_cases=()):
+    def __init__(self, llm):
         self.llm = llm
-        self.runner = runner
-        self.acceptance_cases = acceptance_cases
         self.tool_library = {}  # 工具名 → (代码, 描述, 测试)
         self.embeddings = {}
     
@@ -247,47 +238,27 @@ class CRAFTSystem:
 要求：
 1. 函数应该通用化，能解决这一类问题（不仅仅是这一个具体实例）
 2. 提供清晰的函数签名和文档字符串
-3. 提供至少 3 个候选自测用例（仅供调试，不作为独立验收）
+3. 提供至少 3 个测试用例
 
 请返回：
 - function_name: 函数名
 - code: 完整的 Python 代码
 - description: 功能描述
-- test_cases: 候选自测用例列表
+- test_cases: 测试用例列表
 """
         result = self.llm.generate(prompt)
         return parse_tool_response(result)
     
     def _verify_tool(self, tool: dict) -> bool:
-        """只在受信runner返回独立用例的匹配结果后通过。"""
-        if self.runner is None:
-            return False
+        """用测试用例验证工具"""
         try:
-            if (not isinstance(tool, dict)
-                    or not isinstance(tool.get("code"), str)
-                    or not 1 <= len(tool["code"]) <= 4096):
-                return False
-            name = tool.get("function_name")
-            if not isinstance(name, str) or not name.isidentifier() or keyword.iskeyword(name):
-                return False
-            cases = self.acceptance_cases
-            if (not isinstance(cases, (list, tuple)) or not 1 <= len(cases) <= 32
-                    or any(not isinstance(case, dict) or set(case) != {"input", "expected"}
-                           or not isinstance(case["input"], list) for case in cases)):
-                return False
-            # JSON边界保留类型，拒绝NaN/Infinity；预期不交给候选程序。
-            expected = [json.dumps(case["expected"], sort_keys=True, allow_nan=False)
-                        for case in cases]
-            inputs = json.loads(json.dumps([case["input"] for case in cases], allow_nan=False))
-            results = self.runner.run_candidate(
-                code=tool["code"], function_name=name, inputs=inputs,
-                limits={"timeout_seconds": 2, "cpu_seconds": 1, "memory_mb": 128,
-                        "output_bytes": 65536, "network": False})
-            if type(results) is not list or len(results) != len(cases):
-                return False
-            actual = [json.dumps(value, sort_keys=True, allow_nan=False) for value in results]
-            return actual == expected
-        except Exception:
+            exec(tool["code"])
+            func = eval(tool["function_name"])
+            for test in tool["test_cases"]:
+                assert func(*test["input"]) == test["expected"]
+            return True
+        except Exception as e:
+            print(f"工具验证失败: {e}")
             return False
 ```
 

@@ -1,4 +1,4 @@
-# 13.3 三层架构：Gateway / Engine / Plugin
+# 15.3 三层架构：Gateway / Engine / Plugin
 
 > ☤ *"三层不是分类，是看问题的不同角度。"*
 
@@ -6,16 +6,16 @@
 
 ## 一、为什么"Hermes 的架构值得拆"？
 
-在[第12章 OpenClaw](../chapter_openclaw/README.md)中，本书按渠道、循环与工具讨论组件边界。本页再用 Gateway / Engine / Plugin 三个视角分析 Hermes；这是教学划分，不表示其官方源码原样采用这三层，也不证明所有能力均可替换。
+第 14 章我们看到 OpenClaw 是"渠道 + Agent Loop + Tools"的传统 4 层结构。Hermes 在这之上又叠了一层：**Plugin 子系统**——它把"Agent 核心能力"全部插件化。
 
-需要分别核对：
+这意味着：
 
-- **Memory**：存储接口、数据隔离与迁移责任；
-- **Tool execution backend**：所选后端的配置、权限与清理；
-- **Self-evolving loop**：候选生成、停用和替换是否存在真实接口；
-- **Voice transcriber**：已支持的提供方与错误处理，不能从示意接口推断兼容。
+- **Memory** 是插件（不是写死在框架里）；
+- **Tool execution backend** 是插件（local / Docker / SSH / Singularity / Modal / Daytona 都是不同插件）；
+- **Self-evolving loop** 是插件（可以"关闭"或"换实现"）；
+- **Voice transcriber** 是插件（whisper.cpp、Paraformer、OpenAI Whisper 都可换）。
 
-与[第15章 DeepSeek Harness](../chapter_deepseek_harness/README.md)可以比较扩展边界；相似术语不证明源码同源，也不证明内核可互换。
+这一层抽象给 Hermes 带来了与 DeepSeek Harness（第 17 章）同源的"可换内核"灵活性——只是更早期、更 Python 风格。
 
 我们用三层视图来拆：Gateway / Engine / Plugin。
 
@@ -128,7 +128,7 @@ async def agent_loop(session, user_message):
             )
 ```
 
-> 第5步是本页的教学钩子，用来讨论轨迹交接；本次没有核实 Hermes 存在这个同名接口，也不主张它是产品独有机制。
+> 第 5 步（`self_evolving.on_tool_use`）是 Hermes **独有的钩子**——它让"每完成一次任务"都可能变成"创建/更新 Skill"的契机。
 
 ### 3.1.1 一次循环的运行示例
 
@@ -147,7 +147,7 @@ async def agent_loop(session, user_message):
 [step 3] 写会话记忆 → 返回给用户
 ```
 
-上面的 `self_evolving.on_tool_use` 是教学钩子，示意如何将轨迹交给候选技能生成流程；它不是已核实的 Hermes 官方 API。候选形成与验收的设计见[13.4节](./04_self_evolving_skills.md)。
+**和普通 ReAct 循环的唯一区别，就是第 5 步的 `self_evolving.on_tool_use` 钩子**。它不改变循环的控制流（工具照跑、结果照回写），只是在每次工具调用后**顺手记一笔**——这笔记录攒起来，就是 15.4 节"自进化"的原料。**这就是"自进化"被集成进主循环而不破坏主循环的方式：用钩子，而不是改流程。**
 
 ### 3.2 Context Manager（三层记忆）
 
@@ -178,21 +178,21 @@ async def assemble(session, user_message):
 
 ### 3.3 Self-Evolving Loop
 
-[13.4节](./04_self_evolving_skills.md)用“任务完成 → 候选提炼 → 草稿 → 验收”讨论一种实现设计。是否采用独立进程、何时调优以及是否影响请求延迟，仍需按所选版本检查，不能从这张教学分层图推断。
+这是 Hermes 的核心差异化（详见 15.4）。它在 Engine 主循环之外另起一个**离线进程**，流程是：任务完成 → 评估"是否值得提炼为 Skill" → 若值得，把执行轨迹喂给 LLM 生成 SKILL.md → 落盘为草稿 → 空闲时离线调优。**关键点：它不阻塞主循环**——提炼/迭代都在离线进行，用户感知不到延迟。
 
 ### 3.4 Nudge Engine（主动反思）
 
-主动触发与停止条件见[13.6节](./06_nudge_engine.md)。本书未核验固定“每30分钟”的默认周期；周期、触发条件和权限应以版本配置与轨迹为准。
+Engine 还有一个"周期性触发"的子系统——不是每条消息都触发，而是按时间 / 事件触发（每 30 分钟反思"最近有什么经验值得沉淀"，有就触发 Skill 提炼）。详见 15.6。
 
 ### 3.5 Honcho Dialectic（用户建模）
 
-Hermes 集成的是 Honcho——一个"持续观察用户 + 主动问自己"的子系统。它观察用户的偏好 / 工作模式 / 决策风格，写成 `USER.md`（人话描述），下次对话时注入 system prompt。记忆与用户资料的边界见[13.5节](./05_memory.md)。
+Hermes 集成的是 Honcho——一个"持续观察用户 + 主动问自己"的子系统。它观察用户的偏好 / 工作模式 / 决策风格，写成 `USER.md`（人话描述），下次对话时注入 system prompt。详见 15.5。
 
 ---
 
 ## 四、Layer 3：Plugin Subsystems（可换子系统）
 
-可将 Hermes 的扩展机制与[15.3 Cordis 架构](../chapter_deepseek_harness/03_cordis_architecture.md)比较，逐项检查接口与生命周期；这里不主张协议相同或实现可以直接互换。
+Hermes 的 Plugin 协议和 DeepSeek Harness 的 Cordis Plugin（17 章）有大量相似思想——核心都是"能力可换"。但 Hermes 实现更轻、更 Pythonic。
 
 ### 4.1 一个 Plugin 的骨架
 
@@ -287,7 +287,7 @@ async def recall_relevant(query: str, top_k: int = 10):
 
 ---
 
-## 五、与第8章 Harness 的对照
+## 五、与第 8 章 Harness 的对照
 
 | Harness 六大工程支柱 | Hermes 中的对应 |
 |-------------------|-----------------|
@@ -320,8 +320,8 @@ async def recall_relevant(query: str, top_k: int = 10):
 | Plugin 协议 | LLM Provider / Tool Backend / Memory / Skill Format 等都可换 |
 | 6 种执行后端 | local / Docker / SSH / Singularity / Modal / Daytona |
 | 全文检索 | SQLite FTS5 + BM25 |
-| 与第8章对照 | 完全覆盖六大支柱 + 自进化 + 用户建模 |
+| 与第 8 章对照 | 完全覆盖六大支柱 + 自进化 + 用户建模 |
 
 ---
 
-*下一节：[13.4 核心：Self-Evolving Skills 闭环](./04_self_evolving_skills.md)*
+*下一节：[15.4 核心：Self-Evolving Skills 闭环](./04_self_evolving_skills.md)*

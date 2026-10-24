@@ -1,4 +1,4 @@
-# 18.4 Cost Control and Performance Optimization
+# 20.4 Cost Control and Performance Optimization
 
 > **Section Goal**: Learn how to effectively control API call costs and improve response speed while maintaining Agent quality.
 
@@ -16,7 +16,7 @@ The cost of running an Agent comes primarily from three areas:
 | Vector database | Embedding computation + retrieval queries | 10–20% |
 | Infrastructure | Servers, storage, networking | 10–20% |
 
-A simple calculation: if your Agent consumes an average of 5,000 tokens per conversation (input + output) using GPT-4o, the cost is approximately USD 0.02. Processing 10,000 conversations per day results in a monthly cost of about USD 6,000.
+A simple calculation: if your Agent consumes an average of 5,000 tokens per conversation (input + output) using GPT-4o, the cost is approximately $0.02. Processing 10,000 conversations per day results in a monthly cost of about $6,000.
 
 ---
 

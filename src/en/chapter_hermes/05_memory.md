@@ -1,4 +1,4 @@
-# 13.5 Three-Layer Memory
+# 15.5 Three-Layer Memory
 
 > ☤ *"Memory isn't one block — it's three layers: long-term / working / episodic."*
 
@@ -94,4 +94,4 @@ Forgetting: time decay, conflict resolution (keep newer/higher-confidence), user
 
 ---
 
-*Next section: [13.6 Nudge Engine & Cross-Session Learning](./06_nudge_engine.md)*
+*Next section: [15.6 Nudge Engine & Cross-Session Learning](./06_nudge_engine.md)*

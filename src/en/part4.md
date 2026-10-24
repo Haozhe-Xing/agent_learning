@@ -1,10 +1,14 @@
-# Part IV: Collaboration and Integration
+# Part 4: Multi-Agent Systems
 
-Bring a single-Agent task, permission boundary and acceptance baseline. This part addresses two separate questions: whether roles should share the work, and how tools or other systems cross a protocol boundary. You need not adopt both.
+> 🤝 From solo operation to team collaboration — learn multi-agent cooperation patterns and communication protocols.
 
-| Chapter | Trigger | Artifact | Comparison and failure case |
-|---|---|---|---|
-| [16 Multi-Agent Collaboration](./chapter_18_multi_agent/README.md) | Independently verifiable subtasks or meaningful role boundaries | Handoff contract, shared budget and aggregate acceptance | Compare against one Agent on identical tasks and total budget; failed subtasks cannot become a delivered result |
-| [17 Protocols](./chapter_19_protocol/README.md) | Tools cross process or system boundaries | Request/response contract, errors and connection lifecycle | A valid request still works after a malformed one; connectivity grants no business permission |
+This part contains 2 chapters exploring how to make multiple Agents work together efficiently.
 
-A single Agent can need MCP. A state graph does not automatically need multiple Agents. Without a collaboration or integration requirement, proceed directly to [Part V](./part5.md).
+| Chapter | Content | Key Takeaway |
+|---------|---------|-------------|
+| **Chapter 18** Multi-Agent Collaboration | Communication patterns, role assignment, Supervisor architecture | Master multi-agent collaboration design |
+| **Chapter 19** Agent Communication Protocols | MCP, A2A, ANP protocols | Understand inter-agent communication standards |
+
+---
+
+*Start learning: [Chapter 18: Multi-Agent Collaboration](./chapter_18_multi_agent/README.md)*

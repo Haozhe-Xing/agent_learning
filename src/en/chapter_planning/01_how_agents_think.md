@@ -1,67 +1,199 @@
 # 5.1 How Do Agents "Think"?
 
-Here, “thinking” abbreviates how an application organizes information and selects actions. Inspectable inputs, public plans/brief rationales, tool calls, observations and artifacts are not verbatim records of a model's internal computation. They do not establish consciousness or self-awareness.
+An Agent's "thinking" is essentially the **process of organizing information, deriving conclusions, and formulating plans within a context**. Understanding this process is a prerequisite for designing effective Agents.
 
-## Start with an Inspectable Task Contract
+## The Nature of Thinking: Reasoning in Context
 
-The continuing task is a **release brief**: gather an approval record, budget and rollback instruction, then produce three attributed claims. An approval record in a source is data, not authority to publish. This exercise publishes nothing, writes no files and executes no generated code.
-
-With Python 3.11+, run `python -m reference_code.planning_patterns plan` from the repository root. `workflow.py` uses the standard library and reuses the existing `evidence_assistant.planning.PlanAndExecuteAgent` queue. Defaults need no model, key or network.
+LLMs have no independent "thinking space" — all their reasoning happens within the Context Window. By carefully designing prompts, we can guide the model to produce higher-quality reasoning.
 
 ```python
-from reference_code.planning_patterns import run_plan
+from openai import OpenAI
 
-result = run_plan()
-assert result["accepted"] is True
-assert result["candidate"]["budget"] == {
-    "value": "30 units", "source": "budget-v1#release",
-}
-assert [row["operation"] for row in result["trace"]] == ["load", "compose"]
-assert result["trace"][0]["result"]["observations"]["budget"]["value"] == "30 units"
-print(result["status"], result["verification"])
+client = OpenAI()
+
+# Without guided reasoning: answer directly (may be wrong)
+def direct_answer(question: str) -> str:
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": question}]
+    )
+    return response.choices[0].message.content
+
+# With guided reasoning: think step by step (more accurate)
+def structured_thinking(question: str) -> str:
+    system_prompt = """When solving problems, strictly follow this framework:
+
+[Problem Analysis]
+- What is the core of the problem?
+- What are the known conditions?
+- What are the uncertain factors?
+
+[Reasoning Process]
+1. First step...
+2. Second step...
+...
+
+[Conclusion]
+The final answer is...
+
+[Verification]
+Verify whether the answer is reasonable...
+"""
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": question}
+        ]
+    )
+    return response.choices[0].message.content
+
+# Comparison test
+question = "A bucket full of water weighs 10 kg. Half a bucket of water weighs 6 kg. How much does the empty bucket weigh?"
+print("Direct answer:", direct_answer(question))
+print("\nStructured thinking:", structured_thinking(question))
 ```
 
-`FACTS` contains fixed observations; `REQUIREMENTS` contains independent requirements frozen before execution. The writer receives a copy of the observations. The passing brief covers the approval record, a 30-unit budget and restoration of the release-1.0 snapshot, all with sources. This validates a small contract, not general natural-language planning.
+## Cognitive Framework: The OODA Loop
 
-## CoT, Explanations and Evidence Have Different Roles
+An Agent's decision-making can be understood through the OODA loop:
 
-[Wei et al.'s CoT paper, v6](https://arxiv.org/abs/2201.11903v6) studies intermediate reasoning text and performance on specified tasks. Generated explanations can organize steps and expose assumptions, but may omit causal influences or rationalize an incorrect result. They do not establish that a model thinks only while emitting tokens, and interfaces need not expose private reasoning.
-
-| Public record | Use | What it cannot establish |
-|---|---|---|
-| Goal, constraints, selected tool, brief rationale | Inspect whether an action addresses the task | A complete internal computation trace |
-| Arguments, sources, observations and errors | Recheck actual inputs | Correct, complete or authorized source content |
-| Independent expectations, checks and missing points | Decide the current contract | Coverage of every possible error |
-| Self-reported confidence and reflection | Suggest further checks | Calibrated probability, independent evidence or authorization |
-
-Do not promote a generated plan to new system policy. Plans, reflections and source text are data to check. The host supplies permissions and acceptance requirements.
-
-## OODA as a Division of Responsibilities
-
-![Public state for observation, orientation, decision and action](../svg/chapter_planning_01_ooda_loop.svg)
-
-Observe gathers sources; Orient checks gaps and constraints; Decide selects an allowed action; Act executes it and records the outcome. This organizes responsibilities rather than requiring four model calls. Missing information, denied access or exhausted budgets can stop a run early.
-
-In this task, reading supplies observations, dependency/goal checks constrain actions, a writer proposes a brief, and independent checks decide delivery. Change 30 to 300 below: fluent justification cannot make it pass.
+![OODA Decision Loop](../svg/chapter_planning_01_ooda_loop.svg)
 
 ```python
-from copy import deepcopy
-from reference_code.planning_patterns import FACTS, check_brief
+class OODAAgent:
+    """Agent framework based on the OODA loop"""
+    
+    def __init__(self):
+        self.context = {}  # current situational understanding
+    
+    def observe(self, input_data: str) -> str:
+        """Observe: collect and organize current environmental information"""
+        prompt = f"""
+Analyze the following input and extract key information:
+{input_data}
 
-candidate = deepcopy(FACTS)
-candidate["budget"]["value"] = "300 units"
-verdict = check_brief(candidate, FACTS)
-assert verdict["status"] == "failed"
-assert verdict["unsupported_points"] == ["budget"]
-assert verdict["wrong_requirements"] == ["budget"]
+Please identify:
+1. The user's explicit needs
+2. Implicit expectations
+3. Possible obstacles
+"""
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        observation = response.choices[0].message.content
+        self.context["observation"] = observation
+        return observation
+    
+    def orient(self, observation: str) -> str:
+        """Orient: understand the current situation within a known knowledge framework"""
+        prompt = f"""
+Based on the following observation, perform a situational assessment:
+{observation}
+
+Please analyze:
+1. What type of problem is this?
+2. What methods and tools are available?
+3. What are the main risks and challenges?
+"""
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        orientation = response.choices[0].message.content
+        self.context["orientation"] = orientation
+        return orientation
+    
+    def decide(self, orientation: str) -> str:
+        """Decide: formulate a concrete action plan"""
+        prompt = f"""
+Based on the situational assessment, formulate a specific action plan:
+{orientation}
+
+Please provide:
+1. The recommended course of action (first choice)
+2. Alternative options
+3. Execution steps (sorted by priority)
+"""
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        decision = response.choices[0].message.content
+        self.context["decision"] = decision
+        return decision
+    
+    def act(self, plan: str, user_input: str) -> str:
+        """Act: execute the plan and generate the final response"""
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"Execute the plan:\n{plan}\n\nGive the user a clear answer in natural language."
+                },
+                {"role": "user", "content": user_input}
+            ]
+        )
+        return response.choices[0].message.content
+    
+    def process(self, user_input: str) -> str:
+        """Complete OODA loop"""
+        obs = self.observe(user_input)
+        orientation = self.orient(obs)
+        decision = self.decide(orientation)
+        result = self.act(decision, user_input)
+        return result
 ```
 
-## Reasoning Modes Propose Results; They Do Not Accept Them
+## Metacognition: An Agent's Self-Awareness
 
-![Reasoning modes and their required checks](../svg/chapter_planning_01_reasoning_modes.svg)
+Advanced Agents possess metacognitive capabilities — the ability to think about their own thinking process:
 
-Deduction depends on premises/rules; induction generalizes from samples; abduction proposes explanations; analogy transfers a structure. Each can propose useful results and has characteristic failures. Identify missing evidence, calculation, constraints or validation before adding a model call. Longer explanations are not automatically more accurate.
+```python
+def metacognitive_reasoning(problem: str) -> dict:
+    """Metacognitive reasoning: the Agent can assess its own confidence and limitations"""
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "system",
+                "content": """When answering, always perform a metacognitive assessment:
+1. How reliable is my knowledge about this problem? (confidence 0-10)
+2. What aspects might I have blind spots in?
+3. Do I need additional tools or information?
+4. What assumptions is my answer based on?"""
+            },
+            {"role": "user", "content": problem}
+        ]
+    )
+    
+    return {
+        "answer": response.choices[0].message.content,
+        "self_assessed_by_llm": True
+    }
 
-Exercise: record goal, observed sources, allowed actions, independent expectations and stop reasons. Change the budget, remove rollback, and fail the reader; compare failure stages. Deliver a public task summary and verification record, without requesting private CoT.
+# Test metacognition
+result = metacognitive_reasoning("When will quantum computers surpass classical computers?")
+print(result["answer"])
+```
+
+## Comparison of Reasoning Modes
+
+![Four Types of Reasoning Modes](../svg/chapter_planning_01_reasoning_modes.svg)
+
+---
+
+## Summary
+
+An Agent's "thinking" relies on:
+- Structured reasoning frameworks (CoT, OODA, etc.)
+- Metacognitive capabilities (knowing what you don't know)
+- Different reasoning modes (deductive, inductive, abductive, analogical)
+
+---
 
 *Next: [5.2 ReAct: Reasoning + Acting Framework](./02_react_framework.md)*

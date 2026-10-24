@@ -1,46 +1,121 @@
 # 3.1 Why Do Agents Need Tools?
 
-A model can write “looked up” or “calculated” without any operation occurring. Tools first provide inspectable actions and observations: retrieved sources, actual arguments, function results, and identifiable failures. Task needs determine whether a tool is useful; availability alone does not justify calling it.
+LLMs are powerful on their own, but they have three fundamental limitations: **knowledge cutoff**, **inability to act**, and **inability to access real-time information**. Tools exist precisely to break through these three limitations.
 
-## Choose Capabilities from the Missing Requirement
+## The Limitations of LLMs
 
-| Missing capability | Possible tool | Remaining checks |
-|---|---|---|
-| Required material is absent from current input | Local retrieval or authorized data API | Source, version, visibility, empty results |
-| Numbers need defined operations | Bounded arithmetic or domain calculator | Units, precision, input range, independent expectation |
-| An external action is required | Authorized write interface | Resource scope, confirmation policy, idempotency, receipt |
-| Rewriting supplied text only | Possibly no tool | Output requirements |
-
-Model knowledge can be stale or lack private task material. Tools introduce observations, but retrieved information can also be wrong. A proposed call supplies neither connectivity, credentials, nor database privileges; the host accesses resources.
-
-## An Actual Function Observation
+![LLM three inherent limitations solved by tools](../svg/chapter_tools_01_llm_limits.svg)
 
 ```python
-import json
-from reference_code.tool_calling import ToolHost
+# Suppose you ask an LLM directly
+response = "What is Apple's stock price today?"
+# The LLM might say:
+# "I cannot query Apple's (AAPL) stock price in real time.
+#  Based on my training data, it was approximately $150–190 in early 2024..."
 
-host = ToolHost(allowed_tools=("calculate",))
-observation = host.execute("calculate", json.dumps({"expression": "12345 * 67890"}))
-assert observation == {"ok": True, "value": {"value": 838102050}}
-print(observation)
+# Problems:
+# 1. Data is not real-time (may be very outdated)
+# 2. Accuracy cannot be confirmed
+# 3. Cannot perform any actions
 ```
 
-The shared bounded interpreter computes 838102050. This establishes the result for that expression in this implementation, not correct business inputs or currency units. Tool selection, argument provenance, execution, and task acceptance remain separate.
+Tools allow Agents to:
 
-## Three Records: Proposal, Execution, Acceptance
+| Capability | Tool Type | Examples |
+|-----------|-----------|---------|
+| Access real-time information | Search tools | Tavily, Bing Search |
+| Perform calculations | Calculation tools | Python executor |
+| Operate files | File tools | Read, write, create files |
+| Access databases | Database tools | SQL queries |
+| Call external services | API tools | Weather, maps, email |
+| Control browsers | Browser tools | Playwright |
+| Execute code | Code tools | Python REPL |
 
-1. **Proposal**: The model requests `calculate` with JSON text; neither name nor arguments is trusted yet.
-2. **Execution**: The host checks registration, current permission, argument types/values, and remaining budgets before invoking a function.
-3. **Acceptance**: Independent requirements check final values, units, sources, and omissions; a normal tool return does not complete the task.
+## Tool Classification System
 
-Calling a tool “read-only” does not enforce read-only access. Files, SQL, and messages need resource authorization and operation-specific execution limits. This chapter provides no arbitrary-path, shell, or sending tool.
+![Agent tool system classification](../svg/chapter_tools_01_tool_categories.svg)
 
-## Failures Are Part of the Tool Contract
+## The Essence of Tools: The Bridge Between LLMs and the Real World
 
-Bad arguments, permission denial, empty retrieval, timeouts, and failed acceptance mean different things. Empty text or an answer-shaped error string can obscure those distinctions. The companion uses `ok/code/value` objects and preserves an incomplete task state.
+```python
+# LLM without tools: spinning in the world of text
+def llm_without_tools(question: str) -> str:
+    # Can only answer based on training data
+    # Cannot access real-time information
+    # Cannot perform any actions
+    return "Based on my knowledge, I believe..."
 
-Record diagnostics by purpose. Call IDs, tool names, statuses, and necessary provenance aid inspection. Full arguments, pages, customer records, or exception messages may be sensitive and should not all be retained indefinitely. A visible fixture trace is not a production logging policy.
+# Agent with tools: can perceive and influence the real world
+def agent_with_tools(question: str) -> str:
+    # Analyze what tools the question requires
+    if "weather" in question:
+        weather_data = call_weather_api(location)  # Real data!
+    if "calculate" in question:
+        result = execute_calculation(expression)   # Precise calculation!
+    if "latest" in question:
+        news = search_internet(query)              # Real-time information!
+    # Give an answer based on real data
+    return generate_answer(question, tool_results)
+```
 
-Exercise: define boundaries for “continue yesterday's release checks.” Identify required reads, calculations, and writes; list principal, maximum input, failure states, and completion evidence. Keep the minimum read-only path before adding the next section's protocol.
+## How a Tool Expands an Agent's Capability Boundary
 
-*Next: [3.2 Function Calling](./02_function_calling.md)*
+Let's use a concrete example to feel the power of tools:
+
+```python
+# Scenario: Analyze a competitor
+# What can an LLM without tools do?
+# → Can only give generic advice, cannot access real-time data
+
+# With these tools, what can an Agent do?
+tools = [
+    "search",           # Search for the latest news and information
+    "web_scraper",      # Scrape web page content
+    "python_executor",  # Data analysis
+    "chart_generator",  # Generate visualization charts
+    "file_writer",      # Save reports to files
+]
+
+# The Agent can:
+# 1. Search for the competitor's latest developments
+# 2. Scrape the competitor's website for product information
+# 3. Analyze data and calculate market share
+# 4. Generate comparison charts
+# 5. Output a complete analysis report to PDF
+```
+
+## Tool Safety: With Great Power Comes Great Responsibility
+
+Tools give Agents powerful capabilities, but also bring risks:
+
+```python
+# ⚠️ Dangerous tools (require caution)
+dangerous_tools = {
+    "file_deleter": "Can delete any file",
+    "email_sender": "Can send emails on your behalf",
+    "payment_api": "Can initiate payments",
+    "code_executor": "Can execute arbitrary code",
+}
+
+# Safety measures:
+# 1. Sandbox isolation (code execution in an isolated environment)
+# 2. Least privilege (only grant necessary permissions)
+# 3. Confirmation mechanism (dangerous operations require user confirmation)
+# 4. Audit logs (record all tool calls)
+```
+
+---
+
+## Summary
+
+Tools are the key to breaking through LLM limitations for Agents:
+- LLMs have inherent limitations: knowledge cutoff and inability to act
+- Tools allow Agents to access real-time information and perform operations
+- Tools fall into five categories: information retrieval, computation execution, content generation, interactive operations, and memory storage
+- Powerful tools require accompanying safety mechanisms
+
+> 📖 **Want to dive deeper into the academic frontier of tool learning?** Read [3.6 Paper Readings: Frontier Advances in Tool Learning](./06_paper_readings.md), covering in-depth analysis of three foundational papers: Toolformer, Gorilla, and ToolLLM.
+
+---
+
+*Next section: [3.2 Function Calling Mechanism Explained](./02_function_calling.md)*

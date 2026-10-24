@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 326" width="680" height="326" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
-  <rect width="680" height="326" rx="12" fill="#f8f9fa"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" width="680" height="280" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="680" height="280" rx="12" fill="#f8f9fa"/>
   <!-- 根节点 -->
   <rect x="220" y="16" width="240" height="36" rx="8" fill="#2c3e50"/>
   <text x="340" y="39" text-anchor="middle" font-size="14" font-weight="bold" fill="white">第1章 什么是 Agent？</text>
   <!-- 根到主干 -->
   <line x1="340" y1="52" x2="340" y2="72" stroke="#7f8c8d" stroke-width="2"/>
   <!-- 主干竖线 -->
-  <line x1="80" y1="72" x2="80" y2="294" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="80" y1="72" x2="80" y2="252" stroke="#7f8c8d" stroke-width="2"/>
   <!-- 横线到各节点 -->
   <line x1="80" y1="88" x2="120" y2="88" stroke="#7f8c8d" stroke-width="2"/>
   <line x1="80" y1="130" x2="120" y2="130" stroke="#7f8c8d" stroke-width="2"/>
@@ -45,8 +45,4 @@
   <rect x="120" y="234" width="4" height="36" rx="2" fill="#e74c3c"/>
   <text x="136" y="248" font-size="12" font-weight="bold" fill="#e74c3c">1.5 Agent 的应用场景全景图</text>
   <text x="136" y="264" font-size="11" fill="#7f8c8d">探索 Agent 的实际应用可能性</text>
-<line x1="80" y1="294" x2="120" y2="294" stroke="#7f8c8d" stroke-width="2"/>
-<rect x="120" y="276" width="520" height="36" rx="6" fill="#e2e8f0"/>
-<text x="136" y="290" font-size="12" font-weight="bold" fill="#334155">1.6 智能体发展史：从符号主义到大模型驱动</text>
-<text x="136" y="306" font-size="11" fill="#64748b">按问题理解机制演进，历史阅读可在应用主线后回查</text>
 </svg>

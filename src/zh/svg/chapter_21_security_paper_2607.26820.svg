@@ -2,13 +2,13 @@
 <span id="A1.F10.pic1.2" class="ltx_inline-block ltx_minipage ltx_align_bottom" style="width:45.05em;">
 <div class="ltx_pagination ltx_role_start_2_columns"></div>
 <span id="A1.F10.pic1.2.1" class="ltx_p"><span id="A1.F10.pic1.2.1.1" class="ltx_text ltx_font_bold" style="--ltx-fg-color:#000000;">[Instruction]
-<br class="ltx_break"/><span id="A1.F10.pic1.2.1.1.1" class="ltx_text ltx_font_medium">Insert exactly one user-assistant turn pair into an existing multi-turn trajectory. The new turn should make the process more realistic and fine-grained, rather than merely longer.
-<br class="ltx_break"/>If harmful: keep the harmful goal unchanged, expand pre-failure buildup, and
+<br class="ltx_break"><span id="A1.F10.pic1.2.1.1.1" class="ltx_text ltx_font_medium">Insert exactly one user-assistant turn pair into an existing multi-turn trajectory. The new turn should make the process more realistic and fine-grained, rather than merely longer.
+<br class="ltx_break">If harmful: keep the harmful goal unchanged, expand pre-failure buildup, and
 do not close too early.
-<br class="ltx_break"/>If benign: keep the benign goal unchanged, make the dialogue technically rich
+<br class="ltx_break">If benign: keep the benign goal unchanged, make the dialogue technically rich
 and multi-step, but never form harmful closure.</span></span></span>
 <span id="A1.F10.pic1.2.2" class="ltx_p"><span id="A1.F10.pic1.2.2.1" class="ltx_text ltx_font_bold" style="--ltx-fg-color:#000000;">[Constraints]
-<br class="ltx_break"/><span id="A1.F10.pic1.2.2.1.1" class="ltx_text ltx_font_medium">Keep the topic, logic, and trajectory role unchanged. Fit naturally between the local context and the next original turn. Preserve terminology and goal direction. Avoid topic drift, generic filler, abrupt jumps, and verbatim copying of the next turn. For transition turn, prefer light clarification, recap, confirmation, acknowledgment, or bridge language.</span></span></span>
+<br class="ltx_break"><span id="A1.F10.pic1.2.2.1.1" class="ltx_text ltx_font_medium">Keep the topic, logic, and trajectory role unchanged. Fit naturally between the local context and the next original turn. Preserve terminology and goal direction. Avoid topic drift, generic filler, abrupt jumps, and verbatim copying of the next turn. For transition turn, prefer light clarification, recap, confirmation, acknowledgment, or bridge language.</span></span></span>
 <span id="A1.F10.pic1.2.3" class="ltx_p"><span id="A1.F10.pic1.2.3.1" class="ltx_text ltx_font_bold" style="--ltx-fg-color:#000000;">[Inputs]<span id="A1.F10.pic1.2.3.1.1" class="ltx_text"></span></span></span>
 <span id="A1.I2" class="ltx_itemize">
 <span id="A1.I2.i1" class="ltx_item" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">•</span> 
@@ -37,7 +37,7 @@ and multi-step, but never form harmful closure.</span></span></span>
 </span></span>
 </span>
 <span id="A1.F10.pic1.2.4" class="ltx_p"><span id="A1.F10.pic1.2.4.1" class="ltx_text ltx_font_bold" style="--ltx-fg-color:#000000;">[Output]
-<br class="ltx_break"/><span id="A1.F10.pic1.2.4.1.1" class="ltx_text ltx_font_medium">Return JSON only with keys <span id="A1.F10.pic1.2.4.1.1.1" class="ltx_text ltx_font_typewriter">user</span> and <span id="A1.F10.pic1.2.4.1.1.2" class="ltx_text ltx_font_typewriter">assistant</span>:
-<br class="ltx_break"/><span id="A1.F10.pic1.2.4.1.1.3" class="ltx_text ltx_font_typewriter">{"user":"...", "assistant":"..."}</span></span></span></span>
+<br class="ltx_break"><span id="A1.F10.pic1.2.4.1.1" class="ltx_text ltx_font_medium">Return JSON only with keys <span id="A1.F10.pic1.2.4.1.1.1" class="ltx_text ltx_font_typewriter">user</span> and <span id="A1.F10.pic1.2.4.1.1.2" class="ltx_text ltx_font_typewriter">assistant</span>:
+<br class="ltx_break"><span id="A1.F10.pic1.2.4.1.1.3" class="ltx_text ltx_font_typewriter">{"user":"...", "assistant":"..."}</span></span></span></span>
 <div class="ltx_pagination ltx_role_end_2_columns"></div>
 </span></span></span></foreignObject></g></g></svg>

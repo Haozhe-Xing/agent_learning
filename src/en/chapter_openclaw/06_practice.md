@@ -1,14 +1,4 @@
-# 12.6 Practice: Build a Personal Assistant
-
-## Iteration and Acceptance
-
-Connect tools and memory to assistant channels while checking new external side effects.
-
-- **Success criteria**: Verify channel routing, skill selection, and message ownership using test accounts or local fixtures, enabling integrations individually.
-- **Failure cases**: Test unauthorized senders, duplicate messages, and API timeouts; avoid duplicate writes or sends.
-- **Safety boundary**: Start read-only; require explicit authorization and backend permission checks for sending mail, writing calendars, and executing commands.
-
-Record inputs, expected results, and actual results before extending the system. See [Chapter 18](../chapter_20_evaluation/README.md) for evaluation and [Chapter 19](../chapter_21_security/README.md) for trust and permissions.
+# 14.6 Practice: Build a Personal Assistant
 
 > 🦞 *"From zero to a 24/7 personal assistant, in five steps."*
 
@@ -106,4 +96,4 @@ pm2 save && pm2 startup
 
 ---
 
-*Next section: [12.7 Lessons for Engineers](./07_lessons_for_engineers.md)*
+*Next section: [14.7 Lessons for Engineers](./07_lessons_for_engineers.md)*

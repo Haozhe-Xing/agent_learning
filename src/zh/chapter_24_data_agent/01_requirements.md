@@ -1,4 +1,4 @@
-# 22.1 需求分析与架构设计
+# 24.1 需求分析与架构设计
 
 > **本节目标**：设计一个智能数据分析 Agent 的整体方案。
 
@@ -60,54 +60,168 @@ class AnalysisResult:
 
 ---
 
-## 技术选型与依赖范围
+## 技术选型
 
-先确定任务、数据访问边界和独立预期，再选组件。本章没有同条件模型排名、数据库性能或图表框架对比实验，不能给出“某模型SQL准确率最高”的结论。
+构建数据分析 Agent 需要从多个维度选择技术栈：
 
-| 层次 | 本章起点 | 扩展前需要验证什么 |
-|---|---|---|
-| SQL提议 | 22.2的固定提供者，仅检查接口 | 真实模型/SDK版本、数据发送范围、错误与业务验收率 |
-| 数据访问 | 标准库SQLite与`ReadOnlySQLite` | 其他数据库的驱动、方言、账号/行列权限和资源策略需重新实现 |
-| 分析与图表 | 22.3中的领域设计 | 类型、单位、统计结果、图表数值、输出文件和实际依赖 |
-| 洞察与报告 | 22.4中的候选报告设计 | 结论可回查、缺失项、格式与独立交付要求 |
-| 流程编排 | 22.5宿主定义的依赖顺序 | 有实测需求后再引入状态图、人工审核或并行 |
-
-22.2及其测试只用Python标准库，在仓库根目录使用Python3.11+运行。它不需要安装模型SDK或数据处理库。组装22.3–22.4时，应在独立环境记录实际使用的组件与精确版本，并验证依赖；不能把安装若干包当成已经拥有完整应用。主线参考项目也不要求先安装这些领域扩展。
-
-## 安全与结果边界
-
-| 需要解决的问题 | 本章提供或要求的措施 | 不能由它推出的结论 |
-|---|---|---|
-| 不可信SQL候选 | 数据库只读连接与原生动作/表/函数许可，值使用参数绑定 | 正则白名单、SELECT前缀和模型Prompt不能授予权限 |
-| 资源消耗 | 22.2进度回调、时间检查与有界结果行数 | LIMIT不限制所有扫描/聚合成本；行数不限制字段字节数 |
-| 数据披露 | 只发送许可Schema，业务访问层另行实施身份、用途与行列限制 | 只读或字段名不敏感不代表允许公开数据 |
-| 分析与报告错误 | 固定口径、独立数值与产物预期，失败保留记录 | SQL可执行、图表存在或模型自评不能证明任务完成 |
-
-数据库只读执行器的真实实现、测试与适用范围见22.2；身份/行列级业务权限和完整敏感数据治理不是该执行器已经实现的能力。
-
-## Pipeline职责设计
-
-![数据分析Agent六步设计](../svg/chapter_24_data_agent_02_analysis_flow.svg)
-
-下面是**设计伪代码**，不是已实现的`DataAnalysisAgent`类。数据访问之外的组件需按22.3–22.4补齐，最终用22.5的合同组装：
-
-```text
-接收任务与交付要求
-1. 澄清指标、时间、币种、权限范围与独立预期
-2. 读取许可Schema，提出SQL候选；需要澄清则停止
-3. 宿主在数据库许可及资源预算内执行
-4. 核对类型、空值、单位，计算统计；洞察仅为候选
-5. 生成图表并核对轴、数值与文件产物
-6. 形成报告候选，独立核对结果与全部必需交付物
-只有所有必需条件通过，才保存并标记最终交付
+```python
+TECH_STACK = {
+    "LLM 层": {
+        "推荐": "GPT-4.1",
+        "原因": "SQL 生成准确率最高，代码理解能力强",
+        "备选": "GPT-4.1-mini（成本敏感场景）、Claude 4（长上下文分析）",
+    },
+    "数据库连接层": {
+        "推荐": "SQLAlchemy",
+        "原因": "支持多种数据库（SQLite、PostgreSQL、MySQL）的统一接口",
+        "备选": "直接使用各数据库驱动（sqlite3、psycopg2）",
+    },
+    "数据处理层": {
+        "推荐": "pandas",
+        "原因": "数据清洗、转换、统计分析的事实标准",
+        "备选": "polars（大数据量场景，性能更好）",
+    },
+    "可视化层": {
+        "推荐": "matplotlib + seaborn",
+        "原因": "功能全面、文档丰富、图表质量高",
+        "备选": "plotly（交互式图表）、pyecharts（中文友好）",
+    },
+    "Agent 框架": {
+        "推荐": "LangGraph",
+        "原因": "有状态的分析流程控制、支持人工审核节点",
+        "备选": "原生 OpenAI API（简单场景）",
+    },
+}
 ```
 
-步骤数不等于模型调用数。SQL与文字可以由模型提议，查询许可、预算和验收由宿主执行；统计或报告阶段也可能调用模型，不能统称为确定性计算。模型提议成功与业务答案正确应分别记录。
+### 关键依赖安装
 
-## 小结
-
-本节确定任务与组件责任。22.2提供可运行的SQLite边界和SQL提议接口，22.3–22.4保留领域实现设计，22.5说明组装与验收。读者需要补齐真实组件和固定小数据集，才能交付完整领域任务。
+```bash
+# 数据分析 Agent 的核心依赖
+pip install langchain langchain-openai langgraph \
+            sqlalchemy pandas matplotlib seaborn \
+            tabulate python-dotenv
+```
 
 ---
 
-[22.2 数据连接与查询](./02_data_connection.md)
+## 安全设计考量
+
+数据分析 Agent 直接与数据库交互，安全性是**第一优先级**：
+
+```python
+SECURITY_REQUIREMENTS = {
+    "SQL 注入防护": {
+        "措施": "只允许 SELECT 语句，禁止 INSERT/UPDATE/DELETE/DROP",
+        "实现": "正则白名单 + 参数化查询",
+        "优先级": "P0（必须）",
+    },
+    "数据库权限最小化": {
+        "措施": "使用只读账号连接数据库",
+        "实现": "创建专用 readonly 用户，仅授予 SELECT 权限",
+        "优先级": "P0（必须）",
+    },
+    "查询资源限制": {
+        "措施": "防止生成消耗大量资源的查询（如全表扫描、笛卡尔积）",
+        "实现": "强制添加 LIMIT、设置查询超时时间",
+        "优先级": "P1（重要）",
+    },
+    "敏感数据脱敏": {
+        "措施": "避免将敏感数据（手机号、身份证）发送给 LLM",
+        "实现": "查询结果中自动检测并遮蔽敏感字段",
+        "优先级": "P1（重要）",
+    },
+}
+```
+
+> ⚠️ **重要提醒**：永远不要让 LLM 生成的 SQL 直接执行。必须经过安全检查层——这是数据分析 Agent 与聊天机器人最大的安全差异。
+
+---
+
+## 完整 Pipeline 设计
+
+![数据分析 Agent 六步 Pipeline](../svg/chapter_24_data_agent_02_analysis_flow.svg)
+
+将分析流程分为六个阶段，每个阶段有明确的输入和输出（详见上图）。
+
+---
+
+## Agent 核心结构
+
+下面是 `DataAnalysisAgent` 的骨架设计。每个方法代表分析流程中的一个独立阶段，我们将在后续章节中逐一实现。这里先说明每个方法的**设计思路**：
+
+```python
+class DataAnalysisAgent:
+    """智能数据分析 Agent"""
+    
+    def __init__(self, llm, db_connection):
+        self.llm = llm
+        self.db = db_connection
+        self.table_schemas = self._load_schemas()
+    
+    def _load_schemas(self) -> dict:
+        """加载数据库表结构
+        
+        设计思路：
+        - 查询 INFORMATION_SCHEMA 获取所有表名、列名、数据类型
+        - 将表结构格式化为 LLM 可理解的文本（如 "users(id INT, name TEXT, ..."）
+        - 结果缓存到 self.table_schemas，避免每次分析重复查询
+        - 这些结构信息将作为 LLM 生成 SQL 时的上下文
+        """
+        schemas = {}
+        # 实际实现见 21.2 节 SafeDatabaseConnector
+        return schemas
+    
+    async def analyze(self, request: AnalysisRequest) -> AnalysisResult:
+        """执行分析流程——六步 Pipeline"""
+        
+        # 1. 理解用户意图
+        #    将自然语言映射到 AnalysisType（描述、对比、趋势、相关性）
+        #    提取时间范围、目标表等关键信息
+        intent = await self._understand_intent(request.question)
+        
+        # 2. 生成 SQL 查询
+        #    结合表结构 + 用户意图，让 LLM 生成安全的 SELECT 查询
+        #    包含 SQL 注入防护（只允许 SELECT，禁止 DDL/DML）
+        sql = await self._generate_sql(request.question, intent)
+        
+        # 3. 执行查询
+        #    通过参数化查询执行，返回结构化数据（dict/DataFrame）
+        data = self._execute_query(sql)
+        
+        # 4. 分析数据
+        #    根据分析类型选择不同的分析策略（统计指标、增长率计算等）
+        #    让 LLM 从数据中提取关键洞察
+        insights = await self._analyze_data(data, request.question)
+        
+        # 5. 生成可视化
+        #    根据分析类型自动选择图表类型（柱状图、折线图、散点图等）
+        #    使用 matplotlib 生成图表并保存
+        chart_path = self._create_chart(data, intent)
+        
+        # 6. 生成总结
+        #    将数据、洞察、图表整合为自然语言的分析报告
+        summary = await self._generate_summary(
+            data, insights, request.question
+        )
+        
+        return AnalysisResult(
+            summary=summary,
+            data=data,
+            sql_query=sql,
+            chart_path=chart_path,
+            insights=insights
+        )
+```
+
+> **架构要点**：这个六步 Pipeline 的关键设计决策是将"理解"（步骤1-2）和"执行"（步骤3-6）分离。理解阶段由 LLM 驱动，执行阶段由确定性代码完成。这种混合架构既利用了 LLM 的语义理解能力，又保证了数据处理的可靠性和可控性。各个方法的完整实现将在 21.2-20.4 节中逐步展开。
+
+---
+
+## 小结
+
+本节确定了数据分析 Agent 的核心功能和架构。接下来我们将逐步实现各个模块。
+
+---
+
+[24.2 数据连接与查询](./02_data_connection.md)

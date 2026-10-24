@@ -1,83 +1,325 @@
-# 6.3 Embeddings and Vector Databases
+# 6.3 Vector Embeddings and Vector Databases
 
-Following [source-preserving chunking in 6.2](02_document_loading.md), store attributed passages in real Chroma and inspect distances, filters, reopening, and deletion. The implementation lives separately in `reference_code/vector_retrieval/`: a small storage layer rather than another application framework.
+Vector embeddings and vector databases are the core technologies of a RAG system. This section provides an in-depth look at how to efficiently store and retrieve vectors.
 
-## Similarity Does Not Verify a Fact
+![Vector Embedding and Retrieval Flow](../svg/chapter_rag_03_embedding.svg)
 
-An embedder maps text to vectors. Documents and queries need the same model revision and preprocessing to share a comparison space. Matching dimensions alone do not establish compatibility. Changing the model, chunking, or preprocessing calls for a new index and regression evaluation before switching readers.
+## Choosing an Embedding Model
 
-Compare cloud and local embedders on your questions: evidence recall, answer support, latency, storage, and data-handling requirements. Cloud calls incur service charges; local models still involve downloads, hardware, maintenance, and licenses. Neither larger dimensions nor a newer release alone establishes task suitability.
+When choosing an embedding model, you need to balance three factors: **performance** (embedding quality), **cost** (API pricing or local compute resources), and **dimensions** (vector size, which affects storage and retrieval speed).
 
-![Embeddings, provenance, and distances](../svg/chapter_rag_03_embedding.svg)
+OpenAI currently offers three embedding models. For most scenarios, `text-embedding-3-small` offers the best cost-performance ratio — its performance is close to the `large` model at only 1/6 the price. If your application has strict privacy requirements or you don't want to depend on an external API, you can also use a local open-source model such as `BAAI/bge-small-en-v1.5`, which is completely free.
 
-The companion explicitly selects cosine distance. For nonzero vectors $x,y$:
-
-$$
-\begin{aligned}
-\operatorname{cos}(x,y)&=\frac{x\cdot y}{\|x\|\|y\|}\\
-d_{cos}&=1-\operatorname{cos}(x,y)
-\end{aligned}
-$$
-
-Similarity is theoretically in $[-1,1]$, and distance in $[0,2]$, subject to floating-point error. Neither is accuracy nor a relevance probability. Interpret `1-distance` only after establishing the metric; default L2 distance does not have this meaning. Chroma's [configuration documentation](https://docs.trychroma.com/docs/collections/configure) defines its metrics and index parameters.
-
-Chroma stores float32 vectors. The wrapper first scales by the maximum absolute component, then applies L2 normalization so tiny or huge finite Python values do not become all-zero or infinite vectors in storage. Collection metadata records this rule. It preserves cosine direction, not exact arithmetic or semantic quality.
-
-## Retain Source and Embedding Revisions
-
-A `Record` retains `id`, `text`, `source`, and `version`. Map 6.2's chunk dictionaries by these fields. Original offsets remain in the loading/chunking records; this vector wrapper does not additionally persist them. Record `version` distinguishes content revisions, while collection metadata stores `embedding_id` and dimension.
-
-| Entry point | Contract | Failure behavior |
-|---|---|---|
-| `VectorStore(path, embed, embedding_id=..., dimension=...)` | Explicit cosine space; no default embedder; same-named collection must match provenance/configuration | Reject incompatibility; use a new collection |
-| `add(records)` | At most 100 chunks per batch, 2000 per collection; nonempty source/version/text, unique IDs, finite nonzero vectors | Validate this batch before writing; reject duplicate IDs |
-| `search(query, limit=..., source=..., min_cosine=...)` | Same injected embedder for documents/queries; return IDs, sources, versions, distances | Return early for an empty collection; propagate other errors |
-| `records()` / `delete_source(source)` | Read current records or delete a named source | Deletion is not archival or proof of physical erasure |
-
-`embed(texts)` must return vectors in input order. If a provider's batch response has indices, the adapter must validate completeness and restore input order. The caller declares `embedding_id`; it does not detect an adapter falsely reporting its revision.
-
-This is a single-writer local exercise. Concurrent updates, multi-call transactions, and online migration are outside its scope. Storage failures may require inspection and rebuilding; catching every exception and returning an empty list would disguise failure as missing evidence.
-
-## Run Offline: Make a Wrong Ranking Visible
-
-From the repository root, use Python 3.11+ and the pinned `examples/requirements.txt` environment. This validation uses ChromaDB 1.5.9.
-
-```bash
-python -m reference_code.vector_retrieval
-python -m pytest examples/integration_tests/test_vector_retrieval.py -q
-```
-
-This complete database exercise uses `fixed_embeddings`, which accepts only the companion's fixed text and returns manually assigned 3D vectors. It deliberately places the 500 document closer to the query than the 404 document. It exposes a ranking error; it is not a semantic embedding model.
+The code below demonstrates two approaches: the OpenAI cloud API and a local `sentence-transformers` model.
 
 ```python
-from tempfile import TemporaryDirectory
-from reference_code.vector_retrieval import VectorStore
-from reference_code.vector_retrieval.fixture import build_fixture, fixed_embeddings
+from openai import OpenAI
+import numpy as np
+from typing import List
 
-with TemporaryDirectory() as directory:
-    store = build_fixture(directory)
-    hits = store.search('404', limit=3)
-    assert [hit.record.id for hit in hits][:2] == ['http500-v1:0', 'http404-v1:0']
-    assert abs(hits[1].distance - 0.2) < 1e-6
-    only_404 = store.search('404', source='http404.md')
-    assert [hit.record.id for hit in only_404] == ['http404-v1:0']
-    assert store.search('birthday', min_cosine=0.8) == []
-    reopened = VectorStore(directory, fixed_embeddings,
-                           embedding_id='book-fixture-v1:exact-text', dimension=3)
-    assert len(reopened.records()) == 3
-    reopened.delete_source('http404.md')
-    assert reopened.records(source='http404.md') == []
-    assert len(reopened.records()) == 2
+client = OpenAI()
+
+# ============================
+# OpenAI Embedding Models
+# ============================
+
+# Available model comparison
+EMBEDDING_MODELS = {
+    "text-embedding-3-small": {
+        "dimensions": 1536,
+        "price_per_1m": 0.02,  # USD
+        "performance": "good"
+    },
+    "text-embedding-3-large": {
+        "dimensions": 3072,
+        "price_per_1m": 0.13,
+        "performance": "best"
+    },
+    "text-embedding-ada-002": {
+        "dimensions": 1536,
+        "price_per_1m": 0.10,
+        "performance": "legacy"
+    }
+}
+
+def get_embedding(text: str, model: str = "text-embedding-3-small") -> List[float]:
+    """Get the embedding vector for a single text"""
+    # Clean text
+    text = text.replace("\n", " ").strip()
+    if not text:
+        raise ValueError("Text cannot be empty")
+    
+    response = client.embeddings.create(
+        input=text,
+        model=model
+    )
+    return response.data[0].embedding
+
+def get_embeddings_batch(texts: List[str], model: str = "text-embedding-3-small",
+                          batch_size: int = 100) -> List[List[float]]:
+    """Batch-get embeddings (reduces number of API calls)"""
+    all_embeddings = []
+    
+    for i in range(0, len(texts), batch_size):
+        batch = texts[i:i + batch_size]
+        # Clean text
+        batch = [t.replace("\n", " ").strip() for t in batch]
+        
+        response = client.embeddings.create(
+            input=batch,
+            model=model
+        )
+        
+        embeddings = [item.embedding for item in response.data]
+        all_embeddings.extend(embeddings)
+        
+        print(f"  Batch {i//batch_size + 1}: {len(batch)} texts embedded")
+    
+    return all_embeddings
+
+# ============================
+# Local Embedding Model (Free!)
+# ============================
+
+def get_local_embedding(text: str) -> List[float]:
+    """Use a local model (sentence-transformers), no API key required"""
+    # pip install sentence-transformers
+    try:
+        from sentence_transformers import SentenceTransformer
+        
+        # A good English embedding model
+        model = SentenceTransformer('BAAI/bge-small-en-v1.5')
+        embedding = model.encode(text)
+        return embedding.tolist()
+    
+    except ImportError:
+        raise ImportError("Please install: pip install sentence-transformers")
 ```
 
-Even first place for the 404 document would establish only retrieval order. A `source` filter selects data; when callers can choose it, it cannot implement authentication or tenant authorization. See [4.3](../chapter_memory/03_long_term_memory.md) for memory consent and owner isolation.
+## ChromaDB: Local Vector Database
 
-## Before Connecting a Real Embedder
+With an embedding model, we also need a place to store and retrieve these vectors. ChromaDB is the top choice for local development — it's an embedded vector database that doesn't require a separate server, persists data in local files, and has a usage experience similar to SQLite.
 
-Check response count, ordering, dimension, finite values, and model revision on a small batch before injecting the adapter. Retain original text and stable IDs. Create independent questions covering answerable and unanswerable cases. Select thresholds on a development set rather than repeatedly tuning against test expectations.
+The `VectorStore` class below wraps ChromaDB's core operations. A few design points worth noting:
 
-Chroma's [`query` and `get` documentation](https://docs.trychroma.com/docs/querying-collections/query-and-get) distinguishes similarity search from conditional reads. In this version, IDs are always returned and are not an `include` item. Multiple metadata conditions use [logical filter expressions](https://docs.trychroma.com/docs/querying-collections/metadata-filtering). The companion accepts only a single source filter, avoiding arbitrary model-generated filter dictionaries.
+- **HNSW index parameters**: `construction_ef` and `M` control the trade-off between retrieval precision and speed. Larger values mean higher retrieval precision but slower index construction.
+- **Batch processing**: The `add_documents` method adds documents in batches to avoid memory overflow from passing too many documents at once.
+- **Minimum relevance threshold**: The `min_relevance` parameter in the `search` method filters out results with too-low similarity, reducing noise.
 
-**Validation boundary:** real Chroma writes, cosine distances, filtering, reopening in a separate process, and source deletion run in tests. Incompatible revisions, duplicate IDs, and malformed vectors are rejected. No embedder was downloaded or called; semantic recall, production load, and backup erasure remain untested.
+```python
+import chromadb
+from chromadb.config import Settings
+import json
+import uuid
 
-Next: [6.4 Retrieval Strategies and Reranking](04_retrieval_strategies.md) uses the same record IDs to correct this fixture's ranking.
+class VectorStore:
+    """
+    ChromaDB-based vector store.
+    Supports adding, retrieving, and deleting documents.
+    """
+    
+    def __init__(self, collection_name: str, persist_dir: str = "./chroma_db"):
+        # Persistent client (data survives restarts)
+        self.client = chromadb.PersistentClient(path=persist_dir)
+        
+        self.collection = self.client.get_or_create_collection(
+            name=collection_name,
+            metadata={
+                "hnsw:space": "cosine",  # use cosine similarity
+                "hnsw:construction_ef": 200,
+                "hnsw:M": 16,
+            }
+        )
+        
+        print(f"Vector store '{collection_name}' loaded, contains {self.collection.count()} documents")
+    
+    def add_documents(
+        self,
+        documents: List[str],
+        metadatas: List[dict] = None,
+        ids: List[str] = None,
+        batch_size: int = 50
+    ) -> List[str]:
+        """
+        Add documents to the vector store.
+        
+        Args:
+            documents: list of documents
+            metadatas: list of metadata (can include source, section, etc.)
+            ids: list of document IDs (auto-generated if not provided)
+            batch_size: batch processing size
+        
+        Returns:
+            list of document IDs
+        """
+        if ids is None:
+            ids = [str(uuid.uuid4()) for _ in documents]
+        
+        if metadatas is None:
+            metadatas = [{}] * len(documents)
+        
+        # Batch-generate embeddings
+        print(f"Embedding {len(documents)} documents...")
+        embeddings = get_embeddings_batch(documents)
+        
+        # Batch-add to ChromaDB
+        for i in range(0, len(documents), batch_size):
+            batch_end = min(i + batch_size, len(documents))
+            
+            self.collection.add(
+                ids=ids[i:batch_end],
+                documents=documents[i:batch_end],
+                embeddings=embeddings[i:batch_end],
+                metadatas=metadatas[i:batch_end]
+            )
+        
+        print(f"✅ Successfully added {len(documents)} documents")
+        return ids
+    
+    def search(
+        self,
+        query: str,
+        n_results: int = 5,
+        where: dict = None,
+        min_relevance: float = 0.3
+    ) -> List[dict]:
+        """
+        Semantic search.
+        
+        Returns:
+            [{document, metadata, relevance_score}]
+        """
+        query_embedding = get_embedding(query)
+        
+        kwargs = {
+            "query_embeddings": [query_embedding],
+            "n_results": min(n_results, self.collection.count()),
+            "include": ["documents", "metadatas", "distances"]
+        }
+        
+        if where:
+            kwargs["where"] = where
+        
+        if self.collection.count() == 0:
+            return []
+        
+        results = self.collection.query(**kwargs)
+        
+        # Format results
+        formatted = []
+        if results["documents"] and results["documents"][0]:
+            for doc, meta, dist in zip(
+                results["documents"][0],
+                results["metadatas"][0],
+                results["distances"][0]
+            ):
+                relevance = 1 - dist
+                if relevance >= min_relevance:
+                    formatted.append({
+                        "document": doc,
+                        "metadata": meta,
+                        "relevance": round(relevance, 4)
+                    })
+        
+        return sorted(formatted, key=lambda x: x["relevance"], reverse=True)
+    
+    def delete_by_source(self, source: str):
+        """Delete all documents from a specific source"""
+        self.collection.delete(where={"source": source})
+        print(f"Deleted documents with source '{source}'")
+    
+    def get_stats(self) -> dict:
+        """Get statistics"""
+        return {
+            "total_documents": self.collection.count(),
+            "collection_name": self.collection.name
+        }
+
+
+# ============================
+# Complete Document Indexing Flow
+# ============================
+
+def index_documents_to_vectorstore(
+    documents: List[dict],  # [{"content": str, "source": str, ...}]
+    collection_name: str,
+    chunk_size: int = 500,
+    chunk_overlap: int = 50
+) -> VectorStore:
+    """
+    Complete flow for processing documents and storing them in a vector store.
+    """
+    from document_loading import TextSplitter  # assumed to be defined in the project
+    
+    splitter = TextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    store = VectorStore(collection_name)
+    
+    all_chunks = []
+    all_metadatas = []
+    
+    for doc in documents:
+        content = doc["content"]
+        source = doc.get("source", "unknown")
+        
+        # Split document
+        chunks = splitter.split_by_separator(content)
+        
+        for i, chunk in enumerate(chunks):
+            if chunk.strip():
+                all_chunks.append(chunk)
+                all_metadatas.append({
+                    "source": source,
+                    "chunk_index": i,
+                    "total_chunks": len(chunks),
+                    "char_count": len(chunk)
+                })
+    
+    print(f"Total {len(all_chunks)} Chunks, starting indexing...")
+    store.add_documents(all_chunks, all_metadatas)
+    
+    return store
+
+
+# ============================
+# Quick Usage Example
+# ============================
+
+# 1. Prepare knowledge base content
+knowledge = [
+    {"content": "Python was created by Guido van Rossum and first released in 1991. The name Python comes from the British comedy group Monty Python.", "source": "python_intro"},
+    {"content": "FastAPI is a modern, high-performance Python web framework based on Python 3.7+ type annotations. It was created by Sebastián Ramírez.", "source": "fastapi_intro"},
+    {"content": "LangChain is a framework for building LLM applications, providing components such as tool chains, Agents, and RAG.", "source": "langchain_intro"},
+]
+
+# 2. Create vector store
+store = VectorStore("knowledge_base")
+for item in knowledge:
+    # Add directly (no splitting)
+    store.add_documents(
+        [item["content"]],
+        [{"source": item["source"]}]
+    )
+
+# 3. Search
+query = "When was Python first released?"
+results = store.search(query, n_results=3)
+
+print(f"\nQuery: {query}")
+for r in results:
+    print(f"\n[{r['relevance']:.3f}] {r['document'][:100]}...")
+    print(f"  Source: {r['metadata']['source']}")
+```
+
+---
+
+## Summary
+
+Core technologies for vector storage:
+- **Embedding model**: `text-embedding-3-small` (recommended), or local model (free)
+- **ChromaDB**: top choice for local development, persistent storage
+- **Cosine similarity**: standard metric for measuring semantic relevance
+- **Batch processing**: reduces API calls, improves efficiency
+
+---
+
+*Next: [6.4 Retrieval Strategies and Reranking](./04_retrieval_strategies.md)*

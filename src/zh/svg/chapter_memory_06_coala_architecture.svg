@@ -1,22 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 590" role="img" aria-labelledby="title desc" font-family="Arial, PingFang SC, sans-serif">
-<title id="title">CoALA：三个设计维度</title><desc id="desc">工作记忆与情景、语义、程序性长期记忆有别；动作空间和决策过程为另两个维度，没有固定四步流水线。</desc>
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8Z" fill="#475569"/></marker></defs>
-<rect width="560" height="590" rx="12" fill="#fff"/>
-<text x="280" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">CoALA：三个设计维度</text>
-<rect x="30" y="60" width="500" height="75" rx="9" fill="#eff6ff" stroke="#64748b"/>
-<text x="280.0" y="88" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">工作记忆</text>
-<text x="280.0" y="115" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">当前观察、任务状态与推理所用信息</text>
-<path d="M280,135 L280,166" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
-<rect x="30" y="168" width="500" height="175" rx="9" fill="#f5f3ff" stroke="#64748b"/>
-<text x="280.0" y="196" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">长期记忆</text>
-<text x="52" y="228" text-anchor="start" font-size="17" font-weight="normal" fill="#1e293b">情景：过去的事件与经历</text>
-<text x="52" y="269" text-anchor="start" font-size="17" font-weight="normal" fill="#1e293b">语义：事实、概念及推断知识</text>
-<text x="52" y="310" text-anchor="start" font-size="17" font-weight="normal" fill="#1e293b">程序性：Agent代码与模型权重</text>
-<rect x="30" y="365" width="500" height="98" rx="9" fill="#ecfdf5" stroke="#64748b"/>
-<text x="280.0" y="393" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">动作空间</text>
-<text x="280.0" y="420" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">内部：推理、检索、学习</text>
-<text x="280.0" y="444" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">外部：与工具、环境或其他主体交互</text>
-<rect x="30" y="482" width="500" height="64" rx="9" fill="#fff7ed" stroke="#64748b"/>
-<text x="280.0" y="510" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">决策：组织候选动作、评估与选择</text>
-<text x="280" y="571" text-anchor="middle" font-size="14" font-weight="normal" fill="#475569">本书重绘，依据 Sumers et al., v3 §4 (2024)</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400" font-family="Arial, sans-serif">
+  <!-- 背景 -->
+  <rect width="520" height="400" rx="12" fill="#f8f9fa"/>
+
+  <!-- 标题 -->
+  <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">🏛️ CoALA 认知架构</text>
+
+  <!-- 记忆系统模块 -->
+  <rect x="25" y="50" width="470" height="130" rx="10" fill="#3498db" fill-opacity="0.1" stroke="#3498db" stroke-width="2"/>
+  <text x="45" y="72" font-size="14" font-weight="bold" fill="#3498db">📦 记忆系统</text>
+
+  <!-- 三种记忆 -->
+  <rect x="40" y="82" width="140" height="48" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
+  <text x="110" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">工作记忆</text>
+  <text x="110" y="120" text-anchor="middle" font-size="10" fill="#555">当前任务状态、推理步骤</text>
+
+  <rect x="190" y="82" width="140" height="48" rx="8" fill="#9b59b6" fill-opacity="0.2" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="260" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">情景记忆</text>
+  <text x="260" y="120" text-anchor="middle" font-size="10" fill="#555">具体事件记忆</text>
+
+  <rect x="340" y="82" width="140" height="48" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="410" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">语义记忆</text>
+  <text x="410" y="120" text-anchor="middle" font-size="10" fill="#555">通用知识和概念</text>
+
+  <text x="110" y="165" text-anchor="middle" font-size="9" fill="#888">Working Memory</text>
+  <text x="260" y="165" text-anchor="middle" font-size="9" fill="#888">Episodic Memory</text>
+  <text x="410" y="165" text-anchor="middle" font-size="9" fill="#888">Semantic Memory</text>
+
+  <!-- 决策过程模块 -->
+  <rect x="25" y="190" width="470" height="75" rx="10" fill="#f39c12" fill-opacity="0.1" stroke="#f39c12" stroke-width="2"/>
+  <text x="45" y="212" font-size="14" font-weight="bold" fill="#f39c12">⚙️ 决策过程</text>
+
+  <!-- 四个决策步骤 -->
+  <rect x="40" y="222" width="100" height="32" rx="8" fill="#f39c12" fill-opacity="0.2" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="90" y="243" text-anchor="middle" font-size="11" fill="#2c3e50">🔍 检索</text>
+
+  <rect x="150" y="222" width="100" height="32" rx="8" fill="#f39c12" fill-opacity="0.2" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="200" y="243" text-anchor="middle" font-size="11" fill="#2c3e50">🧠 推理</text>
+
+  <rect x="260" y="222" width="100" height="32" rx="8" fill="#f39c12" fill-opacity="0.2" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="310" y="243" text-anchor="middle" font-size="11" fill="#2c3e50">📝 学习</text>
+
+  <rect x="370" y="222" width="100" height="32" rx="8" fill="#f39c12" fill-opacity="0.2" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="420" y="243" text-anchor="middle" font-size="11" fill="#2c3e50">🎯 行动</text>
+
+  <!-- 箭头连接 -->
+  <defs>
+    <marker id="arrow-gray" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#888"/>
+    </marker>
+  </defs>
+  <line x1="140" y1="238" x2="148" y2="238" stroke="#888" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="250" y1="238" x2="258" y2="238" stroke="#888" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="360" y1="238" x2="368" y2="238" stroke="#888" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+
+  <!-- 行动空间模块 -->
+  <rect x="25" y="280" width="470" height="75" rx="10" fill="#e74c3c" fill-opacity="0.1" stroke="#e74c3c" stroke-width="2"/>
+  <text x="45" y="302" font-size="14" font-weight="bold" fill="#e74c3c">🚀 行动空间</text>
+
+  <rect x="40" y="312" width="215" height="32" rx="8" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="147" y="333" text-anchor="middle" font-size="12" fill="#2c3e50">🔄 内部行动（推理、记忆更新）</text>
+
+  <rect x="265" y="312" width="215" height="32" rx="8" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="372" y="333" text-anchor="middle" font-size="12" fill="#2c3e50">🌐 外部行动（工具、环境交互）</text>
+
+  <!-- 模块间连接线 -->
+  <line x1="260" y1="180" x2="260" y2="188" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-gray)"/>
+  <line x1="260" y1="265" x2="260" y2="278" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-gray)"/>
+
+  <!-- 底部说明 -->
+  <text x="260" y="392" text-anchor="middle" font-size="10" fill="#888">来源：Sumers et al., 2023 — Cognitive Architectures for Language Agents</text>
 </svg>

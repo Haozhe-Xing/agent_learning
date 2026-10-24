@@ -1,18 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" role="img" aria-labelledby="title desc">
-<title id="title">Four checks, not one correctness score</title><desc id="desc">Labels may cite false content; faithful quotes may omit answers</desc>
-<rect width="960" height="250" rx="16" fill="#f6f8fc"/>
-<g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
-<text x="480" y="42" font-size="24" font-weight="700" fill="#172c4f">Four checks, not one correctness score</text>
-<rect x="24" y="81" width="207" height="80" rx="12" fill="#dbeafe" stroke="#91a2bb"/>
-<text x="127.5" y="129" font-size="20" fill="#172c4f">Source labels</text>
-<path d="M236 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="259" y="81" width="207" height="80" rx="12" fill="#e0e7ff" stroke="#91a2bb"/>
-<text x="362.5" y="129" font-size="20" fill="#172c4f">Source support</text>
-<path d="M471 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="494" y="81" width="207" height="80" rx="12" fill="#d1fae5" stroke="#91a2bb"/>
-<text x="597.5" y="129" font-size="20" fill="#172c4f">Task coverage</text>
-<path d="M706 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="729" y="81" width="207" height="80" rx="12" fill="#fef3c7" stroke="#91a2bb"/>
-<text x="832.5" y="129" font-size="20" fill="#172c4f">Freshness</text>
-<text x="480" y="208" font-size="18" fill="#3c506e">Labels may cite false content; faithful quotes may omit answers</text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+  <rect width="760" height="400" fill="#f0f4f8" rx="14"/>
+  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">LLM Hallucination Types and Defense Strategies</text>
+
+  <!-- Center circle -->
+  <circle cx="380" cy="200" r="50" fill="#e74c3c" opacity="0.2"/>
+  <circle cx="380" cy="200" r="45" fill="white" stroke="#e74c3c" stroke-width="2"/>
+  <text x="380" y="195" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#e74c3c">Hallucination</text>
+  <text x="380" y="212" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#e74c3c">Hallucination (Chinese)</text>
+
+  <!-- Factual Hallucination -->
+  <rect x="40" y="60" width="220" height="120" rx="14" fill="#3498db" opacity="0.12"/>
+  <rect x="40" y="60" width="220" height="32" rx="14" fill="#3498db"/>
+  <rect x="40" y="80" width="220" height="12" fill="#3498db"/>
+  <text x="150" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📋 Factual Hallucination</text>
+  <text x="56" y="115" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">Generates information contradicting facts</text>
+  <text x="56" y="135" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: RAG fact-checking</text>
+  <text x="56" y="155" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: Require citations</text>
+  <line x1="260" y1="120" x2="335" y2="180" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="260" cy="120" r="3" fill="#3498db"/>
+
+  <!-- Citation Hallucination -->
+  <rect x="500" y="60" width="220" height="120" rx="14" fill="#27ae60" opacity="0.12"/>
+  <rect x="500" y="60" width="220" height="32" rx="14" fill="#27ae60"/>
+  <rect x="500" y="80" width="220" height="12" fill="#27ae60"/>
+  <text x="610" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">📚 Citation Hallucination</text>
+  <text x="516" y="115" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">Cites non-existent papers or links</text>
+  <text x="516" y="135" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: External verification API</text>
+  <text x="516" y="155" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: Prohibit fabricated citations</text>
+  <line x1="500" y1="120" x2="425" y2="180" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="500" cy="120" r="3" fill="#27ae60"/>
+
+  <!-- Logical Hallucination -->
+  <rect x="40" y="230" width="220" height="120" rx="14" fill="#e67e22" opacity="0.12"/>
+  <rect x="40" y="230" width="220" height="32" rx="14" fill="#e67e22"/>
+  <rect x="40" y="250" width="220" height="12" fill="#e67e22"/>
+  <text x="150" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🧮 Logical Hallucination</text>
+  <text x="56" y="285" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">Reasoning appears valid but contains errors</text>
+  <text x="56" y="305" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: Self-consistency check</text>
+  <text x="56" y="325" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: Tool-based computation fallback</text>
+  <line x1="260" y1="290" x2="335" y2="220" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="260" cy="290" r="3" fill="#e67e22"/>
+
+  <!-- Instruction Hallucination -->
+  <rect x="500" y="230" width="220" height="120" rx="14" fill="#9b59b6" opacity="0.12"/>
+  <rect x="500" y="230" width="220" height="32" rx="14" fill="#9b59b6"/>
+  <rect x="500" y="250" width="220" height="12" fill="#9b59b6"/>
+  <text x="610" y="252" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">⚙️ Instruction Hallucination</text>
+  <text x="516" y="285" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#2c3e50">Claims to have executed unperformed actions</text>
+  <text x="516" y="305" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: Verify operation results</text>
+  <text x="516" y="325" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Defense: Principle of least privilege</text>
+  <line x1="500" y1="290" x2="425" y2="220" stroke="#9b59b6" stroke-width="1.5" stroke-dasharray="4"/>
+  <circle cx="500" cy="290" r="3" fill="#9b59b6"/>
+
+  <!-- Bottom note -->
+  <text x="380" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#95a5a6">Multi-layer defense: Require citations + RAG verification + Consistency check + Tool fallback</text>
+</svg>

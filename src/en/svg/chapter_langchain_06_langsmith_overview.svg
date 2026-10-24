@@ -1,5 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520" role="img" aria-label="Observe locally; choose remote tracing explicitly">
-<title>Observe locally; choose remote tracing explicitly</title><desc>Traces explain execution; independent expectations assess the task. Neither replaces the other.</desc>
-<rect width="800" height="520" rx="16" fill="#f8fafc"/>
-<g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
-<text x="28" y="37" font-size="22" fill="#1e293b" font-weight="600" text-anchor="start">Observe locally; choose remote tracing explicitly</text><text x="28" y="63" font-size="13" fill="#475569" font-weight="400" text-anchor="start">Traces explain execution; independent expectations assess the task. Neither replaces the other.</text><rect x="28" y="93" width="360" height="211" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="46" y="122" font-size="16" fill="#15803d" font-weight="600" text-anchor="start">Local path: exercised here</text><text x="46" y="148" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Runnable → local Callback</text><text x="46" y="171" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Run / parent IDs, events, error types</text><text x="46" y="194" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Allowlisted short metadata fields only</text><text x="46" y="217" font-size="14" fill="#475569" font-weight="400" text-anchor="start">No prompt, output, or error-message text</text><text x="46" y="240" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Optional new local JSON file</text><rect x="412" y="93" width="360" height="211" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="430" y="122" font-size="16" fill="#b45309" font-weight="600" text-anchor="start">Remote path: reader opts in</text><text x="430" y="148" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Choose workspace, project, key, endpoint</text><text x="430" y="171" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Review actual fields and retention</text><text x="430" y="194" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Select which calls may be traced</text><text x="430" y="217" font-size="14" fill="#475569" font-weight="400" text-anchor="start">No service login or upload tested here</text><text x="430" y="240" font-size="14" fill="#475569" font-weight="400" text-anchor="start">enabled=False disables exercise tracing</text><rect x="28" y="329" width="744" height="126" rx="12" fill="#eff6ff" stroke="#93c5fd"/><text x="46" y="359" font-size="16" fill="#2563eb" font-weight="600" text-anchor="start">Independent regression: frozen expectations and negative cases</text><text x="46" y="387" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Check results, retained failures, attempts, and cancellation boundaries.</text><text x="46" y="410" font-size="14" fill="#475569" font-weight="400" text-anchor="start">A cached call can still have a model span; spans are not request counts.</text><text x="28" y="492" font-size="14" fill="#475569" font-weight="400" text-anchor="start">Local metadata may still be sensitive; an allowlist is not a privacy classifier.</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="ls" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#8e44ad"/>
+    </marker>
+  </defs>
+  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">LangSmith: Observability Platform for LLM Applications</text>
+
+  <!-- App Layer -->
+  <rect x="240" y="54" width="320" height="42" rx="8" fill="#2980b9" opacity="0.18" stroke="#2980b9" stroke-width="2"/>
+  <text x="400" y="73" text-anchor="middle" font-size="13" font-weight="bold" fill="#2980b9">LangChain / LangGraph Application</text>
+  <text x="400" y="89" text-anchor="middle" font-size="10" fill="#888">After setting env vars, all calls are auto-reported</text>
+
+  <line x1="400" y1="96" x2="400" y2="120" stroke="#8e44ad" stroke-width="1.6" marker-end="url(#ls)"/>
+
+  <!-- Three Core Capabilities -->
+  <!-- Tracing -->
+  <rect x="40" y="124" width="230" height="150" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="155" y="150" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">Tracing</text>
+  <text x="155" y="176" text-anchor="middle" font-size="11" fill="#555">Auto-record LLM call chains</text>
+  <text x="155" y="196" text-anchor="middle" font-size="11" fill="#555">Tool execution / Agent decisions</text>
+  <text x="155" y="216" text-anchor="middle" font-size="11" fill="#555">Token cost / Latency breakdown</text>
+  <text x="155" y="252" text-anchor="middle" font-size="10" fill="#999">Answers "Where is it stuck?"</text>
+
+  <!-- Evaluation -->
+  <rect x="285" y="124" width="230" height="150" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="150" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">Evaluation</text>
+  <text x="400" y="176" text-anchor="middle" font-size="11" fill="#555">Create Datasets</text>
+  <text x="400" y="196" text-anchor="middle" font-size="11" fill="#555">Auto evaluation pipeline</text>
+  <text x="400" y="216" text-anchor="middle" font-size="11" fill="#555">Regression testing / Score comparison</text>
+  <text x="400" y="252" text-anchor="middle" font-size="10" fill="#999">Answers "Did this change improve things?"</text>
+
+  <!-- Prompt Management -->
+  <rect x="530" y="124" width="230" height="150" rx="10" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="645" y="150" text-anchor="middle" font-size="14" font-weight="bold" fill="#8e44ad">Prompt Management</text>
+  <text x="645" y="176" text-anchor="middle" font-size="11" fill="#555">Prompt version control</text>
+  <text x="645" y="196" text-anchor="middle" font-size="11" fill="#555">A/B testing</text>
+  <text x="645" y="216" text-anchor="middle" font-size="11" fill="#555">Team collaboration &amp; reuse</text>
+  <text x="645" y="252" text-anchor="middle" font-size="10" fill="#999">Answers "Which Prompt version is best?"</text>
+
+  <!-- Bottom -->
+  <rect x="120" y="298" width="560" height="44" rx="8" fill="#34495e" opacity="0.08" stroke="#34495e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="400" y="318" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#34495e">Trace (one request chain) → composed of multiple Runs (single-step calls) → grouped by Project</text>
+  <text x="400" y="335" text-anchor="middle" font-size="10" fill="#7f8c8d">From demo to production, observability turns the "black box" into a "white box"</text>
+</svg>

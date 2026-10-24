@@ -142,7 +142,7 @@ Gorilla 的价值在于，它把 API 文档、检索和模型生成结合起来�
 
 **关键结果**：所得小型 Agentic 模型在搜索与数据分析任务上接近大型模型表现，模型权重与合成数据已开源至 HuggingFace。
 
-**与本章关系**：对应本章「Function Calling 与工具调用」核心知识点，展示了如何通过 RL + 合成数据训练专门的工具调用能力，是第 10.8 节"专为 Agent 的微调"与 [25.3 节"数据飞轮"](../chapter_self_evolving/03_data_flywheel.md) 的典型工业实践。
+**与本章关系**：对应本章「Function Calling 与工具调用」核心知识点，展示了如何通过 RL + 合成数据训练专门的工具调用能力，是第 10.8 节"专为 Agent 的微调"与 [11.3 节"数据飞轮"](../chapter_self_evolving/03_data_flywheel.md) 的典型工业实践。
 
 ---
 

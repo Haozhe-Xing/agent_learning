@@ -1,8 +1,8 @@
-# 25.3 Agentic 数据飞轮：让 Agent 自我进化
+# 11.3 Agentic 数据飞轮：让 Agent 自我进化
 
 > 🔄 *"最好的训练数据不是人工标注的，而是 Agent 在真实环境中成功、失败、修正和完成任务时留下的轨迹。"*
 
-[第 24.8 节](../chapter_agentic_rl/08_agent_finetuning.md) 解决了“如何构建第一批 Agent 训练数据”。但这只是起点。
+[第 10.8 节](../chapter_agentic_rl/08_agent_finetuning.md) 解决了“如何构建第一批 Agent 训练数据”。但这只是起点。
 
 真正强大的 Agent 系统遵循一个循环：**Agent 运行 → 产生轨迹 → 评估结果与过程 → 提取成功和失败信号 → 训练更强模型 → 更强模型产生更好轨迹 → ...**
 
@@ -429,4 +429,4 @@ def _has_safety_violation(self, traj: AgentTrajectory) -> bool:
 
 ---
 
-*学习复盘：回到[第18章 评估与优化](../chapter_20_evaluation/README.md)，用留出任务检查本轮改进；运行入口见[贯穿项目](../learning_project.md)。*
+*下一章：[第12章 LangChain 深入实战](../chapter_langchain/README.md)*

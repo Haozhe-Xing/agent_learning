@@ -1,75 +1,301 @@
 # 5.4 反思与自我纠错机制
 
-反思可以提出“哪里可能错、下一次改什么”，但它不是新的事实来源。同一个模型、同一错误资料上的高分自评可能只强化原错。把提议、反馈、修订和独立验收分开，才有办法判断额外计算是否有用。
+优秀的 Agent 不仅能完成任务，还能评估自己的输出质量，发现问题并自我改进。这种能力来自**反思（Reflection）机制**。
 
-![反馈建议、修订与独立验收](../svg/chapter_planning_04_reflection.svg)
+> 📄 **学术背景**：反思机制是 Agent 研究中增长最快的方向之一。其核心问题是：**LLM 能否意识到自己的错误，并自我修正？** 以下三篇论文从不同角度给出了肯定的回答，并提出了不同的反思框架：
+>
+> - **Reflexion**（*Reflexion: Language Agents with Verbal Reinforcement Learning*，Shinn et al., 2023）：提出了"语言强化学习"——Agent 在任务失败后不更新模型权重，而是将失败经验写成自然语言"反思笔记"，存入长期记忆。下次遇到类似任务时，这些反思笔记会被检索出来指导行为。在 HumanEval 编程任务上，Reflexion Agent 的通过率从 80% 提升到了 91%。
+>
+> - **Self-Refine**（*Self-Refine: Iterative Refinement with Self-Feedback*，Madaan et al., CMU, 2023）：更简洁的方案——让同一个 LLM 扮演"生成者"和"批评者"两个角色。先生成初稿，然后自我批评，再根据批评修改，如此循环直到满意。在代码生成、数学推理、对话摘要等任务上平均提升了约 20%。
+>
+> - **CRITIC**（*CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing*，Gou et al., 2023）：在自我批评的基础上引入**工具验证**——Agent 写完代码后运行单元测试，写完事实陈述后用搜索引擎核实。工具提供的客观反馈比纯自我批评更可靠。
 
-## 研究设计提供不同的反馈路径
+![三大反思框架对比：Reflexion / Self-Refine / CRITIC](../svg/chapter_planning_04_reflection.svg)
 
-| 方法 | 所强调的设计 | 移植时仍需验证 |
-|---|---|---|
-| [Reflexion，v4](https://arxiv.org/abs/2303.11366v4) | 将任务反馈形成反思文本，影响后续尝试，不靠每轮更新权重 | 反馈是否正确、记忆是否适用及是否传播错误 |
-| [Self-Refine，v2](https://arxiv.org/abs/2303.17651v2) | 生成、同模型反馈与修订迭代 | 自评与独立要求是否一致，修订是否退化 |
-| [CRITIC，v4](https://arxiv.org/abs/2305.11738v4) | 工具交互参与批评与修订 | 工具范围、输入、测试完整性和来源支撑 |
+## 基础反思循环
 
-这些工作不是“已经证明模型总能自纠错”的统一结论。本节只借鉴反馈分工，不复现论文模型、数据或报告提升。测试工具也可能只覆盖很小一部分要求；生成器自行编写并通过的测试不能独立证明正确。
-
-## 可运行反例：先遗漏，再按缺项修订
-
-`OmitRollbackOnce`是故意有缺陷的固定写作者：缺少反馈时漏回退说明，收到独立缺项后才补齐。它不是学习算法，也不是任意问题的修复器。运行 `python -m reference_code.planning_patterns revise`，或在仓库根执行：
+> **核心思想**：让 Agent 生成答案后，**再让同一个 LLM 扮演"批评者"审一遍自己的答案**，发现问题就改进。最简实现就是"生成 → 自我批评 → 改进"三段式（Self-Refine 思路），不需要额外模型，只需换一个 prompt 角色。
 
 ```python
-from reference_code.planning_patterns import OmitRollbackOnce, run_plan
+from openai import OpenAI
 
-result = run_plan(writer=OmitRollbackOnce(), max_steps=4, max_replans=1)
-assert result["accepted"] is True
-assert result["replans"] == 1
-assert [row["status"] for row in result["trace"]] == [
-    "succeeded", "failed", "succeeded", "succeeded",
-]
-assert result["verification"]["missing_points"] == []
-print(result["budgets"])
+client = OpenAI()
+
+class ReflectiveAgent:
+    """具备反思能力的 Agent"""
+    
+    def __init__(self, max_reflection_rounds: int = 3):
+        self.max_rounds = max_reflection_rounds
+    
+    def generate(self, task: str, context: str = "") -> str:
+        """生成初始答案"""
+        response = client.chat.completions.create(
+            model="gpt-4.1",
+            messages=[
+                {"role": "system", "content": context or "你是一个专业助手"},
+                {"role": "user", "content": task}
+            ]
+        )
+        return response.choices[0].message.content
+    
+    def reflect(self, task: str, output: str, criteria: list[str]) -> dict:
+        """
+        反思评估：检查输出是否满足标准
+        
+        Returns:
+            {"score": 0-10, "passed": bool, "feedback": str, "improvements": []}
+        """
+        criteria_text = "\n".join([f"- {c}" for c in criteria])
+        
+        response = client.chat.completions.create(
+            model="gpt-4.1",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""请评估以下输出是否满足要求，并给出改进建议。
+
+【原始任务】
+{task}
+
+【生成输出】
+{output}
+
+【评估标准】
+{criteria_text}
+
+请返回JSON格式的评估：
+{{
+  "score": 0-10的评分,
+  "passed": true/false（是否通过所有标准）,
+  "feedback": "整体反馈",
+  "failed_criteria": ["未满足的标准1", "未满足的标准2"],
+  "improvements": ["改进建议1", "改进建议2"]
+}}"""
+                }
+            ],
+            response_format={"type": "json_object"}
+        )
+        
+        import json
+        return json.loads(response.choices[0].message.content)
+    
+    def revise(self, task: str, output: str, feedback: dict) -> str:
+        """基于反思反馈修改输出"""
+        improvements = "\n".join([f"- {i}" for i in feedback.get("improvements", [])])
+        failed = "\n".join([f"- {c}" for c in feedback.get("failed_criteria", [])])
+        
+        response = client.chat.completions.create(
+            model="gpt-4.1",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""请改进以下输出，解决指出的问题。
+
+【原始任务】
+{task}
+
+【当前输出】
+{output}
+
+【未满足的标准】
+{failed}
+
+【改进建议】
+{improvements}
+
+请给出改进后的版本："""
+                }
+            ]
+        )
+        return response.choices[0].message.content
+    
+    def run_with_reflection(self, task: str, criteria: list[str]) -> dict:
+        """
+        运行反思循环：生成 → 反思 → 改进 → 循环
+        
+        Returns:
+            {"final_output": str, "rounds": int, "history": list}
+        """
+        history = []
+        current_output = self.generate(task)
+        
+        print(f"\n任务：{task}")
+        
+        for round_num in range(self.max_rounds):
+            print(f"\n=== 第 {round_num + 1} 轮反思 ===")
+            
+            # 评估
+            evaluation = self.reflect(task, current_output, criteria)
+            score = evaluation.get("score", 0)
+            passed = evaluation.get("passed", False)
+            
+            print(f"评分：{score}/10 | 通过：{passed}")
+            if evaluation.get("feedback"):
+                print(f"反馈：{evaluation['feedback'][:100]}")
+            
+            history.append({
+                "round": round_num + 1,
+                "output": current_output,
+                "score": score,
+                "passed": passed
+            })
+            
+            # 如果通过，停止
+            if passed or score >= 8:
+                print(f"✅ 输出质量满足要求，停止反思")
+                break
+            
+            # 改进
+            if round_num < self.max_rounds - 1:
+                print("🔄 正在改进...")
+                current_output = self.revise(task, current_output, evaluation)
+        
+        return {
+            "final_output": current_output,
+            "rounds": len(history),
+            "history": history
+        }
+
+
+# 测试
+agent = ReflectiveAgent(max_reflection_rounds=3)
+
+result = agent.run_with_reflection(
+    task="写一段Python代码，实现二分查找算法",
+    criteria=[
+        "代码能正确运行",
+        "包含详细注释",
+        "有类型注解",
+        "有边界情况处理",
+        "代码简洁易读"
+    ]
+)
+
+print(f"\n最终输出（第{result['rounds']}轮）：")
+print(result["final_output"])
 ```
 
-第一次compose失败，所有失败尝试仍计数。新计划重新读取资料，修订后再次执行同一套独立检查；通过的是新产物，不是反思文字。这里保守地丢弃旧产物，不把过期核验结果沿用到新候选。
-
-## 高分自评不能放行缺项
-
-下面批评器直接声称满分，但写作者始终漏回退。`reflector(snapshot)`的输出只交给下次写作，不能更改必需项或停止条件：
+## 自我纠错：发现并修复错误
 
 ```python
-from copy import deepcopy
-from reference_code.planning_patterns import run_plan
+def self_correcting_code_generator(requirement: str) -> str:
+    """
+    自我纠错的代码生成器
+    生成代码 → 自动测试 → 发现错误 → 修复 → 循环
+    """
+    import subprocess
+    import tempfile
+    import os
+    
+    max_attempts = 3
+    
+    for attempt in range(max_attempts):
+        print(f"\n[尝试 {attempt + 1}]")
+        
+        # 生成代码
+        response = client.chat.completions.create(
+            model="gpt-4.1",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""
+编写Python代码完成以下需求：
+{requirement}
 
-def stubborn(facts, feedback):
-    candidate = deepcopy(facts)
-    candidate.pop("rollback")
-    return candidate
+要求：
+1. 代码必须能够直接运行（包含完整的测试用例）
+2. 在文件末尾添加 if __name__ == '__main__': 测试代码
+3. 只返回纯Python代码，不要Markdown格式
+"""
+                }
+            ]
+        )
+        
+        code = response.choices[0].message.content
+        
+        # 清理代码（移除可能的markdown标记）
+        if "```python" in code:
+            code = code.split("```python")[1].split("```")[0].strip()
+        elif "```" in code:
+            code = code.split("```")[1].split("```")[0].strip()
+        
+        # 测试代码
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', 
+                                          delete=False, encoding='utf-8') as f:
+            f.write(code)
+            tmp_file = f.name
+        
+        try:
+            result = subprocess.run(
+                ["python", tmp_file],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            
+            if result.returncode == 0:
+                print(f"✅ 代码运行成功！")
+                os.unlink(tmp_file)
+                return code
+            else:
+                error = result.stderr
+                print(f"❌ 运行错误：{error[:200]}")
+                
+                # 修复错误
+                fix_response = client.chat.completions.create(
+                    model="gpt-4.1",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": f"""以下代码有错误，请修复：
 
-def flattering_critic(snapshot):
-    return {"score": 10, "passed": True, "suggestion": "declare success"}
-
-result = run_plan(writer=stubborn, reflector=flattering_critic,
-                  max_steps=6, max_replans=1)
-assert result["status"] == "budget_exhausted"
-assert result["accepted"] is False
-assert result["verification"]["missing_points"] == ["rollback"]
+代码：
+```python
+{code}
 ```
 
-结果为预算耗尽、未接受，仍保留rollback缺项。反思异常也返回失败，不用另一次生成掩盖核验器故障。反思JSON最大4096字节，修订后的简报最大8192字节；这些是本练习序列化字节预算，不是token数。
+错误信息：
+{error}
 
-## 何时值得多试一次
+请返回修复后的完整Python代码（不要Markdown格式）："""
+                        }
+                    ]
+                )
+                code = fix_response.choices[0].message.content
+                if "```python" in code:
+                    code = code.split("```python")[1].split("```")[0].strip()
+        
+        except subprocess.TimeoutExpired:
+            print("❌ 代码执行超时")
+        finally:
+            try:
+                os.unlink(tmp_file)
+            except:
+                pass
+    
+    return f"# 无法生成满足要求的代码（{max_attempts}次尝试后）\n" + code
 
-| 观察 | 可考虑的下一步 | 不可替代的检查 |
-|---|---|---|
-| 明确缺少一项，来源已存在 | 有界修订并重查 | 完整要点、数值与来源 |
-| 来源冲突或无法回答 | 补充资料/请求澄清，或保留未完成 | 不能让自评裁决事实 |
-| 工具权限拒绝 | 停止该动作 | 不能换工具绕过许可 |
-| 临时读取错误 | 在另定策略中有限重试 | 截止时间、总消耗及副作用状态 |
-| 已通过当前合同 | 停止或另立新任务 | 不能把更多轮次当自动更优 |
+# 测试
+code = self_correcting_code_generator(
+    "实现一个函数，计算列表中所有偶数的平均值，如果没有偶数返回0"
+)
+print(code)
+```
 
-本实现只在独立要点检查失败时提供有限重规划；权限拒绝、读取适配器错误不会执行替代计划。没有执行生成代码或启动子进程，更没有依靠子进程退出码验证模型自己生成的测试。若扩展代码修复，隔离运行、独立测试、进程组清理与幂等是额外工程，不用一个 `timeout=10`宣称安全沙箱。
+---
 
-练习比较无修订、一次反馈修订与顽固遗漏，报告每轮来源、缺项、实际尝试和最终判定。再让批评器给出错误建议，确认独立要求没有被改写。需要多资料问答时看[5.5](./05_practice_research_agent.md)的小基线及贯穿项目；论文扩展在[5.7](./06_paper_readings.md)。
+## 小结
+
+反思机制的价值：
+- **质量保证**：多轮评估确保输出满足标准
+- **自动纠错**：发现并修复错误，无需人工干预
+- **持续改进**：每轮反思都让输出更接近目标
+- **适用场景**：代码生成、内容写作、复杂分析
+
+> 📖 **想深入了解反思与自我纠错的学术前沿？** 请阅读 [5.7 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 Reflexion、Self-Refine、CRITIC 等论文的深度解读，以及自我纠错的边界与局限。
+>
+> 💡 **实践建议**：在实际 Agent 中实现反思时，**永远要设置最大迭代次数**（通常 2-3 轮就足够了），并优先使用有工具反馈的反思方式（如运行测试、查询数据库）。纯自我批评适合主观任务（如写作风格改进），而需要客观正确性的任务（如代码、数据分析）必须有外部验证。
+
+---
 
 *下一节：[5.5 实战：自动化研究助手 Agent](./05_practice_research_agent.md)*

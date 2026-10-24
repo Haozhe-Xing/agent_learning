@@ -1,4 +1,4 @@
-# 22.4 报告生成与导出
+# 24.4 报告生成与导出
 
 > **本节目标**：将分析结果自动整合为结构化的 Markdown 报告。
 
@@ -10,7 +10,7 @@
 
 `ReportGenerator` 是整个数据 Agent 的**最后一环**——把问题、查询、数据、统计、洞察、图表六样东西拼成一份人读得懂的报告。关键设计：**模板是结构化 Markdown，LLM 只负责"润色洞察"这一环，而非从头生成整份报告**——这样格式可控、可复现，即便 LLM 跑飞，也不至于整份报告乱掉。
 
-````python
+```python
 from datetime import datetime
 
 class ReportGenerator:
@@ -103,7 +103,7 @@ class ReportGenerator:
             f.write(report)
         
         return filename
-````
+```
 
 ---
 
@@ -334,4 +334,4 @@ async def generate_sales_report():
 
 ---
 
-[22.5 完整项目实现](./05_full_implementation.md)
+[24.5 完整项目实现](./05_full_implementation.md)

@@ -1,111 +1,258 @@
-# 11.3 Build Your First Graph Agent
+# 13.3 Build Your First Graph Agent
 
-This section expresses a tool loop as an explicit state graph: `agent → tools → agent`, ending when there is no tool request. Follow how messages pass between nodes, how a conditional edge selects the next node, and how an execution limit stops a loop.
+This section walks you through building a complete LangGraph Agent step by step, including tool calls and iterative reasoning.
 
-The default model is a deterministic offline fixture. It treats the input as an arithmetic expression, requests `calculate`, and returns the tool result unchanged. This verifies the actual framework's tool-call path; it does not demonstrate natural-language understanding or autonomous planning. The complete entry point is [first_graph_agent.py](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/chapter13/first_graph_agent.py). It shares [framework_fixture.py](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/framework_fixture.py) with Section 10.3 rather than maintaining a second test model.
+Unlike the previous approach of using the OpenAI native API or LangChain's AgentExecutor, LangGraph uses a **graph** to describe Agent behavior. The advantage of this approach is that the execution flow is **visualizable, controllable, and persistable** — you can clearly see which steps the Agent took, pause and resume at any node, and precisely control the flow direction by adding edges.
 
-## Run the Example First
-
-From the repository root, use an environment with [examples/requirements.txt](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/requirements.txt) installed. This section is verified against `langgraph==1.2.16`:
-
-```bash
-python -m examples.chapter13.first_graph_agent
-python -m examples.chapter13.first_graph_agent --stream
-```
-
-The default expression is `sqrt(144) + 2 * 3`, whose tool result is `18`. With `--stream`, expect the node sequence `agent → tools → agent`. A final `completed` means this tool loop ended normally. Fixed arithmetic cases and an offline model are not a model-quality evaluation.
+Building a Graph Agent involves four steps:
+1. **Define tools**: same as before, use the `@tool` decorator to define tool functions
+2. **Create nodes**: each node is a processing function that receives State and returns updates
+3. **Build the graph**: use `add_node` to add nodes, and `add_edge` / `add_conditional_edges` to connect them
+4. **Compile and run**: call `compile()` to get an executable Agent
 
 ![Graph Agent Execution Flow](../svg/chapter_langgraph_03_graph_agent.svg)
 
-The Agent node in the diagram can call a real model. This section substitutes a fixed response for that part while the installed LangGraph still executes the tool node and conditional routing.
-
-## A Runnable Minimal Tool Loop
-
-Run the following code from the repository root in the same environment. All tools, models, and message classes have explicit imports:
+In the code below, we use LangGraph's built-in `MessagesState` (message list state), `ToolNode` (automatically executes tools), and `tools_condition` (determines whether tool calls are needed) — these are shortcut components LangGraph provides for common Agent patterns.
 
 ```python
-from langchain_core.messages import HumanMessage, SystemMessage
-from langgraph.graph import START, MessagesState, StateGraph
+# first_graph_agent.py
+from langgraph.graph import StateGraph, END, START, MessagesState
 from langgraph.prebuilt import ToolNode, tools_condition
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage, SystemMessage
+import math
 
-from examples.framework_fixture import FixedToolChatModel, calculate
+# ============================
+# 1. Define Tools
+# ============================
 
-model = FixedToolChatModel().bind_tools([calculate])
+@tool
+def calculate(expression: str) -> str:
+    """Evaluate a mathematical expression. Supports sqrt, sin, cos, log, pi, e, etc."""
+    try:
+        safe_env = {k: getattr(math, k) for k in dir(math) if not k.startswith('_')}
+        # ⚠️ Security warning: eval() can still be bypassed even with restricted __builtins__
+        # In production, use safe expression parsers like simpleeval or numexpr
+        result = eval(expression, {"__builtins__": {}}, safe_env)
+        if isinstance(result, float):
+            return f"{result:.6g}"
+        return str(result)
+    except Exception as e:
+        return f"Calculation error: {e}"
+
+@tool
+def get_fact(topic: str) -> str:
+    """Get basic knowledge about a topic."""
+    facts = {
+        "python": "Python was created by Guido van Rossum, released in 1991. It is an interpreted, high-level language.",
+        "langchain": "LangChain is a framework for building LLM applications, supporting Agents, RAG, Chains, and more.",
+        "speed of light": "The speed of light in a vacuum is approximately 299,792,458 meters per second.",
+        "earth": "Earth has a diameter of approximately 12,742 km and is about 150 million km from the Sun.",
+    }
+    
+    for key, fact in facts.items():
+        if key.lower() in topic.lower():
+            return fact
+    
+    return f"No pre-loaded knowledge available for '{topic}'"
+
+tools = [calculate, get_fact]
+
+# ============================
+# 2. Create the Agent Node
+# ============================
+
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm_with_tools = llm.bind_tools(tools)
 
 def agent_node(state: MessagesState) -> dict:
-    messages = state.get("messages", [])
-    if not messages:
-        raise ValueError("provide at least one input message")
-    response = model.invoke([
-        SystemMessage(content="Use calculate for arithmetic. Preserve tool failures in the reply."),
-        *messages,
-    ])
+    """Agent core node: calls LLM to decide the next step"""
+    messages = state["messages"]
+    
+    if not any(isinstance(m, SystemMessage) for m in messages):
+        messages = [
+            SystemMessage(content="You are an intelligent assistant with access to a calculator and knowledge base tools.")
+        ] + messages
+    
+    response = llm_with_tools.invoke(messages)
     return {"messages": [response]}
 
+# ============================
+# 3. Build the Graph
+# ============================
+
+# Building the graph involves three steps: add nodes, add edges, compile.
+# - "agent" node: LLM decision-making
+# - "tools" node: uses the built-in ToolNode to automatically execute tools
+# - tools_condition: built-in condition function that checks if the LLM response contains tool calls
+#   If tool calls exist → route to "tools"
+#   If not (plain text response) → route to END (finish)
+# - "tools" → "agent": after tool execution, return to Agent for continued reasoning (forms a loop)
+
 graph = StateGraph(MessagesState)
+
+# Add nodes
 graph.add_node("agent", agent_node)
-graph.add_node("tools", ToolNode([calculate]))
+graph.add_node("tools", ToolNode(tools))  # Built-in tool node
+
+# Add edges
 graph.add_edge(START, "agent")
-graph.add_conditional_edges("agent", tools_condition)
-graph.add_edge("tools", "agent")
+graph.add_conditional_edges(
+    "agent",
+    tools_condition,  # Built-in condition: has tool calls → "tools", otherwise → END
+)
+graph.add_edge("tools", "agent")  # After tool execution, return to Agent
+
+# Compile
 app = graph.compile()
 
-events = list(app.stream(
-    {"messages": [HumanMessage(content="sqrt(144) + 2 * 3")]},
-    config={"recursion_limit": 8},
-    stream_mode="updates",
-))
-print([next(iter(event)) for event in events])
-print(events[1]["tools"]["messages"][0].content)
+# ============================
+# 4. Visualize (if relevant libraries are installed)
+# ============================
+
+try:
+    from IPython.display import Image, display
+    display(Image(app.get_graph().draw_mermaid_png()))
+except:
+    print("Graph structure (Mermaid format):")
+    print(app.get_graph().draw_mermaid())
+
+# ============================
+# 5. Run Tests
+# ============================
+
+def chat(question: str):
+    """Chat with the Agent"""
+    result = app.invoke({
+        "messages": [HumanMessage(content=question)]
+    })
+    
+    # The last message is the AI's response
+    final_msg = result["messages"][-1]
+    return final_msg.content
+
+# Tests
+print(chat("When was Python released?"))
+print(chat("What is the speed of light? How many milliseconds does it take to circle the Earth?"))
+print(chat("Calculate sqrt(2) to 4 decimal places."))
 ```
 
-Follow four connections:
+Understanding the core of the code above: the graph structure forms a "loop" — `agent → tools → agent → tools → ... → END`. In each iteration, the `agent` node calls the LLM for reasoning, and `tools_condition` checks whether the LLM's response contains a tool call request. If it does, the flow goes to the `tools` node to execute the tool; if not (meaning the LLM believes it can answer directly), the flow goes to `END`. This is how the Agent's "reasoning-action loop" is expressed in graph structure.
 
-1. `MessagesState` supplies the message-list merge behavior; a node returns its new messages.
-2. `agent_node` invokes the model with its bound tool definitions and returns an `AIMessage`.
-3. `tools_condition` checks for tool requests, routing to the node named `tools` when they exist and ending otherwise.
-4. `ToolNode` executes registered tools and writes `ToolMessage` results. A fixed edge then returns to `agent`.
+## Tracing the Execution Process
 
-`calculate` reuses Chapter 3's [restricted arithmetic interpreter](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/chapter03/safe_math.py). It accepts listed numbers, operators, and functions, with limits on expression length, tree size, exponents, and numeric magnitude. It does not use `eval()` and is not a general sandbox for arbitrary Python. Invalid expressions produce structured tool errors; the host CLI checks them and exits unsuccessfully.
+When debugging an Agent, understanding each step of its reasoning process is crucial. The `app.stream()` method streams execution state node by node, letting you clearly see: which node the Agent made a decision at, which tool was called, and what result was returned.
 
-## Observe Stopping Without Treating It as Acceptance
-
-These commands demonstrate a rejected expression and a graph-step limit:
-
-```bash
-python -m examples.chapter13.first_graph_agent --expression "__import__('os').getcwd()"
-python -m examples.chapter13.first_graph_agent --recursion-limit 1
+```python
+# Use stream to trace each step
+for event in app.stream({"messages": [HumanMessage(content="What is Earth's diameter in km? Convert it to miles.")]}):
+    for node_name, state in event.items():
+        if node_name != "__end__":
+            print(f"\n[Node: {node_name}]")
+            last_msg = state.get("messages", [])[-1] if state.get("messages") else None
+            if last_msg:
+                if hasattr(last_msg, 'content') and last_msg.content:
+                    print(f"  Message: {last_msg.content[:200]}")
+                if hasattr(last_msg, 'tool_calls') and last_msg.tool_calls:
+                    for tc in last_msg.tool_calls:
+                        print(f"  Tool call: {tc['name']}({tc['args']})")
 ```
 
-The first returns `tool_failed`; the second catches `GraphRecursionError` and returns `budget_exhausted`. Both exit with code `1`. `recursion_limit` limits graph execution steps. It does not impose a tool timeout or directly count total tool calls: one model message may request several tools. Real applications need separate budgets for tool costs and side effects.
+## Comparison with LangChain AgentExecutor
 
-[test_first_graph_agent.py](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/integration_tests/test_first_graph_agent.py) exercises actual tool round trips, direct termination without a tool request, repeated calls stopped by the step limit, rejected empty input, and unsuccessful CLI exits:
+If you've used LangChain's `AgentExecutor` (Chapter 13), you might ask: why go through the trouble of building an Agent with a graph? Let's understand the fundamental difference between the two through a comparison:
 
-```bash
-python -m pytest examples/integration_tests/test_first_graph_agent.py -q
+```python
+# LangChain AgentExecutor approach (black box)
+from langchain.agents import create_openai_tools_agent, AgentExecutor
+
+agent = create_openai_tools_agent(llm, tools, prompt)
+executor = AgentExecutor(agent=agent, tools=tools)
+result = executor.invoke({"input": "Calculate sqrt(2)"})
+# The internal loop is opaque to you
+
+# LangGraph approach (white box)
+graph = StateGraph(MessagesState)
+graph.add_node("agent", agent_node)
+graph.add_node("tools", ToolNode(tools))
+# You have full control over the graph structure, edge conditions, and when to terminate
+app = graph.compile()
 ```
 
-## Choosing Between This Graph and Section 10.3
+| Dimension | AgentExecutor | LangGraph |
+|-----------|--------------|-----------|
+| Transparency | Black-box loop | Every node and edge is visible |
+| Control | Limited configuration | Fully customizable |
+| Persistence | Not supported | Checkpoint natively supported |
+| Human-AI collaboration | Requires extra implementation | Built-in interrupt/resume |
+| Use case | Simple tool calls | Complex multi-step workflows |
 
-| Choice | What this example makes observable | Additional design or configuration |
-|---|---|---|
-| Section 10.3's `create_agent` | A tool loop with less assembly code | Task acceptance, permissions, and budget policies |
-| This section's `StateGraph` | Explicit nodes, message state, conditional edges, and return edges | Custom state and termination rules, plus the same business acceptance |
-| Checkpoints | This example calls `compile()` without a checkpointer | Configure checkpoint storage and a `thread_id`; in-memory storage does not survive process exit |
-| Human interruption and resumption | This example has no approval node | Call `interrupt()` at a chosen point, configure a checkpointer and thread ID, and resume with `Command(resume=...)` |
+> 💡 **Migration advice**: If your Agent only needs a simple "LLM + tool call" loop, `AgentExecutor` is sufficient. When you need conditional branching, multi-stage flows, human approval nodes, or intermediate state persistence, migrate to LangGraph.
 
-A flow being expressible as a graph does not require every Agent to migrate. A simple loop may keep using `create_agent`; a handwritten loop or state machine is also valid. When lifecycle state, branches, and return paths need independent inspection or modification, compare the value of an explicit graph with its maintenance cost. See the official [Persistence](https://docs.langchain.com/oss/python/langgraph/persistence) and [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) guides for configuration, and the [Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api) for the graph model and step limits.
+## Common Pitfalls and Best Practices
 
-## Optional: Connect a Real Model
+When building your first Graph Agent, a few common mistakes are worth noting:
 
-After configuring model-service credentials, explicitly run:
+**Pitfall 1: Forgetting to handle empty message lists**
 
-```bash
-python -m examples.chapter13.first_graph_agent --real --model gpt-4.1-mini
+```python
+# ❌ Wrong: directly accessing the last message, may cause IndexError
+def agent_node(state: MessagesState):
+    response = llm.invoke(state["messages"])
+    return {"messages": [response]}
+
+# ✅ Correct: ensure the message list is not empty
+def agent_node(state: MessagesState):
+    messages = state.get("messages", [])
+    if not messages:
+        messages = [HumanMessage(content="Hello")]
+    response = llm_with_tools.invoke(messages)
+    return {"messages": [response]}
 ```
 
-This uses `ChatOpenAI` with a timeout and finite retries and makes real service requests. The default offline tests do not establish service availability, correct tool selection, or a complete final answer; those require separate fixed-task acceptance. `--real` retains the same graph so model messages can be compared with fixture messages.
+**Pitfall 2: Tool function exceptions crashing the entire Agent**
+
+```python
+# ❌ Wrong: exception propagates upward
+@tool
+def risky_tool(query: str) -> str:
+    """A tool that might fail"""
+    return requests.get(f"https://api.example.com/{query}").text
+
+# ✅ Correct: catch exceptions inside the tool, return friendly error messages
+@tool
+def safe_tool(query: str) -> str:
+    """Safe tool implementation"""
+    try:
+        response = requests.get(f"https://api.example.com/{query}", timeout=5)
+        response.raise_for_status()
+        return response.text
+    except Exception as e:
+        return f"Tool call failed: {type(e).__name__}: {e}"
+```
+
+**Pitfall 3: Infinite loops without a safe exit**
+
+LangGraph's default `recursion_limit` is 25 steps, but in complex scenarios you may need to set it explicitly:
+
+```python
+# Set maximum recursion steps to prevent infinite loops
+result = app.invoke(
+    {"messages": [HumanMessage(content="Do a complex analysis")]},
+    config={"recursion_limit": 15}  # Maximum 15 steps
+)
+```
 
 ---
 
-*Next section: [11.4 Conditional Routing and Loop Control](./04_conditional_routing.md)*
+## Summary
+
+The first Graph Agent demonstrates:
+- `StateGraph` + `MessagesState` for quick construction
+- `ToolNode` + `tools_condition` for built-in tool handling
+- `app.stream()` for tracing the execution process
+
+---
+
+*Next section: [13.4 Conditional Routing and Loop Control](./04_conditional_routing.md)*

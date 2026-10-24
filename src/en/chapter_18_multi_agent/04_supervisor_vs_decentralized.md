@@ -1,4 +1,4 @@
-# 16.4 Supervisor Mode vs. Decentralized Mode
+# 18.4 Supervisor Mode vs. Decentralized Mode
 
 Multi-Agent systems face a fundamental architectural decision: **who coordinates?** Should you set up a "project manager" to centrally schedule all Agents (Supervisor mode), or let Agents negotiate freely with each other (decentralized mode)?
 
@@ -339,4 +339,4 @@ In the global view of the six collaboration patterns (Sequential / Parallel / Su
 
 ---
 
-*Next section: [16.5 Practice: Multi-Agent Software Development Team](./05_practice_dev_team.md)*
+*Next section: [18.5 Practice: Multi-Agent Software Development Team](./05_practice_dev_team.md)*

@@ -1,4 +1,4 @@
-# 15.2 Installation & 4 Run Modes
+# 17.2 Installation & 4 Run Modes
 
 > 🐋 *"One command starts an Agent; four profiles decide its capability boundary."*
 
@@ -103,4 +103,4 @@ Repo layout (per `main`): `packages/` (core/llm/shell/terminal/fs/edit/lsp/web/s
 
 ---
 
-*Next section: [15.3 Architecture: Cordis Microkernel & Plugin Topology](./03_cordis_architecture.md)*
+*Next section: [17.3 Architecture: Cordis Microkernel & Plugin Topology](./03_cordis_architecture.md)*

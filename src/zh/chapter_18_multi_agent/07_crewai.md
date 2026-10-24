@@ -1,4 +1,4 @@
-# 16.7 框架补充：CrewAI（角色扮演型多 Agent 框架）
+# 18.7 框架补充：CrewAI（角色扮演型多 Agent 框架）
 
 > 🎭 *CrewAI 用"角色+任务+团队"的简洁抽象，让多 Agent 协作非常直观。*
 
@@ -87,5 +87,5 @@ CrewAI 用"角色 + 任务 + 团队"的简洁抽象，让多 Agent 协作非常�
 
 ---
 
-*上一节：[16.5 实战：多 Agent 软件开发团队](../chapter_18_multi_agent/05_practice_dev_team.md)*<br>
-*下一节：[第16章 多 Agent 协作 章节首页](../chapter_18_multi_agent/README.md)*
+*上一节：[18.6 实战：多 Agent 软件开发团队](../chapter_18_multi_agent/05_practice_dev_team.md)*  
+*下一节：[第18章 多 Agent 协作 章节首页](../chapter_18_multi_agent/README.md)*

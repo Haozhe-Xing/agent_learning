@@ -1,4 +1,4 @@
-# 13.5 三层记忆系统：MEMORY / USER / Session
+# 15.5 三层记忆系统：MEMORY / USER / Session
 
 > ☤ *"长期语义是'知道什么'，工作记忆是'正在做什么'，情景日志是'做过什么'。"*
 
@@ -93,7 +93,7 @@ OpenClaw 也有"长期记忆"——但只是单层 SQLite；Hermes 把记忆拆�
 - 不要做没必要的视觉化（除非真的有用）
 ```
 
-`USER.md` 与用户建模涉及不同的存储与授权问题，不能直接视作同一个子系统。用户建模位置见[13.3节](./03_three_layer_architecture.md)，主动更新机制见[13.6节](./06_nudge_engine.md)；具体写入路径仍需按版本核验。
+USER.md 是 **Honcho dialectic**（15.6）维护的——Hermes 自己每过一段时间会问自己："我从最近的对话里看出了什么用户偏好？" 然后更新这个文件。
 
 ### 3.4 Skill files 作为"能力记忆"
 
@@ -107,7 +107,7 @@ OpenClaw 也有"长期记忆"——但只是单层 SQLite；Hermes 把记忆拆�
 ├── …
 ```
 
-Skill 可以由人编写、导入或由 Agent 生成；候选生成与验收设计见[13.4节](./04_self_evolving_skills.md)。
+每个 Skill 都是 self-evolving 的产物（15.4）。
 
 ### 3.5 长期记忆的写入路径
 
@@ -196,7 +196,7 @@ $ hermes memory search "Q3 plan review"
 
 ### 5.4 用于 Self-Evolving
 
-Session Log 是 Self-Evolving 的"燃料"——Self-Evolving Loop 通过 `memory.recall_relevant(query, top_k=10)` 召回相似任务的轨迹，再交给 LLM 提炼 Skill（设计讨论见[13.4节](./04_self_evolving_skills.md)）。
+Session Log 是 Self-Evolving 的"燃料"——Self-Evolving Loop 通过 `memory.recall_relevant(query, top_k=10)` 召回相似任务的轨迹，再交给 LLM 提炼 Skill（详见 15.4）。
 
 ---
 
@@ -223,7 +223,7 @@ class MemoryStore:
     async def archive_sessions_older_than(self, days: int): ...
 ```
 
-调用方**不需要**关心底层是 SQLite 还是其它——这是 Memory Store Plugin 起的作用（见[13.3节的插件分析](./03_three_layer_architecture.md)）。
+调用方**不需要**关心底层是 SQLite 还是其它——这是 Memory Store Plugin 起的作用（15.3 的 Layer 3）。
 
 ---
 
@@ -267,4 +267,4 @@ User: 张三
 
 ---
 
-*下一节：[13.6 Nudge Engine 与跨会话学习](./06_nudge_engine.md)*
+*下一节：[15.6 Nudge Engine 与跨会话学习](./06_nudge_engine.md)*

@@ -1,14 +1,4 @@
-# 24.6 Practice: Complete Agentic-RL Training Pipeline
-
-## Iteration and Acceptance
-
-After establishing an engineering baseline, test whether training improves a measured tool-use limitation.
-
-- **Success criteria**: Split training and held-out data first; compare task success, tool argument correctness, and call costs before and after training on the same test set.
-- **Failure cases**: Include invalid arguments, unsolvable tasks, and tool errors; format checks or self-reported success alone must not determine rewards.
-- **Safety boundary**: Use a restricted calculator and synthetic data; validate data and rewards on a small batch before a full run, saving configuration and seeds.
-
-Record inputs, expected results, and actual results before extending the system. See [Chapter 18](../chapter_20_evaluation/README.md) for evaluation and [Chapter 19](../chapter_21_security/README.md) for trust and permissions.
+# 10.6 Practice: Complete Agentic-RL Training Pipeline
 
 ## Project Overview and Experimental Design
 
@@ -787,12 +777,12 @@ Through systematic study of this chapter, you have mastered the complete knowled
 
 | Section | Core Knowledge | Key Conclusion |
 |---------|---------------|----------------|
-| **24.1 Overview** | MDP modeling, two-phase paradigm | RL training can emerge reasoning strategies that exceed training data |
-| **24.2 SFT + LoRA** | Supervised fine-tuning, parameter-efficient training | LoRA achieves near full-parameter fine-tuning effect with <1% of parameters |
-| **24.3 PPO** | Policy gradient, importance sampling, advantage function, Clip mechanism | PPO is the classic RLHF algorithm, but Critic causes memory ≈ 3× |
-| **24.4 DPO** | Implicit reward, Bradley-Terry model, closed-form solution | DPO converts RL to supervised learning, minimal but cannot explore online |
-| **24.5 GRPO + Reward Design** | Within-group comparison, multi-dimensional rewards, reward hacking defense | GRPO reduces memory from 3× to 1.5×; reward function is the decisive factor in RL training effectiveness |
-| **24.6 Practice** | Complete pipeline, evaluation comparison | On GSM8K: base ~40% → SFT ~50% → GRPO ~60% |
+| **10.1 Overview** | MDP modeling, two-phase paradigm | RL training can emerge reasoning strategies that exceed training data |
+| **10.2 SFT + LoRA** | Supervised fine-tuning, parameter-efficient training | LoRA achieves near full-parameter fine-tuning effect with <1% of parameters |
+| **10.3 PPO** | Policy gradient, importance sampling, advantage function, Clip mechanism | PPO is the classic RLHF algorithm, but Critic causes memory ≈ 3× |
+| **10.4 DPO** | Implicit reward, Bradley-Terry model, closed-form solution | DPO converts RL to supervised learning, minimal but cannot explore online |
+| **10.5 GRPO + Reward Design** | Within-group comparison, multi-dimensional rewards, reward hacking defense | GRPO reduces memory from 3× to 1.5×; reward function is the decisive factor in RL training effectiveness |
+| **10.6 Practice** | Complete pipeline, evaluation comparison | On GSM8K: base ~40% → SFT ~50% → GRPO ~60% |
 
 Agentic-RL represents an important development direction for LLM applications: **the paradigm shift from "prompt engineering" to "training optimization."** As algorithms continue to evolve and compute costs decrease, this technology will play a key role in an increasing number of high-value Agent scenarios.
 

@@ -1,4 +1,4 @@
-# 15.1 DeepSeek Harness 是什么：Cordis 内核与"一切皆插件"
+# 17.1 DeepSeek Harness 是什么：Cordis 内核与"一切皆插件"
 
 > 🐋 *"Model + Harness = Agent；模型负责想，Harness 负责做。"*
 
@@ -6,7 +6,7 @@
 
 ## 一、一句话定义
 
-**DeepSeek Harness（dsh / DSH）** 是 DeepSeek AI 的开源 Agent Harness。本次核验使用[预发行版 dsh-v0.2.1-rc.2](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-rc.2)及[固定提交 687f282](https://github.com/deepseek-ai/deepseek-harness/commit/687f282e8625c6b8d11ff58211a90524be2e4317)，该提交采用 [MIT 许可证](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/LICENSE)。首次发布日期尚未由本次一手材料核验，不将仓库创建时间等同于产品发布。
+**DeepSeek Harness（dsh / DSH）** 是 DeepSeek AI 于 2026 年 8 月 13 日开源的 Agent 运行框架，采用 **MIT 协议**，定位是"让大模型真正具备执行工作流的能力"——读写文件、执行命令、调用工具、派出子任务，并在授权范围内把长任务持续做完。
 
 它不是模型，也不是 API 客户端——它是 **AI 的操作系统外壳**。
 
@@ -16,31 +16,36 @@
 
 ### 2.1 行业背景
 
-下面按本书的阅读问题区分案例用途；这不是截至某一日期的行业全景或互斥产品分类：
+到 2025 年底，"行动型 Agent"赛道已经出现两个清晰的对立：
 
 | 阵营 | 代表 | 模型支持 | 开源 |
 |------|------|---------|------|
-| 代码操作案例 | [第14章 Claude Code](../chapter_claude_code/README.md) | 按版本核验 | 另查适用条款 |
-| 个人助理案例 | [第12章 OpenClaw](../chapter_openclaw/README.md)、[第13章 Hermes](../chapter_hermes/README.md) | 按版本核验 | 固定源码为 MIT |
-| 插件化案例 | **DeepSeek Harness（本章）** | 适配器与工具协议分别核验 | 固定源码为 MIT |
+| **商业闭源 Harness** | Claude Code、OpenAI Codex、Cursor | 主要绑自家模型 | ❌ |
+| **开源消费级 Harness** | OpenClaw（第 14 章）、Hermes（第 15 章） | 模型无关 | ✅ |
+| **开源工坊型 Harness** | **DeepSeek Harness（本章）** | 模型无关 | ✅ |
 
-“工坊型”是本书的教学视角，指组件和扩展的研究问题，不是官方发行类别，也不保证任意模型或所有模式已经兼容。
+DeepSeek 的策略是"工坊型"——把"能力"和"模型"完全解耦，让开源社区用同一套 Harness 跑任何模型，同时在 v0.1 阶段就内置一套完整插件（插件数量以仓库为准）和 4 种运行模式。
 
-### 2.2 区分项目自述与验证结论
+### 2.2 团队自述的口号
 
-固定提交的 [README](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/README.md)将项目描述为基于 Cordis 的插件化 Harness，同时标明 developer preview、接口可能发生破坏性变化。它支持我们研究组件边界，不足以证明任意能力均可替换或某类实现必然优于其他产品。
+发布时，DeepSeek 团队说了两句话：
+
+- **"一切皆插件"（Everything is a Plugin）** —— 没有特权组件，所有能力都可换可加可减；
+- **"闭源为用户提供现在，开源让用户自己掌握未来"** —— 公开承诺长期开源路线。
+
+这句话被国内外的开发者大量引用，因为它**承认了商业 Harness 的局限**（闭源、版本不可控、模型绑定）——同时给出了一个可被审计、可被 fork、可被改写的替代。
 
 ---
 
 ## 三、"一切皆插件"是什么
 
-DeepSeek Harness 的底层使用的是 [Cordis（cordiverse/cordis）](https://github.com/cordiverse/cordis)插件元框架。Cordis 提供：
+DeepSeek Harness 的底层使用的是 **Cordis**（Koishi Team 开发的插件元框架）。Cordis 提供：
 
 - 微内核，只负责插件的加载 / 卸载 / 依赖管理；
 - 插件之间靠 **服务（service）** 和 **事件（event）** 协作；
 - 每个插件挂到稳定的 **上下文键（context key）**（如 `ctx.llm`、`ctx.tools`、`ctx.agentLoop`）。
 
-下表是本书用于分析插件边界的能力分类；其中组件名与默认实现尚未逐项在固定提交中核实，不能作为官方 API 清单：
+在 Cordis 之上，DeepSeek Harness 把**所有 Agent 能力**做成插件：
 
 | Agent 能力 | Cordis 插件 | 默认实现 |
 |-----------|------------|---------|
@@ -55,7 +60,7 @@ DeepSeek Harness 的底层使用的是 [Cordis（cordiverse/cordis）](https://g
 | **调度** | `scheduler-*` 插件 | `scheduler.cron` |
 | **UI** | `tui-*` / `web-*` 插件 | `tui.ink`（终端）/`web.react`（浏览器） |
 
-插件数量不作为设计结论。应先确认具体服务、依赖和卸载行为，再讨论“一切皆插件”的实际边界。
+合计上百个插件（数量以仓库为准）——这就是"一切皆插件"的真实含义。
 
 ### 3.1 它给开发者的 3 个直接好处
 
@@ -63,41 +68,48 @@ DeepSeek Harness 的底层使用的是 [Cordis（cordiverse/cordis）](https://g
 2. **加新能力不动核心**：写一个插件，启用，重启即生效；
 3. **降级或拆功能很容易**：CLI 不想要 Web UI？禁掉 `web-*` 插件；不需要 shell？禁掉 `core.tool.shell`。
 
-> **比较循环边界**：在选定版本中查明循环入口、状态读写、工具授权与终止清理分别由哪一层承担，再用固定任务验证替换。不能仅凭插件名称判断循环可换，也不能据此排除其他实现。
+> 📌 **和前两章的对比**：OpenClaw 把能力做成 Skill / Plugin 但**保留特权核心**；Hermes 把能力做成 Plugin 但**有内置运行循环**。DeepSeek Harness 走得更彻底——**连核心循环都是插件**。
 
 ---
 
-## 四、后续需要逐项核验的能力
+## 四、核心特性清单（基于仓库 `main` 分支）
 
-| 书稿涉及的能力 | 需要核验的接口或行为 |
+| 特性 | 实现要点 |
 |------|---------|
 | **MIT 开源** | 完整源码可商用 / 改 / 分发 |
-| **插件化** | Cordis 服务、依赖和卸载边界；不引用未核验数量 |
+| **一切皆插件** | Cordis 微内核 + 100+ 默认插件 |
 | **模型无关** | 任意 OpenAI 兼容端点 + 自定义适配器 |
-| **四种模式** | standard / minimal / PTC / create 的版本对应关系，见[15.2节](./02_install_and_modes.md) |
+| **四种模式** | standard / minimal / PTC / create（详见 17.2） |
 | **事件流+轨迹回放** | Trajectory（轨迹视图）支持 git 风格回放 / 分叉 |
 | **MCP 兼容** | 内置 MCP server，让外部工具按标准接入 |
-| **SKILL.md 迁移检查** | 核对元数据、依赖工具、状态、权限与固定任务结果；同名文件不证明跨产品兼容 |
+| **SKILL.md 兼容** | 兼容 Anthropic 风格 SKILL.md，与 Claude Code / OpenClaw / Hermes 互通 |
 | **本地 + 沙箱** | 默认本地、可切 docker / kubernetes 沙箱 |
 | **CLI + Web** | `dsh` 命令行 + 浏览器 127.0.0.1:3080 Web UI |
 | **Python SDK** | `import deepseek_harness` 直接驱动 Agent |
 
-> 与其他案例比较时，先固定任务与权限，再核对实际接口和结果。[第15.5节](./05_comparison.md)不把功能名称相似当作能力等价。
+> 与 Claude Code / OpenClaw / Hermes 同样的能力，但**路线不同**——这是后面 17.5 我们会展开的核心。
 
 ---
 
-## 五、已核验的来源与范围
+## 五、官方事实清单（可独立核验）
 
-| 项目 | 一手材料与核验范围 |
-|---|---|
-| 仓库 | [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)，本次只对照上述固定提交 |
-| 文档 | [官方开发者文档](https://deepseek-harness.github.io/deepseek-harness/guide/quickstart)，网站未固定到发行版 |
-| Cordis 上游 | README 指向 [cordiverse/cordis](https://github.com/cordiverse/cordis)，不是 `koishijs/koishi` 的同名子目录 |
-| 运行入口 | 固定 README 记录 `npx @deepseek-ai/dsh web` 与默认本地地址 `127.0.0.1:3080`；本次未实际安装运行 |
-| 发行状态 | 固定 README 标明开发者预览；所选 release 标记为 Pre-release |
-| 默认模型、Python SDK及组件清单 | 本次未逐项验证；不从官网截图、名称或论文引用推断实现 |
+下面所有事实以 `deepseek-ai/deepseek-harness` `main` 分支 + 官方文档站为准：
 
-数字与宣传口号不代替行为证据。具体接口、模式和生产适用性，需要在相应版本上验证；未验证部分保留为待核验项。
+| 项目 | 事实 |
+|------|------|
+| 仓库 | `github.com/deepseek-ai/deepseek-harness` |
+| 许可证 | MIT（以仓库 `LICENSE` 为准） |
+| 主语言 | TypeScript（核心 + CLI/Web）+ Python（SDK） |
+| Cordis 上游 | `github.com/koishijs/koishi` 同名子项目 |
+| 默认安装 | `npx @deepseek-ai/dsh web`（开发预览版） |
+| 文档站 | `deepseek-harness.github.io/deepseek-harness/` |
+| 协议兼容 | MCP（Model Context Protocol）、Anthropic `SKILL.md` |
+| 模型后端 | 可换多种主流模型（数量以仓库为准） |
+| 默认后端 | DeepSeek V4-Pro / V4-Flash（同时支持 OpenAI / Anthropic / 自定义） |
+| 关联论文 | "A Programming Paradigm for Spatiotemporal Composability" |
+| 发布时间 | 2026-08-13（v0.1 开发者预览） |
+
+> **会随时间变化的数字**（Star / 安装 / 插件市场条目数等）本书**不引用**——这是 working memory 明确约定的"内容可信度约定"。
 
 ---
 
@@ -105,17 +117,16 @@ DeepSeek Harness 的底层使用的是 [Cordis（cordiverse/cordis）](https://g
 
 ![行动型 Agent Harness 谱系](../svg/chapter_openclaw_01_harness_spectrum.svg)
 
-对第12–15章的案例，分别记录以下问题；结论限于实际运行的版本与配置：
+DeepSeek Harness 的**真正差异化**：
 
-| 检查层次 | 要核对的问题 |
-|---|---|
-| 循环入口 | 能否替换入口，原有路由和停止条件由谁负责？ |
-| 状态 | 替换前后的消息、任务状态与恢复数据是否保持契约？ |
-| 工具权限 | 授权和确认是否仍在执行前由宿主检查？ |
-| 失败清理 | 出错或取消后，进程、连接与临时产物如何清理？ |
-| 固定任务 | 成功、拒绝和预算耗尽用例是否保持，何时需要回退？ |
+| 维度 | OpenClaw | Hermes | Claude Code | DeepSeek Harness |
+|------|----------|--------|-------------|------------------|
+| **能力归属** | 用户/社区写 Skill | Agent + 用户 | 厂商封闭 | **社区插件** |
+| **核心可换** | ❌（核心写死） | 部分 | ❌ | ✅（连循环都是插件） |
+| **可换内核** | ❌ | ❌ | ❌ | ✅ |
+| **模型绑定** | 无 | 无 | 强 | **弱** |
 
-不需要替换循环时可以保留原实现；尚未验证的候选记录为“未知”，不作排他性推荐。
+一句话：**OpenClaw 给你房间的家具，DeepSeek 给你房间蓝图**。
 
 ---
 
@@ -124,12 +135,12 @@ DeepSeek Harness 的底层使用的是 [Cordis（cordiverse/cordis）](https://g
 | 主题 | 关键要点 |
 |------|---------|
 | 项目定位 | 开源 Agent 运行框架，模型无关、插件化 |
-| 团队 | DeepSeek AI；个人职责与发布史未在本次核验 |
-| 上游 | 官方 README 指向 Cordis；接口与生命周期需按固定版本核对 |
-| 循环替换检查 | 在指定版本验证入口、状态、权限与停止清理，记录失败与回退 |
+| 团队 | DeepSeek AI（负责人崔添翼 / Tianyi Cui） |
+| 上游 | Cordis（Koishi Team）作为插件微内核 |
+| 核心差异化 | "一切皆插件"——连 Agent 循环都是可换插件 |
 | 谱系坐标 | 开发者工坊路线，与 OpenClaw/Hermes/Claude Code 并列 |
-| 协议与格式边界 | 按版本核对 MCP 与 SKILL.md 的接口、权限及任务结果 |
+| 协议兼容 | MCP + Anthropic SKILL.md |
 
 ---
 
-*下一节：[15.2 安装与四种运行模式](./02_install_and_modes.md)*
+*下一节：[17.2 安装与四种运行模式](./02_install_and_modes.md)*

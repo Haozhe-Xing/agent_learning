@@ -1,14 +1,5 @@
 # Chapter 9: Agent Skill System
 
-**Reading level**: Engineering extension; prioritize definition, packaging, and practice. Automatic learning and papers are optional.
-
-## This chapter's iteration
-
-- **Previous limitation**: Copying the controlled evidence → extraction → conversion → acceptance workflow into another assistant can fork its parameters, permissions, and success criteria.
-- **This chapter adds**: Package the workflow as a skill with input/output contracts, a version, tool dependencies, and acceptance instructions. Loading a skill reuses the workflow; actions still pass through chapter 8's host permission checks.
-- **How to verify**: Reader exercise: retain the distance skill definition, invocation trace, and tests for seconds/milliseconds, missing evidence, unknown skills, and unapproved tool dependencies. The repository has no separate skill-registry companion entry. Assemble and execute section 9.5's teaching code; passing the earlier Harness tests does not validate a skill system.
-- **Next step**: Use [part III's selection guide](../part3.md) to decide whether the existing modules suffice, or choose [chapter 10 LangChain](../chapter_langchain/README.md) or [chapter 11 LangGraph](../chapter_langgraph/README.md) for integration and state management. Study automatic skill improvement in [chapter 25](../chapter_self_evolving/README.md) after establishing an application and evaluation baseline.
-
 > 🎯 *"Tools let an Agent do one thing; skills let an Agent do a class of things well. A skill is an organic combination of tools, prompts, processes, and experience."*
 
 ---
@@ -39,14 +30,14 @@ After completing this chapter, you will be able to:
 
 | Section | Content | Difficulty |
 |---------|---------|------------|
-| 9.1 Skill System Overview | Skill vs Tool, three-layer skill architecture | ⭐⭐ |
-| 9.2 Skill Definition and Encapsulation | Three encapsulation methods with practice | ⭐⭐⭐ |
-| 9.3 Skill Learning and Acquisition | Voyager, CRAFT, autonomous skill evolution | ⭐⭐⭐ |
-| 9.4 Skill Discovery and Registration | A2A Skill declaration, dynamic discovery | ⭐⭐⭐ |
-| 9.5 Practice: Building a Reusable Skill System | Complete project implementation | ⭐⭐⭐⭐ |
-| 9.6 Paper Readings: Frontier Research in Skill Systems | Voyager, CRAFT and other paper readings | ⭐⭐⭐ |
-| 9.7 Tool, Skill, and Sub-Agent: Three-Layer Capability Abstraction | Three-layer capability model and collaboration patterns | ⭐⭐⭐ |
-| 9.8 The Skills Bible: Superpowers Engineering Practice Guide | obra/superpowers complete workflow | ⭐⭐⭐⭐ |
+| 10.1 Skill System Overview | Skill vs Tool, three-layer skill architecture | ⭐⭐ |
+| 10.2 Skill Definition and Encapsulation | Three encapsulation methods with practice | ⭐⭐⭐ |
+| 10.3 Skill Learning and Acquisition | Voyager, CRAFT, autonomous skill evolution | ⭐⭐⭐ |
+| 10.4 Skill Discovery and Registration | A2A Skill declaration, dynamic discovery | ⭐⭐⭐ |
+| 10.5 Practice: Building a Reusable Skill System | Complete project implementation | ⭐⭐⭐⭐ |
+| 10.6 Paper Readings: Frontier Research in Skill Systems | Voyager, CRAFT and other paper readings | ⭐⭐⭐ |
+| 10.7 Tool, Skill, and Sub-Agent: Three-Layer Capability Abstraction | Three-layer capability model and collaboration patterns | ⭐⭐⭐ |
+| 10.8 The Skills Bible: Superpowers Engineering Practice Guide | obra/superpowers complete workflow | ⭐⭐⭐⭐ |
 
 ## ⏱️ Estimated Study Time
 
@@ -54,16 +45,15 @@ Approximately **90–120 minutes** (including hands-on exercises)
 
 ## 💡 Prerequisites
 
-- Completed chapter 3 (Tool Calling) and chapter 8 (Harness Engineering)
+- Completed Chapter 4 (Tool Calling / Function Calling)
 - Familiar with JSON Schema and Python decorators
 - Basic understanding of Agent workflows
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 3 Tool Calling](../chapter_tools/README.md), [chapter 8 Harness Engineering](../chapter_harness/README.md)
+> **Prerequisites**: [Chapter 3 Tool Calling](../chapter_tools/README.md)
 >
 > **Recommended Next**:
-> - 👉 [Part III: Framework and Implementation Choices](../part3.md) — decide which modules need another implementation
 > - 👉 [Chapter 16 Multi-Agent Collaboration](../chapter_18_multi_agent/README.md) — sharing and discovering skills in multi-Agent systems
 > - 👉 [Chapter 17 Communication Protocols](../chapter_19_protocol/README.md) — skill declaration mechanisms in MCP/A2A
 

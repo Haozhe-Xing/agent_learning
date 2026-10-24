@@ -1,4 +1,4 @@
-# 24.2 SFT + LoRA 基础训练
+# 10.2 SFT + LoRA 基础训练
 
 > 📌 **本节聚焦**：从**算法视角**深入 SFT 的数学原理，以及 LoRA 参数高效微调的实战实现。  
 > 如果你还没有阅读过 [2.8 SFT 与强化学习训练数据准备](../chapter_llm/08_training_data.md)，建议先阅读该节了解训练数据的准备方法，再回到本节深入算法细节。
@@ -233,7 +233,7 @@ def build_agent_sft_dataset() -> Dataset:
                 "</think>\n\n"
                 "<tool_call>\n"
                 "calculator(expression=\"553 * 3 * 2\")\n"
-                "</tool_call>"
+                "\</tool_call\>"
             )
         },
         # 实际训练需要 500–2,000 条覆盖各类工具调用场景的数据
@@ -490,7 +490,7 @@ memory_optimizations = [
 
 ## SFT 毕业标准：何时从 SFT 转入 RL？
 
-在 [24.1 什么是 Agentic-RL](./01_agentic_rl_overview.md) 中我们了解到 Agentic-RL 遵循 **SFT → RL** 的两阶段范式。但一个关键的实操问题是：**SFT 训练到什么程度，才可以"毕业"，进入 RL 阶段？**
+在 [10.1 什么是 Agentic-RL](./01_agentic_rl_overview.md) 中我们了解到 Agentic-RL 遵循 **SFT → RL** 的两阶段范式。但一个关键的实操问题是：**SFT 训练到什么程度，才可以"毕业"，进入 RL 阶段？**
 
 这不是一个可以靠直觉回答的问题——过早进入 RL，模型连基本格式都不稳定，RL 阶段的探索效率极低；**过晚进入 RL，模型过拟合 SFT 数据，多样性丧失，RL 同样无法有效探索**。两种情况都会导致最终性能不佳。
 

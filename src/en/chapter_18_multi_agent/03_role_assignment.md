@@ -1,4 +1,4 @@
-# 16.3 Role Assignment and Task Allocation
+# 18.3 Role Assignment and Task Allocation
 
 > **Goal of this section**: Master the principles of role design in multi-Agent systems, the strategies for task allocation, and how to implement dynamic role assignment.
 
@@ -575,8 +575,8 @@ System-level fault tolerance (distinct from business degradation):
 - **Timeout** prevents hangs, **bounded retry** prevents retry storms, **circuit breaker** prevents dragging down the whole, **heartbeat** prevents silent death, **idempotency** keeps retries safe
 - Especially guard against **fork-bombs**: hard-cap the concurrent sub-agent count
 
-> 💡 **Further reading**: For an in-depth comparison of the Supervisor pattern and the decentralized pattern, see [16.4 Supervisor Mode vs. Decentralized Mode](./04_supervisor_vs_decentralized.md).
+> 💡 **Further reading**: For an in-depth comparison of the Supervisor pattern and the decentralized pattern, see [18.4 Supervisor Mode vs. Decentralized Mode](./04_supervisor_vs_decentralized.md).
 
 ---
 
-*Next section: [16.4 Supervisor Mode vs. Decentralized Mode](./04_supervisor_vs_decentralized.md)*
+*Next section: [18.4 Supervisor Mode vs. Decentralized Mode](./04_supervisor_vs_decentralized.md)*

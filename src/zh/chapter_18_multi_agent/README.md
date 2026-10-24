@@ -1,15 +1,6 @@
-# 第16章 多 Agent 协作
+# 第18章 多 Agent 协作
 
-**阅读层次**：工程进阶；先验证单 Agent 的局限。
-
-## 本章迭代
-
-- **上一版的不足**：单 Agent 的工具、状态与验收已经可控，但研究子任务可能彼此独立；多加角色也可能只增加交接和调用成本。
-- **本章增加**：为交接定义输入、产物、权限与总预算，并在汇总前验收子任务。开发团队示例把持续失败、超时和成功交付分开。
-- **怎样验证**：已有 `examples/dev_team/tests/test_dev_team.py` 检查实际测试返回码、失败不交付、进程清理和目录隔离。再做读者对照：同一任务集、相同总预算下比较单 Agent 与团队，报告通过率、交接失败与总调用量；团队收益尚未由这些离线用例证明。
-- **下一步**：有跨进程工具需求时读[第17章](../chapter_19_protocol/README.md)；没有则进入[第18章评估](../chapter_20_evaluation/README.md)。协作不是上线的前置条件。
-
-> 👥 *"只有分工收益超过交接成本时，协作才值得引入。"*
+> 👥 *"一个 Agent 能做的事有限，多个 Agent 协作才能完成复杂任务。"*
 
 ---
 
@@ -27,22 +18,26 @@
 
 ## 📚 本章结构
 
-| 小节 |
-|---|
-| [16.1 单 Agent 的局限性](./01_single_agent_limits.md) |
-| [16.2 多 Agent 通信模式](./02_communication_patterns.md) |
-| [16.3 角色分工与任务分配](./03_role_assignment.md) |
-| [16.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md) |
-| [16.5 实战：多 Agent 软件开发团队](./05_practice_dev_team.md) |
-| [16.6 论文解读：多 Agent 系统前沿研究](./06_paper_readings.md) |
-| [16.7 框架补充：CrewAI（角色扮演型多 Agent 框架）](./07_crewai.md) |
+当单个 Agent 面对需要多种专业能力的复杂任务时，就需要多个专业化 Agent 分工协作。本章介绍多 Agent 系统的设计模式、通信机制、协商与任务分配、负载均衡、容错降级等协作策略，并实战构建一个由架构师、开发者、测试员和运维工程师组成的多 Agent 软件开发团队。
+
+| 小节 | 内容 | 难度 |
+|------|------|------|
+| 18.1 单 Agent 的局限性 | 为什么需要多 Agent？ | ⭐⭐ |
+| 18.2 多 Agent 通信模式 | 消息传递、共享状态、协商机制、冲突解决 | ⭐⭐⭐ |
+| 18.3 角色分工与任务分配 | 专业化、负载均衡、系统级容错 | ⭐⭐⭐ |
+| 18.4 Supervisor vs 去中心化 | 六大协作模式、Handoff、脑裂 | ⭐⭐⭐ |
+| 18.5 实战：多 Agent 软件开发团队 | 完整实现 | ⭐⭐⭐⭐ |
+| 18.6 论文解读：多 Agent 系统前沿研究 | 学术前沿 | ⭐⭐⭐ |
+| 18.7 框架补充：CrewAI | 角色扮演型多 Agent 框架 | ⭐⭐ |
 
 ## 🔗 学习路径
 
-[工具调用](../chapter_tools/README.md)与[Harness](../chapter_harness/README.md)中的任务、权限和验收记录。生产与领域交付前需通过[评估](../chapter_20_evaluation/README.md)和[安全](../chapter_21_security/README.md)检查。
-
-有跨进程工具需求时读[第17章](../chapter_19_protocol/README.md)；没有则进入[第18章评估](../chapter_20_evaluation/README.md)。协作不是上线的前置条件。
+> **前置知识**：[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
+>
+> **后续推荐**：
+> - 👉 [第19章 Agent 通信协议](../chapter_19_protocol/README.md) — MCP/A2A 等 Agent 间通信标准
+> - 👉 [第21章 安全与可靠性](../chapter_21_security/README.md) — 多 Agent 系统的安全挑战
 
 ---
 
-*下一节：[16.1 单 Agent 的局限性](./01_single_agent_limits.md)*
+*下一节：[18.1 单 Agent 的局限性](./01_single_agent_limits.md)*

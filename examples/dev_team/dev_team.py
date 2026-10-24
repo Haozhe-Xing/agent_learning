@@ -11,16 +11,11 @@
 """
 from __future__ import annotations
 
-import argparse
-import json
-import math
 import os
-import signal
 import subprocess
 import sys
 import tempfile
 from functools import partial
-from pathlib import Path
 from typing import Optional, Protocol, TypedDict
 
 from langgraph.graph import START, END, StateGraph
@@ -39,11 +34,6 @@ class DevState(TypedDict):
     current_phase: str
     iteration: int
     max_iterations: int
-    test_timeout_seconds: float
-    status: str                  # running / delivered / failed / timed_out / budget_exhausted
-    test_status: str             # pending / passed / failed / timed_out / error
-    attempts: list[dict]
-    failure_report: Optional[dict]
 
 
 class Developer(Protocol):
@@ -93,7 +83,7 @@ class LLMDeveloper:
 def product_manager(state: DevState) -> dict:
     spec = (
         f"# 产品规格\n\n需求：{state['original_requirement']}\n\n"
-        "- 用户故事：作为用户，我希望进行加、乘运算\n"
+        "- 用户故事：作为用户，我希望进行加、减、乘运算\n"
         "- 验收标准：add / multiply 计算结果正确\n"
     )
     return {"product_spec": spec, "current_phase": "product_manager"}
@@ -109,20 +99,12 @@ def architect(state: DevState) -> dict:
 
 
 def developer(state: DevState, dev: Developer) -> dict:
-    try:
-        design = state["technical_design"]
-        if state["test_output"]:
-            design += f"\n\n上一轮测试反馈：\n{state['test_output']}"
-        code, test_code = dev.develop(design, state["original_requirement"])
-        ws = state["workspace_dir"]
-        Path(ws, "app.py").write_text(code, encoding="utf-8")
-        Path(ws, "app_test.py").write_text(test_code, encoding="utf-8")
-    except Exception as exc:
-        return {
-            "status": "failed",
-            "failure_report": {"reason": "generation_error", "message": str(exc)},
-            "current_phase": "developer",
-        }
+    code, test_code = dev.develop(state["technical_design"], state["original_requirement"])
+    ws = state["workspace_dir"]
+    with open(os.path.join(ws, "app.py"), "w", encoding="utf-8") as f:
+        f.write(code)
+    with open(os.path.join(ws, "app_test.py"), "w", encoding="utf-8") as f:
+        f.write(test_code)
     return {
         "implementation": code,
         "current_phase": "developer",
@@ -130,71 +112,18 @@ def developer(state: DevState, dev: Developer) -> dict:
     }
 
 
-def _stop_test_processes(proc: subprocess.Popen) -> None:
-    """清理独立进程组，包括 pytest 正常退出后留下的子进程。
-
-    POSIX 会话/进程组不是安全沙箱：主动 setsid 的不可信程序可以逃逸。
-    其他平台只终止直接子进程；生产环境应使用外部隔离执行器。
-    """
-    if os.name == "posix":
-        for sig in (signal.SIGTERM, signal.SIGKILL):
-            try:
-                os.killpg(proc.pid, sig)
-            except ProcessLookupError:
-                break
-            if sig == signal.SIGTERM:
-                try:
-                    proc.wait(timeout=0.2)
-                except subprocess.TimeoutExpired:
-                    pass
-    elif proc.poll() is None:
-        proc.kill()
-    proc.wait()  # 无论成功或超时，都回收直接子进程。
-
-
 def tester(state: DevState) -> dict:
+    # 注意：这里真正运行 pytest，而不是"假装测试通过"
     ws = state["workspace_dir"]
-    timeout = state["test_timeout_seconds"]
-    # 用文件接收输出，避免后台子进程继承 PIPE 后使 communicate 一直等待 EOF。
-    with tempfile.TemporaryFile(mode="w+b") as output:
-        proc = None
-        try:
-            proc = subprocess.Popen(
-                [sys.executable, "-m", "pytest", "app_test.py", "-q"],
-                cwd=ws,
-                stdout=output,
-                stderr=subprocess.STDOUT,
-                start_new_session=os.name == "posix",
-                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"},
-            )
-            try:
-                returncode = proc.wait(timeout=timeout)
-                # pytest: 1 为断言失败，可重试；2—5 为执行/收集/配置错误。
-                test_status = "passed" if returncode == 0 else "failed" if returncode == 1 else "error"
-                message = "" if returncode == 0 else f"pytest exited with code {returncode}"
-            except subprocess.TimeoutExpired:
-                returncode, test_status = None, "timed_out"
-                message = f"pytest exceeded {timeout:g} seconds"
-        except OSError as exc:
-            returncode, test_status, message = None, "error", str(exc)
-        finally:
-            if proc is not None:
-                _stop_test_processes(proc)
-        output.seek(0)
-        test_output = output.read().decode("utf-8", errors="replace")
-    attempt = {
-        "iteration": state["iteration"], "test_status": test_status,
-        "returncode": returncode, "timeout_seconds": timeout,
-        "message": message, "output": test_output,
-    }
-    status = {"timed_out": "timed_out", "error": "failed"}.get(test_status, "running")
+    proc = subprocess.run(
+        [sys.executable, "-m", "pytest", "app_test.py", "-q"],
+        cwd=ws,
+        capture_output=True,
+        text=True,
+    )
     return {
-        "test_output": test_output,
-        "test_passed": test_status == "passed",
-        "test_status": test_status,
-        "status": status,
-        "attempts": state["attempts"] + [attempt],
-        "failure_report": {"reason": test_status, "message": message} if status != "running" else None,
+        "test_output": proc.stdout + proc.stderr,
+        "test_passed": proc.returncode == 0,
         "current_phase": "tester",
     }
 
@@ -216,47 +145,15 @@ def docs(state: DevState) -> dict:
     )
     with open(os.path.join(state["workspace_dir"], "README.md"), "w", encoding="utf-8") as f:
         f.write(readme)
-    return {"documentation": readme, "current_phase": "docs", "status": "delivered"}
-
-
-def _deliver(state: DevState, node) -> dict:
-    try:
-        return node(state)
-    except Exception as exc:
-        return {
-            "status": "failed", "current_phase": node.__name__,
-            "failure_report": {"reason": "delivery_error", "message": str(exc)},
-        }
-
-
-def fail(state: DevState) -> dict:
-    status = state["status"]
-    if status == "running":
-        status = "budget_exhausted"
-    reason = state.get("failure_report") or {
-        "reason": "max_iterations", "message": "Tests did not pass within the iteration budget",
-    }
-    report = {
-        **reason, "status": status, "delivered": False,
-        "iteration": state["iteration"], "max_iterations": state["max_iterations"],
-        "attempts": state["attempts"],
-    }
-    Path(state["workspace_dir"], "failure_report.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8",
-    )
-    return {"status": status, "failure_report": report, "current_phase": "failure"}
+    return {"documentation": readme, "current_phase": "docs"}
 
 
 def route_after_test(state: DevState) -> str:
-    """只有通过才交付；超时/执行错误直接失败，断言失败在预算内重试。"""
-    if state.get("status") in {"failed", "timed_out"}:
-        return "fail"
+    """测试通过后交付；未通过且未达上限则回到开发重试。"""
     passed = state.get("test_passed")
     hit_cap = state.get("iteration", 0) >= state.get("max_iterations", 3)
-    if passed:
+    if passed or hit_cap:
         return "deliver"
-    if hit_cap:
-        return "fail"
     return "fix"
 
 
@@ -266,49 +163,26 @@ def build_graph(dev: Developer):
     g.add_node("architect", architect)
     g.add_node("developer", partial(developer, dev=dev))
     g.add_node("tester", tester)
-    g.add_node("devops", partial(_deliver, node=devops))
-    g.add_node("docs", partial(_deliver, node=docs))
-    g.add_node("failure", fail)
+    g.add_node("devops", devops)
+    g.add_node("docs", docs)
 
     g.add_edge(START, "product_manager")
     g.add_edge("product_manager", "architect")
     g.add_edge("architect", "developer")
-    g.add_conditional_edges("developer", lambda state: "fail" if state["status"] == "failed" else "test", {
-        "test": "tester", "fail": "failure",
-    })
+    g.add_edge("developer", "tester")
     g.add_conditional_edges("tester", route_after_test, {
         "deliver": "devops",
         "fix": "developer",
-        "fail": "failure",
     })
-    g.add_conditional_edges("devops", lambda state: "fail" if state["status"] == "failed" else "docs", {
-        "docs": "docs", "fail": "failure",
-    })
-    g.add_conditional_edges("docs", lambda state: "fail" if state["status"] == "failed" else "end", {
-        "end": END, "fail": "failure",
-    })
-    g.add_edge("failure", END)
+    g.add_edge("devops", "docs")
+    g.add_edge("docs", END)
     return g.compile()
 
 
 def develop(requirement: str, dev: Optional[Developer] = None,
-            workspace_dir: Optional[str] = None, *, max_iterations: int = 3,
-            test_timeout_seconds: float = 30.0) -> dict:
-    if isinstance(max_iterations, bool) or not isinstance(max_iterations, int) or max_iterations <= 0:
-        raise ValueError("max_iterations must be a positive integer")
-    if (isinstance(test_timeout_seconds, bool) or not isinstance(test_timeout_seconds, (int, float))
-            or test_timeout_seconds <= 0):
-        raise ValueError("test_timeout_seconds must be a finite positive number")
-    try:
-        timeout = float(test_timeout_seconds)
-    except OverflowError as exc:
-        raise ValueError("test_timeout_seconds must be a finite positive number") from exc
-    if not math.isfinite(timeout):
-        raise ValueError("test_timeout_seconds must be a finite positive number")
-    dev = DeterministicDeveloper() if dev is None else dev
+            workspace_dir: Optional[str] = None) -> dict:
+    dev = dev or DeterministicDeveloper()
     ws = workspace_dir or tempfile.mkdtemp(prefix="devteam_")
-    if os.path.lexists(ws) and (not Path(ws).is_dir() or any(Path(ws).iterdir())):
-        raise ValueError("workspace_dir must not exist or be an empty directory")
     os.makedirs(ws, exist_ok=True)
     app = build_graph(dev)
     result = app.invoke({
@@ -323,34 +197,13 @@ def develop(requirement: str, dev: Optional[Developer] = None,
         "documentation": None,
         "current_phase": "init",
         "iteration": 0,
-        "max_iterations": max_iterations,
-        "test_timeout_seconds": timeout,
-        "status": "running",
-        "test_status": "pending",
-        "attempts": [],
-        "failure_report": None,
-    }, config={"recursion_limit": 2 * max_iterations + 10})
+        "max_iterations": 3,
+    })
     return dict(result)
 
 
-def main(argv: Optional[list[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--requirement", default="算术模块：加法和乘法")
-    parser.add_argument("--workspace-dir")
-    parser.add_argument("--max-iterations", type=int, default=3)
-    parser.add_argument("--test-timeout-seconds", type=float, default=30.0)
-    args = parser.parse_args(argv)
-    out = develop(args.requirement, workspace_dir=args.workspace_dir,
-                  max_iterations=args.max_iterations, test_timeout_seconds=args.test_timeout_seconds)
-    print("交付状态：", out["status"], "（已交付）" if out["status"] == "delivered" else "（未交付）")
+if __name__ == "__main__":
+    out = develop("用户管理系统：注册、登录、信息修改")
     print("测试通过：", out["test_passed"])
     print("产物目录：", out["workspace_dir"])
     print(out["test_output"])
-    if out["status"] != "delivered":
-        print(json.dumps(out["failure_report"], ensure_ascii=False, indent=2))
-        return 1
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())

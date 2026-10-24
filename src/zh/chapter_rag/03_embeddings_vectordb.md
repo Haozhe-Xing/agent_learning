@@ -1,83 +1,316 @@
 # 6.3 向量嵌入与向量数据库
 
-本节接着[6.2的保真分块](02_document_loading.md)，把带来源的片段存入真实Chroma，再观察距离、过滤、重开与删除。参考实现放在独立目录`reference_code/vector_retrieval/`，只增加小型存取层，不引入额外应用框架。
+向量嵌入（Embedding）和向量数据库是 RAG 系统的核心技术。本节深入讲解如何高效地存储和检索向量。
 
-## 嵌入表示相似性，不验证事实
+![向量嵌入与检索流程](../svg/chapter_rag_03_embedding.svg)
 
-嵌入器把文本映射为向量。相同模型、修订版和预处理用于文档与查询，才有共同的比较空间；相同维度并不能说明两个嵌入器兼容。更换模型、分块方式或预处理时，应建立新索引并回归评估，再切换读取。
+## 向量嵌入模型选择
 
-选择云端或本地嵌入器，都要在自己的问题集上比较证据召回、回答支持、延迟、存储和数据处理要求。云端调用有服务费用；本地方案也有下载、硬件、运维和许可约束。维度更大、更新日期更近都不能单独证明更适合任务。
+选择嵌入模型时需要权衡三个因素：**性能**（嵌入质量）、**成本**（API 价格或本地计算资源）和**维度**（向量大小，影响存储和检索速度）。
 
-![嵌入、来源与距离之间的关系](../svg/chapter_rag_03_embedding.svg)
+OpenAI 目前提供三个嵌入模型。对于大多数场景，`text-embedding-3-small` 是性价比最优的选择——性能接近 `large` 模型，价格只有其 1/6。如果你的应用对隐私有严格要求，或者不想依赖外部 API，也可以使用本地开源模型，比如 `BAAI/bge-small-zh-v1.5`（针对中文优化），完全免费。
 
-配套显式使用余弦距离。非零向量$x,y$的余弦相似度为：
-
-$$
-\begin{aligned}
-\operatorname{cos}(x,y)&=\frac{x\cdot y}{\|x\|\|y\|}\\
-d_{cos}&=1-\operatorname{cos}(x,y)
-\end{aligned}
-$$
-
-相似度理论上在$[-1,1]$，相应距离在$[0,2]$；浮点运算有误差。这些值不是正确率或相关概率。只有确认距离度量后才能解释`1-distance`；默认L2距离不能套用这个说明。Chroma的[配置文档](https://docs.trychroma.com/docs/collections/configure)列出了各度量和索引参数。
-
-Chroma以float32保存向量。配套先按最大绝对值缩放，再做L2归一化，避免合法的极小/极大Python数在入库时变成全零或无穷；这个归一化规则也记入集合元数据。它保留余弦方向，不消除浮点误差，也不改善嵌入语义。
-
-## 保存来源与嵌入版本
-
-配套的`Record`保留四个字段：`id`、`text`、`source`、`version`。6.2的分块字典可按同名字段映射；原文偏移仍保留在加载/分块记录中，当前向量封装不另外持久化偏移。`version`用于区分内容版本，集合元数据另记`embedding_id`及维度。
-
-| 入口 | 合同 | 失败行为 |
-|---|---|---|
-| `VectorStore(path, embed, embedding_id=..., dimension=...)` | 明确cosine空间；禁用默认嵌入函数；同名集合的版本与配置须匹配 | 不兼容则拒绝，要求新集合 |
-| `add(records)` | 每批最多100块、集合最多2000块；非空来源/版本/文本、唯一ID、有限非零向量 | 写入前校验本批；重复ID拒绝 |
-| `search(query, limit=..., source=..., min_cosine=...)` | 查询与文档使用同一注入嵌入器；返回ID、来源、版本及距离 | 空集合直接返回空；其他错误向上报告 |
-| `records()` / `delete_source(source)` | 读取当前集合或删除指定来源 | 删除不是归档，也不证明磁盘物理擦除 |
-
-`embed(texts)`必须按输入顺序返回向量。若服务端批量响应携带索引，适配器要检查完整性并据索引复位，不能默认网络响应顺序正确。声明的`embedding_id`是调用方的版本记录，不会识别一个伪报版本的适配器。
-
-这是单写入者的本地练习，不处理并发更新、跨调用事务或线上迁移。存储失败可能需要检查并重建集合；不要捕获所有异常后返回空列表，把故障伪装成“没有证据”。
-
-## 离线运行：先让错误排名可观察
-
-在仓库根目录，使用Python 3.11+和`examples/requirements.txt`中的锁定环境。本轮验证使用ChromaDB 1.5.9。
-
-```bash
-python -m reference_code.vector_retrieval
-python -m pytest examples/integration_tests/test_vector_retrieval.py -q
-```
-
-下面是完整可执行的数据库机制练习。`fixed_embeddings`仅接受配套中的固定文本，输出人工指定的三维向量；它故意让500文档比404文档更接近查询，用来观察排序错误，不是语义嵌入模型。
+下面的代码展示了两种方案：OpenAI 云端 API 和本地 `sentence-transformers` 模型。
 
 ```python
-from tempfile import TemporaryDirectory
-from reference_code.vector_retrieval import VectorStore
-from reference_code.vector_retrieval.fixture import build_fixture, fixed_embeddings
+from openai import OpenAI
+import numpy as np
+from typing import List
 
-with TemporaryDirectory() as directory:
-    store = build_fixture(directory)
-    hits = store.search('404', limit=3)
-    assert [hit.record.id for hit in hits][:2] == ['http500-v1:0', 'http404-v1:0']
-    assert abs(hits[1].distance - 0.2) < 1e-6
-    only_404 = store.search('404', source='http404.md')
-    assert [hit.record.id for hit in only_404] == ['http404-v1:0']
-    assert store.search('birthday', min_cosine=0.8) == []
-    reopened = VectorStore(directory, fixed_embeddings,
-                           embedding_id='book-fixture-v1:exact-text', dimension=3)
-    assert len(reopened.records()) == 3
-    reopened.delete_source('http404.md')
-    assert reopened.records(source='http404.md') == []
-    assert len(reopened.records()) == 2
+client = OpenAI()
+
+# ============================
+# OpenAI Embedding 模型
+# ============================
 ```
 
-即使404文档排名第一，也只能说明检索顺序，不能说明最终答案正确。`source`过滤只是资料筛选；使用者可以选择来源时，它不能代替身份认证或租户权限。面向用户记忆的写入同意与主体隔离见[4.3](../chapter_memory/03_long_term_memory.md)。
+OpenAI 三个嵌入模型的对比（价格随时间变化，以官方定价为准）：
 
-## 接上真实嵌入器前的检查
+| 模型 | 维度 | 性能 | 定位 |
+|------|------|------|------|
+| `text-embedding-3-small` | 1536 | 好 | **性价比首选**——性能接近 large，价格低得多 |
+| `text-embedding-3-large` | 3072 | 最好 | 精度要求高的场景 |
+| `text-embedding-ada-002` | 1536 | 旧版 | 遗留项目，建议迁移到 3 代 |
 
-先用小批量检查返回条数、顺序、维度、有限性和模型修订，再将适配器注入`VectorStore`；保留原始文本和稳定ID。建立独立问题集，既包含可回答问题，也包含没有证据的问题。阈值只能在开发集上选择，不能反复看测试预期调整。
+```python
+def get_embedding(text: str, model: str = "text-embedding-3-small") -> List[float]:
+    """获取单个文本的嵌入向量"""
+    # 清理文本
+    text = text.replace("\n", " ").strip()
+    if not text:
+        raise ValueError("文本不能为空")
+    
+    response = client.embeddings.create(
+        input=text,
+        model=model
+    )
+    return response.data[0].embedding
 
-Chroma的[`query`与`get`说明](https://docs.trychroma.com/docs/querying-collections/query-and-get)区分相似检索与按条件读取；当前版本的`ids`自动返回，不写进`include`列表。多条件元数据查询应采用[逻辑过滤表达式](https://docs.trychroma.com/docs/querying-collections/metadata-filtering)。配套只接受单一来源过滤，避免把任意模型生成字典直接交给数据库。
+def get_embeddings_batch(texts: List[str], model: str = "text-embedding-3-small",
+                          batch_size: int = 100) -> List[List[float]]:
+    """批量获取嵌入（减少 API 调用次数）"""
+    all_embeddings = []
+    
+    for i in range(0, len(texts), batch_size):
+        batch = texts[i:i + batch_size]
+        # 清理文本
+        batch = [t.replace("\n", " ").strip() for t in batch]
+        
+        response = client.embeddings.create(
+            input=batch,
+            model=model
+        )
+        
+        embeddings = [item.embedding for item in response.data]
+        all_embeddings.extend(embeddings)
+        
+        print(f"  批次 {i//batch_size + 1}: {len(batch)} 个文本已嵌入")
+    
+    return all_embeddings
 
-**验证边界**：测试执行真实Chroma的写入、cosine距离、过滤、独立进程重开及来源删除，并拒绝版本混用、重复ID与畸形向量。没有下载或调用嵌入模型，没有测语义召回质量、线上负载或备份删除。
+# ============================
+# 本地嵌入模型（免费！）
+# ============================
 
-下一节：[6.4 检索策略与重排序](04_retrieval_strategies.md)，用同一批ID修正这个固定反例的排序。
+def get_local_embedding(text: str) -> List[float]:
+    """使用本地模型（sentence-transformers），无需 API Key"""
+    # pip install sentence-transformers
+    try:
+        from sentence_transformers import SentenceTransformer
+        
+        # 这是个好用的中文嵌入模型
+        model = SentenceTransformer('BAAI/bge-small-zh-v1.5')
+        embedding = model.encode(text)
+        return embedding.tolist()
+    
+    except ImportError:
+        raise ImportError("请安装：pip install sentence-transformers")
+```
+
+## ChromaDB：本地向量数据库
+
+有了嵌入模型，我们还需要一个地方来存储和检索这些向量。ChromaDB 是本地开发的首选——它是一个嵌入式的向量数据库，不需要单独部署服务器，数据持久化在本地文件中，使用体验类似 SQLite。
+
+下面的 `VectorStore` 类封装了 ChromaDB 的核心操作。设计上有几个值得注意的地方：
+
+- **HNSW 索引参数**：`construction_ef` 和 `M` 控制索引的精度和速度的权衡。更大的值意味着更高的检索精度，但索引构建更慢
+- **批量处理**：`add_documents` 方法分批添加文档，避免一次传入过多文档导致内存溢出
+- **最低相关性阈值**：`search` 方法的 `min_relevance` 参数过滤掉相似度过低的结果，减少噪音
+
+```python
+import chromadb
+from chromadb.config import Settings
+import json
+import uuid
+
+class VectorStore:
+    """
+    基于 ChromaDB 的向量存储
+    支持添加、检索、删除文档
+    """
+    
+    def __init__(self, collection_name: str, persist_dir: str = "./chroma_db"):
+        # 持久化客户端（重启后数据不丢失）
+        self.client = chromadb.PersistentClient(path=persist_dir)
+        
+        self.collection = self.client.get_or_create_collection(
+            name=collection_name,
+            metadata={
+                "hnsw:space": "cosine",  # 使用余弦相似度
+                "hnsw:construction_ef": 200,
+                "hnsw:M": 16,
+            }
+        )
+        
+        print(f"向量库 '{collection_name}' 已加载，包含 {self.collection.count()} 个文档")
+    
+    def add_documents(
+        self,
+        documents: List[str],
+        metadatas: List[dict] = None,
+        ids: List[str] = None,
+        batch_size: int = 50
+    ) -> List[str]:
+        """
+        添加文档到向量库
+        
+        Args:
+            documents: 文档列表
+            metadatas: 元数据列表（可包含来源、章节等信息）
+            ids: 文档ID列表（不提供则自动生成）
+            batch_size: 批处理大小
+        
+        Returns:
+            文档ID列表
+        """
+        if ids is None:
+            ids = [str(uuid.uuid4()) for _ in documents]
+        
+        if metadatas is None:
+            metadatas = [{}] * len(documents)
+        
+        # 批量生成嵌入
+        print(f"正在嵌入 {len(documents)} 个文档...")
+        embeddings = get_embeddings_batch(documents)
+        
+        # 批量添加到 ChromaDB
+        for i in range(0, len(documents), batch_size):
+            batch_end = min(i + batch_size, len(documents))
+            
+            self.collection.add(
+                ids=ids[i:batch_end],
+                documents=documents[i:batch_end],
+                embeddings=embeddings[i:batch_end],
+                metadatas=metadatas[i:batch_end]
+            )
+        
+        print(f"✅ 成功添加 {len(documents)} 个文档")
+        return ids
+    
+    def search(
+        self,
+        query: str,
+        n_results: int = 5,
+        where: dict = None,
+        min_relevance: float = 0.3
+    ) -> List[dict]:
+        """
+        语义搜索
+        
+        Returns:
+            [{document, metadata, relevance_score}]
+        """
+        query_embedding = get_embedding(query)
+        
+        kwargs = {
+            "query_embeddings": [query_embedding],
+            "n_results": min(n_results, self.collection.count()),
+            "include": ["documents", "metadatas", "distances"]
+        }
+        
+        if where:
+            kwargs["where"] = where
+        
+        if self.collection.count() == 0:
+            return []
+        
+        results = self.collection.query(**kwargs)
+        
+        # 格式化结果
+        formatted = []
+        if results["documents"] and results["documents"][0]:
+            for doc, meta, dist in zip(
+                results["documents"][0],
+                results["metadatas"][0],
+                results["distances"][0]
+            ):
+                relevance = 1 - dist
+                if relevance >= min_relevance:
+                    formatted.append({
+                        "document": doc,
+                        "metadata": meta,
+                        "relevance": round(relevance, 4)
+                    })
+        
+        return sorted(formatted, key=lambda x: x["relevance"], reverse=True)
+    
+    def delete_by_source(self, source: str):
+        """删除来自特定来源的所有文档"""
+        self.collection.delete(where={"source": source})
+        print(f"已删除来源为 '{source}' 的文档")
+    
+    def get_stats(self) -> dict:
+        """获取统计信息"""
+        return {
+            "total_documents": self.collection.count(),
+            "collection_name": self.collection.name
+        }
+
+
+# ============================
+# 完整的文档索引流程
+# ============================
+
+def index_documents_to_vectorstore(
+    documents: List[dict],  # [{"content": str, "source": str, ...}]
+    collection_name: str,
+    chunk_size: int = 500,
+    chunk_overlap: int = 50
+) -> VectorStore:
+    """
+    将文档处理后存入向量库的完整流程
+    """
+    from document_loading import TextSplitter  # 假设已在项目中定义
+    
+    splitter = TextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    store = VectorStore(collection_name)
+    
+    all_chunks = []
+    all_metadatas = []
+    
+    for doc in documents:
+        content = doc["content"]
+        source = doc.get("source", "unknown")
+        
+        # 分割文档
+        chunks = splitter.split_by_separator(content)
+        
+        for i, chunk in enumerate(chunks):
+            if chunk.strip():
+                all_chunks.append(chunk)
+                all_metadatas.append({
+                    "source": source,
+                    "chunk_index": i,
+                    "total_chunks": len(chunks),
+                    "char_count": len(chunk)
+                })
+    
+    print(f"总计 {len(all_chunks)} 个 Chunk，开始索引...")
+    store.add_documents(all_chunks, all_metadatas)
+    
+    return store
+
+
+# ============================
+# 快速使用示例
+# ============================
+
+# 1. 准备知识库内容
+knowledge = [
+    {"content": "Python 是由 Guido van Rossum 创建，1991年首次发布。Python 的名字来源于英国喜剧团体 Monty Python。", "source": "python_intro"},
+    {"content": "FastAPI 是一个现代、高性能的 Python Web 框架，基于 Python 3.7+ 的类型注解。它由 Sebastián Ramírez 创建。", "source": "fastapi_intro"},
+    {"content": "LangChain 是一个用于构建 LLM 应用的框架，提供了工具链、Agent、RAG 等组件。", "source": "langchain_intro"},
+]
+
+# 2. 创建向量库
+store = VectorStore("knowledge_base")
+for item in knowledge:
+    # 直接添加（不分割）
+    store.add_documents(
+        [item["content"]],
+        [{"source": item["source"]}]
+    )
+
+# 3. 搜索
+query = "Python 是什么时候发布的？"
+results = store.search(query, n_results=3)
+
+print(f"\n查询：{query}")
+for r in results:
+    print(f"\n[{r['relevance']:.3f}] {r['document'][:100]}...")
+    print(f"  来源：{r['metadata']['source']}")
+```
+
+---
+
+## 小结
+
+向量存储的核心技术：
+- **嵌入模型**：`text-embedding-3-small`（推荐），或本地模型（免费）
+- **ChromaDB**：本地开发首选，持久化存储
+- **余弦相似度**：衡量语义相关性的标准度量
+- **批量处理**：减少 API 调用，提升效率
+
+---
+
+*下一节：[6.4 检索策略与重排序](./04_retrieval_strategies.md)*

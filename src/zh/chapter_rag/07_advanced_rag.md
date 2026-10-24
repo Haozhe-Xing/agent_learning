@@ -83,7 +83,7 @@ asyncio.run(query_graphrag("GPT-4 的 Vision 功能何时发布？", "local"))
 asyncio.run(query_graphrag("这些文档中反复提及的核心主题是什么？", "global"))
 ```
 
-> 💡 **成本估算**：1000 篇短文档（约 500K tokens），`gpt-4.1-mini` 约 USD 0.4-1，`text-embedding-3-small` 约 USD 0.02。
+> 💡 **成本估算**：1000 篇短文档（约 500K tokens），`gpt-4.1-mini` 约 $0.4-1，`text-embedding-3-small` 约 $0.02。
 
 ### 1.4 LightRAG：成本更低的替代方案
 
@@ -213,7 +213,7 @@ def generate_with_citation(question: str, docs: list[dict]) -> dict:
     }
 ```
 
-配套基线：`examples/chapter06/agentic_rag.py`，覆盖有上限的查询重试基线；GraphRAG 和多数据源后端需另外配置。它不替代本节所有扩展组件。
+> 📦 **完整代码见仓库** `examples/chapter06/agentic_rag.py`，含流式输出、多数据源路由等扩展。
 
 ### 2.3 用 LangGraph 编排完整流程
 
@@ -276,7 +276,7 @@ def build_agentic_rag_graph():
 | 查询变体数 | 2-3 个 | 多于 3 个边际收益递减 |
 | 检索 top_k | 3-5 | 多于 5 个会引入噪声 |
 
-**多数据源路由**（教学片段，需接入实际数据源）：
+**多数据源路由**（完整实现见仓库）：
 
 ```python
 # 思路：根据问题类型路由到不同数据源

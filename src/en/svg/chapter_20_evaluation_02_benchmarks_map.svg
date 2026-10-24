@@ -78,7 +78,7 @@
   <!---->
   <rect x="100" y="325" width="700" height="50" rx="12" fill="#1a365d" filter="url(#shadow3)"/>
   <text x="450" y="348" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff" font-family="system-ui">✅ Recommended: Rules Quick Filter → LLM Judge Batch Eval → Human Spot-check Key Cases</text>
-  <text x="450" y="366" text-anchor="middle" font-size="10" fill="#a0aec0" font-family="system-ui">Three-level Progressive Evaluation, Balancing Efficiency &amp; Accuracy</text>
+  <text x="450" y="366" text-anchor="middle" font-size="10" fill="#a0aec0" font-family="system-ui">Three-level Progressive Evaluation, Balancing Efficiency & Accuracy</text>
   
-  <text x="450" y="393" text-anchor="middle" font-size="10" fill="#718096" font-family="system-ui">Figure 15-1  Agent Evaluation Benchmarks &amp; Methods Overview</text>
+  <text x="450" y="393" text-anchor="middle" font-size="10" fill="#718096" font-family="system-ui">Figure 15-1  Agent Evaluation Benchmarks & Methods Overview</text>
 </svg>

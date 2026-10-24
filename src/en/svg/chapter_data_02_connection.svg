@@ -6,55 +6,55 @@
     </marker>
   </defs>
   <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
-  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Text-to-SQL: Proposal, Execution, and Acceptance</text>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Text-to-SQL Data Connection Flow</text>
 
   <!-- [CN] Stage-->
   <rect x="30" y="60" width="235" height="130" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
-  <text x="147" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">1. Task + allowed schema</text>
-  <text x="147" y="108" text-anchor="middle" font-size="11" fill="#555">Resolve dates, metrics, and units</text>
-  <text x="147" y="128" text-anchor="middle" font-size="11" fill="#555">Map question entities to columns</text>
-  <text x="147" y="148" text-anchor="middle" font-size="11" fill="#3498db">Expose only allowed metadata</text>
-  <text x="147" y="166" text-anchor="middle" font-size="11" fill="#3498db">Clarify missing definitions</text>
+  <text x="147" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#3498db">① Schema Linking</text>
+  <text x="147" y="108" text-anchor="middle" font-size="10" fill="#555">"Top selling product last month"</text>
+  <text x="147" y="128" text-anchor="middle" font-size="10" fill="#555">↓ Mapping</text>
+  <text x="147" y="148" text-anchor="middle" font-size="10" fill="#3498db">Revenue → orders.amount</text>
+  <text x="147" y="166" text-anchor="middle" font-size="10" fill="#3498db">Product → products.name</text>
 
   <line x1="265" y1="125" x2="278" y2="125" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#dc)"/>
 
   <rect x="280" y="60" width="235" height="130" rx="10" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
-  <text x="397" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">2. Model proposes SQL</text>
-  <text x="397" y="108" text-anchor="middle" font-size="11" fill="#555">Proposal remains untrusted</text>
-  <text x="397" y="128" text-anchor="middle" font-size="11" fill="#e67e22">SELECT / JOIN / GROUP BY</text>
-  <text x="397" y="148" text-anchor="middle" font-size="11" fill="#e67e22">Bind values as parameters</text>
-  <text x="397" y="166" text-anchor="middle" font-size="11" fill="#555">Generation grants no permission</text>
+  <text x="397" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">② SQL Skeleton Generation</text>
+  <text x="397" y="108" text-anchor="middle" font-size="10" fill="#555">Determine query type</text>
+  <text x="397" y="128" text-anchor="middle" font-size="10" fill="#e67e22">SELECT + JOIN + GROUP BY</text>
+  <text x="397" y="148" text-anchor="middle" font-size="10" fill="#e67e22">+ ORDER BY + LIMIT</text>
+  <text x="397" y="166" text-anchor="middle" font-size="10" fill="#555">Determine overall structure</text>
 
   <line x1="515" y1="125" x2="528" y2="125" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#dc)"/>
 
   <rect x="530" y="60" width="240" height="130" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
-  <text x="650" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">3. Host checks and executes</text>
-  <text x="650" y="108" text-anchor="middle" font-size="11" fill="#555">mode=ro + authorizer</text>
-  <text x="650" y="128" text-anchor="middle" font-size="11" fill="#27ae60">Gate actions, tables, functions</text>
-  <text x="650" y="148" text-anchor="middle" font-size="11" fill="#555">Bound query work and row count</text>
-  <text x="650" y="166" text-anchor="middle" font-size="11" fill="#27ae60">Check independent expectations</text>
+  <text x="650" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">③ Condition Fill and Execution</text>
+  <text x="650" y="108" text-anchor="middle" font-size="10" fill="#555">Fill in column names, condition values</text>
+  <text x="650" y="128" text-anchor="middle" font-size="10" fill="#27ae60">WHERE date >= '2024-02-01'</text>
+  <text x="650" y="148" text-anchor="middle" font-size="10" fill="#555">Parameterized queries to prevent injection</text>
+  <text x="650" y="166" text-anchor="middle" font-size="10" fill="#27ae60">✅ Secure execution</text>
 
   <!--Security [CN] -->
-  <text x="400" y="218" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Verify Three Boundaries Separately</text>
+  <text x="400" y="218" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Core Security Challenges and Responses</text>
 
   <rect x="30" y="235" width="235" height="120" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
-  <text x="147" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">Read / execution permissions</text>
-  <text x="147" y="280" text-anchor="middle" font-size="11" fill="#555">Readable does not mean public</text>
-  <text x="147" y="300" text-anchor="middle" font-size="11" fill="#27ae60">Allowlisted tables and functions</text>
-  <text x="147" y="318" text-anchor="middle" font-size="11" fill="#27ae60">Deny writes, ATTACH, PRAGMAs</text>
-  <text x="147" y="336" text-anchor="middle" font-size="11" fill="#27ae60">Identity / row ACLs are separate</text>
+  <text x="147" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">SQL Injection Risk</text>
+  <text x="147" y="280" text-anchor="middle" font-size="10" fill="#555">LLM-generated SQL may contain malicious code</text>
+  <text x="147" y="300" text-anchor="middle" font-size="10" fill="#27ae60">✅ Parameterized queries</text>
+  <text x="147" y="318" text-anchor="middle" font-size="10" fill="#27ae60">✅ SQL whitelist filtering</text>
+  <text x="147" y="336" text-anchor="middle" font-size="10" fill="#27ae60">✅ Read-only database connection</text>
 
   <rect x="280" y="235" width="245" height="120" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="402" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Resource boundaries</text>
-  <text x="402" y="280" text-anchor="middle" font-size="11" fill="#555">SELECT can still be expensive</text>
-  <text x="402" y="300" text-anchor="middle" font-size="11" fill="#27ae60">Progress / elapsed-time budgets</text>
-  <text x="402" y="318" text-anchor="middle" font-size="11" fill="#27ae60">Bound fetching; reject overflow</text>
-  <text x="402" y="336" text-anchor="middle" font-size="11" fill="#27ae60">No operating-system sandbox</text>
+  <text x="402" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Data Leakage Risk</text>
+  <text x="402" y="280" text-anchor="middle" font-size="10" fill="#555">LLM may "hallucinate" SQL to access sensitive tables</text>
+  <text x="402" y="300" text-anchor="middle" font-size="10" fill="#27ae60">✅ Table-level/column-level permission control</text>
+  <text x="402" y="318" text-anchor="middle" font-size="10" fill="#27ae60">✅ Query result desensitization</text>
+  <text x="402" y="336" text-anchor="middle" font-size="10" fill="#27ae60">✅ Operation audit logs</text>
 
   <rect x="540" y="235" width="230" height="120" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
-  <text x="655" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">Answer correctness</text>
-  <text x="655" y="280" text-anchor="middle" font-size="11" fill="#555">Executable SQL can be wrong</text>
-  <text x="655" y="300" text-anchor="middle" font-size="11" fill="#27ae60">Clarify dates, metrics, population</text>
-  <text x="655" y="318" text-anchor="middle" font-size="11" fill="#27ae60">Check units and expected results</text>
-  <text x="655" y="336" text-anchor="middle" font-size="11" fill="#27ae60">Self-reported success is not proof</text>
+  <text x="655" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">Accuracy Challenges</text>
+  <text x="655" y="280" text-anchor="middle" font-size="10" fill="#555">Complex queries may lead LLM to generate incorrect SQL</text>
+  <text x="655" y="300" text-anchor="middle" font-size="10" fill="#27ae60">✅ Multi-round error correction loop</text>
+  <text x="655" y="318" text-anchor="middle" font-size="10" fill="#27ae60">✅ Schema description injection</text>
+  <text x="655" y="336" text-anchor="middle" font-size="10" fill="#27ae60">✅ Few-shot SQL examples</text>
 </svg>

@@ -1,4 +1,4 @@
-# 25.1 Automatic Prompt Optimization: From Manual Prompt Engineering to Self-Evolving Agents
+# 11.1 Automatic Prompt Optimization: From Manual Prompt Engineering to Self-Evolving Agents
 
 > 🧬 *"A good Prompt is not written in one sitting — it evolves continuously through tasks, feedback, failures, and reflection. The future Agent won't just answer questions; it will observe its own failures, modify how it works, and distill successful patterns into reusable assets."*
 
@@ -54,7 +54,7 @@ All the methods that follow basically answer four questions:
 
 ---
 
-## 25.1.1 Understanding Automatic Prompt Optimization Through a Real-Life Analogy
+## 11.1.1 Understanding Automatic Prompt Optimization Through a Real-Life Analogy
 
 Think of a Prompt as the "instructions for problem-solving" a teacher gives to students.
 
@@ -154,7 +154,7 @@ The methods introduced later — APE, OPRO, ProTeGi, TextGrad, GEPA — vary in 
 
 ---
 
-## 25.1.2 Why Is Manual Prompt Tuning No Longer Enough?
+## 11.1.2 Why Is Manual Prompt Tuning No Longer Enough?
 
 For simple tasks, manually written Prompts are usually sufficient. For example:
 
@@ -191,7 +191,7 @@ Therefore, the goal of automatic Prompt optimization is not to replace all human
 
 ---
 
-## 25.1.3 What Exactly Does Automatic Prompt Optimization Optimize?
+## 11.1.3 What Exactly Does Automatic Prompt Optimization Optimize?
 
 In neural network training, we optimize model weights. Weights are numbers, so we can use gradient descent to update them.
 
@@ -276,7 +276,7 @@ The second type of feedback is more like a teacher grading homework. It not only
 
 ---
 
-## 25.1.4 The Development Trajectory of This Direction
+## 11.1.4 The Development Trajectory of This Direction
 
 Automatic Prompt optimization didn't appear suddenly. It roughly went through the following stages of development:
 
@@ -310,7 +310,7 @@ In other words, the focus of this section is not "how to use GEPA this one metho
 
 ---
 
-## 25.1.5 Category 1: Automatically Generating Prompts
+## 11.1.5 Category 1: Automatically Generating Prompts
 
 ### APE (ICLR 2023): Letting LLMs Automatically Write Prompts
 
@@ -398,7 +398,7 @@ These limitations are exactly what subsequent methods address. OPRO adds iterati
 
 ---
 
-## 25.1.6 Category 2: Using LLMs as Optimizers
+## 11.1.6 Category 2: Using LLMs as Optimizers
 
 ### OPRO (ICLR 2024): Writing Historical Candidates and Scores into the Prompt
 
@@ -468,7 +468,7 @@ OPRO adds iteration compared to APE, but still only looks at scores. The natural
 
 ---
 
-## 25.1.7 Category 3: Text Feedback-Driven Prompt Optimization
+## 11.1.7 Category 3: Text Feedback-Driven Prompt Optimization
 
 ### ProTeGi (EMNLP 2023): A Text-Based Version of "Gradient Descent"
 
@@ -672,7 +672,7 @@ The difference is:
 
 ---
 
-## 25.1.8 Category 4: Evolutionary Algorithms for Prompt Search
+## 11.1.8 Category 4: Evolutionary Algorithms for Prompt Search
 
 ### EvoPrompt (ICLR 2024): Applying Genetic Algorithms to Prompts
 
@@ -774,7 +774,7 @@ This shows that Prompt optimization has moved beyond just "searching for a bette
 
 ---
 
-## 25.1.9 Category 5: Multi-Module LLM Program Optimization
+## 11.1.9 Category 5: Multi-Module LLM Program Optimization
 
 ### DSPy (ICLR 2024): From Handwritten Prompts to Compiled LLM Programs
 
@@ -898,7 +898,7 @@ The two are not contradictory. GEPA can later be integrated into the DSPy ecosys
 
 ---
 
-## 25.1.10 Category 6: Trace-Driven General Optimization
+## 11.1.10 Category 6: Trace-Driven General Optimization
 
 ### Trace (NeurIPS 2024): Treating Execution Traces as Optimization Signals
 
@@ -970,7 +970,7 @@ Both GEPA and Trace value traces, but GEPA is more focused on the sub-problem of
 
 ---
 
-## 25.1.11 GEPA (ICLR 2026): The Integrative Representative of This Direction
+## 11.1.11 GEPA (ICLR 2026): The Integrative Representative of This Direction
 
 Now we can understand GEPA better.
 
@@ -1375,7 +1375,7 @@ A more accurate statement is:
 
 ---
 
-## 25.1.12 How to Design Good Feedback Functions?
+## 11.1.12 How to Design Good Feedback Functions?
 
 The effectiveness of automatic Prompt optimization heavily depends on feedback quality.
 
@@ -1461,7 +1461,7 @@ Modification suggestion: [how the Prompt should be changed]
 
 ---
 
-## 25.1.13 How to Prevent Automatic Prompt Optimization from Overfitting?
+## 11.1.13 How to Prevent Automatic Prompt Optimization from Overfitting?
 
 Automatic Prompt optimization can also overfit.
 
@@ -1533,15 +1533,13 @@ Safety Prompts and policy constraints should exist as hard constraints or separa
 
 ---
 
-<a id="skill-auto-evolution"></a>
-
-## 25.1.14 Beyond Prompt Evolution: Skill Auto-Evolution
+## 11.1.14 Beyond Prompt Evolution: Skill Auto-Evolution
 
 Up to this point, we've discussed how Prompts can automatically improve.
 
 But truly long-running Agents also need another capability: **Skill Auto-Evolution**.
 
-> 📎 This section focuses on the "Prompt → Skill" pair of optimization targets. If you want to systematically understand the same body of work (Reflexion, Voyager, etc.) from the perspective of "self-evolution levels (Memory / Prompt / Skill / Model)," see [Section 25.2](./02_self_evolution_agent.md).
+> 📎 This section focuses on the "Prompt → Skill" pair of optimization targets. If you want to systematically understand the same body of work (Reflexion, Voyager, etc.) from the perspective of "self-evolution levels (Memory / Prompt / Skill / Model)," see [Section 11.2](./02_self_evolution_agent.md).
 
 Prompt evolution addresses:
 
@@ -1818,7 +1816,7 @@ Its relationship with `GEPA` is also direct:
 
 ---
 
-## 25.1.15 How Do Prompt Evolution and Skill Evolution Combine?
+## 11.1.15 How Do Prompt Evolution and Skill Evolution Combine?
 
 A long-term self-improving Agent will likely do two things simultaneously:
 
@@ -1886,7 +1884,7 @@ As you can see, as tasks are continuously executed, Prompts evolve and Skills ac
 
 ---
 
-## 25.1.16 How to Implement Automatic Prompt Optimization in Real Projects?
+## 11.1.16 How to Implement Automatic Prompt Optimization in Real Projects?
 
 Below is a process that can be implemented in Agent projects.
 
@@ -2077,7 +2075,7 @@ The benefits of this are:
 
 ---
 
-## 25.1.17 Common Failure Modes and Risks
+## 11.1.17 Common Failure Modes and Risks
 
 Automatic Prompt optimization is useful, but it's not magic. It also has risks.
 
@@ -2170,7 +2168,7 @@ A mature optimizer should not only pursue accuracy but also simultaneously consi
 
 ---
 
-## 25.1.18 When Should You Use Automatic Prompt Optimization?
+## 11.1.18 When Should You Use Automatic Prompt Optimization?
 
 Situations suitable for use:
 
@@ -2341,6 +2339,6 @@ When these two lines combine, Agents won't just be "programs that were written" 
 
 ---
 
-*Previous Chapter: [Chapter 24 Agentic-RL: Reinforcement Learning Training for Agents](../chapter_agentic_rl/README.md)*
+*Previous Chapter: [Chapter 10 Agentic-RL: Reinforcement Learning Training for Agents](../chapter_agentic_rl/README.md)*
 
-*Next Section: [25.2 Self-Evolution Agent: From Execution to Self-Improvement](./02_self_evolution_agent.md)*
+*Next Section: [11.2 Self-Evolution Agent: From Execution to Self-Improvement](./02_self_evolution_agent.md)*

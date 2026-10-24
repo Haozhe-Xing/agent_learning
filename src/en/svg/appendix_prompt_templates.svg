@@ -13,7 +13,7 @@
   <text x="35" y="118" font-size="11" fill="#444">• Tool-using Agent Prompt</text>
   <text x="35" y="136" font-size="11" fill="#444">• ReAct Reasoning Agent</text>
   <text x="35" y="154" font-size="11" fill="#444">• Multi-Agent Coordination Prompt</text>
-  <text x="35" y="168" font-size="10" fill="#888">→ Ch. 2, 3, 5, 16</text>
+  <text x="35" y="168" font-size="10" fill="#888">→ Ch. 3, 4, 6</text>
 
   <rect x="278" y="55" width="245" height="120" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
   <text x="400" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">📝 Task Prompts</text>
@@ -21,7 +21,7 @@
   <text x="293" y="118" font-size="11" fill="#444">• Code Review &amp; Analysis</text>
   <text x="293" y="136" font-size="11" fill="#444">• Structured Output Generation</text>
   <text x="293" y="154" font-size="11" fill="#444">• Data Analysis Reports</text>
-  <text x="293" y="168" font-size="10" fill="#888">→ Ch. 2, 8, 21, 22</text>
+  <text x="293" y="168" font-size="10" fill="#888">→ Ch. 3, 19, 20</text>
 
   <rect x="536" y="55" width="244" height="120" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
   <text x="658" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">🔍 RAG-Optimized Prompts</text>
@@ -29,7 +29,7 @@
   <text x="549" y="118" font-size="11" fill="#444">• Query Rewriting &amp; Expansion</text>
   <text x="549" y="136" font-size="11" fill="#444">• Multi-turn Conversation Tracking</text>
   <text x="549" y="154" font-size="11" fill="#444">• Fact-checking Prompt</text>
-  <text x="549" y="168" font-size="10" fill="#888">→ Ch. 6</text>
+  <text x="549" y="168" font-size="10" fill="#888">→ Ch. 7</text>
 
   <!-- Row 2 -->
   <rect x="20" y="190" width="245" height="120" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
@@ -38,7 +38,7 @@
   <text x="35" y="253" font-size="11" fill="#444">• Output Moderation Prompt</text>
   <text x="35" y="271" font-size="11" fill="#444">• Boundary Constraint Prompt</text>
   <text x="35" y="289" font-size="11" fill="#444">• Hallucination Detection Prompt</text>
-  <text x="35" y="303" font-size="10" fill="#888">→ Ch. 19</text>
+  <text x="35" y="303" font-size="10" fill="#888">→ Ch. 18</text>
 
   <rect x="278" y="190" width="245" height="120" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
   <text x="400" y="213" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">🧪 Evaluation &amp; Tuning</text>
@@ -46,7 +46,7 @@
   <text x="293" y="253" font-size="11" fill="#444">• A/B Testing Comparison</text>
   <text x="293" y="271" font-size="11" fill="#444">• System Prompt Iteration</text>
   <text x="293" y="289" font-size="11" fill="#444">• Failure Case Analysis</text>
-  <text x="293" y="303" font-size="10" fill="#888">→ Ch. 18</text>
+  <text x="293" y="303" font-size="10" fill="#888">→ Ch. 16</text>
 
   <rect x="536" y="190" width="244" height="120" rx="8" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="2"/>
   <text x="658" y="213" text-anchor="middle" font-size="13" font-weight="bold" fill="#2980b9">⚙️ Advanced Techniques</text>
@@ -54,6 +54,6 @@
   <text x="549" y="253" font-size="11" fill="#444">• Few-shot Example Selection</text>
   <text x="549" y="271" font-size="11" fill="#444">• Self-Reflection Prompt</text>
   <text x="549" y="289" font-size="11" fill="#444">• Context Compression Prompt</text>
-  <text x="549" y="303" font-size="10" fill="#888">→ Ch. 2, 5, 7</text>
+  <text x="549" y="303" font-size="10" fill="#888">→ Ch. 3, 6</text>
 
 </svg>

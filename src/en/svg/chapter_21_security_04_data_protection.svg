@@ -1,18 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" role="img" aria-labelledby="title desc">
-<title id="title">Protect data along its path</title><desc id="desc">Bound outputs and logs too; local deletion does not clear backups</desc>
-<rect width="960" height="250" rx="16" fill="#f6f8fc"/>
-<g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
-<text x="480" y="42" font-size="24" font-weight="700" fill="#172c4f">Protect data along its path</text>
-<rect x="24" y="81" width="207" height="80" rx="12" fill="#dbeafe" stroke="#91a2bb"/>
-<text x="127.5" y="129" font-size="20" fill="#172c4f">Project fields</text>
-<path d="M236 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="259" y="81" width="207" height="80" rx="12" fill="#e0e7ff" stroke="#91a2bb"/>
-<text x="362.5" y="129" font-size="20" fill="#172c4f">Explicit consent</text>
-<path d="M471 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="494" y="81" width="207" height="80" rx="12" fill="#d1fae5" stroke="#91a2bb"/>
-<text x="597.5" y="129" font-size="20" fill="#172c4f">Actor scope</text>
-<path d="M706 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
-<rect x="729" y="81" width="207" height="80" rx="12" fill="#fef3c7" stroke="#91a2bb"/>
-<text x="832.5" y="129" font-size="20" fill="#172c4f">Scoped deletion</text>
-<text x="480" y="208" font-size="18" fill="#3c506e">Bound outputs and logs too; local deletion does not clear backups</text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent Sensitive Data Protection Workflow</text>
+
+  <!-- Data flow -->
+  <rect x="30" y="60" width="140" height="50" rx="8" fill="#e74c3c" opacity="0.9"/>
+  <text x="100" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">User Input</text>
+  <text x="100" y="98" text-anchor="middle" font-size="10" fill="#ffcccc">Contains sensitive info</text>
+
+  <line x1="170" y1="85" x2="210" y2="85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a1)"/>
+
+  <rect x="212" y="55" width="160" height="60" rx="8" fill="white" stroke="#e74c3c" stroke-width="2"/>
+  <text x="292" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">PII Detector</text>
+  <text x="292" y="96" text-anchor="middle" font-size="10" fill="#555">Regex + NER model</text>
+
+  <line x1="372" y1="85" x2="412" y2="85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a1)"/>
+
+  <rect x="414" y="55" width="160" height="60" rx="8" fill="white" stroke="#e67e22" stroke-width="2"/>
+  <text x="494" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Data Masking</text>
+  <text x="494" y="96" text-anchor="middle" font-size="10" fill="#555">Replace / Mask / Hash</text>
+
+  <line x1="574" y1="85" x2="614" y2="85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a1)"/>
+
+  <rect x="616" y="60" width="155" height="50" rx="8" fill="#27ae60" opacity="0.9"/>
+  <text x="693" y="82" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Sanitized Data</text>
+  <text x="693" y="98" text-anchor="middle" font-size="10" fill="#e8f8e8">Feed to LLM</text>
+
+  <!-- PII types -->
+  <text x="400" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Sensitive Data Types to Protect</text>
+
+  <rect x="30" y="160" width="175" height="80" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="117" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">Personal Identity Info</text>
+  <text x="117" y="203" text-anchor="middle" font-size="10" fill="#555">Name, ID number</text>
+  <text x="117" y="220" text-anchor="middle" font-size="10" fill="#555">Phone, email address</text>
+
+  <rect x="220" y="160" width="175" height="80" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="307" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Auth Credentials</text>
+  <text x="307" y="203" text-anchor="middle" font-size="10" fill="#555">API Key, passwords</text>
+  <text x="307" y="220" text-anchor="middle" font-size="10" fill="#555">Token, SSH keys</text>
+
+  <rect x="410" y="160" width="175" height="80" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="497" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">Financial Data</text>
+  <text x="497" y="203" text-anchor="middle" font-size="10" fill="#555">Bank card number, CVV</text>
+  <text x="497" y="220" text-anchor="middle" font-size="10" fill="#555">Transaction records, balance</text>
+
+  <rect x="600" y="160" width="175" height="80" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="687" y="183" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">Business Secrets</text>
+  <text x="687" y="203" text-anchor="middle" font-size="10" fill="#555">Internal docs, code</text>
+  <text x="687" y="220" text-anchor="middle" font-size="10" fill="#555">Business strategy, customer data</text>
+
+  <!-- Masking strategies -->
+  <text x="400" y="270" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Three Masking Strategies</text>
+
+  <rect x="50" y="285" width="220" height="75" rx="8" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="160" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">Substitution</text>
+  <text x="160" y="328" text-anchor="middle" font-size="10" fill="#555">John → [NAME_1]</text>
+  <text x="160" y="345" text-anchor="middle" font-size="9" fill="#888">Reversible, suited for backfill scenarios</text>
+
+  <rect x="290" y="285" width="220" height="75" rx="8" fill="white" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="400" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Masking</text>
+  <text x="400" y="328" text-anchor="middle" font-size="10" fill="#555">138****5678</text>
+  <text x="400" y="345" text-anchor="middle" font-size="9" fill="#888">Preserves format, suited for display</text>
+
+  <rect x="530" y="285" width="220" height="75" rx="8" fill="white" stroke="#3498db" stroke-width="1.5"/>
+  <text x="640" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">Hashing</text>
+  <text x="640" y="328" text-anchor="middle" font-size="10" fill="#555">sha256(data)[:8]</text>
+  <text x="640" y="345" text-anchor="middle" font-size="9" fill="#888">Irreversible, suited for audit/dedup</text>
+</svg>

@@ -1,4 +1,4 @@
-# 13.6 Nudge Engine & Cross-Session Learning
+# 15.6 Nudge Engine & Cross-Session Learning
 
 > ☤ *"The smartest Agent isn't the fastest reactor — it's the one that proactively asks 'what did I learn?'"*
 
@@ -6,7 +6,7 @@
 
 ## What the Nudge Engine Is
 
-The skill-candidate flow in [section 13.4](./04_self_evolving_skills.md) is *passive* — it evaluates only after each task. The Nudge Engine is *proactive*: every so often, Hermes asks itself:
+Self-Evolving (15.4) is *passive* — it evaluates only after each task. The Nudge Engine is *proactive*: every so often, Hermes asks itself:
 
 - What did I learn recently worth persisting?
 - Has my model of the user changed?
@@ -88,4 +88,4 @@ Honcho merges preference signals from all channels (Telegram short / WhatsApp de
 
 ---
 
-*Next section: [13.7 Borrowing the Philosophy](./07_lessons_philosophy.md)*
+*Next section: [15.7 Borrowing the Philosophy](./07_lessons_philosophy.md)*

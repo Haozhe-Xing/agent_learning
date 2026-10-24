@@ -1,4 +1,4 @@
-# 14.4 System Prompt, Permission Engineering & Prompt Cache
+# 16.4 System Prompt, Permission Engineering & Prompt Cache
 
 > 🛠️ *"Claude Code's ~915-line System Prompt is the artifact of Anthropic engineers taking 'how to constrain a code-writing AI' to its extreme."*
 
@@ -167,4 +167,4 @@ Key value: layered responsibilities, individually togglable, observable, failure
 
 ---
 
-*Next section: [14.5 Advanced Usage: MCP, Hooks, and Skills](./05_advanced_usage.md)*
+*Next section: [16.5 Advanced Usage: MCP, Hooks, and Skills](./05_advanced_usage.md)*

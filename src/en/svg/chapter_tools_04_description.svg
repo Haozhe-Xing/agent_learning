@@ -1,1 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520" role="img" aria-label="Descriptions guide proposals; the host enforces rules"><title>Descriptions guide proposals; the host enforces rules</title><desc>Names, descriptions, schemas, and context influence selection; prose guarantees no accuracy.</desc><rect width="800" height="520" rx="16" fill="#f8fafc"/><g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif"><text x="28" y="38" font-size="22" fill="#1e293b" font-weight="600">Descriptions guide proposals; the host enforces rules</text><text x="28" y="65" font-size="13" fill="#475569" font-weight="400">Names, descriptions, schemas, and context influence selection; prose guarantees no accuracy.</text><rect x="28" y="89" width="360" height="151" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="46" y="119" font-size="16" fill="#2563eb" font-weight="600">Describe actual behavior</text><text x="46" y="147" font-size="14" fill="#475569" font-weight="400">Function, intended uses, exclusions</text><text x="46" y="171" font-size="14" fill="#475569" font-weight="400">Argument formats, sizes, required fields</text><text x="46" y="195" font-size="14" fill="#475569" font-weight="400">Results, units, and empty outcomes</text><text x="46" y="219" font-size="14" fill="#475569" font-weight="400">Local scope and unimplemented features</text><rect x="412" y="89" width="360" height="151" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="430" y="119" font-size="16" fill="#2563eb" font-weight="600">Host enforcement</text><text x="430" y="147" font-size="14" fill="#475569" font-weight="400">Permission claims grant no authority</text><text x="430" y="171" font-size="14" fill="#475569" font-weight="400">Prose cannot isolate a DB or filesystem</text><text x="430" y="195" font-size="14" fill="#475569" font-weight="400">Validate arguments before execution</text><text x="430" y="219" font-size="14" fill="#475569" font-weight="400">Source instructions remain data</text><rect x="28" y="262" width="360" height="180" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="46" y="292" font-size="16" fill="#2563eb" font-weight="600">Independent cases</text><text x="46" y="320" font-size="14" fill="#475569" font-weight="400">Call / skip cases</text><text x="46" y="344" font-size="14" fill="#475569" font-weight="400">Missing evidence / missing arguments</text><text x="46" y="368" font-size="14" fill="#475569" font-weight="400">Malicious data / dependent steps</text><text x="46" y="392" font-size="14" fill="#475569" font-weight="400">Measure choices, arguments, and answers</text><text x="46" y="416" font-size="14" fill="#475569" font-weight="400">Change descriptions alone initially</text><rect x="412" y="262" width="360" height="180" rx="12" fill="#fff" stroke="#cbd5e1"/><text x="430" y="292" font-size="16" fill="#2563eb" font-weight="600">Measured boundary</text><text x="430" y="320" font-size="14" fill="#475569" font-weight="400">Scripted choices do not follow prose</text><text x="430" y="344" font-size="14" fill="#475569" font-weight="400">Local tests check contracts and denials</text><text x="430" y="368" font-size="14" fill="#475569" font-weight="400">No online model A/B experiment</text><text x="430" y="392" font-size="14" fill="#475569" font-weight="400">Freeze versions, sampling, expectations</text><text x="430" y="416" font-size="14" fill="#475569" font-weight="400">No unsourced improvement percentages</text><text x="28" y="493" font-size="14" fill="#475569" font-weight="400">Real-model selection needs independent tasks; passing fixtures is not passing a model evaluation.</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+  </defs>
+  <rect width="800" height="350" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Six Key Elements for Writing Tool Descriptions</text>
+
+  <!-- Six elements -->
+  <rect x="30" y="50" width="230" height="80" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
+  <text x="145" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">1️⃣ Function Summary (one line)</text>
+  <text x="145" y="90" text-anchor="middle" font-size="9" fill="#555">Verb + object + core feature</text>
+  <text x="145" y="106" text-anchor="middle" font-size="8" fill="#27ae60">✅ "Search the internet for real-time info"</text>
+  <text x="145" y="120" text-anchor="middle" font-size="8" fill="#e74c3c">❌ "Search stuff"</text>
+
+  <rect x="285" y="50" width="230" height="80" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
+  <text x="400" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">2️⃣ Use Cases</text>
+  <text x="400" y="90" text-anchor="middle" font-size="9" fill="#555">List scenarios it is "suitable for"</text>
+  <text x="400" y="106" text-anchor="middle" font-size="8" fill="#555">Latest news, real-time data</text>
+  <text x="400" y="120" text-anchor="middle" font-size="8" fill="#555">Product prices and reviews</text>
+
+  <rect x="540" y="50" width="230" height="80" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
+  <text x="655" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">3️⃣ Non-Use Cases</text>
+  <text x="655" y="90" text-anchor="middle" font-size="9" fill="#555">List cases "not suitable for"</text>
+  <text x="655" y="106" text-anchor="middle" font-size="8" fill="#555">Known historical facts (answer directly)</text>
+  <text x="655" y="120" text-anchor="middle" font-size="8" fill="#555">Reduce model misusing tool</text>
+
+  <rect x="30" y="150" width="230" height="80" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
+  <text x="145" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">4️⃣ Parameter Description</text>
+  <text x="145" y="190" text-anchor="middle" font-size="9" fill="#555">Type + Format + Example</text>
+  <text x="145" y="206" text-anchor="middle" font-size="8" fill="#27ae60">✅ "Search keyword, e.g. 'Beijing weather'"</text>
+  <text x="145" y="220" text-anchor="middle" font-size="8" fill="#e74c3c">❌ "query: string"</text>
+
+  <rect x="285" y="150" width="230" height="80" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
+  <text x="400" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">5️⃣ Return Format</text>
+  <text x="400" y="190" text-anchor="middle" font-size="9" fill="#555">Describe return value structure</text>
+  <text x="400" y="206" text-anchor="middle" font-size="8" fill="#555">JSON: {title, url, snippet}</text>
+  <text x="400" y="220" text-anchor="middle" font-size="8" fill="#555">Helps model parse results correctly</text>
+
+  <rect x="540" y="150" width="230" height="80" rx="8" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="2"/>
+  <text x="655" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">6️⃣ Limitations &amp; Notes</text>
+  <text x="655" y="190" text-anchor="middle" font-size="9" fill="#555">Rate limits, data scope, etc.</text>
+  <text x="655" y="206" text-anchor="middle" font-size="8" fill="#555">"Returns at most 10 results"</text>
+  <text x="655" y="220" text-anchor="middle" font-size="8" fill="#555">"Supports English queries only"</text>
+
+  <!-- Comparison -->
+  <rect x="60" y="255" width="300" height="70" rx="8" fill="#e74c3c" opacity="0.06" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="210" y="275" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">❌ Poor Description</text>
+  <text x="210" y="293" text-anchor="middle" font-size="10" fill="#555">name: "search"</text>
+  <text x="210" y="308" text-anchor="middle" font-size="10" fill="#555">description: "Search stuff"</text>
+
+  <rect x="440" y="255" width="300" height="70" rx="8" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="590" y="275" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">✅ Quality Description</text>
+  <text x="590" y="293" text-anchor="middle" font-size="10" fill="#555">name: "search_web"</text>
+  <text x="590" y="308" text-anchor="middle" font-size="10" fill="#555">description: "Search real-time info online..."</text>
+
+  <text x="400" y="345" text-anchor="middle" font-size="10" fill="#95a5a6">LLM relies entirely on tool descriptions to select and use tools — it cannot "see" the tool's code implementation</text>
+</svg>

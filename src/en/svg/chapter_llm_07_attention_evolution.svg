@@ -120,7 +120,7 @@
   <rect x="300" y="278" width="200" height="65" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
   <text x="400" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ KV-Cache halved</text>
   <text x="400" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">4Q : 2K : 2V (grouped sharing)</text>
-  <text x="400" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">Performance loss &lt;1%</text>
+  <text x="400" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">Performance loss <1%</text>
 
   <!-- ===== MLA ===== -->
   <rect x="540" y="65" width="240" height="290" rx="10" fill="#27ae60" opacity="0.05" stroke="#27ae60" stroke-width="2"/>
@@ -159,7 +159,7 @@
   <rect x="560" y="278" width="200" height="65" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
   <text x="660" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅✅ KV-Cache extremely compressed</text>
   <text x="660" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">cache only stores c_kv (low-rank)</text>
-  <text x="660" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">Performance ≈ MHA, cost &lt; GQA</text>
+  <text x="660" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">Performance ≈ MHA, cost < GQA</text>
 
   <!--Bottom [CN] Arrow-->
   <line x1="260" y1="367" x2="278" y2="367" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-llm07b)"/>

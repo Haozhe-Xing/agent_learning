@@ -1,4 +1,4 @@
-# 15.4 插件开发：tool / llm / skill / subagent 的插件接口
+# 17.4 插件开发：tool / llm / skill / subagent 的插件接口
 
 > 🐋 *"加能力 = 写一个插件，不改核心。"*
 
@@ -25,8 +25,6 @@ DeepSeek Harness 里，所有"能力"都是插件。最常见的四类是：
 
 ### 2.1 完整实现
 
-以下是教学接口示意，尚未在固定 DSH 版本中验证，不能据此当作可直接安装的官方插件。工具结果回填的循环视角见[12.3节](../chapter_openclaw/03_architecture.md)；实际参数、授权和卸载仍需对照所选源码。
-
 ```typescript
 // plugins/weather.ts
 import { Context } from 'cordis';
@@ -52,7 +50,7 @@ export function weatherPlugin(ctx: Context, config: WeatherConfig) {
     }),
 
     // ④ run：实际执行函数
-    //    返回值会被回写给 LLM；循环的教学分析见本书 12.3 节
+    //    返回值会被回写给 LLM（就像 14.3 节 Agent Loop 的"工具结果回写"）
     async run(args: { city: string }) {
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${args.city}&appid=${config.apiKey}`,
@@ -140,7 +138,7 @@ export function myLlmPlugin(ctx: Context, config: { endpoint: string; apiKey: st
 
 **为什么"零改动"这么重要？** 因为"换模型"在传统 Agent 框架里往往要改一大堆代码（模型调用逻辑散落在各处）。而 DSH 把"模型调用"抽象成 `stream` / `complete` 两个接口，Agent Loop 只依赖这两个接口，不依赖具体模型。**这就是"一切皆插件"的威力：换模型 = 换一个插件，而不是改核心**。
 
-> 可与[13.3 Hermes 扩展分析](../chapter_hermes/03_three_layer_architecture.md)比较替换边界。是否共享设计来源、哪个实现更彻底，都需要证据，不能从接口名称推断。
+> 对比第 15 章 Hermes 的"6 种执行后端"——思想同源（能力可换），但 DSH 把它抽象得更彻底：连"模型"本身都是插件，而不是"内置模型 + 可替换"。
 
 ---
 
@@ -218,13 +216,13 @@ ctx.plugin(weatherPlugin, {
 });
 ```
 
-**为什么要显式声明依赖？** 两个好处：① 装载顺序正确（weather 插件如果依赖 llm，就必须在 llm 之后装）；② 缺失依赖提前报错（如果 `core.llm` 没装，框架启动时就会报错，而不是运行到一半才崩）。**这比"隐式依赖"（靠约定俗成）可靠得多**——参见[15.3节](./03_cordis_architecture.md)的依赖分析。
+**为什么要显式声明依赖？** 两个好处：① 装载顺序正确（weather 插件如果依赖 llm，就必须在 llm 之后装）；② 缺失依赖提前报错（如果 `core.llm` 没装，框架启动时就会报错，而不是运行到一半才崩）。**这比"隐式依赖"（靠约定俗成）可靠得多**——详见 17.3 的"显式 DAG"。
 
 ---
 
 ## 七、create profile：秒级开发循环
 
-写插件最爽的是 `create` 模式的热重载（见[15.2节](./02_install_and_modes.md)）：
+写插件最爽的是 `create` 模式的热重载（见 17.2）：
 
 ```bash
 $ dsh --profile create dev
@@ -252,4 +250,4 @@ $ dsh --profile create dev
 
 ---
 
-*下一节：[15.5 横向对比：DeepSeek Harness vs Claude Code / OpenClaw / Hermes](./05_comparison.md)*
+*下一节：[17.5 横向对比：DeepSeek Harness vs Claude Code / OpenClaw / Hermes](./05_comparison.md)*

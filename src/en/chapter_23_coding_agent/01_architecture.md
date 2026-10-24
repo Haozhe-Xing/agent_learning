@@ -1,4 +1,4 @@
-# 21.1 Project Architecture Design
+# 23.1 Project Architecture Design
 
 > **Section Goal**: Design the overall architecture of an AI coding assistant, clarifying the responsibilities and interactions of each module.
 
@@ -287,7 +287,7 @@ Requirements:
 
 ---
 
-[Next: 21.2 Code Understanding and Analysis →](./02_code_understanding.md)
+[Next: 19.2 Code Understanding and Analysis →](./02_code_understanding.md)
 
 ---
 

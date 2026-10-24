@@ -1,16 +1,16 @@
-# 13.7 Borrowing the Philosophy: Self-Evolution as Engineering Principle
+# 15.7 Borrowing the Philosophy: Self-Evolution as Engineering Principle
 
-> Treat long-running operation, retained experience, and candidate improvement as separate design questions. Select automatic learning according to the task.
+> ☤ *"Self-evolution isn't a feature — it's the only way an Agent wins the long run."*
 
 ---
 
 ## The One Thing to Take Away
 
-After sections 13.4–13.6, ask separately whether the task needs cross-session state, whether experience is worth retaining, and whether evidence supports automatic skill changes. Reliable fixed workflows, human maintenance, and automatic candidate improvement can each be valid choices.
+Anyone can build an Agent that *runs*. The real difference is what happens after 30 days, 90 days, a year — does your Agent stay a static tool, or become *your version*?
 
-Before an automatic-improvement experiment, fix versions, tasks, interfaces, and permissions. Check held-out acceptance, refusal paths, and rollback. Long-running use alone establishes neither the need for learning nor candidate effectiveness. The following principles organize these checks:
+Five transferable principles:
 
-## 1. Determine Long-Running Requirements from the Task
+## 1. Treat "Long-Running" as the Default Assumption
 
 | Dimension | Short-term | Long-term (Hermes) |
 |-----------|-----------|--------------------|
@@ -48,9 +48,9 @@ Your production Agent **will** be swapped — model, storage, a tool. Make "swap
 
 ## Squeezed Into One Sentence
 
-> **Select state storage, feedback, and replacement mechanisms by task. Enable automatic improvement only when independent acceptance supports it.**
+> **Design your Agent like a long-running service + a continuous learning system + a product with a swappable kernel.**
 
-Identify state that must not be lost and credentials the task may use; test storage, isolation, recovery, and withdrawal. No single configuration guarantees reliable long-term operation.
+If you can only do one thing: **persist state to disk + put credentials in a Keyring** — the minimum bar for surviving 30 days.
 
 ---
 
@@ -66,4 +66,4 @@ You should now be able to answer:
 
 ---
 
-*Next chapter: [Chapter 14: Deep Dive into Claude Code](../chapter_claude_code/README.md)*
+*Next chapter: [Chapter 16: Deep Dive into Claude Code](../chapter_claude_code/README.md)*

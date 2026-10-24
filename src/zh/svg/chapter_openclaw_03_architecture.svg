@@ -1,44 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="640" viewBox="0 0 760 640" role="img" aria-labelledby="title desc">
-<title id="title">OpenClaw 案例：四种责任与两条边界</title>
-<desc id="desc">Skills进入上下文；策略约束执行；工具结果返回模型；候选答复再验收与投递。</desc>
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#52667d"/></marker></defs>
-<rect width="760" height="640" rx="16" fill="#f4f7fb"/>
-<g font-family="PingFang SC,Microsoft YaHei,Arial,sans-serif">
-<text x="380" y="29" font-size="18" fill="#223449" font-weight="bold" text-anchor="middle">OpenClaw 案例：四种责任与两条边界</text>
-<text x="380" y="51" font-size="12" fill="#52667d" font-weight="normal" text-anchor="middle">本书解释模型：不是官方类、事件类型或进程划分</text>
-<rect x="28" y="76" width="448" height="72" rx="10" fill="#e6edf5" stroke="#d1dbe7"/>
-<text x="252" y="103" font-size="15" fill="#223449" font-weight="bold" text-anchor="middle">渠道接入与投递</text>
-<text x="252" y="126" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">渠道 · 账号 · 发送者 · 房间 / 线程 · 消息ID</text>
-<rect x="28" y="174" width="448" height="72" rx="10" fill="#e1effb" stroke="#d1dbe7"/>
-<text x="252" y="201" font-size="15" fill="#223449" font-weight="bold" text-anchor="middle">Gateway 与会话编排</text>
-<text x="252" y="224" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">所选Agent · 会话范围 · 历史写入归属</text>
-<rect x="28" y="272" width="448" height="86" rx="10" fill="#eee8fa" stroke="#d1dbe7"/>
-<text x="252" y="299" font-size="15" fill="#223449" font-weight="bold" text-anchor="middle">上下文与模型提议</text>
-<text x="252" y="322" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">保留角色、来源以及工具调用 / 结果对应关系</text>
-<rect x="28" y="394" width="448" height="86" rx="10" fill="#fff0dd" stroke="#d1dbe7"/>
-<text x="252" y="421" font-size="15" fill="#223449" font-weight="bold" text-anchor="middle">宿主控制的工具执行</text>
-<text x="252" y="444" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">名称 / 参数 / 资源许可 / 预算；失败保留原因</text>
-<line x1="252" y1="148" x2="252" y2="173" stroke="#52667d" stroke-width="1.8" marker-end="url(#arrow)"/>
-<line x1="252" y1="246" x2="252" y2="271" stroke="#52667d" stroke-width="1.8" marker-end="url(#arrow)"/>
-<line x1="164" y1="358" x2="164" y2="393" stroke="#52667d" stroke-width="1.8" marker-end="url(#arrow)"/>
-<line x1="341" y1="394" x2="341" y2="359" stroke="#52667d" stroke-width="1.8" marker-end="url(#arrow)"/>
-<text x="171" y="383" font-size="10" fill="#223449" font-weight="normal" text-anchor="start">工具提议</text>
-<text x="348" y="383" font-size="10" fill="#223449" font-weight="normal" text-anchor="start">调用结果</text>
-<rect x="510" y="272" width="222" height="86" rx="10" fill="#e4f4e9" stroke="#d1dbe7"/>
-<text x="621" y="295" font-size="14" fill="#223449" font-weight="bold" text-anchor="middle">Skills / 资料</text>
-<text x="621" y="318" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">带来源的指导与证据</text>
-<text x="621" y="338" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">不是工具执行授权</text>
-<rect x="510" y="394" width="222" height="86" rx="10" fill="#f9e8e8" stroke="#d1dbe7"/>
-<text x="621" y="417" font-size="14" fill="#223449" font-weight="bold" text-anchor="middle">宿主执行策略</text>
-<text x="621" y="440" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">工具许可与资源限制</text>
-<text x="621" y="460" font-size="11.5" fill="#223449" font-weight="normal" text-anchor="middle">沙箱依实际配置启用</text>
-<line x1="510" y1="311" x2="477" y2="311" stroke="#52667d" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<line x1="510" y1="437" x2="477" y2="437" stroke="#52667d" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<path d="M476,335 H492 V519" fill="none" stroke="#52667d" stroke-width="1.8" marker-end="url(#arrow)"/>
-<text x="486" y="502" font-size="10" fill="#223449" font-weight="normal" text-anchor="end">候选答复</text>
-<rect x="28" y="520" width="704" height="64" rx="10" fill="#e8f2ef" stroke="#b3d2c7"/>
-<text x="380" y="545" font-size="14" fill="#223449" font-weight="bold" text-anchor="middle">按已记录的渠道 / 账号 / 房间 / 线程回包</text>
-<text x="380" y="567" font-size="12" fill="#223449" font-weight="normal" text-anchor="middle">实际投递证据，与独立任务验收分开记录</text>
-<text x="380" y="609" font-size="11.5" fill="#52667d" font-weight="normal" text-anchor="middle">固定材料阅读：v2026.10.5；本节未安装产品或验证实际渠道</text>
-<text x="380" y="628" font-size="11" fill="#52667d" font-weight="normal" text-anchor="middle">Skills进入上下文；策略约束执行；工具结果返回模型；候选答复再验收与投递。</text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 520" width="680" height="520">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  <rect width="680" height="520" rx="14" fill="#f0f4f8"/>
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">OpenClaw 四层架构：消息生命周期</text>
+
+  <!-- Channel Adapters -->
+  <rect x="140" y="48" width="400" height="56" rx="8" fill="#2c3e50"/>
+  <text x="340" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Channel Adapters（渠道适配器）</text>
+  <text x="340" y="92" text-anchor="middle" font-size="10" fill="#bdc3c7">WhatsApp / Telegram / Discord / Slack / Signal · 输出 IncomingMessage</text>
+  <line x1="340" y1="104" x2="340" y2="124" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="120" font-size="9" fill="#7f8c8d">IncomingMessage { from, text, threadId, mentions }</text>
+
+  <!-- Gateway -->
+  <rect x="140" y="128" width="400" height="56" rx="8" fill="#3498db"/>
+  <text x="340" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gateway（消息中枢 / Router）</text>
+  <text x="340" y="172" text-anchor="middle" font-size="10" fill="#d6eaf8">统一协议 + 路由 + 用户身份解析 · 挂到 Session</text>
+  <line x1="340" y1="184" x2="340" y2="204" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="200" font-size="9" fill="#7f8c8d">SessionEvent { sessionId, userId, channel, message }</text>
+
+  <!-- Agent Loop -->
+  <rect x="140" y="208" width="400" height="56" rx="8" fill="#9b59b6"/>
+  <text x="340" y="232" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Agent Loop（推理主循环）</text>
+  <text x="340" y="252" text-anchor="middle" font-size="10" fill="#e8daef">流式推理 + 工具调用 + 上下文管理 · 模型无关</text>
+  <line x1="340" y1="264" x2="340" y2="284" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="280" font-size="9" fill="#7f8c8d">ToolCall { name, args } / final Answer { text }</text>
+
+  <!-- Toolbox -->
+  <rect x="140" y="288" width="400" height="56" rx="8" fill="#e67e22"/>
+  <text x="340" y="312" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Toolbox &amp; Sandbox（工具箱与沙箱）</text>
+  <text x="340" y="332" text-anchor="middle" font-size="10" fill="#fdebd0">file / shell / web / memory · 权限检查 + Hooks 拦截</text>
+  <line x1="340" y1="344" x2="340" y2="364" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="352" y="360" font-size="9" fill="#7f8c8d">ToolResult { ok, output, error }</text>
+
+  <!-- Skills Registry -->
+  <rect x="140" y="368" width="400" height="56" rx="8" fill="#27ae60"/>
+  <text x="340" y="392" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Skills Registry（技能注册中心）</text>
+  <text x="340" y="412" text-anchor="middle" font-size="10" fill="#d5f5e3">运行时加载 SKILL.md · 查找匹配 + 注入上下文</text>
+  <line x1="340" y1="424" x2="340" y2="444" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 回包 -->
+  <rect x="140" y="448" width="400" height="48" rx="8" fill="#fef9e7" stroke="#f39c12"/>
+  <text x="340" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a7d0a">回复（出站消息）→ Gateway → Channel Adapter</text>
+  <text x="340" y="488" text-anchor="middle" font-size="10" fill="#5d6d7e">OutgoingMessage 原路返回</text>
+</svg>

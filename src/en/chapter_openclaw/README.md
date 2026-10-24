@@ -1,38 +1,55 @@
-# Chapter 12: OpenClaw — Cross-Platform Personal AI Assistant
+# Chapter 14: OpenClaw — Cross-Platform Personal AI Assistant
 
-**Reading level**: Optional product and architecture case; skip without a chat-entry requirement.
-
-Use OpenClaw as a case for chat entry points and personal assistants. Examine identity, sessions, tools, and permissions after a message arrives. The aim is to connect an entry point to existing capabilities and inspect the boundaries through task results.
-
-## This chapter's iteration
-
-- **Previous limitation**: The assistant receives scripts or API requests but has no defined mapping from chat identities and sessions to tool permissions.
-- **This chapter adds**: A product case for message gateways, routing, sessions, and extensions; moving the entire assistant into the product is optional.
-- **How to verify**: No uniform product adapter is supplied. Pin a version and one channel, then use controlled tasks to inspect identity, sources, permissions, failures, and outputs. Identify executed and unexecuted parts explicitly.
-- **Next step**: For cross-session accumulation, select [chapter 13, Hermes](../chapter_hermes/README.md). Otherwise return to the [Part III choice guide](../part3.md) and continue the existing implementation.
-
-## Chapter structure
-
-| Section | Focus |
-|---|---|
-| [12.1 OpenClaw Panorama: From Clawdbot to OpenClaw](./01_history_and_positioning.md) | Understand the case and its limits |
-| [12.2 Installation & 4 Deployment Modes](./02_install_and_deploy.md) | Record version, environment, and installation path |
-| [12.3 Architecture: Gateway / Agent Loop / Skills](./03_architecture.md) | Map messages, state, and tool execution |
-| [12.4 Multi-Channel Routing: WhatsApp / Telegram / Discord / Slack / Signal](./04_channels.md) | Verify identity and permissions in one channel |
-| [12.5 Skills & Plugin Ecosystem: ClawHub and Community Contributions](./05_skills_and_plugins.md) | Review extension inputs, capabilities, and trust |
-| [12.6 Practice: Build a Personal Assistant](./06_practice.md) | Run one controlled entry-point experiment |
-| [12.7 Lessons for Engineers](./07_lessons_for_engineers.md) | Map a verified mechanism onto the existing assistant |
-
-## Reading path
-
-Review execution controls in [chapter 8, Harness](../chapter_harness/README.md) and capability packaging in [chapter 9, Skills](../chapter_skill/README.md). For routing, focus on 12.3–12.4. To borrow architecture alone, select 12.7; chapters 10–11 are not required first.
-
-## Verification and material boundaries
-
-The chapter outlines product and architecture experiments; it does not promise all channels will connect within a fixed time. Verify installation, channel, and extension interfaces in a selected version. Without execution conditions, complete design analysis and mark the experiment “not run.”
-
-The offline distance-and-calculation fixture does not call OpenClaw or validate its data handling and permissions. Preserve the task contract in a product experiment and add identity and session cases for the new entry point.
+> 🦞 *"Your lobster butler, already living in every chat app you use."*
 
 ---
 
-*Next section: [12.1 OpenClaw Panorama: From Clawdbot to OpenClaw](./01_history_and_positioning.md)*
+## Chapter Introduction
+
+Most action-oriented Agents (like Claude Code or Hermes) live in a CLI/TUI. If you want an Agent that lives **inside the chat apps you already use** — WhatsApp, Telegram, Discord, Slack, Signal — **OpenClaw** is the most complete implementation in the current ecosystem.
+
+OpenClaw is an **open-source personal AI assistant** started by Peter Steinberger in December 2025 as a weekend project. It was first named `Clawdbot`, then `Moltbot`, and finally `OpenClaw` in January 2026 (to avoid trademark issues and emphasize open-source). Its growth has been phenomenal — it became one of the fastest-growing open-source projects on GitHub. OpenClaw's rapid spread turned the "personal Agent" from a geek toy into an everyday tool.
+
+This chapter does three things:
+
+1. **Dissect OpenClaw's engineering skeleton** — what modules make up "an Agent in a chat app" and how messages flow through the gateway and Agent loop;
+2. **Demonstrate 4 deployment methods** — `npx`, install script, source build, Docker sandbox;
+3. **Map its subsystems to Chapter 8's "six engineering pillars"** — so you see how a real production project instantiates the abstractions you learned earlier.
+
+---
+
+## Chapter Content Overview
+
+| Section | Content | What You'll Learn |
+|---------|---------|-------------------|
+| 14.1 OpenClaw Panorama | Origin, naming history, positioning | OpenClaw's place in the harness spectrum |
+| 14.2 Installation & 4 Deployment Modes | npx / install script / source / Docker | Get it running on macOS/Linux/Windows |
+| 14.3 Architecture: Gateway / Agent Loop / Skills | Four-layer architecture, message flow, plugins | Read OpenClaw's engineering skeleton |
+| 14.4 Multi-Channel Routing | 5 platforms, group/DM policy, cross-channel identity | Take over all chat entrances |
+| 14.5 Skills & Plugin Ecosystem | SKILL.md contract, ClawHub, community forks | Find, customize, publish OpenClaw skills |
+| 14.6 Practice: Build a Personal Assistant | End-to-end 5-step build | Ship a 24/7 personal assistant |
+| 14.7 Lessons for Engineers | 5 engineering insights | Bring OpenClaw's philosophy to your system |
+
+---
+
+## Reading Recommendations
+
+- ✅ **Want to actually "use" an Agent** — read from 14.1
+- ✅ **Cross-platform developers** — focus on 14.3, 14.4
+- ✅ **Engineers studying open-source harnesses** — focus on 14.7
+
+**Prerequisites**: Chapter 8 (Harness Engineering) and Chapter 9 (Skill System) — their abstractions land concretely in OpenClaw's subsystems.
+
+> 📌 **Chapter relationships**: OpenClaw is the **consumer-product route** of the action-Agent spectrum; Claude Code (Ch.16) is the **industrial IDE route**; DeepSeek Harness (Ch.17) is the **developer-workshop route**. After this chapter, read Ch.15 Hermes — same "multi-channel" lineage, but more aggressive on self-evolution.
+
+---
+
+## Citation Convention
+
+Verifiable facts (commits, versions, install commands, licenses, file paths) are anchored to the OpenClaw `main` branch and `openclaw.ai`. Time-varying numbers (stars, extension counts) are **not cited**; versions are anchored to "as of August 2026" where relevant.
+
+> 💡 **Core insight**: OpenClaw changed not "Agent capability" but "how an Agent reaches the user" — when the user key becomes `@bot` in a chat box, the Agent enters daily life.
+
+---
+
+*Next section: [14.1 OpenClaw Panorama: From Clawdbot to OpenClaw](./01_history_and_positioning.md)*

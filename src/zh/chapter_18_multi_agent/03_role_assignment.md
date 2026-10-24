@@ -1,4 +1,4 @@
-# 16.3 角色分工与任务分配
+# 18.3 角色分工与任务分配
 
 > **本节目标**：掌握多 Agent 系统中的角色设计原则、任务分配策略，以及动态角色分配的实现方法。
 
@@ -60,13 +60,10 @@ class SpecializedAgent:
 # 软件开发团队示例
 # ============================
 
-```
-
 ![软件开发团队的角色分工流水线](../svg/chapter_18_multi_agent_03_roles_pipeline.svg)
 
 > **这个团队怎么协作**：5 个角色按流水线接力——产品经理产出需求 → 架构师产出设计 → 开发写代码 → QA 写测试 → DevOps 部署。每个角色的输出是下一个角色的输入，交接时只传关键内容（需求文档/设计方案），不传过程噪音。这正是"明确契约 + 上下文隔离"的落地。
 
-```python
 class DevTeam:
     """多 Agent 软件开发团队"""
     
@@ -243,7 +240,7 @@ class LoadBalancer:
         return agent
 
     # 策略3：能力感知（Capability-Aware）—— 结合"投标"（合同网），
-    # 由 Agent 自报"当前负载 + 完成信心"，综合择优（承接 16.2 的合同网协议）
+    # 由 Agent 自报"当前负载 + 完成信心"，综合择优（承接 18.2 的合同网协议）
     def capability_aware(self, task, bids: dict[str, tuple[float, float]]) -> str:
         # bids: {agent: (预估耗时, 信心)}，信心不足者直接淘汰
         valid = {a: c for a, (c, conf) in bids.items() if conf > 0.5}
@@ -578,8 +575,8 @@ class ContextManager:
 - **超时**防卡死、**有界重试**防重试风暴、**熔断**防拖垮整体、**心跳**防失活、**幂等**保证重试安全
 - 尤其要防 **fork-bomb**：给并发子 Agent 数设硬上限
 
-> 💡 **延伸阅读**：关于 Supervisor 模式与去中心化模式的深入对比，详见 [16.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)。
+> 💡 **延伸阅读**：关于 Supervisor 模式与去中心化模式的深入对比，详见 [18.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)。
 
 ---
 
-*下一节：[16.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)*
+*下一节：[18.4 Supervisor 模式 vs. 去中心化模式](./04_supervisor_vs_decentralized.md)*

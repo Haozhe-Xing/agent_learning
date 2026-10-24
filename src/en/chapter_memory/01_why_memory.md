@@ -1,78 +1,130 @@
 # 4.1 Why Do Agents Need Memory?
 
-“Continue our previous plan” implicitly requires the application to find the correct user's plan in the correct project, and decide whether it is still valid. Adding more chat text to a model does not automatically satisfy that requirement. Memory is about **selecting, retaining, and recalling state**, rather than updating model parameters after each conversation.
+Imagine an assistant who completely forgets you every time you come to them — who you are, what your job is, what tasks you assigned last time. Such an assistant cannot provide any real help.
 
-## Three Responsibilities, Not Three Fixed Databases
-
-![Memory responsibilities and retention boundaries](../svg/chapter_memory_01_memory_types.svg)
-
-| Responsibility | Retained material | Lifetime and boundary |
-|----------------|-------------------|-----------------------|
-| Short-term memory | Current messages and necessary summaries | The model-facing view has a budget; server-log retention is a separate policy |
-| Working memory | Task input references, intermediate results, pending work, failures | Isolate by owner and task; clear under completion, cancellation, or expiry policy |
-| Long-term memory | Consented preferences, facts, or project records | Cross-session use requires provenance, updates, withdrawal, and deletion |
-
-These are application responsibilities; they can share storage or use separate implementations. Ending a session does not necessarily remove short-term history from disk. Long-term memory means neither permanent retention nor mandatory vector storage. Relational databases, keys, lexical search, and vector retrieval serve different needs.
-
-“Please keep answers short” might apply to one turn or be a preference the user wants retained across sessions. Establish scope before persistence. “Forget my occupation” requires removing queryable records and preventing dependent caches, summaries, or indexes from continuing to supply it. Changing the current prompt alone is insufficient.
-
-## Missing Memory and Incorrect Memory Both Cause Failures
-
-| Situation | Evidence to check | Shortcut to avoid |
-|-----------|-------------------|-------------------|
-| Continue a task | Owner/project/task identity and last state | Selecting history from a similar title |
-| Changed preference | Explicit correction and applicable time | Treating the old preference as permanent fact |
-| Conversation over budget | Complete retained messages and pruning report | Silently dropping the current question |
-| Shared assistant | Authorized principal and filters on every read/write | Treating a client-provided username as authentication |
-| Forget request | Cleanup results for active storage, derived indexes, and caches | A `deleted` label while retrieval continues |
-
-Sometimes the best choice is no long-term memory. A public one-off question needs no persistence; temporary results can stay in task state. Cheap storage does not justify saving names, occupations, entire conversations, or inferred profiles by default.
-
-## Run Consent, Isolation, and Deletion First
-
-`reference_code/evidence_assistant/memory.py` provides a SQLite baseline. Run this from the repository root; it uses a temporary file and no model:
+## An Agent Without Memory: The Pain of Constant Repetition
 
 ```python
-from pathlib import Path
-from tempfile import TemporaryDirectory
-from reference_code.evidence_assistant.memory import MemoryStore
+# Example conversation with an Agent that has no memory
+user: "My name is Alex, and I'm a Python developer"
+agent: "Hello! How can I help you?"
 
-with TemporaryDirectory() as folder:
-    path = Path(folder) / "memory.sqlite"
-    store = MemoryStore(path)
-    try:
-        store.put("alice", "style", "concise")
-    except PermissionError:
-        print("write denied without consent")
-    store.put("alice", "style", "concise", consent=True)
-    store.put("bob", "style", "detailed", consent=True)
-    store.close()
+user: "Help me write a function"
+agent: "Sure, what functionality do you need the function to have?"
 
-    store = MemoryStore(path)
-    assert store.records("alice") == {"style": "concise"}
-    store.delete("alice")
-    assert store.records("alice") == {}
-    assert store.records("bob") == {"style": "detailed"}
-    store.close()
+# The next day...
+user: "That function from yesterday has a bug"
+agent: "Sorry, I don't have access to our previous conversation.
+       Could you tell me which function you need help fixing?"  # Completely forgotten!
 ```
 
-`consent=True` is an explicit host input after obtaining consent. A string such as `"yes"` or the number `1` cannot replace Boolean consent. Tests choose identities directly; a service must authenticate and authorize them rather than letting the model choose `alice` or `bob`. SQLite deletion establishes that current records are no longer queryable, not secure erasure of independent backups or disk residue.
+This experience frustrates users and limits the complexity of tasks an Agent can handle.
 
-This baseline has no automatic extraction, expiry, per-record provenance audit, or semantic retrieval. Its purpose is to establish the smallest contract before extending it. Those unimplemented capabilities cannot be counted as an existing memory system.
+## The Three Levels of Memory Systems
 
-## Four Questions for Every Memory
+An Agent's memory system is analogous to human memory and consists of three levels:
 
-1. **Who may use it?** The host determines owner, project, and visibility. Filter authorization before ranking relevance.
-2. **Why may it persist?** Establish purpose and consent. Automatic extraction can propose candidates, not approve persistence for the user.
-3. **What supports it?** Distinguish user statements, external documents, tool results, and model guesses; retain source/version information.
-4. **When does it expire?** Corrections, withdrawal, time limits, and task completion can trigger changes. Deletion must also examine derived material.
+![Memory system hierarchy](../svg/chapter_memory_01_memory_types.svg)
 
-Recalled memory remains attributed data. “Ignore system rules” inside a record does not become new system authorization. A preference for brevity cannot cancel required evidence or permission checks. Persistence establishes storage, not correctness or continuing applicability.
+**Short-Term Memory**
+- Analogy: Documents on your desk while working
+- Content: Message history of the current conversation
+- Characteristics: Limited capacity (constrained by Context Window), disappears when the session ends
+- Use: Maintaining coherence across multi-turn conversations
 
-## Exercise and Reading Route
+**Long-Term Memory**
+- Analogy: Files stored in a filing cabinet
+- Content: User preferences, important information, historical conversation summaries
+- Characteristics: Persistent storage, cross-session access, large capacity
+- Use: Personalized service, knowledge accumulation
 
-For “continue the release checks,” list the minimum conversation history, task results, and information worth retaining with consent. Add correction, project change, withdrawal, and insufficient-budget cases with expected behavior.
+**Working Memory (Scratchpad)**
+- Analogy: Scratch paper
+- Content: Intermediate reasoning steps for the current task
+- Characteristics: Exists while the task is in progress, can be cleared after completion
+- Use: Complex multi-step reasoning, avoiding "repeated reasoning"
 
-[Section 4.2](./02_short_term_memory.md) handles request budgets and complete messages; [4.3](./03_long_term_memory.md) adds persistence/retrieval; [4.4](./04_working_memory.md) tracks task progress. The research route is in [4.6](./06_paper_readings.md). Applications do not require implementing every memory component first.
+## Typical Scenarios Where Memory Failure Causes Problems
 
-*Next: [4.2 Short-Term Memory: Conversation History Management](./02_short_term_memory.md)*
+Understanding when "lack of memory causes problems" helps decide where to add memory systems:
+
+```python
+# Scenario 1: Preference amnesia
+# The user said "I prefer concise code without comments"
+# But in the next conversation the Agent starts writing lots of comments again
+
+# Scenario 2: Context fragmentation
+# The user is discussing a complex problem; the conversation grows too long
+# and exceeds the Context Window
+# The Agent starts forgetting what was said at the beginning of the conversation
+
+# Scenario 3: Repeated onboarding
+# The user has to introduce themselves and their background every time
+# The Agent cannot accumulate knowledge about the user
+
+# Scenario 4: Task continuity
+# The user asks to "continue the plan we discussed last time"
+# The Agent has no idea what was discussed last time
+```
+
+## Core Challenges in Memory System Design
+
+**1. Token Limits**
+
+```python
+# Context Window limits the size of short-term memory
+# GPT-4o has a 128K token context
+# But long conversations consume tokens quickly and are costly
+
+# Solutions:
+# - Sliding window: only keep the most recent N turns of conversation
+# - Summary compression: compress old conversations into summaries
+# - Vector retrieval: retrieve relevant snippets from long-term memory
+```
+
+**2. What Is Worth Remembering**
+
+```python
+# Not all information is worth storing
+# Worth remembering:
+keep_memory = [
+    "User name, profession, preferences",
+    "Important decisions and conclusions",
+    "User-defined rules (e.g., code style)",
+    "Ongoing project information",
+]
+
+# Not worth remembering:
+skip_memory = [
+    "Casual small talk",
+    "Repeated greetings",
+    "Temporary queries",
+    "Outdated information",
+]
+```
+
+**3. Memory Accuracy**
+
+```python
+# Information stored in memory may be incorrect
+# The Agent needs:
+# - The ability to update memory (user corrects preferences)
+# - Distinguishing facts from inferences
+# - Memory source traceability
+```
+
+---
+
+## Summary
+
+Memory systems are the core of Agent practicality:
+- Short-term memory: maintains coherence within the current conversation
+- Long-term memory: accumulates knowledge across sessions
+- Working memory: supports complex reasoning tasks
+- Core challenges: token limits, selective memory, accuracy
+
+> 📖 **Want to dive deeper into the academic frontier of memory systems?** Read [4.6 Paper Readings: Frontier Advances in Memory Systems](./06_paper_readings.md), covering in-depth analysis of four core papers: Generative Agents, MemGPT, MemoryBank, and CoALA.
+
+---
+
+*Next section: [4.2 Short-Term Memory: Conversation History Management](./02_short_term_memory.md)*

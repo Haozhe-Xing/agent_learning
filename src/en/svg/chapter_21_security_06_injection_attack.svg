@@ -1,34 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
-<title id="title">Indirect Injection: Data, Proposals and Execution</title>
-<desc id="desc">Concepts: https://arxiv.org/html/2302.12173v2 §§3–5. Host authorization/budget gate is the book engineering synthesis, not a reproduced paper defense.</desc>
-<metadata>Original illustration created for this book; no paper artwork or screenshot reproduced. Repository MIT license applies to this illustration.</metadata>
-<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
-<rect width="960" height="500" rx="14" fill="#f1f5f9"/>
-<text x="480" y="43" text-anchor="middle" font-size="23" font-weight="bold" fill="#22384c">Indirect Injection: Data, Proposals and Execution</text>
-<rect x="30" y="95" width="280" height="255" rx="12" fill="#2d4965"/>
-<text x="170" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Untrusted entry</text>
-<text x="170" y="177" text-anchor="middle" font-size="14" fill="white">Web pages / documents / tool returns</text>
-<text x="170" y="216" text-anchor="middle" font-size="14" fill="white">Attacker-controlled data fields</text>
-<text x="170" y="255" text-anchor="middle" font-size="14" fill="white">Data may contain instructions</text>
-<text x="170" y="294" text-anchor="middle" font-size="14" fill="white">Source labels grant no permission</text>
-<rect x="340" y="95" width="280" height="255" rx="12" fill="#287598"/>
-<text x="480" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Agent proposal</text>
-<text x="480" y="177" text-anchor="middle" font-size="14" fill="white">Fixed policy and current task</text>
-<text x="480" y="216" text-anchor="middle" font-size="14" fill="white">May propose a tool call</text>
-<text x="480" y="255" text-anchor="middle" font-size="14" fill="white">Model output is not authorization</text>
-<text x="480" y="294" text-anchor="middle" font-size="14" fill="white">Retain proposal and provenance</text>
-<rect x="650" y="95" width="280" height="255" rx="12" fill="#72608a"/>
-<text x="790" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Host boundary</text>
-<text x="790" y="177" text-anchor="middle" font-size="14" fill="white">Identity / resource / args / budget</text>
-<text x="790" y="216" text-anchor="middle" font-size="14" fill="white">Trusted code checks before effects</text>
-<text x="790" y="255" text-anchor="middle" font-size="14" fill="white">Retain denial, failure, exhaustion</text>
-<text x="790" y="294" text-anchor="middle" font-size="14" fill="white">Inspect actual state changes</text>
-<path d="M 312 220 L 327 220" fill="none" stroke="#738296" stroke-width="2"/>
-<path d="M 327 215 L 335 220 L 327 225" fill="none" stroke="#738296" stroke-width="2"/>
-<path d="M 622 220 L 637 220" fill="none" stroke="#738296" stroke-width="2"/>
-<path d="M 637 215 L 645 220 L 637 225" fill="none" stroke="#738296" stroke-width="2"/>
-<rect x="30" y="385" width="900" height="83" rx="9" fill="#fff3e9" stroke="#be8156"/>
-<text x="480" y="414" text-anchor="middle" font-size="14" fill="#754325">The paper describes the entry threat; the host gate is this book’s engineering requirement.</text>
-<text x="480" y="442" text-anchor="middle" font-size="14" fill="#754325">Role separation or prompt warnings alone do not establish injection resistance.</text>
-<text x="480" y="490" text-anchor="middle" font-size="11" fill="#58667a">Original book illustration; fixed sources and evidence scope are cited in the text.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 380" font-family="Arial, sans-serif">
+  <!-- Background -->
+  <rect width="580" height="380" rx="12" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <text x="290" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">🛡️ Indirect Prompt Injection Attack Scenarios</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#e74c3c"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#3498db"/>
+    </marker>
+  </defs>
+
+  <!-- Center: LLM Agent -->
+  <rect x="230" y="170" width="120" height="50" rx="10" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="2"/>
+  <text x="290" y="192" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🤖 LLM Agent</text>
+  <text x="290" y="208" text-anchor="middle" font-size="10" fill="#555">Reads external data</text>
+
+  <!-- Scenario 1: Web injection -->
+  <rect x="20" y="55" width="160" height="90" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+  <text x="100" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">🌐 Scenario 1: Web Injection</text>
+  <text x="100" y="96" text-anchor="middle" font-size="10" fill="#555">Attacker embeds hidden</text>
+  <text x="100" y="110" text-anchor="middle" font-size="10" fill="#555">white-text instructions</text>
+  <text x="100" y="126" text-anchor="middle" font-size="9" fill="#888">(Invisible to humans, retrievable by RAG)</text>
+
+  <!-- Scenario 2: Email injection -->
+  <rect x="400" y="55" width="160" height="90" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+  <text x="480" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">📧 Scenario 2: Email Injection</text>
+  <text x="480" y="96" text-anchor="middle" font-size="10" fill="#555">Email body appears normal</text>
+  <text x="480" y="110" text-anchor="middle" font-size="10" fill="#555">Hidden area contains malicious instructions</text>
+  <text x="480" y="126" text-anchor="middle" font-size="9" fill="#888">(Steals contacts and sensitive info)</text>
+
+  <!-- Scenario 3: Document injection -->
+  <rect x="210" y="270" width="160" height="90" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+  <text x="290" y="293" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">📄 Scenario 3: Document Injection</text>
+  <text x="290" y="311" text-anchor="middle" font-size="10" fill="#555">PDF/Word metadata or</text>
+  <text x="290" y="325" text-anchor="middle" font-size="10" fill="#555">hidden text embeds instructions</text>
+  <text x="290" y="341" text-anchor="middle" font-size="9" fill="#888">(Agent gets compromised when parsing)</text>
+
+  <!-- Arrow: Web → Agent -->
+  <line x1="180" y1="130" x2="238" y2="175" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Arrow: Email → Agent -->
+  <line x1="400" y1="130" x2="342" y2="175" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Arrow: Document → Agent -->
+  <line x1="290" y1="270" x2="290" y2="226" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Attack effect labels -->
+  <text x="195" y="160" text-anchor="middle" font-size="9" fill="#e74c3c" font-style="italic">malicious instruction</text>
+  <text x="385" y="160" text-anchor="middle" font-size="9" fill="#e74c3c" font-style="italic">malicious instruction</text>
+  <text x="310" y="252" text-anchor="middle" font-size="9" fill="#e74c3c" font-style="italic">malicious instruction</text>
+
+  <!-- Bottom key finding -->
+  <text x="290" y="375" text-anchor="middle" font-size="10" fill="#888">⚠️ Core challenge: LLM cannot distinguish "data" from "instructions" — any external data source may be an attack surface</text>
+
 </svg>

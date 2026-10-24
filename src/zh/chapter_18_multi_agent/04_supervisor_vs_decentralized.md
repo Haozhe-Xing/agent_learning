@@ -1,4 +1,4 @@
-# 16.4 Supervisor 模式 vs. 去中心化模式
+# 18.4 Supervisor 模式 vs. 去中心化模式
 
 多 Agent 系统有一个根本性的架构决策：**谁来协调？** 是设置一个"项目经理"统一调度所有 Agent（Supervisor 模式），还是让 Agent 之间自由协商（去中心化模式）？
 
@@ -340,4 +340,4 @@ Handoff 和 Supervisor 的**本质区别**：
 
 ---
 
-*下一节：[16.5 实战：多 Agent 软件开发团队](./05_practice_dev_team.md)*
+*下一节：[18.5 实战：多 Agent 软件开发团队](./05_practice_dev_team.md)*

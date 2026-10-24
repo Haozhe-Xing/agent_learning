@@ -1,7 +1,5 @@
 # 2.7 Foundation Model Architecture Explained
 
-> **Reading position: optional advanced/research reference.** For a first application, continue with [chapter 3, Tool Calling](../chapter_tools/README.md). Revisit this section after establishing a task and evaluation baseline; architecture and training-data engineering are not framework prerequisites.
-
 > 🏗️ *"Understanding how models work helps you make better judgments, and understanding the evolution of model architecture helps you understand where the entire industry is heading."*
 
 In Section 2.1 we built an intuitive understanding of how LLMs work — Transformer, attention, Token prediction. This section goes one level deeper and shows you what the **"skeleton" of a model** actually looks like — from the Decoder-Only architecture to attention variants, normalization schemes, positional encoding, and MoE routing, all the way to the concrete architectural choices made by the major open-source models of 2024–2026.
@@ -282,7 +280,7 @@ class MultiHeadAttentionFull:
         return self.W_O(concat)
 ```
 
-> 🎯 **Intuition**:<br>
+> 🎯 **Intuition**:  
 > - Head 1 might learn: **syntactic dependencies** (subject → verb)
 > - Head 2 might learn: **coreference** ("it" → which noun it refers to)
 > - Head 3 might learn: **local positional relationships** (collocations of adjacent words)
@@ -476,10 +474,10 @@ print(kv_cache_memory_gb(80, 8, 128, 1024))   # ≈ 0.32 GB / 1K Tokens ← 8× 
 >
 > **Conclusion**: the memory cost of the KV Cache can far exceed that of the model parameters! This is exactly why techniques that shrink the KV Cache, such as GQA and MLA, matter so much.
 
-> 💡 **What this means for Agent development**:<br>
-> - KV Cache grows linearly with **number of Tokens × number of layers**; long conversations = high memory = high cost<br>
-> - This is why many Agent frameworks need **context truncation/compression** (see Chapter 7)<br>
-> - Providers charge more for **input Tokens** partly because the Prefill phase has to compute and cache the K/V of every Token at once<br>
+> 💡 **What this means for Agent development**:  
+> - KV Cache grows linearly with **number of Tokens × number of layers**; long conversations = high memory = high cost  
+> - This is why many Agent frameworks need **context truncation/compression** (see Chapter 8)  
+> - Providers charge more for **input Tokens** partly because the Prefill phase has to compute and cache the K/V of every Token at once  
 > - Choosing a GQA/MLA model can significantly reduce deployment costs in long-conversation scenarios
 
 ---
@@ -949,7 +947,7 @@ Multiply the two element-wise: the gate signal decides which dimensions of the c
 
 ## MoE Architecture: The Power of Sparsity
 
-We introduced MoE from a "trends" perspective in Section 2.6. Here we take a closer look at its **architectural details**.
+We introduced MoE from a "trends" perspective in Section 3.6. Here we take a closer look at its **architectural details**.
 
 ### Basic Structure of MoE
 

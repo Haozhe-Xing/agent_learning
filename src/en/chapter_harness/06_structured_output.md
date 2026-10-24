@@ -476,7 +476,7 @@ For **locally deployed open-source models** (Llama, Qwen, DeepSeek, etc.), you c
 
 ### Principle: Enforcing Constraints at the Token Generation Layer
 
-To understand constrained decoding, first review the LLM generation process (see Chapter 2): at each step, the model outputs a **probability distribution over the vocabulary** (logits), then selects the next token through a sampling strategy (top-p, temperature, etc.).
+To understand constrained decoding, first review the LLM generation process (see Chapter 3): at each step, the model outputs a **probability distribution over the vocabulary** (logits), then selects the next token through a sampling strategy (top-p, temperature, etc.).
 
 The core idea of constrained decoding is: **before sampling, based on the currently generated text and JSON Schema rules, force all illegal tokens' probabilities to −∞ (i.e., probability 0 after softmax).** The model still does normal forward inference, but only legal tokens can be sampled.
 
@@ -1080,7 +1080,7 @@ class Item(BaseModel):
 
 **Root cause**: OpenAI Structured Outputs works by serializing the JSON Schema and appending it to the model's system prompt. A complex Schema with 50+ fields and multiple levels of nesting may occupy 500~2000 tokens when serialized — these tokens are **consumed repeatedly in every API call**, increasing both latency and cost.
 
-A deeper impact is that the Schema itself consumes a large amount of context attention budget (see Chapter 7), potentially reducing the model's attention to user input content and actually degrading extraction quality.
+A deeper impact is that the Schema itself consumes a large amount of context attention budget (see Chapter 8), potentially reducing the model's attention to user input content and actually degrading extraction quality.
 
 **Solution principle**: split large Schemas into multiple smaller extractions, each focusing on one subset — similar to "query primary key first, then JOIN details" in database queries:
 

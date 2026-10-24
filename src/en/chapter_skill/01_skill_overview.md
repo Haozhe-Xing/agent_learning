@@ -2,13 +2,13 @@
 
 ## Skill vs Tool: A Key Distinction
 
-In Chapter 3, we learned how to make Agents call tools — searching the web, executing code, reading and writing files. These tools are like a craftsman's hammer, saw, and ruler. But what makes an excellent craftsman able to create beautiful furniture is not just having tools, but having **woodworking skills** — knowing when to use which tool, in what order to operate, and how to handle problems when they arise.
+In Chapter 4, we learned how to make Agents call tools — searching the web, executing code, reading and writing files. These tools are like a craftsman's hammer, saw, and ruler. But what makes an excellent craftsman able to create beautiful furniture is not just having tools, but having **woodworking skills** — knowing when to use which tool, in what order to operate, and how to handle problems when they arise.
 
 ![Skill Structure Diagram](../svg/chapter_skill_01_structure.svg)
 
 Let's use a concrete example to feel this difference:
 
-```text
+```python
 # ❌ Tools only, no skills — Agent needs step-by-step guidance
 user: "Help me analyze the sales data in this CSV file"
 agent: "Sure, I can use the read_csv tool to read the file."
@@ -100,7 +100,7 @@ We divide the skill system into three levels:
 
 ### Layer 1: Basic Tool Layer
 
-This is the content already introduced in Chapter 3 — individual callable tool functions.
+This is the content already introduced in Chapter 4 — individual callable tool functions.
 
 ### Layer 2: Skill Definition Layer
 

@@ -1,4 +1,4 @@
-# 17.6 Framework Supplement: AutoGen (Multi-Agent Dialogue Framework)
+# 19.6 Framework Supplement: AutoGen (Multi-Agent Dialogue Framework)
 
 > 💬 *"Letting Agents discuss in natural language is closer to how humans work than routing them through fixed nodes."*
 
@@ -54,4 +54,4 @@ async with code_executor:
 
 ---
 
-*Back to chapter home: [Chapter 17: Agent Communication Protocols](./README.md)*
+*Back to chapter home: [Chapter 19: Agent Communication Protocols](./README.md)*

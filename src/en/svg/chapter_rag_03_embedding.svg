@@ -1,1 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 620" role="img" aria-labelledby="title desc" font-family="Arial, PingFang SC, sans-serif"><title id="title">From Chunks to Vector Candidates</title><desc id="desc">Distance is not accuracy or relevance probability.</desc><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8Z" fill="#475569"/></marker></defs><rect width="560" height="620" rx="12" fill="white"/><text x="280" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">From Chunks to Vector Candidates</text><rect x="30" y="65" width="500" height="100" rx="9" fill="#eff6ff" stroke="#64748b"/><text x="280.0" y="93" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Index documents</text><text x="280.0" y="118" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">id / text / source / version</text><text x="280.0" y="143" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Embedder revision + preprocessing</text><rect x="30" y="200" width="500" height="100" rx="9" fill="#f5f3ff" stroke="#64748b"/><text x="280.0" y="228" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Chroma collection: cosine space</text><text x="280.0" y="253" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Vectors + text + source/version</text><text x="280.0" y="278" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">No default embedder</text><rect x="30" y="335" width="500" height="82" rx="9" fill="#eff6ff" stroke="#64748b"/><text x="280.0" y="363" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Query: use the same embedder</text><text x="280.0" y="388" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Query → vector → bounded neighbors</text><rect x="30" y="452" width="500" height="82" rx="9" fill="#ecfdf5" stroke="#64748b"/><text x="280.0" y="480" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Candidate records</text><text x="280.0" y="505" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">ID, source, version, distance</text><path d="M280,165 L280,198" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/><path d="M280,300 L280,333" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/><path d="M280,417 L280,450" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/><text x="280" y="580" text-anchor="middle" font-size="17" fill="#334155">Distance is not accuracy or relevance probability.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <defs>
+    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/></marker>
+  </defs>
+  <rect width="800" height="380" rx="12" fill="#f8f9fa"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Vector Embedding &amp; Retrieval Flow</text>
+
+  <!-- Indexing phase -->
+  <text x="400" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">📥 Indexing Phase (Offline)</text>
+  <rect x="30" y="70" width="120" height="50" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5"/>
+  <text x="90" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">📄 Text Chunks</text>
+  <text x="90" y="108" text-anchor="middle" font-size="9" fill="#555">Chunk 1...N</text>
+
+  <line x1="150" y1="95" x2="190" y2="95" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <rect x="195" y="70" width="150" height="50" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="270" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">🧠 Embedding Model</text>
+  <text x="270" y="108" text-anchor="middle" font-size="9" fill="#555">text → [0.12, -0.34, ...]</text>
+
+  <line x1="345" y1="95" x2="385" y2="95" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <rect x="390" y="65" width="180" height="60" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="480" y="87" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e44ad">🗄️ Vector Database</text>
+  <text x="480" y="103" text-anchor="middle" font-size="9" fill="#555">ChromaDB / FAISS / Pinecone</text>
+  <text x="480" y="117" text-anchor="middle" font-size="9" fill="#555">vector + raw text + metadata</text>
+
+  <!-- Model selection card -->
+  <rect x="610" y="65" width="170" height="100" rx="8" fill="#e67e22" opacity="0.08" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="695" y="85" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">📊 Model Selection</text>
+  <text x="625" y="103" font-size="9" fill="#555">small: 1536d, $0.02/1M</text>
+  <text x="625" y="118" font-size="9" fill="#555">large: 3072d, $0.13/1M</text>
+  <text x="625" y="133" font-size="9" fill="#555">local: bge-small (free)</text>
+  <text x="625" y="150" font-size="9" fill="#27ae60" font-weight="bold">→ Recommend small (best value)</text>
+
+  <!-- Divider -->
+  <line x1="30" y1="175" x2="770" y2="175" stroke="#bdc3c7" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- Retrieval phase -->
+  <text x="400" y="200" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">🔍 Retrieval Phase (Online)</text>
+
+  <rect x="30" y="215" width="120" height="50" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="90" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">❓ User Query</text>
+  <text x="90" y="253" text-anchor="middle" font-size="9" fill="#555">"Python GIL..."</text>
+
+  <line x1="150" y1="240" x2="190" y2="240" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <rect x="195" y="215" width="150" height="50" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="270" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">🧠 Same Model</text>
+  <text x="270" y="253" text-anchor="middle" font-size="9" fill="#555">query → query vector</text>
+
+  <line x1="345" y1="240" x2="385" y2="240" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <rect x="390" y="215" width="130" height="50" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="455" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e44ad">🔎 Cosine Similarity</text>
+  <text x="455" y="253" text-anchor="middle" font-size="9" fill="#555">Top-K nearest neighbor search</text>
+
+  <line x1="520" y1="240" x2="560" y2="240" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <rect x="565" y="215" width="120" height="50" rx="8" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="625" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#2980b9">📋 Relevant Docs</text>
+  <text x="625" y="253" text-anchor="middle" font-size="9" fill="#555">score + raw text</text>
+
+  <line x1="685" y1="240" x2="710" y2="240" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <rect x="715" y="215" width="65" height="50" rx="8" fill="#2c3e50"/>
+  <text x="748" y="237" text-anchor="middle" font-size="10" fill="white" font-weight="bold">LLM</text>
+  <text x="748" y="253" text-anchor="middle" font-size="8" fill="#bdc3c7">Generate answer</text>
+
+  <!-- Semantic space illustration -->
+  <rect x="200" y="285" width="400" height="75" rx="8" fill="#2c3e50" opacity="0.04" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="400" y="305" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">💡 Core Concept: Semantic Space</text>
+  <text x="400" y="322" text-anchor="middle" font-size="10" fill="#555">"Python programming language" and "writing code with Python" → similar high-dim vectors</text>
+  <text x="400" y="339" text-anchor="middle" font-size="10" fill="#555">"Python (the snake)" → different vector direction (same word, different meaning)</text>
+</svg>

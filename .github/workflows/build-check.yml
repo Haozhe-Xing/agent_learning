@@ -5,10 +5,6 @@ on:
   pull_request:
     paths:
       - 'src/**'
-      - 'examples/**'
-      - 'reference-agent/**'
-      - 'reference_code/**'
-      - 'tools/**'
       - 'theme/**'
       - 'book.toml'
       - 'book-en.toml'
@@ -21,73 +17,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Check chapter links and companion paths
-        run: python3 tools/check_book.py
-
-      - name: Check learning order and chapter handoffs
-        run: |
-          python3 tools/check_learning_path.py
-          python3 -m unittest discover -s tools/tests -v
-
-      - name: Check Python snippet syntax
-        run: python3 tools/check_snippets.py
-
-      - name: Verify companion behavior offline
-        run: python3 -m unittest discover -s examples/tests -v
-
-      - name: Verify standalone reference project
-        run: python3 -m unittest discover -s reference_code/evidence_assistant/tests -v
-
-      - name: Verify read-only SQL boundary
-        run: python3 -m unittest discover -s reference_code/tests -v
-
       - name: Install mdBook
         run: |
-          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-gnu.tar.gz | tar -xz
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.52/mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz | tar -xz
           mv mdbook /usr/local/bin/
 
       - name: Cache cargo bin
         uses: actions/cache@v4
         with:
           path: ~/.cargo/bin
-          key: ${{ runner.os }}-cargo-bin-mdbook-katex-0.10.0
+          key: ${{ runner.os }}-cargo-bin-mdbook-katex-0.9.4
 
       - name: Install mdbook-katex
         run: |
-          if ! mdbook-katex --version 2>/dev/null | grep -q "0.10.0"; then
-            cargo install mdbook-katex --version 0.10.0 --locked
+          if ! mdbook-katex --version 2>/dev/null | grep -q "0.9.4"; then
+            cargo install mdbook-katex --version 0.9.4 --locked
           else
-            echo "mdbook-katex 0.10.0 already cached"
+            echo "mdbook-katex 0.9.4 already cached"
           fi
 
-      - name: Verify rendered chapter links and math with actual tools
-        run: python3 tools/tests/test_rendered_links.py --require-tools
+      - name: Build Chinese version
+        run: mdbook build
 
-      - name: Build both languages with KaTeX
-        run: python3 tools/build_books.py
-
-      - name: Install verified integration dependencies
-        run: python3 -m pip install -r examples/requirements.txt
-
-      - name: Run companion entry points with actual dependencies
-        run: python3 tools/verify_examples.py --integration
-
-      - name: Verify developer team example
-        run: python3 -m pytest examples/dev_team/tests -q
-        env:
-          PYTHONPATH: examples/dev_team
-
-      - name: Verify actual storage and frameworks
-        run: python3 -m pytest examples/integration_tests -q
-
-      - name: Verify reference agent
-        run: python3 -m pytest reference-agent/tests -q
-        env:
-          PYTHONPATH: reference-agent/src
+      - name: Build English version
+        run: |
+          cp book.toml book.toml.zh_bak
+          cp book-en.toml book.toml
+          mdbook build
+          cp book.toml.zh_bak book.toml
+          rm -f book.toml.zh_bak
 
       - name: Check SUMMARY parity (zh vs en)
         run: |

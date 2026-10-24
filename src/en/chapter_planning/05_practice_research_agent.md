@@ -1,23 +1,5 @@
 # 5.5 Hands-On: Automated Research Assistant Agent
 
-Run `python -m reference_code.evidence_assistant` for the moderately difficult reference application, which answers several questions from local documents. The [project guide](../learning_project.md) gives its reading path. This section also retains the smaller `examples/chapter05/research_agent.py` companion for inspecting planning and QA acceptance in isolation; the `ResearchAgent` API below describes that smaller baseline. Web retrieval is a separate integration.
-
-## Iteration and Acceptance
-
-Extend tool use into planned tasks supported by evidence.
-
-- **Success criteria**: Fix a research question and required points; manually check coverage and whether citations support conclusions, retaining search traces.
-- **Failure cases**: Exercise empty results, conflicting sources, and instructions embedded in sources; missing evidence or a high self-score does not establish completion.
-- **Safety boundary**: Treat pages as evidence, cap searches and iterations, and check the report output directory.
-
-Record inputs, expected results, and actual results before extending the system. See [Chapter 18](../chapter_20_evaluation/README.md) for evaluation and [Chapter 19](../chapter_21_security/README.md) for trust and permissions.
-
-The small baseline's `execution.status=completed` means the plan ran. Its research-level `completed` means each question passed the configured QA checks. Defaults only check nonempty answers and labels against retrieved sources; content may still be unsupported or incomplete. This status alone is not final research acceptance. Empty output, provider errors and missing/unknown citations retain stage failures and produce `incomplete`.
-
-Inject `verifier(question, answer, documents) -> bool` through `ResearchAgent(documents, answerer, verifier=...)`; only the literal `True` passes. Excerpt tasks can reuse `verify_excerpts`, while coverage still needs independently frozen requirements. See [6.5](../chapter_rag/05_practice_qa_agent.md) for complete acceptance conditions and counterexamples. Custom open research cannot inherit the bundled data's expectations. Run `python -m unittest reference_code.evidence_assistant.tests.test_answer_acceptance` for basic rejection cases; use the mainline entry above for a multiple-question application with a specification.
-
-The research lineage and multi-module architecture below are extension designs, not Web research capabilities already provided by the small baseline or established by this wave's planning tests.
-
 Integrating the planning, reasoning, and reflection skills learned in this chapter to build an Agent capable of conducting autonomous research.
 
 > **Design Note**: This project adopts a "Plan-then-Execute" multi-stage Pipeline architecture rather than a pure ReAct loop. This is because in a research task, each stage (planning → searching → analysis → quality check) follows a clear sequential order, and the Pipeline pattern makes it easier to control the flow and debug. Within the Pipeline, each stage still applies ReAct thinking — the Agent "thinks" about the next action based on the current stage's output, and "reflects" during the quality check stage. This embodies the principle discussed in Section 5.1: "apply the right reasoning framework to the right scenario."

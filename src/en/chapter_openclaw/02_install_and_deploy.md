@@ -1,4 +1,4 @@
-# 12.2 Installation & 4 Deployment Modes
+# 14.2 Installation & 4 Deployment Modes
 
 > 🦞 *"Four ways to run OpenClaw — from 'try it out' to 'production'."*
 
@@ -82,4 +82,4 @@ $ openclaw doctor
 
 ---
 
-*Next section: [12.3 Architecture: Gateway / Agent Loop / Skills](./03_architecture.md)*
+*Next section: [14.3 Architecture: Gateway / Agent Loop / Skills](./03_architecture.md)*

@@ -1,21 +1,21 @@
-# Part II: Core Capabilities
+# Part 2: Core Capabilities
 
-Bring the task card and model baseline from chapters 1–2: read a distance source and return cited light-travel time in the requested unit, stopping when evidence is insufficient. Chapters 3–8 progressively add execution, memory, planning, evidence, context and host controls. Chapter 9 optionally packages a verified workflow as a skill.
+> 🧠 Systematically master all the core technical capabilities needed to build Agents — from tool calling to reinforcement learning training.
 
-The six calculation stages are foundational checks. For the moderately sized application, run `python -m reference_code.evidence_assistant` and observe local project documents becoming a cited report through retrieval, planning, and context. The tasks share mechanisms but have separate evidence and acceptance criteria. See the [reference project](./learning_project.md) for entry points and reading order.
+This is the most substantial part of the book, containing 7 chapters that cover the complete capability progression chain for Agents.
 
-| Chapter | Where the previous version fails | Artifact added | Keep this failure case |
-|---|---|---|---|
-| [3 Tools](./chapter_tools/README.md) | A model's numeric answer cannot be replayed | Tool inputs, results and call trace | Invalid expressions do not execute |
-| [4 Memory](./chapter_memory/README.md) | A new session forgets the output unit | Consented, isolated and deletable preference | Another user cannot read it |
-| [5 Planning](./chapter_planning/README.md) | Remembering milliseconds does not prevent a missing extraction or conversion step | Dependency order, execution state and stopping rules | Extraction alone is not task completion |
-| [6 RAG](./chapter_rag/README.md) | A completed plan may still use an unsupported quantity | Retrieved text, source IDs and answer checks | Missing evidence, unknown citations and conflicts cannot pass |
-| [7 Context](./chapter_context_engineering/README.md) | Growing history pushes out required evidence | Constructed messages, required items and measured budget | Exhaustion must be explicit, not a silent deletion |
-| [8 Harness](./chapter_harness/README.md) | Good input organization cannot prevent unauthorized actions or self-reported success | Host permissions, call budget and independent acceptance | Denied actions never execute; wrong artifacts never pass |
-| [9 Skills](./chapter_skill/README.md) | The same verified workflow is copied repeatedly | A skill contract for input, permissions, artifact and failure | Reuse must not expand caller permissions |
+| Chapter | Content | Analogy |
+|---------|---------|---------|
+| **Chapter 4** Tool Calling | Function Calling, custom tools | The Agent's "hands" |
+| **Chapter 5** Memory System | Short-term / long-term / working memory | The Agent's "brain" |
+| **Chapter 6** Planning & Reasoning | ReAct, task decomposition, reflection | The Agent's "thinking" |
+| **Chapter 7** RAG | Document retrieval, vector databases | The Agent's "knowledge base" |
+| **Chapter 8** Context Engineering | Window management, attention budget | The Agent's "information hub" |
+| **Chapter 9** Skill System | Skill encapsulation, learning & discovery | The Agent's "skill tree" |
+| **Chapter 10** Agentic-RL | SFT, PPO, DPO, GRPO | The Agent's "self-evolution" |
 
-Memory retains background; planning controls task progress. They solve different problems. Context controls what the model sees; a Harness controls what may execute, when execution stops and who accepts the result.
+**Capability Progression**: Use tools → Remember → Think → Retrieve → Manage context → Encapsulate skills → Self-evolve
 
-Before continuing, run the [shared project](./learning_project.md) and preserve success, missing-evidence, wrong-unit, denied-action and exhausted-budget records. Each chapter distinguishes supplied runnable checks from exercises you implement yourself.
+---
 
-Choose [Part III](./part3.md) when integration code or state recovery needs justify it. Otherwise keep the small implementation and proceed to [evaluation](./chapter_20_evaluation/README.md). Training and self-improvement are in [Part VII](./part7.md); neither is a prerequisite for a first application.
+*Start learning: [Chapter 3: Tool Calling](./chapter_tools/README.md)*

@@ -1,4 +1,4 @@
-# 20.2 API Service Wrapping: FastAPI / Flask
+# 22.2 API Service Wrapping: FastAPI / Flask
 
 > **Section Goal**: Learn how to wrap an Agent as a usable API service using FastAPI.
 
@@ -264,4 +264,4 @@ After starting, visit `http://localhost:8000/docs` to see the auto-generated API
 
 ---
 
-[Next: 20.3 Containerization and Cloud Deployment →](./03_containerization.md)
+[Next: 18.3 Containerization and Cloud Deployment →](./03_containerization.md)

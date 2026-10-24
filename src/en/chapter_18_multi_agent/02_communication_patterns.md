@@ -1,4 +1,4 @@
-# 16.2 Multi-Agent Communication Patterns
+# 18.2 Multi-Agent Communication Patterns
 
 In a multi-Agent system, how Agents exchange information is a core design decision. Different communication patterns suit different scenarios; choosing the wrong one can make the system difficult to maintain or cause performance issues.
 
@@ -379,10 +379,10 @@ Multi-Agent communication has two layers: the **transport layer** solves "how to
 
 When choosing a communication pattern, the core considerations are **coupling**, **observability**, and **whether disagreement must be converged**. In production, shared state (LangGraph) is the most popular for its transparency and debuggability, combined with voting/debate to resolve key disagreements.
 
-> 📖 **Want to dive deeper into communication pattern designs across frameworks?** Read [16.6 Paper Readings: Frontier Research in Multi-Agent Systems](./06_paper_readings.md), covering comparative analysis of communication patterns in MetaGPT, ChatDev, AutoGen, and other frameworks.
+> 📖 **Want to dive deeper into communication pattern designs across frameworks?** Read [18.6 Paper Readings: Frontier Research in Multi-Agent Systems](./06_paper_readings.md), covering comparative analysis of communication patterns in MetaGPT, ChatDev, AutoGen, and other frameworks.
 >
 > 💡 **Design insight**: An important finding in the MetaGPT paper is that **unstructured free-form conversation leads to information loss and accumulated misunderstandings.** Having Agents pass structured intermediate artifacts (such as JSON, code, documents) between each other is more reliable than passing natural language messages.
 
 ---
 
-*Next section: [16.3 Role Division and Task Allocation](./03_role_assignment.md)*
+*Next section: [18.3 Role Division and Task Allocation](./03_role_assignment.md)*

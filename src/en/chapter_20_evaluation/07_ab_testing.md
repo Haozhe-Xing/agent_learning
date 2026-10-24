@@ -1,4 +1,4 @@
-# 18.7 A/B Testing and Regression Test Automation
+# 20.7 A/B Testing and Regression Test Automation
 
 > **Section Goal**: Master A/B testing and regression testing methods for Agents, build an automated prompt-variant testing framework, and integrate evaluation into the CI/CD pipeline.
 
@@ -99,7 +99,7 @@ class ABTestConfig:
 
 ### A/B Test Framework Implementation
 
-> ⚠️ **Honest note**: The `ABTestFramework` below is a **scaffold** — it is not tied to any specific Agent or fixed test set. To actually run it, you need to provide `agent_factory_a/b` (functions that produce real Agents) and a fixed `test_cases`. This book ships a **real, runnable** evaluation harness at `reference-agent/src/reference_agent/evaluation/harness.py` (based on a fixed JSONL task set, reproducible offline). We recommend implementing the A/B ideas here on top of that harness, rather than building another set of code that stays at the class-definition level.
+> ⚠️ **Honest note**: The `ABTestFramework` below is a **scaffold** — it is not tied to any specific Agent or fixed test set. To actually run it, you need to provide `agent_factory_a/b` (functions that produce real Agents) and a fixed `test_cases`. This book ships a **real, runnable** evaluation harness at `reference-agent/evaluation/harness.py` (based on a fixed JSONL task set, reproducible offline). We recommend implementing the A/B ideas here on top of that harness, rather than building another set of code that stays at the class-definition level.
 
 ```python
 class ABTestFramework:
@@ -493,7 +493,7 @@ The core goal of regression testing: **make sure new changes don't break already
 
 ### Regression Test Framework Implementation
 
-> ⚠️ **Honest note**: `RegressionTestSuite` is also a **scaffold** — it defines the interfaces for "register a case / save a baseline / compare for regression", but the `expected_*` checks inside `register_test` and the semantic-similarity comparison require you to wire up a real Agent and a judgment backend to actually work. This book's `reference-agent/src/reference_agent/evaluation/harness.py` already provides a lighter, immediately `pytest`-reproducible judgment implementation (`expect_contains`), which you can use as a starting point for extending semantic/snapshot judging.
+> ⚠️ **Honest note**: `RegressionTestSuite` is also a **scaffold** — it defines the interfaces for "register a case / save a baseline / compare for regression", but the `expected_*` checks inside `register_test` and the semantic-similarity comparison require you to wire up a real Agent and a judgment backend to actually work. This book's `reference-agent/evaluation/harness.py` already provides a lighter, immediately `pytest`-reproducible judgment implementation (`expect_contains`), which you can use as a starting point for extending semantic/snapshot judging.
 
 ```python
 class RegressionTestSuite:
@@ -1032,4 +1032,4 @@ Code change → CI/CD triggered
 
 ---
 
-[18.8 Model Routing Evaluation](./08_model_routing.md)
+[20.8 Model Routing Evaluation](./08_model_routing.md)

@@ -1,72 +1,383 @@
-# 19.3 Permissions and Sandboxing
+# 21.3 Permission Control and Sandbox Isolation
 
-Implement enforceable checks before a narrowly scoped tool operation, then identify the extra requirements for code isolation. `reference_code/security_boundary/` is an in-memory authorization lab, not an arbitrary Python executor.
+> **Section Objective**: Learn to design minimal permission systems and secure execution environments for Agents.
 
-![Host validation, bound approval and pre-operation recheck](../svg/chapter_21_security_03_runtime_flow.svg)
+---
 
-## Check identity, capability, resource and consent separately
+## Agent Runtime / Sandbox: Why Do We Need Runtime Boundaries?
 
-Identity comes from an authenticated host session, not a model-supplied `principal`. Tool permission determines available operations; resource permission determines accessible documents and destinations. Approval confirms one specific action without extending existing authority. [OWASP Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/) recommends limiting functionality, permissions and autonomy, with complete authorization enforced downstream.
+The key difference between an Agent and a regular LLM application is that an Agent doesn't just generate text—it **calls tools, reads/writes files, accesses the network, executes code, and operates browsers**. Therefore, security boundaries cannot just be written into prompts; they must be enforced at the Runtime and Sandbox level.
 
-Roles can allocate base capabilities while resource attributes constrain owner, task, time or scope. A function name containing `read` does not prove harmlessness: a download may contact a prohibited address, and a read can disclose data.
+Think of the Agent Runtime as the "operating system layer between the model and the real world":
 
-The lab's host policy explicitly lists tools, document IDs and destinations. Empty sets grant nothing. The backend checks ownership again, so accidentally allowlisting Bob's document ID still does not let Alice read it.
+![Agent Runtime Architecture](../svg/chapter_21_security_03_runtime_flow.svg)
+
+An Agent without Runtime constraints is like connecting the model directly to production systems. Once the model is subjected to prompt injection, hallucinated tool calls, or misinterpreted tasks, the risks are amplified by tool invocation.
+
+| Runtime Control Point | Purpose | Typical Implementation |
+|-----------------------|---------|------------------------|
+| **Tool Allowlist** | Only allow registered tools to be called | Tool registry / MCP server allowlist |
+| **Schema Validation** | Intercept incorrect parameters and unauthorized fields | JSON Schema / Pydantic |
+| **Permission Policy** | Determine who can do what | RBAC / ABAC / Policy Engine |
+| **Sandbox Isolation** | Restrict code and browser access scope | Docker / Firecracker / E2B / VM |
+| **Resource Limits** | Prevent runaway execution | timeout, CPU, memory, network, file size limits |
+| **Human Approval** | Secondary confirmation for high-risk actions | Human-in-the-loop approval |
+| **Audit Logs** | Post-hoc tracing and regression testing | Trace, tool log, artifact log |
+
+The following subsections will implement the core mechanisms: least privilege, tool wrappers, and code execution sandbox.
+
+---
+
+## Principle of Least Privilege
+
+An Agent should only have the minimum permissions needed to complete its task—just like a company shouldn't give every employee a master key.
+
+![Agent Permission Control and Sandbox Isolation Architecture](../svg/chapter_21_security_03_permission.svg)
 
 ```python
-from reference_code.security_boundary import HostPolicy, proposal_json
-from reference_code.security_boundary.regression import new_lab, READ
+from enum import Flag, auto
+from dataclasses import dataclass
 
-runtime = new_lab()  # Authenticated actor is the fictional Alice fixture.
-assert runtime.execute(READ)['value'] == {
-    'document_id':'alice_policy', 'excerpt':'Refund requests require a receipt.'}
-other = proposal_json('r2', 'read_document', document_id='bob_policy')
-assert runtime.execute(other)['code'] == 'document_denied'
-assert runtime.backend.read_calls == 1
-runtime.replace_policy(HostPolicy('alice', {'read_document'}, set(), set()))
-assert runtime.execute(READ)['code'] == 'document_denied'
-print('Owned read succeeds; cross-owner and empty scope are denied.')
+class Permission(Flag):
+    """Agent permission definitions"""
+    NONE = 0
+    READ_FILE = auto()       # Read files
+    WRITE_FILE = auto()      # Write files
+    EXECUTE_CODE = auto()    # Execute code
+    NETWORK_ACCESS = auto()  # Network access
+    DATABASE_READ = auto()   # Read from database
+    DATABASE_WRITE = auto()  # Write to database
+    SEND_EMAIL = auto()      # Send emails
+    
+    # Predefined permission sets
+    READONLY = READ_FILE | DATABASE_READ
+    STANDARD = READONLY | WRITE_FILE | NETWORK_ACCESS
+    FULL = STANDARD | EXECUTE_CODE | DATABASE_WRITE | SEND_EMAIL
+
+
+@dataclass
+class PermissionPolicy:
+    """Permission policy"""
+    agent_name: str
+    permissions: Permission
+    allowed_paths: list[str] = None     # Allowed file paths
+    allowed_domains: list[str] = None   # Allowed network domains
+    max_file_size: int = 10 * 1024 * 1024  # Maximum file size (10MB)
+    
+    def check(self, action: str, resource: str = None) -> bool:
+        """Check whether permission exists to perform an action"""
+        perm_map = {
+            "read_file": Permission.READ_FILE,
+            "write_file": Permission.WRITE_FILE,
+            "execute": Permission.EXECUTE_CODE,
+            "http_request": Permission.NETWORK_ACCESS,
+            "db_read": Permission.DATABASE_READ,
+            "db_write": Permission.DATABASE_WRITE,
+            "send_email": Permission.SEND_EMAIL,
+        }
+        
+        required = perm_map.get(action)
+        if required is None:
+            return False
+        
+        if not (self.permissions & required):
+            return False
+        
+        # Check resource-level permissions
+        if action in ("read_file", "write_file") and resource:
+            if self.allowed_paths:
+                return any(
+                    resource.startswith(p) for p in self.allowed_paths
+                )
+        
+        if action == "http_request" and resource:
+            if self.allowed_domains:
+                from urllib.parse import urlparse
+                domain = urlparse(resource).hostname
+                return domain in self.allowed_domains
+        
+        return True
+
+
+# Usage example
+customer_service_policy = PermissionPolicy(
+    agent_name="customer_service",
+    permissions=Permission.READONLY | Permission.NETWORK_ACCESS,
+    allowed_paths=["/data/faq/", "/data/products/"],
+    allowed_domains=["api.internal.com"]
+)
+
+# Check permissions
+print(customer_service_policy.check("read_file", "/data/faq/guide.md"))  # True
+print(customer_service_policy.check("write_file", "/etc/passwd"))  # False
+print(customer_service_policy.check("execute"))  # False
 ```
 
-## Bind approval to content and recheck authority
+---
 
-The host invokes `ApprovalRegistry` to issue an opaque proof bound to the principal, request ID, tool, canonical digest of all arguments and deadline. The model cannot issue a proof through `approved=True`: the closed schema rejects that extra field. A real host must authenticate the reviewer and show the exact action and impact, rather than a generic “continue” prompt.
+## Secure Tool Wrapper
+
+Add security checks before and after tool execution:
 
 ```python
-from reference_code.security_boundary import HostPolicy, proposal_json
-from reference_code.security_boundary.regression import new_lab, NOTICE
+import functools
 
-runtime = new_lab()
-token = runtime.approvals.issue('alice', NOTICE, approved=True)
-changed = proposal_json('notice1', 'publish_notice', destination='board', text='Changed content.')
-assert runtime.execute(changed, approval_token=token)['code'] == 'approval_required'
-runtime.replace_policy(HostPolicy('alice', {'read_document'}, {'alice_policy'}, set()))
-assert runtime.execute(NOTICE, approval_token=token)['code'] == 'tool_denied'
-assert runtime.backend.publish_calls == 0
-print('Approval cannot authorize changed content or override revocation.')
+def secure_tool(policy: PermissionPolicy):
+    """Secure tool decorator — adds permission checks to tools"""
+    
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            tool_name = func.__name__
+            
+            # Permission check
+            action = _infer_action(tool_name)
+            resource = kwargs.get("path") or kwargs.get("url")
+            
+            if not policy.check(action, resource):
+                return {
+                    "error": f"Insufficient permissions: {tool_name} requires {action} permission",
+                    "allowed": False
+                }
+            
+            # Execute the tool
+            try:
+                result = func(*args, **kwargs)
+                
+                # Record audit log
+                _log_tool_execution(
+                    agent=policy.agent_name,
+                    tool=tool_name,
+                    args=kwargs,
+                    success=True
+                )
+                
+                return result
+                
+            except Exception as e:
+                _log_tool_execution(
+                    agent=policy.agent_name,
+                    tool=tool_name,
+                    args=kwargs,
+                    success=False,
+                    error=str(e)
+                )
+                raise
+        
+        return wrapper
+    return decorator
+
+
+def _infer_action(tool_name: str) -> str:
+    """Infer required permission from tool name"""
+    action_keywords = {
+        "read": "read_file",
+        "write": "write_file",
+        "save": "write_file",
+        "execute": "execute",
+        "run": "execute",
+        "fetch": "http_request",
+        "search": "http_request",
+        "query": "db_read",
+        "insert": "db_write",
+        "delete": "db_write",
+        "email": "send_email",
+    }
+    
+    for keyword, action in action_keywords.items():
+        if keyword in tool_name.lower():
+            return action
+    
+    return "unknown"
+
+
+def _log_tool_execution(**kwargs):
+    """Record tool execution log (simplified version)"""
+    import json, datetime
+    log_entry = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        **kwargs
+    }
+    print(f"[AUDIT] {json.dumps(log_entry, ensure_ascii=False)}")
 ```
 
-The runtime reads current policy and checks again immediately before writing. This is a synchronous, single-process fixture. Concurrent services need backend transactions or version conditions for state changes after checking; two Python `if` statements do not prove cross-service atomicity.
+---
 
-## Why string filters do not isolate code
+## Code Execution Sandbox
 
-The old example allowed file paths using `resource.startswith(root)`: `/allowed/../private` could match. Missing resources or empty allowlists could also fall through to permission. Its `CodeSandbox` blocked a few AST calls/imports before starting an ordinary child process, which could still read host files with built-in `open`. The `max_memory_mb` field enforced no limit.
+If an Agent needs to execute code, it must run in an isolated environment:
 
-This section therefore removes host execution of arbitrary programs. AST validation can define a narrow expression language; it cannot turn full Python into a secure sandbox. A changed `HOME`, temporary directory or timeout does not remove filesystem or network capabilities. For restricted arithmetic, reuse Chapter 3's numeric AST evaluator, which does not execute Python programs.
+```python
+import subprocess
+import tempfile
+import os
 
-A real file tool needs a controlled root, resolved containment, symlink policy, race-resistant opening and read/output limits. Network tools separately need redirect, DNS/IP, private-address and egress controls. Checking a string and then passing the original input into an unrestricted operation does not implement those contracts.
+class CodeSandbox:
+    """Code execution sandbox"""
+    
+    def __init__(
+        self,
+        timeout: int = 10,
+        max_memory_mb: int = 256,
+        allowed_imports: list[str] = None
+    ):
+        self.timeout = timeout
+        self.max_memory_mb = max_memory_mb
+        self.allowed_imports = allowed_imports or [
+            "math", "json", "datetime", "re",
+            "collections", "itertools", "functools",
+            "statistics", "random", "string"
+        ]
+    
+    def validate_code(self, code: str) -> tuple[bool, str]:
+        """Validate code safety before execution"""
+        import ast
+        
+        try:
+            tree = ast.parse(code)
+        except SyntaxError as e:
+            return False, f"Syntax error: {e}"
+        
+        # Check for dangerous operations
+        dangerous_calls = {
+            "eval", "exec", "compile",
+            "__import__", "globals", "locals",
+            "getattr", "setattr", "delattr",
+        }
+        
+        dangerous_modules = {
+            "os", "sys", "subprocess", "shutil",
+            "socket", "http", "urllib",
+        }
+        
+        for node in ast.walk(tree):
+            # Check function calls
+            if isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Name):
+                    if node.func.id in dangerous_calls:
+                        return False, f"Prohibited call: {node.func.id}()"
+            
+            # Check imports
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    module_name = alias.name.split(".")[0]
+                    if module_name in dangerous_modules:
+                        return False, f"Prohibited import: {module_name}"
+                    if (self.allowed_imports and 
+                        module_name not in self.allowed_imports):
+                        return False, f"Not in allowlist: {module_name}"
+            
+            if isinstance(node, ast.ImportFrom):
+                if node.module:
+                    module_name = node.module.split(".")[0]
+                    if module_name in dangerous_modules:
+                        return False, f"Prohibited import: {module_name}"
+        
+        return True, "Code validation passed"
+    
+    def execute(self, code: str) -> dict:
+        """Execute code in the sandbox"""
+        
+        # Validate first
+        is_safe, message = self.validate_code(code)
+        if not is_safe:
+            return {
+                "success": False,
+                "error": message,
+                "output": ""
+            }
+        
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(
+            mode='w', suffix='.py', delete=False
+        ) as f:
+            f.write(code)
+            temp_path = f.name
+        
+        try:
+            # Execute in subprocess (with resource limits)
+            result = subprocess.run(
+                ["python3", temp_path],
+                capture_output=True,
+                text=True,
+                timeout=self.timeout,
+                env={
+                    "PATH": "/usr/bin:/usr/local/bin",
+                    "HOME": tempfile.gettempdir(),
+                }
+            )
+            
+            return {
+                "success": result.returncode == 0,
+                "output": result.stdout,
+                "error": result.stderr if result.returncode != 0 else "",
+            }
+            
+        except subprocess.TimeoutExpired:
+            return {
+                "success": False,
+                "error": f"Execution timed out ({self.timeout} seconds)",
+                "output": ""
+            }
+        finally:
+            os.unlink(temp_path)
 
-## Independently verify any arbitrary-code isolation service
 
-| Capability to constrain | Required evidence |
-|---|---|
-| Host files/credentials | Explicit task mounts; no container-management socket or host secrets |
-| Network | Enforced and tested egress policy outside the model |
-| CPU/memory/processes/storage/output | Real quotas; termination and cleanup of the entire task on breach |
-| Lifecycle | A task-specific isolation scope; observable failure, cancellation and residue |
-| Results | Bounded artifacts and independent verification, beyond exit code zero |
+# Usage example
+sandbox = CodeSandbox(timeout=5)
 
-Containers, microVMs and managed services have different configuration and trust assumptions; product names do not establish an absolute safety ranking. [Docker's security documentation](https://docs.docker.com/engine/security/) discusses namespaces, cgroups, daemon attack surface and configuration separately. The local lab does not provide these mechanisms, and no such deployment was tested here.
+# Safe code
+result = sandbox.execute("""
+import math
+print(f"Pi = {math.pi:.10f}")
+print(f"Square root of 2 = {math.sqrt(2):.10f}")
+""")
+print(result)  # {"success": True, "output": "Pi = ...\n", "error": ""}
 
-Exercise: before adding a resource permission, freeze expectations for unauthorized access, empty scope, revocation after approval and retries. Operation counters must show that denied requests never enter the actual operation before connecting a real external service.
+# Dangerous code will be intercepted
+result = sandbox.execute("""
+import os
+os.system("rm -rf /")
+""")
+print(result)  # {"success": False, "error": "Prohibited import: os", "output": ""}
+```
 
-*Next: [19.4 Sensitive Data Protection](./04_data_protection.md)*
+### Additional Requirements for Production-Grade Sandboxes
+
+The `CodeSandbox` above is suitable for educational and prototype validation, but production environments cannot rely solely on Python process isolation. A more reliable approach is to place each task in an independent runtime environment:
+
+| Sandbox Solution | Use Case | Advantages | Considerations |
+|-----------------|----------|------------|----------------|
+| **Docker Container** | Code execution, file processing, CI tasks | Mature, reproducible, rich ecosystem | Must disable privileged mode, restrict mount directories |
+| **Firecracker / microVM** | Multi-tenant high-risk tasks | Strong isolation, fast startup | Higher operational complexity |
+| **E2B / Code Interpreter Sandbox** | Agent code execution | Purpose-built for Agents, API-friendly | Cost and vendor lock-in |
+| **Browser Sandbox** | Web Agent / Browser Use | Can restrict domains, downloads, and form submissions | Must prevent indirect prompt injection |
+| **Full VM** | GUI / Computer Use | Strongest isolation, supports desktop environments | Slow startup, high cost |
+
+A production-grade Agent Runtime should also support three additional capabilities:
+
+1. **Snapshot & Rollback**: Save an environment snapshot before a task starts, and restore it on failure or privilege escalation.
+2. **Network Egress Control**: Only allow access to allowlisted domains to prevent data exfiltration.
+3. **Artifact Isolation**: Store generated files, downloaded files, and logs in separate partitions to avoid contaminating the host machine.
+
+For Browser Use, Computer Use, and code execution Agents, sandboxing is not a "nice-to-have"—it is the minimum requirement before going live.
+
+---
+
+## Summary
+
+| Concept | Description |
+|---------|-------------|
+| Agent Runtime | The runtime control layer between the model and the external environment |
+| Least Privilege | The Agent only has the minimum permissions needed to complete its task |
+| Permission Policy | Defines allowed operations and accessible resources |
+| Secure Wrapper | Adds permission checks and audit logging before and after tool execution |
+| Code Sandbox | Executes untrusted code in an isolated environment |
+| Code Validation | Checks for dangerous operations via AST analysis before execution |
+| Production-Grade Sandbox | Docker, microVM, E2B, browser sandbox, or full VM |
+
+> **Next Section Preview**: Agents may have access to users' sensitive data—how do we protect that data?
+
+---
+
+[21.4 Sensitive Data Protection](./04_data_protection.md)

@@ -1,4 +1,4 @@
-# 20.4 流式响应与并发处理
+# 22.4 流式响应与并发处理
 
 > **本节目标**：掌握 Agent 服务的流式输出和高并发处理技术。
 
@@ -228,4 +228,4 @@ class LLMConnectionPool:
 
 ---
 
-[20.5 实战：部署一个生产级 Agent 服务](./05_practice_production_agent.md)
+[22.5 实战：部署一个生产级 Agent 服务](./05_practice_production_agent.md)

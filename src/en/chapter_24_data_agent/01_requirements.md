@@ -1,4 +1,4 @@
-# 22.1 Requirements Analysis and Architecture Design
+# 24.1 Requirements Analysis and Architecture Design
 
 > **Section Goal**: Design the overall plan for an intelligent data analysis Agent.
 
@@ -60,54 +60,168 @@ class AnalysisResult:
 
 ---
 
-## Component Selection and Dependency Scope
+## Technology Selection
 
-Fix the task, data-access boundary, and independent expectations before choosing components. This chapter ran no controlled model ranking, database benchmark, or chart-library comparison; it cannot claim that a particular model has the highest SQL accuracy.
+Building a data analysis Agent requires choosing a technology stack across multiple dimensions:
 
-| Layer | Starting point here | Required evidence before extension |
-|---|---|---|
-| SQL proposals | The 22.2 fixed provider checks an interface | Live model/SDK versions, data exposure, failures, and business acceptance rate |
-| Data access | Standard-library SQLite and `ReadOnlySQLite` | Other drivers, dialects, account/row/column permissions, and resource policies need separate implementation |
-| Analysis and charts | Domain designs in 22.3 | Types, units, statistics, plotted values, output files, and actual dependencies |
-| Insights and reports | Candidate-report design in 22.4 | Traceable conclusions, missing items, format, and independent delivery requirements |
-| Orchestration | Host-defined dependencies in 22.5 | Measure a need before adding state graphs, human review, or parallelism |
-
-Section 22.2 and its tests need only Python's standard library, run from the repository root with Python 3.11+. Model SDKs and data-analysis libraries are unnecessary for that exercise. When assembling 22.3–22.4, record actual components and exact versions in a separate environment and verify the dependencies. Installing several packages does not supply a complete application; these domain extensions are also not prerequisites for the continuing reference project.
-
-## Security and Result Boundaries
-
-| Problem | Supplied or required measure | What it does not establish |
-|---|---|---|
-| Untrusted SQL proposal | A read-only connection plus native action/table/function permissions; bind values | Regex allowlists, SELECT prefixes, and prompts cannot grant authorization |
-| Resource consumption | The 22.2 progress callback, elapsed-time checks, and bounded result rows | LIMIT cannot bound all scans/aggregates; row count does not bound field bytes |
-| Data disclosure | Send only allowed schema; enforce identity, purpose, and row/column rules at the business access layer | Read-only access or harmless-looking field names do not make data public |
-| Wrong analysis/report | Fixed definitions and independent numeric/artifact expectations; retain failures | Executable SQL, an existing chart, or model self-review cannot establish task completion |
-
-See 22.2 for the actual database implementation, tests, and scope. Identity, row/column business authorization, and complete sensitive-data governance are not supplied by that executor.
-
-## Pipeline Responsibilities
-
-![Six-step data analysis design](../svg/chapter_24_data_agent_02_analysis_flow.svg)
-
-The following is **design pseudocode**, not an implemented `DataAnalysisAgent` class. Components beyond data access need 22.3–22.4 domain implementations and the integration contracts in 22.5:
-
-```text
-Receive task and delivery requirements
-1. Clarify metrics, dates, currency, permissions, and independent expectations
-2. Read allowed schema and propose SQL; stop for clarification when required
-3. Execute under host database permissions and resource budgets
-4. Check types, missing values, and units; calculate statistics; insights remain proposals
-5. Generate charts and check axes, values, and file artifacts
-6. Form a report candidate; independently check results and all required deliverables
-Save and mark final delivery only when every required condition passes
+```python
+TECH_STACK = {
+    "LLM Layer": {
+        "Recommended": "GPT-4o",
+        "Reason": "Highest SQL generation accuracy, strong code understanding",
+        "Alternatives": "GPT-4o-mini (cost-sensitive), Claude 4 (long-context analysis)",
+    },
+    "Database Connection Layer": {
+        "Recommended": "SQLAlchemy",
+        "Reason": "Unified interface supporting multiple databases (SQLite, PostgreSQL, MySQL)",
+        "Alternatives": "Direct database drivers (sqlite3, psycopg2)",
+    },
+    "Data Processing Layer": {
+        "Recommended": "pandas",
+        "Reason": "De facto standard for data cleaning, transformation, and statistical analysis",
+        "Alternatives": "polars (better performance for large datasets)",
+    },
+    "Visualization Layer": {
+        "Recommended": "matplotlib + seaborn",
+        "Reason": "Comprehensive features, rich documentation, high chart quality",
+        "Alternatives": "plotly (interactive charts), pyecharts (Chinese-friendly)",
+    },
+    "Agent Framework": {
+        "Recommended": "LangGraph",
+        "Reason": "Stateful analysis flow control, supports human review nodes",
+        "Alternatives": "Native OpenAI API (simple scenarios)",
+    },
+}
 ```
 
-Step count is not model-call count. Models may propose SQL and prose, while the host enforces authorization, budgets, and acceptance. Analysis or report stages may also call a model, so they are not collectively deterministic computation. Record successful proposals separately from correct business answers.
+### Key Dependency Installation
 
-## Summary
-
-This section defines task and component responsibilities. Section 22.2 supplies runnable SQLite boundaries and a SQL-proposal interface; 22.3–22.4 remain domain implementation designs, and 22.5 defines assembly and acceptance. Actual components and a fixed small dataset are still required for a complete domain delivery.
+```bash
+# Core dependencies for the data analysis Agent
+pip install langchain langchain-openai langgraph \
+            sqlalchemy pandas matplotlib seaborn \
+            tabulate python-dotenv
+```
 
 ---
 
-[22.2 Data Connection and Querying](./02_data_connection.md)
+## Security Design Considerations
+
+The data analysis Agent interacts directly with databases, making security the **top priority**:
+
+```python
+SECURITY_REQUIREMENTS = {
+    "SQL Injection Protection": {
+        "Measure": "Only allow SELECT statements, prohibit INSERT/UPDATE/DELETE/DROP",
+        "Implementation": "Regex whitelist + parameterized queries",
+        "Priority": "P0 (mandatory)",
+    },
+    "Database Least Privilege": {
+        "Measure": "Connect to database using a read-only account",
+        "Implementation": "Create dedicated readonly user, grant only SELECT permission",
+        "Priority": "P0 (mandatory)",
+    },
+    "Query Resource Limits": {
+        "Measure": "Prevent generating resource-intensive queries (full table scans, Cartesian products)",
+        "Implementation": "Force LIMIT, set query timeout",
+        "Priority": "P1 (important)",
+    },
+    "Sensitive Data Masking": {
+        "Measure": "Avoid sending sensitive data (phone numbers, IDs) to LLM",
+        "Implementation": "Automatically detect and mask sensitive fields in query results",
+        "Priority": "P1 (important)",
+    },
+}
+```
+
+> ⚠️ **Important reminder**: Never let LLM-generated SQL execute directly. It must go through a security check layer — this is the biggest security difference between a data analysis Agent and a chatbot.
+
+---
+
+## Complete Pipeline Design
+
+![Data Analysis Agent Six-Step Pipeline](../svg/chapter_24_data_agent_02_analysis_flow.svg)
+
+The analysis process is divided into six stages, each with clear inputs and outputs (see diagram above).
+
+---
+
+## Agent Core Structure
+
+Below is the skeleton design of `DataAnalysisAgent`. Each method represents an independent stage in the analysis pipeline, which we will implement one by one in subsequent sections. Here we explain the **design rationale** for each method:
+
+```python
+class DataAnalysisAgent:
+    """Intelligent Data Analysis Agent"""
+    
+    def __init__(self, llm, db_connection):
+        self.llm = llm
+        self.db = db_connection
+        self.table_schemas = self._load_schemas()
+    
+    def _load_schemas(self) -> dict:
+        """Load database table structure
+        
+        Design rationale:
+        - Query INFORMATION_SCHEMA to get all table names, column names, data types
+        - Format table structure as LLM-understandable text (e.g., "users(id INT, name TEXT, ...")
+        - Cache results in self.table_schemas to avoid repeated queries per analysis
+        - This structure info will serve as context when LLM generates SQL
+        """
+        schemas = {}
+        # Actual implementation in Section 21.2 SafeDatabaseConnector
+        return schemas
+    
+    async def analyze(self, request: AnalysisRequest) -> AnalysisResult:
+        """Execute analysis pipeline — six-step pipeline"""
+        
+        # 1. Understand user intent
+        #    Map natural language to AnalysisType (descriptive, comparative, trend, correlation)
+        #    Extract time range, target tables, and other key information
+        intent = await self._understand_intent(request.question)
+        
+        # 2. Generate SQL query
+        #    Combine table structure + user intent, let LLM generate safe SELECT query
+        #    Includes SQL injection protection (only allow SELECT, prohibit DDL/DML)
+        sql = await self._generate_sql(request.question, intent)
+        
+        # 3. Execute query
+        #    Execute via parameterized query, return structured data (dict/DataFrame)
+        data = self._execute_query(sql)
+        
+        # 4. Analyze data
+        #    Choose different analysis strategies based on analysis type (statistical metrics, growth rate calculation, etc.)
+        #    Let LLM extract key insights from data
+        insights = await self._analyze_data(data, request.question)
+        
+        # 5. Generate visualization
+        #    Automatically select chart type based on analysis type (bar chart, line chart, scatter plot, etc.)
+        #    Generate chart using matplotlib and save
+        chart_path = self._create_chart(data, intent)
+        
+        # 6. Generate summary
+        #    Integrate data, insights, and charts into a natural language analysis report
+        summary = await self._generate_summary(
+            data, insights, request.question
+        )
+        
+        return AnalysisResult(
+            summary=summary,
+            data=data,
+            sql_query=sql,
+            chart_path=chart_path,
+            insights=insights
+        )
+```
+
+> **Architecture key point**: The critical design decision of this six-step pipeline is separating "understanding" (steps 1–2) from "execution" (steps 3–6). The understanding phase is LLM-driven, while the execution phase is completed by deterministic code. This hybrid architecture leverages LLM's semantic understanding while ensuring reliability and controllability of data processing. Complete implementations of each method will be progressively introduced in Sections 20.2–20.4.
+
+---
+
+## Summary
+
+This section established the core features and architecture of the data analysis Agent. Next we will implement each module step by step.
+
+---
+
+[Next: 20.2 Data Connection and Querying →](./02_data_connection.md)

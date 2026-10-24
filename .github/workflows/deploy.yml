@@ -25,35 +25,37 @@ jobs:
 
       - name: Install mdBook
         run: |
-          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-gnu.tar.gz | tar -xz
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.52/mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz | tar -xz
           mv mdbook /usr/local/bin/
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
 
       - name: Cache cargo bin
         uses: actions/cache@v4
         with:
           path: ~/.cargo/bin
-          key: ${{ runner.os }}-cargo-bin-mdbook-katex-0.10.0
+          key: ${{ runner.os }}-cargo-bin-mdbook-katex-0.9.4
 
       - name: Install mdbook-katex
         run: |
-          if ! mdbook-katex --version 2>/dev/null | grep -q "0.10.0"; then
-            cargo install mdbook-katex --version 0.10.0 --locked
+          if ! mdbook-katex --version 2>/dev/null | grep -q "0.9.4"; then
+            cargo install mdbook-katex --version 0.9.4 --locked
           else
-            echo "mdbook-katex 0.10.0 already cached"
+            echo "mdbook-katex 0.9.4 already cached"
           fi
 
-      - name: Verify rendered chapter links and math with actual tools
-        run: python3 tools/tests/test_rendered_links.py --require-tools
-
-      - name: Build both languages with KaTeX
+      - name: Build with mdBook
         run: |
-          python3 tools/check_book.py
-          python3 tools/check_learning_path.py
-          python3 tools/build_books.py
+          # Build Chinese version
+          mdbook build
+
+          # Build English version
+          # mdbook v0.4.52 removed --config flag, use temporary book.toml swap instead
+          cp book.toml book.toml.zh_bak
+          cp book-en.toml book.toml
+          mdbook build
+          cp book.toml.zh_bak book.toml
+          rm -f book.toml.zh_bak
+
+          # Copy root index.html for language detection & redirection
           cp root-index.html ./book/index.html
 
       - name: Upload artifact

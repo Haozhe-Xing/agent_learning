@@ -1,33 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 414" width="720" height="414" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif" role="img" aria-labelledby="rl-title rl-description">
-  <title id="rl-title">采样奖励、中心化与优势的边界</title>
-  <desc id="rl-description">条件：同一问题的当前采样组 · 二元结果奖励 · 仅看结果奖励的组内相对项. 采样组不等于模型对该题的真实成功概率。 若除以组内标准差：零方差须跳过，或用 ε &gt; 0 保护。 其他奖励、KL / 熵项取决于实际训练配置。 本图不能推出通用的难度或通过率“甜点”阈值。</desc>
-  <rect width="720" height="414" rx="12" fill="#f8fafc"/>
-  <text x="360" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">采样奖励、中心化与优势的边界</text>
-  <text x="360" y="53" text-anchor="middle" font-size="11.5" fill="#475569">条件：同一问题的当前采样组 · 二元结果奖励 · 仅看结果奖励的组内相对项</text>
-  <text x="360" y="76" text-anchor="middle" font-size="12" fill="#334155">中心化：d_i = r_i − mean(r)；优势可再按组标准差缩放</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" width="480" height="260" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect width="480" height="260" rx="12" fill="#f8fafc"/>
+  <text x="240" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">有效 vs 无效 RL 训练数据</text>
 
-  <!-- Equal rewards in the current sampled group; no global data-quality verdict. -->
-  <rect x="24" y="94" width="324" height="186" rx="10" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
-  <text x="186" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">当前组的奖励全部相同</text>
-  <text x="186" y="146" text-anchor="middle" font-family="monospace" font-size="12" fill="#1e3a8a">r = (0,0,0,0), mean(r) = 0</text>
-  <text x="186" y="171" text-anchor="middle" font-family="monospace" font-size="12" fill="#1e3a8a">r = (1,1,1,1), mean(r) = 1</text>
-  <rect x="40" y="195" width="292" height="64" rx="6" fill="#dbeafe" stroke="#93c5fd"/>
-  <text x="186" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">中心化奖励：d = (0, 0, 0, 0)</text>
-  <text x="186" y="243" text-anchor="middle" font-size="11.5" fill="#1e3a8a">ε &gt; 0 保护时，归一化优势为 0</text>
+  <!-- 无效数据 -->
+  <rect x="20" y="48" width="205" height="180" rx="10" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+  <text x="122" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#be123c">❌ 无效数据</text>
+  <text x="122" y="88" text-anchor="middle" font-size="11" fill="#f43f5e">奖励恒为 0 或恒为 1</text>
 
-  <!-- Mixed binary rewards provide differences in this term, not assured improvement. -->
-  <rect x="372" y="94" width="324" height="186" rx="10" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.5"/>
-  <text x="534" y="119" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">当前组同时出现 0 和 1</text>
-  <text x="534" y="146" text-anchor="middle" font-family="monospace" font-size="12" fill="#166534">r = (0,1,0,1), mean(r) = 0.5</text>
-  <text x="534" y="171" text-anchor="middle" font-family="monospace" font-size="12" fill="#166534">d = (−0.5,+0.5,−0.5,+0.5)</text>
-  <rect x="388" y="195" width="292" height="64" rx="6" fill="#dcfce7" stroke="#86efac"/>
-  <text x="534" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">该主项对组内回答产生区分</text>
-  <text x="534" y="243" text-anchor="middle" font-size="11.5" fill="#14532d">不保证策略改进或任务成功</text>
+  <rect x="36" y="100" width="173" height="50" rx="6" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
+  <text x="122" y="120" text-anchor="middle" font-size="11" fill="#9f1239">所有回答得分相同</text>
+  <text x="122" y="138" text-anchor="middle" font-size="11" fill="#9f1239">（全 0 或全 1）</text>
 
-  <!-- Scope limits apply to both columns. -->
-  <rect x="24" y="296" width="672" height="104" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
-  <text x="40" y="318" font-size="11.5" fill="#334155">采样组不等于模型对该题的真实成功概率。</text>
-  <text x="40" y="340" font-size="11.5" fill="#334155">若除以组内标准差：零方差须跳过，或用 ε &gt; 0 保护。</text>
-  <text x="40" y="362" font-size="11.5" fill="#334155">其他奖励、KL / 熵项取决于实际训练配置。</text>
-  <text x="40" y="384" font-size="11.5" fill="#334155">本图不能推出通用的难度或通过率“甜点”阈值。</text>
+  <rect x="36" y="162" width="173" height="52" rx="6" fill="#fca5a5" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="122" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#7f1d1d">模型无法区分好坏</text>
+  <text x="122" y="198" text-anchor="middle" font-size="11" fill="#b91c1c">学不到任何东西</text>
+
+  <!-- 有效数据 -->
+  <rect x="255" y="48" width="205" height="180" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="357" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">✅ 有效数据</text>
+  <text x="357" y="88" text-anchor="middle" font-size="11" fill="#22c55e">同一问题有高分也有低分</text>
+
+  <rect x="271" y="100" width="173" height="50" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+  <text x="357" y="120" text-anchor="middle" font-size="11" fill="#166534">G 个回答中</text>
+  <text x="357" y="138" text-anchor="middle" font-size="11" fill="#166534">得分有高有低</text>
+
+  <rect x="271" y="162" width="173" height="52" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="357" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">模型对比学习</text>
+  <text x="357" y="198" text-anchor="middle" font-size="11" fill="#14532d">"这样做 +1，那样做 0"</text>
+
+  <!-- 通过率说明 -->
+  <rect x="20" y="238" width="440" height="16" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="240" y="250" text-anchor="middle" font-size="10" fill="#3730a3">💡 有效区间：同一问题通过率在 20%~80% 之间，模型才能获得有效学习信号</text>
 </svg>

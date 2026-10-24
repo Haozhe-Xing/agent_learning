@@ -1,141 +1,236 @@
-# 17.5 Practice: MCP-Based Tool Integration
+# 19.5 Practice: Complete MCP-Based Tool Integration
 
-## Iteration and Acceptance
-
-Move an existing calculator into a separate process. Discover and call it with structured requests, then verify that malformed input does not break subsequent calls.
-
-- **Success criteria**: Send `initialize`, `tools/list`, and `tools/call` to one stdio process; check request IDs and the result `96` for `12*8`.
-- **Failure cases**: Send malformed JSON, invalid request IDs, array/object tool names, and non-object arguments before a valid calculation. Errors must be explicit and the later call must still succeed.
-- **Safety boundary**: Expose only the restricted calculator. Connectivity grants no business authorization; external tool descriptions and results cannot expand host permissions.
-
-Retain input lines, responses, process status, and verdicts. See [chapter 18](../chapter_20_evaluation/README.md) for evaluation and [chapter 19](../chapter_21_security/README.md) for permissions.
+This section demonstrates how to package custom tools as an MCP server and use them in a LangChain Agent.
 
 ![MCP Tool Integration Architecture](../svg/chapter_19_protocol_05_mcp_integration.svg)
 
-The diagram shows the Client, Agent, and tool-service boundaries. This exercise actually runs the client-to-calculator subprocess segment; it supplies no ready-made model or framework adapter.
+The core value of MCP lies in **standardization and decoupling**: the implementation of tools (MCP Server) and the use of tools (MCP Client / Agent) are completely separated. This means you can write tool servers in any language, and any Agent framework that supports the MCP protocol can use these tools directly, without needing to adapt separately for each framework.
 
-## 1. What Is Supplied
+The code below implements three key components:
 
-The single service implementation is `reference-agent/src/reference_agent/mcp_server.py`; tests are in `reference-agent/tests/test_mcp_server.py`. Execution lives in `reference-agent/src/reference_agent/tools/calculator.py`. Read these files rather than maintaining a copied, incomplete `handle` implementation in the chapter.
+1. **MCPTool adapter**: Wraps MCP tools as LangChain `BaseTool` — this is a "bridge" pattern that allows LangChain Agents to seamlessly use MCP tools just like native tools
+2. **Dynamic tool loading**: Automatically discovers and loads all available tools from the MCP Server, no manual registration needed
+3. **Agent integration**: Injects the loaded MCP tools into a LangChain Agent
 
-This is a **stdio / JSON-RPC teaching subset using MCP tool message shapes**. Each line contains one JSON object. It supports `initialize`, `tools/list`, and `tools/call`, exposes only `calculator`, and returns text content. Valid notifications without an `id` receive no response. End-of-input closes the process.
+### About Session Lifecycle
 
-Initialization declares the fixed value `protocolVersion="2024-11-05"` without version negotiation or a fully enforced initialization state machine. The example has no batch requests, tool pagination, HTTP/SSE, remote authentication, resource/prompt features, or cancellation. Official SDK interoperability has not been verified. Do not infer complete MCP compatibility or production readiness.
-
-## 2. Validate Before Looking Up a Tool
-
-`main` parses each line, `handle` validates requests and IDs, and `_tools_call` checks the name and argument container before accessing the registry. The calculator then constrains expression content and computational resources.
-
-| Check | Current behavior |
-|---|---|
-| Request | An object with `jsonrpc="2.0"` and a string `method`; arrays are not supported batches |
-| Request ID | The teaching validator accepts strings, integers, finite floats, and `null`; it rejects booleans, arrays, objects, and non-finite numbers. Valid IDs are preserved; invalid IDs yield `null` in the response. This is the example's behavior, not a statement of complete MCP ID rules |
-| `params` / `arguments` | Omitted fields default to empty objects; supplied values must be objects. This is not generic `inputSchema` validation |
-| Tool name | A non-empty string is required before registry lookup; unknown tools are rejected |
-| Tool execution | Missing `expression`, invalid expressions, and arithmetic failures are raised by the function signature or calculator and mapped to the example's execution-error response |
-
-Consequently, `name=[]` or `name={}` cannot reach dictionary lookup and cause an uncaught `TypeError`. Invalid containers and calculator failures have distinct responses; neither should be reported indiscriminately as an unknown tool.
-
-## 3. Distinguish Error Channels
-
-The example returns either a successful `result` or a top-level `error`, never both. Its mappings are below; general codes are defined by the [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification#error_object).
-
-| Condition | Current response |
-|---|---|
-| Unparseable JSON | `error.code=-32700` |
-| Invalid request shape or ID | `error.code=-32600` |
-| Unknown method | `error.code=-32601` |
-| Non-object parameters, invalid tool name, or unknown tool | `error.code=-32602` |
-| Calculator call raises, such as `1/0` | `error.code=-32603` |
-
-The [MCP 2024-11-05 tools specification](https://modelcontextprotocol.io/specification/2024-11-05/server/tools#error-handling) also defines tool-execution errors inside `result` with `isError=true`, distinct from JSON-RPC `error`. **The companion does not implement that field**; it simplifies tool-call exceptions into `-32603`. This is not a general recommendation for representing business failures in MCP.
-
-A client for a fuller implementation should inspect top-level `error`, then the tool result's `isError`, before consuming successful content. A `result` alone does not establish task success. This chapter tests the implemented subset; adding error semantics requires corresponding source and test changes.
-
-## 4. Recover Within the Same Process
-
-Save and run the following Python from the repository root. It uses only the standard library to send seven stdin lines to **one** service process: discover tools, send three bad requests, then compute `12*8`. The notification without an ID produces no response.
+There is an important design consideration in the code: MCP tools hold a reference to the `ClientSession`, and once the session is closed, the tools can no longer be used. In real projects, you need to ensure the session's lifecycle covers the period during which the tools are in use — the typical approach is to place session management and Agent execution within the same `async with` context.
 
 ```python
+# mcp_langchain_integration.py
+"""
+A complete example of integrating MCP tools into a LangChain Agent
+"""
+
+import asyncio
 import json
-import os
-from pathlib import Path
-import subprocess
-import sys
+from typing import Any
+from langchain_core.tools import BaseTool
+from langchain_openai import ChatOpenAI
+from langchain.agents import AgentExecutor, create_openai_tools_agent  # legacy; new projects should use LangGraph
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
 
-source = str(Path("reference-agent/src").resolve())
-env = dict(os.environ, PYTHONPATH=os.pathsep.join(
-    filter(None, [source, os.environ.get("PYTHONPATH")])
-))
-requests = [
-    json.dumps({"jsonrpc": "2.0", "id": "init", "method": "initialize"}),
-    json.dumps({"jsonrpc": "2.0", "id": "list", "method": "tools/list"}),
-    "{broken json",
-    json.dumps({"jsonrpc": "2.0", "id": [], "method": "tools/list"}),
-    json.dumps({"jsonrpc": "2.0", "id": "bad-name", "method": "tools/call",
-                "params": {"name": [], "arguments": {}}}),
-    json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}),
-    json.dumps({"jsonrpc": "2.0", "id": "after-errors", "method": "tools/call",
-                "params": {"name": "calculator", "arguments": {"expression": "12*8"}}}),
+# ============================
+# 1. MCP Tool Adapter
+# ============================
+
+class MCPTool(BaseTool):
+    """Wraps an MCP tool as a LangChain Tool"""
+    
+    name: str
+    description: str
+    session: Any  # MCP ClientSession
+    
+    def _run(self, **kwargs) -> str:
+        """Synchronous execution (bridged via asyncio)"""
+        loop = asyncio.new_event_loop()
+        try:
+            result = loop.run_until_complete(
+                self.session.call_tool(self.name, kwargs)
+            )
+            if result.content:
+                return result.content[0].text
+            return "Tool returned no content"
+        finally:
+            loop.close()
+    
+    async def _arun(self, **kwargs) -> str:
+        """Asynchronous execution"""
+        result = await self.session.call_tool(self.name, kwargs)
+        if result.content:
+            return result.content[0].text
+        return "Tool returned no content"
+
+
+# ============================
+# 2. Dynamically Load Tools from MCP Server
+# ============================
+
+async def load_mcp_tools(server_command: str, server_args: list) -> list[MCPTool]:
+    """Load all tools from an MCP Server
+    
+    Note: The tools returned by this function must be used while the MCP session is alive.
+    In real applications, you should ensure the session's lifecycle covers the tools' usage period.
+    The build_mcp_agent() function below demonstrates the correct usage pattern.
+    """
+    
+    server_params = StdioServerParameters(
+        command=server_command,
+        args=server_args
+    )
+    
+    tools = []
+    
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            
+            tools_result = await session.list_tools()
+            
+            for mcp_tool in tools_result.tools:
+                lc_tool = MCPTool(
+                    name=mcp_tool.name,
+                    description=mcp_tool.description or f"Use the {mcp_tool.name} tool",
+                    session=session
+                )
+                tools.append(lc_tool)
+            
+            # ⚠️ Important: tools hold a reference to the session.
+            # Once this context is exited, the session will close and tools will no longer work.
+            # In production, session management and agent execution should be
+            # placed within the same async with context.
+            return tools
+
+
+# ============================
+# 3. Build an Agent Using MCP Tools
+# ============================
+
+async def build_mcp_agent():
+    """Build an Agent integrated with MCP tools"""
+    
+    # Load MCP tools
+    tools = await load_mcp_tools(
+        server_command="python",
+        server_args=["production_mcp_server.py"]
+    )
+    
+    print(f"Loaded {len(tools)} MCP tools: {[t.name for t in tools]}")
+    
+    # Build the Agent
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", """You are a powerful Agent that uses standardized tools via the MCP protocol.
+
+You have the following tools available — choose and use them appropriately:
+- File read/write operations
+- Database queries
+- HTTP requests
+
+When you encounter tasks that require these capabilities, proactively use the appropriate tools."""),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{input}"),
+        MessagesPlaceholder(variable_name="agent_scratchpad"),
+    ])
+    
+    agent = create_openai_tools_agent(llm, tools, prompt)
+    executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+    
+    return executor
+
+
+# ============================
+# 4. Usage Examples
+# ============================
+
+async def main():
+    agent = await build_mcp_agent()
+    
+    # Test file operations
+    result = agent.invoke({
+        "input": "Read the README.md file and summarize its main content",
+        "chat_history": []
+    })
+    print(result["output"])
+    
+    # Test composite operations
+    result = agent.invoke({
+        "input": "Query the latest 10 sales records from the database ./data/sales.db",
+        "chat_history": []
+    })
+    print(result["output"])
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## MCP Best Practices Summary
+
+Before deploying MCP tools to a production environment, security, error handling, and performance optimization are three dimensions that must be carefully considered. Here are some key best practices:
+
+**Security** is the top priority, because MCP tools typically involve sensitive operations on the filesystem, databases, and other resources — and the parameters for these operations are generated by the LLM, which could be exploited through prompt injection attacks.
+
+**Error handling** ensures that any tool call failure does not crash the entire Agent, but instead returns a clear error message that the LLM can understand and respond to.
+
+**Performance optimization**: For read-only operations like database queries, using caching can significantly reduce the overhead of repeated calls.
+
+```python
+# 1. Tool security
+security_checklist = [
+    "✅ File operations: restrict to working directory, prevent path traversal",
+    "✅ Database: only allow SELECT, no DDL/DML",
+    "✅ HTTP: whitelist domains, set timeouts",
+    "✅ Code execution: use a sandbox (Docker/subprocess)",
+    "✅ Sensitive data: do not return full API keys or similar information",
 ]
-process = subprocess.run(
-    [sys.executable, "-m", "reference_agent.mcp_server"],
-    input="\n".join(requests) + "\n", text=True, capture_output=True,
-    timeout=5, check=True, env=env,
-)
-responses = [json.loads(line) for line in process.stdout.splitlines()]
-assert len(responses) == 6
-assert responses[0]["id"] == "init"
-assert responses[0]["result"]["protocolVersion"] == "2024-11-05"
-assert responses[1]["id"] == "list"
-assert responses[1]["result"]["tools"][0]["name"] == "calculator"
-assert [item["error"]["code"] for item in responses[2:5]] == [-32700, -32600, -32602]
-assert responses[3]["id"] is None
-assert responses[4]["id"] == "bad-name"
-assert responses[-1]["id"] == "after-errors"
-assert responses[-1]["result"]["content"][0]["text"] == "96"
-assert process.stderr == ""
-print(json.dumps(responses[-1], ensure_ascii=False))
+
+# 2. Error handling
+def safe_tool_call(func):
+    """Safe decorator for tool calls"""
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except PermissionError as e:
+            return {"error": "Permission denied", "message": str(e)}
+        except FileNotFoundError as e:
+            return {"error": "File not found", "message": str(e)}
+        except Exception as e:
+            return {"error": "Tool execution failed", "message": str(e)[:200]}
+    return wrapper
+
+# 3. Performance optimization
+# Use @lru_cache to cache results of unchanging queries
+from functools import lru_cache
+
+@lru_cache(maxsize=100)
+def cached_database_query(db_path: str, sql: str) -> str:
+    """Database query with caching (only cache read-only queries)"""
+    import sqlite3
+    
+    # Security check
+    sql_upper = sql.strip().upper()
+    if not sql_upper.startswith("SELECT"):
+        raise PermissionError("Only SELECT queries are allowed")
+    
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    conn.close()
+    return json.dumps(result)
 ```
 
-The printed response should contain `id="after-errors"` and text `96`. Closing input allows `subprocess.run` to wait for process exit. Its five-second timeout bounds this client experiment, not individual server tool calls or production recovery.
+## Summary
 
-Starting a new process for every request would not establish recovery after bad input. This service also supplies no durable sessions or business-state restoration.
-
-## 5. Keep SDK Sessions Alive During Use
-
-This is lifecycle pseudocode, not an SDK API example or a tested interoperability claim:
-
-```text
-Open transport
-  Open and initialize session
-    Discover tool metadata
-    Host filters tools and binds permitted calls
-    Run Agent; await tool completion or cancellation cleanup
-  Close session
-Close transport
-```
-
-Wrappers holding a session must be called while it remains open. Do not return wrappers from a `load_mcp_tools` context, close that session, and run the Agent outside it. Do not move session-bound calls to an unrelated event loop. Returning already-consumed plain results is fine; returning objects that still need a closed connection is not.
-
-Pin SDK, transport, and framework versions and test them separately. Successful discovery still requires host permission checks, backend authorization, argument constraints, and deadlines; a discovered tool is not automatically authorized.
-
-This exercise has no database tool. For database connections, see [chapter 19's permissions and isolation](../chapter_21_security/03_permission_sandbox.md) and [chapter 22's data connections](../chapter_24_data_agent/02_data_connection.md). Enforce permissions in the backend; keyword filtering does not establish read-only access.
-
-## 6. Regression Checks and Exercises
-
-From the repository root in an environment with pytest:
-
-```bash
-PYTHONPATH=reference-agent/src python -m pytest reference-agent/tests/test_mcp_server.py -q
-```
-
-Install development dependencies first if needed: `python -m pip install -e 'reference-agent[dev]'`. Tests preserve valid IDs, reject invalid IDs without echoing them, reject unknown tools and non-object arguments, suppress notification responses, and recover within one stdio process. They do not validate production authorization, official SDK compatibility, or isolation of arbitrary generated code.
-
-Reader exercise: replace the array tool name with an object, then replace `arguments` with an array, requiring `-32602`. Use a boolean ID, requiring `-32600` with response ID `null`. Use `1/0`, requiring the current `-32603` mapping. Keep a final valid call to establish continued service. Separately design open/call/close and call-after-close tests for the SDK you intend to adopt; mark them unverified until executed.
+This chapter built a complete MCP tool integration system:
+- ✅ MCP Server: standardized tool server
+- ✅ MCP Client: connect and call tools
+- ✅ LangChain integration: MCPTool adapter
+- ✅ Security best practices: permission control and error handling
 
 ---
-
-*Previous section: [17.4 Message Passing and State Sharing Between Agents](./04_message_passing.md)*
 
 *Next chapter: [Chapter 18: Agent Evaluation and Optimization](../chapter_20_evaluation/README.md)*

@@ -53,50 +53,45 @@ check_mdbook() {
     echo "  brew install mdbook"
     echo ""
     echo "  # 或通过 cargo 安装"
-    echo "  cargo install mdbook --version 0.5.4 --locked"
+    echo "  cargo install mdbook"
     echo ""
     echo "  # 或直接下载二进制（macOS arm64）"
-    echo "  curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-aarch64-apple-darwin.tar.gz | tar -xz"
+    echo "  curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-aarch64-apple-darwin.tar.gz | tar -xz"
     echo "  mv mdbook /usr/local/bin/"
     exit 1
   fi
-  if [[ "$(mdbook --version)" != "mdbook v0.5.4" ]]; then
-    error "需要 mdBook 0.5.4，与 mdbook-katex 0.10.0 配套；安装方法见 tools/README.md"
-    exit 1
-  fi
-  success "$(mdbook --version)"
+  success "mdbook $(mdbook --version)"
 }
 
 check_mdbook_katex() {
   if ! command -v mdbook-katex &>/dev/null; then
-    error "未找到正式构建要求的 mdbook-katex 0.10.0"
+    warn "未找到 mdbook-katex，数学公式渲染可能不可用"
     warn "安装方式："
-    warn "  cargo install mdbook-katex --version 0.10.0 --locked"
+    warn "  cargo install mdbook-katex"
     warn "  # 或下载二进制：https://github.com/lzanini/mdbook-katex/releases"
-    exit 1
+    # 不退出，katex 在 book.toml 中标记为 optional = true
   else
-    if [[ "$(mdbook-katex --version)" != "mdbook-katex 0.10.0" ]]; then
-      error "需要 mdbook-katex 0.10.0；安装方法见 tools/README.md"
-      exit 1
-    fi
-    success "mdbook-katex 0.10.0 已安装"
+    success "mdbook-katex 已安装"
   fi
 }
 
 check_python() {
   if command -v python3 &>/dev/null; then
+    success "python3 $(python3 --version 2>&1 | awk '{print $2}')"
     PYTHON_CMD="python3"
-  elif command -v python &>/dev/null; then
+  elif command -v python &>/dev/null && python --version 2>&1 | grep -q "Python 3"; then
+    success "python $(python --version 2>&1 | awk '{print $2}')"
     PYTHON_CMD="python"
   else
-    error "未找到 Python；请安装 Python 3.11+，建议 Python 3.12，见 tools/README.md"
+    error "未找到 python3，请安装 Python 3："
+    echo ""
+    echo "  # macOS"
+    echo "  brew install python3"
+    echo ""
+    echo "  # Ubuntu/Debian"
+    echo "  sudo apt-get install python3"
     exit 1
   fi
-  if ! "$PYTHON_CMD" -c 'import sys; raise SystemExit(sys.version_info < (3, 11))'; then
-    error "书稿检查与构建需要 Python 3.11+；请先激活 Python 3.12 虚拟环境，见 tools/README.md"
-    exit 1
-  fi
-  success "$("$PYTHON_CMD" --version)"
 }
 
 check_mdbook
@@ -107,28 +102,45 @@ check_python
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-step "检查目录顺序与章节交接"
-"$PYTHON_CMD" tools/check_learning_path.py
-
 # ---------- 构建函数 ----------
-# 与CI共用暂存构建、源资源和实际成品门禁；不替换工作区配置。
+# mdbook v0.4.40+ 移除了 --config 参数，通过临时替换 book.toml 来切换配置
+_build_en_impl() {
+  # 备份中文版配置，临时替换为英文版配置，构建完成后恢复
+  cp book.toml book.toml.zh_bak
+  cp book-en.toml book.toml
+  # 确保无论成功还是失败都能恢复
+  trap 'cp book.toml.zh_bak book.toml; rm -f book.toml.zh_bak' EXIT
+  mdbook build "$@"
+  cp book.toml.zh_bak book.toml
+  rm -f book.toml.zh_bak
+  trap - EXIT
+}
+
 build_all() {
-  step "构建中英文版并检查成品"
-  "$PYTHON_CMD" tools/build_books.py
+  step "构建中文版"
+  mdbook build
+  success "中文版构建完成 → book/zh/"
+
+  step "构建英文版"
+  _build_en_impl
+  success "英文版构建完成 → book/en/"
+
+  step "复制根页面"
   cp root-index.html book/index.html
-  success "双语成品已生成 → book/"
+  success "根页面已复制 → book/index.html"
 }
 
-build_language() {
-  local language="$1"
-  info "重新构建 $language 并检查成品..."
-  "$PYTHON_CMD" tools/check_learning_path.py
-  "$PYTHON_CMD" tools/build_books.py --language "$language"
-  success "$language 成品重建完成"
+build_zh() {
+  info "重新构建中文版..."
+  mdbook build 2>&1 | tail -3
+  success "中文版重建完成"
 }
 
-build_zh() { build_language zh; }
-build_en() { build_language en; }
+build_en() {
+  info "重新构建英文版..."
+  _build_en_impl 2>&1 | tail -3
+  success "英文版重建完成"
+}
 
 # ---------- 首次全量构建 ----------
 build_all

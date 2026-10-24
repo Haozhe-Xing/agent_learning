@@ -532,7 +532,7 @@ This essentially applies the ReAct "action-observation" loop to error correction
 
 > Image source: HALO paper (source: 2026, arXiv:2606.21740)
 
-**Key Results**: Matched or exceeded GPT-5-mini prompted baselines on PlanBench, Natural Plan, and other benchmarks, with **45×** cost reduction (USD 0.18→USD 0.004/task), and 40–50% fewer LLM calls.
+**Key Results**: Matched or exceeded GPT-5-mini prompted baselines on PlanBench, Natural Plan, and other benchmarks, with **45×** cost reduction ($0.18→$0.004/task), and 40–50% fewer LLM calls.
 
 **Relevance to This Chapter**: Corresponds to Section 5.5's "Plan-and-Execute" and Orchestrator design knowledge points — HALO demonstrates a viable path for training small specialized orchestration policies using verified trajectory data, the latest empirical evidence for migrating from "fully reliant on large model API orchestration" to "lightweight local orchestration policy," carrying significant engineering value for low-cost large-scale Agent deployment.
 

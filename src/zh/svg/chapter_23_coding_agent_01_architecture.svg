@@ -31,7 +31,7 @@
 
   <!-- 测试修复 -->
   <rect x="540" y="200" width="180" height="70" rx="14" fill="#e74c3c"/>
-  <text x="630" y="225" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🐛 测试 &amp; 修复</text>
+  <text x="630" y="225" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🐛 测试 & 修复</text>
   <text x="630" y="245" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">测试用例生成 · Bug 诊断</text>
   <text x="630" y="260" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="white">自动修复 · 回归测试</text>
 

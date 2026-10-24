@@ -1,38 +1,64 @@
-# Chapter 15: DeepSeek Harness — The Everything-Is-a-Plugin Foundation
+# Chapter 17: DeepSeek Harness — The Everything-Is-a-Plugin Open-Source Foundation
 
-**Reading level**: Optional architecture case for component replacement and plugin management.
-
-Study DeepSeek Harness as an architecture case for component boundaries and plugin lifecycle. Ask verifiable questions about model adapters, tools, state, and extensions, then decide which interfaces to borrow and which contracts a replacement must preserve.
-
-## This chapter's iteration
-
-- **Previous limitation**: Capabilities run, but replacement scope and cleanup responsibility are unclear when a model, tool, or state implementation changes.
-- **This chapter adds**: Analysis of plugin, service, and event boundaries, including loading, calls, failure, and unloading in the lifecycle.
-- **How to verify**: No uniform DeepSeek Harness adapter is supplied. Pin source or release version, configuration, and one replacement target; inspect identical inputs and outputs, errors, permissions, and cleanup. Unexecuted material remains architecture analysis.
-- **Next step**: Record evidence in [section 15.7](./07_summary_and_decision_matrix.md). Continue to [chapter 16, Multi-Agent Collaboration](../chapter_18_multi_agent/README.md) only when tasks can be assigned independently.
-
-## Chapter structure
-
-| Section | Focus |
-|---|---|
-| [15.1 What Is DeepSeek Harness: Cordis Kernel and "Everything Is a Plugin"](./01_what_is_dsh.md) | Express plugin goals as component contracts |
-| [15.2 Installation & 4 Run Modes](./02_install_and_modes.md) | Verify entry points and modes in the selected version |
-| [15.3 Architecture: Cordis Microkernel & Plugin Topology](./03_cordis_architecture.md) | Map services, events, and component dependencies |
-| [15.4 Plugin Development: tool / llm / skill / subagent](./04_plugin_development.md) | Define an extension's inputs, outputs, and failure cleanup |
-| [15.5 Comparison: DSH vs Claude Code / OpenClaw / Hermes](./05_comparison.md) | Compare by task and permissions; record unknowns |
-| [15.6 Borrowing the Philosophy](./06_lessons_philosophy.md) | Separate transferable designs from product-specific implementations |
-| [15.7 Summary: Choose an Implementation with Task Evidence](./07_summary_and_decision_matrix.md) | Choose with fixed tasks, failure cases, and stop conditions |
-
-## Reading path
-
-Review [chapter 8, Harness](../chapter_harness/README.md) and [chapter 9, Skills](../chapter_skill/README.md). [Chapter 14, Claude Code](../chapter_claude_code/README.md) is an optional code-operation comparison rather than a prerequisite. Reinforcement learning and installation of other products are not prerequisites either.
-
-## Verification and material boundaries
-
-The overview does not establish that a release supplies every described interface or run mode, and does not recommend a production platform from a launch slogan. Record exact versions and evidence; verify installation commands, components, and functionality against that version.
-
-Similar plugin interfaces do not establish interchangeable kernels or direct product-to-product UI integration. Comparisons with OpenClaw, Hermes, or Claude Code must keep tasks and permissions consistent; mark unexecuted and unmatched experiments “not run” and “not directly comparable,” respectively.
+> 🐋 *"Model + Harness = Agent. The model thinks; the harness acts. Closed source gives users the present; open source lets users own the future."*
+> — DeepSeek team, at DeepSeek Harness launch
 
 ---
 
-*Next section: [15.1 What Is DeepSeek Harness: Cordis Kernel and "Everything Is a Plugin"](./01_what_is_dsh.md)*
+## Chapter Introduction
+
+On August 13, 2026, DeepSeek released **DeepSeek Harness (dsh / DSH)** under the MIT license — an Agent runtime framework where *all* Agent capabilities are plugins, shipping with four run modes and a full Python SDK, CLI, and MCP server. It is the "companion runtime" for the open-source DeepSeek **V4-Pro / V4-Flash** models, positioned directly against **Claude Code** and **OpenAI Codex**.
+
+Why build an open-source harness? The answer is in their slogan — **"Model + Harness = Agent"**. The model "thinks"; the harness "does": reading/writing files, running commands, calling tools, dispatching subtasks, and finishing long tasks within authorized scope. It is an "AI operating-system shell."
+
+![Model + Harness = Agent](../svg/chapter_deepseek_harness_model_harness.svg)
+
+Three things make DeepSeek Harness stand apart from every framework before it:
+
+1. **"Everything is a plugin"** — built on the Cordis microkernel (by the Koishi team); model, tools, skills, sessions, sandbox, scheduler, UI are all plugins; any capability is replaceable without touching source;
+2. **Model-agnostic** — not bound to DeepSeek's own models; swap in OpenAI, Anthropic, local Ollama, or any OpenAI-compatible endpoint;
+3. **Four run modes** — standard / minimal / PTC / create, for daily dev, benchmarking, programmatic tool calling, and in-memory experimentation.
+
+This chapter:
+
+1. **Dissects the "everything-is-a-plugin" skeleton** — how Cordis coordinates plugins via services, events, and context keys;
+2. **Demonstrates 4 modes + install** — `npx`, `pnpm dsh web`, Python SDK, source build;
+3. **Compares against Claude Code / OpenClaw / Hermes** — building selection intuition.
+
+---
+
+## Chapter Content Overview
+
+| Section | Content | What You'll Learn |
+|---------|---------|-------------------|
+| 17.1 What Is DeepSeek Harness | "everything is a plugin", Cordis kernel | Its place in the harness spectrum |
+| 17.2 Installation & 4 Run Modes | npx / source / Docker; standard/minimal/PTC/create | Run it on macOS/Linux |
+| 17.3 Architecture: Cordis Microkernel & Plugin Topology | plugin loading, services, events, context keys | Read the engineering skeleton |
+| 17.4 Plugin Development | tool / llm / skill / subagent interfaces | Write your own capabilities |
+| 17.5 Comparison: DSH vs Claude Code / OpenClaw / Hermes | four-harness matrix | Choose which to use |
+| 17.6 Borrowing the Philosophy | swappable kernel, model-agnostic | Bring it to your system |
+| 17.7 Summary: The 6-Harness Decision Matrix | one table to choose | Decide "which one" in 5 minutes |
+
+---
+
+## Reading Recommendations
+
+- ✅ **Building a long-term controllable Agent platform** — read 17.1 in order
+- ✅ **Claude Code users wanting to go open-source** — focus on 17.5
+- ✅ **Adding custom capabilities** — focus on 17.4
+
+**Prerequisites**: Chapter 8 (Harness Engineering), Chapter 16 (Claude Code). This chapter, with 14/15/16, forms the "action-Agent quartet."
+
+> ⚠️ DeepSeek Harness is currently **v0.1 developer preview** (released 2026-08-13); DeepSeek warns of breaking changes. Chapter content is anchored to v0.1 + commits through 2026-08-15; version-specific details (CLI names, config paths) follow the `main` branch.
+
+---
+
+## Citation Convention
+
+Verifiable facts (protocol, commands, CLI flags, Cordis origin) follow the `deepseek-ai/deepseek-harness` `main` branch README and the docs site `deepseek-harness.github.io/deepseek-harness/`.
+
+> 💡 **Core insight**: DeepSeek Harness changed not "what an Agent can do" but "who owns the Agent's capabilities" — when swapping a model or a tool no longer requires waiting for a vendor release, the Agent platform becomes **something the user owns**.
+
+---
+
+*Next section: [17.1 What Is DeepSeek Harness](./01_what_is_dsh.md)*

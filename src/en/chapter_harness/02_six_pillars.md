@@ -27,7 +27,7 @@ As shown in the diagram, the six pillars center on Harness Engineering, each poi
 
 **Core philosophy**: precisely design the information entering the model's context, actively managing the "attention budget."
 
-This is consistent with the context engineering discussed in Chapter 7, but Harness Engineering further emphasizes **active monitoring and dynamic adjustment**.
+This is consistent with the context engineering discussed in Chapter 8, but Harness Engineering further emphasizes **active monitoring and dynamic adjustment**.
 
 ### Context Lifecycle Management
 

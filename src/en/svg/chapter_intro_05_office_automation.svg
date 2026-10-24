@@ -39,7 +39,7 @@
   <text x="626" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">Information Retrieval</text>
   <text x="626" y="118" text-anchor="middle" font-size="10" fill="#7f8c8d">Search company docs</text>
   <text x="626" y="132" text-anchor="middle" font-size="10" fill="#7f8c8d">Quick policy lookup</text>
-  <text x="626" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">Knowledge base Q&amp;A</text>
+  <text x="626" y="146" text-anchor="middle" font-size="10" fill="#7f8c8d">Knowledge base Q&A</text>
 
   <!-- BottomDescription -->
   <text x="350" y="205" text-anchor="middle" font-size="11" fill="#95a5a6">💡 Agent chains these tasks for end-to-end office automation</text>

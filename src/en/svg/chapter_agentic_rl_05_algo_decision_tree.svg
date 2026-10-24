@@ -89,7 +89,7 @@
 
   <rect x="644" y="283" width="78" height="42" rx="6" fill="#1A7A52"/>
   <text x="683" y="302" text-anchor="middle" font-size="11" fill="white" font-weight="bold">GRPO</text>
-  <text x="683" y="318" text-anchor="middle" font-size="10" fill="#A9DFBF">Simple &amp; Efficient</text>
+  <text x="683" y="318" text-anchor="middle" font-size="10" fill="#A9DFBF">Simple & Efficient</text>
 
   <!-- Bottom note -->
   <rect x="30" y="350" width="700" height="22" rx="5" fill="#EBF5FB"/>

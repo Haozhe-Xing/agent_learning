@@ -1,4 +1,4 @@
-# 24.2b Distributed Training Fundamentals: DP / TP / PP / SP / ZeRO
+# 10.2b Distributed Training Fundamentals: DP / TP / PP / SP / ZeRO
 
 > 🖥️ *"Training a 70B parameter model — a single A100 (80GB VRAM) simply can't fit it. Even if it could, you'd retire before training finishes. Distributed training isn't a luxury; it's a prerequisite for large models to exist."*
 
@@ -720,8 +720,8 @@ model.gradient_checkpointing_enable()  # One line, saves ~50% memory
 | **CP / Ring Attn** | Ultra-long sequences | Million-token attention | Attention computation splitting |
 | **EP** | MoE experts | Expert parameter distribution | AllToAll dynamic routing |
 
-> 💡 **Core takeaway for Agent developers**:<br>
-> If you're fine-tuning models with LLaMA-Factory or Axolotl, **FSDP (ZeRO-3) + Gradient Checkpointing** is the optimal choice for small teams — supports training 70B models with up to 8 GPUs.<br>
+> 💡 **Core takeaway for Agent developers**:  
+> If you're fine-tuning models with LLaMA-Factory or Axolotl, **FSDP (ZeRO-3) + Gradient Checkpointing** is the optimal choice for small teams — supports training 70B models with up to 8 GPUs.  
 > If you're designing pre-training from scratch, you need to carefully plan the combination of 3D parallelism (TP × PP × DP).
 
 ---
@@ -742,5 +742,5 @@ model.gradient_checkpointing_enable()  # One line, saves ~50% memory
 
 ---
 
-*Previous section: [24.2 SFT + LoRA Basic Training](./02_sft_lora.md)*<br>
-*Next section: [24.3 PPO: Proximal Policy Optimization](./03_ppo.md)*
+*Previous section: [10.2 SFT + LoRA Basic Training](./02_sft_lora.md)*  
+*Next section: [10.3 PPO: Proximal Policy Optimization](./03_ppo.md)*
