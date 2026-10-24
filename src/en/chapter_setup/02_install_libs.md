@@ -1,4 +1,4 @@
-# Key Library Installation: LangChain, OpenAI SDK, and More
+# F.2 Key Library Installation: LangChain, OpenAI SDK, and More
 
 This section introduces the most important libraries in the Agent development ecosystem, explaining their purpose and how to install them.
 
@@ -323,4 +323,4 @@ Core dependencies for Agent development:
 
 ---
 
-*Next section: [2.3 API Key Management & Security Best Practices](./03_api_key_management.md)*
+*Next section: [F.3 API Key Management & Security Best Practices](./03_api_key_management.md)*

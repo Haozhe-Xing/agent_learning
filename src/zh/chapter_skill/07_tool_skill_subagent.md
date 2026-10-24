@@ -2,7 +2,7 @@
 
 > 🎯 *"Tool 是手，Skill 是技能，Sub Agent 是团队成员——理解三者的关系，是设计好 Agent 架构的关键。"*
 
-在前面的章节中，我们分别学习了工具调用（第3章）、技能系统（第9章）和多 Agent 协作（第18章）。本节将它们放在一起，做一次**统一的对比和梳理**——帮你在实际开发中做出正确的架构选择。
+本书分别介绍了工具调用（第3章）、技能系统（第9章）和多 Agent 协作（后续第16章）。本节将它们放在一起，做一次**统一的对比和梳理**——帮你在实际开发中做出正确的架构选择。
 
 ![Tool · Skill · Sub Agent 三层能力抽象](../svg/chapter_skill_07_three_layers.svg)
 
@@ -188,7 +188,7 @@ class OverEngineeredSearchAgent:
 
 ### ❌ 误区二：把复杂逻辑硬塞进一个 Tool
 
-```python
+```text
 # 反模式：一个"工具"里包含了太多逻辑
 def analyze_and_report(data_path, output_format, language, chart_type, ...):
     """这不是 Tool，应该是 Skill 或 Sub Agent！Tool 应该是单一职责的原子操作"""
@@ -222,7 +222,7 @@ orchestrator = OrchestratorAgent(sub_agents=[analyst, reviewer])
 
 ## 与通信协议的关系
 
-三层抽象与我们在第19章学习的通信协议紧密相关：
+三层抽象与我们在第17章学习的通信协议紧密相关：
 
 | 抽象层 | 典型通信协议 | 说明 |
 |--------|------------|------|
@@ -260,4 +260,4 @@ orchestrator = OrchestratorAgent(sub_agents=[analyst, reviewer])
 
 ---
 
-*相关章节：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md) · [第9章 Skill System](./README.md) · [第18章 多 Agent 协作](../chapter_18_multi_agent/README.md) · [第19章 Agent 通信协议](../chapter_19_protocol/README.md)*
+*相关章节：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md) · [第9章 Skill System](./README.md) · [第16章 多 Agent 协作](../chapter_18_multi_agent/README.md) · [第17章 Agent 通信协议](../chapter_19_protocol/README.md)*

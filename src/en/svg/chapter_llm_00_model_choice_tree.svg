@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#8AA4CC" />
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#B7C5D8" flood-opacity="0.32" />
+    </filter>
+  </defs>
+  <rect width="980" height="560" rx="28" fill="#F8FBFF" />
+  <text x="490" y="52" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28" font-weight="700" fill="#243B64">Choose for the Task</text>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle">
+    <rect x="365" y="90" width="250" height="66" rx="20" fill="#385FA8" filter="url(#shadow)" />
+    <text x="490" y="118" font-size="18" font-weight="700" fill="#FFFFFF">What do I need AI to do?</text>
+    <text x="490" y="142" font-size="13" fill="#E9F1FF">Let the task guide your choice</text>
+    <g filter="url(#shadow)" font-size="14" font-weight="700">
+      <rect x="80" y="230" width="220" height="72" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="190" y="258" fill="#243B64">Chat and office work</text>
+      <text x="190" y="282" fill="#5E6D82" font-size="12">Reliable and affordable</text>
+      <rect x="380" y="230" width="220" height="72" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="490" y="258" fill="#243B64">Write code</text>
+      <text x="490" y="282" fill="#5E6D82" font-size="12">GPT / Claude / DeepSeek / Qwen</text>
+      <rect x="680" y="230" width="220" height="72" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="790" y="258" fill="#243B64">Read long documents</text>
+      <text x="790" y="282" fill="#5E6D82" font-size="12">Claude / Gemini / Kimi</text>
+      <rect x="80" y="380" width="220" height="72" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="190" y="408" fill="#243B64">Chinese content</text>
+      <text x="190" y="432" fill="#5E6D82" font-size="12">DeepSeek / Qwen / Kimi</text>
+      <rect x="380" y="380" width="220" height="72" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="490" y="408" fill="#243B64">Images and multimodal</text>
+      <text x="490" y="432" fill="#5E6D82" font-size="12">GPT / Gemini / Claude</text>
+      <rect x="680" y="380" width="220" height="72" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="790" y="408" fill="#243B64">Local deployment</text>
+      <text x="790" y="432" fill="#5E6D82" font-size="12">Qwen / Llama / Mistral</text>
+    </g>
+  </g>
+  <g stroke="#8AA4CC" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M490 156 C490 195 190 190 190 222" />
+    <path d="M490 156 V222" />
+    <path d="M490 156 C490 195 790 190 790 222" />
+    <path d="M490 156 C490 330 190 330 190 372" />
+    <path d="M490 156 V372" />
+    <path d="M490 156 C490 330 790 330 790 372" />
+  </g>
+  <text x="490" y="516" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" fill="#385FA8">Compare models on your own tasks; no model is best forever</text>
+</svg>

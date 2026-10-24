@@ -1,4 +1,4 @@
-# 19.4 Inter-Agent Message Passing and State Sharing
+# 17.4 Inter-Agent Message Passing and State Sharing
 
 > **Section Goal**: Learn how to implement message passing between Agents, and deepen understanding through a hands-on MCP tool integration exercise.
 
@@ -213,4 +213,4 @@ The two are complementary: MCP solves tool integration; A2A solves Agent interop
 
 ---
 
-*Next section: [19.5 Practice: MCP-Based Tool Integration](./05_practice_mcp_integration.md)*
+*Next section: [17.5 Practice: MCP-Based Tool Integration](./05_practice_mcp_integration.md)*

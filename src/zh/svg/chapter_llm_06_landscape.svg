@@ -62,5 +62,5 @@
   <text x="692" y="352" text-anchor="middle" font-size="11" font-weight="bold" fill="#8e44ad">需要微调</text>
   <text x="692" y="372" text-anchor="middle" font-size="10" fill="#555">Qwen 2.5 / Llama 3</text>
   <text x="692" y="390" text-anchor="middle" font-size="10" fill="#555">LoRA + GRPO 训练</text>
-  <text x="692" y="410" text-anchor="middle" font-size="9" fill="#888">参考第10章</text>
+  <text x="692" y="410" text-anchor="middle" font-size="9" fill="#888">参考第24章</text>
 </svg>

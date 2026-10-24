@@ -1,5 +1,15 @@
 # 9.5 Practice: Building a Reusable Skill System
 
+## Iteration and Acceptance
+
+Package verified tool workflows as reusable capabilities.
+
+- **Success criteria**: Check discovery, argument passing, and execution on three fixed task types; return an explicit result when no skill matches.
+- **Failure cases**: Try malformed descriptions, duplicate names, and missing dependencies; failures must be diagnosable without executing a different skill.
+- **Safety boundary**: Review skill text and code; discovery does not authorize execution, and the host controls file and network access.
+
+Record inputs, expected results, and actual results before extending the system. See [Chapter 18](../chapter_20_evaluation/README.md) for evaluation and [Chapter 19](../chapter_21_security/README.md) for trust and permissions.
+
 This section puts the concepts learned earlier into practice — building a complete Agent skill system. This system supports skill definition, loading, discovery, and invocation.
 
 ![Reusable Skill System Architecture](../svg/chapter_skill_05_practice.svg)

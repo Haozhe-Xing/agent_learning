@@ -771,7 +771,7 @@ class DynamicToolContext:
 
 ### 1. Retrieval-Augmented Context（检索增强上下文）
 
-将 RAG（第7章）和上下文工程结合，**不是把所有信息塞进上下文，而是建立"按需检索"的机制**。这与 Anthropic 的 JIT 策略一脉相承：
+将 RAG（第6章）和上下文工程结合，**不是把所有信息塞进上下文，而是建立"按需检索"的机制**。这与 Anthropic 的 JIT 策略一脉相承：
 
 ```python
 # 传统方式：把所有可能相关的文档都放进上下文
@@ -823,7 +823,7 @@ messages = [
 
 ### 3. 多 Agent 上下文共享
 
-在多 Agent 系统（第18章）中，上下文的跨 Agent 传递和共享是一个活跃的研究方向。核心挑战是：**如何让多个 Agent 高效协作，而不需要每个 Agent 都携带完整上下文？**
+在多 Agent 系统（第16章）中，上下文的跨 Agent 传递和共享是一个活跃的研究方向。核心挑战是：**如何让多个 Agent 高效协作，而不需要每个 Agent 都携带完整上下文？**
 
 ```python
 class SharedContextStore:

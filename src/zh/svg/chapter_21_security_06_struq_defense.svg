@@ -1,42 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" width="520" height="300" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
-  <defs>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
-    </marker>
-  </defs>
-  <rect width="520" height="300" rx="12" fill="#f8fafc"/>
-  <text x="260" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">应用层防御 vs 模型层防御</text>
-
-  <!-- 传统方法 -->
-  <rect x="16" y="46" width="488" height="100" rx="10" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
-  <text x="260" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#be123c">传统方法（应用层防御）</text>
-  <text x="30" y="84" font-size="11" fill="#9f1239">用户输入</text>
-  <rect x="90" y="72" width="70" height="24" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
-  <text x="125" y="88" text-anchor="middle" font-size="10" fill="#9f1239">过滤器</text>
-  <line x1="160" y1="84" x2="178" y2="84" stroke="#f43f5e" stroke-width="1.5" marker-end="url(#arr)"/>
-  <rect x="180" y="72" width="110" height="24" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
-  <text x="235" y="88" text-anchor="middle" font-size="10" fill="#9f1239">系统提示+用户输入</text>
-  <line x1="290" y1="84" x2="308" y2="84" stroke="#f43f5e" stroke-width="1.5" marker-end="url(#arr)"/>
-  <rect x="310" y="72" width="50" height="24" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
-  <text x="335" y="88" text-anchor="middle" font-size="10" fill="#9f1239">LLM</text>
-  <line x1="360" y1="84" x2="378" y2="84" stroke="#f43f5e" stroke-width="1.5" marker-end="url(#arr)"/>
-  <rect x="380" y="72" width="70" height="24" rx="4" fill="#fecdd3" stroke="#fb7185" stroke-width="1"/>
-  <text x="415" y="88" text-anchor="middle" font-size="10" fill="#9f1239">输出过滤</text>
-  <text x="260" y="118" text-anchor="middle" font-size="11" fill="#ef4444">⚠️ 问题：过滤器可能被绕过，依赖外部检查</text>
-  <text x="260" y="134" text-anchor="middle" font-size="10" fill="#f43f5e">攻击者可以精心构造输入绕过过滤器</text>
-
-  <!-- StruQ/SecAlign -->
-  <rect x="16" y="162" width="488" height="120" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="260" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">StruQ / SecAlign（模型层防御）</text>
-
-  <rect x="36" y="192" width="200" height="40" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
-  <text x="136" y="208" text-anchor="middle" font-size="11" fill="#166534">StruQ：微调阶段训练模型</text>
-  <text x="136" y="222" text-anchor="middle" font-size="10" fill="#166534">区分"系统指令"和"用户数据"</text>
-
-  <rect x="284" y="192" width="200" height="40" rx="6" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
-  <text x="384" y="208" text-anchor="middle" font-size="11" fill="#166534">SecAlign：对齐训练</text>
-  <text x="384" y="222" text-anchor="middle" font-size="10" fill="#166534">收到可疑指令时主动拒绝执行</text>
-
-  <rect x="100" y="244" width="320" height="28" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
-  <text x="260" y="263" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">✅ 模型天生具有抗注入能力，无需额外过滤层</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">StruQ：前端与训练共同构成方法</title>
+<desc id="desc">Original explanatory diagram after https://arxiv.org/html/2402.06363v2 §§4–6; no original paper artwork reproduced.</desc>
+<metadata>Original illustration created for this book; no paper artwork or screenshot reproduced. Repository MIT license applies to this illustration.</metadata>
+<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
+<rect width="960" height="500" rx="14" fill="#f1f5f9"/>
+<text x="480" y="43" text-anchor="middle" font-size="23" font-weight="bold" fill="#22384c">StruQ：前端与训练共同构成方法</text>
+<rect x="30" y="95" width="280" height="255" rx="12" fill="#2d4965"/>
+<text x="170" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">安全前端</text>
+<text x="170" y="177" text-anchor="middle" font-size="14" fill="white">分开指令区与数据区</text>
+<text x="170" y="216" text-anchor="middle" font-size="14" fill="white">使用保留分隔标记</text>
+<text x="170" y="255" text-anchor="middle" font-size="14" fill="white">处理数据中的伪造标记</text>
+<text x="170" y="294" text-anchor="middle" font-size="14" fill="white">不只是加一个 XML 标签</text>
+<rect x="340" y="95" width="280" height="255" rx="12" fill="#287598"/>
+<text x="480" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">经专门训练的模型</text>
+<text x="480" y="177" text-anchor="middle" font-size="14" fill="white">结构化指令微调</text>
+<text x="480" y="216" text-anchor="middle" font-size="14" fill="white">训练样例含数据侧攻击</text>
+<text x="480" y="255" text-anchor="middle" font-size="14" fill="white">学习忽略资料区指令</text>
+<text x="480" y="294" text-anchor="middle" font-size="14" fill="white">运行时使用相同输入约定</text>
+<rect x="650" y="95" width="280" height="255" rx="12" fill="#72608a"/>
+<text x="790" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">分别评估</text>
+<text x="790" y="177" text-anchor="middle" font-size="14" fill="white">合法任务的效用</text>
+<text x="790" y="216" text-anchor="middle" font-size="14" fill="white">指定攻击集下的成功率</text>
+<text x="790" y="255" text-anchor="middle" font-size="14" fill="white">自适应攻击与组件消融</text>
+<text x="790" y="294" text-anchor="middle" font-size="14" fill="white">结果限于受测模型和设置</text>
+<path d="M 312 220 L 327 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 327 215 L 335 220 L 327 225" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 622 220 L 637 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 637 215 L 645 220 L 637 225" fill="none" stroke="#738296" stroke-width="2"/>
+<rect x="30" y="385" width="900" height="83" rx="9" fill="#fff3e9" stroke="#be8156"/>
+<text x="480" y="414" text-anchor="middle" font-size="14" fill="#754325">本书未训练该模型或复现其防御分数。</text>
+<text x="480" y="442" text-anchor="middle" font-size="14" fill="#754325">模型抗注入能力不能代替宿主工具授权。</text>
+<text x="480" y="490" text-anchor="middle" font-size="11" fill="#58667a">本书原创示意；固定版本与证据边界见正文。</text>
 </svg>

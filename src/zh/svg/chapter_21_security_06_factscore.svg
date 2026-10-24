@@ -1,32 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
-  <defs>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
-    </marker>
-  </defs>
-  <rect width="500" height="280" rx="12" fill="#f8fafc"/>
-  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">FActScore：原子事实拆解与验证</text>
-
-  <!-- 步骤1 -->
-  <rect x="16" y="46" width="468" height="100" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="250" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">第一步：原子事实拆解</text>
-  <rect x="28" y="72" width="440" height="28" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
-  <text x="248" y="91" text-anchor="middle" font-size="11" fill="#1e40af">输入："爱因斯坦于 1879 年出生在德国的乌尔姆，是理论物理学家。"</text>
-  <text x="28" y="116" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦出生于 1879 年"  ← 可验证</text>
-  <text x="28" y="130" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦出生在德国"  ← 可验证</text>
-  <text x="248" y="116" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦出生在乌尔姆"  ← 可验证</text>
-  <text x="248" y="130" font-size="10" fill="#1d4ed8" dx="8">→ "爱因斯坦是理论物理学家"  ← 可验证</text>
-
-  <line x1="250" y1="146" x2="250" y2="164" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
-
-  <!-- 步骤2 -->
-  <rect x="16" y="166" width="468" height="80" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="250" y="184" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">第二步：逐个验证</text>
-  <text x="250" y="202" text-anchor="middle" font-size="11" fill="#166534">对每个原子事实，检索知识源（如维基百科）进行验证</text>
-  <rect x="80" y="210" width="340" height="28" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
-  <text x="250" y="229" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">FActScore = 有支持的原子事实数 / 总原子事实数</text>
-
-  <!-- 说明 -->
-  <rect x="16" y="256" width="468" height="18" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
-  <text x="250" y="269" text-anchor="middle" font-size="10" fill="#3730a3">💡 借鉴思路：在 Agent 中实现"原子事实拆解 + 逐个验证"的自动事实核查</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">FActScore：支撑比例与任务覆盖不同</title>
+<desc id="desc">Original explanatory diagram after https://arxiv.org/html/2305.14251v2 §§3–4 and Limitations; coverage is a separate book acceptance check. No paper artwork reproduced.</desc>
+<metadata>Original illustration created for this book; no paper artwork or screenshot reproduced. Repository MIT license applies to this illustration.</metadata>
+<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
+<rect width="960" height="500" rx="14" fill="#f1f5f9"/>
+<text x="480" y="43" text-anchor="middle" font-size="23" font-weight="bold" fill="#22384c">FActScore：支撑比例与任务覆盖不同</text>
+<rect x="30" y="95" width="280" height="255" rx="12" fill="#2d4965"/>
+<text x="170" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">拆分回答</text>
+<text x="170" y="177" text-anchor="middle" font-size="14" fill="white">把生成文本拆为原子事实</text>
+<text x="170" y="216" text-anchor="middle" font-size="14" fill="white">一句话可能包含多个主张</text>
+<text x="170" y="255" text-anchor="middle" font-size="14" fill="white">保留待检查的事实清单</text>
+<text x="170" y="294" text-anchor="middle" font-size="14" fill="white">拆分本身也可能出错</text>
+<rect x="340" y="95" width="280" height="255" rx="12" fill="#287598"/>
+<text x="480" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">对照指定来源</text>
+<text x="480" y="177" text-anchor="middle" font-size="14" fill="white">逐条寻找支撑证据</text>
+<text x="480" y="216" text-anchor="middle" font-size="14" fill="white">人物传记 / Wikipedia 实验</text>
+<text x="480" y="255" text-anchor="middle" font-size="14" fill="white">自动估计器仍会误判</text>
+<text x="480" y="294" text-anchor="middle" font-size="14" fill="white">没有检索到不等于已证伪</text>
+<rect x="650" y="95" width="280" height="255" rx="12" fill="#72608a"/>
+<text x="790" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">事实支撑精度</text>
+<text x="790" y="177" text-anchor="middle" font-size="14" fill="white">得到支持的原子事实比例</text>
+<text x="790" y="216" text-anchor="middle" font-size="14" fill="white">相对于给定知识来源</text>
+<text x="790" y="255" text-anchor="middle" font-size="14" fill="white">不直接衡量必答信息覆盖</text>
+<text x="790" y="294" text-anchor="middle" font-size="14" fill="white">少答一个真事实仍可能漏项</text>
+<path d="M 312 220 L 327 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 327 215 L 335 220 L 327 225" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 622 220 L 637 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 637 215 L 645 220 L 637 225" fill="none" stroke="#738296" stroke-width="2"/>
+<rect x="30" y="385" width="900" height="83" rx="9" fill="#fff3e9" stroke="#be8156"/>
+<text x="480" y="414" text-anchor="middle" font-size="14" fill="#754325">本书另查任务覆盖：期限与凭证是否都被回答？</text>
+<text x="480" y="442" text-anchor="middle" font-size="14" fill="#754325">字面摘录检查不是 FActScore 自动估计器；支撑与完整性分别验收。</text>
+<text x="480" y="490" text-anchor="middle" font-size="11" fill="#58667a">本书原创示意；固定版本与证据边界见正文。</text>
 </svg>

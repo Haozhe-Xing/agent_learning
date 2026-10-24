@@ -1,4 +1,4 @@
-# 17.6 Borrowing the Philosophy: Swappable Kernel / Model-Agnostic
+# 15.6 Borrowing the Philosophy: Swappable Kernel / Model-Agnostic
 
 > 🐋 *"Lower the cost of 'swapping a capability' from 'change the source' to 'change the config'."*
 
@@ -8,9 +8,9 @@
 
 DeepSeek Harness' most important legacy isn't "100+ plugins" — it's this philosophy:
 
-> **No Agent capability (model / tool / skill / sub-agent / sandbox / UI) should ever be hard-bound.**
+> **For capabilities that actually need replacement, define testable interface, state, permission, and failure-handling contracts.**
 
-When you push "swapability" this far, you can never be stranded by a product being discontinued, an open project losing maintenance, or a model being deprecated.
+Replaceable designs may reduce migration work, but do not remove interface changes, state conversion, credential, or maintenance risks. Pin a version and compare success, refusal, and failure on fixed tasks. Retain the original implementation and roll back when acceptance fails.
 
 Five transferable principles:
 
@@ -30,7 +30,7 @@ class AgentLoop:
         self.llm = llm; self.store = store; self.tools = tools
 ```
 
-**Test**: ask "to swap the LLM / DB / UI / sandbox, how many lines change?" — if zero (config only), you did it right.
+**Test**: Record configuration and code changes, then check inputs, outputs, state migration, permissions, errors, and fixed task results. Changed-line counts describe effort; configuration-only changes still require independent acceptance and rollback.
 
 ## 2. Degradable + Fallback Chains
 
@@ -98,4 +98,4 @@ If only one: **Principle 1 (thin kernel)** — the precondition for everything e
 
 ---
 
-*Next section: [17.7 Summary: The 6-Harness Decision Matrix](./07_summary_and_decision_matrix.md)*
+*Next section: [15.7 Summary: Choose an Implementation with Task Evidence](./07_summary_and_decision_matrix.md)*

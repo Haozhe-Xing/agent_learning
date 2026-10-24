@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="readme_img.png" width="880" alt="AI Agent 学习路线图">
+<img src="src/zh/svg/preface_learning_path.svg" width="880" alt="应用交付主线与研究选读分支">
 
 # 从零开始学 AI Agent
 
 **一本图解驱动、中英双语、面向真实工程的 AI Agent 开源书。**
 
-从 Function Calling、记忆、规划、RAG、上下文工程，一直讲到 Agentic RL、多 Agent、评估、安全与生产部署。
+从 Function Calling、记忆、规划、RAG、上下文工程，先完成评估、安全、部署与领域交付，再按需进入强化学习和自我改进研究。
 
 <p>
 <a href="https://Haozhe-Xing.github.io/agent_learning/zh/"><img src="https://img.shields.io/badge/在线阅读-中文-d73a49?style=for-the-badge" alt="阅读中文版"></a>
@@ -17,7 +17,7 @@
 <a href="https://github.com/Haozhe-Xing/agent_learning/stargazers"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=flat-square&logo=github&color=gold" alt="GitHub stars"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License"></a>
 <a href="https://github.com/Haozhe-Xing/agent_learning/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="欢迎 PR"></a>
-<img src="https://img.shields.io/badge/章节-23-6f42c1?style=flat-square" alt="23 章">
+<img src="https://img.shields.io/badge/章节-25-6f42c1?style=flat-square" alt="25 章">
 <img src="https://img.shields.io/badge/语言-中文%20%7C%20English-0969da?style=flat-square" alt="中英双语">
 </p>
 
@@ -33,15 +33,15 @@
 
 全书不是按框架 API 堆知识点，而是沿着一条统一主线展开：
 
-> **大模型基础 → 工具 → 记忆 → 规划 → RAG → 上下文 → Harness → 技能 → Agentic RL → 多 Agent → 评估 → 安全 → 部署**
+> **任务契约 → 模型基线 → 工具 → 记忆 → 规划 → 证据 → 上下文 → 宿主控制 → 评估 → 安全 → 部署 → 一个领域项目**
 
 仓库包含：
 
-- **23 章完整内容**，覆盖基础、核心能力、框架、多 Agent、生产化和综合项目。
-- **每种语言 188 个 Markdown 页面**，中文与英文同步维护。
+- **25 章、7 个部分**，先构建和交付应用，再按需研究训练与自我进化。
+- **中英文对齐的目录与学习交接**，每章从失败问题进入，留下可检查的学习产物。
 - **330+ 张原创 SVG 图解**和 **5 个交互动画**，解释架构、状态、时序和训练流程。
 - **从论文到工程的解读**，覆盖 ReAct、Reflexion、MemGPT/Letta、GraphRAG、GRPO、MCP、A2A 等主题。
-- **`reference-agent/` 可运行教学底座**，包含工具、记忆、安全闸门、评估、MCP Server、FastAPI 服务和 16 个测试。
+- **`reference-agent/` 可运行教学底座**，包含工具、记忆、安全闸门、评估、MCP Server、FastAPI 服务和离线回归测试。
 
 > 它不是 Awesome List，也不是某个框架的使用手册，而是一条从原理到生产工程的完整学习路径。
 
@@ -66,27 +66,64 @@
 | --- | --- |
 | **第一次构建 Agent** | [Agent 基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/) → [大模型基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_llm/) → [Hello Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/04_hello_agent.html) |
 | **构建 Agent 应用** | [工具](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_tools/) → [记忆](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_memory/) → [规划](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_planning/) → [RAG](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_rag/) |
-| **让脆弱 Demo 变可靠** | [上下文工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_context_engineering/) → [Harness 工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_harness/) → [评估](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_evaluation/) → [安全](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_security/) |
-| **训练和改进 Agent** | [Agentic RL](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_agentic_rl/) → [自我进化 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_self_evolving/) |
-| **选择 Agent 框架** | [LangChain](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langchain/) → [LangGraph](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langgraph/) → [框架全景](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_frameworks/) |
-| **设计多 Agent 系统** | [多 Agent 协作](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_multi_agent/) → [MCP / A2A / ANP](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_protocol/) |
+| **让脆弱 Demo 变可靠** | [上下文工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_context_engineering/) → [Harness 工程](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_harness/) → [评估](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_20_evaluation/) → [安全](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_21_security/) |
+| **训练和改进 Agent** | [评估](src/zh/chapter_20_evaluation/README.md)与[安全](src/zh/chapter_21_security/README.md)之后，再按瓶颈选择 [Agentic RL](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_agentic_rl/) 或 [自我进化 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_self_evolving/) |
+| **选择 Agent 框架** | [LangChain](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langchain/) → [LangGraph](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langgraph/) ；按问题选择[实现方式](src/zh/part3.md) |
+| **设计多 Agent 系统** | [多 Agent 协作](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_18_multi_agent/) → [MCP / A2A / ANP](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_19_protocol/) |
 
 ---
 
 ## 完整目录
 
-| 部分 | 章节 | 核心主题 |
-| --- | --- | --- |
-| **第一部分：基础** | [1. 什么是 Agent？](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_intro/) · [2. 大语言模型基础](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_llm/) | Agent Loop、LLM 原理、BPE、Attention、KV Cache、RoPE、提示词、模型 API |
-| **第二部分：核心能力** | [3. 工具](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_tools/) · [4. 记忆](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_memory/) · [5. 规划](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_planning/) · [6. RAG](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_rag/) · [7. 上下文](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_context_engineering/) · [8. Harness](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_harness/) · [9. 技能](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_skill/) · [10. Agentic RL](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_agentic_rl/) · [11. 自我进化](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_self_evolving/) | Function Calling、MemGPT/Letta、ReAct、GraphRAG、上下文腐化、结构化输出、Skill System、PPO/DPO/GRPO、数据飞轮 |
-| **第三部分：框架实战** | [12. LangChain](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langchain/) · [13. LangGraph](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_langgraph/) · [14. 框架全景](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_frameworks/) · [15. Claude Code](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_claude_code/) | Chain、状态图、Human-in-the-Loop、CrewAI、AutoGen、低代码平台、Coding Agent |
-| **第四部分：多 Agent** | [16. 多 Agent 协作](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_multi_agent/) · [17. 通信协议](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_protocol/) | Supervisor 与去中心化、角色分工、状态共享、MCP、A2A、ANP |
-| **第五部分：生产化** | [18. 评估](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_evaluation/) · [19. 安全](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_security/) · [20. 部署](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_deployment/) | Benchmark、LLM-as-Judge、可观测性、回归测试、提示注入、Guardrails、沙箱、FastAPI、Docker、Kubernetes |
-| **第六部分：综合项目** | [21. 编程 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_coding_agent/) · [22. 数据分析 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_data_agent/) · [23. 多模态 Agent](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_multimodal/) | 仓库编辑、代码执行、数据分析、报告生成、Computer Use、多模态 RAG |
+先看[贯穿项目与实战验收](src/zh/learning_project.md)。每章交代上一版失败、本章增量、验收产物和下一步选择；框架与协作按需选，训练放在末尾研究进阶篇。章节URL与示例目录保留稳定名称，阅读章号以目录为准。
 
-**附录：**[提示词模板](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/prompt_templates.html) · [常见问题](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/faq.html) · [学习资源](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/resources.html) · [术语表](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/glossary.html) · [KL 散度](https://Haozhe-Xing.github.io/agent_learning/zh/appendix/kl_divergence.html) · [环境搭建](https://Haozhe-Xing.github.io/agent_learning/zh/chapter_setup/)
+- **[第一部分：入门篇](src/zh/part1.md)**
+  - [第1章 什么是 Agent？](src/zh/chapter_intro/README.md)
+  - [第2章 大语言模型基础](src/zh/chapter_llm/README.md)
+- **[第二部分：核心能力篇](src/zh/part2.md)**
+  - [第3章 工具调用（Tool Use / Function Calling）](src/zh/chapter_tools/README.md)
+  - [第4章 记忆系统（Memory）](src/zh/chapter_memory/README.md)
+  - [第5章 规划与推理（Planning & Reasoning）](src/zh/chapter_planning/README.md)
+  - [第6章 检索增强生成（RAG）](src/zh/chapter_rag/README.md)
+  - [第7章 上下文工程](src/zh/chapter_context_engineering/README.md)
+  - [第8章 Harness Engineering：驾驭 Agent 的系统工程](src/zh/chapter_harness/README.md)
+  - [第9章 Skill System](src/zh/chapter_skill/README.md)
+- **[第三部分：框架与实现选择篇](src/zh/part3.md)**
+  - [第10章 LangChain 深入实战](src/zh/chapter_langchain/README.md)
+  - [第11章 LangGraph：构建有状态的 Agent](src/zh/chapter_langgraph/README.md)
+  - [第12章 OpenClaw：跨平台个人 AI 助理](src/zh/chapter_openclaw/README.md)
+  - [第13章 Hermes Agent：自我进化的 Agent](src/zh/chapter_hermes/README.md)
+  - [第14章 Claude Code 深度解析](src/zh/chapter_claude_code/README.md)
+  - [第15章 DeepSeek Harness：一切皆插件的开源底座](src/zh/chapter_deepseek_harness/README.md)
+- **[第四部分：协作与集成篇](src/zh/part4.md)**
+  - [第16章 多 Agent 协作](src/zh/chapter_18_multi_agent/README.md)
+  - [第17章 Agent 通信协议](src/zh/chapter_19_protocol/README.md)
+- **[第五部分：验证与部署篇](src/zh/part5.md)**
+  - [第18章 Agent 的评估与优化](src/zh/chapter_20_evaluation/README.md)
+  - [第19章 安全与可靠性](src/zh/chapter_21_security/README.md)
+  - [第20章 部署与生产化](src/zh/chapter_22_deployment/README.md)
+- **[第六部分：综合项目篇](src/zh/part6.md)**
+  - [第21章 项目实战：AI 编程助手](src/zh/chapter_23_coding_agent/README.md)
+  - [第22章 项目实战：智能数据分析 Agent](src/zh/chapter_24_data_agent/README.md)
+  - [第23章 项目实战：多模态 Agent](src/zh/chapter_25_multimodal/README.md)
+- **[第七部分：研究进阶篇](src/zh/part7.md)**
+  - [第24章 Agentic-RL：智能体强化学习训练](src/zh/chapter_agentic_rl/README.md)
+  - [第25章 自我进化与持续学习](src/zh/chapter_self_evolving/README.md)
+  - [附录 F：开发环境搭建](src/zh/chapter_setup/README.md)
+
+[中文完整目录](src/zh/SUMMARY.md) · [英文完整目录](src/en/SUMMARY.md) · [独立参考项目](reference_code/evidence_assistant/README.md) · [章节示例](examples/README.md)
 
 ---
+
+## 独立参考项目
+
+[本地资料调研助手](reference_code/evidence_assistant/README.md) 将实现、样例资料、测试和契约集中放在一个目录。主任务是读取多份本地资料，按多个问题检索证据，在执行与上下文预算内生成带来源的报告。默认使用 Python 标准库和离线资料，先学单 Agent 的完整流程，再按需接入模型或框架。
+
+```bash
+python -m reference_code.evidence_assistant
+```
+
+距离计算的六阶段案例保留为基础练习：`python -m reference_code.evidence_assistant.demo --all`。阅读顺序和练习难度见项目 README。
 
 ## 图解驱动的讲解
 
@@ -192,8 +229,8 @@ pytest -q
 | RAG 与检索 | `src/*/chapter_rag/` · Embedding · Rerank · GraphRAG · Agentic RAG |
 | 上下文与 Harness 工程 | `src/*/chapter_context_engineering/` · `src/*/chapter_harness/` |
 | Agentic RL 与自我进化 | `src/*/chapter_agentic_rl/` · `src/*/chapter_self_evolving/` · PPO · DPO · GRPO |
-| 多 Agent 与协议 | `src/*/chapter_multi_agent/` · `src/*/chapter_protocol/` · MCP · A2A · ANP |
-| 评估、安全、部署 | `src/*/chapter_evaluation/` · `src/*/chapter_security/` · `src/*/chapter_deployment/` |
+| 多 Agent 与协议 | `src/*/chapter_18_multi_agent/` · `src/*/chapter_19_protocol/` · MCP · A2A · ANP |
+| 评估、安全、部署 | `src/*/chapter_20_evaluation/` · `src/*/chapter_21_security/` · `src/*/chapter_22_deployment/` |
 | 可运行 Python 底座 | `reference-agent/src/reference_agent/` |
 | SVG 图解与交互动画 | `src/*/svg/` · `src/*/animations/` |
 
@@ -238,7 +275,7 @@ agent_learning/
 
 ## 路线图
 
-- [x] 23 章中英双语 mdBook
+- [x] 25 章中英双语 mdBook
 - [x] 本地化图解与交互动画
 - [x] Agentic RL、上下文工程、Harness 工程、自我进化 Agent
 - [x] 带离线测试的 `reference-agent` 可运行底座

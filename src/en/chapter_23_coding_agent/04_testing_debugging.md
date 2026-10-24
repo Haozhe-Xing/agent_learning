@@ -1,4 +1,4 @@
-# 23.4 Test Generation and Bug Fixing
+# 21.4 Test Generation and Bug Fixing
 
 > **Section Goal**: Enable the AI coding assistant to automatically generate unit tests, and locate and fix bugs in code.
 
@@ -20,7 +20,7 @@ An AI coding assistant can play three levels of roles in testing:
 
 ## Automatic Test Generation
 
-```python
+````python
 class TestGenerator:
     """Automatic test generator"""
     
@@ -89,13 +89,13 @@ Return in JSON format:
         response = await self.llm.ainvoke(prompt)
         import json
         return json.loads(response.content)
-```
+````
 
 ---
 
 ## Bug Localization and Fixing
 
-```python
+````python
 class BugFixer:
     """Bug localization and fixing"""
     
@@ -157,7 +157,7 @@ Please return a list of suggestions (one per line).
 """
         response = await self.llm.ainvoke(prompt)
         return response.content.strip().split('\n')
-```
+````
 
 ---
 
@@ -234,4 +234,4 @@ best_practices = {
 
 ---
 
-[Next: 19.5 Full Project Implementation →](./05_full_implementation.md)
+[Next: 21.5 Full Project Implementation →](./05_full_implementation.md)

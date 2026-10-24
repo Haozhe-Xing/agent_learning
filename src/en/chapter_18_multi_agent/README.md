@@ -1,6 +1,15 @@
-# Chapter 18: Multi-Agent Collaboration
+# Chapter 16: Multi-Agent Collaboration
 
-> 👥 *"What a single Agent can do is limited; complex tasks require multiple Agents working together."*
+**Reading level**: Engineering extension; verify single-agent limitations first.
+
+## This chapter's iteration
+
+- **Previous limitation**: A single Agent already has tools, explicit state and acceptance. Some research subtasks may be independent, while extra roles can merely add handoff and call costs.
+- **This chapter adds**: Define handoff inputs, artifacts, permissions and a total budget; accept subtasks before aggregation. The developer-team example separates repeated failures, timeouts and delivery.
+- **How to verify**: Supplied `examples/dev_team/tests/test_dev_team.py` checks actual test results, failed delivery, process cleanup and workspace isolation. As a reader experiment, compare one Agent and a team on identical tasks and total budgets, recording acceptance, handoff failures and calls. These offline cases do not establish a team advantage.
+- **Next step**: Read [chapter 17](../chapter_19_protocol/README.md) for process boundaries, or proceed to [evaluation](../chapter_20_evaluation/README.md). Collaboration is optional.
+
+> 👥 *"Collaboration is worth adding when its measured benefit exceeds handoff costs."*
 
 ---
 
@@ -22,34 +31,22 @@ After completing this chapter, you will be able to:
 
 ## Chapter Structure
 
-| Section | Content | Difficulty |
-|---------|---------|-----------|
-| 18.1 Limitations of Single Agents | Why do we need multi-Agent systems? | ⭐⭐ |
-| 18.2 Multi-Agent Communication Patterns | Message passing, shared state, negotiation, conflict resolution | ⭐⭐⭐ |
-| 18.3 Role Division and Task Allocation | Specialization, load balancing, system-level fault tolerance | ⭐⭐⭐ |
-| 18.4 Supervisor Mode vs. Decentralized | Six collaboration patterns, Handoff, split-brain | ⭐⭐⭐ |
-| 18.5 Practice: Multi-Agent Software Development Team | Complete implementation | ⭐⭐⭐⭐ |
-| 18.6 Paper Reading: Frontiers in Multi-Agent Systems | Key research papers | ⭐⭐⭐ |
-| 18.7 Framework Supplement: CrewAI | Role-playing multi-Agent framework | ⭐⭐ |
-
-## ⏱️ Estimated Study Time
-
-Approximately **90–120 minutes** (including hands-on exercises)
-
-## 💡 Prerequisites
-
-- Completed Chapter 14 LangGraph study
-- Understanding of Agent tool calls and state management
-- Familiarity with basic software development processes (helpful for understanding the hands-on project)
+| Section |
+|---|
+| [16.1 Limitations of Single Agents](./01_single_agent_limits.md) |
+| [16.2 Multi-Agent Communication Patterns](./02_communication_patterns.md) |
+| [16.3 Role Assignment and Task Allocation](./03_role_assignment.md) |
+| [16.4 Supervisor Mode vs. Decentralized Mode](./04_supervisor_vs_decentralized.md) |
+| [16.5 Practice: Multi-Agent Software Development Team](./05_practice_dev_team.md) |
+| [16.6 Paper Reading: Frontiers in Multi-Agent Systems](./06_paper_readings.md) |
+| [16.7 Framework Supplement: CrewAI (Role-Playing Multi-Agent Framework)](./07_crewai.md) |
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 13: LangGraph](../chapter_langgraph/README.md)
->
-> **Recommended next steps**:
-> - 👉 [Chapter 17: Communication Protocols](../chapter_19_protocol/README.md) — Agent-to-Agent communication standards like MCP/A2A
-> - 👉 [Chapter 19: Security and Reliability](../chapter_21_security/README.md) — Security challenges in multi-Agent systems
+Bring task, permission and acceptance records from [tools](../chapter_tools/README.md) and the [Harness](../chapter_harness/README.md). Production and domain delivery require [evaluation](../chapter_20_evaluation/README.md) and [security](../chapter_21_security/README.md) gates.
+
+Read [chapter 17](../chapter_19_protocol/README.md) for process boundaries, or proceed to [evaluation](../chapter_20_evaluation/README.md). Collaboration is optional.
 
 ---
 
-*Next section: [18.1 Limitations of Single Agents](./01_single_agent_limits.md)*
+*Next section: [16.1 Limitations of Single Agents](./01_single_agent_limits.md)*

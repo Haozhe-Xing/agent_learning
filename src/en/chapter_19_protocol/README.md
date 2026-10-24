@@ -1,4 +1,13 @@
-# Chapter 19: Agent Communication Protocols
+# Chapter 17: Agent Communication Protocols
+
+**Reading level**: Engineering extension; study for external integrations.
+
+## This chapter's iteration
+
+- **Previous limitation**: Local tool calls pass, but moving them to another process or service can change request formats, connection state and error behavior.
+- **This chapter adds**: Map the existing tool contract to protocol requests and responses, including IDs, arguments, errors and session ownership. The tool service still enforces business authorization.
+- **How to verify**: Supplied `reference-agent/tests/test_mcp_server.py` sends malformed JSON and invalid fields in one stdio process, then obtains 96 from a valid calculator call. A2A/ANP and remote business authorization need separate reader experiments; the small JSON-RPC server does not validate them.
+- **Next step**: Carry local and protocol success/failure records into [chapter 18](../chapter_20_evaluation/README.md). Keep local interfaces when no integration boundary is needed.
 
 > 🔌 *"Agents need standardized communication methods, just as humans need a common language."*
 
@@ -20,32 +29,21 @@ After completing this chapter, you will be able to:
 
 ## Chapter Structure
 
-| Section | Content | Difficulty |
-|---------|---------|-----------|
-| 19.1 MCP Protocol Deep Dive | Design and implementation of Model Context Protocol | ⭐⭐⭐ |
-| 19.2 A2A Protocol | Agent-to-Agent communication standard | ⭐⭐⭐ |
-| 19.3 ANP Protocol | Agent Network Protocol | ⭐⭐⭐ |
-| 19.4 Inter-Agent Message Passing | Communication patterns in practice | ⭐⭐⭐ |
-| 19.5 Practice: MCP-Based Tool Integration | Complete implementation | ⭐⭐⭐⭐ |
-
-## ⏱️ Estimated Study Time
-
-Approximately **90–120 minutes** (including hands-on exercises)
-
-## 💡 Prerequisites
-
-- Completed Chapter 19 Multi-Agent Collaboration
-- Familiarity with basic communication protocol concepts like JSON-RPC
-- Basic Python asynchronous programming (`asyncio`)
+| Section |
+|---|
+| [17.1 MCP (Model Context Protocol) Explained](./01_mcp_protocol.md) |
+| [17.2 A2A (Agent-to-Agent) Protocol](./02_a2a_protocol.md) |
+| [17.3 ANP (Agent Network Protocol)](./03_anp_protocol.md) |
+| [17.4 Message Passing and State Sharing Between Agents](./04_message_passing.md) |
+| [17.5 Practice: Tool Integration Based on MCP](./05_practice_mcp_integration.md) |
+| [17.6 Framework Supplement: AutoGen (Multi-Agent Dialogue Framework)](./06_autogen.md) |
 
 ## 🔗 Learning Path
 
-> **Prerequisites**: [Chapter 16: Multi-Agent Collaboration](../chapter_18_multi_agent/README.md), [Chapter 3: Tool Calls](../chapter_tools/README.md)
->
-> **Recommended next steps**:
-> - 👉 [Chapter 18: Evaluation and Optimization](../chapter_20_evaluation/README.md) — Enter the production chapter
-> - 👉 [Chapter 20: Deployment and Production](../chapter_22_deployment/README.md) — Deploy MCP-based Agent services
+Bring task, permission and acceptance records from [tools](../chapter_tools/README.md) and the [Harness](../chapter_harness/README.md). Production and domain delivery require [evaluation](../chapter_20_evaluation/README.md) and [security](../chapter_21_security/README.md) gates.
+
+Carry local and protocol success/failure records into [chapter 18](../chapter_20_evaluation/README.md). Keep local interfaces when no integration boundary is needed.
 
 ---
 
-*Next section: [19.1 MCP (Model Context Protocol) Deep Dive](./01_mcp_protocol.md)*
+*Next section: [17.1 MCP (Model Context Protocol) Deep Dive](./01_mcp_protocol.md)*

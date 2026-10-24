@@ -1,5 +1,14 @@
 # 第8章 Harness Engineering：驾驭 Agent 的系统工程
 
+**阅读层次**：核心必读。
+
+## 本章迭代
+
+- **上一版的不足**：第7章保住了距离与目标单位，但提示中写“只许计算”仍不能阻止越权调用，执行完毕也不能证明光行时间和来源正确。
+- **本章增加**：把工具许可和调用上限放到宿主执行器，用独立验收器核对原始资料、单位、计算与最终回答；分别保留执行状态和 `accepted` 判定。
+- **怎样验证**：已有入口 `python -m reference_code.evidence_assistant.demo --stage harness`；`python -m unittest reference_code.evidence_assistant.tests.test_learning_path.HarnessTests reference_code.evidence_assistant.tests.test_project_contracts` 检查未授权工具不会执行、预算耗尽不被接受，以及损坏计算器和来源时验收失败。交付执行轨迹与验收理由；`status=completed` 仍可伴随 `accepted=false`。该执行器是教学约束，不是运行任意代码的安全沙箱。
+- **下一步**：需要复用流程时进入[第9章](../chapter_skill/README.md)；需要换实现时直接查看[第三部分选型](../part3.md)。训练与自进化位于[研究进阶篇](../part7.md)，不是使用框架或部署应用的前置步骤。
+
 > 🔧 *"不要只关注让 AI 写更好的代码，要关注如何构建一个能让 AI 持续可靠地工作的系统。"*  
 > —— Mitchell Hashimoto，HashiCorp 联合创始人
 
@@ -21,7 +30,7 @@
 
 > **后续推荐**：
 > - 👉 [第9章 Skill System](../chapter_skill/README.md)
-> - 👉 [第16章 Claude Code 深度解析：工业级 Harness 的原理](../chapter_claude_code/README.md)
+> - 👉 [第14章 Claude Code 深度解析：工业级 Harness 的原理](../chapter_claude_code/README.md)
 
 ---
 

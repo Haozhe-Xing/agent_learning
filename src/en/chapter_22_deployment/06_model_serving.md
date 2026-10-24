@@ -1,4 +1,4 @@
-# 22.6 Model Inference Serving
+# 20.6 Model Inference Serving
 
 > **Goal of this section**: Master the three major LLM inference serving frameworks (vLLM / SGLang / TGI), understand the mainstream quantization options (GPTQ / AWQ / GGUF), and learn to design model routing strategies that strike the best balance between cost and performance.
 
@@ -706,4 +706,4 @@ def warm_up_model(base_url: str, model_name: str, warmup_rounds: int = 3):
 
 ---
 
-[22.7 Kubernetes Orchestration and Serverless GPU](./07_k8s_serverless.md)
+[20.7 Kubernetes Orchestration and Serverless GPU](./07_k8s_serverless.md)

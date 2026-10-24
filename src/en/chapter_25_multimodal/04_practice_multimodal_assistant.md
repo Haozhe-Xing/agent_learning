@@ -1,4 +1,4 @@
-# 25.4 Practice: Multimodal Personal Assistant
+# 23.4 Practice: Multimodal Personal Assistant
 
 > **Section Goal**: Build a multimodal Agent that can handle text, image, and voice input.
 
@@ -19,11 +19,11 @@ from langchain_openai import ChatOpenAI
 
 # Import components implemented in previous sections
 # Full implementations of each component are in the corresponding sections:
-# from vision_tool import VisionTool           # → Section 22.2
-# from image_generator import ImageGenerator   # → Section 22.2
-# from speech_to_text import SpeechToText      # → Section 22.3
-# from text_to_speech import TextToSpeech      # → Section 22.3
-# Note: Before running this section's code, save sections 21.2–21.3 code as independent modules
+# from vision_tool import VisionTool           # → Section 23.2
+# from image_generator import ImageGenerator   # → Section 23.2
+# from speech_to_text import SpeechToText      # → Section 23.3
+# from text_to_speech import TextToSpeech      # → Section 23.3
+# Note: Before running this section's code, save sections 23.2–23.3 code as independent modules
 
 
 class MultimodalAssistant:
@@ -222,7 +222,7 @@ You: gen:a shiba inu wearing sunglasses sitting on a beach
 
 > 🎓 **Chapter Summary**: Multimodal Agents free AI from text-only interaction. By integrating visual understanding, image generation, speech recognition, and synthesis, we built a more natural and powerful personal assistant.
 
-> 🎉 **Book Summary**: From the basic concepts in Chapter 1 to the multimodal practice in Chapter 23, you have completed the full learning path of Agent development. You have learned tool calling, memory systems, planning and reasoning, RAG, multi-Agent collaboration, secure deployment, and other core technologies. Now go build your own Agent applications!
+> 🎉 **Application Development Review**: From the basic concepts in Chapter 1 to the multimodal practice in Chapter 23, you have completed the application development and capstone route. You have learned tool calling, memory systems, planning and reasoning, RAG, multi-Agent collaboration, secure deployment, and other core technologies. Now verify your own Agent application against a fixed task set. If current models show a measurable limitation, continue with the optional [Chapter 24: Agentic-RL](../chapter_agentic_rl/README.md) and [Chapter 25: Self-Evolution](../chapter_self_evolving/README.md).
 
 ---
 

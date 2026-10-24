@@ -35,7 +35,7 @@
   <text x="390" y="80" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f39c12">1980s-1990s</text>
   <rect x="300" y="130" width="180" height="180" rx="14" fill="white" stroke="#f39c12" stroke-width="2" filter="url(#shadow)"/>
   <text x="390" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#f39c12">Distributed Intelligence</text>
-  <text x="390" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#555">Multi-agent collaboration & emergence</text>
+  <text x="390" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#555">Multi-agent collaboration &amp; emergence</text>
   <line x1="320" y1="190" x2="460" y2="190" stroke="#eee" stroke-width="1"/>
   <text x="320" y="210" font-family="system-ui, sans-serif" font-size="10" fill="#666">• Society of Mind (1986)</text>
   <text x="320" y="228" font-family="system-ui, sans-serif" font-size="10" fill="#666">• BDI Architecture (1991)</text>

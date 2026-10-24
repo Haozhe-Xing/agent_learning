@@ -1,4 +1,4 @@
-# 20.7 A/B 测试与回归测试自动化
+# 18.7 A/B 测试与回归测试自动化
 
 > **本节目标**：掌握 Agent 的 A/B 测试与回归测试方法，能够构建自动化的 Prompt 变体测试框架，并将评估集成到 CI/CD 流水线中。
 
@@ -101,7 +101,7 @@ class ABTestConfig:
 
 ### A/B 测试框架实现
 
-> ⚠️ **诚实说明**：下面的 `ABTestFramework` 是一个**脚手架**——它本身不绑定任何具体 Agent 或固定测试集。要真正跑起来，你需要提供 `agent_factory_a/b`（能产出真实 Agent 的函数）和一份固定的 `test_cases`。本书已随附一个**真实可运行**的评估基座 `reference-agent/evaluation/harness.py`（基于固定 JSONL 任务集、可离线复现），建议把这里的 A/B 思想落到那个基座上，而不是另起一套只停留在类定义层面的代码。
+> ⚠️ **诚实说明**：下面的 `ABTestFramework` 是一个**脚手架**——它本身不绑定任何具体 Agent 或固定测试集。要真正跑起来，你需要提供 `agent_factory_a/b`（能产出真实 Agent 的函数）和一份固定的 `test_cases`。本书已随附一个**真实可运行**的评估基座 `reference-agent/src/reference_agent/evaluation/harness.py`（基于固定 JSONL 任务集、可离线复现），建议把这里的 A/B 思想落到那个基座上，而不是另起一套只停留在类定义层面的代码。
 
 ```python
 class ABTestFramework:
@@ -495,7 +495,7 @@ print(f"效应量：{result['analysis']['quality']['effect_size']}")
 
 ### 回归测试框架实现
 
-> ⚠️ **诚实说明**：`RegressionTestSuite` 同样是**脚手架**——它定义了"注册用例 / 保存基线 / 回归比对"的接口，但 `register_test` 里的 `expected_*` 判定、语义相似度比对等都需要你接真实 Agent 与判定后端才能真正工作。本书的 `reference-agent/evaluation/harness.py` 已经给出了一个更轻量、可立即 `pytest` 复现的判定实现（`expect_contains`），可作为你扩展语义/快照判定的起点。
+> ⚠️ **诚实说明**：`RegressionTestSuite` 同样是**脚手架**——它定义了"注册用例 / 保存基线 / 回归比对"的接口，但 `register_test` 里的 `expected_*` 判定、语义相似度比对等都需要你接真实 Agent 与判定后端才能真正工作。本书的 `reference-agent/src/reference_agent/evaluation/harness.py` 已经给出了一个更轻量、可立即 `pytest` 复现的判定实现（`expect_contains`），可作为你扩展语义/快照判定的起点。
 
 ```python
 class RegressionTestSuite:
@@ -1034,4 +1034,4 @@ if __name__ == "__main__":
 
 ---
 
-[20.8 模型路由评估](./08_model_routing.md)
+[18.8 模型路由评估](./08_model_routing.md)

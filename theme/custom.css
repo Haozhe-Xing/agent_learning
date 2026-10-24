@@ -119,12 +119,17 @@ html:not(.sidebar-visible) .content main {
   border-radius: 4px;
 }
 
+/* Keep code blocks from inheriting the smaller inline-code size a second time. */
+.content pre code {
+  font-size: 1em;
+}
+
 /* ---------- 表格美化 ---------- */
 .content table {
   border-collapse: collapse;
   width: 100%;
   margin: 1.2em 0;
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
@@ -815,20 +820,20 @@ html:not(.sidebar-visible) .content main {
 /* ---------- 移动端响应式 ---------- */
 @media (max-width: 768px) {
   .content {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     line-height: 1.75;
   }
 
   .content h1 {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
 
   .content h2 {
-    font-size: 1.35rem;
+    font-size: 1.8rem;
   }
 
   .content h3 {
-    font-size: 1.15rem;
+    font-size: 1.6rem;
   }
 
   /* 表格在小屏可横向滚动 */
@@ -836,12 +841,12 @@ html:not(.sidebar-visible) .content main {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    font-size: 0.95rem;
+    font-size: 1.4rem;
   }
 
   /* 代码块字体缩小，防止横向溢出 */
   .content pre {
-    font-size: 0.82em;
+    font-size: 1.3rem;
     padding: 0.8em;
   }
 

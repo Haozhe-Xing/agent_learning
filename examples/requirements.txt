@@ -1,0 +1,11 @@
+# Python 3.11+; exact direct dependency versions used for integration verification.
+pytest==8.4.2
+httpx==0.28.1
+fastapi==0.143.5
+openai==2.54.0
+chromadb==1.5.9
+python-dotenv==1.2.4
+requests==2.34.2
+langchain==1.4.6
+langchain-openai==1.7.2
+langgraph==1.2.16

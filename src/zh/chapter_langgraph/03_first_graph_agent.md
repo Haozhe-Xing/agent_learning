@@ -1,75 +1,111 @@
-# 13.3 构建你的第一个 Graph Agent
+# 11.3 构建你的第一个 Graph Agent
 
-本节用 LangGraph 构建一个完整的、带工具调用与循环推理的 Agent。与前面用原生 API 或 `AgentExecutor` 不同，LangGraph 用**图**描述 Agent 行为——执行流程**可视化、可控、可持久化**：你能清楚看到 Agent 走了哪些步骤，能在任意节点暂停/恢复，也能通过加边精确控制走向。
+本节把一个工具循环写成显式的状态图：`agent → tools → agent`，没有工具请求时结束。重点是观察消息怎样经过节点、条件边怎样选择下一步，以及循环怎样被上限停止。
 
-构建一个 Graph Agent 分四步：①定义工具 → ②创建节点（接收 State、返回更新）→ ③构建图（加节点与边）→ ④`compile()` 运行。下面用 LangGraph 内置的 `MessagesState`、`ToolNode`、`tools_condition` 来搭——这些是常见 Agent 模式的快捷组件。
+默认使用固定响应的离线模型：它把输入原文当作算术表达式，先请求 `calculate`，收到工具结果后原样返回。这能验证真实框架的工具调用链路，不能证明模型理解了自然语言或会自主规划。完整入口为 [first_graph_agent.py](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/chapter13/first_graph_agent.py)，与10.3共用 [framework_fixture.py](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/framework_fixture.py)，避免维护两份替身。
+
+## 先运行，再阅读图
+
+在仓库根目录、已安装 [examples/requirements.txt](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/requirements.txt) 的环境中运行。本节验证版本为 `langgraph==1.2.16`：
+
+```bash
+python -m examples.chapter13.first_graph_agent
+python -m examples.chapter13.first_graph_agent --stream
+```
+
+默认表达式是 `sqrt(144) + 2 * 3`，工具结果为 `18`。`--stream` 显示的节点顺序应为 `agent → tools → agent`。最后的 `completed` 只表示这个工具循环正常结束；离线替身与算术工具的固定用例不等于模型质量评测。
 
 ![Graph Agent执行流程](../svg/chapter_langgraph_03_graph_agent.svg)
 
+图中的 Agent 节点可接真实模型；本节默认用固定响应替代这一步，工具节点和条件路由仍由已安装的 LangGraph 执行。
+
+## 一个可运行的最小工具循环
+
+下面代码可在同一环境、仓库根目录直接执行。工具、模型和消息类均有明确来源：
+
 ```python
-from langgraph.graph import StateGraph, END, START, MessagesState
+from langchain_core.messages import HumanMessage, SystemMessage
+from langgraph.graph import START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
 
-@tool
-def calculate(expression: str) -> str:
-    """计算数学表达式。"""
-    # 生产环境用 AST 沙箱求值，绝不用 eval()（即使清空 __builtins__ 仍可被对象链逃逸）
-    return safe_calculate_expr(expression)   # 见下方"工具安全"说明
+from examples.framework_fixture import FixedToolChatModel, calculate
 
-tools = [calculate]
+model = FixedToolChatModel().bind_tools([calculate])
+
+def agent_node(state: MessagesState) -> dict:
+    messages = state.get("messages", [])
+    if not messages:
+        raise ValueError("provide at least one input message")
+    response = model.invoke([
+        SystemMessage(content="Use calculate for arithmetic. Preserve tool failures in the reply."),
+        *messages,
+    ])
+    return {"messages": [response]}
+
 graph = StateGraph(MessagesState)
-graph.add_node("agent", lambda s: {"messages": [llm.bind_tools(tools).invoke(s["messages"])]})
-graph.add_node("tools", ToolNode(tools))
+graph.add_node("agent", agent_node)
+graph.add_node("tools", ToolNode([calculate]))
 graph.add_edge(START, "agent")
-graph.add_conditional_edges("agent", tools_condition)  # 有工具调用→tools，否则→END
-graph.add_edge("tools", "agent")                       # 工具执行后回到 agent → 形成循环
+graph.add_conditional_edges("agent", tools_condition)
+graph.add_edge("tools", "agent")
 app = graph.compile()
+
+events = list(app.stream(
+    {"messages": [HumanMessage(content="sqrt(144) + 2 * 3")]},
+    config={"recursion_limit": 8},
+    stream_mode="updates",
+))
+print([next(iter(event)) for event in events])
+print(events[1]["tools"]["messages"][0].content)
 ```
 
-> 💡 **直觉理解**：图的拓扑本身就是一个"循环"——`agent → tools → agent → … → END`。每轮 `agent` 调 LLM 推理，`tools_condition` 检查返回是否含工具调用：有则去 `tools`，没有（模型认为可直接回答）则去 `END`。这正是 ReAct 循环在图里的落地。
+观察四处连接：
 
-**工具安全（重要）**：上面的 `calculate` 用 AST 沙箱而非 `eval()` 求值。即使把 `__builtins__` 清空，攻击者仍可用 `().__class__.__bases__[0].__subclasses__()` 这类对象链逃逸，所以**只允许"算术"这一种语义**——把字符串 `ast.parse` 成抽象语法树，在白名单（`+ - * / % **`、`sqrt/sin/log/pi`…）里逐项求值。这是把"工具执行"当作不可信输入处理的基本纪律。
+1. `MessagesState` 为消息列表提供状态合并规则，节点返回本轮新增消息。
+2. `agent_node` 调用绑定了工具定义的模型，返回 `AIMessage`。
+3. `tools_condition` 检查消息中的工具请求；存在请求就进入名为 `tools` 的节点，否则结束。
+4. `ToolNode` 执行已注册的工具并写入 `ToolMessage`，随后沿固定边回到 `agent`。
 
-## 追踪执行过程
+`calculate` 复用第3章的 [受限算术解释器](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/chapter03/safe_math.py)，只接受列明的数值、运算和函数，并限制表达式长度、树大小、幂指数和数值范围。它没有使用 `eval()`，也不是能执行任意 Python 的通用沙箱。非法表达式返回结构化工具错误；宿主 CLI 检查这些错误并以非零退出码结束。
 
-调试 Agent 时，`app.stream()` 能逐节点流式输出状态，让你看到每个节点的决策、工具调用与结果：
+## 看见停止，不把停止当作通过
 
-```python
-for event in app.stream({"messages": [HumanMessage(content="地球直径多少公里？换算成英里？")]}):
-    for node, state in event.items():
-        if node == "__end__":
-            continue
-        last = state.get("messages", [])[-1]
-        if hasattr(last, "tool_calls") and last.tool_calls:
-            print(f"[{node}] 调用：{[tc['name'] for tc in last.tool_calls]}")
+以下两条命令分别观察工具拒绝和图步骤上限：
+
+```bash
+python -m examples.chapter13.first_graph_agent --expression "__import__('os').getcwd()"
+python -m examples.chapter13.first_graph_agent --recursion-limit 1
 ```
 
-## 与 AgentExecutor 的本质差异
+第一条返回 `tool_failed`；第二条捕获 `GraphRecursionError`，返回 `budget_exhausted`。两者退出码均为 `1`。`recursion_limit` 限制图的执行步数，不是单个工具的耗时限制，也不能直接当成工具调用总数：一条模型消息可能包含多个工具请求。真实应用还需按工具的成本和副作用制定独立预算。
 
-| 维度 | AgentExecutor | LangGraph |
-|------|--------------|-----------|
-| 透明度 | 黑盒循环，内部不透明 | 每个节点/边都可见 |
-| 控制力 | 有限配置项 | 完全自定义拓扑与终止条件 |
-| 持久化 | 不支持 | Checkpoint 原生支持 |
-| 人在回路 | 需额外实现 | 内置 `interrupt` / resume |
-| 适用 | 简单工具调用 | 复杂多步、有状态工作流 |
+测试位于 [test_first_graph_agent.py](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/integration_tests/test_first_graph_agent.py)，实际覆盖工具往返、无工具请求时直接结束、重复请求被步数上限停止、空输入拒绝及 CLI 失败退出：
 
-> 💡 **迁移建议**：若只需"LLM + 工具"的简单循环，`AgentExecutor` 已够用；一旦需要条件分支、多阶段流程、人工审批、中间状态持久化，就该上 LangGraph。
+```bash
+python -m pytest examples/integration_tests/test_first_graph_agent.py -q
+```
 
-## 常见陷阱（用 prose 记牢，不必背代码）
+## 与10.3的取舍，以及尚未配置的能力
 
-1. **空消息列表**：取最后一条消息前先做非空校验，避免 `IndexError`。
-2. **工具抛异常拖垮整个 Agent**：工具内部 `try/except`，返回友好错误信息而非上抛——让 Agent 见到错误后能自我纠正。
-3. **无限循环无安全出口**：显式设 `recursion_limit`（如 `app.invoke(input, {"recursion_limit": 15})`），作为防失控兜底。
+| 选择 | 本节可以观察的内容 | 需要另外设计或配置 |
+|---|---|---|
+| 10.3的 `create_agent` | 用较少装配代码运行工具循环 | 自定义任务验收、权限及预算策略 |
+| 本节的 `StateGraph` | 显式编写节点、消息状态、条件边和返回边 | 自定义状态与终止规则，以及同样的业务验收 |
+| 检查点 | 本节的 `compile()` 没有传入 checkpointer | 配置检查点存储与 `thread_id`；内存存储不会跨进程保留 |
+| 人工中断与恢复 | 本节没有审批节点 | 明确调用 `interrupt()`，配置 checkpointer 和线程标识，再通过 `Command(resume=...)` 恢复 |
+
+不要把“能用图表达”理解成每个 Agent 都必须迁移。简单循环可继续用 `create_agent`；自写循环或状态机也可以。需要独立观察或修改生命周期中的状态、分支和返回路径时，再比较显式图所带来的收益与维护成本。检查点及人工中断的配置见官方 [Persistence](https://docs.langchain.com/oss/python/langgraph/persistence) 与 [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)，图模型与步数限制见 [Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api)。
+
+## 选做：连接真实模型
+
+配置好模型服务凭据后，显式运行：
+
+```bash
+python -m examples.chapter13.first_graph_agent --real --model gpt-4.1-mini
+```
+
+此路径使用有超时和有限重试的 `ChatOpenAI`，会产生真实服务请求。默认离线测试没有验证该服务是否可用、模型是否选择正确工具，或它的最终回答是否完整；这些需要另做固定任务验收。`--real` 保留相同的图结构，便于比较模型消息与离线消息的差异。
 
 ---
 
-## 小结
-
-第一个 Graph Agent 展示了：`StateGraph` + `MessagesState` 快速搭建；`ToolNode` + `tools_condition` 处理工具；`app.stream()` 追踪过程。下一节我们把"循环"变成可控、可路由的核心能力。
-
----
-
-*下一节：[13.4 条件路由与循环控制](./04_conditional_routing.md)*
+*下一节：[11.4 条件路由与循环控制](./04_conditional_routing.md)*

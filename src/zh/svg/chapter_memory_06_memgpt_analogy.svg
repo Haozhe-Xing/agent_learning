@@ -1,52 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 300" font-family="Arial, sans-serif">
-  <!-- 背景 -->
-  <rect width="580" height="300" rx="12" fill="#f8f9fa"/>
-
-  <!-- 标题 -->
-  <text x="290" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">🧠 MemGPT 核心类比：操作系统 ↔ LLM Agent</text>
-
-  <!-- 左列：计算机操作系统 -->
-  <rect x="30" y="55" width="245" height="230" rx="10" fill="#3498db" fill-opacity="0.1" stroke="#3498db" stroke-width="2"/>
-  <text x="152" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🖥️ 计算机操作系统</text>
-
-  <rect x="50" y="92" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="113" text-anchor="middle" font-size="12" fill="#2c3e50">CPU 寄存器</text>
-
-  <rect x="50" y="132" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="153" text-anchor="middle" font-size="12" fill="#2c3e50">主内存 (RAM)</text>
-
-  <rect x="50" y="172" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="193" text-anchor="middle" font-size="12" fill="#2c3e50">硬盘 / SSD</text>
-
-  <rect x="50" y="212" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="233" text-anchor="middle" font-size="12" fill="#2c3e50">缺页中断</text>
-
-  <rect x="50" y="252" width="205" height="28" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="271" text-anchor="middle" font-size="12" fill="#2c3e50">页面置换 / 虚拟内存</text>
-
-  <!-- 中间箭头列 -->
-  <text x="290" y="113" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="153" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="193" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="233" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="271" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-
-  <!-- 右列：LLM Agent (MemGPT) -->
-  <rect x="305" y="55" width="245" height="230" rx="10" fill="#27ae60" fill-opacity="0.1" stroke="#27ae60" stroke-width="2"/>
-  <text x="427" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🤖 LLM Agent (MemGPT)</text>
-
-  <rect x="325" y="92" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="113" text-anchor="middle" font-size="12" fill="#2c3e50">LLM 的注意力焦点</text>
-
-  <rect x="325" y="132" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="153" text-anchor="middle" font-size="12" fill="#2c3e50">上下文窗口 (Context)</text>
-
-  <rect x="325" y="172" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="193" text-anchor="middle" font-size="12" fill="#2c3e50">外部存储 (DB/文件)</text>
-
-  <rect x="325" y="212" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="233" text-anchor="middle" font-size="12" fill="#2c3e50">信息不在上下文→换入</text>
-
-  <rect x="325" y="252" width="205" height="28" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="271" text-anchor="middle" font-size="12" fill="#2c3e50">记忆换入换出 / "无限"记忆</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 590" role="img" aria-labelledby="title desc" font-family="Arial, PingFang SC, sans-serif">
+<title id="title">MemGPT：存储与当前可见内容</title><desc id="desc">有限主上下文包括系统指令、工作区与FIFO队列。外部召回和归档存储通过显式函数访问。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8Z" fill="#475569"/></marker></defs>
+<rect width="560" height="590" rx="12" fill="#fff"/>
+<text x="280" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">MemGPT：存储与当前可见内容</text>
+<rect x="30" y="62" width="500" height="230" rx="9" fill="#eff6ff" stroke="#64748b"/>
+<text x="280.0" y="90" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">主上下文：有限的输入窗口</text>
+<rect x="48" y="105" width="464" height="52" rx="9" fill="#fff" stroke="#64748b"/>
+<text x="280.0" y="133" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">系统指令：只读</text>
+<rect x="48" y="163" width="464" height="52" rx="9" fill="#fff" stroke="#64748b"/>
+<text x="280.0" y="191" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">工作区：通过函数编辑</text>
+<rect x="48" y="221" width="464" height="52" rx="9" fill="#fff" stroke="#64748b"/>
+<text x="280.0" y="249" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">FIFO队列：近期消息与摘要</text>
+<path d="M160,292 L160,388" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="345" y="327" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">显式函数搬运数据</text>
+<text x="345" y="352" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">容量预警与队列淘汰</text>
+<rect x="30" y="390" width="500" height="105" rx="9" fill="#f5f3ff" stroke="#64748b"/>
+<text x="280.0" y="418" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">外部上下文：窗口之外</text>
+<text x="280.0" y="445" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">召回存储：历史消息</text>
+<text x="280.0" y="469" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">归档存储：额外内容</text>
+<text x="280" y="536" text-anchor="middle" font-size="16" font-weight="normal" fill="#1e293b">保存于外部 ≠ 当前可见 ≠ 正确召回</text>
+<text x="280" y="576" text-anchor="middle" font-size="14" font-weight="normal" fill="#475569">本书重绘，依据 Packer et al., v2 §2 (2024)</text>
 </svg>

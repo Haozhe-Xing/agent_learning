@@ -1,4 +1,4 @@
-# 14.5 Skills 与插件生态：ClawHub 与社区贡献
+# 12.5 Skills 与插件生态：ClawHub 与社区贡献
 
 > 🦞 *"SKILL.md 不是文档，是公共契约。"*
 
@@ -108,7 +108,7 @@ OpenClaw 之所以值得研究，一个硬指标是——**它能被多语言重
 
 ### 3.1 为什么能 fork 到 6 种语言？
 
-因为 OpenClaw 的核心抽象**足够小且稳定**：整条数据流就是 `IncomingMessage → Gateway → Agent Loop → Toolbox → OutgoingMessage`（完整图见 [14.1 第 5 节](./01_history_and_positioning.md) 和 [14.3 架构](./03_architecture.md)），其中 Gateway 负责会话、Skills 负责扩展。
+因为 OpenClaw 的核心抽象**足够小且稳定**：整条数据流就是 `IncomingMessage → Gateway → Agent Loop → Toolbox → OutgoingMessage`（完整图见 [12.1 第 5 节](./01_history_and_positioning.md) 和 [12.3 架构](./03_architecture.md)），其中 Gateway 负责会话、Skills 负责扩展。
 
 只要这个骨架不变，语言实现是"翻译"而非"重新设计"——**这就是"核心抽象做对"的标志：换语言重写时，你只需要把每一层的接口翻译成目标语言，而不需要重新想一遍架构该怎么搭**。
 
@@ -159,4 +159,4 @@ $ openclaw skills reload
 
 ---
 
-*下一节：[14.6 实战：基于 OpenClaw 打造个人助理](./06_practice.md)*
+*下一节：[12.6 实战：基于 OpenClaw 打造个人助理](./06_practice.md)*

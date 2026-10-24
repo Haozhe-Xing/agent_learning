@@ -1,4 +1,4 @@
-# 14.5 Skills & Plugin Ecosystem: ClawHub and Community Contributions
+# 12.5 Skills & Plugin Ecosystem: ClawHub and Community Contributions
 
 > 🦞 *"SKILL.md is not a document — it's a public contract."*
 
@@ -103,4 +103,4 @@ The core abstraction is small and stable enough that re-implementing it in anoth
 
 ---
 
-*Next section: [14.6 Practice: Build a Personal Assistant](./06_practice.md)*
+*Next section: [12.6 Practice: Build a Personal Assistant](./06_practice.md)*

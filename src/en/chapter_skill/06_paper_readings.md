@@ -167,7 +167,7 @@ The greatest contribution of Anthropic Skills is **lowering the barrier to skill
 
 *Back to: [Chapter 9 Skill System](./README.md)*
 
-*Next chapter: [Chapter 10 Agentic-RL: Agent Reinforcement Learning Training](../chapter_agentic_rl/README.md)*
+*Next chapter: [Chapter 10: LangChain In-Depth](../chapter_langchain/README.md)*
 
 ---
 

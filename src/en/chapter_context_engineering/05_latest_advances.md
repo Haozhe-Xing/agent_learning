@@ -772,7 +772,7 @@ class DynamicToolContext:
 
 ### 1. Retrieval-Augmented Context
 
-Combining RAG (Chapter 7) with context engineering, **not stuffing all information into context, but establishing an "on-demand retrieval" mechanism**. This aligns with Anthropic's JIT strategy:
+Combining RAG (Chapter 6) with context engineering, **not stuffing all information into context, but establishing an "on-demand retrieval" mechanism**. This aligns with Anthropic's JIT strategy:
 
 ```python
 # Traditional approach: Put all potentially relevant documents into context
@@ -824,7 +824,7 @@ Increasing research explores using structured formats (XML, JSON Schema) to orga
 
 ### 3. Multi-Agent Context Sharing
 
-In multi-Agent systems (Chapter 14), cross-Agent context transfer and sharing is an active research direction. The core challenge is: **how to enable multiple Agents to efficiently collaborate without each Agent carrying complete context?**
+In multi-Agent systems (Chapter 16), cross-Agent context transfer and sharing is an active research direction. The core challenge is: **how to enable multiple Agents to efficiently collaborate without each Agent carrying complete context?**
 
 ```python
 class SharedContextStore:

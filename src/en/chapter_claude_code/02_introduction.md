@@ -1,4 +1,4 @@
-# 16.2 Getting to Know Claude Code: More Than Just Code Completion
+# 14.2 Getting to Know Claude Code: More Than Just Code Completion
 
 > 🖥️ *"We didn't set out to build a coding assistant. We set out to build a trusted, capable colleague who happens to work entirely in the terminal."*  
 > — Anthropic Engineering Team, 2024
@@ -475,4 +475,4 @@ Claude Code's capabilities cover the full software development lifecycle:
 
 ---
 
-*Next section: [16.3 Claude Code Core Architecture](./03_architecture.md)*
+*Next section: [14.3 Claude Code Core Architecture](./03_architecture.md)*

@@ -82,7 +82,7 @@ class MixtureOfExperts:
 | **Llama 4 Maverick** | ~400B | 17B | 128 experts; native multimodal; text generation surpasses GPT-4.1 |
 | **Qwen3-235B-A22B** | 235B | 22B | Hybrid reasoning; Apache 2.0; tops open-source leaderboard |
 | **Qwen3-30B-A3B** | 35B | 3B | Lightweight MoE; runs on a single GPU |
-| **DeepSeek-V3** | 671B | 37B | MoE architecture; $5.57M training cost; best price-performance |
+| **DeepSeek-V3** | 671B | 37B | MoE architecture; USD 5.57M training cost; best price-performance |
 | **DeepSeek-V3-0324** | 685B | 37B | Minor update; major coding improvement |
 | **Gemma 4-26B** | 26B | 4B (active) | Apache 2.0; native video/image; 256K context |
 | **Llama 4 Scout** | 109B | 17B | 16 experts; 10M-token ultra-long context |

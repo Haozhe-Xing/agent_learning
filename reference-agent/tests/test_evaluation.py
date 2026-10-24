@@ -11,3 +11,7 @@ def test_eval_runs_on_fixed_set():
 def test_load_samples_shape():
     samples = load_samples()
     assert all("input" in s and "expect_contains" in s for s in samples)
+
+
+def test_empty_eval_set_does_not_fall_back_to_demo_samples():
+    assert evaluate(samples=[])["total"] == 0

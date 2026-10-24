@@ -1,4 +1,4 @@
-# 14.7 借鉴点：从消费品 Agent 学到的工程经验
+# 12.7 借鉴点：从消费品 Agent 学到的工程经验
 
 > 🦞 *"当用户键从 CLI 变成聊天框，Agent 的每一处设计都要重新考虑。"*
 
@@ -301,4 +301,4 @@ CLI 场景下，Agent 通常是"用户开启 → 执行 → 关闭"的短流程�
 
 ---
 
-*下一章：[第15章 Hermes Agent：自我进化的 Agent](../chapter_hermes/README.md)*
+*下一章：[第13章 Hermes Agent：自我进化的 Agent](../chapter_hermes/README.md)*

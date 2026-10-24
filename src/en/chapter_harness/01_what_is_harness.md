@@ -108,7 +108,7 @@ class PreCompletionChecklist:
 
 > **Context Engineering ⊂ Harness Engineering**
 
-Context Engineering (Chapter 8) is a **subset** of Harness Engineering: it focuses on **input-level** optimization, answering the question "what information to give the model."
+Context Engineering (Chapter 7) is a **subset** of Harness Engineering: it focuses on **input-level** optimization, answering the question "what information to give the model."
 
 Harness Engineering has a broader scope, also including:
 

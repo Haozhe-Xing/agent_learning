@@ -1,383 +1,72 @@
-# 21.3 权限控制与沙箱隔离
+# 19.3 权限控制与沙箱隔离
 
-> **本节目标**：学会为 Agent 设计最小权限体系和安全的执行环境。
+本节实现“小范围能力如何在工具执行前被强制检查”，再说明代码隔离需要哪些额外机制。参考实现是`reference_code/security_boundary/`的本地内存练习，不是任意Python执行器。
 
----
+![宿主校验、审批绑定与操作前复查](../svg/chapter_21_security_03_runtime_flow.svg)
 
-## Agent Runtime / Sandbox：为什么需要运行时边界？
+## 身份、能力、资源与同意分别判断
 
-Agent 与普通 LLM 应用最大的区别是：它不只生成文本，还会**调用工具、读写文件、访问网络、执行代码、操作浏览器**。因此，安全边界不能只写在 Prompt 里，必须落实到运行时（Runtime）和沙箱（Sandbox）中。
+身份来自经过鉴权的宿主会话，不能从模型参数`principal`取得。工具许可决定可以提出哪些操作；资源许可决定可访问哪份资料、哪个目的地。审批确认某次具体动作，不能扩大原本没有的权限。[OWASP Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)建议限制功能、权限与自主性，并在下游实施完整授权检查。
 
-可以把 Agent Runtime 理解为"模型与真实世界之间的操作系统层"：
+角色可以用于分配基础能力，资源属性再收紧归属、任务、时间或范围。不要仅根据函数名含`read`就推断它无副作用；下载也可能访问不应访问的网络地址，“只读”也会泄露资料。
 
-![Agent Runtime 架构](../svg/chapter_21_security_03_runtime_flow.svg)
-
-没有 Runtime 约束的 Agent，就像把模型直接接到生产系统上；一旦模型被提示注入、幻觉工具或误解任务，风险会被工具调用放大。
-
-| Runtime 控制点 | 作用 | 典型实现 |
-|---------------|------|----------|
-| **工具白名单** | 只允许调用注册过的工具 | Tool registry / MCP server allowlist |
-| **Schema 校验** | 拦截错误参数和越权字段 | JSON Schema / Pydantic |
-| **权限策略** | 判断谁能做什么 | RBAC / ABAC / Policy Engine |
-| **沙箱隔离** | 限制代码和浏览器访问范围 | Docker / Firecracker / E2B / VM |
-| **资源限制** | 防止失控执行 | timeout、CPU、内存、网络、文件大小限制 |
-| **人工确认** | 高风险动作二次确认 | Human-in-the-loop approval |
-| **审计日志** | 事后追踪和回归测试 | Trace、tool log、artifact log |
-
-后面的小节会分别实现其中的核心机制：最小权限、工具包装器和代码执行沙箱。
-
----
-
-## 最小权限原则
-
-Agent 应该只拥有完成任务所需的最小权限——就像公司不应该给每个员工发一把万能钥匙。
-
-![Agent 权限控制与沙箱隔离架构](../svg/chapter_21_security_03_permission.svg)
+练习的宿主策略明确列出工具、文档ID与目的地。空集合表示没有许可。后端再次检查文档归属，允许列表里误放了Bob的ID，也不能让Alice读取它。
 
 ```python
-from enum import Flag, auto
-from dataclasses import dataclass
+from reference_code.security_boundary import HostPolicy, proposal_json
+from reference_code.security_boundary.regression import new_lab, READ
 
-class Permission(Flag):
-    """Agent 权限定义"""
-    NONE = 0
-    READ_FILE = auto()       # 读取文件
-    WRITE_FILE = auto()      # 写入文件
-    EXECUTE_CODE = auto()    # 执行代码
-    NETWORK_ACCESS = auto()  # 网络访问
-    DATABASE_READ = auto()   # 读取数据库
-    DATABASE_WRITE = auto()  # 写入数据库
-    SEND_EMAIL = auto()      # 发送邮件
-    
-    # 预定义的权限组合
-    READONLY = READ_FILE | DATABASE_READ
-    STANDARD = READONLY | WRITE_FILE | NETWORK_ACCESS
-    FULL = STANDARD | EXECUTE_CODE | DATABASE_WRITE | SEND_EMAIL
-
-
-@dataclass
-class PermissionPolicy:
-    """权限策略"""
-    agent_name: str
-    permissions: Permission
-    allowed_paths: list[str] = None     # 允许访问的文件路径
-    allowed_domains: list[str] = None   # 允许访问的网络域名
-    max_file_size: int = 10 * 1024 * 1024  # 最大文件大小（10MB）
-    
-    def check(self, action: str, resource: str = None) -> bool:
-        """检查是否有权限执行某个操作"""
-        perm_map = {
-            "read_file": Permission.READ_FILE,
-            "write_file": Permission.WRITE_FILE,
-            "execute": Permission.EXECUTE_CODE,
-            "http_request": Permission.NETWORK_ACCESS,
-            "db_read": Permission.DATABASE_READ,
-            "db_write": Permission.DATABASE_WRITE,
-            "send_email": Permission.SEND_EMAIL,
-        }
-        
-        required = perm_map.get(action)
-        if required is None:
-            return False
-        
-        if not (self.permissions & required):
-            return False
-        
-        # 检查资源级别的权限
-        if action in ("read_file", "write_file") and resource:
-            if self.allowed_paths:
-                return any(
-                    resource.startswith(p) for p in self.allowed_paths
-                )
-        
-        if action == "http_request" and resource:
-            if self.allowed_domains:
-                from urllib.parse import urlparse
-                domain = urlparse(resource).hostname
-                return domain in self.allowed_domains
-        
-        return True
-
-
-# 使用示例
-customer_service_policy = PermissionPolicy(
-    agent_name="customer_service",
-    permissions=Permission.READONLY | Permission.NETWORK_ACCESS,
-    allowed_paths=["/data/faq/", "/data/products/"],
-    allowed_domains=["api.internal.com"]
-)
-
-# 检查权限
-print(customer_service_policy.check("read_file", "/data/faq/guide.md"))  # True
-print(customer_service_policy.check("write_file", "/etc/passwd"))  # False
-print(customer_service_policy.check("execute"))  # False
+runtime = new_lab()  # Authenticated actor is the fictional Alice fixture.
+assert runtime.execute(READ)['value'] == {
+    'document_id':'alice_policy', 'excerpt':'Refund requests require a receipt.'}
+other = proposal_json('r2', 'read_document', document_id='bob_policy')
+assert runtime.execute(other)['code'] == 'document_denied'
+assert runtime.backend.read_calls == 1
+runtime.replace_policy(HostPolicy('alice', {'read_document'}, set(), set()))
+assert runtime.execute(READ)['code'] == 'document_denied'
+print('Owned read succeeds; cross-owner and empty scope are denied.')
 ```
 
----
+## 审批必须绑定具体内容，并再次检查权限
 
-## 安全工具包装器
-
-在工具执行前后加上安全检查：
+`ApprovalRegistry`由宿主调用，生成不透明凭据，绑定主体、请求ID、工具、全部参数的规范JSON摘要与截止时间。模型不能通过`approved=True`字段签发凭据；闭合Schema直接拒绝这种额外字段。真实系统还须鉴别审批者，并展示准确动作与影响，不能只显示笼统“继续”。
 
 ```python
-import functools
+from reference_code.security_boundary import HostPolicy, proposal_json
+from reference_code.security_boundary.regression import new_lab, NOTICE
 
-def secure_tool(policy: PermissionPolicy):
-    """安全工具装饰器 —— 为工具添加权限检查"""
-    
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            tool_name = func.__name__
-            
-            # 权限检查
-            action = _infer_action(tool_name)
-            resource = kwargs.get("path") or kwargs.get("url")
-            
-            if not policy.check(action, resource):
-                return {
-                    "error": f"权限不足: {tool_name} 需要 {action} 权限",
-                    "allowed": False
-                }
-            
-            # 执行工具
-            try:
-                result = func(*args, **kwargs)
-                
-                # 记录审计日志
-                _log_tool_execution(
-                    agent=policy.agent_name,
-                    tool=tool_name,
-                    args=kwargs,
-                    success=True
-                )
-                
-                return result
-                
-            except Exception as e:
-                _log_tool_execution(
-                    agent=policy.agent_name,
-                    tool=tool_name,
-                    args=kwargs,
-                    success=False,
-                    error=str(e)
-                )
-                raise
-        
-        return wrapper
-    return decorator
-
-
-def _infer_action(tool_name: str) -> str:
-    """从工具名推断需要的权限"""
-    action_keywords = {
-        "read": "read_file",
-        "write": "write_file",
-        "save": "write_file",
-        "execute": "execute",
-        "run": "execute",
-        "fetch": "http_request",
-        "search": "http_request",
-        "query": "db_read",
-        "insert": "db_write",
-        "delete": "db_write",
-        "email": "send_email",
-    }
-    
-    for keyword, action in action_keywords.items():
-        if keyword in tool_name.lower():
-            return action
-    
-    return "unknown"
-
-
-def _log_tool_execution(**kwargs):
-    """记录工具执行日志（简化版）"""
-    import json, datetime
-    log_entry = {
-        "timestamp": datetime.datetime.now().isoformat(),
-        **kwargs
-    }
-    print(f"[AUDIT] {json.dumps(log_entry, ensure_ascii=False)}")
+runtime = new_lab()
+token = runtime.approvals.issue('alice', NOTICE, approved=True)
+changed = proposal_json('notice1', 'publish_notice', destination='board', text='Changed content.')
+assert runtime.execute(changed, approval_token=token)['code'] == 'approval_required'
+runtime.replace_policy(HostPolicy('alice', {'read_document'}, {'alice_policy'}, set()))
+assert runtime.execute(NOTICE, approval_token=token)['code'] == 'tool_denied'
+assert runtime.backend.publish_calls == 0
+print('Approval cannot authorize changed content or override revocation.')
 ```
 
----
+策略在执行时重新读取，实际写入前再查一次。此实现是同步、单进程夹具；并发服务须在后端事务/版本条件中解决检查后状态变化，Python层两次`if`不能证明跨服务原子性。
 
-## 代码执行沙箱
+## 字符串过滤为什么不是隔离
 
-如果 Agent 需要执行代码，必须在隔离环境中运行：
+旧示例按`resource.startswith(root)`放行文件路径，`/allowed/../private`仍可能匹配；资源缺失或空许可列表也会落入放行分支。旧`CodeSandbox`通过AST拒绝少数函数和导入，然后运行普通子进程；它仍能用内置`open`读取宿主文件。`max_memory_mb`字段没有落实到任何限制。
 
-```python
-import subprocess
-import tempfile
-import os
+因此本节撤下宿主上的任意代码执行路径。AST检查可用于限定特定表达式语言，却不能把完整Python变成安全沙箱；改`HOME`、创建临时目录或设置超时也没有切断文件和网络能力。仅对受限算术，可复用第3章的AST表达式求值器，它只接受少数数值节点，并不执行Python程序。
 
-class CodeSandbox:
-    """代码执行沙箱"""
-    
-    def __init__(
-        self,
-        timeout: int = 10,
-        max_memory_mb: int = 256,
-        allowed_imports: list[str] = None
-    ):
-        self.timeout = timeout
-        self.max_memory_mb = max_memory_mb
-        self.allowed_imports = allowed_imports or [
-            "math", "json", "datetime", "re",
-            "collections", "itertools", "functools",
-            "statistics", "random", "string"
-        ]
-    
-    def validate_code(self, code: str) -> tuple[bool, str]:
-        """在执行前验证代码安全性"""
-        import ast
-        
-        try:
-            tree = ast.parse(code)
-        except SyntaxError as e:
-            return False, f"语法错误: {e}"
-        
-        # 检查危险操作
-        dangerous_calls = {
-            "eval", "exec", "compile",
-            "__import__", "globals", "locals",
-            "getattr", "setattr", "delattr",
-        }
-        
-        dangerous_modules = {
-            "os", "sys", "subprocess", "shutil",
-            "socket", "http", "urllib",
-        }
-        
-        for node in ast.walk(tree):
-            # 检查函数调用
-            if isinstance(node, ast.Call):
-                if isinstance(node.func, ast.Name):
-                    if node.func.id in dangerous_calls:
-                        return False, f"禁止调用: {node.func.id}()"
-            
-            # 检查 import
-            if isinstance(node, ast.Import):
-                for alias in node.names:
-                    module_name = alias.name.split(".")[0]
-                    if module_name in dangerous_modules:
-                        return False, f"禁止导入: {module_name}"
-                    if (self.allowed_imports and 
-                        module_name not in self.allowed_imports):
-                        return False, f"不在白名单中: {module_name}"
-            
-            if isinstance(node, ast.ImportFrom):
-                if node.module:
-                    module_name = node.module.split(".")[0]
-                    if module_name in dangerous_modules:
-                        return False, f"禁止导入: {module_name}"
-        
-        return True, "代码检查通过"
-    
-    def execute(self, code: str) -> dict:
-        """在沙箱中执行代码"""
-        
-        # 先验证
-        is_safe, message = self.validate_code(code)
-        if not is_safe:
-            return {
-                "success": False,
-                "error": message,
-                "output": ""
-            }
-        
-        # 创建临时文件
-        with tempfile.NamedTemporaryFile(
-            mode='w', suffix='.py', delete=False
-        ) as f:
-            f.write(code)
-            temp_path = f.name
-        
-        try:
-            # 在子进程中执行（带资源限制）
-            result = subprocess.run(
-                ["python3", temp_path],
-                capture_output=True,
-                text=True,
-                timeout=self.timeout,
-                env={
-                    "PATH": "/usr/bin:/usr/local/bin",
-                    "HOME": tempfile.gettempdir(),
-                }
-            )
-            
-            return {
-                "success": result.returncode == 0,
-                "output": result.stdout,
-                "error": result.stderr if result.returncode != 0 else "",
-            }
-            
-        except subprocess.TimeoutExpired:
-            return {
-                "success": False,
-                "error": f"执行超时（{self.timeout}秒）",
-                "output": ""
-            }
-        finally:
-            os.unlink(temp_path)
+真实文件工具至少需要受控根目录、规范化后的路径归属、符号链接策略、实际打开时的防竞态措施与读取/输出上限。网络工具另需处理重定向、DNS/IP变化、私有地址和出站策略。先按字符串检查，再把原输入交给任意操作，并不能实现这些合同。
 
+## 如需任意代码运行，独立验收隔离环境
 
-# 使用示例
-sandbox = CodeSandbox(timeout=5)
+| 需要约束的能力 | 必须看到的证据 |
+|---|---|
+| 宿主文件/凭据 | 任务只得到明确挂载；不授予容器管理套接字或宿主秘密 |
+| 网络 | 在模型之外配置并验证出站限制 |
+| CPU/内存/进程/存储/输出 | 配额真实生效；越限能终止并清理整个任务 |
+| 生命周期 | 一任务一隔离范围；失败、取消与残留都可检查 |
+| 结果 | 产物有界；独立验证而非进程退出0就接受 |
 
-# 安全代码
-result = sandbox.execute("""
-import math
-print(f"圆周率 = {math.pi:.10f}")
-print(f"平方根2 = {math.sqrt(2):.10f}")
-""")
-print(result)  # {"success": True, "output": "圆周率 = ...\n", "error": ""}
+容器、微型虚拟机与托管执行服务各有配置和信任前提；不能只按产品名字排序“绝对安全”。[Docker安全文档](https://docs.docker.com/engine/security/)分别讨论命名空间、cgroups、守护进程攻击面与配置。这些机制不由本地练习提供，也未在本轮部署测试。
 
-# 危险代码会被拦截
-result = sandbox.execute("""
-import os
-os.system("rm -rf /")
-""")
-print(result)  # {"success": False, "error": "禁止导入: os", "output": ""}
-```
+练习：添加新资源许可时，先写未授权、空许可、审批后撤权和重复请求的预期。调用计数必须证明被拒请求没有进入实际操作，再讨论是否接入真实外部服务。
 
-### 生产级沙箱的额外要求
-
-上面的 `CodeSandbox` 适合教学和原型验证，但生产环境不能只依赖 Python 进程隔离。更可靠的做法是把每次任务放入独立运行环境中：
-
-| 沙箱方案 | 适用场景 | 优点 | 注意事项 |
-|---------|----------|------|----------|
-| **Docker 容器** | 代码执行、文件处理、CI 任务 | 成熟、易复现、生态完善 | 需要禁用特权模式、限制挂载目录 |
-| **Firecracker / microVM** | 多租户高风险任务 | 隔离强、启动快 | 运维复杂度更高 |
-| **E2B / Code Interpreter Sandbox** | Agent 代码执行 | 专为 Agent 设计、API 友好 | 成本和供应商绑定 |
-| **浏览器沙箱** | Web Agent / Browser Use | 可限制域名、下载和提交动作 | 必须防间接提示注入 |
-| **完整 VM** | GUI / Computer Use | 隔离最强、支持桌面环境 | 启动慢、成本高 |
-
-生产级 Agent Runtime 还应支持三个能力：
-
-1. **快照与回滚**：任务开始前保存环境快照，失败或越权时恢复。
-2. **网络出站控制**：只允许访问白名单域名，防止数据外传。
-3. **Artifact 隔离**：生成文件、下载文件和日志分区存放，避免污染宿主机。
-
-对于 Browser Use、Computer Use、代码执行 Agent，沙箱不是“加分项”，而是上线前的最低要求。
-
----
-
-## 小结
-
-| 概念 | 说明 |
-|------|------|
-| Agent Runtime | 模型与外部环境之间的运行时控制层 |
-| 最小权限 | Agent 只拥有完成任务所需的最小权限 |
-| 权限策略 | 定义允许的操作和可访问的资源 |
-| 安全包装 | 在工具执行前后加权限检查和审计日志 |
-| 代码沙箱 | 在隔离环境中执行不受信任的代码 |
-| 代码验证 | 执行前通过 AST 分析检查危险操作 |
-| 生产级沙箱 | Docker、microVM、E2B、浏览器沙箱或完整 VM |
-
-> **下一节预告**：Agent 可能会接触到用户的敏感数据，如何保护这些数据？
-
----
-
-[21.4 敏感数据保护](./04_data_protection.md)
+*下一节：[19.4 敏感数据保护](./04_data_protection.md)*

@@ -3,6 +3,7 @@ book/
 
 # Temporary build directories
 build-en/
+.tools/
 
 # IDE
 .idea/
@@ -34,3 +35,6 @@ CLAUDE.md
 
 # 临时预览产物
 outputs/
+
+# Local data created by companion examples
+/data/

@@ -17,6 +17,8 @@ from dataclasses import dataclass, field
 class Message:
     role: str  # "user" | "assistant" | "tool" | "system"
     content: str
+    tool_calls: list = field(default_factory=list)
+    tool_call_id: str | None = None
 
 
 @dataclass
@@ -81,12 +83,24 @@ class OpenAIProvider:
         from openai import OpenAI  # lazy import
 
         self.model = model
-        self.client = OpenAI(api_key=api_key, base_url=base_url)
+        self.client = OpenAI(api_key=api_key, base_url=base_url, timeout=30, max_retries=1)
 
     def complete(self, messages, tools=None, max_tokens=512, temperature=0.0) -> Completion:
+        serialized = []
+        for message in messages:
+            entry = {"role": message.role, "content": message.content}
+            if message.tool_calls:
+                entry["tool_calls"] = [
+                    {"id": call["id"], "type": "function", "function":
+                     {"name": call["name"], "arguments": json.dumps(call["arguments"])}}
+                    for call in message.tool_calls
+                ]
+            if message.tool_call_id is not None:
+                entry["tool_call_id"] = message.tool_call_id
+            serialized.append(entry)
         payload: dict = {
             "model": self.model,
-            "messages": [{"role": m.role, "content": m.content} for m in messages],
+            "messages": serialized,
             "max_tokens": max_tokens,
             "temperature": temperature,
         }
@@ -102,6 +116,6 @@ class OpenAIProvider:
         if msg.tool_calls:
             for tc in msg.tool_calls:
                 tool_calls.append(
-                    {"name": tc.function.name, "arguments": json.loads(tc.function.arguments or "{}")}
+                    {"id": tc.id, "name": tc.function.name, "arguments": json.loads(tc.function.arguments or "{}")}
                 )
         return Completion(content=msg.content or "", tool_calls=tool_calls)

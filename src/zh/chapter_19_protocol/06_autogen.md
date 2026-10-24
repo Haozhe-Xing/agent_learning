@@ -1,4 +1,4 @@
-# 19.6 框架补充：AutoGen（多 Agent 对话框架）
+# 17.6 框架补充：AutoGen（多 Agent 对话框架）
 
 > 💬 *"让 Agent 之间用自然语言讨论，比让它们按预定节点流转更接近真实人类工作方式。"*
 
@@ -81,5 +81,5 @@ AutoGen 的核心价值在于**代码自动生成与执行**能力，以及**基
 
 ---
 
-*上一节：[19.5 实战：基于 MCP 的工具集成](../chapter_19_protocol/05_practice_mcp_integration.md)*  
-*下一节：[第19章 Agent 通信协议 章节首页](../chapter_19_protocol/README.md)*
+*上一节：[17.5 实战：基于 MCP 的工具集成](../chapter_19_protocol/05_practice_mcp_integration.md)*<br>
+*下一节：[第17章 Agent 通信协议 章节首页](../chapter_19_protocol/README.md)*

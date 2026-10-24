@@ -37,7 +37,7 @@
   <!-- Agent Node -->
   <rect x="170" y="126" width="140" height="68" rx="10" fill="#3498db" filter="url(#shadow-lg03)"/>
   <text x="240" y="152" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="white">🤖 Agent Node</text>
-  <text x="240" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4e6f9">LLM reasoning + decisions</text>
+  <text x="240" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4e6f9">Model: offline by default</text>
   <text x="240" y="184" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0d4f1">bind_tools(tools)</text>
 
   <!--ArrowAgent→Condition [CN] -->
@@ -60,7 +60,7 @@
 
   <!-- LoopArrow Tools → Agent -->
   <path d="M612,194 L612,240 Q612,260 540,260 Q350,260 310,194" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-blue-lg03)"/>
-  <text x="460" y="253" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#3498db">🔁 Tool result returned, continue reasoning</text>
+  <text x="600" y="285" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#3498db">Tool result → next model call</text>
 
   <!--Condition [CN] 2： [CN] →END-->
   <line x1="425" y1="200" x2="425" y2="270" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-red-lg03)"/>
@@ -92,5 +92,5 @@
 
   <!--=====Bottom [CN] =====-->
   <rect x="60" y="340" width="680" height="30" rx="6" fill="#3498db" opacity="0.06"/>
-  <text x="400" y="360" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">💡 tools_condition checks if LLM output contains tool_calls — if yes route to Tools, else route to END</text>
+  <text x="400" y="360" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">💡 tools_condition checks model tool_calls — if present route to Tools, otherwise END</text>
 </svg>

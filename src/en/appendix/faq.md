@@ -283,7 +283,7 @@ Recommend keeping System Prompts within 500–1500 tokens, with core rules at th
 2. **Efficiency**: How many steps? How many tokens? What latency?
 3. **Safety**: Did it follow safety boundaries? Did it reject unreasonable requests?
 
-Specifically, refer to benchmarks like AgentBench, SWE-bench, and GAIA introduced in Chapter 17.
+Specifically, refer to benchmarks like AgentBench, SWE-bench, and GAIA introduced in Chapter 15.
 
 ### Q27: Agent output is unstable and results vary each time — what to do?
 
@@ -311,7 +311,7 @@ Specifically, refer to benchmarks like AgentBench, SWE-bench, and GAIA introduce
 1. **Long-term memory**: Store successful experiences as memory entries (see Chapter 5)
 2. **Skill system**: Encapsulate validated workflows as reusable skills (see Chapter 9)
 3. **Prompt adaptation**: Dynamically adjust prompts based on user feedback
-4. **Fine-tuning**: Collect successful Agent conversation data, train specialized models with SFT/RLHF (see Chapter 10)
+4. **Fine-tuning**: Collect successful Agent conversation data, train specialized models with SFT/RLHF (see Chapter 24)
 
 ### Q30: What are the most common mistakes in Agent development?
 

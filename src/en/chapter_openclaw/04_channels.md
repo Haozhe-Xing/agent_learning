@@ -1,4 +1,4 @@
-# 14.4 Multi-Channel Routing: WhatsApp / Telegram / Discord / Slack / Signal
+# 12.4 Multi-Channel Routing: WhatsApp / Telegram / Discord / Slack / Signal
 
 > 🦞 *"The user key is already in your pocket — put the Agent into that key."*
 
@@ -90,4 +90,4 @@ channels:
 
 ---
 
-*Next section: [14.5 Skills & Plugin Ecosystem](./05_skills_and_plugins.md)*
+*Next section: [12.5 Skills & Plugin Ecosystem](./05_skills_and_plugins.md)*

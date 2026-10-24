@@ -13,7 +13,7 @@ import os
 from ..agent import Agent
 from ..provider import FakeProvider
 
-_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "data")
+_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 def load_samples(path: str | None = None) -> list[dict]:
@@ -36,7 +36,7 @@ def run_case(agent: Agent, sample: dict) -> dict:
 
 def evaluate(agent: Agent | None = None, samples: list[dict] | None = None) -> dict:
     agent = agent or Agent(FakeProvider())
-    samples = samples or load_samples()
+    samples = load_samples() if samples is None else samples
     results = [run_case(agent, s) for s in samples]
     passed = sum(1 for r in results if r["passed"])
     total = len(results)

@@ -45,6 +45,6 @@
 
   <!-- Bottom comparison -->
   <rect x="30" y="312" width="700" height="58" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="380" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">vs GEPA: MIPROv2 uses Bayesian optimization, relies more on final scores; GEPA uses reflective evolution, leveraging full trace & text feedback</text>
+  <text x="380" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">vs GEPA: MIPROv2 uses Bayesian optimization, relies more on final scores; GEPA uses reflective evolution, leveraging full trace &amp; text feedback</text>
   <text x="380" y="356" text-anchor="middle" font-size="10" fill="#64748b">They're not contradictory—GEPA could also serve as a "trace-reflection-heavy" optimizer integrated into the DSPy ecosystem</text>
 </svg>

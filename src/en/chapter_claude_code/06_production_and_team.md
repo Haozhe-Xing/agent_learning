@@ -1,10 +1,10 @@
-# 16.6 Production Practice: Using Claude Code Effectively in Teams
+# 14.6 Production Practice: Using Claude Code Effectively in Teams
 
 > 🏗️ *"The tool itself isn't what matters — what matters are the engineering standards you build around it."*
 
 ---
 
-After studying the previous four sections, you have mastered Claude Code's architectural principles, permission system, extension mechanisms, and multi-agent capabilities. This section is the finale of Chapter 15, focusing on a core question: **How to reliably use Claude Code in real team and production environments?**
+After studying the previous sections, you have mastered Claude Code's architectural principles, permission system, extension mechanisms, and multi-agent capabilities. This section is the finale of Chapter 14, focusing on a core question: **How to reliably use Claude Code in real team and production environments?**
 
 This isn't theory — it's a summary of experience from engineering practice.
 
@@ -466,9 +466,9 @@ Understanding the caching mechanism is key to cost reduction:
 
 | Model | Approximate Cost | Suitable Scenarios |
 |------|---------|---------|
-| Haiku | ~$0.25 | Simple tasks |
-| Sonnet | ~$3.00 | Daily development (recommended) |
-| Opus | ~$16.00 | Complex architecture design |
+| Haiku | ~USD 0.25 | Simple tasks |
+| Sonnet | ~USD 3.00 | Daily development (recommended) |
+| Opus | ~USD 16.00 | Complex architecture design |
 
 ### 3.4 Monitoring Usage
 
@@ -600,7 +600,7 @@ npm update -g @anthropic-ai/claude-code
 | **Context Management** | Three-tier Compression + Long-term Memory | Limited | Limited | Limited |
 | **Project Config File** | CLAUDE.md (auto-read) | None | Rules (manual config) | None |
 | **CI/CD Integration** | ✅ Headless Mode | Limited | ❌ | Limited |
-| **Pricing Model** | Per Token | Subscription ($19/mo) | Subscription ($20/mo) | Per Token |
+| **Pricing Model** | Per Token | Subscription (USD 19/mo) | Subscription (USD 20/mo) | Per Token |
 | **Offline Use** | ❌ | ❌ | ❌ | ✅ (local models) |
 | **Open Source** | ❌ (accidental leak) | ❌ | ❌ | ✅ |
 
@@ -636,7 +636,7 @@ npm update -g @anthropic-ai/claude-code
 
 ## Part 6: Chapter Summary
 
-### Chapter 16 Knowledge Review
+### Chapter 14 Knowledge Review
 
 | Section | Core Content | Key Insight |
 |------|---------|---------|
@@ -650,13 +650,13 @@ npm update -g @anthropic-ai/claude-code
 
 Claude Code is not just an AI programming tool — it represents a new **human-machine collaboration engineering paradigm**:
 
-**1. The Codebase as Truth**  
+**1. The Codebase as Truth**<br>
 Encode engineering standards through CLAUDE.md, allowing AI to learn rules from the codebase itself each time, rather than relying on "memory."
 
-**2. Constraints Enable Freedom**  
+**2. Constraints Enable Freedom**<br>
 Strict permission systems and Hooks mechanisms actually give engineers the courage to use AI for high-risk tasks — because there are clear guardrails.
 
-**3. Tools Are Means, Standards Are the Foundation**  
+**3. Tools Are Means, Standards Are the Foundation**<br>
 The best CLAUDE.md is not the longest but the most precise. The best workflow is not the most complex but the most predictable.
 
 ### Career Insights for AI Engineers
@@ -800,11 +800,11 @@ Thus, `sys.exit(2)` is the switch that truly "stops" dangerous commands in this 
 
 ---
 
-> 🎉 **Thank you for completing all of Chapter 15!**  
-> From Claude Code's architectural principles to production practices, from the permission system to multi-agent collaboration, you have systematically mastered all the knowledge needed to use Claude Code effectively in production environments.  
+> 🎉 **Thank you for completing all of Chapter 14!**<br>
+> From Claude Code's architectural principles to production practices, from the permission system to multi-agent collaboration, you have systematically mastered all the knowledge needed to use Claude Code effectively in production environments.<br>
 > Now, go create your first `CLAUDE.md` in your project — that's where truly mastering this chapter begins.
 
 ---
 
-*Previous: [16.5 Advanced Usage: MCP, Hooks, and Skills](./05_advanced_usage.md)*  
-*Return to chapter index: [Chapter 16: Claude Code Deep Dive: From Usage to Source Code](./README.md)*
+*Previous: [14.5 Advanced Usage: MCP, Hooks, and Skills](./05_advanced_usage.md)*<br>
+*Return to chapter index: [Chapter 14: Claude Code Deep Dive: From Usage to Source Code](./README.md)*

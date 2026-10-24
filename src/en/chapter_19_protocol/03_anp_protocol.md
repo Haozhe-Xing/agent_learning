@@ -1,4 +1,4 @@
-# 19.3 ANP (Agent Network Protocol)
+# 17.3 ANP (Agent Network Protocol)
 
 > **Section Goal**: Understand the design philosophy of the ANP protocol, master the core mechanisms of decentralized Agent networks, and compare it with MCP/A2A.
 
@@ -346,7 +346,7 @@ Forms an autonomous network via ANP, no central controller needed:
 
 ---
 
-*Next section: [19.4 Inter-Agent Message Passing and State Sharing](./04_message_passing.md)*
+*Next section: [17.4 Inter-Agent Message Passing and State Sharing](./04_message_passing.md)*
 
 ---
 

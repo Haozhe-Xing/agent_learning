@@ -1,8 +1,8 @@
-# 10.8 Agent-Specific Fine-Tuning: Teaching Models to Really Use Tools
+# 24.8 Agent-Specific Fine-Tuning: Teaching Models to Really Use Tools
 
 > 🔧 *"General SFT teaches a model to talk; Agent SFT teaches it to act in the right format; Agentic-RL teaches it to actually get the job done under real feedback."*
 
-Chapter 10.2 covered the general SFT + LoRA recipe. But when your goal is a model that **uses tools reliably, follows Agent behavior formats, and hallucinates fewer tool calls**, both data construction and training strategy need dedicated design.
+Chapter 24.2 covered the general SFT + LoRA recipe. But when your goal is a model that **uses tools reliably, follows Agent behavior formats, and hallucinates fewer tool calls**, both data construction and training strategy need dedicated design.
 
 This section focuses on one question: **how do you fine-tune a model that genuinely knows how to use tools?** Keep one boundary in mind throughout: Agent SFT is the starting point, not the finish line. It solves "can the model act in the right format"; Agentic-RL solves "once it acts, can it actually finish the task".
 
@@ -614,7 +614,7 @@ Phase 3 (ongoing): Iteration
 | **Evaluation metrics** | BLEU/ROUGE | Tool-call accuracy, task completion rate | Success rate, recovery rate, stability, cost |
 | **Core difficulty** | Language diversity | Format consistency + tool generalization | Reward design + exploration efficiency + safety boundaries |
 
-> 🔗 **Relationship to Chapter 11 (Self-Evolving Agents)**: this section answers "how do I train my first usable Agent". [11.3 Agentic Data Flywheel](../chapter_self_evolving/03_data_flywheel.md) will show how to continuously turn real-world successes, failures, and environment feedback into training data, so the Agent gets stronger the more it is used.
+> 🔗 **Relationship to Chapter 25 (Self-Evolving Agents)**: this section answers "how do I train my first usable Agent". [25.3 Agentic Data Flywheel](../chapter_self_evolving/03_data_flywheel.md) will show how to continuously turn real-world successes, failures, and environment feedback into training data, so the Agent gets stronger the more it is used.
 
 ---
 

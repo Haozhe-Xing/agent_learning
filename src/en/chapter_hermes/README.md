@@ -1,58 +1,38 @@
-# Chapter 15: Hermes Agent — The Self-Evolving Agent
+# Chapter 13: Hermes Agent — The Self-Evolving Agent
 
-> ☤ *"The longer you use it, the more it understands you — not marketing, a closed loop."*
+**Reading level**: Optional product and architecture case for cross-session memory or skill accumulation.
 
----
+Use Hermes Agent to study how experience becomes a memory or skill candidate, and how that candidate is validated, reviewed, and reverted. Creating a skill file establishes an artifact; improvement on unseen tasks requires independent evidence.
 
-## Chapter Introduction
+## This chapter's iteration
 
-The previous chapter showed OpenClaw — a "consumer-grade" personal assistant living in chat apps, where **all capabilities are maintained by humans**. Hermes Agent takes a different road: **the Agent writes its own skills**.
+- **Previous limitation**: Memory and Skill interfaces can store content, but do not yet decide what to retain, how to validate a change, or how to withdraw it.
+- **This chapter adds**: A case for cross-session memory, skill accumulation, and scheduling, separating candidate generation, evaluation, and activation.
+- **How to verify**: No uniform Hermes adapter is supplied. Pin the version, tasks, and permissions; compare enabled and disabled behavior on held-out tasks and test user isolation, deletion, disabling, and rollback. Without execution, submit an analysis record only.
+- **Next step**: For code operations, select [chapter 14, Claude Code](../chapter_claude_code/README.md). For independent memory or skill evaluation, continue to [chapter 18, Evaluation](../chapter_20_evaluation/README.md).
 
-Hermes Agent (nicknamed "爱马仕" by the Chinese community) was released by Nous Research in mid-2025. It shares deep lineage with OpenClaw (Node + TypeScript, personal local execution, multi-platform), but its core differentiator is one word: **learn**.
+## Chapter structure
 
-- **OpenClaw** is "configure-and-use" — skills are pre-written by users/community;
-- **Hermes** is "learn-in-use" — after each complex task, the Agent **itself** distills the execution trajectory into a Markdown skill file (`SKILL.md`) and iterates those skills offline (DSPy / GEPA-inspired).
+| Section | Focus |
+|---|---|
+| [13.1 Birth & the "Growing Agent" Philosophy](./01_birth_and_philosophy.md) | Turn growth goals into testable questions |
+| [13.2 Installation & Migration (from OpenClaw)](./02_install_and_migration.md) | Record environment and migration scope; preserve original data |
+| [13.3 Three-Layer Architecture: Gateway / Engine / Plugin](./03_three_layer_architecture.md) | Separate entry, execution, and extension boundaries |
+| [13.4 Core: Self-Evolving Skills Loop](./04_self_evolving_skills.md) | Skill candidates, validation, activation, and rollback |
+| [13.5 Three-Layer Memory](./05_memory.md) | Isolation, retrieval, deletion, and cross-session evidence |
+| [13.6 Nudge Engine & Cross-Session Learning](./06_nudge_engine.md) | Triggers, authorization, and stopping for proactive tasks |
+| [13.7 Borrowing the Philosophy](./07_lessons_philosophy.md) | Extract transferable designs and their verification limits |
 
-This "autonomous skill creation + continuous self-iteration" is called **Self-Evolving Skills** — the sharpest feature distinguishing Hermes from every other Agent framework. Combined with a three-layer memory system and a proactive Nudge Engine, Hermes is "the agent that grows with you."
+## Reading path
 
-This chapter:
+Relevant foundations are [chapter 4, Memory](../chapter_memory/README.md), [chapter 8, Harness](../chapter_harness/README.md), and [chapter 9, Skills](../chapter_skill/README.md). [Chapter 12, OpenClaw](../chapter_openclaw/README.md) provides an optional entry-point comparison, not a prerequisite or evidence of direct migration and component compatibility.
 
-1. **Dissects the closed learning loop** — how "write skills automatically + improve skills automatically + reflect proactively" forms an engineered self-evolution loop;
-2. **Demonstrates install / migration** — `hermes claw migrate` one-click migration from OpenClaw;
-3. **Analyzes three-layer memory + FTS5 + LLM summarization** — how SQLite full-text search + LLM summarization resolve "limited context vs. long-term memory."
+## Verification and material boundaries
 
----
+“Self-evolution” here identifies design questions to test. It does not guarantee an effective skill after each task or treat a product description as quality evidence. Specific backends, migration commands, and storage implementations require version-specific verification.
 
-## Chapter Content Overview
-
-| Section | Content | What You'll Learn |
-|---------|---------|-------------------|
-| 15.1 Birth & the "Growing Agent" Philosophy | Nous Research, the naming, the self-evolution design | Hermes' place in the new-gen Agent spectrum |
-| 15.2 Installation & Migration (from OpenClaw) | one-liner, `hermes claw migrate` | Run it on macOS/Linux/VPS/Termux |
-| 15.3 Three-Layer Architecture | Gateway / Engine / Plugin subsystems | Read Hermes' engineering skeleton |
-| 15.4 Core: Self-Evolving Skills Loop | skill distillation, DSPy/GEPA offline iteration | How "Agent writes its own skills" works |
-| 15.5 Three-Layer Memory | long-term / working / episodic, FTS5 + LLM summary | Cross-session memory design |
-| 15.6 Nudge Engine & Cross-Session Learning | active reflection, Honcho user modeling, cron | Make the Agent proactively ask "what to remember" |
-| 15.7 Borrowing the Philosophy | closed loop, model-agnostic, runs on $5 VPS | Bring Hermes' philosophy to your system |
+The book's offline memory and skill examples check their own contracts and do not replace Hermes experiments. Application development does not require research chapters first; select [Part VII](../part7.md) later when learning algorithms become a research goal.
 
 ---
 
-## Reading Recommendations
-
-- ✅ **Engineers wanting to understand Agent self-evolution** — focus on 15.4, 15.6
-- ✅ **OpenClaw users wanting to upgrade** — focus on 15.2
-- ✅ **Long-term memory / cross-session developers** — focus on 15.5
-
-**Prerequisites**: Chapters 8 (Harness), 9 (Skill System), 14 (OpenClaw). This chapter and Ch.14 form the "action-Agent twin chapters" — one multi-channel, one self-evolving.
-
----
-
-## Citation Convention
-
-Verifiable facts are anchored to the Hermes Agent `main` branch and `hermes-agent.nousresearch.com/docs/`. Time-varying numbers are **not cited**.
-
-> 💡 **Core insight**: Hermes proves an Agent can *distill experience into skills like a person* — provided it's designed as a closed system loop, not maintained by hand.
-
----
-
-*Next section: [15.1 Birth & the "Growing Agent" Philosophy](./01_birth_and_philosophy.md)*
+*Next section: [13.1 Birth & the "Growing Agent" Philosophy](./01_birth_and_philosophy.md)*

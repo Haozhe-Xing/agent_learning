@@ -1,6 +1,6 @@
-# 16.3 Deep Dive into Core Architecture
+# 14.3 Deep Dive into Core Architecture
 
-> 🏗️ *"The best architectures are the ones where the design decisions are invisible — you only notice them when something goes wrong."*  
+> 🏗️ *"The best architectures are the ones where the design decisions are invisible — you only notice them when something goes wrong."*<br>
 > — From Claude Code source code comments (accidentally leaked in March 2026)
 
 ---
@@ -222,5 +222,5 @@ function ConversationView({ messages }: Props) {
 
 ---
 
-*Previous section: [16.2 Getting to Know Claude Code: From Zero to Hands-On](./02_introduction.md)*  
-*Next section: [16.4 System Prompt, Permission Engineering & Prompt Cache](./04_system_prompt_and_permissions.md)*
+*Previous section: [14.2 Getting to Know Claude Code: From Zero to Hands-On](./02_introduction.md)*<br>
+*Next section: [14.4 System Prompt, Permission Engineering & Prompt Cache](./04_system_prompt_and_permissions.md)*

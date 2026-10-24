@@ -1,60 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 380" font-family="Arial, sans-serif">
-  <!-- 背景 -->
-  <rect width="580" height="380" rx="12" fill="#f8f9fa"/>
-
-  <!-- 标题 -->
-  <text x="290" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">🛡️ 间接 Prompt 注入攻击场景</text>
-
-  <!-- 箭头 marker -->
-  <defs>
-    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
-      <path d="M0,0 L8,4 L0,8 Z" fill="#e74c3c"/>
-    </marker>
-    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
-      <path d="M0,0 L8,4 L0,8 Z" fill="#3498db"/>
-    </marker>
-  </defs>
-
-  <!-- 中间：LLM Agent -->
-  <rect x="230" y="170" width="120" height="50" rx="10" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="2"/>
-  <text x="290" y="192" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🤖 LLM Agent</text>
-  <text x="290" y="208" text-anchor="middle" font-size="10" fill="#555">读取外部数据</text>
-
-  <!-- 场景1：网页注入 -->
-  <rect x="20" y="55" width="160" height="90" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
-  <text x="100" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">🌐 场景1：网页注入</text>
-  <text x="100" y="96" text-anchor="middle" font-size="10" fill="#555">攻击者在网页中嵌入</text>
-  <text x="100" y="110" text-anchor="middle" font-size="10" fill="#555">白色隐藏文字指令</text>
-  <text x="100" y="126" text-anchor="middle" font-size="9" fill="#888">（人眼不可见，RAG 可检索）</text>
-
-  <!-- 场景2：邮件注入 -->
-  <rect x="400" y="55" width="160" height="90" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
-  <text x="480" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">📧 场景2：邮件注入</text>
-  <text x="480" y="96" text-anchor="middle" font-size="10" fill="#555">邮件正文看似正常</text>
-  <text x="480" y="110" text-anchor="middle" font-size="10" fill="#555">不可见区域包含恶意指令</text>
-  <text x="480" y="126" text-anchor="middle" font-size="9" fill="#888">（窃取联系人等敏感信息）</text>
-
-  <!-- 场景3：文档注入 -->
-  <rect x="210" y="270" width="160" height="90" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
-  <text x="290" y="293" text-anchor="middle" font-size="13" font-weight="bold" fill="#e74c3c">📄 场景3：文档注入</text>
-  <text x="290" y="311" text-anchor="middle" font-size="10" fill="#555">PDF/Word 元数据或</text>
-  <text x="290" y="325" text-anchor="middle" font-size="10" fill="#555">隐藏文本中嵌入指令</text>
-  <text x="290" y="341" text-anchor="middle" font-size="9" fill="#888">（Agent 解析文档时中招）</text>
-
-  <!-- 箭头：网页 → Agent -->
-  <line x1="180" y1="130" x2="238" y2="175" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
-
-  <!-- 箭头：邮件 → Agent -->
-  <line x1="400" y1="130" x2="342" y2="175" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
-
-  <!-- 箭头：文档 → Agent -->
-  <line x1="290" y1="270" x2="290" y2="226" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow-red)"/>
-
-  <!-- 攻击效果标签 -->
-  <text x="195" y="160" text-anchor="middle" font-size="9" fill="#e74c3c" font-style="italic">恶意指令</text>
-  <text x="385" y="160" text-anchor="middle" font-size="9" fill="#e74c3c" font-style="italic">恶意指令</text>
-  <text x="310" y="252" text-anchor="middle" font-size="9" fill="#e74c3c" font-style="italic">恶意指令</text>
-
-  <!-- 底部关键发现 -->
-  <text x="290" y="375" text-anchor="middle" font-size="10" fill="#888">⚠️ 核心挑战：LLM 难以区分"数据"与"指令"，任何外部数据源都可能成为攻击面</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">间接注入：资料、提议、执行分别看</title>
+<desc id="desc">Concepts: https://arxiv.org/html/2302.12173v2 §§3–5. Host authorization/budget gate is the book engineering synthesis, not a reproduced paper defense.</desc>
+<metadata>Original illustration created for this book; no paper artwork or screenshot reproduced. Repository MIT license applies to this illustration.</metadata>
+<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
+<rect width="960" height="500" rx="14" fill="#f1f5f9"/>
+<text x="480" y="43" text-anchor="middle" font-size="23" font-weight="bold" fill="#22384c">间接注入：资料、提议、执行分别看</text>
+<rect x="30" y="95" width="280" height="255" rx="12" fill="#2d4965"/>
+<text x="170" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">不可信入口</text>
+<text x="170" y="177" text-anchor="middle" font-size="14" fill="white">网页 / 文档 / 工具返回</text>
+<text x="170" y="216" text-anchor="middle" font-size="14" fill="white">攻击者可修改的资料字段</text>
+<text x="170" y="255" text-anchor="middle" font-size="14" fill="white">数据可能包含操作指令</text>
+<text x="170" y="294" text-anchor="middle" font-size="14" fill="white">来源标签不授予权限</text>
+<rect x="340" y="95" width="280" height="255" rx="12" fill="#287598"/>
+<text x="480" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Agent 提议</text>
+<text x="480" y="177" text-anchor="middle" font-size="14" fill="white">结合固定规则与当前任务</text>
+<text x="480" y="216" text-anchor="middle" font-size="14" fill="white">可能提出工具调用</text>
+<text x="480" y="255" text-anchor="middle" font-size="14" fill="white">模型输出不是可信授权</text>
+<text x="480" y="294" text-anchor="middle" font-size="14" fill="white">记录提议及其来源</text>
+<rect x="650" y="95" width="280" height="255" rx="12" fill="#72608a"/>
+<text x="790" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">宿主执行边界</text>
+<text x="790" y="177" text-anchor="middle" font-size="14" fill="white">身份 / 资源 / 参数 / 预算</text>
+<text x="790" y="216" text-anchor="middle" font-size="14" fill="white">执行前由可信代码检查</text>
+<text x="790" y="255" text-anchor="middle" font-size="14" fill="white">拒绝、失败、超限分别保留</text>
+<text x="790" y="294" text-anchor="middle" font-size="14" fill="white">再核对真实状态变化</text>
+<path d="M 312 220 L 327 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 327 215 L 335 220 L 327 225" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 622 220 L 637 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 637 215 L 645 220 L 637 225" fill="none" stroke="#738296" stroke-width="2"/>
+<rect x="30" y="385" width="900" height="83" rx="9" fill="#fff3e9" stroke="#be8156"/>
+<text x="480" y="414" text-anchor="middle" font-size="14" fill="#754325">左侧是论文描述的威胁入口；右侧是本书的宿主工程要求。</text>
+<text x="480" y="442" text-anchor="middle" font-size="14" fill="#754325">角色分离或提示警告不能单独保证抗注入。</text>
+<text x="480" y="490" text-anchor="middle" font-size="11" fill="#58667a">本书原创示意；固定版本与证据边界见正文。</text>
 </svg>

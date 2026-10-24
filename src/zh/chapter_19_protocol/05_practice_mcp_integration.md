@@ -1,168 +1,141 @@
-# 19.5 实战：基于 MCP 的工具集成
+# 17.5 实战：基于 MCP 的工具集成
 
-本节讲清楚一件事：**怎样让 Agent 真正用上一个 MCP 工具**，而不是只画出架构图。
+## 本次迭代与验收
+
+把已有计算工具放到独立进程中，通过标准形状的请求发现和调用工具，并验证错误不会破坏后续请求。
+
+- **成功标准**：在同一 stdio 进程中完成 `initialize`、`tools/list`、`tools/call`，核对请求 ID 与 `12*8` 的结果 `96`。
+- **失败用例**：先发送坏 JSON、非法请求 ID、数组或对象形式的工具名及非对象参数，再发送合法计算；前面的错误应有明确响应，后面的计算仍能成功。
+- **安全边界**：本例只暴露受限计算器。协议连通不等于业务授权；外部工具描述和工具结果都是资料，不能扩大宿主许可。
+
+保留输入行、响应、退出状态和判定理由。评估方法见[第18章](../chapter_20_evaluation/README.md)，权限设计见[第19章](../chapter_21_security/README.md)。
 
 ![MCP 工具集成架构](../svg/chapter_19_protocol_05_mcp_integration.svg)
 
-MCP 的核心价值在于**标准化和解耦**：工具的实现（MCP Server）和工具的使用（MCP Client / Agent）完全分离。你可以用任何语言写工具服务器，任何支持 MCP 的 Agent 框架都能直接用，不必为每个框架单独适配。
+图示展示 Client、Agent 与工具服务的边界。本节实际运行的是“客户端子进程调用→计算器服务”这一段，不包含现成的模型或框架适配器。
 
-> ⚠️ **一个真实踩过的坑**：MCP 工具通常持有对 `ClientSession` 的引用。如果像下面这样把 `async with ClientSession(...) as session:` 写在 `load_mcp_tools()` 内部、并在 `with` 块里 `return tools`，那么函数一返回，上下文退出、session 关闭，返回的工具就绑死了一个已失效的 session——后面调用必然失败。**正确做法是让 session 的生命周期覆盖整个 Agent 运行。**
+## 一、本节实际提供什么
 
----
+唯一的服务实现是 `reference-agent/src/reference_agent/mcp_server.py`，测试是 `reference-agent/tests/test_mcp_server.py`。工具执行逻辑在 `reference-agent/src/reference_agent/tools/calculator.py`。阅读这些文件，避免复制一份会逐渐失真的 `handle` 节选。
 
-## 一、先写一个能跑的 MCP Server
+这是使用 MCP 工具消息形状的 **stdio / JSON-RPC 教学子集**：每行一个 JSON 对象，支持 `initialize`、`tools/list` 和 `tools/call`；列举和调用的工具只有 `calculator`，结果为文本内容。无 `id` 的有效通知不返回响应，输入结束后进程退出。
 
-仓库 `reference-agent/src/reference_agent/mcp_server.py` 是一个**最小、可运行、已测试**的 MCP Server（stdio + JSON-RPC 2.0）。它自己持有工具，生命周期与进程一致，不存在"返回已关闭 session"的问题。可直接用：
+`initialize` 固定声明 `protocolVersion="2024-11-05"`，不协商版本，也不强制完整初始化状态机。本例没有批量请求、工具分页、HTTP/SSE、远程鉴权、资源/提示功能或取消机制，未验证与官方 SDK 的互操作，不能据此声称完整 MCP 兼容或生产可用。
+
+## 二、请求在哪里被拒绝
+
+服务入口 `main` 负责逐行解析；`handle` 检查请求和 ID；`_tools_call` 在查询注册表前检查工具名与参数容器。具体工具继续检查表达式内容与计算资源。
+
+| 检查位置 | 当前实现的行为 |
+|---|---|
+| 请求 | 必须为对象，`jsonrpc` 为 `"2.0"`，`method` 为字符串；数组不是本例支持的批量请求 |
+| 请求 ID | 当前教学检查接受字符串、整数、有限浮点数与 `null`，拒绝布尔值、数组、对象和非有限数；合法 ID 原样返回，非法 ID 的错误响应使用 `null`。这是本例的检查范围，不代表完整 MCP ID 规则 |
+| `params` / `arguments` | 省略时使用空对象；提供时必须为对象。不是对工具 `inputSchema` 的通用校验 |
+| 工具名 | 必须为非空字符串，随后才能查询固定注册表；未知工具也被拒绝 |
+| 工具执行 | 缺少 `expression`、表达式非法或计算失败，由调用签名或计算器报错，再映射为本例的执行异常响应 |
+
+因此，`name=[]` 和 `name={}` 不会进入字典查询并触发未处理的 `TypeError`。参数错误与计算器自身报错的通道仍有区别，不能把所有失败统一理解为“没找到工具”。
+
+## 三、JSON-RPC 错误与工具错误分开读
+
+本例的响应只有成功的 `result` 或顶层 `error`，两者不同时出现。实际错误码如下；通用代码定义见 [JSON-RPC 2.0 规范](https://www.jsonrpc.org/specification#error_object)。
+
+| 情况 | 本例返回 |
+|---|---|
+| JSON 文本无法解析 | `error.code=-32700` |
+| 请求形状或请求 ID 不合法 | `error.code=-32600` |
+| 未知方法 | `error.code=-32601` |
+| 非对象参数、非法工具名或未知工具 | `error.code=-32602` |
+| 计算器调用抛出异常，例如 `1/0` | `error.code=-32603` |
+
+[MCP 2024-11-05 工具规范](https://modelcontextprotocol.io/specification/2024-11-05/server/tools#error-handling)还区分工具执行错误：它可以放在 `result` 中并设置 `isError=true`，与顶层 JSON-RPC `error` 不同。**当前配套服务没有实现这个字段**，而是把工具调用异常简化为 `-32603`；不要把它当作一般 MCP 服务处理业务错误的推荐映射。
+
+客户端处理完整实现时，应先检查顶层 `error`，再检查工具结果的 `isError`，最后解析成功内容。不能仅凭有 `result` 就宣布任务成功。本节只测试现有子集，不在文字中虚构 `isError` 已实现；扩展错误语义时应一起修改源码和测试。
+
+## 四、在同一进程中复现错误恢复
+
+从仓库根目录保存并运行下面的 Python 片段。它仅依赖标准库，通过 stdin 将七行输入送到**同一个**服务进程：列举工具之后发送三个坏请求，再计算 `12*8`；无 ID 的通知没有响应。
+
+```python
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+source = str(Path("reference-agent/src").resolve())
+env = dict(os.environ, PYTHONPATH=os.pathsep.join(
+    filter(None, [source, os.environ.get("PYTHONPATH")])
+))
+requests = [
+    json.dumps({"jsonrpc": "2.0", "id": "init", "method": "initialize"}),
+    json.dumps({"jsonrpc": "2.0", "id": "list", "method": "tools/list"}),
+    "{broken json",
+    json.dumps({"jsonrpc": "2.0", "id": [], "method": "tools/list"}),
+    json.dumps({"jsonrpc": "2.0", "id": "bad-name", "method": "tools/call",
+                "params": {"name": [], "arguments": {}}}),
+    json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}),
+    json.dumps({"jsonrpc": "2.0", "id": "after-errors", "method": "tools/call",
+                "params": {"name": "calculator", "arguments": {"expression": "12*8"}}}),
+]
+process = subprocess.run(
+    [sys.executable, "-m", "reference_agent.mcp_server"],
+    input="\n".join(requests) + "\n", text=True, capture_output=True,
+    timeout=5, check=True, env=env,
+)
+responses = [json.loads(line) for line in process.stdout.splitlines()]
+assert len(responses) == 6
+assert responses[0]["id"] == "init"
+assert responses[0]["result"]["protocolVersion"] == "2024-11-05"
+assert responses[1]["id"] == "list"
+assert responses[1]["result"]["tools"][0]["name"] == "calculator"
+assert [item["error"]["code"] for item in responses[2:5]] == [-32700, -32600, -32602]
+assert responses[3]["id"] is None
+assert responses[4]["id"] == "bad-name"
+assert responses[-1]["id"] == "after-errors"
+assert responses[-1]["result"]["content"][0]["text"] == "96"
+assert process.stderr == ""
+print(json.dumps(responses[-1], ensure_ascii=False))
+```
+
+预期打印含 `id="after-errors"` 和文本 `96` 的响应。输入关闭后，`subprocess.run` 等待进程退出；`timeout=5` 是本次客户端实验的等待上限，不是服务端的逐工具超时或生产恢复机制。
+
+若每个请求都启动新进程，就不能证明“坏请求之后同一个服务仍能工作”。本例服务也没有提供持久会话恢复或业务状态保存。
+
+## 五、接入官方 SDK 时保住会话生命周期
+
+下面只是生命周期伪代码，不是 SDK API 示例，也未在本例上验证互操作：
+
+```text
+打开 transport
+  打开并初始化 session
+    发现工具元数据
+    由宿主筛选工具、绑定允许的调用
+    运行 Agent，并等待其工具调用结束或取消清理完成
+  关闭 session
+关闭 transport
+```
+
+若工具包装器持有 session，所有调用都要发生在 session 仍打开时。不要在 `load_mcp_tools` 的上下文内部返回这些包装器后关闭 session，再在外部运行 Agent；也不要把它们转交给无关的新事件循环。返回已经消费完成的普通结果可以，返回仍需使用已关闭连接的对象不可以。
+
+具体 SDK、传输和框架接口应固定版本并独立测试。接入成功后仍需宿主工具许可、后端鉴权、参数约束和超时，不能让发现到的工具自动获得调用权限。
+
+本节没有数据库工具。扩展数据库连接时，另读[第19章权限与隔离](../chapter_21_security/03_permission_sandbox.md)和[第22章数据连接](../chapter_24_data_agent/02_data_connection.md)，在后端实施权限，而不把字符串关键词过滤当作只读保证。
+
+## 六、回归检查与读者练习
+
+从仓库根目录，在已安装 pytest 的环境执行：
 
 ```bash
-# 在项目根目录 reference-agent/ 下
-python -m reference_agent.mcp_server
-# 然后向 stdin 逐行发送 JSON-RPC：initialize / tools/list / tools/call
+PYTHONPATH=reference-agent/src python -m pytest reference-agent/tests/test_mcp_server.py -q
 ```
 
-其核心结构（节选，完整见源码）：
+需要开发依赖时先执行 `python -m pip install -e 'reference-agent[dev]'`。测试覆盖合法 ID 保留、非法 ID 不回显、未知工具、非对象参数、通知不响应，以及同一 stdio 进程坏请求后的正常计算。它们不测试生产鉴权、官方 SDK 兼容或任意生成代码的隔离。
 
-```python
-# reference-agent/src/reference_agent/mcp_server.py
-_TOOLS = {"calculator": CalculatorTool()}
-
-def handle(request: dict) -> dict:
-    method = request.get("method")
-    if method == "initialize":
-        return {"jsonrpc": "2.0", "id": request.get("id"),
-                "result": {"protocolVersion": "2024-11-05",
-                           "capabilities": {"tools": {}},
-                           "serverInfo": {"name": "reference-agent", "version": "0.1.0"}}}
-    if method == "tools/list":
-        return {"jsonrpc": "2.0", "id": request.get("id"),
-                "result": {"tools": [{"name": t.name, "description": t.description,
-                                      "inputSchema": t.parameters} for t in _TOOLS.values()]}}
-    if method == "tools/call":
-        name = request["params"]["name"]
-        tool = _TOOLS.get(name)
-        if tool is None:
-            return error(f"unknown tool: {name}")
-        result = tool.run(**request["params"].get("arguments", {}))
-        return {"jsonrpc": "2.0", "id": request.get("id"),
-                "result": {"content": [{"type": "text", "text": str(result)}]}}
-```
+读者练习：把上面的数组工具名换成对象，再把 `arguments` 改成数组，核对 `-32602`；将 ID 改为布尔值，核对 `-32600` 且响应 ID 为 `null`；将计算表达式改为 `1/0`，核对当前实现的 `-32603`。每次最后保留一条合法调用，确认服务仍存活。接着为计划采用的 SDK 设计单独的打开、调用、关闭与关闭后拒绝测试，未执行前标记为待验证。
 
 ---
 
-## 二、正确的 Client / Agent 集成方式
+*上一节：[17.4 Agent 间的消息传递与状态共享](./04_message_passing.md)*
 
-关键原则：**session 的存活范围要覆盖 Agent 的整个执行**。下面用官方 `mcp` SDK 给出正确形态（伪代码骨架，真实运行需安装 `mcp` 与对应 LLM SDK）：
-
-```python
-import asyncio
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
-
-async def run_agent_with_mcp(server_command, server_args, user_input):
-    server_params = StdioServerParameters(command=server_command, args=server_args)
-
-    # ✅ session 与 agent 执行在同一个 async with 内，生命周期一致
-    async with stdio_client(server_params) as (read, write):
-        async with ClientSession(read, write) as session:
-            await session.initialize()
-            mcp_tools = await session.list_tools()
-
-            # 在这里构建并运行 Agent，session 全程存活
-            answer = await agent_run(user_input, mcp_tools, session)
-            return answer
-
-# 注意：不要像旧版本那样在 async with 内部 return tools 后退出上下文，
-# 否则 tools 持有的 session 已经关闭，调用会失败。
-```
-
-如果你用的是 LangChain / LangGraph，思路相同：先把 `ClientSession` 打开并保活，再把 `session.call_tool` 包成工具注入 Agent，**Agent 运行期间不要关闭 session**。第 13 章的 LangGraph 实战与第 18 章的多 Agent 系统都可沿用这个约束。
-
----
-
-## 三、工具安全：LLM 生成的参数不可信
-
-MCP 工具常涉及文件、数据库、HTTP，而参数由 LLM 生成，可能被 Prompt 注入利用。下面是一段**示意性**的只读 SQL 工具校验（仅展示思路，生产环境请结合具体数据库驱动与参数化查询）：
-
-```python
-def safe_query(db_path: str, sql: str) -> str:
-    sql = sql.strip()
-    sql_upper = sql.upper()
-    # 防线 1：只允许 SELECT 开头
-    if not sql_upper.startswith("SELECT"):
-        raise PermissionError("只允许 SELECT 查询")
-    # 防线 2：拦截危险关键词
-    for kw in ("DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "CREATE", "TRUNCATE"):
-        if kw in sql_upper:
-            raise PermissionError(f"SQL 含禁止关键词: {kw}")
-    # 防线 3：禁止多语句（去掉结尾分号后不应再有分号）
-    if ";" in sql.rstrip(";"):
-        raise PermissionError("不允许执行多条 SQL 语句")
-    # 防线 4：限制返回行数，防数据爆量
-    import sqlite3
-    conn = sqlite3.connect(db_path)
-    rows = conn.cursor().execute(sql).fetchmany(100)
-    conn.close()
-    return str([dict(r) for r in rows])
-```
-
-四道防线分别挡住：以非 SELECT 开头的破坏性语句、夹带写关键词的混合攻击、分号拼接的第二句恶意 SQL、以及 `SELECT *` 拉爆全表。
-
----
-
-## 小结
-
-- MCP = **Agent ↔ 工具/数据源** 的连接标准（"USB 接口"），价值在标准化与解耦。
-- 集成时的硬规则：**session 生命周期必须覆盖 Agent 运行**，绝不在 `async with` 内部返回工具后退出上下文。
-- 真实可运行的最小 Server 见 `reference-agent/src/reference_agent/mcp_server.py`（已带测试）。
-- 工具参数来自 LLM，必须按"不可信输入"做校验与最小化权限。
-
-> 📌 关于 MCP / A2A / ANP 的"安装量""市场份额"等说法，请以官方文档与发布方最新数据为准，本书不引用无法独立核验的数字。
-
----
-
-## 📝 本章练习
-
-读完本章，先合上书用自己的话回答下面的问题，再展开参考答案对照。
-
-**练习 1（概念）**：本章把 MCP 比作"AI 世界的 USB-C 接口"。请解释：在 MCP 出现之前，给 Agent 接工具有什么痛点？MCP 的"标准化 + 解耦"具体解决了什么问题？
-
-<details>
-<summary>参考答案</summary>
-
-**MCP 之前的痛点：工具接口各家不兼容。** 同一个 search 工具，OpenAI Function Calling、LangChain、Anthropic 的格式各不相同，每接入一个新框架就得重写一遍。
-
-**MCP 解决的核心问题：标准化 + 解耦。** 它规定了统一的工具描述格式（name / description / inputSchema）和调用协议；工具的**实现**（MCP Server）与**使用**（MCP Client / Agent）被彻底分开，互不关心对方用什么语言、什么框架。
-
-**为什么"写一次，到处用"？** 接口标准化后，一个 Python 写的 MCP 天气服务器，任何支持 MCP 的客户端都能直接连上来用，无需单独适配。这正是 MCP 能成为主流工具协议的根本原因。
-
-</details>
-
-**练习 2（辨析）**：有同学说"MCP、A2A、ANP 都是 Agent 通信协议，功能重叠，最后肯定只有一个能活下来。" 请反驳：用一句类比概括三者定位，说明为什么是"互补而非竞争"，并描述一个三者协同的场景。
-
-<details>
-<summary>参考答案</summary>
-
-**这个观点是错的——三者处在不同抽象层，是互补关系。**
-
-| 协议 | 一句话类比 | 解决的核心问题 |
-|------|-----------|--------------|
-| **MCP** | Agent 的"USB 接口" | Agent ↔ **工具/数据源** 怎么连接 |
-| **A2A** | Agent 的"即时通讯" | Agent ↔ **Agent** 怎么协作（任务委派、流式） |
-| **ANP** | Agent 的"开放网络" | **大规模 Agent 网络**怎么发现、验证、安全通信 |
-
-**协同场景**：用户向公司 A 的客服 Agent 咨询退货——ANP 负责在开放网络中发现并验证公司 B 的物流 Agent、公司 C 的支付 Agent；A2A 负责把"查物流""办退款"等任务委派给 B、C 并追踪状态；MCP 负责物流/支付 Agent 各自调用自己的内部工具。三层叠在一起，构成完整生态。
-
-</details>
-
-**练习 3（动手）**：实现一个只读 SQL 工具 `query_database(db_path, sql)`，只放行 `SELECT`、拦截危险关键词、禁止多语句、限制返回行数。写出核心校验逻辑，并解释每道防线分别挡住什么攻击。
-
-<details>
-<summary>参考答案</summary>
-
-核心思路见上文"三、工具安全"代码：只放行 SELECT、拦截写关键词、禁止多语句、限制 100 行。四道防线分别挡住破坏性语句、夹带写操作的混合攻击、分号拼接的第二句恶意 SQL，以及 `SELECT *` 的数据爆量。
-
-</details>
-
----
-
-*下一章：[第20章 Agent 的评估与优化](../chapter_20_evaluation/README.md)*
+*下一章：[第18章 Agent 的评估与优化](../chapter_20_evaluation/README.md)*

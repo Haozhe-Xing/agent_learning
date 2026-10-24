@@ -1,8 +1,8 @@
-# 11.3 Agentic Data Flywheel: Letting Agents Evolve Autonomously
+# 25.3 Agentic Data Flywheel: Letting Agents Evolve Autonomously
 
 > 🔄 *"The best training data is not manually labeled — it is the trajectory left behind when Agents succeed, fail, recover, and complete tasks in real environments."*
 
-[Section 10.8](../chapter_agentic_rl/08_agent_finetuning.md) addressed "how to build the first batch of Agent training data." But that is only the starting point.
+[Section 24.8](../chapter_agentic_rl/08_agent_finetuning.md) addressed "how to build the first batch of Agent training data." But that is only the starting point.
 
 A truly powerful Agent system follows a cycle: **Agent runs → produces trajectories → evaluate results and process → extract success and failure signals → train a stronger model → stronger model produces better trajectories → ...**
 
@@ -429,4 +429,4 @@ Key points:
 
 ---
 
-*Next chapter: [Chapter 12: LangChain In-Depth](../chapter_langchain/README.md)*
+*Learning review: Return to [Chapter 18: Evaluation and Optimization](../chapter_20_evaluation/README.md) and test the improvement on held-out tasks; use [the continuing project](../learning_project.md) to rerun the baseline.*

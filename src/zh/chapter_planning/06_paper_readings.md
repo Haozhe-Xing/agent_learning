@@ -532,7 +532,7 @@ def coding_agent_with_critic(task, llm, run_tests, max_rounds=3):
 
 > 图源：HALO 论文（来源：2026, arXiv:2606.21740）
 
-**关键结果**：在 PlanBench、Natural Plan 等基准上匹配或超越 GPT-5-mini 提示基线，成本降低 **45×**（$0.18→$0.004/任务），LLM 调用次数减少 40–50%。
+**关键结果**：在 PlanBench、Natural Plan 等基准上匹配或超越 GPT-5-mini 提示基线，成本降低 **45×**（USD 0.18→USD 0.004/任务），LLM 调用次数减少 40–50%。
 
 **与本章关系**：对应本章 5.5 节「Plan-and-Execute」与 Orchestrator 设计知识点，HALO 展示了用验证轨迹数据训练小型专用编排策略的可行路线，是从"全程依赖大模型 API 编排"向"轻量本地编排策略"迁移的最新实证，对低成本大规模 Agent 部署具有重要工程价值。
 

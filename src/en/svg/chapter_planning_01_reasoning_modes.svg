@@ -1,61 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320">
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="460" viewBox="0 0 920 460" role="img" aria-labelledby="title desc">
+  <title id="title">Reasoning patterns: separate proposals from checks</title>
+  <desc id="desc">Four reasoning patterns and the checks each needs.</desc>
   <defs>
-    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#64748b" />
+    </marker>
   </defs>
-  <rect width="680" height="320" rx="14" fill="#f8f9fa"/>
-  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Four Types of Reasoning Modes</text>
-
-  <!-- Deductive -->
-  <rect x="20" y="50" width="150" height="120" rx="10" fill="#3498db"/>
-  <text x="95" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Deductive</text>
-  <text x="95" y="92" text-anchor="middle" font-size="11" fill="#d6eaf8">Reasoning</text>
-  <line x1="30" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-  <text x="95" y="116" text-anchor="middle" font-size="10" fill="white">From general to specific</text>
-  <text x="95" y="132" text-anchor="middle" font-size="10" fill="#d6eaf8">"All Python functions</text>
-  <text x="95" y="148" text-anchor="middle" font-size="10" fill="#d6eaf8">have a return value"</text>
-  <text x="95" y="162" text-anchor="middle" font-size="10" fill="#aed6f1">→ Logically certain</text>
-
-  <!-- Inductive -->
-  <rect x="185" y="50" width="150" height="120" rx="10" fill="#27ae60"/>
-  <text x="260" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Inductive</text>
-  <text x="260" y="92" text-anchor="middle" font-size="11" fill="#d5f5e3">Reasoning</text>
-  <line x1="195" y1="100" x2="325" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-  <text x="260" y="116" text-anchor="middle" font-size="10" fill="white">From specific to general</text>
-  <text x="260" y="132" text-anchor="middle" font-size="10" fill="#d5f5e3">"Seen 100 quicksort</text>
-  <text x="260" y="148" text-anchor="middle" font-size="10" fill="#d5f5e3">implementations..."</text>
-  <text x="260" y="162" text-anchor="middle" font-size="10" fill="#a9dfbf">→ Generalize a pattern</text>
-
-  <!-- Abductive -->
-  <rect x="350" y="50" width="150" height="120" rx="10" fill="#8e44ad"/>
-  <text x="425" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Abductive</text>
-  <text x="425" y="92" text-anchor="middle" font-size="11" fill="#e8daef">Reasoning</text>
-  <line x1="360" y1="100" x2="490" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-  <text x="425" y="116" text-anchor="middle" font-size="10" fill="white">Best explanation inference</text>
-  <text x="425" y="132" text-anchor="middle" font-size="10" fill="#e8daef">"The program crashed,</text>
-  <text x="425" y="148" text-anchor="middle" font-size="10" fill="#e8daef">maybe a null pointer"</text>
-  <text x="425" y="162" text-anchor="middle" font-size="10" fill="#d2b4de">→ Verify hypothesis</text>
-
-  <!-- Analogical -->
-  <rect x="515" y="50" width="150" height="120" rx="10" fill="#e67e22"/>
-  <text x="590" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Analogical</text>
-  <text x="590" y="92" text-anchor="middle" font-size="11" fill="#fdebd0">Reasoning</text>
-  <line x1="525" y1="100" x2="655" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-  <text x="590" y="116" text-anchor="middle" font-size="10" fill="white">Transfer from similar problems</text>
-  <text x="590" y="132" text-anchor="middle" font-size="10" fill="#fdebd0">"This problem is similar</text>
-  <text x="590" y="148" text-anchor="middle" font-size="10" fill="#fdebd0">to the previous XX"</text>
-  <text x="590" y="162" text-anchor="middle" font-size="10" fill="#f0b27a">→ Transfer the solution</text>
-
-  <!-- Bottom: Agent combining modes -->
-  <rect x="20" y="195" width="640" height="100" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1.2"/>
-  <text x="340" y="218" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">Agent Combines Multiple Reasoning Modes</text>
-  <text x="340" y="240" text-anchor="middle" font-size="11" fill="#7f8c8d">When facing complex problems, agents flexibly switch reasoning modes:</text>
-  <text x="340" y="258" text-anchor="middle" font-size="11" fill="#3498db">Deductive</text>
-  <text x="390" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">(verify logic) →</text>
-  <text x="450" y="258" text-anchor="middle" font-size="11" fill="#27ae60">Inductive</text>
-  <text x="500" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">(find patterns) →</text>
-  <text x="560" y="258" text-anchor="middle" font-size="11" fill="#8e44ad">Abductive</text>
-  <text x="615" y="258" text-anchor="middle" font-size="11" fill="#7f8c8d">(diagnose) →</text>
-  <text x="560" y="275" text-anchor="middle" font-size="11" fill="#e67e22">Analogical</text>
-  <text x="615" y="275" text-anchor="middle" font-size="11" fill="#7f8c8d">(transfer)</text>
-  <text x="340" y="280" text-anchor="middle" font-size="11" fill="#95a5a6">Metacognition: knowing what you don't know, choosing the right reasoning style</text>
+  <rect width="920" height="460" fill="#f8fafc" />
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <text x="460" y="35" font-size="22" fill="#0f172a" font-weight="bold" text-anchor="middle">Reasoning patterns: separate proposals from checks</text>
+    <rect x="24" y="75" width="424" height="122" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+    <text x="236.0" y="103" font-size="17" fill="#2563eb" font-weight="bold" text-anchor="middle">Deduction</text>
+    <text x="236.0" y="130" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Derive a conclusion from premises</text>
+    <text x="236.0" y="153" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Check premises and inference</text>
+    <rect x="472" y="75" width="424" height="122" rx="10" fill="#ffffff" stroke="#15803d" stroke-width="1.5" />
+    <text x="684.0" y="103" font-size="17" fill="#15803d" font-weight="bold" text-anchor="middle">Induction</text>
+    <text x="684.0" y="130" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Propose a pattern from finite samples</text>
+    <text x="684.0" y="153" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Check held-out cases and scope</text>
+    <rect x="24" y="218" width="424" height="122" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5" />
+    <text x="236.0" y="246" font-size="17" fill="#7c3aed" font-weight="bold" text-anchor="middle">Abduction</text>
+    <text x="236.0" y="273" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Propose an explanation for observations</text>
+    <text x="236.0" y="296" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Seek evidence that separates hypotheses</text>
+    <rect x="472" y="218" width="424" height="122" rx="10" fill="#ffffff" stroke="#b45309" stroke-width="1.5" />
+    <text x="684.0" y="246" font-size="17" fill="#b45309" font-weight="bold" text-anchor="middle">Analogy</text>
+    <text x="684.0" y="273" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Borrow a candidate from a similar task</text>
+    <text x="684.0" y="296" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">Check current constraints and differences</text>
+    <rect x="24" y="365" width="872" height="72" rx="9" fill="#e8eef7" />
+    <text x="460" y="390" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">These describe problem-solving methods; explanatory text does not reveal internal reasoning.</text>
+    <text x="460" y="414" font-size="14" fill="#334155" font-weight="normal" text-anchor="middle">The release-brief exercise checks observable fields, sources and task requirements.</text>
+  </g>
 </svg>

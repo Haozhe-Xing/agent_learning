@@ -1,5 +1,7 @@
 # 2.8 SFT and Reinforcement Learning Training Data Preparation
 
+> **Reading position: optional advanced/research reference.** For a first application, continue with [chapter 3, Tool Calling](../chapter_tools/README.md). Revisit this section after establishing a task and evaluation baseline; architecture and training-data engineering are not framework prerequisites.
+
 > 📊 *"Data is the most underestimated lever in model training. Algorithms change every year, but the improvements from high-quality data are cross-algorithm."*
 
 In the previous sections, we learned about how large language models work and their architectural design. But the gap between a model going from a "general foundation" to a "useful Agent" is not just algorithms — it's **data**. Whether it's SFT (Supervised Fine-Tuning) or reinforcement learning training like RLHF/GRPO, the quality, quantity, distribution, and format of data directly determine the ceiling of training effectiveness.
@@ -467,16 +469,31 @@ The logic for choosing data volume in the RL stage is completely different from 
 |--------|--------|----------------|
 | **Number of questions** | More questions = more exploration directions | 10K–100K unique questions |
 | **Samples per question (G)** | GRPO samples G responses per question | G = 8–64, adjust based on resources |
-| **Effective training samples** | Questions × G = total training samples | 100K–millions of samples |
+| **Generated responses** | Questions × G; not the number of samples with nonzero advantages | Also count the groups retained after filtering |
 | **Training epochs** | Usually 1–3 epochs | Too many leads to overfitting |
 
-**The key for RL data is not volume, but the "effective reward range"**:
+**Specify the algorithm and reward before judging whether a group provides a contrast.** Outcome-supervised GRPO in [DeepSeekMath §4.1.2](https://arxiv.org/html/2402.03300v3#S4.SS1.SSS2) normalizes rewards within a group. For binary correctness rewards on $G$ responses to one question, let $r_i$ be a reward, $\bar r$ the group mean, and $s_r$ its standard deviation. A numerically guarded illustration is:
 
-![Effective vs Ineffective RL Training Data](../svg/chapter_llm_08_valid_rl_data.svg)
+$$
+\hat A_i=\frac{r_i-\bar r}{s_r+\epsilon},\qquad \epsilon>0.
+$$
 
-> ⚠️ **Key principle**: If a question is too easy (model gets it right 100% of the time) or too hard (model gets it right 0% of the time), it has **absolutely no value** in RL training. The most valuable data is questions where the model has a 30%–70% pass rate — "just hard enough."
+![Centered signals and scope for a current group of binary outcome rewards](../svg/chapter_llm_08_valid_rl_data.svg)
+
+| Current sampled group | Implication for this outcome-reward policy term |
+|---|---|
+| Both correct and incorrect responses | Reward variance allows relative advantages; overall training benefit is not guaranteed |
+| All correct or all incorrect, with no other reward differences | Every numerator is 0; guarded advantages are 0, so this group supplies no policy gradient from this term |
+
+The unguarded expression is $0/0$ at zero standard deviation, not automatically 0; implementations must skip the group or handle zero variance explicitly. [DAPO §3.2](https://arxiv.org/html/2503.14476v1#S3.SS2) filters groups observed to be all correct or all incorrect; it does not prescribe a 30%–70% pass-rate window.
+
+**Observed pass rate is not the underlying success probability.** $\hat p=\text{number correct}/G$ describes finite samples. With a fixed model and sampling configuration, assuming independent draws with single-draw success probability $p$, the probability of a mixed group is $1-p^G-(1-p)^G$. For $p=0.1,G=8$, it is about 57%, so contrasts are still possible; one all-incorrect group does not prove $p=0$. A 30%–70% window is a heuristic to evaluate, not a boundary outside which questions are worthless.
+
+> **Scope**: This argument concerns group-relative outcome advantages. The value baseline/GAE in [PPO §5](https://arxiv.org/pdf/1707.06347v2) is different; [process rewards](https://arxiv.org/html/2402.03300v3#S4.SS1.SSS3) or other rewards can differ, and configured KL or entropy terms may still contribute gradients. A zero policy term does not imply no training update or establish curriculum quality. Questions may also serve coverage checks, evaluation, or later curricula; choose retention rates using sampling costs and an independent validation set.
 
 ### RL Data Filtering: Difficulty Calibration
+
+The following filtering sketch needs an actual model, tokenizer, and reward function; it is not a training reproduction. Its default 20%–80% window is adjustable. Fix the model version, temperature, and sample count, record observations, and compare filtering cost and validation results. Here `reward_fn > 0.5` defines a binary pass; multi-dimensional rewards require a separate check of total within-group reward variance.
 
 ```python
 def calibrate_difficulty(
@@ -487,18 +504,18 @@ def calibrate_difficulty(
     target_pass_rate: tuple[float, float] = (0.2, 0.8),
 ) -> list[dict]:
     """
-    Difficulty calibration: filter questions that are "just hard enough" for the current model
+    Filter by finite-sample observed pass rate; the window is a heuristic, not an optimum
     
     Process:
     1. Sample n_samples responses for each question
-    2. Calculate pass rate
+    2. Calculate observed pass rate (not the underlying success probability)
     3. Keep questions with pass rate within target_pass_rate range
     
     Args:
         questions: List of candidate questions
         model: Current policy model
         n_samples: Number of samples per question
-        target_pass_rate: Target pass rate range (lower bound, upper bound)
+        target_pass_rate: Heuristic filtering window (lower bound, upper bound)
     """
     calibrated = []
     
@@ -514,7 +531,7 @@ def calibrate_difficulty(
             )
             responses.append(tokenizer.decode(response[0]))
         
-        # Calculate pass rate
+        # Binary pass counts do not check multi-dimensional reward variance
         rewards = [q["reward_fn"](r) for r in responses]
         pass_rate = sum(1 for r in rewards if r > 0.5) / len(rewards)
         
@@ -609,7 +626,7 @@ Classic examples:
 **Solutions**:
 1. Reward function should be **multi-dimensional** (correctness + format + reasoning quality)
 2. Regularly **manually sample** training outputs to check for abnormal patterns
-3. Use **KL divergence constraints** to limit policy drift (built into PPO/GRPO)
+3. If drift from a reference policy needs control, explicitly configure and monitor a **KL penalty** and its coefficient; it does not guarantee protection against reward hacking. Do not infer it from the algorithm name: original [PPO §3–4](https://arxiv.org/pdf/1707.06347v2) distinguishes clipping from KL-penalty objectives; its old/new-policy KL differs from KL against a frozen reference model. [DeepSeekMath's GRPO Eq. (3)](https://arxiv.org/html/2402.03300v3#S4.SS1.SSS1) includes reference-policy KL, whereas [DAPO §2.3](https://arxiv.org/html/2503.14476v1#S2.SS3) removes it. Inspect the actual loss and coefficient.
 
 ### Pitfall 4: Catastrophic Forgetting
 
@@ -620,7 +637,7 @@ Over-fine-tuning causes the model to lose the general capabilities learned durin
 **Solutions**:
 1. **Mix in general data**: Add 10%–20% general conversation data to SFT data
 2. **Control training epochs**: SFT usually only needs 1–3 epochs
-3. **Use LoRA**: Only update a small number of parameters, naturally prevents catastrophic forgetting (see Section 10.2)
+3. **Use LoRA**: Only update a small number of parameters, naturally prevents catastrophic forgetting (see Section 24.2)
 
 ---
 
@@ -641,8 +658,8 @@ Before starting training, use the following checklist to review your data prepar
 **RL Data Checklist**:
 
 - [ ] Can the reward function be automatically evaluated?
-- [ ] Does the reward signal have discriminative power? (Not all 0s or all 1s)
-- [ ] Has question difficulty been calibrated? (30%–70% pass rate)
+- [ ] For the chosen advantage estimator, are within-group reward variance, zero-variance frequency, and its handling recorded?
+- [ ] Is observed pass rate calibrated under a fixed sampling configuration, with filtering windows compared on an independent validation set?
 - [ ] Has a multi-dimensional reward been designed? (To prevent Reward Hacking)
 - [ ] Is there a curriculum learning strategy? (Easy to hard)
 - [ ] Are training outputs regularly manually sampled for review?
@@ -680,20 +697,14 @@ Before starting training, use the following checklist to review your data prepar
 > - Plot a **scaling curve**: start from 100 samples, gradually increase to 500, 1000, 5000, observe the performance inflection point
 > - If performance improvement from 1000 to 5000 is < 2%, 1000 samples may already be sufficient
 
-**3. In reinforcement learning training, what kinds of questions are most valuable for training? What kinds are completely worthless?**
+**3. Why can an all-correct or all-incorrect group lack a contrast in outcome-supervised GRPO? Does that make the question worthless in all RL?**
 
 > **Key points**:
 >
-> **Most valuable**: Questions where the model has a 30%–70% probability of answering correctly
-> - These questions are in the model's "Zone of Proximal Development"
-> - After sampling G responses, some are good and some are bad, forming effective contrasts
-> - GRPO's within-group normalization can produce discriminative advantage signals
->
-> **Completely worthless**:
-> - Too easy (100% correct): all response rewards are 1, after normalization all advantages are 0
-> - Too hard (0% correct): all response rewards are 0, equally unable to learn
->
-> **Analogy**: Exam question design — if a question is too easy everyone gets full marks, if too hard everyone gets zero; neither can distinguish student ability. The best questions are "moderately difficult questions with discriminative power"
+> - With binary outcome rewards identical within a group, centering gives zero numerators. Handle zero standard deviation before obtaining zero advantages or skipping the group.
+> - Only that policy-gradient signal is absent. Analyze PPO baselines, other rewards, and regularizers separately.
+> - All-correct/all-incorrect finite samples do not establish success probabilities of 1/0; 30%–70% is not a universal optimum.
+> - Retention also depends on evaluation coverage, sampling budget, and curriculum goals; one group is insufficient to judge these.
 
 ### Deep Understanding
 
@@ -706,7 +717,7 @@ Before starting training, use the following checklist to review your data prepar
 > | **Data errors** | Wrong answers are directly "learned" | Reward function design flaws lead to Reward Hacking |
 > | **Distribution issues** | Training distribution ≠ usage distribution → generalization failure | Unreasonable question difficulty distribution → no useful signal learned |
 > | **Volume issues** | Too much low-quality data → dilutes high-quality signal | Too few effective questions → insufficient exploration |
-> | **Prevention** | Manual review + automated quality control | Multi-dimensional rewards + KL constraints + manual sampling |
+> | **Prevention** | Manual review + automated quality control | Validate rewards + configure and monitor KL when needed + manual sampling |
 >
 > **Core difference**: SFT errors are "learned wrong" (garbage in, garbage out); RL errors are "learned crooked" (found unexpected shortcuts)
 
@@ -737,7 +748,7 @@ Before starting training, use the following checklist to review your data prepar
 | **SFT data quality** | Five-dimensional evaluation: correctness, format consistency, completeness, difficulty distribution, diversity |
 | **SFT data sources** | Manual annotation > strong model distillation > automated selection |
 | **RL data core** | No standard answers needed; need good questions + good reward functions |
-| **RL difficulty calibration** | Most valuable questions have 30%–70% pass rate |
+| **RL difficulty calibration** | Distinguish observed pass rates from success probabilities; tune filtering against the estimator, reward variance, and validation set |
 | **Curriculum learning** | Easy-to-hard training rhythm; avoid "throwing into the deep end" |
 | **Common pitfalls** | Data contamination, distribution shift, Reward Hacking, catastrophic forgetting |
 
@@ -766,18 +777,18 @@ This is the "most counterintuitive but most important rule" stated in this chapt
 
 </details>
 
-**Exercise 2 (Distinguish)**: Judge whether the following statement is correct and explain why — "RL training, like SFT, benefits from more and harder questions, so we should collect those super-hard problems the model can't solve at all to force it to improve." Analyze this in light of the "effective reward range" concept.
+**Exercise 2 (Distinguish)**: Judge whether the following statement is correct and explain why — "RL training, like SFT, benefits from more and harder questions, so we should collect those super-hard problems the model can't solve at all to force it to improve." State the assumed algorithm and reward, and distinguish observed pass rate from underlying success probability.
 
 <details>
 <summary>Reference answer</summary>
 
-This statement is **wrong**, on two counts.
+The statement is **wrong**, but its opposite—“super-hard questions are worthless in all RL”—does not follow.
 
-**First, RL data is not "more is better" — it's about the "effective reward range."** RL learns by contrasting multiple sampled responses to the same question (some good, some bad). If a problem is **100% correct**, all sampled rewards are 1, and after within-group normalization all advantages are 0 — nothing is learned. If it's **0% correct**, all sampled rewards are 0, equally lacking discriminative power. Only problems where the model's **pass rate is 30%–70%** — "just hard enough" — produce a mix of good and bad samples after sampling, forming an effective contrast signal.
+**First specify the conditions.** With binary outcome rewards and GRPO group normalization, an all-incorrect group has no reward contrast. After handling zero variance, that term supplies no policy gradient. Generating many such groups spends budget without automatically producing the intended success/failure contrasts.
 
-**Second, "the more super-hard problems the better" is exactly the counterexample.** A problem the model can't solve at all has a 0% pass rate and belongs to the "completely worthless" data.
+**Then examine the evidence.** Sixteen failures are an observation, not proof of zero success probability. Within budget, try resampling, adjusting exploration, or decomposing tasks and adding reliably verifiable process rewards, then check an independent validation set; none guarantees improvement. A 30%–70% window is not the sole useful range, and a missing policy signal does not imply all KL, entropy, or other terms are inactive.
 
-An analogy to exam design: a too-easy question gives the whole class full marks, a too-hard one gives everyone zero — neither distinguishes student ability. The most valuable are "moderately difficult questions with discriminative power." So the correct approach is **difficulty calibration** — filter out the too-easy and too-hard, keeping only problems that fall in the model's "zone of proximal development." Note this is completely different from SFT logic: SFT wants high-quality standard answers, while RL wants "just-right difficulty" problems plus a good reward function.
+**Finally choose the use.** Compare useful signals per unit cost and validation performance when filtering training data. Hard questions may remain useful for coverage checks and evaluation. Within-group variance is a local metric, not a complete curriculum-quality measure.
 
 </details>
 
@@ -825,7 +836,7 @@ def math_reward(response: str, ground_truth: str) -> float:
 - **Adding a reasoning-process score**: encourages the model to "think before answering" rather than bluff. Note we require the think content to have **some length**, otherwise the model would write an empty `<think></think>` to game the points — this adds another line of defense against cheating.
 - **Multi-dimensional combination**: this chapter points out that the key to preventing Reward Hacking is "the reward function must be multi-dimensional (correctness + format + reasoning quality)." A single dimension is too easy to break.
 
-For further improvement: cap the length reward (to prevent padding), regularly manually sample training outputs, and use KL divergence constraints to limit policy drift (built into PPO/GRPO).
+For further improvement, review whether length rewards encourage padding and manually inspect outputs. If reference-policy drift needs control, explicitly configure and monitor a KL penalty (see the algorithm differences above); the PPO/GRPO name does not establish that it is enabled.
 
 </details>
 
@@ -843,11 +854,17 @@ For further improvement: cap the length reward (to prevent padding), regularly m
 
 [5] QWEN TEAM. Qwen2.5 Technical Report[R]. arXiv preprint arXiv:2412.15115, 2024.
 
+[6] SHAO Z, WANG P, ZHU Q, et al. [DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models](https://arxiv.org/html/2402.03300v3)[R]. 2024. §4.1.1–4.1.3 (GRPO objective and advantage estimation).
+
+[7] YU Q, ZHANG Z, ZHU R, et al. [DAPO: An Open-Source LLM Reinforcement Learning System at Scale](https://arxiv.org/html/2503.14476v1)[R]. 2025. §2.3 and §3.2 (removing KL and dynamic sampling).
+
+[8] SCHULMAN J, WOLSKI F, DHARIWAL P, et al. [Proximal Policy Optimization Algorithms](https://arxiv.org/pdf/1707.06347v2)[R]. 2017. §3–5 (clipping, KL penalties, and value/entropy terms).
+
 ---
 
-> 🔗 **Division of labor with Chapter 10**  
-> This section (2.8) focuses on the **data engineering perspective**: how to prepare high-quality SFT and RL training data, including data format specifications, quality standards, and common pitfalls.  
-> **Chapter 10 Agentic-RL** (starting from Section 10.2) goes deeper into the **algorithm perspective**: LoRA parameter-efficient fine-tuning principles, PPO/DPO/GRPO reinforcement learning algorithms, and the complete training pipeline.  
+> 🔗 **Division of labor with Chapter 24**<br>
+> This section (2.8) focuses on the **data engineering perspective**: how to prepare high-quality SFT and RL training data, including data format specifications, quality standards, and common pitfalls.<br>
+> **Chapter 24 Agentic-RL** (starting from Section 24.2) goes deeper into the **algorithm perspective**: LoRA parameter-efficient fine-tuning principles, PPO/DPO/GRPO reinforcement learning algorithms, and the complete training pipeline.<br>
 > The two chapters are best read together.
 
 *Previous section: [2.7 Foundation Model Architecture Explained](./07_model_architecture.md)*

@@ -1,4 +1,4 @@
-# 24.4 Report Generation and Export
+# 22.4 Report Generation and Export
 
 > **Section Goal**: Automatically integrate analysis results into structured Markdown reports.
 
@@ -8,7 +8,7 @@
 
 ## Report Generator
 
-```python
+````python
 from datetime import datetime
 
 class ReportGenerator:
@@ -101,7 +101,7 @@ Requirements: 2–3 paragraphs, including core findings and specific actionable 
             f.write(report)
         
         return filename
-```
+````
 
 ---
 
@@ -331,4 +331,4 @@ async def generate_sales_report():
 
 ---
 
-[Next: 20.5 Full Project Implementation →](./05_full_implementation.md)
+[Next: 22.5 Full Project Implementation →](./05_full_implementation.md)

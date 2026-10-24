@@ -1,4 +1,4 @@
-# 14.1 OpenClaw Panorama: From Clawdbot to OpenClaw
+# 12.1 OpenClaw Panorama: From Clawdbot to OpenClaw
 
 > 🦞 *"How a weekend project became a phenomenon — and why its name changed three times."*
 
@@ -6,48 +6,42 @@
 
 ## Why OpenClaw Matters
 
-Before 2025, Agents were mostly demos (AutoGPT, BabyAGI) stuck in a CLI or a crude web UI. The thing that pushed Agents into daily life was the **action-oriented Agent living in chat apps** — you `@` it in WhatsApp and it searches, edits files, runs commands.
+Start with a chat-entry question: after a message arrives, who checks identity, selects the session, and authorizes a tool? This connects a minimal Agent with a personal-assistant product.
 
-**OpenClaw** is a leading representative. Its GitHub growth was unprecedented — hundreds of thousands of stars within months. How did it start? What fundamentally separates it from an industrial harness like Claude Code? This section gives the panorama.
+**OpenClaw** is a case to study through entry points, state, and extension boundaries. Its author recounts the prototype and renaming in the [official introduction dated January 29, 2026](https://openclaw.ai/blog/introducing-openclaw). Repository popularity is not evidence of engineering quality.
 
 ---
 
 ## A Brief Naming History
 
-The same codebase changed names three times in under two months:
+The author's [naming retrospective](https://openclaw.ai/blog/introducing-openclaw) supports this sequence. Unsupported prototype repository names and precise intermediate dates are omitted.
 
-| Time | Name | Event |
-|------|------|-------|
-| Dec 2025 | early prototype | Peter Steinberger's first repo — a "WhatsApp relay" forwarding messages to an LLM and back |
-| Jan 2026 (early) | **Clawdbot** | First "general" version; "claw" from the Claude+claw meme; multi-channel + sandbox + LSP + voice |
-| Jan 27, 2026 | **Moltbot** | Renamed over Anthropic trademark concerns ("Clawd" too close to "Claude") |
-| Jan 30, 2026+ | **OpenClaw** | Dropped the trademark conflict; emphasized open-source / long-term brand |
+| Time | Name or stage | Supported detail |
+|---|---|---|
+| November 2025 | Clawd / WhatsApp Relay prototype phase | The author dates Clawd's beginning to November 2025 and describes the relay experiment |
+| Between names | Moltbot | A rename followed trademark concerns, before another naming change |
+| January 29, 2026 | OpenClaw | The official introduction announces the name on this date |
+
+The source-check anchor is [v2026.10.5](https://github.com/openclaw/openclaw/releases/tag/v2026.10.5), [commit 1b58cb9](https://github.com/openclaw/openclaw/commit/1b58cb9a1b4f4353e1add63c8506db4d890962e8), with its [MIT license](https://github.com/openclaw/openclaw/blob/1b58cb9a1b4f4353e1add63c8506db4d890962e8/LICENSE). This fixes identity and source version, not execution verification of every example in this chapter.
 
 What this history teaches:
 
 1. **Naming is engineering** — a wrong name brings recurring trademark/SEO/community costs.
-2. **Rewrites flourished** — nanobot (Python ~4000 lines), ZeroClaw (Rust), NanoClaw (Go + Apple containers), IronClaw (Rust + WASM sandbox), NullClaw (Zig, 678KB static binary) all use OpenClaw's core architecture as a starting line — itself a "collective quality review."
+2. **Check third-party implementations separately** — similar names, interfaces, or multiple implementation languages establish neither source lineage nor architecture quality.
 3. **OpenClaw chose the community-driven route** — the biggest divide from Claude Code (closed source).
 
 ---
 
 ## OpenClaw's Place in the Harness Spectrum
 
-```
-Action-oriented Agent Harness spectrum (2026)
-│
-├── Multi-channel · consumer · community-driven (open source)
-│   └─ OpenClaw (Ch.14) — put the Agent in chat apps
-│
-├── Multi-channel · consumer · self-evolving (open source)
-│   └─ Hermes Agent (Ch.15) — Agent writes its own skills
-│
-├── Terminal IDE · industrial · closed (source-available)
-│   └─ Claude Code (Ch.16) — the coding IDE
-│
-└── Terminal IDE · developer workshop · everything-is-a-plugin (open source)
-    └─ DeepSeek Harness (Ch.17) — model-agnostic + swappable kernel
-```
+| Case | Reading focus |
+|---|---|
+| [12, OpenClaw](./README.md) | Chat entry points and session boundaries |
+| [13, Hermes](../chapter_hermes/README.md) | Memory and skill candidates |
+| [14, Claude Code](../chapter_claude_code/README.md) | Code-operation boundaries |
+| [15, DeepSeek Harness](../chapter_deepseek_harness/README.md) | Plugin interfaces and lifecycle |
+
+These are teaching perspectives, not claims of product exclusivity.
 
 The "user key" difference is decisive:
 
@@ -107,4 +101,4 @@ Normalizes all channels into `IncomingMessage`/`OutgoingMessage`. The flow acros
 
 ---
 
-*Next section: [14.2 Installation & 4 Deployment Modes](./02_install_and_deploy.md)*
+*Next section: [12.2 Installation & 4 Deployment Modes](./02_install_and_deploy.md)*

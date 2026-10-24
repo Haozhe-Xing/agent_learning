@@ -1,4 +1,4 @@
-# 14.4 多渠道路由：WhatsApp / Telegram / Discord / Slack / Signal
+# 12.4 多渠道路由：WhatsApp / Telegram / Discord / Slack / Signal
 
 > 🦞 *"用户键已经在你手机里了——把 Agent 装进那把钥匙。"*
 
@@ -293,4 +293,4 @@ Signal 没有直接的 Bot API，OpenClaw 通过 `signal-cli`（Java 编写的�
 
 ---
 
-*下一节：[14.5 Skills 与插件生态：ClawHub 与社区贡献](./05_skills_and_plugins.md)*
+*下一节：[12.5 Skills 与插件生态：ClawHub 与社区贡献](./05_skills_and_plugins.md)*

@@ -1,4 +1,4 @@
-# 14.7 Lessons for Engineers
+# 12.7 Lessons for Engineers
 
 > 🦞 *"When the user key moves from CLI to a chat box, every part of the Agent must be reconsidered."*
 
@@ -63,4 +63,4 @@ Why did OpenClaw explode? Position (action-Agent was a strong demand), low barri
 
 ---
 
-*Next chapter: [Chapter 15: Hermes Agent — The Self-Evolving Agent](../chapter_hermes/README.md)*
+*Next chapter: [Chapter 13: Hermes Agent — The Self-Evolving Agent](../chapter_hermes/README.md)*

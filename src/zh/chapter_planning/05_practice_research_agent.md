@@ -1,5 +1,23 @@
 # 5.5 实战：自动化研究助手 Agent
 
+中等难度的完整参考应用入口是 `python -m reference_code.evidence_assistant`，从多份本地资料回答多个问题，阅读顺序见[贯穿项目](../learning_project.md)。本节另保留较小的 `examples/chapter05/research_agent.py` 配套入口，便于单独观察计划与问答验收；下面的 `ResearchAgent` API 说明指这个小基线。网页获取属于独立的外部集成。
+
+## 本次迭代与验收
+
+把搜索与计算扩展为有计划、有证据的多步任务。
+
+- **成功标准**：固定一个研究问题和必答要点；人工核对报告是否覆盖要点、引用是否能支持结论，并保留搜索轨迹。
+- **失败用例**：加入无结果查询、来源冲突和材料中的指令文本；不能把来源缺失或自评分高当作研究完成。
+- **安全边界**：网页内容仅作证据；设置搜索次数、总轮数与输出预算，保存报告前检查目标目录。
+
+先保留输入、预期和实际结果，再继续扩展。评估方法见[第18章](../chapter_20_evaluation/README.md)，信任与权限设计见[第19章](../chapter_21_security/README.md)。
+
+小基线返回的`execution.status=completed`只代表计划已执行；其研究层`completed`表示每题都通过已配置的QA检查。默认只核对非空回答与命中来源标签，仍可能内容不受支撑或漏答，因此不能把这个状态当作本节最终研究验收。空回答、模型异常、缺失或未知引用保留阶段失败，整体为`incomplete`。
+
+可通过`ResearchAgent(documents, answerer, verifier=...)`注入`verifier(question, answer, documents) -> bool`，只有严格`True`通过。摘录任务可使用已有`verify_excerpts`，但问题覆盖仍须独立冻结规格；完整条件和反例见[6.5](../chapter_rag/05_practice_qa_agent.md)。自有开放研究不能套用默认资料的预期。可运行`python -m unittest reference_code.evidence_assistant.tests.test_answer_acceptance`检查基础拒绝路径；配好规格的多问题应用使用本页开头的主线入口。
+
+下面的研究谱系与多模块架构是扩展设计，不是这个小基线已实现的Web研究能力，也不由本轮规划机制测试证明。
+
 综合本章所学的规划、推理和反思能力，构建一个能够自主进行研究的 Agent。
 
 > **设计说明**：本项目采用"Plan-then-Execute"的多阶段 Pipeline 架构，而非纯 ReAct 循环。这是因为在研究任务中，各阶段（规划→搜索→分析→质量检查）有明确的先后顺序，Pipeline 模式更易于控制流程和调试。在 Pipeline 内部，每个阶段仍然运用了 ReAct 思想——Agent 根据当前阶段的输出"思考"下一步行动，并在质量检查阶段进行"反思"。这体现了第 5.1 节讨论的"将合适的推理框架应用到合适的场景"原则。

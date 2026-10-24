@@ -2,7 +2,8 @@
 
 Key honesty fix vs. the old book draft: `/chat` returns the **real** agent
 output (or an error), never a hard-coded "这是 Agent 的回复" string.
-`/stream` streams the real answer token-by-token over SSE.
+`/stream` sends a completed answer as whitespace-delimited SSE chunks.
+It demonstrates SSE transport, not live model-token streaming.
 """
 
 from __future__ import annotations
@@ -60,7 +61,10 @@ def stream(req: ChatRequest):
         _guard.check_input(req.message)
     except GuardrailError as exc:
         return JSONResponse(status_code=400, content={"error": str(exc)})
-    answer = _build_agent().run(req.message)
+    try:
+        answer = _build_agent().run(req.message)
+    except Exception:
+        return JSONResponse(status_code=500, content={"error": "Agent execution failed"})
 
     def event_gen():
         for token in answer.split(" "):

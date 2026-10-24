@@ -1,4 +1,4 @@
-# 20.5 Observability: Logging, Tracing, and Monitoring
+# 18.5 Observability: Logging, Tracing, and Monitoring
 
 > **Section Goal**: Learn how to build a comprehensive observability system for Agents, so that "problems can be detected when they occur, and located once detected."
 
@@ -838,7 +838,7 @@ class ProductionObservability:
 | Development & debugging | Arize Phoenix (zero-config) |
 | Production-grade unified | OTel Collector → LangFuse + Prometheus → Grafana |
 
-> 💡 **Further Reading**: For model routing evaluation and A/B testing of the Agent runtime, see [20.7 A/B Testing and Regression Test Automation](./07_ab_testing.md) and [20.8 Model Routing Evaluation](./08_model_routing.md).
+> 💡 **Further Reading**: For model routing evaluation and A/B testing of the Agent runtime, see [18.7 A/B Testing and Regression Test Automation](./07_ab_testing.md) and [18.8 Model Routing Evaluation](./08_model_routing.md).
 
 > 🎓 **Chapter Summary**: Evaluation and optimization is a continuous, iterative process. First establish an evaluation system, then continuously improve the Agent through prompt tuning, cost control, and observability.
 

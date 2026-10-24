@@ -1,4 +1,4 @@
-# 17.1 What Is DeepSeek Harness: Cordis Kernel and "Everything Is a Plugin"
+# 15.1 What Is DeepSeek Harness: Cordis Kernel and "Everything Is a Plugin"
 
 > 🐋 *"Model + Harness = Agent; the model thinks, the harness acts."*
 
@@ -6,17 +6,17 @@
 
 ## One-Sentence Definition
 
-**DeepSeek Harness (dsh / DSH)** is an Agent runtime framework open-sourced by DeepSeek AI on August 13, 2026 under the MIT license. It is not a model, not an API client — it is an **AI operating-system shell**.
+**DeepSeek Harness (dsh / DSH)** is an open-source Agent harness from DeepSeek AI. This review anchors [dsh-v0.2.1-rc.2](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-rc.2), [commit 687f282](https://github.com/deepseek-ai/deepseek-harness/commit/687f282e8625c6b8d11ff58211a90524be2e4317), and its [MIT license](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/LICENSE). This review has not established the first-release date; repository creation is not a product-launch date.
 
 ## Why DeepSeek Built an Open Harness
 
-By late 2025, the action-Agent race had two clear poles: commercial closed harnesses (Claude Code, OpenAI Codex, Cursor — mostly model-bound) and open consumer harnesses (OpenClaw, Hermes — model-agnostic). DeepSeek chose a third path — the **workshop route**: decouple "capability" from "model" completely, ship 100+ default plugins, and four run modes, all MIT.
+The **workshop** perspective is this book's teaching lens: study component boundaries and extension lifecycles. It is not an official release category, an exhaustive industry classification, or evidence that every model or mode is supported.
 
-The team's launch slogans: **"Everything is a plugin"** and **"Closed source gives users the present; open source lets users own the future."**
+The fixed [README](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/README.md) describes plugin composition and marks the project as a developer preview with breaking changes expected. A project description does not establish universal replaceability or superiority.
 
 ## What "Everything Is a Plugin" Means
 
-DeepSeek Harness runs on **Cordis** (a plugin meta-framework by the Koishi team) — a microkernel that only loads/unloads plugins and manages their dependencies. On top of it, **every Agent capability is a plugin**:
+DeepSeek Harness runs on [Cordis (cordiverse/cordis)](https://github.com/cordiverse/cordis) — a microkernel that only loads/unloads plugins and manages their dependencies. The following is this book's analysis inventory. Component names and defaults have not been individually checked at the fixed commit, so this is not an official API reference:
 
 | Agent capability | Cordis plugin | Default implementation |
 |------------------|---------------|------------------------|
@@ -31,7 +31,7 @@ DeepSeek Harness runs on **Cordis** (a plugin meta-framework by the Koishi team)
 | Scheduler | `scheduler-*` | cron |
 | UI | `tui-*` / `web-*` | ink / react |
 
-100+ default plugins — that's what "everything is a plugin" really means.
+Plugin counts do not establish the architecture. Check services, dependencies, and unload behavior directly.
 
 ### Three direct benefits
 
@@ -39,49 +39,68 @@ DeepSeek Harness runs on **Cordis** (a plugin meta-framework by the Koishi team)
 2. **Add capabilities without touching the core** — write a plugin, enable, restart;
 3. **Remove/disable features easily** — disable `web-*`, `tool.shell`, etc.
 
-> 📌 vs the previous two chapters: OpenClaw makes capabilities into Skills/plugins but keeps a privileged core; Hermes does the same but has a built-in loop; DeepSeek Harness goes further — **even the Agent loop itself is a plugin**.
+> **Compare loop boundaries**: In a selected version, identify loop entry, state access, tool authorization, and termination cleanup, then test replacement on fixed tasks. Plugin names alone establish neither replaceability nor the absence of alternatives.
 
-## Core Feature List (per `main` branch)
+## Capabilities Requiring Further Checks
 
-| Feature | Note |
+| Capability in the manuscript | Interface or behavior to check |
 |---------|------|
 | MIT open source | full source usable commercially |
-| Everything is a plugin | Cordis microkernel + 100+ default plugins |
+| Everything is a plugin | Cordis service, dependency, and unload boundaries |
 | Model-agnostic | any OpenAI-compatible endpoint + custom adapters |
 | Four modes | standard / minimal / PTC / create |
 | Event stream + trajectory replay | git-style replay / fork |
 | MCP compatible | built-in MCP server |
-| SKILL.md compatible | interoperable with Claude Code / OpenClaw / Hermes |
+| SKILL.md migration checks | Verify metadata, tool dependencies, state, permissions, and fixed task results; a filename does not establish cross-product compatibility |
 | Local + sandbox | default local, docker/kubernetes options |
 | CLI + Web | `dsh` + browser at 127.0.0.1:3080 |
 | Python SDK | `import deepseek_harness` |
 
-## Verifiable Facts
+## Checked Sources and Their Scope
 
-Repository `deepseek-ai/deepseek-harness`; MIT; TypeScript core + Python SDK; Cordis upstream `koishijs/koishi`; default install `npx @deepseek-ai/dsh web`; docs `deepseek-harness.github.io/deepseek-harness/`; ~40 swappable models; MCP + Anthropic `SKILL.md` compatible; associated paper "A Programming Paradigm for Spatiotemporal Composability"; released 2026-08-13 (v0.1 preview). Time-varying numbers are **not cited**.
+| Item | Evidence and limit |
+|---|---|
+| Repository | [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness), anchored to the commit above |
+| Documentation | [Official quickstart](https://deepseek-harness.github.io/deepseek-harness/guide/quickstart); website content is not pinned to the release |
+| Cordis upstream | The README links [cordiverse/cordis](https://github.com/cordiverse/cordis), not a subdirectory of `koishijs/koishi` |
+| Entry point | The fixed README documents `npx @deepseek-ai/dsh web` and local address `127.0.0.1:3080`; no installation was executed here |
+| Release status | Developer preview in the README; Pre-release on the selected release |
+| Defaults, Python SDK, and component inventory | Not individually verified in this review |
+
+Counts and slogans do not replace execution evidence. Interfaces, modes, and deployment suitability require version-specific checks.
 
 ## Spectrum Position
 
 ```
 Action-oriented Harness spectrum (2026)
-├── multi-channel · self-evolving (open)      → Hermes (Ch.15)
-├── multi-channel · consumer · skills (open)  → OpenClaw (Ch.14)
-├── terminal IDE · industrial · closed        → Claude Code (Ch.16)
+├── multi-channel · self-evolving (open)      → Hermes (Ch.13)
+├── multi-channel · consumer · skills (open)  → OpenClaw (Ch.12)
+├── terminal IDE · industrial · closed        → Claude Code (Ch.14)
 └── terminal+web · workshop · all-plugins (open) → DeepSeek Harness (this chapter)
 ```
 
-The true differentiator: **only DeepSeek Harness makes the Agent loop itself swappable**.
+For each case in chapters 12–15, record these checks in an exact version and configuration:
+
+| Layer | Question |
+|---|---|
+| Loop entry | Can the entry be replaced, and who owns routing and stop conditions? |
+| State | Do messages, task state, and recovery data preserve their contracts? |
+| Permissions | Does the host still authorize and confirm before tool execution? |
+| Cleanup | How are processes, connections, and temporary artifacts handled on failure or cancellation? |
+| Fixed task | Do success, refusal, and exhaustion cases remain valid, and when is rollback needed? |
+
+Keep the original loop when replacement is unnecessary. Mark an unverified candidate unknown rather than excluding alternatives.
 
 ## Section Summary
 
 | Topic | Key point |
 |-------|-----------|
 | Positioning | open Agent runtime, model-agnostic, pluginized |
-| Team | DeepSeek AI (lead Tianyi Cui) |
-| Upstream | Cordis (Koishi team) |
-| Core differentiator | "everything is a plugin" — even the loop |
-| Protocol | MCP + Anthropic SKILL.md |
+| Team | DeepSeek AI; individual responsibilities and launch history are not checked here |
+| Upstream | Cordis, linked by the official README |
+| Loop replacement | Verify entry, state, permissions, stopping, cleanup, and rollback in a selected version |
+| Protocol and format boundaries | Verify MCP and SKILL.md interfaces, permissions, and task results by version |
 
 ---
 
-*Next section: [17.2 Installation & 4 Run Modes](./02_install_and_modes.md)*
+*Next section: [15.2 Installation & 4 Run Modes](./02_install_and_modes.md)*

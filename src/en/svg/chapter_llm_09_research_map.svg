@@ -31,7 +31,7 @@
     <text x="320" y="173" text-anchor="middle" font-size="13" font-weight="bold" fill="#b45309">3</text>
     <rect x="255" y="86" width="130" height="62" rx="10" fill="#fffbeb" stroke="#fbbf24"/>
     <text x="320" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">ProTeGi / TextGrad</text>
-    <text x="320" y="130" text-anchor="middle" font-size="11" fill="#b45309">Text feedback & text gradients</text>
+    <text x="320" y="130" text-anchor="middle" font-size="11" fill="#b45309">Text feedback &amp; text gradients</text>
   </g>
 
   <g>

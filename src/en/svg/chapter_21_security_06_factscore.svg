@@ -1,32 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
-  <defs>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
-    </marker>
-  </defs>
-  <rect width="500" height="280" rx="12" fill="#f8fafc"/>
-  <text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">FActScore: Atomic Fact Decomposition &amp; Verification</text>
-
-  <!-- Step 1 -->
-  <rect x="16" y="46" width="468" height="100" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="250" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">Step 1: Atomic Fact Decomposition</text>
-  <rect x="28" y="72" width="440" height="28" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
-  <text x="248" y="91" text-anchor="middle" font-size="11" fill="#1e40af">Input: "Einstein was born in Ulm, Germany in 1879 and was a theoretical physicist."</text>
-  <text x="28" y="116" font-size="10" fill="#1d4ed8" dx="8">→ "Einstein was born in 1879"  ← Verifiable</text>
-  <text x="28" y="130" font-size="10" fill="#1d4ed8" dx="8">→ "Einstein was born in Germany"  ← Verifiable</text>
-  <text x="248" y="116" font-size="10" fill="#1d4ed8" dx="8">→ "Einstein was born in Ulm"  ← Verifiable</text>
-  <text x="248" y="130" font-size="10" fill="#1d4ed8" dx="8">→ "Einstein was a theoretical physicist"  ← Verifiable</text>
-
-  <line x1="250" y1="146" x2="250" y2="164" stroke="#6366f1" stroke-width="2" marker-end="url(#arr)"/>
-
-  <!-- Step 2 -->
-  <rect x="16" y="166" width="468" height="80" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="250" y="184" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Step 2: Individual Verification</text>
-  <text x="250" y="202" text-anchor="middle" font-size="11" fill="#166534">For each atomic fact, search knowledge sources (e.g., Wikipedia) for verification</text>
-  <rect x="80" y="210" width="340" height="28" rx="6" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/>
-  <text x="250" y="229" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">FActScore = Supported atomic facts / Total atomic facts</text>
-
-  <!-- Note -->
-  <rect x="16" y="256" width="468" height="18" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
-  <text x="250" y="269" text-anchor="middle" font-size="10" fill="#3730a3">💡 Takeaway: Implement "atomic fact decomposition + individual verification" for automated fact-checking in Agents</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">FActScore: Support Precision Differs from Coverage</title>
+<desc id="desc">Original explanatory diagram after https://arxiv.org/html/2305.14251v2 §§3–4 and Limitations; coverage is a separate book acceptance check. No paper artwork reproduced.</desc>
+<metadata>Original illustration created for this book; no paper artwork or screenshot reproduced. Repository MIT license applies to this illustration.</metadata>
+<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
+<rect width="960" height="500" rx="14" fill="#f1f5f9"/>
+<text x="480" y="43" text-anchor="middle" font-size="23" font-weight="bold" fill="#22384c">FActScore: Support Precision Differs from Coverage</text>
+<rect x="30" y="95" width="280" height="255" rx="12" fill="#2d4965"/>
+<text x="170" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Split the response</text>
+<text x="170" y="177" text-anchor="middle" font-size="14" fill="white">Decompose into atomic facts</text>
+<text x="170" y="216" text-anchor="middle" font-size="14" fill="white">One sentence can mix claims</text>
+<text x="170" y="255" text-anchor="middle" font-size="14" fill="white">Retain a checkable claim list</text>
+<text x="170" y="294" text-anchor="middle" font-size="14" fill="white">Decomposition may also fail</text>
+<rect x="340" y="95" width="280" height="255" rx="12" fill="#287598"/>
+<text x="480" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Check a chosen source</text>
+<text x="480" y="177" text-anchor="middle" font-size="14" fill="white">Look for support for each claim</text>
+<text x="480" y="216" text-anchor="middle" font-size="14" fill="white">Biography / Wikipedia experiments</text>
+<text x="480" y="255" text-anchor="middle" font-size="14" fill="white">Automatic estimators can err</text>
+<text x="480" y="294" text-anchor="middle" font-size="14" fill="white">No retrieved support is not disproof</text>
+<rect x="650" y="95" width="280" height="255" rx="12" fill="#72608a"/>
+<text x="790" y="130" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Factual precision</text>
+<text x="790" y="177" text-anchor="middle" font-size="14" fill="white">Fraction of supported atomic facts</text>
+<text x="790" y="216" text-anchor="middle" font-size="14" fill="white">Relative to the knowledge source</text>
+<text x="790" y="255" text-anchor="middle" font-size="14" fill="white">Not required-answer coverage</text>
+<text x="790" y="294" text-anchor="middle" font-size="14" fill="white">One true fact may leave omissions</text>
+<path d="M 312 220 L 327 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 327 215 L 335 220 L 327 225" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 622 220 L 637 220" fill="none" stroke="#738296" stroke-width="2"/>
+<path d="M 637 215 L 645 220 L 637 225" fill="none" stroke="#738296" stroke-width="2"/>
+<rect x="30" y="385" width="900" height="83" rx="9" fill="#fff3e9" stroke="#be8156"/>
+<text x="480" y="414" text-anchor="middle" font-size="14" fill="#754325">The book separately checks task coverage: are deadline and proof both answered?</text>
+<text x="480" y="442" text-anchor="middle" font-size="14" fill="#754325">Literal-excerpt checks are not FActScore’s estimator; validate support and completeness separately.</text>
+<text x="480" y="490" text-anchor="middle" font-size="11" fill="#58667a">Original book illustration; fixed sources and evidence scope are cited in the text.</text>
 </svg>

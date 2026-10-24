@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="readme_img.png" width="880" alt="Agent Learning Roadmap">
+<img src="src/en/svg/preface_learning_path.svg" width="880" alt="The application route and optional research branches">
 
 # Learn AI Agents from Scratch
 
 **A visual, bilingual, and engineering-first textbook for building reliable LLM Agents.**
 
-From Function Calling, memory, planning, RAG, and context engineering to Agentic RL, multi-agent systems, evaluation, security, and production deployment.
+From Function Calling, memory, planning, RAG, and context engineering to implementation choices, evaluation, security, deployment and capstone delivery, followed by optional research.
 
 <p>
 <a href="https://Haozhe-Xing.github.io/agent_learning/en/"><img src="https://img.shields.io/badge/Read%20Online-English-2ea44f?style=for-the-badge" alt="Read the English book"></a>
@@ -17,7 +17,7 @@ From Function Calling, memory, planning, RAG, and context engineering to Agentic
 <a href="https://github.com/Haozhe-Xing/agent_learning/stargazers"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=flat-square&logo=github&color=gold" alt="GitHub stars"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License"></a>
 <a href="https://github.com/Haozhe-Xing/agent_learning/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs welcome"></a>
-<img src="https://img.shields.io/badge/Chapters-23-6f42c1?style=flat-square" alt="23 chapters">
+<img src="https://img.shields.io/badge/Chapters-25-6f42c1?style=flat-square" alt="25 chapters">
 <img src="https://img.shields.io/badge/Languages-English%20%7C%20中文-0969da?style=flat-square" alt="Bilingual">
 </p>
 
@@ -33,15 +33,15 @@ From Function Calling, memory, planning, RAG, and context engineering to Agentic
 
 Instead of teaching isolated framework APIs, the book builds one connected mental model:
 
-> **LLM fundamentals → tools → memory → planning → RAG → context → harness → skills → Agentic RL → multi-agent → evaluation → security → deployment**
+> **task contract → model baseline → tools → memory → planning → evidence → context → host controls → evaluation → security → deployment → one capstone**
 
 The repository includes:
 
-- **23 chapters** across foundations, core capabilities, frameworks, multi-agent systems, production, and capstone projects.
-- **188 Markdown pages per language**, maintained in English and Chinese.
+- **25 chapters across seven parts**: foundations, core capabilities, implementation choices, collaboration/integration, validation/deployment, capstones, and optional research.
+- **Aligned English and Chinese navigation**, with a shared project and chapter acceptance handoffs.
 - **330+ original SVG diagrams** and **5 interactive demos** for architecture, state, sequence, and training flows.
 - **Paper-to-practice explanations** covering ReAct, Reflexion, MemGPT/Letta, GraphRAG, GRPO, MCP, A2A, and more.
-- **`reference-agent/`**, a small runnable Agent baseline with tools, memory, security gates, evaluation, an MCP server, a FastAPI service, and 16 tests.
+- **`reference-agent/`**, a small runnable Agent baseline with tools, memory, security gates, evaluation, an MCP server, a FastAPI service, and offline regression tests.
 
 > This is not an awesome-list and not a framework manual. It is a structured path from first principles to production engineering.
 
@@ -49,62 +49,55 @@ The repository includes:
 
 ## Complete directory
 
-- **Book source**
-  - `src/en/` — English mdBook source
-  - `src/zh/` — Chinese mdBook source
-  - `src/en/SUMMARY.md` — English table of contents
-  - `src/zh/SUMMARY.md` — Chinese table of contents
-- **Foundations**
-  - [1. What Is an Agent?](https://Haozhe-Xing.github.io/agent_learning/en/chapter_intro/)
-  - [2. LLM Fundamentals](https://Haozhe-Xing.github.io/agent_learning/en/chapter_llm/)
-- **Core capabilities**
-  - [3. Tools](https://Haozhe-Xing.github.io/agent_learning/en/chapter_tools/)
-  - [4. Memory](https://Haozhe-Xing.github.io/agent_learning/en/chapter_memory/)
-  - [5. Planning](https://Haozhe-Xing.github.io/agent_learning/en/chapter_planning/)
-  - [6. RAG](https://Haozhe-Xing.github.io/agent_learning/en/chapter_rag/)
-  - [7. Context Engineering](https://Haozhe-Xing.github.io/agent_learning/en/chapter_context_engineering/)
-  - [8. Harness Engineering](https://Haozhe-Xing.github.io/agent_learning/en/chapter_harness/)
-  - [9. Skills](https://Haozhe-Xing.github.io/agent_learning/en/chapter_skill/)
-  - [10. Agentic RL](https://Haozhe-Xing.github.io/agent_learning/en/chapter_agentic_rl/)
-  - [11. Self-Evolving Agents](https://Haozhe-Xing.github.io/agent_learning/en/chapter_self_evolving/)
-- **Framework practice**
-  - [12. LangChain](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langchain/)
-  - [13. LangGraph](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langgraph/)
-  - [14. Agent Frameworks](https://Haozhe-Xing.github.io/agent_learning/en/chapter_frameworks/)
-  - [15. Claude Code](https://Haozhe-Xing.github.io/agent_learning/en/chapter_claude_code/)
-- **Multi-agent systems**
-  - [16. Multi-Agent Collaboration](https://Haozhe-Xing.github.io/agent_learning/en/chapter_multi_agent/)
-  - [17. Agent Protocols](https://Haozhe-Xing.github.io/agent_learning/en/chapter_protocol/)
-- **Production engineering**
-  - [18. Evaluation](https://Haozhe-Xing.github.io/agent_learning/en/chapter_evaluation/)
-  - [19. Security](https://Haozhe-Xing.github.io/agent_learning/en/chapter_security/)
-  - [20. Deployment](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deployment/)
-- **Capstone projects**
-  - [21. Coding Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_coding_agent/)
-  - [22. Data Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_data_agent/)
-  - [23. Multimodal Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_multimodal/)
-- **Appendices**
-  - [Prompt templates](https://Haozhe-Xing.github.io/agent_learning/en/appendix/prompt_templates.html)
-  - [FAQ](https://Haozhe-Xing.github.io/agent_learning/en/appendix/faq.html)
-  - [Resources](https://Haozhe-Xing.github.io/agent_learning/en/appendix/resources.html)
-  - [Glossary](https://Haozhe-Xing.github.io/agent_learning/en/appendix/glossary.html)
-  - [KL divergence](https://Haozhe-Xing.github.io/agent_learning/en/appendix/kl_divergence.html)
-  - [Environment setup](https://Haozhe-Xing.github.io/agent_learning/en/chapter_setup/)
-- **Runnable implementation**
-  - `reference-agent/` — teaching baseline Agent implementation
-  - `reference-agent/src/reference_agent/` — Agent loop, providers, tools, memory, security, server, evaluation
-  - `reference-agent/tests/` — offline test suite
-- **Assets and build files**
-  - `src/en/svg/` — English diagrams
-  - `src/zh/svg/` — Chinese diagrams
-  - `src/en/animations/` — English interactive demos
-  - `src/zh/animations/` — Chinese interactive demos
-  - `theme/` — shared mdBook theme
-  - `book.toml` — Chinese mdBook config
-  - `book-en.toml` — English mdBook config
-  - `serve.sh` — build and serve both books locally
+Follow [the continuing project](src/en/learning_project.md). Every chapter states the previous failure, its addition, a verification artifact and the next decision. Frameworks and collaboration are chosen by need; training is in the final optional part. Chapter URLs and example directories retain stable names even where reader-facing numbers have changed.
+
+- **[Part I: Foundations](src/en/part1.md)**
+  - [Chapter 1: What Is an Agent?](src/en/chapter_intro/README.md)
+  - [Chapter 2: Large Language Model Fundamentals](src/en/chapter_llm/README.md)
+- **[Part II: Core Capabilities](src/en/part2.md)**
+  - [Chapter 3: Tool Use / Function Calling](src/en/chapter_tools/README.md)
+  - [Chapter 4: Memory Systems](src/en/chapter_memory/README.md)
+  - [Chapter 5: Planning and Reasoning](src/en/chapter_planning/README.md)
+  - [Chapter 6: Retrieval-Augmented Generation (RAG)](src/en/chapter_rag/README.md)
+  - [Chapter 7: Context Engineering](src/en/chapter_context_engineering/README.md)
+  - [Chapter 8: Harness Engineering: System Engineering for Controlling Agents](src/en/chapter_harness/README.md)
+  - [Chapter 9: Skill System](src/en/chapter_skill/README.md)
+- **[Part III: Frameworks and Implementation Choices](src/en/part3.md)**
+  - [Chapter 10: LangChain In-Depth](src/en/chapter_langchain/README.md)
+  - [Chapter 11: LangGraph: Building Stateful Agents](src/en/chapter_langgraph/README.md)
+  - [Chapter 12: OpenClaw — Cross-Platform Personal AI Assistant](src/en/chapter_openclaw/README.md)
+  - [Chapter 13: Hermes Agent — The Self-Evolving Agent](src/en/chapter_hermes/README.md)
+  - [Chapter 14: Deep Dive into Claude Code](src/en/chapter_claude_code/README.md)
+  - [Chapter 15: DeepSeek Harness — The Everything-Is-a-Plugin Foundation](src/en/chapter_deepseek_harness/README.md)
+- **[Part IV: Collaboration and Integration](src/en/part4.md)**
+  - [Chapter 16: Multi-Agent Collaboration](src/en/chapter_18_multi_agent/README.md)
+  - [Chapter 17: Agent Communication Protocols](src/en/chapter_19_protocol/README.md)
+- **[Part V: Validation and Deployment](src/en/part5.md)**
+  - [Chapter 18: Agent Evaluation and Optimization](src/en/chapter_20_evaluation/README.md)
+  - [Chapter 19: Security and Reliability](src/en/chapter_21_security/README.md)
+  - [Chapter 20: Deployment and Productionization](src/en/chapter_22_deployment/README.md)
+- **[Part VI: Capstone Projects](src/en/part6.md)**
+  - [Chapter 21: Capstone Project: AI Coding Assistant](src/en/chapter_23_coding_agent/README.md)
+  - [Chapter 22: Capstone Project: Intelligent Data Analysis Agent](src/en/chapter_24_data_agent/README.md)
+  - [Chapter 23: Capstone Project: Multimodal Agent](src/en/chapter_25_multimodal/README.md)
+- **[Part VII: Research Extensions](src/en/part7.md)**
+  - [Chapter 24: Agentic-RL: Reinforcement Learning for Agents](src/en/chapter_agentic_rl/README.md)
+  - [Chapter 25 Self-Evolution and Continuous Learning](src/en/chapter_self_evolving/README.md)
+  - [Appendix F: Development Environment Setup](src/en/chapter_setup/README.md)
+
+[English contents](src/en/SUMMARY.md) · [Chinese contents](src/zh/SUMMARY.md) · [Reference project](reference_code/evidence_assistant/README.md) · [Chapter examples](examples/README.md)
 
 ---
+
+## Standalone reference project
+
+The [local evidence research assistant](reference_code/evidence_assistant/README.md) keeps its code, sample documents, tests, and contracts in one directory. It is a small single-agent application: ask several questions about local documents, retrieve evidence, respect execution and context budgets, and produce a cited report. It runs offline with the Python standard library. Framework adapters and external model integration are optional extensions.
+
+```bash
+python -m reference_code.evidence_assistant
+```
+
+The smaller distance-calculation fixture remains available through `python -m reference_code.evidence_assistant.demo --all` for learning individual mechanisms.
 
 ## Runnable reference agent
 
@@ -114,7 +107,7 @@ The repository includes:
 - offline `FakeProvider` and optional OpenAI provider;
 - memory, prompt-injection guardrails, and fail-closed permission checks;
 - an MCP server, FastAPI endpoints, streaming, evaluation harness, and Dockerfile;
-- **16 tests** that run without an API key.
+- Offline regression tests that run without an API key.
 
 ```bash
 cd reference-agent
@@ -166,7 +159,7 @@ Please keep claims verifiable and prefer primary sources for papers, protocols, 
 
 ## Roadmap
 
-- [x] 23-chapter bilingual mdBook
+- [x] 25-chapter bilingual mdBook
 - [x] Localized diagrams and interactive demos
 - [x] Agentic RL, context engineering, harness engineering, and self-evolving Agent coverage
 - [x] Runnable `reference-agent` baseline with offline tests

@@ -1,4 +1,4 @@
-# 22.1 Agent Application Deployment Architecture
+# 20.1 Agent Application Deployment Architecture
 
 > **Section Goal**: Understand what architectural changes are needed when moving an Agent from development to production, and master the unique deployment challenges and solutions for Agents.
 
@@ -36,7 +36,7 @@ Agent conversations may span dozens of turns, carrying tens of thousands of toke
 
 **Challenge 4: Uncontrolled Costs**
 
-A complex request may trigger multiple LLM calls (reasoning + tool selection + result summarization), with per-request costs ranging from $0.01 to $1.00. Without limits, a malicious user can quickly exhaust the budget.
+A complex request may trigger multiple LLM calls (reasoning + tool selection + result summarization), with per-request costs ranging from USD 0.01 to USD 1.00. Without limits, a malicious user can quickly exhaust the budget.
 
 **Challenge 5: Observability Difficulties**
 
@@ -100,15 +100,15 @@ Use cloud functions (AWS Lambda, Cloudflare Workers) for on-demand execution wit
 | Scalability | Vertical | Horizontal + Vertical | Automatic |
 | Cold start latency | None | None | 1–5s |
 | Max request duration | Unlimited | Unlimited | 15min |
-| Monthly cost (low traffic) | ~$20 | ~$100+ | ~$5 |
-| Monthly cost (high traffic) | ~$200 | ~$500+ | ~$300 |
+| Monthly cost (low traffic) | ~USD 20 | ~USD 100+ | ~USD 5 |
+| Monthly cost (high traffic) | ~USD 200 | ~USD 500+ | ~USD 300 |
 | Suitable stage | MVP/Prototype | Growth phase | Exploration/Variable traffic |
 
 > 💡 **Recommended path**: Most Agent projects should start with **monolithic architecture**, then migrate to microservices after validating product value. Premature architectural decomposition is a common over-engineering trap.
 
 ### Self-Hosted or Managed: Who Owns Runtime Infrastructure?
 
-Monolithic, microservices, and Serverless patterns describe how a system is organized; self-hosted or managed execution determines who operates its runtime infrastructure. These are separate selection dimensions. For example, Managed Deep Agents, introduced in [Section 12.7](../chapter_langchain/07_langchain_ecosystem_2026.md), lets developers define Agent behavior through project files while LangSmith hosts the Deep Agents Harness and runtime environment.
+Monolithic, microservices, and Serverless patterns describe how a system is organized; self-hosted or managed execution determines who operates its runtime infrastructure. These are separate selection dimensions. For example, Managed Deep Agents, introduced in [Section 10.7](../chapter_langchain/07_langchain_ecosystem_2026.md), lets developers define Agent behavior through project files while LangSmith hosts the Deep Agents Harness and runtime environment.
 
 | Choice | Suitable Requirements | Remaining Developer Responsibilities |
 |--------|-----------------------|--------------------------------------|
@@ -338,4 +338,4 @@ class AgentConfig(BaseSettings):
 
 ---
 
-[Next: 18.2 API Service Wrapping: FastAPI / Flask →](./02_api_service.md)
+[Next: 20.2 API Service Wrapping: FastAPI / Flask →](./02_api_service.md)

@@ -1,352 +1,221 @@
 # 6.5 Practice: Intelligent Document Q&A Agent
 
-Combining the knowledge from this chapter, we'll build an intelligent Q&A system that can answer questions about any collection of documents.
+Use a fictional refund policy for an inspectable local exercise: retrieve material, produce attributed excerpts, then check source support and question coverage separately. Defaults call neither a model nor an embedding service and need no key. Reuse `reference_code/evidence_assistant/` directly rather than maintaining another Q&A class with the same name.
 
-## System Architecture
+## Iteration and Acceptance
 
-![Document Q&A Agent System Architecture](../svg/chapter_rag_05_qa_arch.svg)
+- **Previous limitation**: A retrieval hit and citation label may still leave the actual question unanswered; producing text is not enough for delivery.
+- **This chapter adds**: Explainable lexical matches, retained retrieval/generation/verification states, independent excerpt checks, and frozen task requirements.
+- **How to verify**: Preserve expected and actual outcomes for success, same-topic missing answers, unrelated material, fabricated content, bad citations, verifier rejection/errors, and changed sources. Every Python block below runs independently from the repository root.
+- **Next step**: Use the [local-document research assistant](../learning_project.md) for several questions and an overall call budget; continue to [Chapter 7](../chapter_context_engineering/README.md) to control the actual model input further.
 
-## Complete Implementation
+![Local QA stages, source support, and independent coverage requirements](../svg/chapter_rag_05_qa_arch.svg)
+
+## Read the Three Interface Contracts First
+
+| Existing module/entry | Used here | What it does not establish |
+|---|---|---|
+| `rag.py`: `Document(source, text)`, `rank`/`ask` | In-memory material, explainable lexical ranking, state-bearing answers | No built-in persistent index, content versions, or multi-format loader |
+| `research.py`: `check_excerpts`/`verify_excerpts` | Each `[source] original excerpt` line maps to a retrieved original and shares lexical terms | No general semantic entailment for paraphrases/summaries or real-world source authenticity |
+| `task_acceptance.py`: `check_question_coverage` | Independently frozen literal requirements for a matching question; `unknown` without a specification/verifier | Not a general natural-language grader, citation checker, or permission check |
+
+`rank` returns `document/score/matched_terms`; the score counts distinct matched terms. The baseline uses English words and basic Chinese bigrams, filtering generic phrases. Filtering and minimum-match rules reduce some weak hits; they establish neither semantic retrieval nor a correctness probability.
+
+`ask` returns a dictionary containing `status/answer/retrieved_sources/sources/retrieval/generation/verification/retryable`. Its default producer quotes retrieved material. An `answerer(messages)` can replace generation, but its output still needs acceptance. Fixed system rules, reference data, and the current question remain separate messages.
+
+`answered` means this class's configured checks passed. **Without a verifier, only citation labels are checked; `answer_accepted(result)` cannot manufacture source support or question coverage.** That result records `semantic_support=not_checked`. Final acceptance here additionally requires independent source checks and `coverage.status == "passed"`. `sources` contains citations used by an answer passing the class's checks; `retrieved_sources` is the candidate list. Failed answers cannot present that entire list as verified citations.
+
+## Normal Path: Freeze the Question and Requirements First
+
+The task asks for the refund deadline and required proof. Documents, question, and requirements are fixtures. English text makes lexical matches easy to inspect; this is not a language-understanding benchmark. The seven-day and receipt requirements are fixed before invoking the producer, which cannot rewrite them:
 
 ```python
-# doc_qa_agent.py
-import os
-import json
-import uuid
-import datetime
-import chromadb
-from pathlib import Path
-from openai import OpenAI
-from dotenv import load_dotenv
-from typing import Optional, List
-from rich.console import Console
-from rich.panel import Panel
-from rich.markdown import Markdown
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent, answer_accepted
+from reference_code.evidence_assistant.research import check_excerpts, verify_excerpts
+from reference_code.evidence_assistant.task_acceptance import check_question_coverage
 
-load_dotenv()
-
-client = OpenAI()
-console = Console()
-
-
-class DocumentQAAgent:
-    """Intelligent Document Q&A Agent"""
-    
-    def __init__(self, name: str = "Document Assistant", persist_dir: str = "./qa_db"):
-        self.name = name
-        
-        # Initialize vector store
-        self.chroma = chromadb.PersistentClient(path=persist_dir)
-        self.collection = self.chroma.get_or_create_collection(
-            name="documents",
-            metadata={"hnsw:space": "cosine"}
-        )
-        
-        # Conversation history
-        self.chat_history = []
-        
-        count = self.collection.count()
-        console.print(f"[dim]{name} started, knowledge base contains {count} document fragments[/dim]")
-    
-    # =====================
-    # Document Management
-    # =====================
-    
-    def add_text(self, text: str, source: str = "manual", chunk_size: int = 400):
-        """Add text to the knowledge base"""
-        chunks = []
-        # Split by paragraphs first to preserve semantic integrity
-        paragraphs = text.split('\n\n')
-        current_chunk = ""
-        
-        for para in paragraphs:
-            para = para.strip()
-            if not para:
-                continue
-            # If adding the new paragraph doesn't exceed chunk_size, merge
-            if len(current_chunk) + len(para) + 1 <= chunk_size:
-                current_chunk = current_chunk + "\n" + para if current_chunk else para
-            else:
-                # Save current chunk (if it has content)
-                if current_chunk:
-                    chunks.append(current_chunk)
-                # If a single paragraph exceeds chunk_size, split by sentence-ending punctuation
-                if len(para) > chunk_size:
-                    import re
-                    sentences = re.split(r'(?<=[.!?])\s+', para)
-                    current_chunk = ""
-                    for sentence in sentences:
-                        if not sentence.strip():
-                            continue
-                        if len(current_chunk) + len(sentence) <= chunk_size:
-                            current_chunk += sentence
-                        else:
-                            if current_chunk:
-                                chunks.append(current_chunk)
-                            current_chunk = sentence
-                else:
-                    current_chunk = para
-        
-        if current_chunk:
-            chunks.append(current_chunk)
-        
-        if not chunks:
-            return
-        
-        # Batch embed
-        embeddings_response = client.embeddings.create(
-            input=chunks,
-            model="text-embedding-3-small"
-        )
-        embeddings = [e.embedding for e in embeddings_response.data]
-        
-        # Store
-        ids = [str(uuid.uuid4()) for _ in chunks]
-        self.collection.add(
-            ids=ids,
-            documents=chunks,
-            embeddings=embeddings,
-            metadatas=[{
-                "source": source,
-                "chunk_index": i,
-                "added_at": datetime.datetime.now().isoformat()
-            } for i in range(len(chunks))]
-        )
-        
-        console.print(f"[green]✅ Added {len(chunks)} fragments (source: {source})[/green]")
-    
-    def add_file(self, file_path: str):
-        """Load a file and add it to the knowledge base"""
-        path = Path(file_path)
-        
-        if not path.exists():
-            console.print(f"[red]❌ File not found: {file_path}[/red]")
-            return
-        
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            self.add_text(content, source=path.name)
-            
-        except Exception as e:
-            console.print(f"[red]❌ Load failed: {e}[/red]")
-    
-    def list_sources(self) -> List[str]:
-        """List all sources in the knowledge base"""
-        if self.collection.count() == 0:
-            return []
-        
-        results = self.collection.get(include=["metadatas"])
-        sources = list(set(
-            m.get("source", "unknown") 
-            for m in results["metadatas"]
-        ))
-        return sources
-    
-    # =====================
-    # Q&A
-    # =====================
-    
-    def _retrieve(self, query: str, n: int = 5) -> List[dict]:
-        """Retrieve relevant documents"""
-        if self.collection.count() == 0:
-            return []
-        
-        response = client.embeddings.create(
-            input=query.replace("\n", " "),
-            model="text-embedding-3-small"
-        )
-        query_embedding = response.data[0].embedding
-        
-        results = self.collection.query(
-            query_embeddings=[query_embedding],
-            n_results=min(n, self.collection.count()),
-            include=["documents", "metadatas", "distances"]
-        )
-        
-        chunks = []
-        if results["documents"] and results["documents"][0]:
-            for doc, meta, dist in zip(
-                results["documents"][0],
-                results["metadatas"][0],
-                results["distances"][0]
-            ):
-                relevance = 1 - dist
-                if relevance > 0.3:
-                    chunks.append({
-                        "content": doc,
-                        "source": meta.get("source", "unknown"),
-                        "relevance": round(relevance, 3)
-                    })
-        
-        return chunks
-    
-    def ask(self, question: str) -> str:
-        """Ask a question to the knowledge base"""
-        
-        # Retrieve relevant documents
-        chunks = self._retrieve(question)
-        
-        if not chunks:
-            return "Sorry, I couldn't find any information related to this question in my knowledge base. Please add relevant documents first."
-        
-        # Build context
-        context_parts = []
-        for i, chunk in enumerate(chunks[:3], 1):
-            context_parts.append(
-                f"[Document Fragment {i}] (Source: {chunk['source']}, Relevance: {chunk['relevance']})\n"
-                f"{chunk['content']}"
-            )
-        
-        context = "\n\n".join(context_parts)
-        
-        # Build messages (including conversation history)
-        messages = [
-            {
-                "role": "system",
-                "content": f"""You are {self.name}, a Q&A assistant based on the user's document knowledge base.
-
-Answer requirements:
-1. Only answer based on the provided reference documents
-2. If the reference documents don't contain relevant information, clearly state so
-3. Cite specific sources (e.g., "According to document X...")
-4. Keep answers concise and accurate; avoid fabricating information
-
-[Reference Documents]
-{context}"""
-            }
-        ] + self.chat_history[-6:] + [  # keep the last 3 rounds of conversation
-            {"role": "user", "content": question}
-        ]
-        
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=messages,
-            max_tokens=800
-        )
-        
-        answer = response.choices[0].message.content
-        
-        # Update conversation history
-        self.chat_history.append({"role": "user", "content": question})
-        self.chat_history.append({"role": "assistant", "content": answer})
-        
-        return answer
-
-
-# ============================
-# Main Program
-# ============================
-
-def main():
-    agent = DocumentQAAgent("Intelligent Document Assistant")
-    
-    # Add sample knowledge base
-    sample_docs = [
-        ("Python Basics", """
-Python is a high-level programming language known for its clean and readable syntax. Python was created by Guido van Rossum in 1991.
-Python supports object-oriented programming, functional programming, and procedural programming.
-Python's package manager is pip; the recommended virtual environment tools are venv or conda.
-"""),
-        ("FastAPI Introduction", """
-FastAPI is a modern, high-performance Python web framework.
-FastAPI is based on Python 3.7+ type annotations and automatically generates API documentation.
-FastAPI's performance is close to NodeJS and Go, making it one of the fastest Python web frameworks available.
-It uses uvicorn as the ASGI server. Command: uvicorn main:app --reload
-"""),
-        ("LangChain Overview", """
-LangChain is an open-source framework for building LLM applications.
-LangChain provides: Chain (processing pipelines), Agent (intelligent agents), Memory, RAG, and other components.
-LangChain supports multiple LLM providers including OpenAI, Anthropic, and local models.
-The latest version LangChain 0.3 uses LCEL (LangChain Expression Language) as the standard way to build chains.
-"""),
-    ]
-    
-    for title, content in sample_docs:
-        agent.add_text(content, source=title)
-    
-    console.print(Panel(
-        f"[bold]📚 {agent.name} is ready[/bold]\n"
-        f"Knowledge base contains {len(sample_docs)} topics\n\n"
-        "Commands:\n"
-        "  sources → view knowledge base sources\n"
-        "  add <file path> → add a file\n"
-        "  quit → exit",
-        title="System Started",
-        border_style="blue"
-    ))
-    
-    while True:
-        user_input = input("\n❓ Your question: ").strip()
-        
-        if not user_input:
-            continue
-        
-        if user_input.lower() == "quit":
-            break
-        
-        if user_input.lower() == "sources":
-            sources = agent.list_sources()
-            console.print(f"[cyan]Knowledge base sources ({len(sources)}):[/cyan]")
-            for s in sources:
-                console.print(f"  • {s}")
-            continue
-        
-        if user_input.lower().startswith("add "):
-            file_path = user_input[4:].strip()
-            agent.add_file(file_path)
-            continue
-        
-        # Answer the question
-        answer = agent.ask(user_input)
-        console.print(f"\n[bold green]📖 Answer:[/bold green]")
-        console.print(Markdown(answer))
-
-
-if __name__ == "__main__":
-    main()
+question = "What is the refund deadline and required proof?"
+# Freeze requirements independently of the answer producer.
+tasks = [{"question": question, "requirements": [
+    {"id": "deadline", "description": "seven-day refund deadline", "all_of": ["seven days"]},
+    {"id": "proof", "description": "receipt required", "all_of": ["receipt"]},
+]}]
+documents = [Document("policy-v1",
+    "Refund requests are accepted within seven days and require a receipt.")]
+qa = DocumentQAAgent(documents, verifier=verify_excerpts)
+hits = qa.rank(question)
+assert hits[0]["document"].source == "policy-v1"
+assert hits[0]["score"] == len(hits[0]["matched_terms"])
+retrieved = [hit["document"] for hit in hits]
+result = qa.ask(question)
+support = check_excerpts(question, result["answer"], retrieved)
+coverage = check_question_coverage(question, result["answer"], specs=tasks)
+accepted = (answer_accepted(result) and support["status"] == "passed"
+            and coverage["status"] == "passed")
+assert accepted is True
+assert result["sources"] == ["policy-v1"]
+print({"qa": result["status"], "support": support["status"],
+       "coverage": coverage["status"], "accepted": accepted})
 ```
 
-## Sample Conversation
+Expected `qa/support/coverage` values are `answered/passed/passed`, with `accepted: True`. `verify_excerpts` supplies the QA class's independent Boolean callback; the separate `support` dictionary preserves detailed reasons. Both check excerpts only. `check_question_coverage` calls no generator and independently checks the two requirements. Case/whitespace normalization tolerates formatting changes, not replacing seven days with ten.
 
+The exercise freezes documents during the call, so `rank` and `ask` use the same list. A service must not silently change data or permissions between them. Source labels are unique in this fixture; an external-data adapter must additionally check duplicate/invalid identities, retain stable versions, and preserve the retrieved snapshot.
+
+## Related Material Can Still Leave the Task Incomplete
+
+A receipt-only policy provides a valid excerpt without a deadline. An arbitrary question also cannot inherit another question's expectations:
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent
+from reference_code.evidence_assistant.research import verify_excerpts
+from reference_code.evidence_assistant.task_acceptance import check_question_coverage
+
+question = "What is the refund deadline and required proof?"
+tasks = [{"question": question, "requirements": [
+    {"id": "deadline", "description": "seven-day refund deadline", "all_of": ["seven days"]},
+    {"id": "proof", "description": "receipt required", "all_of": ["receipt"]},
+]}]
+qa = DocumentQAAgent([Document("policy-v1", "Refund requests require a receipt.")],
+                     verifier=verify_excerpts)
+result = qa.ask(question)
+coverage = check_question_coverage(question, result["answer"], specs=tasks)
+assert result["status"] == "answered"  # A supported excerpt, not a complete answer.
+assert coverage["status"] == "failed"
+assert coverage["missing_points"] == ["seven-day refund deadline"]
+
+free_question = "What is the refund owner's birthday?"
+free = qa.ask(free_question)
+unknown = check_question_coverage(free_question, free["answer"], specs=tasks)
+assert unknown["status"] == "unknown"
+absent = qa.ask("Mars weather?")
+assert absent["status"] == "no_evidence"
+assert absent["generation"]["status"] == "not_started"
+print({"missing": coverage["missing_points"], "free_question": unknown["status"],
+       "unrelated": absent["status"]})
 ```
-❓ Your question: What server does FastAPI use?
 
-📖 Answer:
-According to the "FastAPI Introduction" document, FastAPI uses **uvicorn** as its ASGI server.
+These are three different outcomes: a hit missing the seven-day requirement, a hit with no matching task contract, and no retrieval hit. None establishes completion. `unknown` means no criterion was configured, not proven unanswerability. `no_evidence` means this retrieval found no candidate, not that no evidence exists anywhere.
 
-The startup command is:
+`ask` performs no retries. `retryable` is a hint for the host, not permission to rewrite queries indefinitely until something is retrieved. New queries need query/call limits and acceptance against the original question. Repeating a request with no evidence does not supply the answer.
+
+## A Valid Label Can Still Cite Unsupported Content
+
+Inject a fixed faulty output, without making a real model request:
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent, answer_accepted
+from reference_code.evidence_assistant.research import check_excerpts, verify_excerpts
+
+policy = Document("policy-v1", "Refund requests are accepted within seven days.")
+wrong = "[policy-v1] Refund requests are accepted within ninety days."
+# A scripted faulty producer, not a real language-model call.
+producer = lambda messages: wrong
+labels_only = DocumentQAAgent([policy], producer).ask("refund deadline")
+assert answer_accepted(labels_only) is True
+assert labels_only["verification"]["semantic_support"] == "not_checked"
+support = check_excerpts("refund deadline", labels_only["answer"], [policy])
+assert support["code"] == "unsupported_excerpt"
+assert support["status"] == "failed"
+
+checked = DocumentQAAgent([policy], producer, verifier=verify_excerpts).ask("refund deadline")
+assert checked["status"] == "verification_failed"
+assert answer_accepted(checked) is False
+assert checked["sources"] == []
+assert checked["retrieved_sources"] == ["policy-v1"]
+print(checked["status"], support["code"])
+```
+
+This is why default `answered` is insufficient for delivery. With the excerpt verifier, ninety days cannot be found in the seven-day source, so the result is `verification_failed`. The retrieved `policy-v1` remains in `retrieved_sources`, while `sources` is empty. If free paraphrases are later allowed, use an appropriate independent support checker or human review rather than reducing the rule to label presence.
+
+## Preserve Failures Instead of Empty Strings or Replacement Success
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent, answer_accepted
+
+policy = Document("policy-v1", "Refund requests are accepted within seven days.")
+for output, status, error in [
+    ("  ", "generation_failed", "empty_or_non_string_answer"),
+    (None, "generation_failed", "empty_or_non_string_answer"),
+    ("Seven days.", "verification_failed", "missing_citations"),
+    ("[invented] Refunds take seven days.", "verification_failed", "unknown_citations"),
+]:
+    result = DocumentQAAgent([policy], lambda messages: output).ask("refund")
+    assert result["status"] == status
+    stage = "generation" if status == "generation_failed" else "verification"
+    assert result[stage]["error"] == error
+    assert answer_accepted(result) is False
+
+def broken_verifier(question, answer, documents):
+    raise RuntimeError("fixed verifier failure")
+
+for verifier, error in [
+    (lambda question, answer, documents: False, "task_requirements_not_met"),
+    (lambda question, answer, documents: 1, "task_requirements_not_met"),
+    (broken_verifier, "verifier_error"),
+]:
+    result = DocumentQAAgent([policy], verifier=verifier).ask("refund")
+    assert result["status"] == "verification_failed"
+    assert result["verification"]["error"] == error
+    assert result["generation"]["status"] == "succeeded"
+print("output, citation, and verifier failures retained")
+```
+
+| Overall state | Actual meaning |
+|---|---|
+| `retrieval_failed` | Retrieval or source-label validation raised; not equivalent to no hit |
+| `no_evidence` | Retrieval is empty; generation has not started and verification has not run |
+| `generation_failed` | Generation raised or returned whitespace/non-string output |
+| `verification_failed` | Missing, unknown/unretrieved citations, or configured verifier rejection/error |
+| `answered` | Class-level checks passed; delivery still depends on required support and coverage |
+
+Provider `TimeoutError`/`ConnectionError` retains its type and is marked retryable; a normal `RuntimeError` is not treated as transient. `KeyboardInterrupt` is not converted into success or an ordinary result. Verifiers must return exactly Boolean `True`. Exceptions retain `verifier_error`; another generated answer cannot conceal a broken acceptance criterion.
+
+## Recheck Old Answers and Expectations After Source Changes
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent
+from reference_code.evidence_assistant.research import check_excerpts, verify_excerpts
+from reference_code.evidence_assistant.task_acceptance import check_question_coverage
+
+question = "What is the refund deadline?"
+tasks = [{"question": question, "requirements": [
+    {"id": "deadline", "description": "seven-day deadline", "all_of": ["seven days"]},
+]}]
+old = Document("policy-v1", "Refund requests are accepted within seven days.")
+old_result = DocumentQAAgent([old], verifier=verify_excerpts).ask(question)
+updated = Document("policy-v2", "Refund requests are accepted within ten days.")
+new_result = DocumentQAAgent([updated], verifier=verify_excerpts).ask(question)
+assert check_excerpts(question, old_result["answer"], [updated])["status"] == "failed"
+coverage = check_question_coverage(question, new_result["answer"], specs=tasks)
+assert new_result["status"] == "answered"
+assert coverage["status"] == "failed"  # A policy change requires a specification review.
+print(new_result["sources"], coverage["missing_points"])
+```
+
+`Document` contains only a source label and text. Here the caller supplies `v1/v2`; **there is no automatic version management**. Excerpt checks can reject answers quoting an old body, but do not decide whether a policy change is legitimate. The ten-day revision no longer satisfies the old seven-day requirement. Review the source and business contract before freezing a revised expectation; the producer cannot update tests to match its answer.
+
+[Section 6.2](./02_document_loading.md) supplies original SHA-256 versions and character offsets. An adapter should map chunk IDs, source versions, and positions into the QA citation manifest, then check against the actual retrieved snapshot. Duplicate sources, stale-index removal, permission changes, and cache invalidation also belong to that adapter contract; the two-field `Document` does not implement them automatically.
+
+## Where to Stop and How to Continue
+
+| Existing exercise | Relationship to this section | Separate integration still required |
+|---|---|---|
+| [6.2 Loading/chunking](./02_document_loading.md) | Exact text, stable source versions, and positions | Map loaded chunks to the QA citation manifest |
+| [6.3 Vector storage](./03_embeddings_vectordb.md), [6.4 Fusion/reranking](./04_retrieval_strategies.md) | Separate `reference_code/vector_retrieval/` mechanisms return candidates, not answers | No adapter currently combines them with this QA class; preserve identity, version, budgets, and failures |
+| This lexical QA | Positive/negative cases, excerpt support, frozen requirements | No PDF/Word/web ingestion, semantic encoder, conversation history, or deployed service |
+| [Research project](../learning_project.md) | Already combines local documents, multiple questions, context, and Harness budgets | Default specifications apply only to bundled tasks; custom documents need their own specification or verifier |
+
+From the repository root:
+
 ```bash
-uvicorn main:app --reload
+python examples/chapter06/doc_qa_agent.py
+python -m unittest examples.integration_tests.test_rag_qa_chapter -v
+python -m reference_code.evidence_assistant --format json
 ```
 
-❓ Your question: What is the relationship between LangChain and FastAPI?
+The first command shows raw QA stage states without this section's full coverage specification. The third is a separate, specified multi-question application. Neither establishes that every retrieval technique in the chapter is combined into one product. Code and tests here use no extra dependency or online call. Real-model quality, semantic retrieval, multi-excerpt adequacy, and production permissions need separate testing.
 
-📖 Answer:
-Based on the information in the documents:
-- **LangChain** is a framework for building LLM applications, providing AI components like Agents and RAG
-- **FastAPI** is a high-performance Python web framework for building API services
-
-The two can be used together: use LangChain to build AI logic, and use FastAPI to expose it as an API interface.
-However, the documents don't directly describe how to integrate the two; please refer to relevant tutorials for details.
-```
-
----
-
-## Summary
-
-This chapter built a complete RAG system from scratch:
-
-| Stage | Key Technologies |
-|-------|----------------|
-| Document loading | Multi-format support (PDF/Word/web/text) |
-| Text splitting | Split by semantics/headings/tokens, set overlap |
-| Vector embedding | OpenAI/local models, batch processing |
-| Vector storage | ChromaDB persistent storage |
-| Retrieval strategies | Hybrid retrieval, reranking, query expansion |
-| Answer generation | Context injection + source citation |
-
----
+Exercise: add a question requiring two sources and freeze two required points first. Remove one source, change a key number, and return an unsupported paraphrase. Submit match reasons, stage states, support decisions, missing requirements, and the final outcome. Close this evidence loop before choosing vectors, additional formats, or a more complex Agent loop.
 
 *Next chapter: [Chapter 7: Context Engineering](../chapter_context_engineering/README.md)*

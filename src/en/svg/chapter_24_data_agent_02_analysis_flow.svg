@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350">
   <rect width="760" height="350" fill="#f0f4f8" rx="14"/>
-  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Data Analysis Agent: 6-Step Pipeline</text>
+  <text x="380" y="36" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Data Analysis Agent: Six Design Responsibilities</text>
 
   <!-- Arrow marker -->
   <defs>
@@ -13,9 +13,9 @@
   <rect x="30" y="70" width="105" height="75" rx="12" fill="#3498db" opacity="0.15"/>
   <rect x="30" y="70" width="105" height="28" rx="12" fill="#3498db"/>
   <rect x="30" y="86" width="105" height="12" fill="#3498db"/>
-  <text x="82" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">① Intent Understanding</text>
-  <text x="82" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">LLM parsing</text>
-  <text x="82" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Analysis type + target table</text>
+  <text x="82" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">① Clarify task</text>
+  <text x="82" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Metrics · Dates</text>
+  <text x="82" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Scope · Targets</text>
 
   <line x1="135" y1="108" x2="150" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
 
@@ -23,9 +23,9 @@
   <rect x="155" y="70" width="105" height="75" rx="12" fill="#27ae60" opacity="0.15"/>
   <rect x="155" y="70" width="105" height="28" rx="12" fill="#27ae60"/>
   <rect x="155" y="86" width="105" height="12" fill="#27ae60"/>
-  <text x="207" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">② SQL Generation</text>
-  <text x="207" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">LLM generates</text>
-  <text x="207" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Safe SELECT only</text>
+  <text x="207" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">② SQL proposal</text>
+  <text x="207" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Allowed schema</text>
+  <text x="207" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">No permission grant</text>
 
   <line x1="260" y1="108" x2="275" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
 
@@ -33,9 +33,9 @@
   <rect x="280" y="70" width="105" height="75" rx="12" fill="#e74c3c" opacity="0.15"/>
   <rect x="280" y="70" width="105" height="28" rx="12" fill="#e74c3c"/>
   <rect x="280" y="86" width="105" height="12" fill="#e74c3c"/>
-  <text x="332" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">③ Security Check</text>
-  <text x="332" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Whitelist validation</text>
-  <text x="332" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Parameterized execution</text>
+  <text x="332" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">③ Read-only run</text>
+  <text x="332" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">DB permissions</text>
+  <text x="332" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Bindings · Budgets</text>
 
   <line x1="385" y1="108" x2="400" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
 
@@ -43,9 +43,9 @@
   <rect x="405" y="70" width="105" height="75" rx="12" fill="#e67e22" opacity="0.15"/>
   <rect x="405" y="70" width="105" height="28" rx="12" fill="#e67e22"/>
   <rect x="405" y="86" width="105" height="12" fill="#e67e22"/>
-  <text x="457" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">④ Data Analysis</text>
-  <text x="457" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">pandas statistics</text>
-  <text x="457" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Insight extraction</text>
+  <text x="457" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">④ Analyze</text>
+  <text x="457" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Types · Nulls · Units</text>
+  <text x="457" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Draft insights</text>
 
   <line x1="510" y1="108" x2="525" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
 
@@ -53,9 +53,9 @@
   <rect x="530" y="70" width="105" height="75" rx="12" fill="#9b59b6" opacity="0.15"/>
   <rect x="530" y="70" width="105" height="28" rx="12" fill="#9b59b6"/>
   <rect x="530" y="86" width="105" height="12" fill="#9b59b6"/>
-  <text x="582" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">⑤ Visualization</text>
-  <text x="582" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">matplotlib</text>
-  <text x="582" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Auto chart type selection</text>
+  <text x="582" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">⑤ Charts</text>
+  <text x="582" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Axes · Values</text>
+  <text x="582" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Check output files</text>
 
   <line x1="635" y1="108" x2="650" y2="108" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#arw)"/>
 
@@ -64,26 +64,26 @@
   <rect x="655" y="70" width="75" height="28" rx="12" fill="#2c3e50"/>
   <rect x="655" y="86" width="75" height="12" fill="#2c3e50"/>
   <text x="692" y="89" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" font-weight="bold" fill="white">⑥ Report</text>
-  <text x="692" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Markdown</text>
-  <text x="692" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">HTML/PDF</text>
+  <text x="692" y="115" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2c3e50">Check outputs</text>
+  <text x="692" y="130" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Pass all checks</text>
 
   <!-- Divider -->
   <line x1="30" y1="175" x2="730" y2="175" stroke="#bdc3c7" stroke-width="1" stroke-dasharray="6,3"/>
 
   <!-- Bottom: LLM-driven vs Code-driven -->
-  <text x="380" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">Driver Comparison</text>
+  <text x="380" y="200" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#2c3e50">Model Proposals and Host Controls</text>
 
   <!-- LLM-driven -->
   <rect x="60" y="215" width="280" height="50" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1"/>
-  <text x="200" y="235" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#3498db">🧠 LLM-Driven (Steps ①②④⑥)</text>
-  <text x="200" y="255" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Semantic understanding, SQL gen, insight extraction, summary</text>
+  <text x="200" y="235" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#3498db">Optional model proposals</text>
+  <text x="200" y="255" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Independently check SQL, insights and summaries</text>
 
   <!-- Code-driven -->
   <rect x="420" y="215" width="280" height="50" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="1"/>
-  <text x="560" y="235" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">⚙️ Deterministic Code (Steps ③⑤)</text>
-  <text x="560" y="255" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Security check, DB execution, chart generation</text>
+  <text x="560" y="235" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">Host-enforced controls</text>
+  <text x="560" y="255" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#7f8c8d">Permissions, budgets, calculations and acceptance</text>
 
   <!-- Bottom summary -->
   <rect x="120" y="290" width="520" height="35" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1"/>
-  <text x="380" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">💡 Hybrid architecture: LLM for understanding &amp; creativity, code for safety &amp; reliability</text>
+  <text x="380" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#7f8c8d">Design steps are not model calls; implement 22.3–22.4 domain components before delivery</text>
 </svg>

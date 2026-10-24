@@ -1,4 +1,4 @@
-# 25.3 Voice Interaction Integration
+# 23.3 Voice Interaction Integration
 
 > **Section Goal**: Integrate speech recognition (STT) and text-to-speech (TTS) capabilities into the Agent, and understand real-time voice processing architecture and multilingual support strategies.
 
@@ -428,4 +428,4 @@ The Agent continuously monitors ambient audio and activates when it detects a wa
 
 ---
 
-[Next: 21.4 Practice: Multimodal Personal Assistant →](./04_practice_multimodal_assistant.md)
+[Next: 23.4 Practice: Multimodal Personal Assistant →](./04_practice_multimodal_assistant.md)

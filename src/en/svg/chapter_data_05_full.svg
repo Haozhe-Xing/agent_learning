@@ -6,49 +6,49 @@
     </marker>
   </defs>
   <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
-  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Data Analysis Agent: Pipeline vs Agent Loop Architecture</text>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Data Analysis: Components and Optional Loop</text>
 
   <!-- Pipeline Architecture -->
   <rect x="30" y="55" width="740" height="120" rx="10" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="2"/>
-  <text x="70" y="78" font-size="13" font-weight="bold" fill="#3498db">Pipeline Architecture — This Chapter's Choice</text>
+  <text x="70" y="78" font-size="13" font-weight="bold" fill="#3498db">Host Pipeline — Design, Not End-to-End Verified</text>
 
   <rect x="50" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="95" y="112" text-anchor="middle" font-size="9" fill="white">Text-to-SQL</text>
+  <text x="95" y="112" text-anchor="middle" font-size="9" fill="white">SQL Proposal</text>
   <line x1="140" y1="107" x2="158" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="160" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="205" y="112" text-anchor="middle" font-size="9" fill="white">Execute Query</text>
+  <text x="205" y="112" text-anchor="middle" font-size="9" fill="white">Read-only Query</text>
   <line x1="250" y1="107" x2="268" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="270" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="315" y="112" text-anchor="middle" font-size="9" fill="white">Statistical Analysis</text>
+  <text x="315" y="112" text-anchor="middle" font-size="9" fill="white">Statistics</text>
   <line x1="360" y1="107" x2="378" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="380" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="425" y="112" text-anchor="middle" font-size="9" fill="white">Chart Generation</text>
+  <text x="425" y="112" text-anchor="middle" font-size="9" fill="white">Chart</text>
   <line x1="470" y1="107" x2="488" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="490" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="535" y="112" text-anchor="middle" font-size="9" fill="white">Insight Extraction</text>
+  <text x="535" y="112" text-anchor="middle" font-size="9" fill="white">Insight Proposal</text>
   <line x1="580" y1="107" x2="598" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="600" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="645" y="112" text-anchor="middle" font-size="9" fill="white">Report Generation</text>
+  <text x="645" y="112" text-anchor="middle" font-size="9" fill="white">Report Proposal</text>
 
-  <text x="50" y="155" font-size="10" fill="#2980b9">✅ Predictable, easy to debug, controllable latency</text>
-  <text x="400" y="155" font-size="10" fill="#e74c3c">❌ Limited flexibility, cannot self-correct</text>
+  <text x="50" y="155" font-size="10" fill="#2980b9">Inspect step inputs, outputs, and status</text>
+  <text x="400" y="155" font-size="10" fill="#e74c3c">SQL boundary tested; other components need checks</text>
 
   <!-- Agent Loop Architecture -->
   <rect x="30" y="180" width="740" height="155" rx="10" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2"/>
-  <text x="70" y="203" font-size="13" font-weight="bold" fill="#8e44ad">Agent Loop Architecture — More Flexible</text>
+  <text x="70" y="203" font-size="13" font-weight="bold" fill="#8e44ad">Agent Loop — Optional; Controller Not Supplied</text>
 
   <rect x="280" y="215" width="240" height="45" rx="10" fill="#8e44ad" opacity="0.9"/>
-  <text x="400" y="238" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🧠 Agent Reasoning Core</text>
-  <text x="400" y="253" text-anchor="middle" font-size="9" fill="#d2b4de">Observe → Think → Select Tool → Act</text>
+  <text x="400" y="238" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Policy / Model Chooses Next Step</text>
+  <text x="400" y="253" text-anchor="middle" font-size="9" fill="#d2b4de">Allowed actions · state · total budget</text>
 
   <!-- Tools surrounding -->
   <rect x="50" y="220" width="100" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
-  <text x="100" y="242" text-anchor="middle" font-size="9" fill="#8e44ad">SQL Generator</text>
+  <text x="100" y="242" text-anchor="middle" font-size="9" fill="#8e44ad">SQL Proposal</text>
 
   <rect x="160" y="220" width="100" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
   <text x="210" y="242" text-anchor="middle" font-size="9" fill="#8e44ad">Data Analyzer</text>
@@ -61,8 +61,8 @@
 
   <!-- Loop indicator -->
   <path d="M400,260 Q400,290 350,290 Q300,290 300,270" fill="none" stroke="#8e44ad" stroke-width="2" stroke-dasharray="4,3"/>
-  <text x="400" y="300" text-anchor="middle" font-size="10" fill="#8e44ad">🔄 Dynamic multi-turn interaction, self-correcting</text>
+  <text x="400" y="302" text-anchor="middle" font-size="10" fill="#8e44ad">Bounded exploration; stop or mark unfinished</text>
 
-  <text x="50" y="320" font-size="10" fill="#27ae60">✅ Flexible, self-correcting, adapts to complex scenarios</text>
-  <text x="400" y="320" font-size="10" fill="#e74c3c">❌ Unpredictable latency, higher cost, harder to debug</text>
+  <text x="50" y="320" font-size="10" fill="#27ae60">Trace actions and state; controller not supplied</text>
+  <text x="400" y="320" font-size="10" fill="#e74c3c">Measure cost and latency on the same tasks</text>
 </svg>

@@ -1,6 +1,6 @@
-# 10.3 PPO: Proximal Policy Optimization
+# 24.3 PPO: Proximal Policy Optimization
 
-In [10.1 What Is Agentic-RL](./01_agentic_rl_overview.md), we introduced the two-phase training paradigm of Agentic-RL (SFT → RL). The core question in the RL phase is: **how do we update model parameters based on reward signals?** This is exactly the problem that policy optimization algorithms solve.
+In [24.1 What Is Agentic-RL](./01_agentic_rl_overview.md), we introduced the two-phase training paradigm of Agentic-RL (SFT → RL). The core question in the RL phase is: **how do we update model parameters based on reward signals?** This is exactly the problem that policy optimization algorithms solve.
 
 This section systematically explains the **PPO (Proximal Policy Optimization) algorithm** from scratch — it is the core training algorithm behind InstructGPT and ChatGPT, and the foundation for understanding the DPO and GRPO algorithms that follow. We will start from the most basic intuition, derive the mathematical formulas step by step, and use plenty of diagrams to aid understanding.
 
@@ -153,7 +153,7 @@ Although the intuition is clear, raw policy gradients have two serious problems:
 | **High variance** | $R(\tau)$ may vary enormously across different trajectories | Gradient estimates are unstable; training converges extremely slowly |
 | **Uncontrolled step size** | No constraint on the size of single-step updates | One "big jump" can destroy the entire policy |
 
-**PPO, DPO, and GRPO each solve these two problems in different ways.** This section explains PPO in detail; DPO and GRPO will be introduced in [10.4 DPO: Direct Preference Optimization](./04_dpo.md) and [10.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md) respectively.
+**PPO, DPO, and GRPO each solve these two problems in different ways.** This section explains PPO in detail; DPO and GRPO will be introduced in [24.4 DPO: Direct Preference Optimization](./04_dpo.md) and [24.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md) respectively.
 
 ---
 

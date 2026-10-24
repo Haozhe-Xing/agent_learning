@@ -1,4 +1,4 @@
-# 18.1 Limitations of Single Agents
+# 16.1 Limitations of Single Agents
 
 > **Section Goal**: Understand the three core limitations of a single Agent on complex tasks, and learn how to decide when to introduce a multi-Agent architecture.
 
@@ -291,10 +291,10 @@ The cost of multi-Agent:
 - Difficult debugging (locating distributed problems)
 - Information loss (context truncation when passing between Agents)
 
-> 📖 **Want to dive deeper into the academic frontier of multi-Agent systems?** Read [18.6 Paper Readings: Frontier Research in Multi-Agent Systems](./06_paper_readings.md), covering in-depth analyses of core papers including MetaGPT, ChatDev, AutoGen, and AgentVerse.
+> 📖 **Want to dive deeper into the academic frontier of multi-Agent systems?** Read [16.6 Paper Readings: Frontier Research in Multi-Agent Systems](./06_paper_readings.md), covering in-depth analyses of core papers including MetaGPT, ChatDev, AutoGen, and AgentVerse.
 
 > 💡 **Further reading**: For specialized evaluation methods for multi-Agent systems (Agent-as-Judge, τ-bench, SWE-bench), see [18.6 Agent-Specific Evaluation Framework](../chapter_20_evaluation/06_agent_evaluation.md).
 
 ---
 
-*Next section: [18.2 Multi-Agent Communication Patterns](./02_communication_patterns.md)*
+*Next section: [16.2 Multi-Agent Communication Patterns](./02_communication_patterns.md)*

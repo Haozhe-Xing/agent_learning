@@ -1,4 +1,4 @@
-# 16.5 高级用法：MCP、Hooks 与 Skills
+# 14.5 高级用法：MCP、Hooks 与 Skills
 
 > 🔧 *"工具不是障碍，工具是杠杆。真正厉害的工程师，不是自己跑得快，而是把 Agent 配得好。"*
 
@@ -84,7 +84,7 @@ $ claude
 
 **实战案例**（自然语言即可串联多个工具）：*"帮我查看最近 5 个未 Review 的 PR，找出有潜在安全问题的，写上 Review 评论，并在 Slack #engineering 通知负责人。"*——Claude Code 会自动依次调用 `github.list_pull_requests` → `github.get_pull_request_diff` → 安全分析 → `github.create_review_comment` → `slack.post_message`。
 
-> 📌 **与 OpenClaw（第 14 章）/ DeepSeek Harness（第 17 章）的关系**：MCP 协议的影响力远超 Claude Code——OpenClaw 与 DeepSeek Harness 都实现了 MCP server，让"同一份工具协议"在三个截然不同的 Harness 上都能工作。这是协议化（vs. 单一厂商扩展）红利的早期显现。
+> 📌 **与 OpenClaw（第12章）/ DeepSeek Harness（第15章）的关系**：MCP 协议的影响力远超 Claude Code——OpenClaw 与 DeepSeek Harness 都实现了 MCP server，让"同一份工具协议"在三个截然不同的 Harness 上都能工作。这是协议化（vs. 单一厂商扩展）红利的早期显现。
 
 ### 1.4 自建 MCP 服务器（关键骨架）
 
@@ -231,7 +231,7 @@ Skills 是 Claude Code 的**工作流模板系统**——把"你反复告诉 Cla
 | **适合场景** | 跨项目通用工作流（Code Review、部署） | 项目特定操作（跑测试、升版本号） |
 | **触发方式** | Skill 工具自动识别并调用 | 用户手动输入 `/command-name` |
 
-> 📌 **跨 Harness 兼容**：Claude Code 的 `SKILL.md` 格式与 OpenClaw（第 14 章）完全兼容——同一份 Skill 文件，加载到 Claude Code 也工作，加载到 OpenClaw 也工作，加载到 Hermes（第 15 章）也工作。这是 2026 年技能市场"协议化"的关键支撑。
+> **跨 Harness 迁移检查**：同名 `SKILL.md` 不证明兼容。为源端与目标端记录确切版本，核对元数据解析、依赖工具、状态与路径、凭据和权限检查，再运行相同的成功、拒绝及失败用例。未运行的组合保持未知；迁移失败时保留原文件并回退。
 
 ### 3.2 创建自己的 Skill（关键结构）
 
@@ -375,5 +375,5 @@ Claude Code 把**长期记忆**与**会话状态**分开管理，避免压缩时
 
 ---
 
-*上一节：[16.4 System Prompt、权限工程与 Prompt Cache](./04_system_prompt_and_permissions.md)*
-*下一节：[16.6 生产实践与团队配置](./06_production_and_team.md)*
+*上一节：[14.4 System Prompt、权限工程与 Prompt Cache](./04_system_prompt_and_permissions.md)*
+*下一节：[14.6 生产实践与团队配置](./06_production_and_team.md)*

@@ -1,112 +1,95 @@
-# 12.3 使用 LangChain 构建 Agent
+# 10.3 使用 LangChain 构建 Agent
 
-前面几章我们都是"手工"构建 Agent——自己写工具 Schema、自己管理消息循环、自己处理工具调用。这虽然有助于理解底层原理，但在实际项目中太繁琐了。LangChain 提供了标准化的工具接口和 AgentExecutor，把那些"样板代码"封装成可复用组件。
+前面的最小循环已经能调用工具。本节要减少模型、消息与工具之间的适配代码，同时保留可检查的调用记录和停止条件。使用本仓库实际验证的 **LangChain 1.4.6、langchain-core 1.6.12、LangGraph 1.2.16**；安装入口见 `examples/requirements.txt`。版本依据可查 [LangChain 1.4.6 发布记录](https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.4.6)。
 
-> 📌 **前置提醒**：LangChain 的 `AgentExecutor` 属于 legacy Agent 方案。官方推荐新项目使用 **LangGraph** 构建 Agent（见第 13 章）。本节保留它，是为了让你用最少的认知负担理解"Agent 循环的封装"这一核心概念——理解了它，LangGraph 只是换了一种更灵活的表达方式。
+这一版使用 `from langchain.agents import create_agent`。它建立模型与工具之间的消息循环，底层使用 LangGraph 运行时；读者可以先用这个接口完成单 Agent 任务，出现自定义状态、分支或恢复需求时再学习第11章。官方接口说明见 [Agents](https://docs.langchain.com/oss/python/langchain/agents)。
 
-## LangChain 到底帮你做了什么
+## 先运行一个真实框架、固定模型的例子
 
-LangChain 把你在前几章手写的样板，收敛成三层可复用组件：
+在仓库根目录、安装配套依赖后运行：
 
-| 你手搓时要做的事 | LangChain 的封装 |
-|----------------|------------------|
-| 手写 JSON Schema 描述工具 | `@tool` 装饰器，从函数签名 + docstring 自动提取 |
-| 自己写"循环调模型→解析工具调用→执行→回填" | `AgentExecutor` 自动驱动整个循环 |
-| 自己管理 scratchpad（推理空间） | `MessagesPlaceholder("agent_scratchpad")` 自动维护 |
-
-![LangChain Agent三层架构](../svg/chapter_langchain_03_agent_architecture.svg)
-
-## 工具定义：两种方式怎么选
-
-LangChain 提供两种定义工具的方式，选择标准很清晰：
-
-| 方式 | 适用场景 | 关键成本 |
-|------|---------|---------|
-| `@tool` 装饰器 | 大多数情况，逻辑简单 | 几乎零样板，docstring 即工具描述 |
-| 继承 `BaseTool` | 需要内部状态、异步执行、自定义参数校验 | 多写一个 Pydantic `args_schema` |
-
-> ⚠️ **关键细节**：`@tool` 的函数 **docstring 会直接成为工具描述**，喂给模型看。描述写不清，模型就调不对——这是新手最容易踩的坑。把"这个工具做什么、参数含义、何时用"写清楚，比换更强的模型更管用。
-
-```python
-from langchain_core.tools import tool, BaseTool
-from langchain_openai import ChatOpenAI
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-# 方式1：@tool —— 最简单，docstring 即描述
-@tool
-def calculate(expression: str) -> str:
-    """计算数学表达式，如 calculate("sqrt(144) + 2 * 3")。"""
-    try:
-        safe_env = {k: getattr(math, k) for k in dir(math) if not k.startswith('_')}
-        return str(eval(expression, {"__builtins__": {}}, safe_env))
-    except Exception as e:
-        return f"计算错误：{e}"
-
-# 方式2：BaseTool —— 需要自定义校验/状态时
-class WeatherTool(BaseTool):
-    name: str = "get_weather"
-    description: str = "获取指定城市的当前天气"
-    # args_schema 用 Pydantic 定义结构化入参
+```bash
+python -m examples.chapter12.first_agent
 ```
 
-## Agent 与执行循环
+目录保留历史编号 `chapter12`，对应当前第10章。默认输入是 `sqrt(144) + 2 * 3`，输出的 `tool_results[0].value` 应为 `18.0`，`model_calls` 为 `2`，`tool_calls` 为 `1`，模式为 `offline-fixture`。
 
-工具准备好后，用 `create_openai_tools_agent` 创建 Agent，再用 `AgentExecutor` 驱动循环：
+这个演示实际运行 LangChain 的工具绑定、消息传递、工具执行和中间件。模型由 `examples/framework_fixture.py` 中的 `FixedToolChatModel` 替代：第一次把用户输入原样作为计算表达式请求工具，收到工具消息后原样回传结果。它不理解任意自然语言，也不发出模型、搜索或天气请求；算术结果由工具实际计算。
 
-```python
-tools = [calculate, WeatherTool()]
-llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "你是智能助手，遇到需要工具的问题先调用工具。"),
-    MessagesPlaceholder("chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder("agent_scratchpad"),  # Agent 的"推理空间"
-])
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools,
-                               max_iterations=5, return_intermediate_steps=True)
-```
+## 看清四个接口
 
-上面几个概念值得理解其"为什么"：
+| 接口 | 本例中的作用 | 仍需由应用决定 |
+|---|---|---|
+| `@tool` | 从参数类型和 docstring 形成工具说明与参数 Schema | 允许什么操作、如何校验输入、怎样报告失败 |
+| `create_agent` | 连接模型、工具及中间件 | 使用哪种模型、开放哪些工具 |
+| `messages` | 保存用户输入、模型工具请求和工具结果 | 哪些历史需要保留、是否跨调用持久化 |
+| 调用限制中间件 | 限制一次调用中的模型请求数和工具请求数 | 时间、费用、权限及独立业务验收 |
 
-- **`MessagesPlaceholder("agent_scratchpad")`**：Agent 的"推理空间"。LangChain 把工具调用的中间步骤（调了什么工具、得到什么结果）填到这里，让模型能"看到"自己的推理过程，从而决定下一步。
-- **`AgentExecutor`**：整个 Agent 循环的"驱动器"。它反复执行"模型决策 → 执行工具 → 回填结果"，直到模型给出最终回答或触发停止条件。
-- **`return_intermediate_steps=True`**：让你在最终结果里看到 Agent 经历了哪些中间步骤——调试 Agent 时 invaluable。
+![create_agent 的消息循环与调用预算](../svg/chapter_langchain_03_agent_architecture.svg)
 
-> 💡 **直觉理解**：`AgentExecutor` 本质上就是一个**固定结构的 ReAct 循环器**——它的能力边界，就是"观察→思考→行动"这一固定顺序的重复。一旦你需要"先审批再执行""循环次数动态""并行多步"，它就力不从心了，必须上 LangGraph。这也解释了为什么官方把它列为 legacy。
+本例只有一个 `calculate` 工具。其完整定义在 `examples/framework_fixture.py`，实际复用 `examples/chapter03/safe_math.py`：仅解释允许的 AST 节点、运算符和数学函数，限制表达式长度、节点数、指数与数值范围。它返回 `status=ok` 和数值，或 `status=invalid_expression` 及原因；不会执行 Python 语句。需要查询事实的任务应另接有来源的工具。
 
-## 生产环境的执行控制
+工具的 docstring 会作为模型可见的说明，参数 `expression: str` 则进入 Schema。清晰描述有助于选工具，实际许可和输入检查仍要放在执行边界。初次学习使用 `@tool` 即可；需要自定义工具类时，再完整实现 `BaseTool` 的输入模型和执行方法。
+
+## 用 create_agent 连接并观察循环
+
+下面与配套源码使用相同接口，可以在仓库根目录运行：
 
 ```python
-agent_executor = AgentExecutor(
-    agent=agent, tools=tools,
-    max_iterations=10,          # 防无限循环（模型反复调同一工具）
-    max_execution_time=30,      # 总超时，保护用户体验
-    handle_parsing_errors=True,  # 模型输出格式异常时自动恢复
-    early_stopping_method="generate",  # 超限时让模型基于现有信息给尽量好的回答
+import json
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+from examples.framework_fixture import FixedToolChatModel, calculate
+
+agent = create_agent(
+    model=FixedToolChatModel(),
+    tools=[calculate],
+    system_prompt="Use calculate for arithmetic. Report rejected input as a failure.",
+    middleware=[
+        ModelCallLimitMiddleware(run_limit=3, exit_behavior="error"),
+        ToolCallLimitMiddleware(run_limit=2, exit_behavior="error"),
+    ],
 )
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "sqrt(144) + 2 * 3"}]},
+    config={"recursion_limit": 16},
+)
+messages = result["messages"]
+print([message.type for message in messages])  # human, ai, tool, ai
+print(json.loads(messages[2].content)["value"])  # 18.0
+assert messages[2].tool_call_id == messages[1].tool_calls[0]["id"]
 ```
 
-| 参数 | 解决的问题 |
-|------|-----------|
-| `max_iterations` | 模型陷入死循环烧 token |
-| `max_execution_time` | 单次请求总超时 |
-| `handle_parsing_errors` | 模型输出格式错乱时不直接崩 |
-| `early_stopping_method` | 超限时优雅收尾而非报错 |
+先查看第一个 `AIMessage.tool_calls`：其中包含工具名、参数与调用 ID。工具执行后产生的 `ToolMessage` 使用同一个 ID，将结果回填到消息列表。模型再次被调用，返回不带工具请求的消息后结束。这些是可观察的动作与结果记录，不是模型内部推理的完整展示。
 
----
+`first_agent.py` 将调用包装为 `run()`，统一返回执行状态、工具结果和调用数。计算输入被拒绝时返回 `incomplete`；调用限制或图步骤限制触发时返回 `budget_exhausted`，CLI 以非零状态退出。`completed` 只说明本例执行与工具结果检查完成；输出中的 `verification_scope` 明确指出，业务验收需要另设判据。
 
-## 小结
+## 分别验证错误与预算
 
-LangChain Agent 的关键组件：
-- `@tool` 装饰器：最快的工具定义方式（docstring 即描述）
-- `BaseTool`：需要复杂逻辑/状态时使用
-- `create_openai_tools_agent`：创建使用 Function Calling 的 Agent
-- `AgentExecutor`：驱动"决策→执行→回填"循环
+```bash
+python -m examples.chapter12.first_agent --expression '__import__("os").getcwd()'
+python -m examples.chapter12.first_agent --expression '1 / 0'
+python -m examples.chapter12.first_agent --max-model-calls 1
+python -m pytest examples/integration_tests/test_first_langchain_agent.py -q
+```
 
-> 📌 记住 `AgentExecutor` 的能力边界（固定 ReAct 循环），它是你理解第 13 章 LangGraph 为何必要的认知锚点。
+前两项应返回 `invalid_expression`，不能出现伪造数值。第三项允许第一次模型请求及其工具执行，但阻止获得最终回答所需的第二次模型调用，因此返回 `budget_exhausted`。测试另外注入持续请求工具的固定模型，确认超出工具预算的那一次调用没有进入计算器；未注册工具请求也不能成为成功结果。测试期间封锁出站 socket，不调用线上服务。
 
----
+| 限制 | 本例配置 | 计量边界 |
+|---|---|---|
+| 模型调用 | `ModelCallLimitMiddleware(run_limit=3)` | 一次 `invoke` 内的模型调用数 |
+| 工具请求 | `ToolCallLimitMiddleware(run_limit=2)` | 一次 `invoke` 内所有工具的请求数；超限以错误结束 |
+| 图执行步骤 | `recursion_limit=16` | 图的调度步数，不等于工具调用数 |
+| 计算输入 | `safe_math` 的长度、复杂度和数值上限 | 单次算术求值 |
 
-*下一节：[12.4 LCEL：LangChain 表达式语言](./04_lcel.md)*
+两种中间件在本例均设为 `exit_behavior="error"`，避免把预算停止消息当作正常完成。配置语义可核对官方[预置中间件文档](https://docs.langchain.com/oss/python/langchain/middleware/built-in)。这些次数限制不提供总耗时保证，也不隔离任意外部代码；持久状态、业务权限和进程超时需要分别设计。
+
+## 真实模型作为显式选做
+
+```bash
+python -m examples.chapter12.first_agent --real --model gpt-4.1-mini
+```
+
+只有传入 `--real` 才创建 `ChatOpenAI` 并访问配置的模型服务，需要可用凭证。本例设置 SDK 请求超时 `30` 秒及最多一次重试；这不等于整项任务最多运行30秒。真实模型的工具选择、参数质量、最终回答准确性和费用，需要单独的任务集评估，本节离线测试没有验证这些指标。
+
+完成本节应保留正常消息序列、一次输入拒绝和一次预算停止记录。若这些接口已满足任务，可以继续使用 `create_agent`；需要自己定义状态与路由时，再转到[第11章](../chapter_langgraph/README.md)。下一节介绍[10.4 LCEL](./04_lcel.md)，用于表达可组合的数据处理流程。

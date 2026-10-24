@@ -187,8 +187,8 @@ CRAFT approach:
        return sum(x for x in arr if is_prime(x))
    
 2. Verify Phase
-   Verify tool correctness with test cases
-   sum_of_primes([1,2,3,4,5]) == 10  ✅
+   Run the candidate in an isolated runner against independently maintained cases
+   sum_of_primes([1,2,3,4,5]) == 10 is one test, not a proof of complete correctness
    
 3. Store Phase
    Save verified tool to tool library
@@ -199,14 +199,23 @@ CRAFT approach:
    → Reference its structure to create sum_of_evens
 ```
 
-### CRAFT Python Implementation
+### CRAFT Teaching Interface: Isolated Execution and Independent Acceptance
+
+This fragment shows the algorithm flow and rejection boundary; it does not provide a runnable CRAFT system. Retrieval, response parsing, storage, and problem-solving methods still need implementations. Every execution of a new or stored tool must use the same isolated runner. Model-generated `test_cases` are candidate self-tests and cannot determine acceptance expectations. The task maintainer supplies `acceptance_cases` separately, using `{"input": [positional arguments], "expected": JSON value}`; they are not read from the candidate tool.
+
+`runner.run_candidate` is a trusted execution interface awaiting implementation. It receives source, function name, inputs, and resource policy, and returns one JSON result per input. Expected results stay in the host verifier and are not sent to the candidate program. A real runner must enforce process/container permissions, no host secrets or writable shared directories, disabled networking, wall-clock timeouts, CPU/memory/output bounds, and process cleanup before execution. Passing policy values does not prove isolation. This repository does not supply such a runner for arbitrary Python. Missing runners, missing independent cases, execution failures, and malformed results are rejected. Test doubles verify interface branches only.
 
 ```python
+import json
+import keyword
+
 class CRAFTSystem:
-    """CRAFT: Create and Retrieve Adaptive Function Tools"""
+    """Teaching fragment; the host must separately implement runner isolation."""
     
-    def __init__(self, llm):
+    def __init__(self, llm, runner=None, acceptance_cases=()):
         self.llm = llm
+        self.runner = runner
+        self.acceptance_cases = acceptance_cases
         self.tool_library = {}  # tool name → (code, description, tests)
         self.embeddings = {}
     
@@ -240,27 +249,47 @@ Problem: {problem}
 Requirements:
 1. The function should be generalized to solve this class of problems (not just this specific instance)
 2. Provide a clear function signature and docstring
-3. Provide at least 3 test cases
+3. Provide at least 3 candidate self-tests (debugging only, not independent acceptance)
 
 Please return:
 - function_name: function name
 - code: complete Python code
 - description: functionality description
-- test_cases: list of test cases
+- test_cases: list of candidate self-tests
 """
         result = self.llm.generate(prompt)
         return parse_tool_response(result)
     
     def _verify_tool(self, tool: dict) -> bool:
-        """Verify tool with test cases"""
+        """Pass only when a trusted runner's results match independent cases."""
+        if self.runner is None:
+            return False
         try:
-            exec(tool["code"])
-            func = eval(tool["function_name"])
-            for test in tool["test_cases"]:
-                assert func(*test["input"]) == test["expected"]
-            return True
-        except Exception as e:
-            print(f"Tool verification failed: {e}")
+            if (not isinstance(tool, dict)
+                    or not isinstance(tool.get("code"), str)
+                    or not 1 <= len(tool["code"]) <= 4096):
+                return False
+            name = tool.get("function_name")
+            if not isinstance(name, str) or not name.isidentifier() or keyword.iskeyword(name):
+                return False
+            cases = self.acceptance_cases
+            if (not isinstance(cases, (list, tuple)) or not 1 <= len(cases) <= 32
+                    or any(not isinstance(case, dict) or set(case) != {"input", "expected"}
+                           or not isinstance(case["input"], list) for case in cases)):
+                return False
+            # Preserve JSON types and reject NaN/Infinity; keep expectations private.
+            expected = [json.dumps(case["expected"], sort_keys=True, allow_nan=False)
+                        for case in cases]
+            inputs = json.loads(json.dumps([case["input"] for case in cases], allow_nan=False))
+            results = self.runner.run_candidate(
+                code=tool["code"], function_name=name, inputs=inputs,
+                limits={"timeout_seconds": 2, "cpu_seconds": 1, "memory_mb": 128,
+                        "output_bytes": 65536, "network": False})
+            if type(results) is not list or len(results) != len(cases):
+                return False
+            actual = [json.dumps(value, sort_keys=True, allow_nan=False) for value in results]
+            return actual == expected
+        except Exception:
             return False
 ```
 

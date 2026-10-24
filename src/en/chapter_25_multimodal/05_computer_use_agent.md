@@ -1,4 +1,4 @@
-# 25.5 Computer Use and GUI Agents
+# 23.5 Computer Use and GUI Agents
 
 > **Goal of this section**: Master the core architecture and implementation of Computer Use Agents, and understand the latest progress in GUI automation in 2025–2026.
 
@@ -530,7 +530,7 @@ Action types:
 """
 
 # The OpenHands file-editing strategy (Search-Replace Pattern)
-SEARCH_REPLACE_EXAMPLE = """
+SEARCH_REPLACE_EXAMPLE = '''
 <<< SEARCH
  def calculate_sum(numbers):
      total = 0
@@ -542,7 +542,7 @@ SEARCH_REPLACE_EXAMPLE = """
      """Return the sum of all numbers in the list"""
      return sum(numbers)
 >>> REPLACE
-"""
+'''
 # This Search-Replace editing pattern is more robust than line-number editing
 # Claude Code adopts a similar editing strategy
 ```
@@ -705,4 +705,4 @@ SANDBOX_OPTIONS = {
 
 ---
 
-[25.6 Video Understanding and Multimodal RAG](./06_video_and_multimodal_rag.md)
+[23.6 Video Understanding and Multimodal RAG](./06_video_and_multimodal_rag.md)

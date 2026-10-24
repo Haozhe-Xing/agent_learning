@@ -22,13 +22,13 @@
 
   <!-- ===== State 区域 ===== -->
   <rect x="30" y="55" width="230" height="340" rx="10" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="2"/>
-  <text x="145" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#2980b9">📦 State（状态）</text>
-  <text x="145" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#555">数据中心，所有节点共享读写</text>
+  <text x="145" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#2980b9">State（状态）</text>
+  <text x="145" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#555">节点读取快照，提交部分更新</text>
 
   <!-- State 内部组件 -->
   <rect x="50" y="115" width="190" height="36" rx="6" fill="white" stroke="#3498db" stroke-width="1.5" filter="url(#shadow-lg02)"/>
   <text x="145" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2980b9">TypedDict</text>
-  <text x="145" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">定义字段和类型</text>
+  <text x="145" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">声明类型，不替代外部输入校验</text>
 
   <rect x="50" y="162" width="190" height="36" rx="6" fill="white" stroke="#3498db" stroke-width="1.5" filter="url(#shadow-lg02)"/>
   <text x="145" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2980b9">Annotated + Reducer</text>
@@ -36,11 +36,11 @@
 
   <rect x="50" y="209" width="190" height="36" rx="6" fill="white" stroke="#3498db" stroke-width="1.5" filter="url(#shadow-lg02)"/>
   <text x="145" y="224" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2980b9">MessagesState</text>
-  <text x="145" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">内置消息列表（推荐）</text>
+  <text x="145" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">消息ID驱动的添加或替换</text>
 
   <rect x="50" y="256" width="190" height="36" rx="6" fill="white" stroke="#3498db" stroke-width="1.5" filter="url(#shadow-lg02)"/>
   <text x="145" y="271" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2980b9">Checkpoint</text>
-  <text x="145" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">持久化快照，断点恢复</text>
+  <text x="145" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">保存器决定内存或磁盘边界</text>
 
   <!-- State 示例代码 -->
   <rect x="50" y="303" width="190" height="40" rx="6" fill="#2c3e50"/>
@@ -48,59 +48,59 @@
   <text x="60" y="335" font-family="Courier New, monospace" font-size="9" fill="#98c379">  list, add_messages]</text>
 
   <!-- State → Node/Edge 虚线 -->
-  <text x="145" y="370" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">⚡ 节点读写 State</text>
-  <text x="145" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">⚡ 边根据 State 路由</text>
+  <text x="145" y="370" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">节点不直接修改传入状态</text>
+  <text x="145" y="385" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#2980b9">并发同字段写入需合并规则</text>
 
   <!-- ===== Node 区域 ===== -->
   <rect x="285" y="55" width="230" height="340" rx="10" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="2"/>
-  <text x="400" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">⚙️ Node（节点）</text>
+  <text x="400" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">Node（节点）</text>
   <text x="400" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#555">处理单元，执行具体逻辑</text>
 
   <!-- Node 内部组件 -->
   <rect x="305" y="115" width="190" height="42" rx="6" fill="white" stroke="#27ae60" stroke-width="1.5" filter="url(#shadow-lg02)"/>
-  <text x="400" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">🤖 Agent 节点</text>
-  <text x="400" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">调用 LLM 进行决策</text>
+  <text x="400" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">Agent 节点</text>
+  <text x="400" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">可选模型提议，不自动验收</text>
 
   <rect x="305" y="168" width="190" height="42" rx="6" fill="white" stroke="#27ae60" stroke-width="1.5" filter="url(#shadow-lg02)"/>
-  <text x="400" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">🔧 Tool 节点</text>
+  <text x="400" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">Tool 节点</text>
   <text x="400" y="201" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">执行工具调用</text>
 
   <rect x="305" y="221" width="190" height="42" rx="6" fill="white" stroke="#27ae60" stroke-width="1.5" filter="url(#shadow-lg02)"/>
-  <text x="400" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">📝 自定义节点</text>
-  <text x="400" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">任意 Python 函数</text>
+  <text x="400" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#27ae60">自定义节点</text>
+  <text x="400" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">普通计算或有界业务逻辑</text>
 
   <!-- Node 关键规则 -->
   <rect x="305" y="278" width="190" height="60" rx="6" fill="#27ae60" opacity="0.06"/>
-  <text x="400" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#27ae60">📌 关键规则</text>
-  <text x="400" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">输入：State → 输出：State 更新</text>
+  <text x="400" y="296" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#27ae60">关键规则</text>
+  <text x="400" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">输入快照 → 输出部分更新</text>
   <text x="400" y="328" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">通过 Reducer 决定合并方式</text>
 
   <!-- Node 示例代码 -->
   <rect x="305" y="348" width="190" height="40" rx="6" fill="#2c3e50"/>
   <text x="315" y="364" font-family="Courier New, monospace" font-size="9" fill="#c678dd">def</text>
   <text x="335" y="364" font-family="Courier New, monospace" font-size="9" fill="#61afef"> node</text>
-  <text x="365" y="364" font-family="Courier New, monospace" font-size="9" fill="#98c379">(state) -> dict</text>
-  <text x="315" y="380" font-family="Courier New, monospace" font-size="9" fill="#98c379">  return {"messages": [r]}</text>
+  <text x="365" y="364" font-family="Courier New, monospace" font-size="9" fill="#98c379">(state) -> dict:</text>
+  <text x="315" y="380" font-family="Courier New, monospace" font-size="9" fill="#98c379">  return {"accepted": False}</text>
 
   <!-- ===== Edge 区域 ===== -->
   <rect x="540" y="55" width="230" height="340" rx="10" fill="#e67e22" opacity="0.08" stroke="#e67e22" stroke-width="2"/>
-  <text x="655" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#e67e22">🔀 Edge（边）</text>
+  <text x="655" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#e67e22">Edge（边）</text>
   <text x="655" y="98" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#555">连接节点，控制执行流</text>
 
   <!-- Edge 类型 -->
   <rect x="560" y="115" width="190" height="50" rx="6" fill="white" stroke="#e67e22" stroke-width="1.5" filter="url(#shadow-lg02)"/>
-  <text x="655" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">➡️ 普通边</text>
+  <text x="655" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">普通边</text>
   <text x="655" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">add_edge(A, B)</text>
-  <text x="655" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#999">固定路由：A 完成后必到 B</text>
+  <text x="655" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#999">固定后继；多个出边可并发调度</text>
 
   <rect x="560" y="178" width="190" height="50" rx="6" fill="white" stroke="#e67e22" stroke-width="1.5" filter="url(#shadow-lg02)"/>
-  <text x="655" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">🔀 条件边</text>
+  <text x="655" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">条件边</text>
   <text x="655" y="211" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">add_conditional_edges()</text>
   <text x="655" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#999">动态路由：根据 State 决定去向</text>
 
   <rect x="560" y="241" width="190" height="42" rx="6" fill="white" stroke="#e67e22" stroke-width="1.5" filter="url(#shadow-lg02)"/>
-  <text x="655" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">🏁 START / END</text>
-  <text x="655" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">图的入口和出口节点</text>
+  <text x="655" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e67e22">START / END</text>
+  <text x="655" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#777">入口/终止标记，不是业务通过</text>
 
   <!-- Edge 组合示意 -->
   <rect x="570" y="298" width="170" height="85" rx="8" fill="#e67e22" opacity="0.06"/>

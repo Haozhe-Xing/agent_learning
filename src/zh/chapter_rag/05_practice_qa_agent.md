@@ -1,363 +1,221 @@
 # 6.5 实战：智能文档问答 Agent
 
-综合本章知识，构建一个可以回答关于任意文档集合问题的智能问答系统。
+本节用一份虚构退款政策完成一个可检查的本地问答练习：先找资料，再生成带来源的摘录，最后分别核对原文支撑和问题覆盖。默认不调用模型或嵌入服务，不需要密钥。配套直接复用 `reference_code/evidence_assistant/`，不再维护另一套同名问答类。
 
-## 系统架构
+## 本次迭代与验收
 
-![文档问答 Agent 系统架构](../svg/chapter_rag_05_qa_arch.svg)
+- **上一版的不足**：检索命中与引用标签存在，仍可能没有回答具体问题；“有答案文字”不足以交付。
+- **本章增加**：观察词法匹配、保留检索/生成/验证状态，接上独立的摘录核验和冻结任务要求。
+- **怎样验证**：正常问题、同主题缺答案、完全无关、编造内容、坏引用、验证器拒绝/异常以及资料更新都要留下预期与实际结果。下面全部 Python 片段可在仓库根目录独立运行。
+- **下一步**：有多个问题与总调用预算时使用[本地资料调研助手](../learning_project.md)；需要进一步控制实际输入时进入[第7章](../chapter_context_engineering/README.md)。
 
-## 完整实现
+![本地QA的阶段状态、原文支撑和独立覆盖判据](../svg/chapter_rag_05_qa_arch.svg)
 
-下面是完整代码（约 300 行），分 4 个部分，建议边读边对照下面的导航：
+## 先读清三个接口的合同
 
-| 代码段 | 方法 | 作用 |
-|--------|------|------|
-| ① 初始化 | `__init__`（32-48 行） | 连 ChromaDB 向量库 + 建对话历史 |
-| ② 文档加载 | `add_text` / `add_file`（51-136 行） | 切片 → 向量化 → 存入向量库 |
-| ③ 检索 + 回答 | `_retrieve` / `ask`（149-237 行） | 检索相关片段 → 拼 prompt → 调 LLM 回答 |
-| ④ 主程序 | `main`（240-310 行） | 交互式循环 + 示例知识库 |
+| 已有模块/入口 | 本节实际使用 | 不能从中推导什么 |
+|---|---|---|
+| `rag.py` 的 `Document(source, text)`、`rank`/`ask` | 内存资料、可解释词法排名、带状态的回答 | 没有内置持久索引、内容版本或多格式加载 |
+| `research.py` 的 `check_excerpts`/`verify_excerpts` | 每行 `[source] 原文摘录` 可回查本次命中的原文，并有词项交集 | 不支持通用改写/摘要的语义蕴含判断，不验证现实来源真实性 |
+| `task_acceptance.py` 的 `check_question_coverage` | 对匹配问题核对独立冻结的字面要点；无规格/验证器时为 `unknown` | 不是自然语言通用判卷器，也不验证引用与权限 |
+
+`rank` 返回 `document/score/matched_terms`，分数是不同命中词项数。英文按词、中文按基础二元组匹配并过滤通用短语；短语过滤和最低匹配规则只能减少部分弱命中，不是语义检索或正确概率。
+
+`ask` 返回字典，包含 `status/answer/retrieved_sources/sources/retrieval/generation/verification/retryable`。默认生成器逐条引用检索原文；`answerer(messages)` 可以替换生成，但必须另外验收它的输出。系统规则固定，文档放在独立参考消息，当前问题单独保留。
+
+`answered` 表示这个类配置的检查通过。**未配置验证器时，它只检查引用标签；`answer_accepted(result)`也不能凭空补出原文支撑或任务覆盖。** 此时 `semantic_support=not_checked`。本节最终完成条件还必须包括独立的原文检查和 `coverage.status == "passed"`。`sources` 是通过类内检查后回答实际引用的来源，`retrieved_sources` 才是命中列表；失败回答不能把命中列表当成已核验引用。
+
+## 正常路径：先冻结题目与要点，再运行
+
+练习问题是“退款期限和需要的凭证是什么”。资料、问题和要点均为教学夹具；英文文本使词项匹配结果容易观察，不是语言理解质量测试。7天和收据要求由调用前的规格固定，生成器无权修改它们：
 
 ```python
-# doc_qa_agent.py
-import os
-import json
-import uuid
-import datetime
-import chromadb
-from pathlib import Path
-from openai import OpenAI
-from dotenv import load_dotenv
-from typing import Optional, List
-from rich.console import Console
-from rich.panel import Panel
-from rich.markdown import Markdown
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent, answer_accepted
+from reference_code.evidence_assistant.research import check_excerpts, verify_excerpts
+from reference_code.evidence_assistant.task_acceptance import check_question_coverage
 
-load_dotenv()
-
-client = OpenAI()
-console = Console()
-
-
-class DocumentQAAgent:
-    """智能文档问答 Agent"""
-    
-    def __init__(self, name: str = "文档助手", persist_dir: str = "./qa_db"):
-        self.name = name
-        
-        # 初始化向量库
-        self.chroma = chromadb.PersistentClient(path=persist_dir)
-        self.collection = self.chroma.get_or_create_collection(
-            name="documents",
-            metadata={"hnsw:space": "cosine"}
-        )
-        
-        # 对话历史
-        self.chat_history = []
-        
-        count = self.collection.count()
-        console.print(f"[dim]{name} 已启动，知识库包含 {count} 个文档片段[/dim]")
-    
-    # =====================
-    # 文档管理
-    # =====================
-    
-    def add_text(self, text: str, source: str = "manual", chunk_size: int = 400):
-        """添加文本到知识库"""
-        # 按字符数分割（兼容中文和英文）
-        # 中文文本词语之间没有空格，按空格分词会导致整段文本无法分割
-        chunks = []
-        # 先按段落分割，尽量保持语义完整性
-        paragraphs = text.split('\n\n')
-        current_chunk = ""
-        
-        for para in paragraphs:
-            para = para.strip()
-            if not para:
-                continue
-            # 如果当前块加上新段落不超过 chunk_size，就合并
-            if len(current_chunk) + len(para) + 1 <= chunk_size:
-                current_chunk = current_chunk + "\n" + para if current_chunk else para
-            else:
-                # 保存当前块（如果有内容）
-                if current_chunk:
-                    chunks.append(current_chunk)
-                # 如果单个段落超过 chunk_size，按句号/问号/感叹号分割
-                if len(para) > chunk_size:
-                    import re
-                    sentences = re.split(r'(?<=[。！？.!?])', para)
-                    current_chunk = ""
-                    for sentence in sentences:
-                        if not sentence.strip():
-                            continue
-                        if len(current_chunk) + len(sentence) <= chunk_size:
-                            current_chunk += sentence
-                        else:
-                            if current_chunk:
-                                chunks.append(current_chunk)
-                            current_chunk = sentence
-                else:
-                    current_chunk = para
-        
-        if current_chunk:
-            chunks.append(current_chunk)
-        
-        if not chunks:
-            return
-        
-        # 批量嵌入
-        embeddings_response = client.embeddings.create(
-            input=chunks,
-            model="text-embedding-3-small"
-        )
-        embeddings = [e.embedding for e in embeddings_response.data]
-        
-        # 存储
-        ids = [str(uuid.uuid4()) for _ in chunks]
-        self.collection.add(
-            ids=ids,
-            documents=chunks,
-            embeddings=embeddings,
-            metadatas=[{
-                "source": source,
-                "chunk_index": i,
-                "added_at": datetime.datetime.now().isoformat()
-            } for i in range(len(chunks))]
-        )
-        
-        console.print(f"[green]✅ 已添加 {len(chunks)} 个片段（来源：{source}）[/green]")
-    
-    def add_file(self, file_path: str):
-        """从文件加载并添加到知识库"""
-        path = Path(file_path)
-        
-        if not path.exists():
-            console.print(f"[red]❌ 文件不存在：{file_path}[/red]")
-            return
-        
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            self.add_text(content, source=path.name)
-            
-        except Exception as e:
-            console.print(f"[red]❌ 加载失败：{e}[/red]")
-    
-    def list_sources(self) -> List[str]:
-        """列出知识库中的所有来源"""
-        if self.collection.count() == 0:
-            return []
-        
-        results = self.collection.get(include=["metadatas"])
-        sources = list(set(
-            m.get("source", "unknown") 
-            for m in results["metadatas"]
-        ))
-        return sources
-    
-    # =====================
-    # 问答
-    # =====================
-    
-    def _retrieve(self, query: str, n: int = 5) -> List[dict]:
-        """检索相关文档"""
-        if self.collection.count() == 0:
-            return []
-        
-        response = client.embeddings.create(
-            input=query.replace("\n", " "),
-            model="text-embedding-3-small"
-        )
-        query_embedding = response.data[0].embedding
-        
-        results = self.collection.query(
-            query_embeddings=[query_embedding],
-            n_results=min(n, self.collection.count()),
-            include=["documents", "metadatas", "distances"]
-        )
-        
-        chunks = []
-        if results["documents"] and results["documents"][0]:
-            for doc, meta, dist in zip(
-                results["documents"][0],
-                results["metadatas"][0],
-                results["distances"][0]
-            ):
-                relevance = 1 - dist
-                if relevance > 0.3:
-                    chunks.append({
-                        "content": doc,
-                        "source": meta.get("source", "未知"),
-                        "relevance": round(relevance, 3)
-                    })
-        
-        return chunks
-    
-    def ask(self, question: str) -> str:
-        """向知识库提问"""
-        
-        # 检索相关文档
-        chunks = self._retrieve(question)
-        
-        if not chunks:
-            return "抱歉，我的知识库中没有找到与此问题相关的信息。请先添加相关文档。"
-        
-        # 构建上下文
-        context_parts = []
-        for i, chunk in enumerate(chunks[:3], 1):
-            context_parts.append(
-                f"【文档片段 {i}】（来源：{chunk['source']}，相关度：{chunk['relevance']}）\n"
-                f"{chunk['content']}"
-            )
-        
-        context = "\n\n".join(context_parts)
-        
-        # 构建消息（包含对话历史）
-        messages = [
-            {
-                "role": "system",
-                "content": f"""你是 {self.name}，一个基于用户文档知识库的问答助手。
-
-回答要求：
-1. 只基于提供的参考文档回答
-2. 如果参考文档中没有相关信息，明确说明
-3. 引用具体来源（如"根据文档X..."）
-4. 回答简洁准确，避免编造信息
-
-【参考文档】
-{context}"""
-            }
-        ] + self.chat_history[-6:] + [  # 保留最近3轮对话
-            {"role": "user", "content": question}
-        ]
-        
-        response = client.chat.completions.create(
-            model="gpt-4.1",
-            messages=messages,
-            max_tokens=800
-        )
-        
-        answer = response.choices[0].message.content
-        
-        # 更新对话历史
-        self.chat_history.append({"role": "user", "content": question})
-        self.chat_history.append({"role": "assistant", "content": answer})
-        
-        return answer
-
-
-# ============================
-# 主程序
-# ============================
-
-def main():
-    agent = DocumentQAAgent("智能文档助手")
-    
-    # 添加示例知识库
-    sample_docs = [
-        ("Python 基础", """
-Python 是一种高级编程语言，以简洁易读著称。Python 由 Guido van Rossum 于1991年创建。
-Python 支持面向对象编程、函数式编程和过程式编程。
-Python 的包管理工具是 pip，虚拟环境工具推荐使用 venv 或 conda。
-"""),
-        ("FastAPI 简介", """
-FastAPI 是一个现代、高性能的 Python Web 框架。
-FastAPI 基于 Python 3.7+ 的类型注解，自动生成 API 文档。
-FastAPI 的性能接近 NodeJS 和 Go，是目前最快的 Python Web 框架之一。
-使用 uvicorn 作为 ASGI 服务器，命令：uvicorn main:app --reload
-"""),
-        ("LangChain 介绍", """
-LangChain 是一个用于构建 LLM 应用的开源框架。
-LangChain 提供：Chain（处理管道）、Agent（智能体）、Memory（记忆）、RAG 等组件。
-LangChain 支持 OpenAI、Anthropic、本地模型等多种 LLM 提供商。
-最新版本 LangChain 0.3 采用 LCEL（LangChain Expression Language）作为标准链构建方式。
-"""),
-    ]
-    
-    for title, content in sample_docs:
-        agent.add_text(content, source=title)
-    
-    console.print(Panel(
-        f"[bold]📚 {agent.name} 已就绪[/bold]\n"
-        f"知识库包含 {len(sample_docs)} 个主题\n\n"
-        "命令：\n"
-        "  sources → 查看知识库来源\n"
-        "  add <文件路径> → 添加文件\n"
-        "  quit → 退出",
-        title="系统启动",
-        border_style="blue"
-    ))
-    
-    while True:
-        user_input = input("\n❓ 你的问题：").strip()
-        
-        if not user_input:
-            continue
-        
-        if user_input.lower() == "quit":
-            break
-        
-        if user_input.lower() == "sources":
-            sources = agent.list_sources()
-            console.print(f"[cyan]知识库来源（{len(sources)}个）：[/cyan]")
-            for s in sources:
-                console.print(f"  • {s}")
-            continue
-        
-        if user_input.lower().startswith("add "):
-            file_path = user_input[4:].strip()
-            agent.add_file(file_path)
-            continue
-        
-        # 回答问题
-        answer = agent.ask(user_input)
-        console.print(f"\n[bold green]📖 回答：[/bold green]")
-        console.print(Markdown(answer))
-
-
-if __name__ == "__main__":
-    main()
+question = "What is the refund deadline and required proof?"
+# Freeze requirements independently of the answer producer.
+tasks = [{"question": question, "requirements": [
+    {"id": "deadline", "description": "seven-day refund deadline", "all_of": ["seven days"]},
+    {"id": "proof", "description": "receipt required", "all_of": ["receipt"]},
+]}]
+documents = [Document("policy-v1",
+    "Refund requests are accepted within seven days and require a receipt.")]
+qa = DocumentQAAgent(documents, verifier=verify_excerpts)
+hits = qa.rank(question)
+assert hits[0]["document"].source == "policy-v1"
+assert hits[0]["score"] == len(hits[0]["matched_terms"])
+retrieved = [hit["document"] for hit in hits]
+result = qa.ask(question)
+support = check_excerpts(question, result["answer"], retrieved)
+coverage = check_question_coverage(question, result["answer"], specs=tasks)
+accepted = (answer_accepted(result) and support["status"] == "passed"
+            and coverage["status"] == "passed")
+assert accepted is True
+assert result["sources"] == ["policy-v1"]
+print({"qa": result["status"], "support": support["status"],
+       "coverage": coverage["status"], "accepted": accepted})
 ```
 
-## 示例对话
+预期输出中的 `qa/support/coverage` 分别为 `answered/passed/passed`，`accepted` 为 `True`。`verify_excerpts` 是给 QA 类的独立布尔回调，另行保留的 `support` 字典用于查看详细原因；它们都只核对摘录。`check_question_coverage` 不调用生成器，独立检查两个要点。大写、空白的规范化允许排版变化，不允许把“十天”当作“七天”。
 
+本例在一次调用中冻结资料，`rank` 与 `ask` 使用同一份列表。实际服务不能在两次操作间静默切换资料或权限。每个来源标签在本例中唯一；接收外部资料的适配器还应检查重复/非法标识，保留稳定版本与命中快照。
+
+## 资料相关，但还不能完成问题
+
+只有收据要求的资料可以提供有效摘录，却没有期限。自由问题也不能套用另一道题的预期：
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent
+from reference_code.evidence_assistant.research import verify_excerpts
+from reference_code.evidence_assistant.task_acceptance import check_question_coverage
+
+question = "What is the refund deadline and required proof?"
+tasks = [{"question": question, "requirements": [
+    {"id": "deadline", "description": "seven-day refund deadline", "all_of": ["seven days"]},
+    {"id": "proof", "description": "receipt required", "all_of": ["receipt"]},
+]}]
+qa = DocumentQAAgent([Document("policy-v1", "Refund requests require a receipt.")],
+                     verifier=verify_excerpts)
+result = qa.ask(question)
+coverage = check_question_coverage(question, result["answer"], specs=tasks)
+assert result["status"] == "answered"  # A supported excerpt, not a complete answer.
+assert coverage["status"] == "failed"
+assert coverage["missing_points"] == ["seven-day refund deadline"]
+
+free_question = "What is the refund owner's birthday?"
+free = qa.ask(free_question)
+unknown = check_question_coverage(free_question, free["answer"], specs=tasks)
+assert unknown["status"] == "unknown"
+absent = qa.ask("Mars weather?")
+assert absent["status"] == "no_evidence"
+assert absent["generation"]["status"] == "not_started"
+print({"missing": coverage["missing_points"], "free_question": unknown["status"],
+       "unrelated": absent["status"]})
 ```
-❓ 你的问题：FastAPI 用什么服务器？
 
-📖 回答：
-根据文档"FastAPI 简介"，FastAPI 使用 **uvicorn** 作为 ASGI 服务器。
+三种结果分别是：命中但缺“七天期限”要点、命中但没有本题验收规格、检索无命中。它们都不能交付为已完成。`unknown` 表示判据尚未配置，不代表已证明问题无解；`no_evidence` 也只说明当前检索没有找到候选，不代表全世界没有资料。
 
-启动命令为：
+`ask` 本身不执行重试。`retryable` 只是给宿主的提示，不能据此无限改写问题直到出现来源。若尝试新查询，须限制查询/调用次数并始终按原始问题验收；无证据时重复同一请求不会自动补出答案。
+
+## 有正确标签，内容仍然可能不受支持
+
+下面注入一个固定错误输出。它只模拟生成器失误，没有发真实模型请求：
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent, answer_accepted
+from reference_code.evidence_assistant.research import check_excerpts, verify_excerpts
+
+policy = Document("policy-v1", "Refund requests are accepted within seven days.")
+wrong = "[policy-v1] Refund requests are accepted within ninety days."
+# A scripted faulty producer, not a real language-model call.
+producer = lambda messages: wrong
+labels_only = DocumentQAAgent([policy], producer).ask("refund deadline")
+assert answer_accepted(labels_only) is True
+assert labels_only["verification"]["semantic_support"] == "not_checked"
+support = check_excerpts("refund deadline", labels_only["answer"], [policy])
+assert support["code"] == "unsupported_excerpt"
+assert support["status"] == "failed"
+
+checked = DocumentQAAgent([policy], producer, verifier=verify_excerpts).ask("refund deadline")
+assert checked["status"] == "verification_failed"
+assert answer_accepted(checked) is False
+assert checked["sources"] == []
+assert checked["retrieved_sources"] == ["policy-v1"]
+print(checked["status"], support["code"])
+```
+
+这解释了为什么不能把默认 `answered` 当作问答完成。加上摘录验证器后，九十天无法回查七天原文，结果是 `verification_failed`；被检索到的 `policy-v1` 仍出现在 `retrieved_sources` 中，`sources` 为空。若以后允许自由改写，应替换为适用的独立支撑验证或人工审查，而不是放松成“有标签就行”。
+
+## 失败不是空字符串，也不是成功的替代答案
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent, answer_accepted
+
+policy = Document("policy-v1", "Refund requests are accepted within seven days.")
+for output, status, error in [
+    ("  ", "generation_failed", "empty_or_non_string_answer"),
+    (None, "generation_failed", "empty_or_non_string_answer"),
+    ("Seven days.", "verification_failed", "missing_citations"),
+    ("[invented] Refunds take seven days.", "verification_failed", "unknown_citations"),
+]:
+    result = DocumentQAAgent([policy], lambda messages: output).ask("refund")
+    assert result["status"] == status
+    stage = "generation" if status == "generation_failed" else "verification"
+    assert result[stage]["error"] == error
+    assert answer_accepted(result) is False
+
+def broken_verifier(question, answer, documents):
+    raise RuntimeError("fixed verifier failure")
+
+for verifier, error in [
+    (lambda question, answer, documents: False, "task_requirements_not_met"),
+    (lambda question, answer, documents: 1, "task_requirements_not_met"),
+    (broken_verifier, "verifier_error"),
+]:
+    result = DocumentQAAgent([policy], verifier=verifier).ask("refund")
+    assert result["status"] == "verification_failed"
+    assert result["verification"]["error"] == error
+    assert result["generation"]["status"] == "succeeded"
+print("output, citation, and verifier failures retained")
+```
+
+| 外层状态 | 实际含义 |
+|---|---|
+| `retrieval_failed` | 检索或来源标识检查异常，尚不能当作无命中 |
+| `no_evidence` | 当前检索为空；生成未开始、验证未运行 |
+| `generation_failed` | 生成异常，或输出为空白/非字符串 |
+| `verification_failed` | 缺引用、未知/未命中引用，或配置的独立回调拒绝/异常 |
+| `answered` | 类内检查通过；最终交付还要看本题要求的支撑和覆盖 |
+
+提供者的 `TimeoutError`/`ConnectionError` 会保留错误类型并标记可重试；普通 `RuntimeError` 不被当作临时故障。`KeyboardInterrupt` 不转换为成功或普通失败。回调必须严格返回布尔 `True` 才通过；抛异常保留 `verifier_error`，不要用另一次生成掩盖判据故障。
+
+## 来源变了，旧回答与旧预期都要复核
+
+```python
+from reference_code.evidence_assistant.rag import Document, DocumentQAAgent
+from reference_code.evidence_assistant.research import check_excerpts, verify_excerpts
+from reference_code.evidence_assistant.task_acceptance import check_question_coverage
+
+question = "What is the refund deadline?"
+tasks = [{"question": question, "requirements": [
+    {"id": "deadline", "description": "seven-day deadline", "all_of": ["seven days"]},
+]}]
+old = Document("policy-v1", "Refund requests are accepted within seven days.")
+old_result = DocumentQAAgent([old], verifier=verify_excerpts).ask(question)
+updated = Document("policy-v2", "Refund requests are accepted within ten days.")
+new_result = DocumentQAAgent([updated], verifier=verify_excerpts).ask(question)
+assert check_excerpts(question, old_result["answer"], [updated])["status"] == "failed"
+coverage = check_question_coverage(question, new_result["answer"], specs=tasks)
+assert new_result["status"] == "answered"
+assert coverage["status"] == "failed"  # A policy change requires a specification review.
+print(new_result["sources"], coverage["missing_points"])
+```
+
+`Document` 只有来源标签和文本，本节的 `v1/v2` 由调用方提供，**不是自动版本管理**。摘录核验可以拒绝引用旧正文的回答，但不会自动决定政策改变是否正确。变成十天后，旧的七天要求不再满足，应审查资料与业务规格后另立预期，不能让生成器按新答案改测试。
+
+[6.2](./02_document_loading.md)已提供原文 SHA-256 与字符偏移的分块机制；接入时应把块 ID、来源版本和偏移映射到 QA 的引用清单，再对本次命中快照核验。重复来源、旧索引清理、权限变更与缓存失效也属于适配合同，当前两字段 `Document` 不会自动完成这些工作。
+
+## 到哪里停，怎样继续
+
+| 已有练习 | 与本节的关系 | 仍须单独完成的接入 |
+|---|---|---|
+| [6.2 加载与分块](./02_document_loading.md) | 保真文本、稳定来源版本与位置 | 加载/分块结果到问答引用清单的映射 |
+| [6.3 向量存储](./03_embeddings_vectordb.md)、[6.4 融合/重排](./04_retrieval_strategies.md) | 独立 `reference_code/vector_retrieval/` 练习，返回候选而不生成答案 | 当前没有与本 QA 类组合的适配器；须保留候选身份、版本、预算和失败 |
+| 本节词法 QA | 正常与反例、摘录支撑、冻结要点 | 不含 PDF/Word/Web、语义编码器、对话历史或上线服务 |
+| [综合调研项目](../learning_project.md) | 已组合本地资料、多问题、上下文和 Harness 预算 | 其默认规格只适用于随附任务，自有资料须提供独立规格或验证器 |
+
+在仓库根目录运行：
+
 ```bash
-uvicorn main:app --reload
+python examples/chapter06/doc_qa_agent.py
+python -m unittest examples.integration_tests.test_rag_qa_chapter -v
+python -m reference_code.evidence_assistant --format json
 ```
 
-❓ 你的问题：LangChain 和 FastAPI 有什么关系？
+第一个命令只展示原始 QA 接口的阶段状态，不带本节完整覆盖规格；第三个命令是另一个已配规格的多问题应用。两者都不是“本章所有检索技术已接成一个产品”的证据。本节代码和测试无额外依赖、无线上调用；真实模型、语义检索效果、跨片段充分性与生产权限需要另行测试。
 
-📖 回答：
-根据文档中的信息：
-- **LangChain** 是用于构建 LLM 应用的框架，提供 Agent、RAG 等 AI 组件
-- **FastAPI** 是高性能 Python Web 框架，用于构建 API 服务
+练习增加一题必须合并两个来源的要求，事先冻结两个必答点。分别移除一个来源、改动关键数值、返回不受支持的改写，提交排名原因、阶段状态、支撑结果、缺失要点和最终判定。先让这一组证据闭环，再决定是否需要向量检索、更多格式或更复杂的 Agent 循环。
 
-两者可以结合使用：用 LangChain 构建 AI 逻辑，用 FastAPI 将其暴露为 API 接口。
-但文档中没有直接描述两者的集成方式，建议查阅相关教程。
-```
-
----
-
-## 小结
-
-本章从零构建了完整的 RAG 系统：
-
-| 阶段 | 技术要点 |
-|------|---------|
-| 文档加载 | 多格式支持（PDF/Word/网页/文本） |
-| 文本分割 | 按语义/标题/Token 分割，设置重叠 |
-| 向量嵌入 | OpenAI/本地模型，批量处理 |
-| 向量存储 | ChromaDB 持久化存储 |
-| 检索策略 | 混合检索、重排序、查询扩展 |
-| 答案生成 | 上下文注入 + 来源引用 |
-
----
-
-*下一节：[6.6 论文解读：RAG 前沿进展](./06_paper_readings.md)*
+*下一章：[第7章：上下文工程](../chapter_context_engineering/README.md)*

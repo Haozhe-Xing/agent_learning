@@ -1,4 +1,4 @@
-# 15.3 Three-Layer Architecture: Gateway / Engine / Plugin
+# 13.3 Three-Layer Architecture: Gateway / Engine / Plugin
 
 > ☤ *"Three layers aren't a classification — they're three ways of looking at the same system."*
 
@@ -6,7 +6,7 @@
 
 ## Why Hermes' Architecture Matters
 
-Hermes layers a **Plugin subsystem** on top of the traditional channel+loop+tool structure. Memory, tool-execution backend, self-evolving loop, and voice transcriber are **all plugins** — giving Hermes the same "swappable kernel" flexibility as DeepSeek Harness (Ch.17), just earlier and more Pythonic.
+This page uses Gateway / Engine / Plugin as teaching perspectives on Hermes. Check memory interfaces, tool backends, candidate-generation controls, and voice providers separately; the diagram does not establish that all capabilities are plugins. Compare those boundaries with [chapter 15, DeepSeek Harness](../chapter_deepseek_harness/README.md) without assuming shared lineage or interchangeable kernels.
 
 ![Hermes three-layer architecture](../svg/chapter_hermes_03_three_layer.svg)
 
@@ -33,7 +33,7 @@ async def agent_loop(session, user_message):
             await self_evolving.on_tool_use(session, parsed.tool_call, result, context)
 ```
 
-The `self_evolving.on_tool_use` hook is Hermes' **unique** addition — every completed task may trigger skill creation/update.
+The `self_evolving.on_tool_use` hook above is a teaching interface, not a verified Hermes API. [Section 13.4](./04_self_evolving_skills.md) discusses candidate generation and acceptance.
 
 ### Context Manager — pulls from plugin Memory Store
 
@@ -93,4 +93,4 @@ Hermes implements all six pillars **plus two new ones**: Self-Evolution and Honc
 
 ---
 
-*Next section: [15.4 Core: Self-Evolving Skills Loop](./04_self_evolving_skills.md)*
+*Next section: [13.4 Core: Self-Evolving Skills Loop](./04_self_evolving_skills.md)*

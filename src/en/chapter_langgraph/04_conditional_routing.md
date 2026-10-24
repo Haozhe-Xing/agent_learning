@@ -1,275 +1,112 @@
-# 13.4 Conditional Routing and Loop Control
+# 11.4 Conditional Routing and Loop Control
 
-LangGraph's power lies in its flexible conditional routing and loop control — enabling it to express workflows far more complex than a simple "call a tool."
+The 11.3 `tools_condition` decides whether to enter tools. Here, business routing reviews required release fields, proposes a revision, and independently checks again. Acceptance, a failed check and budget exhaustion are distinct outcomes. Stopping at a limit must never mean approval.
 
-In the previous section, we used `tools_condition`, a built-in condition function, to determine "whether a tool is needed." But real-world Agents often require more complex decision logic: deciding whether to pass or reject code based on review results, routing to different processing flows based on user intent, deciding whether to iterate and optimize based on a quality score...
+![Release-record revision loop with explicit failure exits](../svg/chapter_langgraph_04_review_loop.svg)
 
-All of these can be implemented with **conditional routing** — you define a condition function that inspects the current state and returns a string identifying which path to take. Then use `add_conditional_edges` to map those strings to different target nodes.
+## Run the bounded revision exercise
 
-### The Power and Risk of Loops
+With the 11.2 locked environment, run from the repository root:
 
-The most powerful use of conditional routing is constructing **loops** — allowing a node's output to point back to a previous node. For example, an iterative flow like "code review → fix → re-review → re-fix." But loops also introduce the risk of infinite loops: if the condition logic has a bug, the Agent might loop forever. Therefore, **setting a maximum iteration count is a mandatory safety measure.**
-
-Below, we use a "Code Review Agent" to demonstrate conditional routing and loop control. This Agent analyzes code, finds issues, fixes the code, and then re-reviews — until the code passes review or the maximum iteration count is reached.
-
-![Conditional Routing and Loop Control — Code Review Agent Example](../svg/chapter_langgraph_04_review_loop.svg)
-
-```python
-from langgraph.graph import StateGraph, END, START
-from typing import TypedDict, Optional, Literal
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
-import json
-
-llm = ChatOpenAI(model="gpt-4o-mini")
-
-# ============================
-# Code Review Agent with Loops
-# ============================
-
-class CodeReviewState(TypedDict):
-    code: str
-    review_result: Optional[str]
-    issues: list
-    iteration: int
-    max_iterations: int
-    approved: bool
-
-def analyze_code(state: CodeReviewState) -> CodeReviewState:
-    """Analyze code quality"""
-    response = llm.invoke([
-        HumanMessage(content=f"""Review the following code and identify all issues (JSON format):
-```python
-{state['code']}
-```
-Return: {{"issues": ["issue1", "issue2"], "severity": "high/medium/low"}}""")
-    ])
-    
-    try:
-        import re
-        json_match = re.search(r'\{.*\}', response.content, re.DOTALL)
-        if json_match:
-            result = json.loads(json_match.group())
-            issues = result.get("issues", [])
-        else:
-            issues = []
-    except:
-        issues = []
-    
-    return {
-        "issues": issues,
-        "review_result": response.content,
-        "iteration": state.get("iteration", 0) + 1
-    }
-
-def fix_code(state: CodeReviewState) -> CodeReviewState:
-    """Fix code issues"""
-    issues_text = "\n".join([f"- {issue}" for issue in state["issues"]])
-    
-    response = llm.invoke([
-        HumanMessage(content=f"""Fix the issues in the following code:
-
-Code:
-```python
-{state['code']}
+```bash
+python -m reference_code.langgraph_patterns review
+python -m reference_code.langgraph_patterns review --no-repair --max-attempts 2
 ```
 
-Issues:
-{issues_text}
+The first command returns `status="accepted"`, `attempts=2`: a fixed repair supplies a missing rollback description and the second check passes. The second leaves the draft unchanged, returning `status="budget_exhausted"`, `accepted=false`, unresolved `findings`, and exit code 1.
 
-Return only the fixed Python code:""")
-    ])
-    
-    fixed_code = response.content
-    if "```python" in fixed_code:
-        fixed_code = fixed_code.split("```python")[1].split("```")[0].strip()
-    elif "```" in fixed_code:
-        fixed_code = fixed_code.split("```")[1].split("```")[0].strip()
-    
-    return {"code": fixed_code}
-
-def should_fix_or_approve(state: CodeReviewState) -> Literal["fix", "approve", "max_reached"]:
-    """Conditional routing: decide whether to continue fixing or approve
-    
-    This function is the core control logic of the entire loop:
-    - Check the iteration count limit (safety valve to prevent infinite loops)
-    - If no issues, approve directly
-    - Only trigger the fix loop for critical issues (e.g., bugs, security vulnerabilities)
-    """
-    
-    if state["iteration"] >= state["max_iterations"]:
-        return "max_reached"
-    
-    if not state["issues"]:
-        return "approve"
-    
-    # Only continue fixing for critical issues
-    critical_keywords = ["bug", "error", "security vulnerability", "performance issue", "syntax error"]
-    has_critical = any(
-        any(kw in issue.lower() for kw in critical_keywords)
-        for issue in state["issues"]
-    )
-    
-    return "fix" if has_critical else "approve"
-
-def mark_approved(state: CodeReviewState) -> CodeReviewState:
-    """Mark code as approved"""
-    return {"approved": True}
-
-# Build the graph
-graph = StateGraph(CodeReviewState)
-graph.add_node("analyze", analyze_code)
-graph.add_node("fix", fix_code)
-graph.add_node("approve", mark_approved)
-
-graph.add_edge(START, "analyze")
-graph.add_conditional_edges(
-    "analyze",
-    should_fix_or_approve,
-    {
-        "fix": "fix",
-        "approve": "approve",
-        "max_reached": "approve"
-    }
-)
-graph.add_edge("fix", "analyze")  # After fixing, re-analyze (loop!)
-graph.add_edge("approve", END)
-
-app = graph.compile()
-
-# Test
-initial_code = """
-def divide(a, b):
-    return a / b
-
-result = divide(10, 0)
-print(result)
-"""
-
-result = app.invoke({
-    "code": initial_code,
-    "review_result": None,
-    "issues": [],
-    "iteration": 0,
-    "max_iterations": 3,
-    "approved": False
-})
-
-print(f"Final code:\n{result['code']}")
-print(f"Approved: {result['approved']}")
-print(f"Iterations: {result['iteration']}")
-```
-
-## Advanced Routing Patterns
-
-The code review example above demonstrates basic conditional routing. In real Agent systems, you may need more complex routing logic:
-
-**Pattern 1: Fan-out**
-
-Route requests to different specialized processing flows based on user intent:
+See `reference_code/langgraph_patterns/review.py` for the implementation. It executes no submitted code and calls no model. The reviewer only checks nonempty `version/owner/rollback` strings; the repairer only proposes a fixed rollback description. Separating proposals from independent checks makes adapters replaceable; it is not a general code-review benchmark.
 
 ```python
-def intent_router(state: dict) -> str:
-    """Route to different processing nodes based on user intent"""
-    intent = state.get("detected_intent", "unknown")
-    
-    routing_map = {
-        "code_review": "code_analyzer",
-        "bug_fix": "debugger",
-        "feature_request": "planner",
-        "documentation": "doc_writer",
-    }
-    
-    return routing_map.get(intent, "general_handler")
+from reference_code.langgraph_patterns.review import run_review
 
-graph.add_conditional_edges("intent_detector", intent_router, {
-    "code_analyzer": "code_analyzer",
-    "debugger": "debugger",
-    "planner": "planner",
-    "doc_writer": "doc_writer",
-    "general_handler": "general_handler",
-})
+draft = {"version": "1.0", "owner": "release-team"}
+result = run_review(draft, max_attempts=3)
+assert result["status"] == "accepted"
+assert result["attempts"] == 2  # review, repair, independent recheck
+assert result["findings"] == []
+
+def keep_draft(draft, findings):
+    return draft
+
+failed = run_review(draft, max_attempts=2, repairer=keep_draft)
+assert failed["status"] == "budget_exhausted"
+assert failed["accepted"] is False
+assert failed["findings"] == ["rollback"]
+print(failed["status"], failed["attempts"], failed["findings"])
 ```
 
-**Pattern 2: Quality Gate**
+## Route by outcome before deciding whether another revision is allowed
 
-Add a quality check before Agent output; if it doesn't pass, send it back for rework:
+This is the actual routing rule. `max_attempts` counts **reviews**, including the first review; there are at most `max_attempts-1` repair opportunities. Passing on the final allowed review is accepted. Unresolved findings on that review exhaust the budget:
 
 ```python
-def quality_gate(state: dict) -> str:
-    """Check output quality, decide whether to pass or redo"""
-    score = state.get("quality_score", 0)
-    retries = state.get("retry_count", 0)
-    
-    if score >= 0.8:
-        return "publish"       # Quality acceptable, publish
-    elif retries >= 3:
-        return "manual_review" # Retries exhausted, hand off to human
-    else:
-        return "regenerate"    # Regenerate
+from typing import Literal
+from reference_code.langgraph_patterns.review import ReviewState
+
+def route_review(state: ReviewState) -> Literal["accept", "repair", "exhausted", "fail"]:
+    if state["status"] == "failed":
+        return "fail"
+    if not state["findings"]:
+        return "accept"
+    if state["attempts"] >= state["max_attempts"]:
+        return "exhausted"
+    return "repair"
+
+assert route_review({"status": "running", "findings": ["rollback"],
+                     "attempts": 2, "max_attempts": 2}) == "exhausted"
 ```
 
-**Pattern 3: Map-Reduce (Parallel Merge)**
+The graph connects:
 
-LangGraph 2.0 introduced the `Send()` API, supporting dynamic creation of parallel branches:
+```text
+START → analyze
+  analyze → accept → END                check passed
+  analyze → exhausted → END             findings remain, no attempts left
+  analyze → fail → END                  known error or invalid response
+  analyze → repair → analyze            revise within budget, then recheck
+  repair  → fail → END                  repair adapter failed
+```
+
+`add_conditional_edges("analyze", route_review, {...})` maps symbols to nodes. The router neither repairs the draft nor sets acceptance. Do not also add an unconditional success edge from the same source and assume the conditional route cancels it; both may schedule successors. Nodes return partial updates, and the router sees state after those updates are applied.
+
+## Errors must not become “no findings”
+
+The implementation turns expected `AdapterError` exceptions and malformed responses into `failed` with a reason. It never reaches acceptance in these cases. Unexpected programming errors propagate for diagnosis; a bare `except` must not turn every failure into an empty findings list. Structured model output is validated at runtime, and valid types still cannot establish a correct business judgment.
 
 ```python
-from langgraph.constants import Send
+from langgraph.errors import GraphRecursionError
+from reference_code.langgraph_patterns.review import AdapterError, run_review
 
-def route_to_parallel(state: dict) -> list[Send]:
-    """Dynamically distribute tasks to multiple parallel nodes"""
-    subtasks = state.get("subtasks", [])
-    
-    # Create an independent Send for each subtask
-    return [
-        Send("worker", {"task": subtask, "task_id": i})
-        for i, subtask in enumerate(subtasks)
-    ]
+def unavailable(draft):
+    raise AdapterError("review unavailable")
 
-graph.add_conditional_edges("planner", route_to_parallel)
+result = run_review({}, reviewer=unavailable)
+assert result["status"] == "failed"
+assert result["accepted"] is False
+
+try:
+    run_review({}, recursion_limit=1)
+except GraphRecursionError:
+    print("graph step budget exceeded; no approval")
+else:
+    raise AssertionError("expected GraphRecursionError")
 ```
 
-## Debugging Conditional Routing
+`recursion_limit` is a separate graph super-step cap at the config's top level. Exceeding it raises `GraphRecursionError`; it is neither elapsed-time control nor the business retry budget. `run_review` leaves room for terminal nodes in its default finite topology. Setting the limit to 1 deliberately reproduces the error above. Live model/network adapters still need their own call, token, time and cancellation policies. Raising the step cap cannot repair faulty routing. See the [official recursion-limit interface](https://docs.langchain.com/oss/python/langgraph/graph-api#recursion-limit).
 
-When conditional routing behavior doesn't match expectations, the most effective debugging method is **tracing each routing decision**:
+## Exclusive routing, parallel dispatch and joining differ
 
-```python
-# Method 1: Add logging to the condition function
-import logging
-logger = logging.getLogger("agent.routing")
+| Purpose | Return or connection | Additional contract |
+|---|---|---|
+| Select one business branch | One conditional mapping symbol | A failure path for unknown/invalid input |
+| Schedule several known branches | Multiple edges or target names | Reducers, failures and a join barrier; see 11.2 |
+| Dispatch dynamic items | `langgraph.types.Send` with per-item input | Item/concurrency budgets, empty input, result IDs and merging |
 
-def route_with_logging(state: dict) -> str:
-    """Conditional routing with logging"""
-    decision = state.get("review_result")
-    iteration = state.get("iteration", 0)
-    
-    if decision == "pass":
-        result = "approve"
-    elif iteration >= state.get("max_iterations", 3):
-        result = "approve"  # Force approve when max iterations exceeded
-    else:
-        result = "fix"
-    
-    logger.info(f"Routing decision: iteration={iteration}, decision={decision} → {result}")
-    return result
+Exclusive routing with one string is not parallel fan-out; `Send` was not introduced only in a hypothetical “LangGraph 2.0.” This exercise runs a bounded single-path revision loop, not an implemented dynamic map-reduce workflow. `stream(..., stream_mode="updates")` exposes node updates; a logged update is not proof of business acceptance.
 
-# Method 2: Use stream to trace the complete execution path
-for event in app.stream(initial_state):
-    for node_name, output in event.items():
-        print(f"  Node [{node_name}] → iteration={output.get('iteration', '?')}")
-```
+## Acceptance and the next step
 
-> 💡 **Best practice**: Complex condition routing functions should be **unit tested first** to verify that every input combination returns the correct routing target, before integrating into the graph.
+Tests cover first-pass success, final-attempt success, persistent failures, malformed review output, adapter failures, programming exceptions and the graph step cap. Make `fixture_repair` keep the original draft and verify that the cap still leaves the task unaccepted. A human handoff requires the explicit pause protocol in 11.5; reaching `END` cannot create a resumable approval automatically.
 
----
-
-## Summary
-
-Key techniques for conditional routing:
-- **Condition function**: returns a string identifying the next node
-- **Loop control**: must set a maximum iteration count to prevent infinite loops
-- **State tracking**: record iteration count and completion flags in State
-
----
-
-*Next section: [13.5 Human-in-the-Loop: Human-AI Collaboration](./05_human_in_the_loop.md)*
+*Next section: [11.5 Human-in-the-Loop](./05_human_in_the_loop.md)*

@@ -1,63 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
-  <defs>
-    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
-    <marker id="wm" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#e67e22"/>
-    </marker>
-  </defs>
-  <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
-  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Working Memory: Scratchpad Pattern</text>
-
-  <!-- Without vs With working memory -->
-  <!-- Left: Without -->
-  <rect x="20" y="55" width="370" height="140" rx="8" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
-  <text x="205" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">❌ Without Working Memory</text>
-  <text x="35" y="100" font-size="11" fill="#444">Step 1: Compute total revenue → got ¥5.2M</text>
-  <text x="35" y="120" font-size="11" fill="#444">Step 2: Analyze product lines → forgot total revenue</text>
-  <text x="35" y="140" font-size="11" fill="#888">Step 3: Identify anomalies → forgot prior results</text>
-  <text x="35" y="160" font-size="11" fill="#ccc">Step 4: Write report → data is confused</text>
-  <rect x="35" y="170" width="340" height="18" rx="4" fill="#e74c3c" opacity="0.15"/>
-  <text x="205" y="183" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">Intermediate results lost → final output unreliable</text>
-
-  <!-- Right: With -->
-  <rect x="410" y="55" width="370" height="140" rx="8" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
-  <text x="595" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">✅ With Working Memory (Scratchpad)</text>
-  <text x="425" y="100" font-size="11" fill="#444">Step 1: Compute total revenue → write to scratchpad</text>
-  <text x="425" y="120" font-size="11" fill="#444">Step 2: Analyze product lines → refer to scratchpad</text>
-  <text x="425" y="140" font-size="11" fill="#444">Step 3: Identify anomalies → read previous results</text>
-  <text x="425" y="160" font-size="11" fill="#444">Step 4: Write report → consolidate all intermediates</text>
-  <rect x="425" y="170" width="340" height="18" rx="4" fill="#27ae60" opacity="0.15"/>
-  <text x="595" y="183" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">Fully traceable → complete and reliable output</text>
-
-  <!-- Scratchpad structure -->
-  <text x="400" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Scratchpad Data Structure</text>
-
-  <rect x="20" y="235" width="185" height="110" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
-  <text x="112" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">Task State</text>
-  <text x="32" y="278" font-size="11" fill="#444">• current_step</text>
-  <text x="32" y="296" font-size="11" fill="#444">• completed_steps</text>
-  <text x="32" y="314" font-size="11" fill="#444">• remaining_tasks</text>
-  <text x="32" y="332" font-size="11" fill="#444">• error_log</text>
-
-  <rect x="215" y="235" width="185" height="110" rx="8" fill="#e67e22" opacity="0.12" stroke="#e67e22" stroke-width="2"/>
-  <text x="307" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67e22">Intermediate Results</text>
-  <text x="227" y="278" font-size="11" fill="#444">• key-value store</text>
-  <text x="227" y="296" font-size="11" fill="#444">• computation cache</text>
-  <text x="227" y="314" font-size="11" fill="#444">• API response data</text>
-  <text x="227" y="332" font-size="11" fill="#444">• query result sets</text>
-
-  <rect x="410" y="235" width="185" height="110" rx="8" fill="#8e44ad" opacity="0.12" stroke="#8e44ad" stroke-width="2"/>
-  <text x="502" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">Reasoning Chain</text>
-  <text x="422" y="278" font-size="11" fill="#444">• decision log</text>
-  <text x="422" y="296" font-size="11" fill="#444">• hypotheses and validations</text>
-  <text x="422" y="314" font-size="11" fill="#444">• tool call records</text>
-  <text x="422" y="332" font-size="11" fill="#444">• backtracking markers</text>
-
-  <rect x="605" y="235" width="175" height="110" rx="8" fill="#2980b9" opacity="0.12" stroke="#2980b9" stroke-width="2"/>
-  <text x="692" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#2980b9">Attention Hints</text>
-  <text x="617" y="278" font-size="11" fill="#444">• key findings flagged</text>
-  <text x="617" y="296" font-size="11" fill="#444">• items to verify</text>
-  <text x="617" y="314" font-size="11" fill="#444">• priority ranking</text>
-  <text x="617" y="332" font-size="11" fill="#444">• time constraints</text>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460" role="img" aria-labelledby="title">
+<title id="title">Scratchpad: Inspectable Task State</title>
+<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
+<rect width="900" height="460" rx="14" fill="#f0f4f8"/>
+<text x="450" y="37" text-anchor="middle" font-size="20" font-weight="bold" fill="#233447">Scratchpad: Inspectable Task State</text>
+<rect x="30" y="110" width="260" height="180" rx="10" fill="#2c3e50"/>
+<text x="160" y="141" text-anchor="middle" font-size="16" fill="white" font-weight="bold">Result and provenance</text>
+<text x="160" y="173" text-anchor="middle" font-size="12" fill="white">Tool observations / proposals / refs</text>
+<text x="160" y="205" text-anchor="middle" font-size="12" fill="white">No private model reasoning required</text>
+<rect x="320" y="110" width="260" height="180" rx="10" fill="#236fa3"/>
+<text x="450" y="141" text-anchor="middle" font-size="16" fill="white" font-weight="bold">Task-scoped state</text>
+<text x="450" y="173" text-anchor="middle" font-size="12" fill="white">Address by owner + task + key</text>
+<text x="450" y="205" text-anchor="middle" font-size="12" fill="white">Capacity failure; no silent eviction</text>
+<rect x="610" y="110" width="260" height="180" rx="10" fill="#73519a"/>
+<text x="740" y="141" text-anchor="middle" font-size="16" fill="white" font-weight="bold">Independent checks and use</text>
+<text x="740" y="173" text-anchor="middle" font-size="12" fill="white">observed / verified / rejected</text>
+<text x="740" y="205" text-anchor="middle" font-size="12" fill="white">Reference data cannot change policy</text>
+<line x1="290" y1="200" x2="315" y2="200" stroke="#65758a" stroke-width="2"/><polygon points="315,200 307,196 307,204" fill="#65758a"/>
+<line x1="580" y1="200" x2="605" y2="200" stroke="#65758a" stroke-width="2"/><polygon points="605,200 597,196 597,204" fill="#65758a"/>
+<rect x="30" y="402" width="840" height="40" rx="8" fill="#fff0e9" stroke="#c46b3e"/>
+<text x="450" y="427" text-anchor="middle" font-size="12" fill="#873a24">Clear under task policy; cross-session retention separately requires consent and governance.</text>
 </svg>

@@ -1,10 +1,10 @@
-# 11.2 Self-Evolution Agent: From Execution to Self-Improvement
+# 25.2 Self-Evolution Agent: From Execution to Self-Improvement
 
 > 🧬 *"A truly long-term valuable Agent does not merely complete the current task, but extracts experience from every task so that the next performance is better."*
 
 ---
 
-## 11.2.1 What Is a Self-Evolution Agent?
+## 25.2.1 What Is a Self-Evolution Agent?
 
 A **Self-Evolution Agent** is an Agent system capable of continuous self-improvement based on its own operational experience. It crystallizes the success patterns, failure causes, user feedback, and environmental changes from each task into reusable assets, and automatically applies them in later tasks.
 
@@ -30,7 +30,7 @@ Only improvements that have passed evaluation and validation enter the long-term
 
 ---
 
-## 11.2.2 The Four Levels of Self-Evolution
+## 25.2.2 The Four Levels of Self-Evolution
 
 Self-Evolution can happen at different levels. The further down the stack, the greater the benefit — but also the higher the risk and cost.
 
@@ -49,11 +49,11 @@ Production systems usually start with L1 and L2: first teach the Agent to "remem
 
 ---
 
-## 11.2.3 Representative Frontier Work: The Paper Lineage of Self-Evolution
+## 25.2.3 Representative Frontier Work: The Paper Lineage of Self-Evolution
 
 A Self-Evolution Agent is not a fixed architecture proposed by a single paper; it is the convergence of multiple research lines: **reflection-based learning, output self-correction, tool-assisted critique, lifelong skill-library learning, automatic Agent-system design, and self-modifying codebases**. Understanding this body of work clarifies exactly which level "self-evolution" can occur at.
 
-> 📎 **Division of labor with 11.1**: This section strings these works together from the perspective of "self-evolution levels (L1–L4)"; among them, Reflexion and Voyager were already explained in detail from the perspective of "Prompt/Skill optimization methods" in the "Skill Auto-Evolution" subsection of [Section 12.1](./01_automatic_prompt_optimization.md) (with diagrams and a customer-service example). The two sections are complementary in perspective; here we only locate them by level and do not repeat the implementation details.
+> 📎 **Division of labor with 25.1**: This section strings these works together from the perspective of "self-evolution levels (L1–L4)"; among them, Reflexion and Voyager were already explained in detail from the perspective of "Prompt/Skill optimization methods" in the "Skill Auto-Evolution" subsection of [Section 25.1](./01_automatic_prompt_optimization.md) (with diagrams and a customer-service example). The two sections are complementary in perspective; here we only locate them by level and do not repeat the implementation details.
 
 ### Reflexion (NeurIPS 2023): Turning Reward Signals into Verbal Memory
 
@@ -73,7 +73,7 @@ At the start of the next episode, the most recent reflections are spliced into t
 
 **Key results and boundaries**: it clearly surpasses the no-reflection baseline on three task types — decision-making (ALFWorld), reasoning (HotpotQA), and programming (HumanEval, pass@1 reaching 91%). But it has two implicit prerequisites — a **relatively reliable Evaluator** (otherwise reflections drift further and further based on wrong signals), and the task must allow **multiple retries** (reflections only pay off in the next similar task). This is exactly why it is classified as L1: what changes is retrievable, editable, forgettable verbal memory, not weights.
 
-> 📎 The framework diagram and customer-service example of Reflexion are already given in [11.1.14 Skill Auto-Evolution](./01_automatic_prompt_optimization.md); we do not repeat them here.
+> 📎 The framework diagram and customer-service example of Reflexion are already given in [25.1.14 Skill Auto-Evolution](./01_automatic_prompt_optimization.md#skill-auto-evolution); we do not repeat them here.
 
 ### Self-Refine (NeurIPS 2023): Iterative Improvement of a Single Output with Self-Feedback
 
@@ -133,7 +133,7 @@ Voyager is the representative work that took the Self-Evolution Agent to L3 Skil
 
 **Why it is a milestone**: in Minecraft, Voyager far surpassed previous methods in unique items obtained, exploration mileage, and tech-tree unlock speed, and **the skill library can transfer zero-shot to new worlds**. It corresponds to L3 — crystallizing successful trajectories into callable Skills, and is also the ideological origin of almost all of today's "tool-based skill libraries / Skill systems" (including the entire SkillRL lineage later). Its boundary is a strong dependence on an environment that is **code-executable with immediate feedback**; without such strong verification signals, skill quality is hard to guarantee.
 
-> 📎 The skill-library code example of Voyager is already given in [11.1.14 Skill Auto-Evolution](./01_automatic_prompt_optimization.md); we do not repeat it here.
+> 📎 The skill-library code example of Voyager is already given in [25.1.14 Skill Auto-Evolution](./01_automatic_prompt_optimization.md#skill-auto-evolution); we do not repeat it here.
 
 ### ADAS (ICLR 2025): Automatically Searching for and Designing the Agent System Itself
 
@@ -192,7 +192,7 @@ These papers jointly show that Self-Evolution is not a slogan of "let the Agent 
 
 ---
 
-## 11.2.4 The System Architecture of a Self-Evolution Agent
+## 25.2.4 The System Architecture of a Self-Evolution Agent
 
 A controllable self-evolution system usually contains six modules:
 
@@ -239,7 +239,7 @@ The key principle is: **separate the execution path from the evolution path**. U
 
 ---
 
-## 11.2.5 The Self-Evolution Loop: Learning from a Single Failure
+## 25.2.5 The Self-Evolution Loop: Learning from a Single Failure
 
 Suppose a coding Agent made an error while modifying a project: without first reading the latest file content, it directly performed a replacement based on stale context, causing the patch to fail.
 
@@ -268,7 +268,7 @@ This is the minimal closed loop of self-evolution:
 
 ---
 
-## 11.2.6 Implementation Skeleton: A Lightweight Self-Evolution Agent
+## 25.2.6 Implementation Skeleton: A Lightweight Self-Evolution Agent
 
 Below is a simplified version showing the key data structures and control flow of a self-evolution system.
 
@@ -406,7 +406,7 @@ This example is deliberately kept simple, but it already embodies the core idea 
 
 ---
 
-## 11.2.7 How to Decide Whether an "Evolution" Is Worth Keeping?
+## 25.2.7 How to Decide Whether an "Evolution" Is Worth Keeping?
 
 The most dangerous part of a self-evolution system is that it may crystallize wrong experience. Therefore, every evolution patch should be evaluated.
 
@@ -425,9 +425,9 @@ A practical rule is:
 
 ---
 
-## 11.2.8 The Relationship Between Self-Evolution and the Agentic Data Flywheel
+## 25.2.8 The Relationship Between Self-Evolution and the Agentic Data Flywheel
 
-The Self-Evolution Agent and the [data flywheel in Section 12.3](./03_data_flywheel.md) are not two independent concepts, but the same closed loop expressed at different levels.
+The Self-Evolution Agent and the [data flywheel in Section 25.3](./03_data_flywheel.md) are not two independent concepts, but the same closed loop expressed at different levels.
 
 | Perspective | Self-Evolution Agent | Agentic Data Flywheel |
 |-------------|----------------------|-----------------------|
@@ -453,7 +453,7 @@ Produces higher-quality trajectories
 
 ---
 
-## 11.2.9 Risks and Boundaries
+## 25.2.9 Risks and Boundaries
 
 A Self-Evolution Agent sounds attractive, but you must avoid "uncontrolled self-modification". In production, adhere to the following boundaries:
 
@@ -465,7 +465,7 @@ A Self-Evolution Agent sounds attractive, but you must avoid "uncontrolled self-
 
 ---
 
-## 11.2.10 Practical Deployment Roadmap
+## 25.2.10 Practical Deployment Roadmap
 
 To build a Self-Evolution Agent from scratch, proceed along the following roadmap:
 
@@ -491,11 +491,11 @@ Phase 6: Data flywheel
 
 ---
 
-## 11.2.11 Frontier Research Panorama: Technical Routes and Research Gaps
+## 25.2.11 Frontier Research Panorama: Technical Routes and Research Gaps
 
 The previous sections answered "how to build a controllable self-evolution system" from an engineering perspective. But if we switch to the research frontier of 2025–2026, another question needs answering: **what exactly are these papers evolving, who is being trained, who is frozen, and which links are still missing?**
 
-To avoid confusion with the engineering-implementation levels `L1–L4` from 11.2.2, the four-level coordinate in the research survey below is renamed `R1–R4`: `R1` denotes the parameter level, `R2` the skill level, `R3` the memory level, and `R4` the system level. The former cares about "what is safer to change first in engineering", while the latter cares about "what object the paper actually updates".
+To avoid confusion with the engineering-implementation levels `L1–L4` from 25.2.2, the four-level coordinate in the research survey below is renamed `R1–R4`: `R1` denotes the parameter level, `R2` the skill level, `R3` the memory level, and `R4` the system level. The former cares about "what is safer to change first in engineering", while the latter cares about "what object the paper actually updates".
 
 After reading this section, you will be able to:
 
@@ -503,7 +503,7 @@ After reading this section, you will be able to:
 - Use the "proposer / solver / summarizer" three-role perspective to judge which module the training resources are invested in;
 - See clearly the most noteworthy research gap today: **the training of the summarizer itself**, and the cross-direction of "fully autonomous + training the summarizer".
 
-### 11.2.11.1 A Research Coordinate System: What Exactly Is "Evolution" in a Paper?
+### 25.2.11.1 A Research Coordinate System: What Exactly Is "Evolution" in a Paper?
 
 To impose order on a dozen papers of wildly different styles, the best method is not to list them, but to first ask a fundamental question: **when we say an Agent has "evolved", which part of it actually changed?**
 
@@ -541,7 +541,7 @@ R1–R4 answers "what evolves"; there is another orthogonal ruler answering "whe
 
 ---
 
-### 11.2.11.2 R2 Skill Level: Crystallizing Experience into Reusable Skills (Without Changing Weights)
+### 25.2.11.2 R2 Skill Level: Crystallizing Experience into Reusable Skills (Without Changing Weights)
 
 > **Common feature of this level**: the base model is frozen throughout; all "growth" happens in external Skill documents. Like giving the Agent an "external brain" — the main body does not move, the capability grows on the add-on.
 
@@ -646,7 +646,7 @@ To put it in one analogy: **give a genius (frozen LLM) a notebook that scores it
 
 > 📄 **Original**: arXiv [2604.01687](https://arxiv.org/abs/2604.01687) | 🧬 **Level**: R2 | **One-liner**: Give each new Skill a Verifier "examiner" that must pass the exam before entering the library — bringing software engineering's "unit testing" into Skill evolution.
 
-CoEvoSkills directly targets the common soft spot of AutoSkill / EvoSkill: **Skills are put into the library right after generation, with quality entirely relying on the LLM's self-discipline.** Its answer is blunt — you cannot rely on self-discipline, you need a validation closed loop. This is also the first frontal response to the "missing evaluation" ailment at the beginning of 11.2.11.2.
+CoEvoSkills directly targets the common soft spot of AutoSkill / EvoSkill: **Skills are put into the library right after generation, with quality entirely relying on the LLM's self-discipline.** Its answer is blunt — you cannot rely on self-discipline, you need a validation closed loop. This is also the first frontal response to the "missing evaluation" ailment at the beginning of 25.2.11.2.
 
 ![CoEvoSkills' Generator + Verifier twin stars: Skill and unit tests co-evolve](../svg/chapter_agentic_rl_selfevo_img08.png)
 
@@ -750,22 +750,22 @@ This work can be seen as the ultimate engineering version of CoEvoSkills' "valid
 
 > ⚠️ Note: although the "training" terminology is heavy throughout, the **target model stays frozen**; only the external Skill document is updated, and the optimizer is not trained (inference only). So it still belongs to the R2 Skill level.
 
-**Comment**: SkillOpt is the **most highly engineered** work at the R2 Skill level; it almost brings "Prompt/Skill space optimization" to isomorphism with weight training — validation gate, learning rate, negative-feedback buffer, momentum, all present. It is close kin to TextGrad/GEPA in Section 12.1 (both text-space optimization), the difference being: TextGrad/GEPA optimize **prompts**, while SkillOpt optimizes **persistable, exportable, reusable Skill documents**, and introduces the "held-out validation gate" generally missing from prompt-optimization methods.
+**Comment**: SkillOpt is the **most highly engineered** work at the R2 Skill level; it almost brings "Prompt/Skill space optimization" to isomorphism with weight training — validation gate, learning rate, negative-feedback buffer, momentum, all present. It is close kin to TextGrad/GEPA in Section 25.1 (both text-space optimization), the difference being: TextGrad/GEPA optimize **prompts**, while SkillOpt optimizes **persistable, exportable, reusable Skill documents**, and introduces the "held-out validation gate" generally missing from prompt-optimization methods.
 
 #### R2 Skill Level Summary: Seems Training-Free, but Still Relies on Data
 
 - **Core point 1: Seems training-free, but still needs training data**. Whether relying on human interaction feedback or training-set feedback, it is essentially training data; it has not truly achieved "zero data".
 - **Core point 2: The soul is "storing experience as reusable assets"**. The value of this level is entirely in crystallizing interaction by-products into retrievable Skill documents.
-- **Core point 3: The summarization step is severely underestimated**. Almost all works tacitly hand "Skill summarization" to the frozen base or an independent large model — this should be the most critical link in the whole chain, yet almost no one optimizes for it (this foreshadowing detonates in 11.2.11.5).
+- **Core point 3: The summarization step is severely underestimated**. Almost all works tacitly hand "Skill summarization" to the frozen base or an independent large model — this should be the most critical link in the whole chain, yet almost no one optimizes for it (this foreshadowing detonates in 25.2.11.5).
 - **Core point 4: Lateral vs. vertical summarization**: the vast majority of works are **vertical** (summarizing based on a single historical trajectory), only SE-Agent is **lateral** (summarizing based on multiple sampled trajectories). This distinction is an important anchor for discussing research gaps later.
 
 ---
 
-### 11.2.11.3 R1 Parameter Level: Training Experience into Weights (Key Focus)
+### 25.2.11.3 R1 Parameter Level: Training Experience into Weights (Key Focus)
 
 > **Common feature of this level**: directly update model weights via RL/SFT, letting the model fundamentally "grow capability", rather than just consulting an external notebook. This is the current mainstream direction in academia and industry.
 
-R2/R3 experience lives outside the model and must be retrieved and occupy context when used; R1 is more thorough — it **internalizes experience into weights through training**, making capability the model's "instinct". What is interesting at this level is the different choices each work makes on "**who is trained, who is frozen**"; we will repeatedly revisit this with the "three-role" perspective of 11.2.11.5 later.
+R2/R3 experience lives outside the model and must be retrieved and occupy context when used; R1 is more thorough — it **internalizes experience into weights through training**, making capability the model's "instinct". What is interesting at this level is the different choices each work makes on "**who is trained, who is frozen**"; we will repeatedly revisit this with the "three-role" perspective of 25.2.11.5 later.
 
 #### EvolveR: Offline Distillation Principles + Online Retrieval Action
 
@@ -913,7 +913,7 @@ This work gives two conclusions extremely important for subsequent research:
 
 ---
 
-### 11.2.11.4 Zero-Data Self-Learning: No Dataset Needed
+### 25.2.11.4 Zero-Data Self-Learning: No Dataset Needed
 
 > **Common feature of this level**: completely without human-annotated data, driven by a closed loop where Agents propose tasks for and solve tasks for each other. It builds on R1 (updating weights) by further shedding the constraint of the "whether it depends on human data" ruler.
 
@@ -984,7 +984,7 @@ General flow: `task-proposing Agent training → propose and construct dataset �
 
 ---
 
-### 11.2.11.5 Horizontal Comparison: The "Three-Role" Perspective on Four Representative Works
+### 25.2.11.5 Horizontal Comparison: The "Three-Role" Perspective on Four Representative Works
 
 Within the R1 Parameter level, the four works **SkillRL → SKILL0 → SkillOS → AgentEvolver** deserve a dedicated horizontal comparison, because they best reflect the paradigm evolution of long-horizon Agent self-evolution. Here we introduce the second core tool of this section — the **"three-role" perspective**: any self-evolution system, regardless of level, can essentially be broken into **task proposer / solver / summarizer** three roles; the only difference is "who is trained, who is frozen". This ruler is finer than R1–R4, specifically for seeing "which role the training resources are invested in".
 
@@ -1033,7 +1033,7 @@ AgentEvolver
 
 ---
 
-### 11.2.11.6 Key Insight: The Overlooked "Summarizer"
+### 25.2.11.6 Key Insight: The Overlooked "Summarizer"
 
 #### The Summarizer Is a Severely Underestimated Key Module
 
@@ -1071,7 +1071,7 @@ So the more precise statement is: **"optimizing the executor's Skills" is the ex
 
 #### A Necessary Companion Reverse Risk: Judge Collapse
 
-But this path has a fatal precondition: **the judge must be more reliable than the executor**. Once the judge itself is biased, the more you repeatedly "optimize" it in the self-evolution closed loop, the more you solidify and amplify the bias — this is **reward hacking / evaluator collapse**. In a pure self-loop without external anchors (code executor, unit tests, human annotation, verifiable answers), "training the judge" easily degenerates into "training an increasingly confident wrong judge". This is exactly why Absolute Zero insists on using a code executor as the sole judge rather than a silver answer (see 11.2.11.4).
+But this path has a fatal precondition: **the judge must be more reliable than the executor**. Once the judge itself is biased, the more you repeatedly "optimize" it in the self-evolution closed loop, the more you solidify and amplify the bias — this is **reward hacking / evaluator collapse**. In a pure self-loop without external anchors (code executor, unit tests, human annotation, verifiable answers), "training the judge" easily degenerates into "training an increasingly confident wrong judge". This is exactly why Absolute Zero insists on using a code executor as the sole judge rather than a silver answer (see 25.2.11.4).
 
 Therefore, the core proposition of this section should be precisely stated as:
 
@@ -1101,7 +1101,7 @@ SE-Agent at the R2 Skill level is **lateral** (multiple sampled trajectories) su
 
 ---
 
-### 11.2.11.7 Final Words
+### 25.2.11.7 Final Words
 
 The pace of self-evolving Agent research over this past year-plus has actually been very fast, from "storing skills" to "training skills", from "depending on human data" to "zero-data self-training", with new work appearing almost every month. But after chewing through it carefully, you find large research gaps no one has touched — especially the cross-path of "**training the summarizer itself**" and "**fully autonomous + training the summarizer**".
 
@@ -1181,6 +1181,6 @@ When an Agent can stably complete tasks, remember lessons, crystallize skills, a
 
 ---
 
-*Previous section: [11.1 Automatic Prompt Optimization](./01_automatic_prompt_optimization.md)*
+*Previous section: [25.1 Automatic Prompt Optimization](./01_automatic_prompt_optimization.md)*
 
-*Next section: [11.3 Agentic Data Flywheel](./03_data_flywheel.md)*
+*Next section: [25.3 Agentic Data Flywheel](./03_data_flywheel.md)*

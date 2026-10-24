@@ -1,4 +1,4 @@
-# 20.6 Agent-Specific Evaluation Frameworks
+# 18.6 Agent-Specific Evaluation Frameworks
 
 > **Goal**: Master frontier methods for agent evaluation, including the Agent-as-Judge paradigm and benchmarks such as τ-bench / OSWorld / SWE-bench, and be able to implement a complete Agent-as-Judge evaluator.
 
@@ -6,7 +6,7 @@
 
 ## From LLM-as-Judge to Agent-as-Judge
 
-In Chapter 20.1 we introduced LLM-as-Judge — using one LLM to judge the output quality of another LLM. But an Agent is different from an ordinary chat model: an Agent calls tools, executes multi-step operations, and interacts with an environment. Evaluating only the final output is not enough — we need to evaluate the Agent's **entire behavior trajectory**.
+In Chapter 18.1 we introduced LLM-as-Judge — using one LLM to judge the output quality of another LLM. But an Agent is different from an ordinary chat model: an Agent calls tools, executes multi-step operations, and interacts with an environment. Evaluating only the final output is not enough — we need to evaluate the Agent's **entire behavior trajectory**.
 
 That is the core idea of **Agent-as-Judge**: use an Agent (not merely an LLM) to evaluate another Agent's complete execution process [1].
 
@@ -778,7 +778,7 @@ report = evaluate()  # uses FakeProvider by default, runs fully offline
 print(report["pass_rate"])  # e.g. 1.0
 ```
 
-The task set `reference-agent/data/eval_samples.jsonl` has one JSON object per line with a fixed schema:
+The task set `reference-agent/src/reference_agent/data/eval_samples.jsonl` has one JSON object per line with a fixed schema:
 
 ```json
 {"id": "calc_001", "input": "what is 3 plus 5", "expect_contains": ["8"]}
@@ -897,4 +897,4 @@ This avoids a common misconception: **a high benchmark score does not mean produ
 
 ---
 
-[20.7 A/B Testing and Regression Test Automation](./07_ab_testing.md)
+[18.7 A/B Testing and Regression Test Automation](./07_ab_testing.md)

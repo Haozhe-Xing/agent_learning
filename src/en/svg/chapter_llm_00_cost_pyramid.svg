@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520">
+  <rect width="980" height="520" rx="28" fill="#F8FBFF" />
+  <text x="490" y="52" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28" font-weight="700" fill="#243B64">Tasks and Their Relative Token Use</text>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle" font-size="17" font-weight="700">
+    <rect x="360" y="100" width="260" height="48" rx="14" fill="#FFE1E1" /><text x="490" y="131" fill="#914044">Many autonomous Agent steps</text>
+    <rect x="320" y="160" width="340" height="48" rx="14" fill="#FFE8C2" /><text x="490" y="191" fill="#8A641A">Read an entire codebase</text>
+    <rect x="280" y="220" width="420" height="48" rx="14" fill="#FFF3D7" /><text x="490" y="251" fill="#8A641A">Analyze a long PDF</text>
+    <rect x="240" y="280" width="500" height="48" rx="14" fill="#E7F0FF" /><text x="490" y="311" fill="#385FA8">Summarize a long article</text>
+    <rect x="200" y="340" width="580" height="48" rx="14" fill="#EAF7EF" /><text x="490" y="371" fill="#2D7A46">Write a short passage</text>
+    <rect x="160" y="400" width="660" height="48" rx="14" fill="#F1F5FA" /><text x="490" y="431" fill="#5E6D82">Simple question</text>
+  </g>
+  <text x="490" y="486" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" fill="#5E6D82">Longer input, output, and execution loops require closer cost control</text>
+</svg>

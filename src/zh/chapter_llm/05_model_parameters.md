@@ -282,12 +282,12 @@ def test_temperature(prompt: str, temperatures: list, runs: int = 3):
         print('='*50)
         
         for i in range(runs):
-    response = client.chat.completions.create(
-        model="qwen-plus",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=temp,
-        max_tokens=50
-    )
+            response = client.chat.completions.create(
+                model="qwen-plus",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=temp,
+                max_tokens=50
+            )
             print(f"  运行 {i+1}：{response.choices[0].message.content}")
 
 # 测试创意写作（高 Temperature 更好）
@@ -296,7 +296,7 @@ test_temperature(
     temperatures=[0.0, 0.7, 1.5],
     runs=3
 )
-# Temperature=0.0：每次输出完全相同（绝对确定性）
+# Temperature=0.0：通常随机性较低，但不能据此保证每次输出完全相同
 # Temperature=0.7：有一定变化，语言流畅自然
 # Temperature=1.5：高度发散创意，但词汇可能跳跃或不连贯
 ```
@@ -306,7 +306,7 @@ test_temperature(
 ```python
 TEMPERATURE_GUIDE = {
     "代码生成": 0.1,          # 要求精确，低随机性
-    "数据提取/JSON格式化": 0.0, # 完全确定性，防崩溃
+    "数据提取/JSON格式化": 0.0, # 低随机性，仍需解析与校验
     "问答/事实查询": 0.3,      # 稍微稳定
     "文案/摘要": 0.7,         # 平衡创意和准确
     "头脑风暴/创意": 1.0,      # 鼓励多样性

@@ -1,4 +1,4 @@
-# 15.2 安装与快速上手（含 OpenClaw 迁移）
+# 13.2 安装与快速上手（含 OpenClaw 迁移）
 
 > ☤ *"从'跑起来'到'用 OpenClaw 数据迁过来'，都在一行命令里。"*
 
@@ -11,7 +11,7 @@ Hermes Agent 给用户的部署选项和 OpenClaw 类似，但**多了"从 OpenC
 | 场景 | 命令 | 适合 |
 |------|------|------|
 | **A: 个人 macOS / Linux** | `curl -fsSL https://hermes-agent.nousresearch.com/install.sh \| bash` | 长期在自己机器上 |
-| **B: VPS（$5/月起的 Linux）** | 同 A + `pm2 start hermes-gateway` | 想 24/7 在线 |
+| **B: VPS（USD 5/月起的 Linux）** | 同 A + `pm2 start hermes-gateway` | 想 24/7 在线 |
 | **C: Docker 沙箱** | `docker pull hermes/agent:latest` | 生产化、隔离 |
 | **D: OpenClaw 迁移** | `hermes claw migrate` | 从 OpenClaw 平迁 |
 | **E: Modal/Daytona（Serverless 休眠）** | `hermes deploy modal` | 不想开机就能用 |
@@ -186,19 +186,17 @@ $ hermes doctor
 
 ### 5.4 兼容性边界（**重要**）
 
-Hermes 是 OpenClaw 的"扩展演化"，不是"完全超集"。迁移时会遇到若干兼容性问题，常见的有：
+迁移是否可行，需要在确切的源端与目标端版本中验证。文件名相同、命令返回成功或数据能复制，都不等于行为兼容。先在独立副本上使用固定任务检查：
 
-| OpenClaw 特性 | Hermes 兼容状态 | 处理 |
-|---------------|---------------|------|
-| 标准 Skills（`SKILL.md` + 脚本） | ✅ 完全兼容 | 直接复制 |
-| WhatsApp / Telegram / Discord / Slack | ✅ 完全支持 | 直接复制 |
-| `SKILL.md` frontmatter 字段 | ✅ 兼容 | 直接复制 |
-| 自定义 TypeScript 渠道适配器 | ⚠️ 部分兼容 | 需要重写 |
-| 微信 / iMessage 等闭源渠道 | ❌ 不支持 | 跳过 |
-| 自定义 OpenClaw-only Tools（TS 内部 API） | ⚠️ 大部分不兼容 | 自动重写 |
-| `agent_memory.db`（OpenClaw 长期记忆格式） | ⚠️ 转换 | 自动转换 |
+| 迁移对象 | 需要验证的内容 | 未通过时的处理 |
+|---|---|---|
+| `SKILL.md` 与脚本 | 元数据解析、依赖工具、参数、错误与任务结果 | 保留原文件，记录差异后适配并重测 |
+| 聊天渠道 | 身份、会话、确认与允许动作是否保持 | 不切换该渠道，保留原接入 |
+| 自定义适配器或内部工具 | 接口、状态、路径与权限检查是否一致 | 不假定自动重写有效，先审查再验收 |
+| 记忆数据 | 格式、用户范围、删除语义与恢复行为 | 保留原数据和备份，核对后再决定是否切换 |
+| 凭据与配置 | 哪些字段被读取、写入或忽略，权限如何限制 | 不扩大授权，未确认的配置不迁入 |
 
-迁移完后，建议先跑一周 `hermes claw migrate --dry-run` 对比的副本来确保一致；然后再删 OpenClaw。
+对相同任务保留成功、拒绝、失败与回退记录。兼容结论仅适用于已验证的版本、配置和对象；不要仅凭 dry-run 或示例输出删除源目录。
 
 ### 5.5 共享配置文件
 
@@ -213,7 +211,7 @@ shared:
     mode: read_only   # Hermes 读 OpenClaw 的数据，但写回自己的目录
 ```
 
-这是开发期间非常实用的模式——你能同时用 OpenClaw 和 Hermes 比对行为。
+如需实验共享配置，应先在副本中验证哪些数据会被读写、冲突怎样处理、失败如何回退；示例配置本身不证明两个版本可以安全共享状态。
 
 ---
 
@@ -288,7 +286,7 @@ $ hermes deploy daytona
 ✓ Setup complete. Try: hermes chat
 ```
 
-`✓ Enable cross-session persona blending` 是**首次启动强烈建议开**——它给 Hermes 打开用户建模（Honcho dialectic）的开关，后面 15.6 会详细讲。
+上面的交互输出是教学示意，不能据此确认真实版本存在同名开关。用户建模的授权、隔离和删除应分别核验；阅读[13.5 记忆](./05_memory.md)与[13.6 主动任务](./06_nudge_engine.md)时保留这些问题。
 
 ---
 
@@ -298,10 +296,10 @@ $ hermes deploy daytona
 |------|---------|
 | 5 种部署 | 一行安装 / VPS / Docker / OpenClaw 迁移 / Serverless |
 | 关键命令 | `hermes` / `hermes gateway` / `hermes claw migrate` / `hermes deploy <backend>` |
-| OpenClaw 迁移 | `hermes claw migrate [--dry-run]`；处理 Skills 不兼容时会自动重写 |
+| OpenClaw 迁移 | 命令与输出需按版本核验；先在副本中检查工具、状态、权限与固定任务 |
 | 后端选择 | 6 种：local / Docker / SSH / Singularity / Modal / Daytona |
-| 兼容性边界 | 标准 Skill 完全兼容；TS 内部 API / 闭源渠道不兼容 |
+| 兼容性边界 | 不从文件名推断兼容；只报告已验证版本和对象，保留原数据与回退 |
 
 ---
 
-*下一节：[15.3 三层架构：Gateway / Engine / Plugin 子系统](./03_three_layer_architecture.md)*
+*下一节：[13.3 三层架构：Gateway / Engine / Plugin 子系统](./03_three_layer_architecture.md)*

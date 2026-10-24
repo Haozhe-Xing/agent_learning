@@ -1,4 +1,4 @@
-# 20.6 Agent 专项评估框架
+# 18.6 Agent 专项评估框架
 
 > **本节目标**：掌握 Agent 专项评估的前沿方法，包括 Agent-as-Judge 范式、τ-bench / OSWorld / SWE-bench 等基准测试，并能实现完整的 Agent-as-Judge 评估器。
 
@@ -778,7 +778,7 @@ report = evaluate()  # 默认用 FakeProvider，离线即可跑通
 print(report["pass_rate"])  # 例如 1.0
 ```
 
-任务集 `reference-agent/data/eval_samples.jsonl` 每行一个 JSON 对象，schema 固定：
+任务集 `reference-agent/src/reference_agent/data/eval_samples.jsonl` 每行一个 JSON 对象，schema 固定：
 
 ```json
 {"id": "calc_001", "input": "3加5等于几", "expect_contains": ["8"]}
@@ -800,7 +800,7 @@ pytest                      # 含 evaluation 测试，离线通过
 2. **判定要可执行**：`expect_contains` 是弱判定（关键词命中），生产环境应替换为更强的判定——结构化输出校验、单元测试、或人工标注。
 3. **报告要可复现**：`pass_rate` + 每条 `passed` 标志，可直接作为 CI 质量门禁（见 20.7）。
 
-> 想看"多维度 Agent-as-Judge 评分"如何落到真实代码：第 16 章 `examples/dev_team/` 的 `reviewer` 节点用结构化输出做质量判定，同样遵循"判定可执行、报告可复现"的原则。
+> 想看"多维度 Agent-as-Judge 评分"如何落到真实代码：第16章 `examples/dev_team/` 的 `reviewer` 节点用结构化输出做质量判定，同样遵循"判定可执行、报告可复现"的原则。
 
 
 ---
@@ -897,4 +897,4 @@ pytest                      # 含 evaluation 测试，离线通过
 
 ---
 
-[20.7 A/B 测试与回归测试自动化](./07_ab_testing.md)
+[18.7 A/B 测试与回归测试自动化](./07_ab_testing.md)

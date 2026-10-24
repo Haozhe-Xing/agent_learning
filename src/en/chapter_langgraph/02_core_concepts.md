@@ -1,336 +1,122 @@
-# 13.2 LangGraph Core Concepts: Nodes, Edges, and State
+# 11.2 LangGraph Core Concepts: Nodes, Edges, and State
 
-![LangGraph Three Core Concepts: State · Node · Edge](../svg/chapter_langgraph_02_state_node_edge.svg)
+Use an offline release-record exercise to observe state transitions: metadata and rollback checks run in parallel, then a join decides acceptance. Nodes need not call a model, and a graph cannot establish business correctness for you.
 
-## State
+![LangGraph state, partial updates and routing](../svg/chapter_langgraph_02_state_node_edge.svg)
 
-State is LangGraph's data center — all nodes read from and write to State.
+## Run first, then inspect the three concepts
 
-```python
-from typing import TypedDict, Annotated, Optional
-from langgraph.graph import MessagesState
-import operator
+This chapter verifies Python 3.11+ and `langgraph==1.2.16`, pinned in `examples/requirements.txt`. Official pages may evolve; the pinned environment and offline tests define the reproducible scope here. From the repository root:
 
-# Method 1: Use the built-in MessagesState (recommended)
-# Already includes: messages: Annotated[list, add_messages]
-class MyState(MessagesState):
-    # Add extra fields on top of the base
-    user_name: Optional[str]
-    task_complete: bool
-
-# Method 2: Fully custom
-from langchain_core.messages import BaseMessage
-
-class CustomState(TypedDict):
-    # Use Annotated + operator.add to express "append" semantics
-    messages: Annotated[list[BaseMessage], operator.add]
-    
-    # Regular fields (each update overwrites)
-    current_step: str
-    error_count: int
-    result: Optional[str]
+```bash
+python -m pip install -r examples/requirements.txt
+python -m reference_code.langgraph_patterns core
+python -m unittest examples.integration_tests.test_langgraph_chapter -v
 ```
 
-### Advanced Usage of State Reducers
+The implementation is in `reference_code/langgraph_patterns/`: `core.py` accompanies this section; `review.py` and `approval.py` accompany 11.4 and 11.5. Defaults require no model, key, or network. These exercises test lifecycle mechanics, not model comprehension. The model/tool-message loop in 11.3 continues to reuse `examples/framework_fixture.py`.
 
-Reducers are a mechanism in LangGraph that is easy to overlook but extremely powerful. When multiple nodes simultaneously update the same field in State, the Reducer determines **how to merge those updates**.
+## State declares fields; a Node returns partial updates
+
+`TypedDict` describes a field contract; it does not validate every external input at runtime. A node reads its current state and returns updated fields. Do not mutate input lists or assume a parallel node has already written its result. The three imported check functions are implemented and return partial `checks` or `accepted` updates:
 
 ```python
-from typing import Annotated
+from typing import Annotated, TypedDict
 import operator
+from langgraph.graph import START, END, StateGraph
+from reference_code.langgraph_patterns.core import (
+    audit_input, check_metadata, check_rollback, summarize,
+)
 
-# Reducer Example 1: Append (most common)
-# The messages field uses operator.add as its Reducer
-# Effect: new messages are appended to the end of the list, not replacing the entire list
-class ChatState(TypedDict):
-    messages: Annotated[list, operator.add]  # Append semantics
+class AuditState(TypedDict):
+    draft: dict[str, str]
+    checks: Annotated[list[dict], operator.add]
+    accepted: bool
 
-# Reducer Example 2: Custom Reducer function
-def merge_results(existing: dict, new: dict) -> dict:
-    """Custom merge strategy: deep merge two dictionaries"""
-    merged = {**existing}
-    for key, value in new.items():
-        if key in merged and isinstance(merged[key], list):
-            merged[key] = merged[key] + value  # Append lists
-        else:
-            merged[key] = value  # Overwrite other types
-    return merged
+builder = StateGraph(AuditState)
+builder.add_node("metadata", check_metadata)
+builder.add_node("rollback", check_rollback)
+builder.add_node("summarize", summarize)
+builder.add_edge(START, "metadata")
+builder.add_edge(START, "rollback")
+builder.add_edge(["metadata", "rollback"], "summarize")
+builder.add_edge("summarize", END)
+app = builder.compile()
 
-class AnalysisState(TypedDict):
-    # Using a custom Reducer: results from multiple analysis nodes are merged, not overwritten
-    analysis_results: Annotated[dict, merge_results]
-    step_count: int
+result = app.invoke(audit_input({"version": "1.0", "owner": "team"}))
+assert len(result["checks"]) == 2
+assert result["accepted"] is False  # missing rollback
+print(sorted(result["checks"], key=lambda check: check["name"]))
+```
 
-# Reducer Example 3: Using add_messages (LangChain built-in)
+`check_metadata` only checks that version and owner are nonempty; `check_rollback` checks a nonempty rollback description. `summarize` requires both named checks to pass. This is a deliberately small acceptance contract, not comprehensive release-quality validation. Add a `rollback` field and run again to observe `accepted=True`.
+
+## Reducers define merging; concurrent writes do not silently pick a winner
+
+| Field rule | Sequential updates | Multiple writers in one super-step |
+|---|---|---|
+| No reducer | Usually replaces the field | An ordinary single-value field raises `InvalidUpdateError` |
+| `Annotated[list, operator.add]` | Concatenates old and new lists | Combines branch updates; business completion order is not guaranteed |
+| `add_messages` / `MessagesState` | Adds or replaces by message ID | Still needs correct IDs and application-specific business rules |
+
+Each branch appends only its own check, avoiding duplication of the whole old list. Aggregation uses check names, not parallel list order. Concatenation does not deduplicate and is not a commutative general-purpose merge. Repeated business events and conflicting results need an explicit policy; there is no universal automatic dictionary deep merge. See the [official concurrent-update error](https://docs.langchain.com/oss/python/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE).
+
+For message state, LangGraph's `add_messages` is usually more appropriate than unconditional `operator.add`. A matching ID replaces that message; it does not automatically recognize semantically identical business events:
+
+```python
+from langchain_core.messages import HumanMessage
 from langgraph.graph import add_messages
 
-class AgentState(TypedDict):
-    # add_messages is smarter than operator.add:
-    # - Automatically handles message deduplication (based on message ID)
-    # - Supports message updates (new messages with the same ID replace old ones)
-    messages: Annotated[list, add_messages]
-```
-
-> ⚠️ **Common pitfall**: If you forget to add a Reducer to a list-type field, every time a node returns `{"messages": [new_msg]}` it will **replace** rather than **append** to the message list. This is the most common bug for beginners.
-
-### Checkpoint Persistence
-
-Checkpoints are the core mechanism in LangGraph for implementing "checkpoint recovery" and "session persistence." At each state transition, LangGraph can automatically save a Checkpoint (snapshot), and execution can later be resumed from any Checkpoint.
-
-```python
-# In-memory Checkpoint (for development/testing)
-from langgraph.checkpoint.memory import MemorySaver
-
-memory_checkpointer = MemorySaver()
-app = graph.compile(checkpointer=memory_checkpointer)
-
-# Use thread_id to identify an independent execution session
-config = {"configurable": {"thread_id": "user-session-001"}}
-
-# First round of conversation
-result1 = app.invoke(
-    {"messages": [HumanMessage(content="My name is Alice")]},
-    config=config
+messages = add_messages(
+    [HumanMessage(content="draft", id="request-1")],
+    [HumanMessage(content="corrected", id="request-1")],
 )
-
-# Second round of conversation — automatically restores previous state
-result2 = app.invoke(
-    {"messages": [HumanMessage(content="What's my name?")]},
-    config=config
-)
-# Agent can remember "Alice" because state was persisted via Checkpoint
-
-# SQLite Checkpoint (recommended for production)
-from langgraph.checkpoint.sqlite import SqliteSaver
-
-# Data persisted to disk, not lost after restart
-db_checkpointer = SqliteSaver.from_conn_string("checkpoints.db")
-app = graph.compile(checkpointer=db_checkpointer)
-
-# PostgreSQL Checkpoint (distributed production environments)
-# pip install langgraph-checkpoint-postgres
-# from langgraph.checkpoint.postgres import PostgresSaver
-# pg_checkpointer = PostgresSaver.from_conn_string("postgresql://...")
+assert len(messages) == 1
+assert messages[0].content == "corrected"
 ```
 
-**Typical use cases for Checkpoints**:
+## Edges schedule work; compile creates an invocable graph
 
-| Scenario | Description |
-|----------|-------------|
-| Multi-turn conversation persistence | User closes browser and returns; conversation state is not lost |
-| Human-in-the-Loop | Pause execution to wait for human approval; resume from pause point after approval |
-| Long-running tasks | Data analysis may run for several minutes; supports mid-task checkpoint/resume |
-| Error recovery | A node fails; after fixing, retry from the failure point rather than from the beginning |
-| Time-travel debugging | Roll back to a previous Checkpoint to inspect the State at that time |
+Two outgoing `START` edges schedule both checks in the same super-step. This does not guarantee CPU speedup or immediate visibility of another branch's writes. `add_edge(["metadata", "rollback"], "summarize")` explicitly waits for both checks. `START/END` are entry/termination markers; reaching `END` only means this invocation ended.
 
----
+`compile()` checks and constructs the graph, enabling `invoke/stream/get_state`. It does not automatically configure persistence, authorize tools, or validate task results. If a required branch raises, another completed branch cannot establish overall acceptance. See the [official Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api) for node and edge interfaces.
 
-## Node
+## Checkpoint scope depends on the saver
+
+This executable block rebuilds a graph with the same saver, then demonstrates that a new in-memory saver has no old checkpoint:
 
 ```python
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from langgraph.graph import StateGraph, END, START, MessagesState
+from langgraph.checkpoint.memory import InMemorySaver
+from reference_code.langgraph_patterns.core import audit_input, build_audit_graph
 
-llm = ChatOpenAI(model="gpt-4o")
+saver = InMemorySaver()
+app = build_audit_graph(checkpointer=saver)
+config = {"configurable": {"thread_id": "audit-1"}}
+app.invoke(audit_input({"version": "1.0", "owner": "team"}), config)
+snapshot = app.get_state(config)
+assert snapshot.values["accepted"] is False
+assert snapshot.next == ()  # ended, not waiting for approval
 
-# A node is just a regular Python function
-def agent_node(state: MessagesState) -> dict:
-    """
-    Agent node: calls LLM to process messages
-    
-    Receives: current State
-    Returns: the updated portion of State (a dictionary)
-    """
-    messages = state["messages"]
-    
-    # Call LLM
-    response = llm.invoke(messages)
-    
-    # Return updates (only return the changed parts)
-    return {"messages": [response]}
-
-def tool_node(state: MessagesState) -> dict:
-    """Tool node: execute tool calls"""
-    import json
-    
-    last_message = state["messages"][-1]
-    tool_results = []
-    
-    for tool_call in last_message.tool_calls:
-        # Execute tool (simulated here)
-        result = f"Result of tool {tool_call['name']}"
-        
-        from langchain_core.messages import ToolMessage
-        tool_results.append(ToolMessage(
-            content=result,
-            tool_call_id=tool_call["id"]
-        ))
-    
-    return {"messages": tool_results}
+rebuilt = build_audit_graph(checkpointer=saver)
+assert rebuilt.get_state(config).values == snapshot.values
+fresh = build_audit_graph(checkpointer=InMemorySaver())
+assert fresh.get_state(config).values == {}
 ```
 
-## Edge
+In this version, `MemorySaver` aliases `InMemorySaver`. Checkpoints are saved at super-step boundaries, not after every line inside a function. `thread_id` identifies an execution history; missing required configuration raises an error. Reusing a thread may accumulate reducer fields. Use a new thread for a new task; `checks=[]` does not clear an append reducer.
 
-```python
-# Regular edge: fixed direction
-graph.add_edge("node_a", "node_b")  # A always points to B
+| Data | Actual location in this exercise | After restart or object recreation |
+|---|---|---|
+| `InMemorySaver` graph checkpoints | The current saver's process memory | Lost; reusing the same thread name cannot recreate them |
+| The 11.5 SQLite receipt | Application-owned local database | Can be reopened if the file remains; it is not a graph checkpoint |
+| A disk/service checkpointer | A separately installed and pinned saver/backend | Recovery requires verified connection lifetime, serialization, access and resume behavior |
 
-# Conditional edge: dynamically determined
-def route_after_agent(state: MessagesState) -> str:
-    """Decide the next step based on Agent output"""
-    last_message = state["messages"][-1]
-    
-    # If there are tool calls → execute tools
-    if hasattr(last_message, "tool_calls") and last_message.tool_calls:
-        return "tool_node"
-    
-    # Otherwise → end
-    return END
+The locked exercise does not install `langgraph-checkpoint-sqlite`. An extension using `SqliteSaver.from_conn_string` must follow its [official context-manager interface](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver/from_conn_string) and keep the connection alive throughout graph execution. Add a pause/resume test spanning two independent processes before claiming restart recovery. A database choice does not establish multiprocess safety, authorization, or deployment readiness. The [official persistence guide](https://docs.langchain.com/oss/python/langgraph/persistence) distinguishes memory savers from durable backends.
 
-graph.add_conditional_edges(
-    "agent_node",
-    route_after_agent,
-    {
-        "tool_node": "tool_node",
-        END: END
-    }
-)
-```
+## Errors and budgets belong in the application contract
 
-## Complete ReAct Graph
+An expected failed business check can remain in state; a known adapter exception can become structured failure. Programming errors, authorization denials, and cancellation should not all become requests for model retries. `recursion_limit` bounds graph super-steps, not elapsed time, tool calls, or tokens. Section 11.4 adds a separate business attempt budget and verifies that exhaustion never approves.
 
-```python
-from langchain_core.tools import tool
-import math
+The integration tests cover concurrent conflicts, message-ID replacement, joins and in-memory checkpoint boundaries. They verify these small contracts and interfaces, not general review quality.
 
-@tool
-def calculate(expression: str) -> str:
-    """Evaluate a mathematical expression"""
-    try:
-        result = eval(expression, {"__builtins__": {}}, 
-                     {k: getattr(math, k) for k in dir(math)})
-        return str(result)
-    except Exception as e:
-        return f"Error: {e}"
-
-tools = [calculate]
-llm_with_tools = llm.bind_tools(tools)
-
-def agent_node(state: MessagesState) -> dict:
-    response = llm_with_tools.invoke(state["messages"])
-    return {"messages": [response]}
-
-def tool_executor(state: MessagesState) -> dict:
-    from langchain_core.messages import ToolMessage
-    import json
-    
-    last_msg = state["messages"][-1]
-    results = []
-    
-    for tool_call in last_msg.tool_calls:
-        if tool_call["name"] == "calculate":
-            result = calculate.invoke(tool_call["args"])
-        else:
-            result = "Unknown tool"
-        
-        results.append(ToolMessage(
-            content=str(result),
-            tool_call_id=tool_call["id"]
-        ))
-    
-    return {"messages": results}
-
-def should_use_tools(state: MessagesState) -> str:
-    last_msg = state["messages"][-1]
-    if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
-        return "tools"
-    return END
-
-# Build the graph
-graph = StateGraph(MessagesState)
-graph.add_node("agent", agent_node)
-graph.add_node("tools", tool_executor)
-graph.add_edge(START, "agent")
-graph.add_conditional_edges("agent", should_use_tools)
-graph.add_edge("tools", "agent")  # After tool execution, return to agent
-
-app = graph.compile()
-
-# Run
-result = app.invoke({"messages": [HumanMessage(content="Calculate sqrt(2) * pi")]})
-print(result["messages"][-1].content)
-```
-
----
-
-## Error Handling and Retry Strategies
-
-In production environments, Agent nodes (especially those calling external APIs) can fail at any time. LangGraph provides multiple error handling patterns:
-
-```python
-import time
-from langchain_core.runnables import RunnableConfig
-
-# Pattern 1: try-except inside the node (most flexible)
-def resilient_tool_node(state: MessagesState) -> dict:
-    """Tool node with error handling"""
-    last_msg = state["messages"][-1]
-    results = []
-    
-    for tool_call in last_msg.tool_calls:
-        try:
-            result = execute_tool(tool_call)
-            results.append(ToolMessage(
-                content=str(result),
-                tool_call_id=tool_call["id"]
-            ))
-        except Exception as e:
-            # When a tool fails, return error info rather than raising an exception
-            # This gives the Agent a chance to self-correct
-            results.append(ToolMessage(
-                content=f"Tool execution failed: {str(e)}. Please try a different approach.",
-                tool_call_id=tool_call["id"]
-            ))
-    
-    return {"messages": results}
-
-# Pattern 2: Conditional routing with retry count
-class RetryState(MessagesState):
-    retry_count: int
-    max_retries: int
-
-def should_retry(state: RetryState) -> str:
-    """Retry decision: retry if failure count hasn't exceeded the limit"""
-    last_msg = state["messages"][-1]
-    
-    if "failed" in last_msg.content.lower() and state["retry_count"] < state["max_retries"]:
-        return "retry"
-    elif "failed" in last_msg.content.lower():
-        return "fallback"  # Exceeded retry count, take degraded path
-    else:
-        return "success"
-
-# Pattern 3: Timeout control
-# LangGraph supports setting timeouts via RunnableConfig
-config = RunnableConfig(
-    recursion_limit=25,  # Maximum recursion steps (prevent infinite loops)
-    # Other configurations...
-)
-result = app.invoke(input_data, config=config)
-```
-
-> 💡 **Best practice**: In an Agent's tool nodes, never let exceptions propagate directly and crash the entire graph. Catch exceptions and return the error information as a ToolMessage to the Agent, letting the LLM decide the next step based on the error (retry, try a different approach, or inform the user). This "graceful degradation" pattern is the hallmark of production-grade Agents.
-
----
-
-## Summary
-
-LangGraph's three elements:
-- **State**: shared data container, structure defined by TypedDict
-- **Node**: processing function, receives State, returns partial updates
-- **Edge**: connection relationship, regular edge or conditional edge
-
----
-
-*Next section: [13.3 Build Your First Graph Agent](./03_first_graph_agent.md)*
+*Next section: [11.3 Build Your First Graph Agent](./03_first_graph_agent.md)*

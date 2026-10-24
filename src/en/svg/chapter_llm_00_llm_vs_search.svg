@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#B7C5D8" flood-opacity="0.32" />
+    </filter>
+  </defs>
+  <rect width="980" height="420" rx="28" fill="#F8FBFF" />
+  <text x="490" y="52" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28" font-weight="700" fill="#243B64">Search Finds Sources; an LLM Helps Work with Them</text>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle">
+    <g filter="url(#shadow)">
+      <rect x="60" y="105" width="260" height="230" rx="24" fill="#FFFFFF" stroke="#D7E4F5" />
+      <circle cx="190" cy="160" r="36" fill="#E7F0FF" />
+      <g transform="translate(190 160)" fill="none" stroke="#385FA8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="-6" cy="-6" r="14" />
+        <path d="M5 5 L20 20" />
+      </g>
+      <text x="190" y="220" font-size="23" font-weight="700" fill="#243B64">Search engine</text>
+      <text x="190" y="255" font-size="16" fill="#5E6D82">A library catalog</text>
+      <text x="190" y="285" font-size="16" fill="#5E6D82">Find relevant sources</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="360" y="105" width="260" height="230" rx="24" fill="#FFFFFF" stroke="#D7E4F5" />
+      <circle cx="490" cy="160" r="36" fill="#FFF3D7" />
+      <g transform="translate(490 160)" fill="none" stroke="#8A641A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="-20" y="-24" width="40" height="48" rx="7" fill="#FFFFFF" />
+        <path d="M-11 -11 H11" />
+        <circle cx="-10" cy="3" r="2" fill="#8A641A" />
+        <circle cx="0" cy="3" r="2" fill="#8A641A" />
+        <circle cx="10" cy="3" r="2" fill="#8A641A" />
+        <circle cx="-10" cy="14" r="2" fill="#8A641A" />
+        <circle cx="0" cy="14" r="2" fill="#8A641A" />
+        <circle cx="10" cy="14" r="2" fill="#8A641A" />
+      </g>
+      <text x="490" y="220" font-size="23" font-weight="700" fill="#243B64">Calculator</text>
+      <text x="490" y="255" font-size="16" fill="#5E6D82">A precise instrument</text>
+      <text x="490" y="285" font-size="16" fill="#5E6D82">Compute exact results</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="660" y="105" width="260" height="230" rx="24" fill="#385FA8" />
+      <circle cx="790" cy="160" r="36" fill="#FFFFFF" opacity="0.2" />
+      <g transform="translate(790 160)" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="-13" cy="-10" r="8" fill="#6F8ED0" />
+        <circle cx="13" cy="-10" r="8" fill="#6F8ED0" />
+        <path d="M-28 21 C-23 6 -4 6 0 21" />
+        <path d="M0 21 C4 6 23 6 28 21" />
+      </g>
+      <text x="790" y="220" font-size="23" font-weight="700" fill="#FFFFFF">LLM</text>
+      <text x="790" y="255" font-size="16" fill="#E9F1FF">A language assistant</text>
+      <text x="790" y="285" font-size="16" fill="#E9F1FF">Read, write, revise, summarize</text>
+    </g>
+  </g>
+  <rect x="190" y="362" width="600" height="36" rx="18" fill="#E2EDFF" />
+  <text x="490" y="386" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" fill="#385FA8">Use search to find evidence and an LLM to work with it</text>
+</svg>

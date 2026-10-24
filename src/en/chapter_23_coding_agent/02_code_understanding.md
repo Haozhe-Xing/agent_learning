@@ -1,4 +1,4 @@
-# 23.2 Code Understanding and Analysis
+# 21.2 Code Understanding and Analysis
 
 > **Section Goal**: Implement code indexing, AST analysis, and semantic search capabilities for the AI coding assistant.
 
@@ -225,4 +225,4 @@ Requirement: Reference specific file and function names to support your answer."
 
 ---
 
-[Next: 19.3 Code Generation and Modification →](./03_code_generation.md)
+[Next: 21.3 Code Generation and Modification →](./03_code_generation.md)

@@ -1,4 +1,4 @@
-# 22.2 API 服务化：FastAPI / Flask 封装
+# 20.2 API 服务化：FastAPI / Flask 封装
 
 > **本节目标**：用 FastAPI 把 Agent 封装成一个**真实返回结果**的 API 服务，而不是"看起来像服务的桩代码"。
 
@@ -25,7 +25,7 @@
 本节不贴"返回固定字符串"的示例。真实实现在仓库 `reference-agent/src/reference_agent/service/app.py`，它的关键点是：
 
 1. `/chat` **调用真实 Agent** 返回结果，出错就返回错误，绝不返回 "这是 Agent 的回复" 这类占位串。
-2. 每次请求先过**注入守卫**（第 19 章），可疑输入直接 400 拒绝（fail-closed）。
+2. 每次请求先过**注入守卫**（第19章），可疑输入直接 400 拒绝（fail-closed）。
 3. `/stream` 用 SSE **真实逐 token 流式输出** Agent 的答案。
 4. 默认离线（FakeProvider），设 `AGENT_REAL=1` + API Key 才接真实模型。
 
@@ -137,4 +137,4 @@ if __name__ == "__main__":
 
 ---
 
-[22.3 容器化与云部署](./03_containerization.md)
+[20.3 容器化与云部署](./03_containerization.md)

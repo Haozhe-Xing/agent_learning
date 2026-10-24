@@ -145,7 +145,7 @@ Gorilla can be understood as an early representative of the later engineering pa
 
 **Key Results**: The resulting small Agentic model approaches large-model performance on search and data analysis tasks; model weights and synthetic data have been open-sourced on HuggingFace.
 
-**Relation to This Chapter**: Corresponds to this chapter's core "Function Calling and Tool Calling" knowledge points, demonstrating how to train specialized tool-calling capabilities through RL + synthetic data. It is a typical industrial practice of Section 10.8 "Agent-Specific Fine-Tuning" and [Section 11.3 "Data Flywheels"](../chapter_self_evolving/03_data_flywheel.md).
+**Relation to This Chapter**: Corresponds to this chapter's core "Function Calling and Tool Calling" knowledge points, demonstrating how to train specialized tool-calling capabilities through RL + synthetic data. It is a typical industrial practice of Section 24.8 "Agent-Specific Fine-Tuning" and [Section 25.3 "Data Flywheels"](../chapter_self_evolving/03_data_flywheel.md).
 
 ---
 
@@ -173,11 +173,11 @@ Gorilla can be understood as an early representative of the later engineering pa
 
 **Core Problem**: Tool call evaluation (tool selection, parameter accuracy, scope identification) has historically been **post-hoc** — decoupled from the running execution loop, where discovered errors can typically only be fixed through prompt tuning or retraining, **unable to correct in real time.**
 
-**Method**: Move evaluation into the in-execution loop — a dedicated **Reviewer Agent inspects candidate tool calls before they actually execute**, establishing a clear division of labor between "Execution Agent / Review Agent." The paper evaluates three collaboration mechanisms (different feedback rounds r, different feedback models) and uses **GEPA** (see Section 11.1 on automatic prompt optimization) to automatically optimize the Reviewer's prompt, eliminating the high cost of manually writing review prompts.
+**Method**: Move evaluation into the in-execution loop — a dedicated **Reviewer Agent inspects candidate tool calls before they actually execute**, establishing a clear division of labor between "Execution Agent / Review Agent." The paper evaluates three collaboration mechanisms (different feedback rounds r, different feedback models) and uses **GEPA** (see Section 25.1 on automatic prompt optimization) to automatically optimize the Reviewer's prompt, eliminating the high cost of manually writing review prompts.
 
 **Key Results**: On BFCL single-turn scenarios, improvement of **+5.5%**; on Tau²-Bench multi-turn stateful scenarios, improvement of **+7.1%**; with GEPA automatic prompt optimization, an additional **+1.5~2.8%**.
 
-**Relation to This Chapter**: Corresponds to this chapter's knowledge points on tool call reliability and error recovery. It is an online enhancement for existing ReAct-style tool call workflows, directly echoing Section 11.1 GEPA and Section 11.3 "Critic" topics.
+**Relation to This Chapter**: Corresponds to this chapter's knowledge points on tool call reliability and error recovery. It is an online enhancement for existing ReAct-style tool call workflows, directly echoing Section 25.1 GEPA and Section 25.3 "Critic" topics.
 
 ---
 
@@ -259,7 +259,7 @@ Gorilla can be understood as an early representative of the later engineering pa
 
 **Key Results**: Across four customer service domains and multiple open/closed-weight models, LedgerAgent achieved the largest improvements on strict multi-turn consistency metrics (repeated-run reliability).
 
-**Relation to This Chapter**: Corresponds to this chapter's "Tool Call Reliability" and "Policy Compliance in Tool Calling" knowledge points. It is the latest engineering exploration of introducing explicit state management into the tool-calling loop — conceptually aligned with Section 11.3 SkillOpt's "external state" and Self-Evolution's "explicit state separation" ideas, directly addressing the core problems of "context drift" and "implicit state confusion" in multi-turn tool execution.
+**Relation to This Chapter**: Corresponds to this chapter's "Tool Call Reliability" and "Policy Compliance in Tool Calling" knowledge points. It is the latest engineering exploration of introducing explicit state management into the tool-calling loop — conceptually aligned with Section 25.3 SkillOpt's "external state" and Self-Evolution's "explicit state separation" ideas, directly addressing the core problems of "context drift" and "implicit state confusion" in multi-turn tool execution.
 
 ---
 

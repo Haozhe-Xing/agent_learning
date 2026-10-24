@@ -1,4 +1,4 @@
-# Python Environment & Dependency Management
+# F.1 Python Environment & Dependency Management
 
 Agent projects depend on many third-party libraries, and version conflicts are a common headache. Using virtual environments creates an isolated dependency space for each project, completely eliminating conflicts.
 
@@ -237,4 +237,4 @@ Recommended: use `uv` — it's fast, simple, and modern, and is becoming the new
 
 ---
 
-*Next section: [2.2 Key Library Installation: LangChain, OpenAI SDK, etc.](./02_install_libs.md)*
+*Next section: [F.2 Key Library Installation: LangChain, OpenAI SDK, etc.](./02_install_libs.md)*

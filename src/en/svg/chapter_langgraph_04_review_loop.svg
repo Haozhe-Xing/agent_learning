@@ -1,87 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
-  <defs>
-    <marker id="arr-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#7f8c8d"/>
-    </marker>
-    <marker id="arr-grn-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
-    </marker>
-    <marker id="arr-red-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/>
-    </marker>
-    <marker id="arr-org-lg04" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#e67e22"/>
-    </marker>
-    <filter id="sh-lg04">
-      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
-    </filter>
-  </defs>
-
-  <rect width="800" height="420" fill="#f8f9fa" rx="12"/>
-
-  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Conditional Routing and Loop Control — Code Review Agent Example</text>
-
-  <!-- ===== START ===== -->
-  <circle cx="80" cy="180" r="24" fill="#2c3e50" filter="url(#sh-lg04)"/>
-  <text x="80" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">▶</text>
-  <text x="80" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">START</text>
-
-  <line x1="104" y1="180" x2="150" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg04)"/>
-
-  <!--===== [CN] Node=====-->
-  <rect x="152" y="148" width="140" height="64" rx="10" fill="#3498db" filter="url(#sh-lg04)"/>
-  <text x="222" y="172" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🔍 Analyze Code</text>
-  <text x="222" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d4e6f9">analyze_code()</text>
-  <text x="222" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0d4f1">LLM reviews code quality</text>
-
-  <line x1="292" y1="180" x2="340" y2="180" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arr-lg04)"/>
-
-  <!--===== [CN] =====-->
-  <polygon points="400,140 460,180 400,220 340,180" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#sh-lg04)"/>
-  <text x="400" y="175" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="white">Review</text>
-  <text x="400" y="188" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="white">result?</text>
-
-  <!--===== [CN] 1： [CN] →END=====-->
-  <line x1="460" y1="180" x2="620" y2="180" stroke="#27ae60" stroke-width="2" marker-end="url(#arr-grn-lg04)"/>
-  <text x="540" y="172" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#27ae60">✅ approved = True</text>
-
-  <circle cx="650" cy="180" r="24" fill="#27ae60" filter="url(#sh-lg04)"/>
-  <text x="650" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">✓</text>
-  <text x="650" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">END</text>
-  <text x="650" y="216" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">Code passes review</text>
-
-  <!--===== [CN] 2： [CN] → [CN] =====-->
-  <line x1="400" y1="220" x2="400" y2="272" stroke="#e67e22" stroke-width="2" marker-end="url(#arr-org-lg04)"/>
-  <text x="445" y="244" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e67e22">🔧 Has issues</text>
-  <text x="445" y="258" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e67e22">within limit</text>
-
-  <rect x="330" y="274" width="140" height="60" rx="10" fill="#9b59b6" filter="url(#sh-lg04)"/>
-  <text x="400" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" font-weight="bold" fill="white">🔧 Fix Code</text>
-  <text x="400" y="316" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8d5f5">fix_code()</text>
-  <text x="400" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d5b8e8">LLM fixes discovered issues</text>
-
-  <!--===== [CN] Arrow [CN] → [CN] =====-->
-  <path d="M330,304 Q200,304 200,242 L200,212" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-lg04)"/>
-  <text x="232" y="270" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#3498db">🔁 Re-review</text>
-
-  <!--===== [CN] 3： [CN] →END=====-->
-  <line x1="400" y1="140" x2="400" y2="90" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr-red-lg04)"/>
-  <text x="455" y="110" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#e74c3c">⚠️ Exceeded max iterations</text>
-
-  <circle cx="400" cy="68" r="22" fill="#e74c3c" filter="url(#sh-lg04)"/>
-  <text x="400" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">⏹</text>
-  <text x="400" y="77" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">END</text>
-
-  <!-- ===== BottomDescription ===== -->
-  <rect x="50" y="362" width="700" height="46" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
-  <text x="400" y="380" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#2c3e50">Conditional Routing Key Points</text>
-  <text x="145" y="398" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">📌 Conditional function returns string to identify route</text>
-  <text x="400" y="398" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#555">📌 Loop goes back to previous node via conditional edge</text>
-  <text x="655" y="398" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">📌 Must set max_iterations to prevent infinite loops</text>
-
-  <!-- Iteration counterAnnotation -->
-  <rect x="610" y="275" width="130" height="55" rx="6" fill="#f39c12" opacity="0.08" stroke="#f39c12" stroke-width="1"/>
-  <text x="675" y="292" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" font-weight="bold" fill="#e67e22">Iteration counter</text>
-  <text x="675" y="308" text-anchor="middle" font-family="Courier New, monospace" font-size="9" fill="#e67e22">iteration += 1</text>
-  <text x="675" y="322" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">Increments each review round</text>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#74889a"/></marker></defs>
+<rect width="800" height="420" rx="12" fill="#f3f6fa"/>
+<text x="400" y="31" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#243746" font-weight="bold">Release-record review: separate acceptance, failure and exhaustion</text>
+<rect x="35" y="148" width="80" height="64" rx="10" fill="#334e68"/>
+<text x="75" y="184" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">START</text>
+<line x1="115" y1="180" x2="150" y2="180" stroke="#74889a" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="152" y="145" width="145" height="70" rx="10" fill="#277fba"/>
+<text x="224" y="169" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Independent check</text>
+<text x="224" y="188" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="11" fill="white">analyze</text>
+<text x="224" y="205" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="white">Required nonempty fields</text>
+<line x1="297" y1="180" x2="340" y2="180" stroke="#74889a" stroke-width="2" marker-end="url(#arrow)"/>
+<polygon points="400,140 460,180 400,220 340,180" fill="#ca7b16"/>
+<text x="400" y="177" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="11" fill="white" font-weight="bold">Outcome</text>
+<text x="400" y="192" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="8" fill="white">route_review</text>
+<line x1="460" y1="180" x2="620" y2="180" stroke="#28835d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="540" y="168" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="#22784f">No findings</text>
+<rect x="622" y="150" width="140" height="60" rx="10" fill="#28835d"/>
+<text x="692" y="175" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">accepted</text>
+<text x="692" y="194" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="white">Check passed</text>
+<line x1="400" y1="140" x2="400" y2="110" stroke="#bb4444" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="292" y="62" width="216" height="46" rx="10" fill="#bb4444"/>
+<text x="400" y="80" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="11" fill="white" font-weight="bold">failed / budget_exhausted</text>
+<text x="400" y="97" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="white">Error or unresolved at attempt limit</text>
+<line x1="400" y1="220" x2="400" y2="272" stroke="#a26920" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="500" y="243" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="#975b13">Findings + budget left</text>
+<rect x="330" y="275" width="140" height="60" rx="10" fill="#8554a6"/>
+<text x="400" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="white" font-weight="bold">Fixed proposal</text>
+<text x="400" y="318" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="11" fill="white">repair</text>
+<path d="M330 305 L224 305 L224 216" fill="none" stroke="#277fba" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+<text x="232" y="276" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="#277fba">Recheck</text>
+<path d="M152 154 L130 154 L130 85 L291 85" fill="none" stroke="#bb4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+<text x="180" y="74" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="9" fill="#bb4444">Adapter failure</text>
+<rect x="580" y="273" width="180" height="62" rx="10" fill="#e5edf5"/>
+<text x="670" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#334e68" font-weight="bold">attempts += 1</text>
+<text x="670" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="#243746">Count each review</text>
+<text x="670" y="327" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="#243746">At most max_attempts</text>
+<rect x="40" y="357" width="720" height="48" rx="10" fill="white"/>
+<text x="400" y="376" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#243746" font-weight="bold">Stopping at a limit is not approval; every repair needs another check</text>
+<text x="400" y="394" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="10" fill="#526879">Graph steps, business attempts and elapsed time are different budgets</text>
 </svg>

@@ -1,6 +1,6 @@
-# 10.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design
+# 24.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design
 
-In [10.3 PPO: Proximal Policy Optimization](./03_ppo.md) and [10.4 DPO: Direct Preference Optimization](./04_dpo.md), we introduced the PPO and DPO policy optimization algorithms respectively. PPO requires an additional Critic model (large memory footprint), while DPO is simple but completely offline (it cannot explore new strategies).
+In [24.3 PPO: Proximal Policy Optimization](./03_ppo.md) and [24.4 DPO: Direct Preference Optimization](./04_dpo.md), we introduced the PPO and DPO policy optimization algorithms respectively. PPO requires an additional Critic model (large memory footprint), while DPO is simple but completely offline (it cannot explore new strategies).
 
 **GRPO (Group Relative Policy Optimization)** [1] is an algorithm tailor-made by the DeepSeek team for large-model RL training. It replaces the Critic model with **within-group sampling comparison**, dramatically reducing resource consumption while retaining online exploration capability. **GSPO (Group Sequence Policy Optimization)** [10] is Alibaba's Qwen team's improvement on top of GRPO: by raising the optimization granularity from the token level to the sequence level, it solves the training stability problems of large-scale models (especially MoE architectures). This section also introduces the core driving force behind both algorithms — **reward function design** — because the reward function defines "what counts as good Agent behavior" and therefore directly determines training effectiveness.
 

@@ -1,4 +1,4 @@
-# 17.3 Architecture: Cordis Microkernel & Plugin Topology
+# 15.3 Architecture: Cordis Microkernel & Plugin Topology
 
 > 🐋 *"No privileged components — this is the fundamental difference from every other Agent framework."*
 
@@ -60,15 +60,17 @@ The event stream powers "trajectory replay": replay a whole session, fork at a s
 
 ## Paradigm Comparison
 
-| Paradigm | OpenClaw | Hermes | Claude Code | DeepSeek Harness |
-|----------|----------|--------|-------------|------------------|
-| Event stream | internal | internal + Hooks | internal | **plugin** (`trajectory`) |
-| Sandbox | built-in + Docker | 6 impls | 6-stage perms | **plugin** (`sandbox.*`) |
-| State graph | implicit | implicit | explicit | **plugin** (`context.*`) |
-| Tools | internal | internal | internal | **plugin** (`tool.*`) |
-| Agent loop | internal | internal | internal | **plugin** (`agent.loop`) |
+Chapters 12–15 offer architecture cases in different settings. Compare pluginization through common interface and lifecycle questions, rather than treating a diagram as evidence of an exclusive capability:
 
-DeepSeek Harness is the **only** industrial harness that plugin-izes *all* of these paradigms.
+| Object | Interface and state checks | Failure checks on a fixed task |
+|---|---|---|
+| Event stream | What defines event types, ordering, and state updates? | How are replayed, duplicate, or missing events handled? |
+| Execution isolation | Who checks permissions, environment, inputs, and outputs? | Do refusal, timeout, and cleanup preserve the contract? |
+| State management | What is saved, and how are recovery formats versioned? | Can interruption and recovery duplicate side effects? |
+| Tools | Do names, arguments, results, and errors match? | Are unauthorized tools and invalid arguments rejected? |
+| Agent loop | Are entry, stopping, and resource ownership explicit? | Does replacement preserve success, failure, and exhaustion? |
+
+Retain configuration, traces, and verdicts for the version actually tested. Mark unexecuted cases unknown. A plugin name does not establish replacement or migration acceptance.
 
 ---
 
@@ -81,8 +83,8 @@ DeepSeek Harness is the **only** industrial harness that plugin-izes *all* of th
 | Topology | LLM / Tool / Context / Skill / Sub-agent / Session / Sandbox / UI all plugins |
 | Context keys | `ctx.llm` / `ctx.tools` / `ctx.session` stable |
 | Trajectory | git-style replay / fork |
-| Difference | only harness with a plugin-ized loop |
+| Comparison method | Verify interfaces, state, permissions, cleanup, and fixed task results by version |
 
 ---
 
-*Next section: [17.4 Plugin Development](./04_plugin_development.md)*
+*Next section: [15.4 Plugin Development](./04_plugin_development.md)*

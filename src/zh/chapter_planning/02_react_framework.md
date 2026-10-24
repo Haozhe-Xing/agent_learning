@@ -1,278 +1,59 @@
 # 5.2 ReAct：推理 + 行动框架
 
-ReAct（Reasoning + Acting）是 Agent 开发中最重要的框架之一，来自 2022 年普林斯顿大学和 Google Brain 的论文《ReAct: Synergizing Reasoning and Acting in Language Models》（Yao et al.）。它将 LLM 的推理能力与工具使用结合起来，创造出更可靠、更透明的 Agent 行为。
+[Yao等的ReAct论文，v3](https://arxiv.org/abs/2210.03629v3)研究交替生成推理文本与任务动作，并从环境获得反馈。它是一种组织交互的方式，不是“所有传统Agent都黑盒、ReAct就透明可靠”的分类。原论文结果取决于任务、模型和提示，本书不把那些分数移植为当前应用质量。
 
-> 📄 **论文背景**：在 ReAct 之前，LLM 的推理（Chain-of-Thought）和行动（工具调用）是两个独立的研究方向。CoT 让模型"会想"但"不会做"——推理时无法获取外部信息；而工具调用让模型"会做"但"不会想"——盲目执行而不解释理由。ReAct 的核心洞察是：**推理为行动提供方向，行动为推理提供依据，两者交替进行才能解决复杂问题。**
->
-> 论文在多个任务上的实验证明了这一点：在 HotpotQA（多跳问答）上，ReAct 比纯 CoT 提升了约 6 个百分点的准确率，因为 CoT 只能依赖模型已有知识，而 ReAct 可以通过搜索获取最新事实。在 ALFWorld（交互式文字游戏）上，ReAct 比纯行动（Act-only）提升了 34 个百分点，因为显式推理帮助 Agent 避免了盲目尝试。
+![结构动作、工具观察与独立停止条件](../svg/chapter_planning_02_react_loop.svg)
 
-## ReAct 的核心思想
+## 把动作协议与自由文字分开
 
-ReAct 的关键创新是**将思考过程显式化**：Agent 在行动之前先"大声说出"自己的推理，然后再采取行动。
+本节用结构化动作练习这种交替控制：`chooser(snapshot)`看到公开状态和工具观察，只能返回 `{"action": "load"}`、`{"action": "compose"}` 或 `{"finish": True}`。宿主负责动作白名单、预算及结果核验。没有“找不到行动就把整段回复当最终答案”的兜底，也不从模型生成的“观察：”中提取可信工具结果。
 
-![ReAct 推理+行动循环](../svg/chapter_planning_02_react_loop.svg)
-
-> 🎬 **交互式动画**：通过动画对比 ReAct、纯 CoT 和 Act-only 三种范式在同一道多跳问答上的不同表现——推理如何为行动提供方向，行动如何为推理提供依据。
->
-> <a href="../animations/react_cycle.html" target="_blank" style="display:inline-block;padding:8px 16px;background:#2196F3;color:white;border-radius:6px;text-decoration:none;font-weight:bold;">▶ 打开 ReAct 推理循环交互动画</a>
-
-**与传统 Agent 的对比：**
-
-| 特点 | 传统 Agent（黑盒） | ReAct Agent（透明） |
-|------|:---:|:---:|
-| 思考过程 | 隐藏 | 显式写入上下文 |
-| 可解释性 | 差 | 好 |
-| 自我纠错 | 难 | 容易 |
-| 幻觉风险 | 高 | 低（工具验证） |
-
-## 从零实现 ReAct Agent
+这是本书的离线控制流练习，不复现原论文Prompt或模型。固定选择器按状态选动作，不理解任意自然语言；来源读取与写作者都是可替换的普通函数。代码见 `reference_code/planning_patterns/workflow.py`：
 
 ```python
-import json
-import re
-from openai import OpenAI
-from typing import Callable
+from reference_code.planning_patterns import run_react
 
-client = OpenAI()
-
-class ReActAgent:
-    """
-    ReAct Agent 实现
-    显式推理 + 工具调用交织执行
-    """
-    
-    def __init__(self, tools: dict[str, Callable], tool_descriptions: str):
-        """
-        Args:
-            tools: 工具名 → 工具函数 的映射
-            tool_descriptions: 工具描述文本
-        """
-        self.tools = tools
-        self.tool_descriptions = tool_descriptions
-        self.scratchpad = []  # 记录推理过程
-    
-    def _build_system_prompt(self) -> str:
-        return f"""你是一个能够使用工具解决问题的 AI 助手。
-
-可用工具：
-{self.tool_descriptions}
-
-解题格式（严格遵守）：
-思考：[分析当前情况，决定下一步]
-行动：工具名[参数]
-观察：[工具返回的结果，系统填充]
-...（重复直到问题解决）
-最终答案：[综合所有信息给出答案]
-
-注意事项：
-- 每次只选择一个工具
-- 行动格式必须是：工具名[参数]
-- 等待观察结果后再继续
-- 如果不需要工具，直接写"最终答案："
-"""
-    
-    def _parse_action(self, text: str) -> tuple[str, str] | None:
-        """从文本中解析 Action"""
-        # 匹配 "行动：工具名[参数]" 格式
-        pattern = r'行动：(\w+)\[([^\]]*)\]'
-        match = re.search(pattern, text)
-        if match:
-            return match.group(1), match.group(2)
-        return None
-    
-    def _is_final_answer(self, text: str) -> bool:
-        """检查是否有最终答案"""
-        return "最终答案：" in text
-    
-    def _extract_final_answer(self, text: str) -> str:
-        """提取最终答案"""
-        idx = text.find("最终答案：")
-        if idx != -1:
-            return text[idx + len("最终答案："):].strip()
-        return text
-    
-    def run(self, question: str, max_steps: int = 8) -> str:
-        """
-        运行 ReAct 循环
-        
-        Args:
-            question: 用户问题
-            max_steps: 最大步骤数
-        
-        Returns:
-            最终答案
-        """
-        self.scratchpad = []
-        
-        print(f"\n🔍 问题：{question}")
-        print("=" * 60)
-        
-        # 构建初始消息
-        messages = [
-            {"role": "system", "content": self._build_system_prompt()},
-            {"role": "user", "content": f"请回答以下问题：{question}"}
-        ]
-        
-        for step in range(max_steps):
-            # 调用 LLM
-            response = client.chat.completions.create(
-                model="gpt-4.1",
-                messages=messages,
-                stop=["观察："],  # 在"观察："前停止，等待工具执行
-                max_tokens=500
-            )
-            
-            output = response.choices[0].message.content
-            print(f"\n{output}")
-            
-            self.scratchpad.append(output)
-            
-            # 检查是否有最终答案
-            if self._is_final_answer(output):
-                answer = self._extract_final_answer(output)
-                print(f"\n✅ 最终答案：{answer}")
-                return answer
-            
-            # 解析行动
-            action = self._parse_action(output)
-            if not action:
-                # 没有找到行动，可能直接给出答案了
-                if output.strip():
-                    return output
-                break
-            
-            tool_name, tool_input = action
-            
-            # 执行工具
-            tool_func = self.tools.get(tool_name)
-            if tool_func:
-                try:
-                    observation = tool_func(tool_input)
-                except Exception as e:
-                    observation = f"工具执行错误：{str(e)}"
-            else:
-                observation = f"未知工具：{tool_name}"
-            
-            # 打印观察结果
-            obs_text = f"观察：{observation}"
-            print(obs_text)
-            self.scratchpad.append(obs_text)
-            
-            # 将完整的交互添加到消息历史
-            messages.append({
-                "role": "assistant",
-                "content": output + "\n" + obs_text
-            })
-        
-        return "已达到最大步骤数，无法给出确定答案"
-
-
-# ============================
-# 工具定义
-# ============================
-
-import math
-import requests
-
-def search(query: str) -> str:
-    """模拟搜索（实际项目用真实搜索API）"""
-    # 预设一些知识库
-    knowledge = {
-        "python创始人": "Python 由 Guido van Rossum 创建，1991年首次发布",
-        "光速": "光在真空中的速度约为 299,792,458 米/秒（约30万公里/秒）",
-        "地球周长": "地球赤道周长约为 40,075 公里",
-        "水的沸点": "在标准大气压下，水的沸点是100摄氏度（212华氏度）",
-    }
-    
-    for key, value in knowledge.items():
-        if key in query.lower():
-            return value
-    
-    return f"搜索'{query}'：找到相关信息，建议进行计算验证"
-
-def calculate(expression: str) -> str:
-    """计算数学表达式"""
-    try:
-        safe_dict = {k: getattr(math, k) for k in dir(math) if not k.startswith('_')}
-        # ⚠️ 安全警告：eval() 存在安全风险，生产环境请使用 simpleeval 等安全替代方案
-        result = eval(expression, {"__builtins__": {}}, safe_dict)
-        return f"{expression} = {result}"
-    except Exception as e:
-        return f"计算错误：{e}"
-
-def get_current_date(_: str = "") -> str:
-    """获取当前日期"""
-    import datetime
-    return datetime.datetime.now().strftime("%Y年%m月%d日")
-
-# 工具描述（关键！）
-tool_descriptions = """
-- search[查询词]：搜索互联网获取信息
-  示例：search[Python 创始人是谁]
-  
-- calculate[表达式]：计算数学表达式
-  支持：+, -, *, /, **, sqrt, sin, cos, log, pi
-  示例：calculate[sqrt(144) + pi * 2]
-  
-- get_current_date[]：获取今天的日期
-  示例：get_current_date[]
-"""
-
-# ============================
-# 测试
-# ============================
-
-agent = ReActAgent(
-    tools={
-        "search": search,
-        "calculate": calculate,
-        "get_current_date": get_current_date
-    },
-    tool_descriptions=tool_descriptions
-)
-
-# 测试1：需要搜索 + 计算
-result = agent.run("光绕地球赤道一圈需要多少毫秒？")
-
-# 测试2：需要多步推理
-result = agent.run("Python 是哪年发布的？距离今年有多少年了？")
+result = run_react()
+assert result["accepted"] is True
+assert result["budgets"]["decisions_used"] == 3
+assert result["budgets"]["steps_used"] == 2
+print([(row["operation"], row["status"]) for row in result["trace"]])
 ```
 
-## ReAct 的优势与局限
+正常顺序是读取、形成并检查简报、提出结束：3次决策、2次工具尝试。工具观察由宿主写入trace，下一次选择器实际读到其快照。写作者消费读取到的资料，不凭空生成数据。它们不产生或保存私有推理链。
 
-**优势：**
-- 推理过程透明可解释
-- 支持自我纠错（观察到错误结果可以重新思考）
-- 减少幻觉（每步都有工具验证）
+## Finish只是结束提议
 
-**局限：**
-- Token 消耗较大（每步都要写思考过程）
-- 在简单任务上显得繁琐
-- 可能陷入循环（需要 max_steps 保护）
+自由文字、未知动作、多种动作同时出现、`finish=1`均拒绝。即使明确提出结束，独立检查尚未通过仍返回 `incomplete`，而不是交付候选：
 
----
+```python
+from reference_code.planning_patterns import run_react
 
-## 小结
+def malformed(snapshot):
+    return "All done, trust my reasoning."
 
-ReAct 框架的三大要素：
-- **显式推理**：思考过程写在上下文中
-- **行动-观察循环**：工具调用与推理交替进行
-- **自然终止**：最终答案时结束循环
+def premature(snapshot):
+    return {"finish": True}
 
-> 📖 **想深入了解 ReAct 及规划推理的学术前沿？** 请阅读 [5.7 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 ReAct、MRKL、Plan-and-Solve、Reflexion、CRITIC 等核心论文的深度解读。
->
-> 💡 **实践建议**：ReAct 是目前大多数 Agent 框架（LangChain、LlamaIndex）的默认架构。但它并非万能——对于不需要工具的纯推理任务，CoT 更高效；对于流程固定的工作流，直接编排（LangGraph）更可控。选择合适的架构，而非一味使用 ReAct。
+assert run_react(chooser=malformed)["status"] == "failed"
+result = run_react(chooser=premature)
+assert result["status"] == "incomplete"
+assert result["accepted"] is False
+assert result["trace"] == []
+```
 
----
+`finish`不授予权限，不证明答案完整。来源中的审批记录也不允许调用发布工具；本练习只有 `load/compose`，没有任意Python、shell或文件写入接口。扩展计算工具时应复用第3章的受限算术接口，不重新引入 `eval`，也不要把该算术器称为通用沙箱。
 
-## 参考文献
+## 观察如何驱动修订
 
-[1] YAO S, ZHAO J, YU D, et al. ReAct: Synergizing reasoning and acting in language models[C]//ICLR. 2023.
+若候选缺回退项，`compose`保留失败及缺项。下一轮可以在预算内重新提议，不能把工具异常伪装成普通答案。运行 `python -m reference_code.planning_patterns react`观察正常路径；将 `writer`换为 `OmitRollbackOnce()`，会经历一次缺项再修订。5.4展开这个反馈过程。
 
-[2] WEI J, WANG X, SCHUURMANS D, et al. Chain-of-thought prompting elicits reasoning in large language models[C]//NeurIPS. 2022.
+真实模型可能忽略观察、编造理由或反复选择同一动作。结构正确只证明能解析；来源支撑和目标覆盖仍需另验。相同模型批评自己的答案不能充当第二份独立证据。
 
-[3] SHINN N, CASSANO F, GOPINATH A, et al. Reflexion: Language agents with verbal reinforcement learning[C]//NeurIPS. 2023.
+## 两种预算，两个失败出口
 
----
+`max_decisions`计每次选择器调用，包括结束提议；`max_calls`计工具尝试，包括失败。两者均为1..30的整数，达到上限仍未核验就为 `budget_exhausted`。它们不限制阻塞回调的墙钟时间；接入外部适配器还需超时、取消、权限和幂等合同。
+
+练习让选择器一直返回 `load`，分别只给1次工具调用与1次决策，记录实际使用量及原因。再返回一句“任务已完成”，确认它是协议失败而非成功。比较计划预先已知和需要观察后再选择的任务，而不是把ReAct固定归为简单任务、另一模式固定归为生产任务。
 
 *下一节：[5.3 任务分解：将复杂问题拆解为子任务](./03_task_decomposition.md)*

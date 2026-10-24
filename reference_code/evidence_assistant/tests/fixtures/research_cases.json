@@ -1,0 +1,102 @@
+{
+  "description": "Frozen research acceptance cases maintained separately from source documents and runtime task specifications.",
+  "cases": [
+    {
+      "id": "complete_release_conditions",
+      "question": "上线验收需要满足哪些条件？",
+      "documents": [{"source": "release", "text": "上线验收需要同时满足三个条件：资料负责人确认发布清单；二十条固定问题中至少十八条返回正确来源；全部无证据样例明确标记为缺少证据。任一条件未通过都不能标记为验收完成。"}],
+      "expected_sources": ["release"],
+      "expected_coverage": "passed",
+      "missing_ids": []
+    },
+    {
+      "id": "same_generic_words_different_topic",
+      "question": "火星移民需要满足哪些条件？",
+      "documents": [{"source": "release", "text": "上线验收需要同时满足三个条件：资料负责人确认发布清单。"}],
+      "expected_sources": [],
+      "expected_coverage": "unknown",
+      "missing_ids": []
+    },
+    {
+      "id": "related_topic_without_requested_fact",
+      "question": "上线验收负责人的生日是哪天？",
+      "documents": [{"source": "release", "text": "上线验收记录由试点负责人签字，记录保留文档版本和失败样例。"}],
+      "expected_sources": ["release"],
+      "expected_coverage": "unknown",
+      "missing_ids": []
+    },
+    {
+      "id": "known_question_but_no_conditions",
+      "question": "上线验收需要满足哪些条件？",
+      "documents": [{"source": "release", "text": "上线验收将在周五举行，记录由试点负责人保存。"}],
+      "expected_sources": ["release"],
+      "expected_coverage": "failed",
+      "missing_ids": ["release_list", "retrieval_target", "missing_evidence", "all_required"]
+    },
+    {
+      "id": "only_one_required_point",
+      "question": "上线验收需要满足哪些条件？",
+      "documents": [{"source": "release", "text": "上线验收需要资料负责人确认发布清单。"}],
+      "expected_sources": ["release"],
+      "expected_coverage": "failed",
+      "missing_ids": ["retrieval_target", "missing_evidence", "all_required"]
+    },
+    {
+      "id": "changed_source_does_not_change_frozen_expectation",
+      "question": "上线验收需要满足哪些条件？",
+      "documents": [{"source": "release", "text": "上线验收需要同时满足三个条件：资料负责人确认发布清单；二十条固定问题中至少十七条返回正确来源；全部无证据样例明确标记为缺少证据。任一条件未通过都不能标记为验收完成。"}],
+      "expected_sources": ["release"],
+      "expected_coverage": "failed",
+      "missing_ids": ["retrieval_target"]
+    },
+    {
+      "id": "related_coverage_question_has_no_specification",
+      "question": "上线验收具体测试覆盖率是多少？",
+      "documents": [{"source": "release", "text": "上线验收要求二十条固定问题中至少十八条返回正确来源。"}],
+      "expected_sources": ["release"],
+      "expected_coverage": "unknown",
+      "missing_ids": []
+    },
+    {
+      "id": "complete_budget_and_timeout",
+      "question": "工具调用预算和执行超时如何限制？",
+      "documents": [{"source": "budget", "text": "青禾项目的工具调用预算为每次任务最多八次调用，检索和回答各计一次。超过工具调用预算必须停止，保留已完成问题和未完成问题的记录，不能标记整份任务完成。执行超时限制为单次外部工具三十秒；发生执行超时先终止该工具并记录失败，由负责人决定是否重新发起任务。离线资料调研示例不执行这些外部工具，三十秒是项目文档要求，不是示例已经实现的进程隔离能力。"}],
+      "expected_sources": ["budget"],
+      "expected_coverage": "passed",
+      "missing_ids": []
+    },
+    {
+      "id": "changed_timeout_does_not_redefine_acceptance",
+      "question": "工具调用预算和执行超时如何限制？",
+      "documents": [{"source": "budget", "text": "青禾项目的工具调用预算为每次任务最多八次调用，检索和回答各计一次。超过工具调用预算必须停止，保留已完成问题和未完成问题的记录，不能标记整份任务完成。执行超时限制为单次外部工具二十五秒；发生执行超时先终止该工具并记录失败，由负责人决定是否重新发起任务。离线资料调研示例不执行这些外部工具，三十秒是项目文档要求，不是示例已经实现的进程隔离能力。"}],
+      "expected_sources": ["budget"],
+      "expected_coverage": "failed",
+      "missing_ids": ["timeout"]
+    },
+    {
+      "id": "complete_rollback_procedure",
+      "question": "部署失败后如何回退？",
+      "documents": [{"source": "rollback", "text": "部署失败后立即停止灰度流量，恢复上一份已验收的服务配置和文档索引快照，再运行十条回退检查问题。只有十条检查均通过，才记录为回退完成；失败记录继续保留。回退执行人需要在值班记录中写明失败时间、恢复快照版本和检查结果。若上一份快照不可用，应停止发布并升级给试点负责人，不得自动重试到未知版本。"}],
+      "expected_sources": ["rollback"],
+      "expected_coverage": "passed",
+      "missing_ids": []
+    },
+    {
+      "id": "rollback_omits_missing_snapshot_action",
+      "question": "部署失败后如何回退？",
+      "documents": [{"source": "rollback", "text": "部署失败后立即停止灰度流量，恢复上一份已验收的服务配置和文档索引快照，再运行十条回退检查问题。只有十条检查均通过，才记录为回退完成；失败记录继续保留。回退执行人需要在值班记录中写明失败时间、恢复快照版本和检查结果。"}],
+      "expected_sources": ["rollback"],
+      "expected_coverage": "failed",
+      "missing_ids": ["no_snapshot"]
+    },
+    {
+      "id": "answer_omits_a_point_even_when_source_has_it",
+      "question": "上线验收需要满足哪些条件？",
+      "documents": [{"source": "release", "text": "上线验收需要同时满足三个条件：资料负责人确认发布清单；二十条固定问题中至少十八条返回正确来源；全部无证据样例明确标记为缺少证据。任一条件未通过都不能标记为验收完成。"}],
+      "answer": "[release] 上线验收需要同时满足三个条件：资料负责人确认发布清单；二十条固定问题中至少十八条返回正确来源；全部无证据样例明确标记为缺少证据。",
+      "expected_sources": ["release"],
+      "expected_coverage": "failed",
+      "missing_ids": ["all_required"]
+    }
+  ]
+}

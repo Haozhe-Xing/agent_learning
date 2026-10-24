@@ -1,4 +1,4 @@
-# 22.8 Long-Running Task Queues and Cost Governance
+# 20.8 Long-Running Task Queues and Cost Governance
 
 > **Goal**: Learn how to manage long-running Agent tasks with task queues (Celery / Temporal), master Token budget control and on-demand large/small model routing, and build a complete cost monitoring and alerting system.
 
@@ -87,10 +87,13 @@ app.conf.update(
 
 ### Agent Task Definitions
 
+The calculator below reuses `examples/chapter03/safe_math.py` from this repository. Run these modules from the repository root; when using them in your own project, include that module and adjust its import path. The interpreter accepts allowlisted arithmetic, with limits of 256 input characters, 64 AST nodes, an absolute exponent of 100, and intermediate numeric magnitude of $10^{100}$. Invalid input raises an exception. These checks cover the calculator input boundary; Celery/Temporal, the broker, model APIs, and the complete workflow still require separate configuration and runtime validation.
+
 ```python
 # agent_tasks.py
 from celery_config import app
 from openai import OpenAI
+from examples.chapter03.safe_math import safe_math
 import json
 import logging
 
@@ -196,9 +199,25 @@ def complex_reasoning(self, message: str, tools: list = None,
     max_retries=3,
     default_retry_delay=3,
 )
-def execute_tool(self, tool_name: str, arguments: dict):
+def execute_tool(self, tool_name: str, arguments: str | dict):
     """Tool-call execution task"""
     try:
+        # Models usually return JSON text; backend callers may pass an object.
+        if isinstance(arguments, str):
+            try:
+                arguments = json.loads(arguments)
+            except json.JSONDecodeError as exc:
+                raise ValueError("Tool arguments are not valid JSON") from exc
+        if not isinstance(arguments, dict):
+            raise ValueError("Tool arguments must be a JSON object")
+        # Python accepts NaN/Infinity while decoding; require finite JSON data.
+        try:
+            json.dumps(arguments, allow_nan=False)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Tool arguments must contain finite JSON data") from exc
+        if not isinstance(tool_name, str) or not tool_name.strip():
+            raise ValueError("Tool name must be a non-empty string")
+
         # Tool registry
         tool_registry = {
             "search": _tool_search,
@@ -212,6 +231,9 @@ def execute_tool(self, tool_name: str, arguments: dict):
         result = tool_registry[tool_name](**arguments)
         return {"tool": tool_name, "result": result}
 
+    except (ValueError, TypeError, SyntaxError, ArithmeticError):
+        # Repeating malformed JSON, arguments or arithmetic cannot repair them.
+        raise
     except Exception as exc:
         logger.error(f"execute_tool task failed: {exc}")
         raise self.retry(exc=exc)
@@ -226,21 +248,8 @@ def _tool_search(query: str, limit: int = 5) -> list:
 
 
 def _tool_calculate(expression: str) -> float:
-    """Calculator tool"""
-    # Safe calculator implementation (do NOT use eval!)
-    import ast
-    import operator
-
-    ops = {
-        ast.Add: operator.add,
-        ast.Sub: operator.sub,
-        ast.Mult: operator.mul,
-        ast.Div: operator.truediv,
-    }
-
-    node = ast.parse(expression, mode="eval")
-    # Simplified example; production needs stricter safety checks
-    return eval(expression)  # noqa: S307 — illustration only
+    """Evaluate arithmetic within length, syntax, and numeric budgets."""
+    return safe_math(expression)
 
 
 def _tool_query_database(sql: str) -> list:
@@ -381,6 +390,8 @@ Temporal is a workflow orchestration engine, naturally suited to the Agent's com
 # temporal_workflows.py
 from datetime import timedelta
 from typing import Optional
+from examples.chapter03.safe_math import safe_math
+import json
 
 from temporalio import activity, workflow
 from temporalio.common import RetryPolicy
@@ -441,19 +452,37 @@ async def call_llm(prompt: str, model: str = "gpt-4.1",
 
 
 @activity.defn
-async def execute_tool_call(tool_name: str, arguments: dict) -> dict:
+async def execute_tool_call(tool_name: str, arguments: str | dict) -> dict:
     """Execute a tool"""
+    if isinstance(arguments, str):
+        try:
+            arguments = json.loads(arguments)
+        except json.JSONDecodeError as exc:
+            raise ValueError("Tool arguments are not valid JSON") from exc
+    if not isinstance(arguments, dict):
+        raise ValueError("Tool arguments must be a JSON object")
+    try:
+        json.dumps(arguments, allow_nan=False)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("Tool arguments must contain finite JSON data") from exc
+    if not isinstance(tool_name, str) or not tool_name.strip():
+        raise ValueError("Tool name must be a non-empty string")
+
     # Reuse the previous tool registry
     tool_registry = {
-        "search": lambda q: {"results": [f"Search result for: {q}"]},
-        "calculate": lambda expr: {"result": eval(expr)},  # noqa
+        "search": lambda query: {"results": [f"Search result for: {query}"]},
+        "calculate": lambda expression: {"result": safe_math(expression)},
     }
 
     handler = tool_registry.get(tool_name)
     if not handler:
         raise ValueError(f"Unknown tool: {tool_name}")
 
-    return handler(**arguments)
+    try:
+        return handler(**arguments)
+    except (TypeError, SyntaxError, ArithmeticError) as exc:
+        # Normalize permanent argument errors for the retry policy above.
+        raise ValueError(f"Invalid tool arguments: {exc}") from exc
 
 
 @activity.defn
@@ -1247,7 +1276,7 @@ def send_alert_dedup(alert_type: str, message: str, dedup_window: int = 300):
 
 After reading this chapter, close the book and answer the questions in your own words first, then expand the reference answers to check.
 
-**Exercise 1 (Concept)**: Section 22.1 ("The Five Unique Challenges of Agent Deployment") lists "side effects of tool calls" as one of them. Pick that item and explain why it makes "failure retries" dangerous, and describe how this chapter (19.8) solves the problem.
+**Exercise 1 (Concept)**: Section 20.1 ("The Five Unique Challenges of Agent Deployment") lists "side effects of tool calls" as one of them. Pick that item and explain why it makes "failure retries" dangerous, and describe how this chapter (19.8) solves the problem.
 
 <details>
 <summary>Reference answer</summary>
@@ -1343,4 +1372,4 @@ That is why this chapter's `TokenBudgetManager` uses a Redis pipeline + incrby +
 
 ---
 
-[22.7 Kubernetes Orchestration and Serverless GPU](./07_k8s_serverless.md)
+[20.7 Kubernetes Orchestration and Serverless GPU](./07_k8s_serverless.md)

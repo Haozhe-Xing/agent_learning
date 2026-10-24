@@ -1,245 +1,58 @@
 # 5.3 任务分解：将复杂问题拆解为子任务
 
-复杂任务往往超出单个 LLM 调用的能力范围。任务分解是将大问题拆成可管理的小问题，然后逐步解决。
+分解不是多写几条待办。每个子任务都应说明输入、依赖、许可动作、产物及所覆盖的目标；执行时要真的检查这些关系。发布简报的三个目标是审批记录、预算和回退说明，不是“生成任意一段总结”。
 
-> 📄 **学术背景**：任务分解的思想在 AI 规划领域有悠久的历史（如层次任务网络 HTN），但将其与 LLM 结合是近年的研究热点。*"Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning"*（Wang et al., 2023）是该方向的代表性工作，它提出让 LLM 先制定计划（"Let's first understand the problem and devise a plan"），再逐步执行每个子任务，在 GSM8K 等数学推理基准上比标准 Zero-shot CoT 提升了 5-6 个百分点。
+![依赖、目标覆盖与实际产物的区别](../svg/chapter_planning_03_decomposition.svg)
 
-![Plan-and-Execute 任务分解模式](../svg/chapter_planning_03_decomposition.svg)
+## 从列表升级为有界依赖图
 
-## Plan-and-Execute 模式
-
-```python
-from openai import OpenAI
-import json
-
-client = OpenAI()
-
-class PlanAndExecuteAgent:
-    """
-    规划-执行模式 Agent
-    先制定完整计划，再逐步执行
-    """
-    
-    def __init__(self, available_tools: dict):
-        self.tools = available_tools
-    
-    def plan(self, goal: str) -> list[dict]:
-        """
-        将目标分解为有序的子任务列表
-        
-        Returns:
-            [{"step": 1, "task": "...", "tool": "...", "depends_on": []}]
-        """
-        response = client.chat.completions.create(
-            model="gpt-4.1",
-            messages=[
-                {
-                    "role": "system",
-                    "content": f"""你是一个任务规划专家。将用户目标分解为可执行的子任务。
-
-可用工具：{list(self.tools.keys())}
-
-返回 JSON 格式的执行计划：
-{{
-  "goal": "总目标",
-  "steps": [
-    {{
-      "step": 1,
-      "task": "任务描述",
-      "tool": "工具名（可选）",
-      "expected_output": "预期产出",
-      "depends_on": []
-    }}
-  ]
-}}"""
-                },
-                {"role": "user", "content": f"请为以下目标制定执行计划：{goal}"}
-            ],
-            response_format={"type": "json_object"}
-        )
-        
-        plan = json.loads(response.choices[0].message.content)
-        return plan
-    
-    def execute_step(self, step: dict, context: dict) -> str:
-        """执行单个步骤"""
-        task = step["task"]
-        tool_name = step.get("tool")
-        
-        print(f"\n[步骤 {step['step']}] {task}")
-        
-        if tool_name and tool_name in self.tools:
-            # 让 LLM 决定工具参数
-            param_response = client.chat.completions.create(
-                model="gpt-4.1-mini",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": f"""
-任务：{task}
-已有信息：{json.dumps(context, ensure_ascii=False)}
-请生成调用工具 "{tool_name}" 所需的参数（JSON格式，只返回参数值）："""
-                    }
-                ]
-            )
-            
-            try:
-                params = json.loads(param_response.choices[0].message.content)
-                result = self.tools[tool_name](**params)
-            except:
-                result = self.tools[tool_name](task)
-        else:
-            # 直接用 LLM 处理
-            response = client.chat.completions.create(
-                model="gpt-4.1",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": f"你正在执行以下任务，已有的上下文信息：{json.dumps(context, ensure_ascii=False)}"
-                    },
-                    {"role": "user", "content": task}
-                ]
-            )
-            result = response.choices[0].message.content
-        
-        print(f"  结果：{str(result)[:200]}")
-        return str(result)
-    
-    def execute(self, goal: str) -> str:
-        """执行完整目标"""
-        # 1. 制定计划
-        plan = self.plan(goal)
-        print(f"\n📋 执行计划：{plan.get('goal', goal)}")
-        for step in plan.get("steps", []):
-            print(f"  步骤{step['step']}: {step['task']}")
-        
-        # 2. 逐步执行
-        context = {}  # 各步骤结果的共享上下文
-        
-        for step in plan.get("steps", []):
-            result = self.execute_step(step, context)
-            context[f"step_{step['step']}_result"] = result
-        
-        # 3. 汇总结果
-        summary_response = client.chat.completions.create(
-            model="gpt-4.1",
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"""
-目标：{goal}
-
-各步骤执行结果：
-{json.dumps(context, ensure_ascii=False, indent=2)}
-
-请综合以上结果，给出最终回答："""
-                }
-            ]
-        )
-        
-        final_answer = summary_response.choices[0].message.content
-        print(f"\n✅ 最终结果：\n{final_answer}")
-        return final_answer
-
-
-# 测试工具
-def mock_search(query: str) -> str:
-    return f"搜索'{query}'的结果：[相关信息...]"
-
-def mock_calculate(expression: str) -> str:
-    import math
-    try:
-        result = eval(expression, {"__builtins__": {}, "math": math})
-        return f"{expression} = {result}"
-    except:
-        return "计算失败"
-
-def mock_write_file(filename: str, content: str) -> str:
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(content)
-    return f"文件 {filename} 已创建"
-
-# 执行示例
-agent = PlanAndExecuteAgent({
-    "search": mock_search,
-    "calculate": mock_calculate,
-    "write_file": mock_write_file
-})
-
-result = agent.execute(
-    "研究Python在AI开发中的主要应用场景，并写一份300字的总结报告"
-)
-```
-
-## 层次化任务分解（HTN）
-
-对于更复杂的任务，可以采用层次化分解：
+配套 `Node(id, operation, depends_on, covers)` 描述计划节点。`validate_plan`只接受最多12个节点的列表，拒绝重复ID、未知依赖、环、未注册动作与漏目标；不能遍历一个无限生成器来“验证计划”。`compose`还必须有 `load`祖先，避免靠偶然列表顺序碰巧有资料。
 
 ```python
-def hierarchical_decompose(task: str, depth: int = 2) -> dict:
-    """
-    层次化任务分解
-    将任务递归分解，直到达到"原子操作"级别
-    """
-    
-    response = client.chat.completions.create(
-        model="gpt-4.1",
-        messages=[
-            {
-                "role": "system",
-                "content": """你是任务分解专家。将复杂任务分解为子任务。
-                
-判断标准：
-- 原子任务（leaf）：可以直接执行，不需要进一步分解
-- 复合任务（composite）：需要分解为子任务
+from reference_code.planning_patterns import default_plan, validate_plan, run_plan
 
-返回JSON格式：
-{
-  "task": "任务描述",
-  "type": "leaf|composite",
-  "subtasks": [],  // composite时填写
-  "tool": "使用的工具（leaf时）",
-  "estimated_minutes": 5
-}"""
-            },
-            {
-                "role": "user",
-                "content": f"分解此任务（深度{depth}层）：{task}"
-            }
-        ],
-        response_format={"type": "json_object"}
-    )
-    
-    return json.loads(response.choices[0].message.content)
-
-# 示例
-task_tree = hierarchical_decompose(
-    "开发一个天气预报 Python 应用"
-)
-print(json.dumps(task_tree, ensure_ascii=False, indent=2))
+proposal = list(reversed(default_plan()))
+ordered = validate_plan(proposal)
+assert [node.id for node in ordered] == ["read", "brief"]
+result = run_plan(nodes=proposal, max_steps=2)
+assert result["accepted"] is True
+assert result["budgets"]["steps_used"] == 2
 ```
 
----
+即使输入列表反向，校验器也按依赖给出 `read → brief`。本例执行仍是顺序的，没有实现并行调度。独立节点可以在设计上并行，但若共享写入或生成报告依赖统计结果，还要定义合并与汇聚，不能从“没依赖”推导线程安全。
 
-## 小结
+本练习一次只保留一份最新资料快照。`compose` 实际消费的最近一次 `load` 必须属于其声明的依赖祖先，否则拒绝，避免把另一支路的资料串入。多个 `load` 不会自动合并；需要分支工件时应另建显式的产物选择与汇合协议。
 
-任务分解的核心模式：
-- **Plan-and-Execute**：先规划再执行，步骤共享上下文
-- **层次化分解**：递归拆解直到原子任务
-- **依赖管理**：并行执行无依赖的子任务
+## 计划覆盖与结果覆盖要分别检查
 
-> 📖 **想深入了解任务规划的学术前沿？** 请阅读 [5.7 论文解读：规划与推理前沿研究](./06_paper_readings.md)，涵盖 Plan-and-Solve、HuggingGPT、LLM+P 等论文的深度解读。
+`covers`用于静态检查计划是否遗漏目标，并限制某种动作能声明哪些目标；它不能证明产物已经满足目标。即便声明三项都覆盖，写作者仍可能漏回退说明、写错预算或伪造来源。独立 `check_brief`检查完整字段、原观察及冻结值，不读取写作者自报的分数。
 
----
+```python
+from reference_code.planning_patterns import Node, run_plan
 
-## 参考文献
+missing_goal = [Node("read", "load"),
+                Node("brief", "compose", ("read",), ("budget",))]
+result = run_plan(nodes=missing_goal)
+assert result["status"] == "failed"
+assert result["trace"] == []  # rejected before calling any tool
 
-[1] WANG L, XU W, LAN Y, et al. Plan-and-solve prompting: Improving zero-shot chain-of-thought reasoning by large language models[C]//ACL. 2023.
+cycle = [Node("a", "load", ("b",)),
+         Node("b", "compose", ("a",), ("approval", "budget", "rollback"))]
+assert run_plan(nodes=cycle)["status"] == "failed"
+```
 
-[2] YAO S, YU D, ZHAO J, et al. Tree of thoughts: Deliberate problem solving with large language models[C]//NeurIPS. 2023.
+这两种错误都在工具调用前结束，trace为空。循环依赖不应通过“按原列表继续”消解，漏目标也不应该等最后生成器补一句话。
 
-[3] SHEN Y, SONG K, TAN X, et al. HuggingGPT: Solving AI tasks with ChatGPT and its friends in Hugging Face[C]//NeurIPS. 2023.
+## 依赖完成、尝试过和验证通过不是一个状态
 
----
+成功读取后才有资料；写作/检查失败时该节点没有进入completed集合。失败后如果允许重规划，本练习用新队列替换旧队列，并保守地使全部旧产物失效、重新读取。这样较容易验证，但会多花调用；更细粒度复用需要版本化产物、依赖失效传播及幂等约束，当前没有实现。
+
+`Session`分别保留公开trace、候选和verification。给回调的数据是副本，写作者改动预算字段不会改写原观察或独立要求。当前任务只有三条固定结构资料，不声称能自动拆解任意研究项目。
+
+## 层次分解还要增加什么
+
+将“准备发布”分成资料检查、审批流程和实际部署，属于另一层任务建模；不能因JSON包含 `leaf/composite` 就宣称有HTN规划器。递归方案还需限制深度、节点总数、展开调用、分支数与总工具尝试，并检测未覆盖目标、重复动作和不可执行叶子。本节不提供HTN或自动递归模型。
+
+练习先把回退项从 `covers` 删除，再把它只从生成结果删除，分别记录静态失败与动态核验失败。然后准备一个依赖中间产物的任务，解释哪些节点可以并行、哪些必须等待，以及取消后哪些迟到结果应拒绝。先交付依赖图、目标映射与失败轨迹，不执行模型生成的文件写入或代码。
 
 *下一节：[5.4 反思与自我纠错机制](./04_reflection.md)*

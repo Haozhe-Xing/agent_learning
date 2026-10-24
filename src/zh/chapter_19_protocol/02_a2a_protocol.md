@@ -1,4 +1,4 @@
-# 19.2 A2A（Agent-to-Agent）协议
+# 17.2 A2A（Agent-to-Agent）协议
 
 A2A（Agent-to-Agent）是 Google 于 2025 年 4 月在 Google Cloud Next 大会上推出的开放协议，专门设计用于不同 Agent 之间的互操作性。发布时即获得数十家技术合作伙伴支持；2025 年 8 月 IBM 的 ACP 协议并入 A2A，2026 年 3 月 A2A 在 Linux 基金会下发布 **v1.0 稳定版**（新增多租户与签名 Agent Card），成为 Agent 间协作的事实标准。
 
@@ -424,4 +424,4 @@ A2A 协议的价值：
 
 ---
 
-*下一节：[19.3 ANP（Agent Network Protocol）协议](./03_anp_protocol.md)*
+*下一节：[17.3 ANP（Agent Network Protocol）协议](./03_anp_protocol.md)*

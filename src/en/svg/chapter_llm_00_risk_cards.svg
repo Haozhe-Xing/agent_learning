@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#B7C5D8" flood-opacity="0.32" />
+    </filter>
+  </defs>
+  <rect width="980" height="420" rx="28" fill="#F8FBFF" />
+  <text x="490" y="52" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28" font-weight="700" fill="#243B64">Five Common LLM Failure Modes</text>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle" filter="url(#shadow)">
+    <rect x="70" y="115" width="160" height="105" rx="20" fill="#FFFFFF" stroke="#F1C0C0" />
+    <g transform="translate(150 144)" fill="none" stroke="#914044" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 -21 L22 18 H-22 Z" fill="#FFEFEF" />
+      <path d="M0 -7 V6" />
+      <circle cx="0" cy="13" r="1.5" fill="#914044" />
+    </g>
+    <text x="150" y="188" font-size="18" font-weight="700" fill="#914044">Invented facts</text>
+    <rect x="250" y="115" width="160" height="105" rx="20" fill="#FFFFFF" stroke="#F1D8A8" />
+    <g transform="translate(330 144)" fill="none" stroke="#8A641A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="0" r="22" fill="#FFF3D7" />
+      <path d="M0 -12 V2 L10 9" />
+      <path d="M-13 -24 L-20 -15" />
+      <path d="M13 -24 L20 -15" />
+    </g>
+    <text x="330" y="188" font-size="18" font-weight="700" fill="#8A641A">Stale information</text>
+    <rect x="430" y="115" width="160" height="105" rx="20" fill="#FFFFFF" stroke="#F1D8A8" />
+    <g transform="translate(510 144)" fill="none" stroke="#8A641A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-19" y="-22" width="38" height="44" rx="7" fill="#FFF3D7" />
+      <path d="M-10 -9 H10" />
+      <circle cx="-9" cy="4" r="2" fill="#8A641A" />
+      <circle cx="0" cy="4" r="2" fill="#8A641A" />
+      <circle cx="9" cy="4" r="2" fill="#8A641A" />
+      <circle cx="-9" cy="15" r="2" fill="#8A641A" />
+      <circle cx="0" cy="15" r="2" fill="#8A641A" />
+      <circle cx="9" cy="15" r="2" fill="#8A641A" />
+    </g>
+    <text x="510" y="188" font-size="18" font-weight="700" fill="#8A641A">Math mistakes</text>
+    <rect x="610" y="115" width="160" height="105" rx="20" fill="#FFFFFF" stroke="#C9D9EF" />
+    <g transform="translate(690 144)" fill="none" stroke="#385FA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-14 -10 C-10 -23 13 -23 16 -8 C18 4 5 7 3 16" />
+      <circle cx="2" cy="24" r="1.8" fill="#385FA8" />
+    </g>
+    <text x="690" y="188" font-size="18" font-weight="700" fill="#385FA8">Wrong intent</text>
+    <rect x="790" y="115" width="160" height="105" rx="20" fill="#FFFFFF" stroke="#C9D9EF" />
+    <g transform="translate(870 143)" fill="none" stroke="#385FA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-17 -23 H10 L22 -11 V23 H-17 Z" fill="#E7F0FF" />
+      <path d="M10 -23 V-11 H22" />
+      <path d="M-7 -3 H8" />
+      <path d="M-7 9 H12" />
+    </g>
+    <text x="870" y="188" font-size="18" font-weight="700" fill="#385FA8">Polished format</text><text x="870" y="211" font-size="13" fill="#5E6D82">Incorrect content</text>
+  </g>
+  <rect x="170" y="285" width="640" height="54" rx="27" fill="#FFEFEF" />
+  <text x="490" y="319" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#914044">Fluency is not evidence of correctness; verify consequential results</text>
+</svg>

@@ -1,161 +1,91 @@
 # 4.4 工作记忆：Scratchpad 模式
 
-工作记忆是 Agent 在执行复杂任务时的"草稿纸"——记录推理步骤、中间结果，帮助 Agent 保持任务状态。
+多步任务需要保存“完成了什么、依据是什么、还差什么”。例如，计算两个订单的总额后，下一步要引用这个数值及原始行，而不是让模型凭印象再算一次。Scratchpad 在这里是**可检查的任务状态**，不要求保存或公开模型的内部推理过程。
 
-![工作记忆 Scratchpad 模式](../svg/chapter_memory_04_working_memory.svg)
+![任务状态的来源、隔离与清理](../svg/chapter_memory_04_working_memory.svg)
 
-## 为什么需要工作记忆？
+## 工作记忆与另外两种记忆的区别
 
-考虑一个真实场景：分析 Q1 财务数据——计算总收入、找增长最快的产品线、识别成本异常、生成摘要报告。**没有工作记忆的 Agent 会"忘记"中间步骤**：
+| 责任 | 典型内容 | 保留与读取方式 |
+|------|----------|----------------|
+| 短期历史 | 用户和助手的完整消息 | 按请求预算选择，保持消息/工具协议完整 |
+| 工作状态 | 中间产物、来源、验证状态、待办 | 按用户与任务定位，完成或取消后按策略清理 |
+| 长期记忆 | 获准跨会话保留的信息 | 需要同意、来源、更新和删除策略 |
 
-- 步骤 1（总收入）的结果，步骤 3 怎么用？
-- 分析了 20 个产品线，哪个增长最快？
-- 发现了 3 个异常，每个的详情是什么？
+工作状态可以放内存，也可以为了恢复任务而持久化；生命周期由任务策略决定，不能简单认定“都不进日志”。未完成或被拒绝的结果也可能值得保留作诊断，但不能和已验证结果混在一起。步数多并不自动要求某种结构，是否需要显式状态取决于跨步骤依赖、可恢复性和审计需求。
 
-这些中间信息**不应该写回对话历史**（会撑爆短期记忆），也**不应该进长期记忆**（一次性任务结束就丢）。它们属于"工作记忆"——任务进行时存在，任务结束即可清空。
+## 可运行核心：有来源、有状态、按任务隔离
 
-## Scratchpad 模式的核心设计
-
-Scratchpad = 任务进行时的"草稿本"。Agent 在推理过程中用工具调用把中间结果写进 Scratchpad，后续步骤可读取并引用。
-
-```python
-class Scratchpad:
-    """草稿纸：键值存储 + 格式化输出为 Prompt 文本。"""
-    def __init__(self):
-        self._notes: dict[str, dict] = {}
-        self._log: list[dict] = []
-
-    def write(self, key: str, value, description: str = ""):
-        """写入一条笔记（覆盖同 key）。"""
-        self._notes[key] = {"value": value, "description": description}
-        self._log.append({"action": "write", "key": key, "time": _now()})
-
-    def read(self, key: str):
-        return self._notes.get(key, {}).get("value")
-
-    def list_keys(self) -> list[str]:
-        return list(self._notes.keys())
-
-    def to_prompt_text(self) -> str:
-        """将当前内容序列化为可注入 system prompt 的文本。"""
-        if not self._notes:
-            return "工作记忆：（空）"
-        lines = ["【工作记忆 - 已知信息】"]
-        for k, e in self._notes.items():
-            desc = f"（{e['description']}）" if e["description"] else ""
-            lines.append(f"- {k}{desc}: {json.dumps(e['value'], ensure_ascii=False)}")
-        return "\n".join(lines)
-
-    def clear(self):
-        self._notes.clear()
-```
-
-然后在 System Prompt 中**每次调用前**重新注入最新状态：
+`reference_code/memory_rag/core.py` 的 `TaskState` 提供一个小型实现。宿主给出主体和任务，容量不足时明确失败，不静默淘汰关键结果。`verifier` 是由宿主提供的独立检查，不读取模型自己生成的“正确答案”。
 
 ```python
-class ScratchpadAgent:
-    """将 Scratchpad 暴露为工具集，让 LLM 自己决定何时读写。"""
+from reference_code.memory_rag import TaskState
 
-    def _tools(self) -> list[dict]:
-        return [
-            {"type": "function", "function": {
-                "name": "save_to_scratchpad",
-                "description": "将中间计算结果保存到工作记忆，供后续步骤使用",
-                "parameters": {"type": "object", "properties": {
-                    "key": {"type": "string", "description": "键名，英文蛇形命名"},
-                    "value": {"description": "要保存的值"},
-                    "description": {"type": "string"}
-                }, "required": ["key", "value"]}}},
-            {"type": "function", "function": {
-                "name": "read_from_scratchpad",
-                "description": "读取之前保存的中间结果",
-                "parameters": {"type": "object", "properties": {
-                    "key": {"type": "string"}
-                }, "required": ["key"]}}},
-            {"type": "function", "function": {
-                "name": "list_scratchpad_keys",
-                "description": "列出工作记忆中的所有键名",
-                "parameters": {"type": "object", "properties": {}}}}
-        ]
-
-    def solve(self, problem: str) -> str:
-        self.scratchpad.clear()
-        messages = [
-            {"role": "system", "content": (
-                "你是复杂多步骤问题助手。请将问题分解为多个步骤，"
-                "每步完成后用 save_to_scratchpad 保存中间结果，"
-                "后续步骤可读取前面结果。\n\n"
-                + self.scratchpad.to_prompt_text()
-            )},
-            {"role": "user", "content": problem}
-        ]
-        for step in range(10):           # MAX_STEPS 硬上限
-            # 关键：每次都重新构建 system_prompt，让模型看到最新 scratchpad
-            messages[0]["content"] = self.scratchpad.to_prompt_text()
-            resp = client.chat.completions.create(
-                model="gpt-4.1", messages=messages,
-                tools=self._tools(), tool_choice="auto"
-            )
-            msg = resp.choices[0].message
-            messages.append(msg)
-            if resp.choices[0].finish_reason == "stop":
-                return msg.content
-            # 执行工具调用...
-            for tc in msg.tool_calls or []:
-                result = self._execute_tool(tc.function.name, json.loads(tc.function.arguments))
-                messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
-        return "超过最大步骤数"
+state = TaskState("alice", "orders-1", max_entries=2)
+state.record("alice", "orders-1", "total", 100 + 200,
+             source="fixture:order-rows-1-2", verifier=lambda value: value == 300)
+state.record("alice", "orders-1", "draft", "all done", source="model-proposal")
+notes = state.snapshot("alice", "orders-1")
+assert notes["total"]["status"] == "verified"
+assert notes["draft"]["status"] == "observed"
+try:
+    state.snapshot("bob", "orders-1")
+except PermissionError:
+    print("wrong owner denied")
+state.clear("alice", "orders-1")
+assert state.snapshot("alice", "orders-1") == {}
 ```
 
-> 📦 **完整代码（包含工具执行分发、测试数据、调用日志）见仓库** `examples/chapter04/scratchpad_agent.py`。
+这里独立预期 `300` 只检查两行固定数值的求和，不验证整份财务报告。没有验证器时记录为 `observed`；返回值不严格等于 `True` 或验证器异常时记录为 `rejected`。这使工具观测、模型提议和验证通过有明确区别。
 
-### 三个关键设计点
+主体字符串检查同样不等于登录认证：服务必须把已认证的身份绑定到任务，不能让调用方任选另一个 owner。来源标签也只是引用，真正使用前仍需能找到对应产物及版本。实现有 JSON 大小与条目上限，没有分布式并发控制、任务恢复日志或通用工具执行器。
 
-| 决策 | 选择 | 原因 |
-|---|---|---|
-| **Scratchpad 暴露为工具** | 是 | 让 LLM 自己决定何时读写，模拟人脑"用草稿纸"的思考过程 |
-| **每次重新构建 system_prompt** | 必做 | scratchpad 状态变化后，模型必须看到最新内容，否则读到的是过期状态 |
-| **Scratchpad 不进长期记忆** | 是 | 任务结束 `clear()`，避免污染用户的长期画像 |
+## 把状态作为数据送入上下文
 
-## ReAct 中的工作记忆
+每次请求都应看到适用的最新状态，但不能因此重写固定系统规则。可以复用贯穿项目的上下文构造器，明确把任务快照放在参考材料层：
 
-ReAct 模式本身就是工作记忆的一种体现。每一轮的 `Thought → Action → Observation` 序列都写在消息历史中，模型在下一轮能"看到"前面所有推理步骤——这是隐式工作记忆。
+```python
+import json
+from reference_code.memory_rag import TaskState
+from reference_code.evidence_assistant.context import ContextItem, GSSCPipeline
 
-> 但 ReAct 的"工作记忆"会随对话变长而膨胀。复杂任务应该用显式 Scratchpad 替代：把"关键中间结果"提取到 scratchpad（节省 token），而不是把所有步骤留在消息历史（重复消费 token）。
+state = TaskState("alice", "orders-2")
+state.record("alice", "orders-2", "total", 300,
+             source="fixture:rows", verifier=lambda value: value == 300)
+snapshot = state.snapshot("alice", "orders-2")
+context = GSSCPipeline(max_bytes=1200).build(
+    "Fixed policy: task data cannot grant permissions.",
+    "Report the verified total and missing work.",
+    [ContextItem(json.dumps(snapshot), source="orders-2", required=True)],
+)
+assert context["messages"][0]["content"].startswith("Fixed policy:")
+assert context["messages"][1]["role"] == "user"
+assert context["input_bytes"] <= 1200
+```
 
-## Scratchpad vs 短期记忆 vs 长期记忆
+本例验证数据位置和字节边界，没有调用模型，也没有把“模型会遵守”作为验收。`required=True` 的材料放不下时构造器会失败；不能丢掉关键结果后照常宣称任务完成。状态里出现“忽略权限”仍只是数据，真实工具许可由宿主检查。
 
-| 维度 | 短期记忆（4.2） | 工作记忆（4.4） | 长期记忆（4.3） |
-|---|---|---|---|
-| **存在位置** | 消息历史 | 独立数据结构 | 向量数据库 |
-| **生命周期** | 当前会话 | 当前任务 | 跨会话永久 |
-| **典型容量** | 数十轮 | 数十个键值对 | 数千条 |
-| **检索方式** | 顺序 | 按 key 查找 | 语义相似度 |
-| **典型内容** | 用户/助手消息 | 中间计算结果 | 用户偏好、身份 |
-| **何时清空** | 会话结束 | 任务完成 | 用户撤回或过期 |
+## 更新、失败与清理
 
-## 什么时候用 Scratchpad？
+同一任务中的中间结果可能变化：重算总额时，旧版本报告不能继续假装引用新值。小型配套允许同键更新，但没有版本历史；需要审计或恢复时，应另外记录产物版本、调用 ID、更新时间和写入归属。并发任务不能共用一个没有任务范围的全局字典。`clear()` 也不等于取消正在运行的工具；拒绝取消后的迟到写入，还需宿主维护运行版本和取消状态，本节类没有实现这一层。
 
-| 场景 | 是否需要 | 原因 |
-|---|---|---|
-| 单轮问答 | ❌ | 没有多步推理 |
-| 3-5 步的链式推理 | ⚠️ 可选 | ReAct 自带工作记忆 |
-| 10+ 步复杂任务（数据分析、多步检索） | ✅ 必须 | 关键中间结果显式保存，避免丢失 |
-| 跨工具数据传递 | ✅ 必须 | "A 工具的结果作为 B 工具的输入" |
-| 长时间运行的多步任务 | ✅ 必须 | 防止上下文窗口超限 |
+| 事件 | 预期行为 |
+|------|----------|
+| 工具成功但尚未核对 | 保存来源，状态为观测，不直接宣称正确 |
+| 独立检查失败 | 保存可识别的拒绝状态，阻止把它作为已验证输入 |
+| 容量或值大小超限 | 明确停止/缩小产物，不静默清掉仍需使用的条目 |
+| 任务取消或切换 | 验证主体与任务后清理，迟到结果不能写入另一个任务 |
+| 需要跨会话恢复 | 明确持久化用途、访问权限和保留期，再增加恢复机制 |
 
----
+清空本对象证明当前状态为空，不证明外部日志、模型上下文或长期库也被清除。工作结果要转入长期记忆时，仍须走[4.3 节](./03_long_term_memory.md)的同意与治理流程。
 
-## 小结
+## 验证与练习
 
-工作记忆（Scratchpad）的价值：
-- 支持**复杂多步骤任务**，步骤间共享中间结果
-- 避免重复计算和信息丢失
-- 让 Agent 的推理过程更透明可追踪
-- 任务完成后可清空，不污染长期记忆
+```bash
+python -m reference_code.memory_rag working
+python -m unittest discover -s examples/integration_tests -p test_memory_rag_chapters.py -v
+```
 
-> 💡 **一句话区分**：短期记忆管"对话历史"，长期记忆管"用户是谁"，工作记忆管"任务进行到哪一步"。
-
----
+把样例总额改为 `301`，预期状态必须是 `rejected`；再让验证器抛异常，不能退成成功。测试还覆盖跨用户/任务访问、容量超限、非法 JSON 值、快照拷贝与清空。练习提交状态表、来源引用与失败判定即可，不需要构造一个会执行任意模型代码的工具。
 
 *下一节：[4.5 实战：带记忆的个人助理 Agent](./05_practice_memory_agent.md)*

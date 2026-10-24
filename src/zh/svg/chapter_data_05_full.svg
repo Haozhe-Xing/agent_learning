@@ -6,18 +6,18 @@
     </marker>
   </defs>
   <rect width="800" height="360" rx="12" fill="#f8f9fa"/>
-  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">数据分析Agent：管道式 vs Agent循环架构</text>
+  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">数据分析集成：组件职责与可选循环</text>
 
   <!-- 管道式 -->
   <rect x="30" y="55" width="740" height="120" rx="10" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="2"/>
-  <text x="70" y="78" font-size="13" font-weight="bold" fill="#3498db">管道式架构（Pipeline）— 本章选择</text>
+  <text x="70" y="78" font-size="13" font-weight="bold" fill="#3498db">宿主流水线 — 本章集成设计，尚未端到端验收</text>
 
   <rect x="50" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="95" y="112" text-anchor="middle" font-size="9" fill="white">Text-to-SQL</text>
+  <text x="95" y="112" text-anchor="middle" font-size="9" fill="white">SQL 候选</text>
   <line x1="140" y1="107" x2="158" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="160" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="205" y="112" text-anchor="middle" font-size="9" fill="white">执行查询</text>
+  <text x="205" y="112" text-anchor="middle" font-size="9" fill="white">只读查询</text>
   <line x1="250" y1="107" x2="268" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="270" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
@@ -29,26 +29,26 @@
   <line x1="470" y1="107" x2="488" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="490" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="535" y="112" text-anchor="middle" font-size="9" fill="white">洞察提取</text>
+  <text x="535" y="112" text-anchor="middle" font-size="9" fill="white">洞察候选</text>
   <line x1="580" y1="107" x2="598" y2="107" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#da)"/>
 
   <rect x="600" y="90" width="90" height="35" rx="6" fill="#3498db" opacity="0.9"/>
-  <text x="645" y="112" text-anchor="middle" font-size="9" fill="white">报告生成</text>
+  <text x="645" y="112" text-anchor="middle" font-size="9" fill="white">报告候选</text>
 
-  <text x="50" y="155" font-size="10" fill="#2980b9">✅ 可预测、易调试、延迟可控</text>
-  <text x="400" y="155" font-size="10" fill="#e74c3c">❌ 灵活性有限、无法自我纠错</text>
+  <text x="50" y="155" font-size="10" fill="#2980b9">按依赖执行；检查各步输入、输出与状态</text>
+  <text x="400" y="155" font-size="10" fill="#e74c3c">已有 SQL 边界；分析、图表与报告待验收</text>
 
   <!-- Agent循环 -->
   <rect x="30" y="180" width="740" height="155" rx="10" fill="#8e44ad" opacity="0.08" stroke="#8e44ad" stroke-width="2"/>
-  <text x="70" y="203" font-size="13" font-weight="bold" fill="#8e44ad">Agent 循环架构 — 更灵活</text>
+  <text x="70" y="203" font-size="13" font-weight="bold" fill="#8e44ad">Agent 循环 — 可选设计，需另补控制器</text>
 
   <rect x="280" y="215" width="240" height="45" rx="10" fill="#8e44ad" opacity="0.9"/>
-  <text x="400" y="238" text-anchor="middle" font-size="12" fill="white" font-weight="bold">🧠 Agent 推理核心</text>
-  <text x="400" y="253" text-anchor="middle" font-size="9" fill="#d2b4de">观察 → 思考 → 选择工具 → 行动</text>
+  <text x="400" y="238" text-anchor="middle" font-size="12" fill="white" font-weight="bold">策略或模型选择下一步</text>
+  <text x="400" y="253" text-anchor="middle" font-size="9" fill="#d2b4de">许可动作 + 状态 + 总预算</text>
 
   <!-- 工具环绕 -->
   <rect x="50" y="220" width="100" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
-  <text x="100" y="242" text-anchor="middle" font-size="9" fill="#8e44ad">SQL 生成器</text>
+  <text x="100" y="242" text-anchor="middle" font-size="9" fill="#8e44ad">SQL 提议</text>
 
   <rect x="160" y="220" width="100" height="35" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
   <text x="210" y="242" text-anchor="middle" font-size="9" fill="#8e44ad">数据分析器</text>
@@ -61,8 +61,8 @@
 
   <!-- 循环标记 -->
   <path d="M400,260 Q400,290 350,290 Q300,290 300,270" fill="none" stroke="#8e44ad" stroke-width="2" stroke-dasharray="4,3"/>
-  <text x="400" y="300" text-anchor="middle" font-size="10" fill="#8e44ad">🔄 动态多轮交互，可自我纠错</text>
+  <text x="400" y="302" text-anchor="middle" font-size="10" fill="#8e44ad">有界探索；失败须停止或标记未完成</text>
 
-  <text x="50" y="320" font-size="10" fill="#27ae60">✅ 灵活、可纠错、适应复杂场景</text>
-  <text x="400" y="320" font-size="10" fill="#e74c3c">❌ 延迟不确定、成本较高、调试困难</text>
+  <text x="50" y="320" font-size="10" fill="#27ae60">跟踪完整动作与状态；循环控制器未提供</text>
+  <text x="400" y="320" font-size="10" fill="#e74c3c">费用与时延：按相同任务另做实测</text>
 </svg>

@@ -9,33 +9,33 @@
 
   <!-- Pipeline -->
   <rect x="16" y="46" width="528" height="60" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="280" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">Pipeline Architecture — Our Choice</text>
-  <text x="30" y="84" font-size="10" fill="#3b82f6">User Question</text>
-  <text x="100" y="84" font-size="10" fill="#3b82f6">→ Text-to-SQL</text>
-  <text x="195" y="84" font-size="10" fill="#3b82f6">→ Execute Query</text>
-  <text x="270" y="84" font-size="10" fill="#3b82f6">→ Statistical Analysis</text>
-  <text x="345" y="84" font-size="10" fill="#3b82f6">→ Chart Generation</text>
-  <text x="420" y="84" font-size="10" fill="#3b82f6">→ Insight Extraction</text>
-  <text x="495" y="84" font-size="10" fill="#3b82f6">→ Report</text>
-  <text x="280" y="100" text-anchor="middle" font-size="10" fill="#60a5fa">Fixed Sequence · Debuggable · Predictable Latency</text>
+  <text x="280" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">Host-defined Pipeline (Integration Design)</text>
+  <text x="30" y="84" font-size="10" fill="#1d4ed8">Question</text>
+  <text x="100" y="84" font-size="10" fill="#1d4ed8">→ SQL Proposal</text>
+  <text x="195" y="84" font-size="10" fill="#1d4ed8">→ Query</text>
+  <text x="270" y="84" font-size="10" fill="#1d4ed8">→ Stats</text>
+  <text x="345" y="84" font-size="10" fill="#1d4ed8">→ Chart</text>
+  <text x="420" y="84" font-size="10" fill="#1d4ed8">→ Insight</text>
+  <text x="495" y="84" font-size="10" fill="#1d4ed8">→ Draft</text>
+  <text x="280" y="100" text-anchor="middle" font-size="10" fill="#1d4ed8">SQL boundary tested; downstream components need acceptance</text>
 
   <!-- Agent Loop -->
   <rect x="16" y="118" width="528" height="60" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="280" y="136" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Agent Loop Architecture (ReAct Loop)</text>
-  <text x="30" y="156" font-size="10" fill="#22c55e">User Question</text>
-  <text x="100" y="156" font-size="10" fill="#22c55e">→ Think</text>
-  <text x="150" y="156" font-size="10" fill="#22c55e">→ Select Tool</text>
-  <text x="225" y="156" font-size="10" fill="#22c55e">→ Execute</text>
-  <text x="270" y="156" font-size="10" fill="#22c55e">→ Observe Result</text>
-  <text x="355" y="156" font-size="10" fill="#22c55e">→ Think</text>
-  <text x="400" y="156" font-size="10" fill="#22c55e">→ ...</text>
-  <text x="440" y="156" font-size="10" fill="#22c55e">→ Final Answer</text>
-  <text x="280" y="172" text-anchor="middle" font-size="10" fill="#4ade80">Flexible &amp; Smart · Unpredictable Latency · Higher Cost</text>
+  <text x="280" y="136" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Agent Loop (Optional; Controller Not Supplied)</text>
+  <text x="30" y="156" font-size="10" fill="#15803d">Question</text>
+  <text x="100" y="156" font-size="10" fill="#15803d">→ Plan</text>
+  <text x="150" y="156" font-size="10" fill="#15803d">→ Tool</text>
+  <text x="225" y="156" font-size="10" fill="#15803d">→ Run</text>
+  <text x="270" y="156" font-size="10" fill="#15803d">→ Observe</text>
+  <text x="355" y="156" font-size="10" fill="#15803d">→ Plan</text>
+  <text x="400" y="156" font-size="10" fill="#15803d">→ ...</text>
+  <text x="440" y="156" font-size="10" fill="#15803d">→ Candidate</text>
+  <text x="280" y="172" text-anchor="middle" font-size="10" fill="#15803d">Also needs permissions, budgets, and stop conditions</text>
 
   <!-- Comparison Table -->
   <rect x="16" y="190" width="528" height="80" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
-  <text x="280" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Key Comparison</text>
-  <text x="30" y="226" font-size="10" fill="#475569">LLM Calls: Pipeline ~3 vs Agent Loop 5-10+</text>
-  <text x="30" y="242" font-size="10" fill="#475569">Cost per Call: Pipeline ~$0.05 vs Agent Loop ~$0.15-0.50</text>
-  <text x="30" y="258" font-size="10" fill="#475569">Debuggability: Pipeline step outputs inspectable vs Agent Loop requires full trace</text>
+  <text x="280" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Before Comparing: Fix Tasks and Acceptance</text>
+  <text x="30" y="226" font-size="10" fill="#475569">Calls: count actual requests and retries, not diagram steps.</text>
+  <text x="30" y="242" font-size="10" fill="#475569">Cost / latency: same-task measurement; no comparison supplied.</text>
+  <text x="30" y="258" font-size="10" fill="#475569">Delivery: candidates require independent task acceptance.</text>
 </svg>

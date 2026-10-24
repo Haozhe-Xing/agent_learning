@@ -1,591 +1,76 @@
-# 12.7 LangChain 生态 2026
+# 10.7 LangChain 生态 2026
 
-> **本节目标**：了解 LangChain 生态的最新进展，理解 Deep Agents Harness 与托管运行的关系，掌握 LangGraph Platform、LangServe、MCP 集成等核心工具，并理解从旧版 AgentExecutor 迁移到 LangGraph 的路径。
+生态名称不是学习顺序。本节以“已有应用还缺什么”为起点，区分组件编排、状态运行、Harness组合与部署服务；没有缺口就停在已验收的版本。这里不要求把一个本地问答扩成全套托管项目。
 
----
+## 可复现边界与资料日期
 
-## LangChain 生态全景
+本地实测版本见[10.1](./01_langchain_overview.md)。本页另核对2026-10-22的官方产品文档；在线页面会变化，不能把它们的所有新API都归到 `langchain==1.4.6`。Deep Agents、MCP适配包、LangServe及部署SDK没有在本章示例环境安装或进行服务互操作测试。
 
-LangChain 已经从一个单一框架发展为一个完整的生态系统。截至 2026 年，LangChain 生态的核心成员如下：
+| 层次 | 代表入口 | 选用前要解决的问题 |
+|---|---|---|
+| 组件与基本工具Agent | [LangChain](https://docs.langchain.com/oss/python/langchain/overview) | Runnable组合或 `create_agent` 能否满足当前任务？ |
+| 显式状态编排 | [LangGraph](../chapter_langgraph/README.md) | 是否需要控制状态、检查点、暂停与恢复？ |
+| 现成Harness | [Deep Agents](https://docs.langchain.com/oss/python/deepagents/overview) | 是否确实需要文件、规划、委派等组合能力，并能约束其权限？ |
+| 观察与部署服务 | [LangSmith Deployment](https://docs.langchain.com/langsmith/deployment) | 是否愿意引入服务、账号、运行数据与运营责任？ |
+| 外部工具协议 | [LangChain MCP说明](https://docs.langchain.com/oss/python/langchain/mcp) | 工具来源、会话生命周期、参数与执行授权如何验证？ |
+| 已有HTTP封装 | [LangServe仓库](https://github.com/langchain-ai/langserve) | 已有项目的版本、安全接口与客户端是否兼容？ |
 
-| 工具 | 定位 | 核心价值 |
-|------|------|---------|
-| **LangChain** | 核心编排框架 | 组件抽象 + LCEL 表达式语言 |
-| **LangGraph** | 有状态 Agent 框架 | 图结构编排、循环、人机协作 |
-| **Deep Agents** | 可复用的 Agent Harness | 文件系统、上下文管理、子 Agent 与可选的规划和 Skills |
-| **Managed Deep Agents** | Harness 的托管交付方式 | 声明 Agent 行为，由 LangSmith 托管运行 |
-| **LangGraph Platform** | 托管运行服务 | 部署、扩缩容、持久化 |
-| **LangServe** | API 部署工具 | 一行代码将 Chain 发布为 REST API |
-| **LangSmith** | Agent 工程平台 | 追踪、评估、Prompt 管理与部署运行 |
-| **LangChain CLI** | 项目脚手架 | Templates 快速启动模板 |
+[官方LangChain概览](https://docs.langchain.com/oss/python/langchain/overview)将基础Agent入口与更低层编排区分开。可以使用 `create_agent` 而不自己编写图；可以使用Runnable分支而不选择托管部署。需要新能力时，应先补能暴露问题的验收用例。
 
-> 💡 **演进逻辑**：LangChain 提供组件，LangGraph 支撑有状态编排与运行，Deep Agents 组合现成的 Harness 能力。部署时可以自行运行，也可以选择 Managed Deep Agents 等托管路径；LangSmith 则覆盖追踪、评估与部署。理解这些职责，比记住产品名称更重要。
+## 三个具体停点
 
----
+![从任务缺口选择可停止的运行路径](../svg/chapter_langchain_07_platform_three_layers.svg)
 
-## Deep Agents 与 Managed Deep Agents：从 Harness 到托管运行
+| 当前任务 | 可先采用的最小路径 | 何时才继续 |
+|---|---|---|
+| 固定输入、固定步骤、少量独立分支 | 10.2/10.4的Runnable流程 | 需要维护跨步骤状态或恢复点 |
+| 模型按问题选择工具 | 10.3/10.5的 `create_agent`，宿主保留许可与预算 | 需要自定义图节点、持久检查点或人工挂起 |
+| 工作要跨请求、重启或审查持续 | 第11章的显式状态与持久化设计 | 实际运维需求支持引入服务；先测试故障恢复 |
 
-前面第 7–9 章分别讨论了上下文工程、Harness 和 Skills。以研究助手为例，除了搜索工具，它还可能需要保存资料、管理不断增长的上下文，并将部分工作交给子 Agent。**Deep Agents 将这些能力组合为可复用的 Harness**：它基于 LangChain 的 Agent 组件，并使用 LangGraph 运行时支持持久执行、流式输出和人机协作。[5]
+图中是本书的责任选择模型，不是宣称平台内部有一个固定“State Server”。持久执行需要适用的存储、运行配置与恢复测试；不能从“图已经compile”推导重启后可恢复或副作用只执行一次。
 
-### Managed 增加了什么？
-
-**Managed Deep Agents（MDA）复用开源 Deep Agents Harness**，由 LangSmith Agent Server 托管运行。开发者定义模型、指令、工具和业务行为，平台负责组装 Harness 与运行基础设施。这里的变化在于工程责任的划分：Agent 行为由开发者定义，运行生命周期交给平台管理。[6]
-
-| 关注点 | Deep Agents：自行运行 | Managed Deep Agents：托管运行 |
-|--------|----------------------|-----------------------------|
-| Agent 定义 | `create_deep_agent` 返回编译后的 Agent | `define_deep_agent` 返回定义，由平台编译 |
-| 业务行为 | 配置模型、指令、工具和可选能力 | 在项目文件中声明模型、指令、工具和可选能力 |
-| 运行基础设施 | 自行配置 backend、store、checkpointer 和服务 | 由托管运行时提供相关组件和生命周期管理 |
-| 选择依据 | 需要自行运行或自定义底层组件 | 希望沿用现成 Harness，减少基础设施工作 |
-
-### 将 Agent 行为组织为项目文件
-
-研究助手可以从一个小目录开始，只添加任务需要的能力：
-
-```text
-research-assistant/
-├── agent.py          # 模型与核心配置
-├── instructions.md   # 行为指令
-├── tools/            # 搜索等业务工具
-└── skills/           # 按需加载的研究流程
-```
-
-`agent.py` 声明 Agent 定义，工具实现在 `tools/` 中。指令说明如何完成研究任务，Skills 封装可复用的操作流程。上传项目后，托管运行时负责将定义组装成可运行的 Agent。[6]
-
-这与前文的能力划分一致：**Tool 提供动作，Skill 描述流程，Harness 管理执行，托管运行时负责运行基础设施**。掌握这一划分后，可以按任务需要逐步添加能力；完整配置和部署步骤见官方文档。[6]
-
-> 💡 **选型提示**：先判断是否需要 Deep Agents 的现成能力，再决定是否托管。简单工具调用可以继续使用 LangChain Agent；需要明确控制流程时可以编写 LangGraph 工作流。选择 MDA 后，业务工具的正确性、权限边界和效果评估仍需要开发者设计。部署选型详见 [22.1 Agent 应用的部署架构](../chapter_22_deployment/01_deployment_architecture.md)。
-
-> **版本说明**：截至 2026 年 10 月 7 日，官方文档将 MDA 标为 Beta。本文侧重职责与组织方式，具体 API 和部署要求以官方文档为准。[5][6]
-
----
-
-## LangGraph Platform 托管服务
-
-LangGraph Platform 是 LangGraph 的托管运行环境，解决了 Agent 应用部署中最棘手的问题：**有状态长时运行**。
-
-### 为什么需要 LangGraph Platform？
-
-一个典型的 Agent 应用有以下部署难题：
-
-| 难题 | 传统部署 | LangGraph Platform |
-|------|---------|-------------------|
-| 长时运行任务 | HTTP 超时、进程崩溃丢失状态 | 内置持久化，自动恢复 |
-| 人机协作等待 | 需要自己实现挂起/恢复 | 原生支持 interrupt/resume |
-| 并发管理 | 需要自己加锁、限流 | 内置并发控制和队列 |
-| 水平扩缩容 | 无状态服务容易扩，有状态难 | State Server 统一管理状态 |
-| 流式输出 | 需要 SSE + 反压处理 | 内置流式 API |
-
-### 核心架构
-
-LangGraph Platform 采用三层架构：
-
-![LangGraph Platform 三层架构](../svg/chapter_langchain_07_platform_three_layers.svg)
-
-### 使用示例
+## 在锁定环境检查入口，不发请求
 
 ```python
-# 1. 定义你的 LangGraph Agent
-from langgraph.graph import StateGraph, MessagesState, START, END
-from langgraph.prebuilt import ToolNode
+from langchain.agents import create_agent
+from langchain_core.runnables import RunnableBranch
 from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
 
-@tool
-def search_docs(query: str) -> str:
-    """搜索文档"""
-    return f"搜索结果：{query} 的相关文档内容..."
-
-@tool
-def run_analysis(data: str) -> str:
-    """运行数据分析"""
-    return f"分析结果：{data} 的统计摘要..."
-
-tools = [search_docs, run_analysis]
-llm = ChatOpenAI(model="gpt-4.1").bind_tools(tools)
-
-def agent_node(state: MessagesState):
-    response = llm.invoke(state["messages"])
-    return {"messages": [response]}
-
-def should_continue(state: MessagesState):
-    last = state["messages"][-1]
-    if last.tool_calls:
-        return "tools"
-    return END
-
-# 构建图
-graph = StateGraph(MessagesState)
-graph.add_node("agent", agent_node)
-graph.add_node("tools", ToolNode(tools))
-graph.add_edge(START, "agent")
-graph.add_conditional_edges("agent", should_continue)
-graph.add_edge("tools", "agent")
-
-app = graph.compile()
-
-# 2. 本地测试
-result = app.invoke({"messages": [{"role": "user", "content": "搜索 LangGraph 文档"}]})
-print(result["messages"][-1].content)
+assert callable(create_agent) and callable(RunnableBranch)
+model = ChatOpenAI(model="gpt-4.1-mini", api_key="not-a-real-key", timeout=1, max_retries=0)
+assert model.model_name == "gpt-4.1-mini"
+# Construction only; no invoke, login, or model request.
 ```
 
-```bash
-# 3. 部署到 LangGraph Platform
-# 创建 langgraph.json 配置文件
-cat > langgraph.json << 'EOF'
-{
-    "dependencies": ["."],
-    "graphs": {
-        "agent": "./agent.py:app"
-    },
-    "env": ".env"
-}
-EOF
+这里使用无效占位密钥只构造适配器，未调用模型。真实服务调用应沿用10.3的显式 `--real` 路径另行配置，而不是把离线固定回答当作真实模型质量。安装更多集成包也不证明它们拥有同一套工具选择或结构化输出能力。
 
-# 部署
-langgraph deploy
+### 从旧接口迁移，先对照合同
 
-# 或者使用 Docker 自托管
-langgraph build -t my-agent:latest
-docker run -p 8000:8000 my-agent:latest
-```
+[v1迁移说明](https://docs.langchain.com/oss/python/releases/langchain-v1)明确了精简命名空间与 `create_agent`。遗留 `LLMChain`/`AgentExecutor`材料应留在其原有依赖中复现；本章没有测试 `langchain-classic` 兼容层。
 
-```python
-# 4. 客户端调用
-from langgraph_sdk import get_client
+| 原有关注点 | 当前本章路径 | 迁移验收 |
+|---|---|---|
+| Prompt与模型串联 | `prompt | model | parser` | 输入字段、消息角色与输出值一致 |
+| 工具Agent循环 | `create_agent` | 实际工具调用、许可拒绝、停止与预算反例 |
+| 手写状态流程 | 按需使用LangGraph | 状态更新、重复运行、恢复与副作用处理 |
+| 回调/Trace | 10.6局部回调，再自愿接服务 | 不把旧 `output` 字段或空回调列表当通用合同 |
 
-# 连接到 LangGraph Platform
-client = get_client(url="http://localhost:8000")
+迁移不是全局替换类名。工具描述、调用参数、消息结果、异常类型和预算语义都可能变化；先用固定提供者跑同题，再按需验证真实模型。只有编排接口需要改变时，不必同时更换模型、数据与权限策略。
 
-# 创建线程（有状态会话）
-thread = await client.threads.create()
+## Harness与托管：仍然保留谁的责任
 
-# 发送消息
-run = await client.runs.create(
-    thread_id=thread["thread_id"],
-    assistant_id="agent",
-    input={"messages": [{"role": "user", "content": "帮我分析一下最近的数据"}]},
-    stream_mode="values",
-)
+官方[Deep Agents概览](https://docs.langchain.com/oss/python/deepagents/overview)把多种Agent能力组合为Harness；是否采用，应逐项核对你的需求与执行边界。现成文件或委派能力会增加资源面，不会让所有任务自动更可靠。
 
-# 流式接收结果
-async for chunk in client.runs.join_stream(
-    thread_id=thread["thread_id"],
-    run_id=run["run_id"],
-    stream_mode="values",
-):
-    if chunk.data and "messages" in chunk.data:
-        last_msg = chunk.data["messages"][-1]
-        if isinstance(last_msg, dict) and last_msg.get("content"):
-            print(last_msg["content"], end="", flush=True)
-```
+[LangSmith Deployment说明](https://docs.langchain.com/langsmith/deployment)区分运行部署与可观测平台，列出不同部署位置；Managed Deep Agents另提供托管Deep Agents路径。本页没有验证其发布API、网络配置、费用或SLA，因此不提供假定一次命令就具备鉴权、恢复和扩缩容的完整部署代码。业务工具、数据权限与验收仍由应用负责。
 
-> 💡 **LangGraph Platform vs 自己部署**：如果你的 Agent 需要人机协作（interrupt/resume）或长时运行，LangGraph Platform 省去了大量基础设施工作。简单场景用 LangServe 即可。
+MCP也不是执行权限。连接器发现了一个工具，不代表可以执行它；客户端会话要覆盖工具实际使用期间。协议边界与可运行教学子集见[17.5](../chapter_19_protocol/05_practice_mcp_integration.md)，不要复制一个退出上下文后已经关闭的session。
 
----
+## 选型练习
 
-## LangServe 部署方案
+为同一个客服任务写两份记录：一份只需10.5的订单查询，另一份确实需要跨进程恢复。分别列出固定任务、缺失能力、最小新增组件、失败用例和停止条件。若没有测出新需求，就保留简单版本；“生态里有这个产品”不是升级证据。
 
-LangServe 让你用一行代码将 LangChain 应用发布为 REST API——非常适合不需要复杂状态管理的场景。
+可交付产物是一张选择表和对应的验收命令，不要求注册服务或部署到公网。生产边界继续看[10.8](./08_production_patterns.md)；更复杂的状态任务再进入第11章。
 
-### 基础部署
+*上一节：[10.6 LangSmith与可观测性](./06_langsmith_integration.md)*
 
-```python
-# pip install langserve fastapi uvicorn
-
-from fastapi import FastAPI
-from langserve import add_routes
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-
-app = FastAPI(
-    title="LangChain Agent API",
-    version="1.0",
-)
-
-# 定义 Chain
-llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.7)
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "你是一个{role}。"),
-    ("human", "{question}")
-])
-chain = prompt | llm | StrOutputParser()
-
-# 一行添加 API 路由
-add_routes(app, chain, path="/chat")
-
-# 运行：uvicorn server:app --host 0.0.0.0 --port 8000
-```
-
-启动后自动获得以下端点：
-
-| 端点 | 方法 | 说明 |
-|------|------|------|
-| `/chat/invoke` | POST | 同步调用 |
-| `/chat/stream` | POST | 流式调用（SSE） |
-| `/chat/batch` | POST | 批量调用 |
-| `/chat/playground` | GET | 交互式测试页面 |
-
-### 完整的 Agent API 示例
-
-在"一行部署"基础上加**会话历史**即可发布有状态的 Agent——核心是把 `AgentExecutor` 包进 `RunnableWithMessageHistory`，再交给 `add_routes`：
-
-```python
-from fastapi import FastAPI
-from langserve import add_routes
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.chat_history import InMemoryChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
-
-app = FastAPI(title="Customer Service Agent API")
-
-@tool
-def search_faq(query: str) -> str:
-    """搜索常见问题。"""
-    return f"FAQ 结果：{query}"
-
-@tool
-def check_order(order_id: str) -> str:
-    """查询订单状态。"""
-    return f"订单 {order_id}：已发货"
-
-tools = [search_faq, check_order]
-llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "你是客服助手，使用工具帮助用户。"),
-    MessagesPlaceholder("chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder("agent_scratchpad"),
-])
-
-agent_executor = AgentExecutor(
-    agent=create_openai_tools_agent(llm, tools, prompt), tools=tools, verbose=False)
-
-# 用内存会话历史包装，使 Agent 能记住多轮对话
-store = {}
-agent_with_history = RunnableWithMessageHistory(
-    agent_executor,
-    lambda sid: store.setdefault(sid, InMemoryChatMessageHistory()),
-    input_messages_key="input", history_messages_key="chat_history",
-)
-
-add_routes(app, agent_with_history, path="/agent")  # 自动获得 /agent/invoke 等端点
-# 启动：uvicorn server:app --host 0.0.0.0 --port 8000
-```
-
-> 该写法与 [12.5](./05_practice_customer_service.md) 的客服 Agent 一脉相承，区别仅在于多了 `add_routes` 这层 API 暴露。需要生产级状态持久化时，改用 `LangGraph Platform`（见上文）。
-
-### 客户端调用
-
-```python
-# 同步调用
-from langserve import RemoteRunnable
-
-remote_chain = RemoteRunnable("http://localhost:8000/chat/")
-result = remote_chain.invoke({"role": "助手", "question": "你好"})
-print(result)
-
-# 流式调用
-for chunk in remote_chain.stream({"role": "助手", "question": "介绍一下自己"}):
-    print(chunk, end="", flush=True)
-```
-
-```bash
-# 使用 curl 测试
-curl -X POST http://localhost:8000/chat/invoke \
-  -H "Content-Type: application/json" \
-  -d '{"input": {"role": "助手", "question": "你好"}}'
-```
-
----
-
-## LangChain Templates 快速启动模板
-
-LangChain CLI 提供了官方模板，帮你快速创建特定类型的应用：
-
-```bash
-# 安装 LangChain CLI
-pip install langchain-cli
-
-# 列出可用模板
-langchain templates list
-
-# 从模板创建项目
-langchain app new my-rag-app --template rag-conversational
-
-# 项目结构
-# my-rag-app/
-# ├── app/                   # LangServe 服务器
-# │   ├── server.py          # FastAPI 入口
-# │   └── __init__.py
-# ├── chain/                 # 核心逻辑
-# │   ├── chain.py           # Chain 定义
-# │   └── __init__.py
-# ├── pyproject.toml
-# └── .env
-```
-
-常用模板：
-
-| 模板名 | 用途 | 核心技术 |
-|--------|------|---------|
-| `rag-conversational` | 对话式 RAG | Retrieval + Memory |
-| `extraction-openai-functions` | 信息抽取 | Function Calling |
-| `openai-functions-agent` | 通用 Agent | Tools + Agent |
-| `pinecone-semantic-search` | 语义搜索 | Pinecone + Embeddings |
-
----
-
-## LangChain 与 MCP 集成
-
-MCP（Model Context Protocol）是 Anthropic 提出的标准化协议，让 LLM 能以统一的方式连接外部工具和数据源。LangChain 社区已经提供了 MCP 集成。
-
-> 📌 关于 MCP 的详细介绍，请参考 [第19章 Agent 通信协议](../chapter_19_protocol/README.md)。
-
-### 使用 MCP 工具
-
-```python
-# pip install langchain-mcp
-
-from langchain_mcp import MCPToolkit
-from langchain_openai import ChatOpenAI
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-# 连接到 MCP Server
-async def create_agent_with_mcp():
-    # 方式1：连接到 stdio 模式的 MCP Server
-    toolkit = MCPToolkit.from_server_command(
-        command="npx",
-        args=["-y", "@modelcontextprotocol/server-filesystem", "/tmp"],
-    )
-
-    # 方式2：连接到 SSE 模式的 MCP Server
-    # toolkit = MCPToolkit.from_sse_url("http://localhost:3001/sse")
-
-    async with toolkit.session() as session:
-        # 自动发现 MCP Server 提供的工具
-        mcp_tools = toolkit.get_tools()
-
-        llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", "你可以使用文件系统工具来帮助用户。"),
-            MessagesPlaceholder("chat_history"),
-            ("human", "{input}"),
-            MessagesPlaceholder("agent_scratchpad"),
-        ])
-
-        agent = create_openai_tools_agent(llm, mcp_tools, prompt)
-        agent_executor = AgentExecutor(
-            agent=agent,
-            tools=mcp_tools,
-            verbose=True,
-        )
-
-        result = agent_executor.invoke({
-            "input": "读取 /tmp/notes.txt 文件的内容",
-            "chat_history": [],
-        })
-        print(result["output"])
-
-# 运行
-import asyncio
-asyncio.run(create_agent_with_mcp())
-```
-
-### 将 LangChain 工具暴露为 MCP Server
-
-```python
-# 将你已有的 LangChain 工具通过 MCP 协议暴露出去
-# 这样其他 MCP 兼容的客户端（如 Claude Desktop）也能调用
-
-from langchain_core.tools import tool
-from langchain_mcp import create_mcp_server
-
-@tool
-def search_internal_docs(query: str) -> str:
-    """搜索内部文档库"""
-    return f"搜索结果：{query}"
-
-@tool
-def query_database(sql: str) -> str:
-    """执行 SQL 查询"""
-    return f"查询结果：[模拟数据]"
-
-# 创建 MCP Server
-server = create_mcp_server(
-    tools=[search_internal_docs, query_database],
-    server_name="internal-tools",
-    server_version="1.0.0",
-)
-
-# 启动 Server
-# server.run(transport="stdio")   # Claude Desktop 集成
-# server.run(transport="sse", port=3001)  # SSE 模式
-```
-
-> ⚠️ **MCP 集成的价值**：MCP 让 LangChain 工具不再局限于 LangChain 生态内部——Claude Desktop、其他 MCP 兼容客户端都可以调用你的工具。这对于企业内部工具共享特别有价值。
-
----
-
-## LangChain 2025-2026 重大变更
-
-### 从 LangChain v0.1 到 v0.3 的架构演变
-
-LangChain 在 2024-2025 年间经历了剧烈的架构变化。如果你在维护旧代码，以下迁移指南至关重要：
-
-| 变更项 | v0.1（旧） | v0.3（新） | 影响 |
-|--------|-----------|-----------|------|
-| **包结构** | `from langchain import ...` | `from langchain_openai import ...` | 所有导入路径 |
-| **链构建** | `LLMChain(llm=..., prompt=...)` | `prompt \| llm \| parser` | 核心范式 |
-| **Agent** | `AgentExecutor` | `LangGraph` | Agent 编排 |
-| **输出解析** | `output_key` 参数 | LCEL 自动传递 | 链输出 |
-| **回调** | `callbacks` 参数 | `config={"callbacks": [...]}` | 回调机制 |
-| **消息类型** | `HumanMessage(content=...)` | 同上，但新增 `.type` 属性 | 消息处理 |
-
-### 关键废弃 API 速查
-
-```python
-# ❌ 已废弃
-from langchain.llms import OpenAI                    # → 使用 ChatOpenAI
-from langchain.chains import LLMChain                # → 使用 LCEL (prompt | llm)
-from langchain.chains import RetrievalQA             # → 使用 LCEL + retriever
-from langchain.agents import initialize_agent        # → 使用 create_openai_tools_agent
-from langchain.chat_models import ChatOpenAI         # → 使用 langchain_openai.ChatOpenAI
-from langchain.embeddings import OpenAIEmbeddings    # → 使用 langchain_openai.OpenAIEmbeddings
-from langchain.vectorstores import Chroma            # → 使用 langchain_chroma.Chroma
-
-# ✅ 推荐写法
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_chroma import Chroma
-
-chain = prompt | llm | StrOutputParser()  # LCEL
-```
-
----
-
-## 迁移指南：从 AgentExecutor 迁移到 LangGraph
-
-这是最重要的迁移——LangChain 官方推荐新项目使用 LangGraph 构建 Agent。
-
-### 为什么迁移？
-
-| AgentExecutor | LangGraph |
-|---------------|-----------|
-| 固定的 `observe → act → observe` 循环 | 自由定义任意拓扑的图 |
-| 难以实现"先审批再执行"等流程 | 原生支持 interrupt/resume |
-| 循环控制只有 `max_iterations` | 条件路由、循环、分支完整支持 |
-| 状态管理受限 | 完全自定义 State |
-| 无法表达并行步骤 | 原生并行节点 |
-
-### 迁移对照表
-
-**旧版 AgentExecutor（已废弃，仅作对照）**：
-
-```python
-# 旧范式：固定的 observe→act→observe 循环，难以表达分支/审批/并行
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools,
-                               max_iterations=5, handle_parsing_errors=True)
-result = agent_executor.invoke({"input": "...", "chat_history": []})
-```
-
-**新版 LangGraph（官方推荐）**——同样的工具，改成图编排后，循环、分支、人机协作都成了图的原生能力：
-
-```python
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langgraph.graph import StateGraph, MessagesState, START
-from langgraph.prebuilt import ToolNode, tools_condition
-
-@tool
-def search(query: str) -> str:
-    """搜索信息"""
-    return f"结果：{query}"
-
-@tool
-def calculate(expression: str) -> str:
-    """计算数学表达式"""
-    return f"结果：{eval(expression)}"
-
-tools = [search, calculate]
-llm = ChatOpenAI(model="gpt-4.1", temperature=0).bind_tools(tools)
-
-def agent_node(state: MessagesState):
-    return {"messages": [llm.invoke(state["messages"])]}
-
-graph = StateGraph(MessagesState)
-graph.add_node("agent", agent_node)
-graph.add_node("tools", ToolNode(tools))
-graph.add_edge(START, "agent")
-graph.add_conditional_edges("agent", tools_condition)  # 自动判断是否调用工具
-graph.add_edge("tools", "agent")                        # 工具执行后回到 Agent
-
-app = graph.compile()
-result = app.invoke({"messages": [{"role": "user", "content": "搜索 Python 最新版本"}]})
-print(result["messages"][-1].content)
-```
-
-### 关键迁移点
-
-| AgentExecutor 概念 | LangGraph 对应 | 说明 |
-|-------------------|---------------|------|
-| `AgentExecutor(...)` | `graph.compile()` | 编译图 |
-| `max_iterations` | 图的循环结构本身 | 不再需要手动限制 |
-| `handle_parsing_errors` | 工具节点的错误处理 | 更细粒度 |
-| `return_intermediate_steps` | State 中自动保留 | 消息即状态 |
-| `verbose=True` | LangSmith 追踪 | 更好的调试方式 |
-| 会话历史 | `MemorySaver` / `checkpointer` | 持久化方案 |
-| `agent_scratchpad` | `MessagesState` 自动管理 | 无需手动 |
-
-> 💡 **迁移建议**：
-> - 新项目直接用 LangGraph，不要再用 AgentExecutor
-> - 旧项目可以分步迁移——先替换 Agent 核心循环，工具定义不需要改
-> - 详细的 LangGraph 教程请参考第 12 章 [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
-
----
-
-## 小结
-
-LangChain 生态在 2025-2026 年的核心演进方向是**从"框架"走向"平台"**：
-
-| 演进方向 | 具体表现 |
-|---------|---------|
-| **编排进化** | AgentExecutor → LangGraph 图编排 |
-| **部署简化** | LangServe 一行部署 → LangGraph Platform 托管运行 |
-| **Harness 复用与托管** | Deep Agents 组合工程能力，MDA 提供托管运行路径 |
-| **协议开放** | MCP 集成，工具不再局限于 LangChain 生态 |
-| **可观测性** | LangSmith 从"追踪"扩展为"评估+管理"平台 |
-| **架构稳定** | v0.3 移除废弃 API，LCEL 成为标准范式 |
-
-> 💡 **与本书其他章节的关系**：
-> - [第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md) 深入讲解 LangGraph 图编排
-> - [第19章 Agent 通信协议](../chapter_19_protocol/README.md) 详解 MCP 协议
-> - [第22章 部署与生产化](../chapter_22_deployment/README.md) 讨论更完整的部署方案
-
----
-
-*下一节：[12.8 LangChain 生产化模式](./08_production_patterns.md)*
-
----
-
-## 参考文献
-
-[1] LangChain Team. LangGraph Platform Documentation. https://langchain-ai.github.io/langgraph/cloud, 2025.
-
-[2] LangChain Team. LangServe Documentation. https://python.langchain.com/docs/langserve, 2025.
-
-[3] LangChain Team. LangChain MCP Adapters. https://github.com/langchain-ai/langchain-mcp-adapters, 2025.
-
-[4] LangChain Team. Migration Guide: AgentExecutor to LangGraph. https://python.langchain.com/docs/migration, 2025.
-
-[5] LangChain Team. [Deep Agents Overview](https://docs.langchain.com/oss/python/deepagents/overview). 查阅日期：2026-10-07。
-
-[6] LangChain Team. [Managed Deep Agents Overview](https://docs.langchain.com/langsmith/python/managed-deep-agents-overview). 查阅日期：2026-10-07。
+*下一节：[10.8 LangChain生产化模式](./08_production_patterns.md)*

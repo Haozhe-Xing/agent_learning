@@ -7,9 +7,15 @@ title = "从零开始学 Agent"
 [build]
 build-dir = "book/zh"
 
+[preprocessor.readme-links]
+command = "python3 tools/readme_links.py"
+after = ["index", "links"]
+before = ["katex"]
+optional = false
+
 [preprocessor.katex]
-after = ["links"]
-optional = true
+after = ["links", "index", "readme-links"]
+optional = false
 
 [output.html]
 mathjax-support = false
@@ -18,7 +24,7 @@ preferred-dark-theme = "navy"
 additional-css = ["theme/custom.css"]
 no-section-label = true
 git-repository-url = "https://github.com/Haozhe-Xing/agent_learning"
-git-repository-icon = "fa-github"
+git-repository-icon = "fab-github"
 edit-url-template = "https://github.com/Haozhe-Xing/agent_learning/edit/main/{path}"
 
 [output.html.print]

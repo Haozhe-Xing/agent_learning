@@ -1,39 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 340" width="520" height="340">
-  <rect width="520" height="340" fill="#f8f9fa" rx="12"/>
-  <text x="260" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Generative Agents 三层记忆架构</text>
-
-  <!-- Layer 1: Memory Stream -->
-  <rect x="30" y="48" width="460" height="80" rx="10" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="2"/>
-  <text x="50" y="70" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3498db">📝 1. 记忆流 Memory Stream</text>
-  <text x="50" y="88" font-family="Arial, sans-serif" font-size="10" fill="#555">├── 记录 Agent 的所有经历（观察、对话、行动）</text>
-  <text x="50" y="104" font-family="Arial, sans-serif" font-size="10" fill="#555">├── 每条记忆附带时间戳、重要性评分</text>
-  <text x="50" y="120" font-family="Arial, sans-serif" font-size="10" fill="#888">└── 是记忆系统的"原始数据层"</text>
-
-  <!-- Layer 2: Reflection -->
-  <rect x="30" y="138" width="460" height="80" rx="10" fill="#9b59b6" opacity="0.1" stroke="#9b59b6" stroke-width="2"/>
-  <text x="50" y="160" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#9b59b6">🧠 2. 反思 Reflection</text>
-  <text x="50" y="178" font-family="Arial, sans-serif" font-size="10" fill="#555">├── 定期触发（当积累的记忆重要性超过阈值时）</text>
-  <text x="50" y="194" font-family="Arial, sans-serif" font-size="10" fill="#555">├── 从近期记忆中提炼高层次洞察</text>
-  <text x="50" y="210" font-family="Arial, sans-serif" font-size="10" fill="#888">└── 反思结果也存入记忆流（可层次化反思）</text>
-
-  <!-- Example -->
-  <rect x="310" y="164" width="170" height="40" rx="6" fill="#9b59b6" opacity="0.08"/>
-  <text x="395" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#9b59b6">多次观察 "Klaus在画画"</text>
-  <text x="395" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#9b59b6">→ "Klaus对艺术充满热情"</text>
-
-  <!-- Layer 3: Retrieval -->
-  <rect x="30" y="228" width="460" height="100" rx="10" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="2"/>
-  <text x="50" y="250" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#27ae60">🔍 3. 检索 Retrieval</text>
-  <text x="50" y="268" font-family="Arial, sans-serif" font-size="10" fill="#555">├── 当 Agent 需要做决策时，从记忆流中检索相关记忆</text>
-  <text x="50" y="284" font-family="Arial, sans-serif" font-size="10" fill="#555">└── 检索基于三个维度的加权组合：</text>
-
-  <!-- Three dimensions -->
-  <rect x="70" y="292" width="130" height="28" rx="6" fill="#e74c3c" opacity="0.1" stroke="#e74c3c" stroke-width="1"/>
-  <text x="135" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e74c3c">⏱️ 时效性 Recency</text>
-
-  <rect x="210" y="292" width="130" height="28" rx="6" fill="#f39c12" opacity="0.1" stroke="#f39c12" stroke-width="1"/>
-  <text x="275" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e67e22">⭐ 重要性 Importance</text>
-
-  <rect x="350" y="292" width="130" height="28" rx="6" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1"/>
-  <text x="415" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3498db">🎯 相关性 Relevance</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 590" role="img" aria-labelledby="title desc" font-family="Arial, PingFang SC, sans-serif">
+<title id="title">Generative Agents：信息流</title><desc id="desc">观察进入记忆流。检索把相关内容送入规划，反思读取记忆并写回推断。示意不是三层存储。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8Z" fill="#475569"/></marker></defs>
+<rect width="560" height="590" rx="12" fill="#fff"/>
+<text x="280" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">Generative Agents：信息流</text>
+<rect x="40" y="60" width="480" height="75" rx="9" fill="#eff6ff" stroke="#64748b"/>
+<text x="280.0" y="88" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">观察</text>
+<text x="280.0" y="115" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">环境事件、对话与行动记录</text>
+<path d="M280,135 L280,163" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+<rect x="40" y="165" width="480" height="95" rx="9" fill="#eff6ff" stroke="#64748b"/>
+<text x="280.0" y="193" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">记忆流</text>
+<text x="280.0" y="220" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">记录观察、反思与计划</text>
+<text x="280.0" y="244" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">保留时间及来源关联</text>
+<path d="M155,260 L155,300" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+<path d="M405,260 L405,300" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<rect x="30" y="302" width="250" height="110" rx="9" fill="#eff6ff" stroke="#64748b"/>
+<text x="155.0" y="330" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">检索</text>
+<text x="155.0" y="357" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">时近性、重要性</text>
+<text x="155.0" y="381" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">与当前情境的相关性</text>
+<rect x="305" y="302" width="225" height="110" rx="9" fill="#f5f3ff" stroke="#64748b"/>
+<text x="417.5" y="330" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">反思</text>
+<text x="417.5" y="357" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">从记录推断结论</text>
+<text x="417.5" y="381" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">再写入记忆流</text>
+<path d="M155,412 L155,450" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+<rect x="40" y="452" width="480" height="75" rx="9" fill="#ecfdf5" stroke="#64748b"/>
+<text x="280.0" y="480" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">规划与反应</text>
+<text x="280.0" y="507" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">使用检索到的内容生成行为</text>
+<text x="280" y="556" text-anchor="middle" font-size="16" font-weight="normal" fill="#1e293b">信息流示意；反思不是已验证事实。</text>
+<text x="280" y="580" text-anchor="middle" font-size="14" font-weight="normal" fill="#475569">本书重绘，依据 Park et al., v2 §4 (2023)</text>
 </svg>

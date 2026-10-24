@@ -1,86 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
-  <defs>
-    <filter id="sh-mem02">
-      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/>
-    </filter>
-  </defs>
-
-  <rect width="800" height="380" fill="#f8f9fa" rx="12"/>
-  <text x="400" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Comparison of Three Short-Term Memory Strategies</text>
-  <text x="400" y="50" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#777">Balancing memory completeness and resource efficiency</text>
-
-  <!-- ===== Strategy 1: Full Retention ===== -->
-  <rect x="30" y="70" width="230" height="290" rx="10" fill="#3498db" opacity="0.06" stroke="#3498db" stroke-width="2"/>
-  <text x="145" y="94" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#2980b9">📋 Full Retention</text>
-  <text x="145" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">Keep all conversation history</text>
-
-  <!-- Message list visualization -->
-  <rect x="55" y="125" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
-  <text x="145" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 Message 1 (kept)</text>
-  <rect x="55" y="151" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
-  <text x="145" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 Message 2 (kept)</text>
-  <rect x="55" y="177" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
-  <text x="145" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 Message 3 (kept)</text>
-  <text x="145" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2980b9">. . .</text>
-  <rect x="55" y="222" width="180" height="22" rx="4" fill="#3498db" opacity="0.15"/>
-  <text x="145" y="237" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2980b9">💬 Message N (kept)</text>
-
-  <!-- Pros/Cons -->
-  <rect x="45" y="258" width="190" height="90" rx="6" fill="white" stroke="#3498db" stroke-width="1"/>
-  <text x="140" y="276" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Complete info, zero loss</text>
-  <text x="140" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Simplest to implement</text>
-  <text x="140" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ Token count grows linearly</text>
-  <text x="140" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">Best for: short sessions (&lt;10 turns)</text>
-
-  <!-- ===== Strategy 2: Sliding Window ===== -->
-  <rect x="285" y="70" width="230" height="290" rx="10" fill="#27ae60" opacity="0.06" stroke="#27ae60" stroke-width="2"/>
-  <text x="400" y="94" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#1e8449">🪟 Sliding Window</text>
-  <text x="400" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">Keep only the most recent N messages</text>
-
-  <!-- Message list visualization -->
-  <rect x="310" y="125" width="180" height="22" rx="4" fill="#ccc" opacity="0.3"/>
-  <text x="400" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#aaa">💬 Message 1 (dropped)</text>
-  <rect x="310" y="151" width="180" height="22" rx="4" fill="#ccc" opacity="0.3"/>
-  <text x="400" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#aaa">💬 Message 2 (dropped)</text>
-  <rect x="310" y="177" width="180" height="22" rx="4" fill="#27ae60" opacity="0.15"/>
-  <text x="400" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e8449">💬 Message N-2 (kept)</text>
-  <rect x="310" y="199" width="180" height="22" rx="4" fill="#27ae60" opacity="0.15"/>
-  <text x="400" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e8449">💬 Message N-1 (kept)</text>
-  <rect x="310" y="221" width="180" height="22" rx="4" fill="#27ae60" opacity="0.2"/>
-  <text x="400" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e8449">💬 Message N (latest)</text>
-
-  <!-- Pros/Cons -->
-  <rect x="300" y="258" width="190" height="90" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="395" y="276" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Token count stays bounded</text>
-  <text x="395" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Always has recent context</text>
-  <text x="395" y="312" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ Early context lost</text>
-  <text x="395" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">Best for: 10–50 turn conversations</text>
-
-  <!-- ===== Strategy 3: Summary Compression ===== -->
-  <rect x="540" y="70" width="230" height="290" rx="10" fill="#9b59b6" opacity="0.06" stroke="#9b59b6" stroke-width="2"/>
-  <text x="655" y="94" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#8e44ad">🗜️ Summary Compression</text>
-  <text x="655" y="112" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="10" fill="#555">LLM compress + keep recent messages</text>
-
-  <!-- Summary block -->
-  <rect x="565" y="125" width="180" height="50" rx="6" fill="#9b59b6" opacity="0.12" stroke="#8e44ad" stroke-width="1"/>
-  <text x="655" y="143" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" font-weight="bold" fill="#8e44ad">📝 History Summary</text>
-  <text x="655" y="158" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#8e44ad">"User discussed AI model selection,</text>
-  <text x="655" y="169" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="8" fill="#8e44ad">prefers open-source, cares about inference..."</text>
-
-  <!-- Recent messages -->
-  <rect x="565" y="185" width="180" height="22" rx="4" fill="#9b59b6" opacity="0.12"/>
-  <text x="655" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8e44ad">💬 Message N-1 (kept)</text>
-  <rect x="565" y="211" width="180" height="22" rx="4" fill="#9b59b6" opacity="0.15"/>
-  <text x="655" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8e44ad">💬 Message N (latest)</text>
-
-  <!-- Compression indicator -->
-  <text x="655" y="250" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#8e44ad">⚡ Auto-triggered when threshold exceeded</text>
-
-  <!-- Pros/Cons -->
-  <rect x="555" y="264" width="190" height="84" rx="6" fill="white" stroke="#9b59b6" stroke-width="1"/>
-  <text x="650" y="282" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Retains key information</text>
-  <text x="650" y="298" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#27ae60">✅ Token usage stays controlled</text>
-  <text x="650" y="314" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ Compression may lose details</text>
-  <text x="650" y="330" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#e74c3c">❌ Extra LLM call overhead</text>
-  <text x="650" y="346" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="9" fill="#777">Best for: 50+ turn long conversations</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460" role="img" aria-labelledby="title">
+<title id="title">Dialogue History: Strategy and Budget</title>
+<style>text { font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }</style>
+<rect width="900" height="460" rx="14" fill="#f0f4f8"/>
+<text x="450" y="37" text-anchor="middle" font-size="20" font-weight="bold" fill="#233447">Dialogue History: Strategy and Budget</text>
+<rect x="30" y="110" width="260" height="180" rx="10" fill="#2c3e50"/>
+<text x="160" y="141" text-anchor="middle" font-size="16" fill="white" font-weight="bold">Full history</text>
+<text x="160" y="173" text-anchor="middle" font-size="12" fill="white">Send all retained messages</text>
+<text x="160" y="205" text-anchor="middle" font-size="12" fill="white">Still check input and output capacity</text>
+<rect x="320" y="110" width="260" height="180" rx="10" fill="#236fa3"/>
+<text x="450" y="141" text-anchor="middle" font-size="16" fill="white" font-weight="bold">Sliding window</text>
+<text x="450" y="173" text-anchor="middle" font-size="12" fill="white">Select complete recent turns</text>
+<text x="450" y="205" text-anchor="middle" font-size="12" fill="white">Keep policy and current input</text>
+<rect x="610" y="110" width="260" height="180" rx="10" fill="#73519a"/>
+<text x="740" y="141" text-anchor="middle" font-size="16" fill="white" font-weight="bold">Summary + recent turns</text>
+<text x="740" y="173" text-anchor="middle" font-size="12" fill="white">A summary remains reference data</text>
+<text x="740" y="205" text-anchor="middle" font-size="12" fill="white">Loss/error possible; never new policy</text>
+<rect x="30" y="402" width="840" height="40" rx="8" fill="#fff0e9" stroke="#c46b3e"/>
+<text x="450" y="427" text-anchor="middle" font-size="12" fill="#873a24">Bytes, characters, and tokens differ; reject mandatory input that cannot fit.</text>
 </svg>

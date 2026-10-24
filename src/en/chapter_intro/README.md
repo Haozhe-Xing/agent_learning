@@ -1,5 +1,14 @@
 # Chapter 1: What is an Agent?
 
+**Reading level**: Core.
+
+## This chapter's iteration
+
+- **Previous limitation**: A chat reply saying “calculated” or “completed” does not show that the system consulted evidence, executed a calculation, or met the request.
+- **This chapter adds**: Write a task card for the foundational exercise: calculate light travel time from the teaching statement `Moon distance is 100 km.`, use the requested seconds or milliseconds, and identify the source. Map the goal, actions, observations, and acceptance. This practices mechanisms for the later local-document research assistant rather than constituting the application.
+- **How to verify**: Reader exercise: specify acceptable outcomes and stopping conditions for valid evidence, missing distance, and an unauthorized action request. Deliver the task card and verdict rationale. This chapter supplies no automated grader; a model's completion claim is not evidence.
+- **Next step**: Record a model-call baseline in [chapter 2](../chapter_llm/README.md), using [appendix F](../chapter_setup/README.md) for setup. Define what must be verified before adding capabilities.
+
 > 🎯 *"An Agent is not just a chatbot — it is an intelligent entity capable of autonomously perceiving its environment, making decisions, and taking action."*
 
 ## Chapter Overview
@@ -44,24 +53,21 @@ Approximately **45–60 minutes** (including thinking exercises)
 
 ## 🔗 Learning Path
 
-This book has 23 chapters across 6 parts, with clear dependencies between chapters. The overview diagram below shows the structural backbone of the book and three recommended routes — **the color strip on the left border of each node marks which route(s) it belongs to** (a chapter can belong to multiple routes simultaneously).
+This book has 25 chapters across 7 parts. The application path is task definition → capabilities → implementation choice → verification and deployment → capstone. Training and self-evolution follow applications as optional research. Use the page's left-hand table of contents for chapter order and the [shared project](../learning_project.md) for stage artifacts.
 
-![AI Agent Complete Learning Path Overview](../svg/learning_path_overview.svg)
+![Application path and optional branches](../svg/learning_path_overview.svg)
 
 ### Three Recommended Routes
 
 Readers from different backgrounds can "skip around" the book along different routes — no need to read linearly from start to finish:
 
-- 🟠 **Fast Track (5 chapters, for product managers / managers)**: `1 → 3 → 8 → 12 → 21`
-  Build Agent intuition first (Chapter 1), understand tool calling (Chapter 3), master Harness engineering standards (Chapter 8), use a mainstream framework (Chapter 12 LangChain) to build your first programming assistant project (Chapter 21). Skip deep theory and see results fastest.
+- 🟠 **Concepts and experience**: `1 → 2 → 3 → 8`. Produce a task card and observe tool calls and execution constraints. This short route develops judgment about results and boundaries; it does not constitute application delivery.
 
-- 🔵 **Engineer Track (11 chapters, for developers wanting systematic mastery)**: `1 → 2 → 3 → 4 → 5 → 7 → 12 → 13 → 15 → 20 → 21`
-  On top of the Fast Track, add LLM fundamentals (Chapter 2), memory and planning (Chapters 4, 5), context engineering (Chapter 7), then learn LangChain + LangGraph + Claude Code three frameworks, and finally land on deployment (Chapter 20) and a practical project (Chapter 21).
+- 🔵 **Engineering delivery**: `1–8 → choose from 9–17 → 18–20 → one of 21/22/23`. Chapter 9 covers reuse. Choose chapters 10–11 for integration and state requirements and cases from 12–15 for your setting. Study 16–17 when coordination or external integration solves an identified limitation. Evaluation, safety, and deployment are part of delivery.
 
-- 🟣 **Researcher Track (8 chapters, for those diving deep into theory and frontiers)**: `1 → 2 → 4 → 5 → 10 → 11 → 16 → 18`
-  Focus on principles and frontiers: LLM fundamentals (Chapter 2), memory and planning theory (Chapters 4, 5), deep dive into Agentic-RL training (Chapter 10) and self-evolution (Chapter 11), then expand to multi-Agent systems (Chapter 16) and evaluation methods (Chapter 18).
+- 🟣 **Research improvement**: Complete an application and independent evaluation, then choose `24` for model training or `25` for prompt, skill, and system improvement. Keep the application's regression gates. Neither learning every framework nor training weights is required to improve prompts.
 
-> 💡 **Reading suggestion**: Solid arrows indicate "in-part sequential order," dashed arrows indicate "cross-part backbone connections." Regardless of which route you take, it is recommended to read Chapter 1 first to build a holistic view; the comprehensive project chapters (Chapters 21–23) are best left for last as an integration test of everything you've learned.
+> 💡 **Reading suggestion**: Retain artifacts and acceptance evidence after each addition. Expand scope after the previous stage passes; diagnose a failure in its responsible module instead of adding every technique in sequence.
 
 ### Recommended Next Steps
 

@@ -1,4 +1,4 @@
-# 22.3 Containerization and Cloud Deployment
+# 20.3 Containerization and Cloud Deployment
 
 > **Section Goal**: Learn how to package an Agent service with Docker to achieve "build once, run anywhere."
 
@@ -366,4 +366,4 @@ docker compose down
 
 ---
 
-[Next: 18.4 Streaming Responses and Concurrency Handling →](./04_streaming_concurrency.md)
+[Next: 20.4 Streaming Responses and Concurrency Handling →](./04_streaming_concurrency.md)

@@ -1,72 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
-  <defs>
-    <style>text { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; }</style>
-    <marker id="ar5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#2980b9"/>
-    </marker>
-  </defs>
-  <rect width="800" height="420" rx="12" fill="#f8f9fa"/>
-  <text x="400" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#2c3e50">Agent Behavior Alignment and Boundary Control</text>
-
-  <!-- Alignment goal -->
-  <rect x="250" y="55" width="300" height="45" rx="22" fill="#2c3e50"/>
-  <text x="400" y="83" text-anchor="middle" font-size="14" fill="white" font-weight="bold">Agent Behavior = User Intent + Safety Constraints</text>
-
-  <!-- Three control panels -->
-  <rect x="30" y="120" width="235" height="280" rx="10" fill="#e74c3c" opacity="0.12" stroke="#e74c3c" stroke-width="2"/>
-  <text x="147" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">🚫 Behavior Boundaries</text>
-
-  <rect x="50" y="160" width="195" height="30" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
-  <text x="147" y="180" text-anchor="middle" font-size="10" fill="#e74c3c">❌ Forbidden Zone: Never do</text>
-  <text x="147" y="205" text-anchor="middle" font-size="10" fill="#555">Delete system files</text>
-  <text x="147" y="220" text-anchor="middle" font-size="10" fill="#555">Access other users' data</text>
-  <text x="147" y="235" text-anchor="middle" font-size="10" fill="#555">Modify security configurations</text>
-
-  <rect x="50" y="255" width="195" height="30" rx="6" fill="white" stroke="#e67e22" stroke-width="1"/>
-  <text x="147" y="275" text-anchor="middle" font-size="10" fill="#e67e22">⚠️ Approval Zone: Require human confirm</text>
-  <text x="147" y="300" text-anchor="middle" font-size="10" fill="#555">Send emails/messages</text>
-  <text x="147" y="315" text-anchor="middle" font-size="10" fill="#555">Execute DB write operations</text>
-  <text x="147" y="330" text-anchor="middle" font-size="10" fill="#555">Deploy code to production</text>
-
-  <rect x="50" y="345" width="195" height="30" rx="6" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="147" y="365" text-anchor="middle" font-size="10" fill="#27ae60">✅ Autonomous Zone: Execute freely</text>
-  <text x="147" y="385" text-anchor="middle" font-size="10" fill="#555">Read files, search, compute…</text>
-
-  <!-- Fallback mechanisms -->
-  <rect x="283" y="120" width="235" height="280" rx="10" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="2"/>
-  <text x="400" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🔄 Fallback Mechanisms</text>
-
-  <rect x="303" y="165" width="195" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1"/>
-  <text x="400" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">Max Steps Limit</text>
-  <text x="400" y="205" text-anchor="middle" font-size="10" fill="#555">max_steps=20 prevents infinite loops</text>
-
-  <rect x="303" y="232" width="195" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1"/>
-  <text x="400" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">Timeout Protection</text>
-  <text x="400" y="272" text-anchor="middle" font-size="10" fill="#555">timeout=300s per-step auto-terminate</text>
-
-  <rect x="303" y="299" width="195" height="55" rx="8" fill="white" stroke="#3498db" stroke-width="1"/>
-  <text x="400" y="319" text-anchor="middle" font-size="11" font-weight="bold" fill="#3498db">Budget Control</text>
-  <text x="400" y="339" text-anchor="middle" font-size="10" fill="#555">max_cost=$5.0 spending cap</text>
-
-  <rect x="303" y="366" width="195" height="28" rx="6" fill="#e8f4fd" stroke="#3498db" stroke-width="1"/>
-  <text x="400" y="385" text-anchor="middle" font-size="10" fill="#2980b9">Graceful degradation → return partial results</text>
-
-  <!-- Intent alignment -->
-  <rect x="536" y="120" width="235" height="280" rx="10" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="2"/>
-  <text x="653" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🎯 Intent Alignment</text>
-
-  <rect x="556" y="165" width="195" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="653" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">Clarify Ambiguous Instructions</text>
-  <text x="653" y="205" text-anchor="middle" font-size="10" fill="#555">"Delete file" → Confirm which files?</text>
-
-  <rect x="556" y="232" width="195" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="653" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">Reversibility Check</text>
-  <text x="653" y="272" text-anchor="middle" font-size="10" fill="#555">Irreversible ops → double confirmation</text>
-
-  <rect x="556" y="299" width="195" height="55" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="653" y="319" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">Impact Scope Assessment</text>
-  <text x="653" y="339" text-anchor="middle" font-size="10" fill="#555">Action affects N records → inform user</text>
-
-  <rect x="556" y="366" width="195" height="28" rx="6" fill="#e8f8e8" stroke="#27ae60" stroke-width="1"/>
-  <text x="653" y="385" text-anchor="middle" font-size="10" fill="#27ae60">Refuse unethical/harmful requests</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" role="img" aria-labelledby="title desc">
+<title id="title">Different levels need different evidence</title><desc id="desc">Success counts do not grant authority; identical retries reuse receipts</desc>
+<rect width="960" height="250" rx="16" fill="#f6f8fc"/>
+<g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+<text x="480" y="42" font-size="24" font-weight="700" fill="#172c4f">Different levels need different evidence</text>
+<rect x="24" y="81" width="207" height="80" rx="12" fill="#dbeafe" stroke="#91a2bb"/>
+<text x="127.5" y="129" font-size="20" fill="#172c4f">Training goals</text>
+<path d="M236 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
+<rect x="259" y="81" width="207" height="80" rx="12" fill="#e0e7ff" stroke="#91a2bb"/>
+<text x="362.5" y="129" font-size="20" fill="#172c4f">Host policy</text>
+<path d="M471 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
+<rect x="494" y="81" width="207" height="80" rx="12" fill="#d1fae5" stroke="#91a2bb"/>
+<text x="597.5" y="129" font-size="20" fill="#172c4f">Specific consent</text>
+<path d="M706 121h17m-6-5 6 5-6 5" fill="none" stroke="#52647e" stroke-width="2"/>
+<rect x="729" y="81" width="207" height="80" rx="12" fill="#fef3c7" stroke="#91a2bb"/>
+<text x="832.5" y="129" font-size="20" fill="#172c4f">Acceptance</text>
+<text x="480" y="208" font-size="18" fill="#3c506e">Success counts do not grant authority; identical retries reuse receipts</text>
+</g></svg>

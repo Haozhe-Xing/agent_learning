@@ -1,5 +1,14 @@
 # 第7章 上下文工程
 
+**阅读层次**：核心必读。
+
+## 本章迭代
+
+- **上一版的不足**：已经找到 `100 km` 的证据，但把历史、记忆和检索片段全部拼接后，关键距离或“输出毫秒”的任务要求可能被截掉；检索命中因此没有转化为正确输入。
+- **本章增加**：在同一任务中为规则、任务状态和必需证据分配位置与预算，记录去重、压缩、保留或拒绝的理由，并从真正构造的消息中消费资料。
+- **怎样验证**：已有入口 `python examples/chapter07/gssc_pipeline.py`；`python -m unittest reference_code.evidence_assistant.tests.test_learning_path.ContextTests reference_code.evidence_assistant.tests.test_project_contracts.ProjectContractTests.test_constructed_context_is_actually_consumed` 检查完整消息计量、必需证据不能静默丢弃及实际消息流。交付消息快照和取舍记录。该最小实现约束 UTF-8 字节，不等于模型 token 预算；接入具体 tokenizer 是读者扩展。
+- **下一步**：即使消息中的资料完全正确，Agent 仍可能调用未授权工具或给出错误产物。在[第8章](../chapter_harness/README.md)由宿主强制检查许可、预算和验收；“给模型看什么”不能替代“允许执行什么”。
+
 > 📖 *"提示工程让你学会如何跟 LLM 说话，上下文工程让你学会如何帮 LLM 看见全世界。"*
 
 > 📌 **与第8章的关系**：本章聚焦**上下文的内容和策略**（窗口管理、信息密度、注意力预算）；第8章 Harness 工程则关注**工程规范和执行结构**（Agents.md、六大工程支柱）。两章是互补而非重复，建议连续阅读。
@@ -22,7 +31,7 @@
 
 > **后续推荐**：
 > - 👉 [第8章 Harness Engineering：驾驭 Agent 的系统工程](../chapter_harness/README.md)
-> - 👉 [第10章 Agentic-RL：智能体强化学习训练](../chapter_agentic_rl/README.md)
+> - 👉 [第18章 Agent 的评估与优化](../chapter_20_evaluation/README.md) — 比较上下文策略对同一任务集的影响
 
 ---
 

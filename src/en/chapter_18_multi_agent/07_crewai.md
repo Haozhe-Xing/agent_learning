@@ -1,4 +1,4 @@
-# 18.7 Framework Supplement: CrewAI (Role-Playing Multi-Agent Framework)
+# 16.7 Framework Supplement: CrewAI (Role-Playing Multi-Agent Framework)
 
 > 🎭 *CrewAI uses the simple abstraction of "role + task + crew" to make multi-Agent collaboration intuitive.*
 
@@ -55,4 +55,4 @@ When you need **conditionals, loops, precise ordering**, use Flows (decorators `
 
 ---
 
-*Back to chapter home: [Chapter 18: Multi-Agent Collaboration](./README.md)*
+*Back to chapter home: [Chapter 16: Multi-Agent Collaboration](./README.md)*

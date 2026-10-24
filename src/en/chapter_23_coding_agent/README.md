@@ -1,4 +1,13 @@
-# Chapter 23: Project Practice: AI Coding Assistant
+# Chapter 21: Project Practice: AI Coding Assistant
+
+**Reading level**: Capstone; choose at least one domain from chapters 21–23.
+
+## This chapter's iteration
+
+- **Previous limitation**: Passing a generic numeric task does not establish repository diagnosis, bounded edits or an independently tested patch.
+- **This chapter adds**: Replace document evidence with code indexes and restrict actions to reviewable changes; define acceptance for understanding, generation, testing and rollback.
+- **How to verify**: This is a component-design and assembly exercise, not a supplied complete coding assistant. Repair one small defect and retain the original failure, passing result, unchanged independent tests and diff. Out-of-scope edits, deleted tests or failed rollback cannot count as completion.
+- **Next step**: Finish the application route after acceptance. [Data analysis](../chapter_24_data_agent/README.md) and [multimodal tasks](../chapter_25_multimodal/README.md) are alternative capstones.
 
 > Build an AI coding assistant from scratch that can understand code, generate code, write tests, and fix bugs.
 
@@ -18,23 +27,20 @@ This chapter is the first comprehensive hands-on project. We will apply the core
 
 ## Chapter Structure
 
-| Section | Content | Difficulty |
-|---------|---------|-----------|
-| 19.1 Project Architecture Design | Overall plan and component design | ⭐⭐ |
-| 19.2 Code Understanding and Analysis | AST parsing, semantic search | ⭐⭐⭐ |
-| 19.3 Code Generation and Modification | Structured generation, diff modification | ⭐⭐⭐ |
-| 19.4 Test Generation and Bug Fixing | Automated testing, diagnostic repair | ⭐⭐⭐ |
-| 19.5 Full Project Implementation | Integrating all components | ⭐⭐⭐⭐ |
+| Section |
+|---|
+| [21.1 Project Architecture Design](./01_architecture.md) |
+| [21.2 Code Understanding and Analysis](./02_code_understanding.md) |
+| [21.3 Code Generation and Modification](./03_code_generation.md) |
+| [21.4 Test Generation and Bug Fixing](./04_testing_debugging.md) |
+| [21.5 Integration Design: From Components to Assistant](./05_full_implementation.md) |
 
 ## 🔗 Learning Path
 
-> **Core Prerequisites**: [Chapter 3: Tool Calling](../chapter_tools/README.md), [Chapter 6: RAG](../chapter_rag/README.md), [Chapter 13: LangGraph](../chapter_langgraph/README.md)
-> Recommended but not required: [Chapters 16–18: Production Series](../chapter_20_evaluation/README.md)
->
-> **Related Projects**:
-> - 📊 [Chapter 22: Data Analysis Agent](../chapter_24_data_agent/README.md)
-> - 🎨 [Chapter 23: Multimodal Agent](../chapter_25_multimodal/README.md)
+Bring task, permission and acceptance records from [tools](../chapter_tools/README.md) and the [Harness](../chapter_harness/README.md). Production and domain delivery require [evaluation](../chapter_20_evaluation/README.md) and [security](../chapter_21_security/README.md) gates.
+
+Finish the application route after acceptance. [Data analysis](../chapter_24_data_agent/README.md) and [multimodal tasks](../chapter_25_multimodal/README.md) are alternative capstones.
 
 ---
 
-*Next: [23.1 Project Architecture Design](./01_architecture.md)*
+*Next: [21.1 Project Architecture Design](./01_architecture.md)*

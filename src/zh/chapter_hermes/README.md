@@ -1,66 +1,38 @@
-# 第15章 Hermes Agent：自我进化的 Agent
+# 第13章 Hermes Agent：自我进化的 Agent
 
-> ☤ *"用得越久，越懂你——这不是营销，是闭环。"*
-> ——改编自 Nous Research 对 Hermes Agent 的一句话自我描述
+**阅读层次**：产品与架构案例选读；需要跨会话记忆或技能积累时阅读。
 
----
+本章用 Hermes Agent 讨论经验怎样形成记忆或技能候选，以及候选怎样经过验证、审查和回退。写出一份技能文件只说明产物形成；它是否改善未见任务，必须由独立结果判断。
 
-## 本章导读
+## 本章迭代
 
-前面章节我们认识了 OpenClaw（第 14 章）——一个住在聊天 App 里的"消费级"个人助理。本章我们要看的是 OpenClaw 的**同源兄弟**，但走了一条完全不同的路线：**Hermes Agent**（社区昵称"爱马仕"），由 Nous Research 于 2025 年发布。
+- **上一版的不足**：已有记忆和 Skill 接口能保存内容，但还没有定义经验何时值得保留、如何验证改动及如何撤回。
+- **本章增加**：分析跨会话记忆、技能积累与调度的边界，把生成候选、评估和启用分开。
+- **怎样验证**：本书没有统一 Hermes 适配器。读者实验应固定版本、任务与权限，在未用于编写技能的任务上比较启用前后，并验证用户隔离、删除、停用和回退；未运行时只提交分析记录。
+- **下一步**：有代码操作需求时选读[第14章 Claude Code](../chapter_claude_code/README.md)；要独立衡量记忆或技能改动时进入[第18章 评估](../chapter_20_evaluation/README.md)。
 
-Hermes 和 OpenClaw 共享大量底层思想（都基于 Node + TypeScript 生态、都强调"个人本地运行"、都支持多消息平台），但它们的**核心差异化**只有一个字：**学**。
+## 本章结构
 
-- **OpenClaw** 是"配置即用"的——技能（Skills）由用户/社区预先写好，使用时选择加载；
-- **Hermes** 是"用中学"的——每完成一个复杂任务，Agent 会**自己**把执行轨迹提炼成一个 Markdown 技能文件（`SKILL.md`），并基于 DSPy / GEPA 等思想**离线迭代**这些技能。下次遇到类似任务，它会调用自己写出来的技能，越用越准。
+| 小节 | 本节关注的问题 |
+|---|---|
+| [13.1 Hermes Agent 的诞生与"成长型 Agent"理念](./01_birth_and_philosophy.md) | 把成长目标转化为可检验问题 |
+| [13.2 安装与快速上手（含 OpenClaw 迁移）](./02_install_and_migration.md) | 记录环境与迁移范围，保留原数据 |
+| [13.3 三层架构：Gateway / Engine / Plugin 子系统](./03_three_layer_architecture.md) | 区分入口、执行与扩展边界 |
+| [13.4 核心：Self-Evolving Skills 闭环](./04_self_evolving_skills.md) | 技能候选、验证、启用与回退 |
+| [13.5 三层记忆系统](./05_memory.md) | 隔离、召回、删除与跨会话证据 |
+| [13.6 Nudge Engine 与跨会话学习](./06_nudge_engine.md) | 主动任务的触发、授权与停止 |
+| [13.7 借鉴哲学：从 Hermes 学到的"自进化"工程原则](./07_lessons_philosophy.md) | 提炼可迁移设计并标明验证边界 |
 
-这种"自主创建技能 + 持续自我迭代"的能力，被称为 **Self-Evolving Skills**（自进化技能），是 Hermes 区别于所有其他 Agent 框架的最锐利特征。配合三层记忆系统（长期语义、工作记忆、情景日志）+ 主动反思的 Nudge Engine，Hermes 号称"The agent that grows with you"。
+## 阅读路径
 
-本章的目标：
+相关基础是[第4章 记忆](../chapter_memory/README.md)、[第8章 Harness](../chapter_harness/README.md)和[第9章 Skill](../chapter_skill/README.md)。[第12章 OpenClaw](../chapter_openclaw/README.md)可用于对照入口设计，不是必修前置，也不表示两者存在直接迁移或组件兼容关系。
 
-1. **拆解 Hermes 的闭环学习系统**——理解"自动写技能 + 自动改技能 + 主动反思"如何形成一个工程化的自进化闭环；
-2. **演示安装 / 迁移路径**——Hermes 提供 `hermes claw migrate` 一键平迁 OpenClaw 的记忆、技能、API key、人设文件；本章会演示从零安装和从 OpenClaw 迁移两条路径；
-3. **分析三层记忆 + FTS5 + LLM 摘要的组合**——理解 Hermes 如何用 SQLite 的全文检索 + LLM 摘要解决"上下文有限 vs 长期记忆"的矛盾。
+## 验证与材料边界
 
-通过本章你将获得：**理论层面**——你将掌握"自进化"这一新一代 Agent 设计范式的工程骨架；**实战层面**——你能够在自己的 VPS / macOS / Linux 上启动一个会"成长"的 Agent，并通过它观察"技能自迭代"在真实任务里是如何发生的。
+本章的“自我进化”是一组待检验的设计问题，不保证每次任务都会产生有效技能，也不把产品自述当作质量证据。具体后端、迁移命令和存储实现需要在明确版本中核验，不能仅据本章概览断言可用。
 
----
-
-## 本章内容概览
-
-| 小节 | 内容 | 你将学到 |
-|------|------|---------|
-| 15.1 Hermes Agent 的诞生与"成长型 Agent"理念 | Nous Research、Hermes 与爱马仕的取名、自我进化闭环的设计哲学 | 建立 Hermes 在新一代 Agent 谱系中的坐标 |
-| 15.2 安装与快速上手（含 OpenClaw 迁移） | 一键安装、`hermes claw migrate` 命令、从 OpenClaw 平迁数据 | 在 macOS / Linux / VPS / Termux 上启动 Hermes |
-| 15.3 三层架构：Gateway / Engine / Plugin 子系统 | 子系统边界、事件总线、模型无关抽象、6 种执行后端 | 读懂 Hermes 的工程骨架 |
-| 15.4 核心：Self-Evolving Skills 闭环 | 技能自动提炼、DSPy/GEPA 离线迭代、`~/.hermes/skills/` 目录 | 理解"Agent 自己写技能"的工程实现 |
-| 15.5 三层记忆系统 | 长期语义 / 工作记忆 / 情景日志、FTS5 全文检索、LLM 摘要 | 掌握跨会话长期记忆的设计模式 |
-| 15.6 Nudge Engine 与跨会话学习 | 主动反思、用户建模、Honcho dialectic、cron 调度 | 让 Agent 主动问你"还有什么该记住" |
-| 15.7 借鉴哲学：从 Hermes 学到的"自进化"工程原则 | 闭环而非插件、模型无关 + 任何后端、能跑在 $5 VPS 上 | 把 Hermes 的设计哲学搬回自己的系统 |
+本书的记忆和技能离线示例验证自己的模块契约，不能代替 Hermes 产品实验。应用开发无需先学习研究篇；只有需要研究学习算法时，再按目标选择[第七部分](../part7.md)。
 
 ---
 
-## 阅读建议
-
-本章适合以下读者：
-
-- ✅ **想理解"Agent 自进化"的工程师**：关注新一代 Agent 的范式跃迁——重点读 15.4、15.6
-- ✅ **正在用 OpenClaw 想升级的用户**：关注迁移路径与数据归属——重点读 15.2
-- ✅ **做长期记忆 / 跨会话学习的开发者**：关注三层记忆的工程实现——重点读 15.5
-- ✅ **长期运行 / 成本敏感的部署者**：关注 6 种执行后端与自动休眠——重点读 15.3
-
-**前置知识建议**：建议先阅读第 8 章 Harness Engineering、第 9 章 Skill System、第 14 章 OpenClaw。本章和第 14 章构成"行动型 Agent 双子篇"——一边是消费级 + 多渠道，一边是消费级 + 自进化。
-
-> 📌 **章节关系**：OpenClaw 是"行动型 Agent 谱系"的**多渠道路线**代表；Hermes 是**自进化路线**代表；二者共享祖先（同一个生态），但分化方向不同。读完本章后，继续阅读第 16 章 Claude Code 看"工业 IDE"路线；第 17 章 DeepSeek Harness 看"开发者工坊"路线。
-
----
-
-## 引用约定
-
-本章所有可核验事实以 **Hermes Agent `main` 分支**与官方 `hermes-agent.nousresearch.com/docs/` 为准；性能与基准数据（如"省 X% 步数"）以官方 README 与最新发布说明为准；动态信息（如 npm 包的下载量、技能市场条目数）以"截至 2026 年 8 月"为时间锚。
-
-> 💡 **核心洞察**：Hermes 想证明的，是 Agent 可以像人一样**把经验沉淀为技能**——前提是这件事被设计成系统闭环、而不是靠用户手动维护。下一章我们会在 DeepSeek Harness（第 17 章）看到另一种"插件化"的解法——把"能力"和"进化"分开。
-
----
-
-*下一节：[15.1 Hermes Agent 的诞生与"成长型 Agent"理念](./01_birth_and_philosophy.md)*
+*下一节：[13.1 Hermes Agent 的诞生与"成长型 Agent"理念](./01_birth_and_philosophy.md)*

@@ -1,109 +1,99 @@
-# 12.2 Chain：构建处理管道
+# 10.2 Chain：构建处理管道
 
-Chain（链）是 LangChain 的核心概念——将多个处理步骤串联成可复用的流水线。你可以把 Chain 想象成一条装配线：原材料（用户输入）从一端进入，经过多个加工站（提示模板、LLM、解析器等），最终从另一端输出成品（结构化结果）。
+上一节跑通了单次消息接口，本节增加输入规范化、一次分类、分支和结果汇合。任务是一个**离线客服入口练习**：只支持英文退货/退款关键词，其余请求要求澄清。固定提供者不做真实意图识别或检索；中文自然语言、否定句和同词异义都不在这条规则的质量承诺内。
 
-在 LangChain 中，Chain 用 **LCEL（LangChain Expression Language）** 构建。LCEL 的核心符号是 `|`（管道符），工作方式类似 Unix 命令行管道——前一个组件的输出自动成为下一个组件的输入。本节先建立"四种 Chain 模式"的心智模型，再给一个最小可运行示例，最后给出"何时应选哪种模式"的决策表。
+使用[10.1的版本环境](./01_langchain_overview.md)，完整实现见 `reference_code/langchain_patterns/workflows.py`。
 
-![LCEL四种Chain模式](../svg/chapter_langchain_02_chain_patterns.svg)
+## 数据流先于链名
 
-## 四种 Chain 模式的心智模型
+![LCEL的顺序、保留输入、并行与条件模式](../svg/chapter_langchain_02_chain_patterns.svg)
 
-| 模式 | 数据流向 | 典型场景 | 核心原语 |
-|------|---------|---------|---------|
-| **顺序链** | A → B → C，前步输出喂后步 | 提取关键词 → 生成摘要 | `\|` 串联 |
-| **并行链** | 同一输入同时跑多条链，结果汇入字典 | 情感分析 + 摘要 + 关键词同时做 | `RunnableParallel` |
-| **条件链** | 按输入特征路由到不同分支 | 客服按意图（技术/业务/投诉）分流 | `RunnableBranch` |
-| **流式链** | 逐字输出，不等待完整生成 | 类 ChatGPT 打字机效果 | `.stream()` / `.astream()` |
+| 组合 | 输入 → 输出 | 本练习的责任 |
+|---|---|---|
+| `A | B` | A的值交给B | 清理空白后再分类 |
+| `RunnablePassthrough.assign` | 字典 → 保留原字段并加字段 | 只分类一次，保存 `intent` |
+| `RunnableBranch` | 同一输入 → 首个条件命中的分支或默认分支 | 已支持任务与澄清分开 |
+| `RunnableParallel` | 同一输入 → 分支结果字典 | 保留原问题、意图和答案 |
 
-> 💡 **直觉理解**：这四种模式对应人类处理任务的四种本能——**按顺序做**（先理解再总结）、**同时做**（边看边听边想）、**看情况做**（问题不同走不同流程）、**边做边说**（不必等全部想完才开口）。LCEL 只是把这四种本能变成了可组合的算子。
+这些组合是真实控制流，不应因为使用Chain就称它只能线性执行。是否改用图，取决于状态生命周期、恢复与人工决策需求，而不是出现一个 `if`。[官方Runnable入口](https://reference.langchain.com/python/langchain-core/runnables)列出了相关原语。
 
-## 最小可运行示例
+## 一条完整、可运行的入口流
 
-下面一段代码同时覆盖了"顺序 + 并行 + 流式"三种模式，是后续所有 Chain 的基础：
-
-```python
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableParallel, RunnableLambda, RunnablePassthrough
-
-llm = ChatOpenAI(model="gpt-4.1-mini")
-
-# 顺序链：提示 → LLM → 解析
-translate_chain = ChatPromptTemplate.from_messages([
-    ("system", "你是一位专业翻译，将文本翻译成{target_lang}"),
-    ("human", "{text}")
-]) | llm | StrOutputParser()
-
-# 并行链：同一输入同时跑多个独立分析，结果汇入字典
-def analyze(text: str) -> dict:
-    sentiment = (ChatPromptTemplate.from_messages([
-        ("system", "只返回：正面/负面/中性"), ("human", "{text}")])
-        | llm | StrOutputParser()).invoke({"text": text})
-    summary = (ChatPromptTemplate.from_messages([
-        ("system", "用一句话概括"), ("human", "{text}")])
-        | llm | StrOutputParser()).invoke({"text": text})
-    return {"情感": sentiment, "摘要": summary}
-
-# 流式链：逐字返回
-async def stream(text: str):
-    chain = ChatPromptTemplate.from_messages([("system", "你是有帮助的助手"), ("human", "{q}")]) | llm | StrOutputParser()
-    async for chunk in chain.astream({"q": text}):
-        print(chunk, end="", flush=True)
-```
-
-## 条件链的关键陷阱
-
-`RunnableBranch` 按条件函数路由到不同分支。一个常见错误是**在条件函数里也调用 LLM**——如果每次判断都先跑一次分类模型，条件分支一多，token 消耗会翻倍。正确做法是"先分类一次并缓存结果，再路由"：
+`normalize_request`只接受非空 `question`，拒绝额外字段；`classify_fixture`是明确的英文子串规则。二者在配套文件里只有少量普通Python逻辑，先读它们再修改分类方式。
 
 ```python
-from langchain_core.runnables import RunnableLambda, RunnableBranch
+from langchain_core.runnables import (
+    RunnableLambda, RunnablePassthrough, RunnableParallel, RunnableBranch,
+)
+from langsmith import tracing_context
+from reference_code.langchain_patterns import FIXTURE_ANSWER, build_answer_chain
+from reference_code.langchain_patterns.workflows import normalize_request, classify_fixture
 
-# 先用一个 Lambda 把意图分类一次，挂到状态字典上
-branch = (
-    RunnableLambda(lambda x: {**x, "_intent": classify_intent(x)})
-    | RunnableBranch(
-        (lambda x: "技术问题" in x["_intent"], tech_chain),
-        (lambda x: "投诉" in x["_intent"], complaint_chain),
-        default_chain,  # 兜底分支
+policy = RunnableLambda(lambda x: {
+    "fact": FIXTURE_ANSWER, "question": x["question"],
+}) | build_answer_chain()
+route = RunnableBranch(
+    (lambda x: x["intent"] == "policy", policy),
+    RunnableLambda(lambda _: "Unsupported fixture question; clarify the task."),
+)
+flow = (
+    RunnableLambda(normalize_request)
+    | RunnablePassthrough.assign(intent=RunnableLambda(classify_fixture))
+    | RunnableParallel(
+        question=RunnableLambda(lambda x: x["question"]),
+        intent=RunnableLambda(lambda x: x["intent"]), answer=route,
     )
 )
+with tracing_context(enabled=False):
+    result = flow.invoke({"question": "  Refund policy?  "})
+assert result == {"question": "Refund policy?", "intent": "policy", "answer": FIXTURE_ANSWER}
+print(result)
 ```
 
-> ⚠️ **性能要点**：条件路由的判断逻辑应尽量轻量（关键词、规则、或一次性的分类结果缓存），避免每个分支都重复触发 LLM 调用。
+输出字典保留清理后的原问题。条件函数不重复请求模型；默认分支直接说明练习不支持。若未来把分类换成模型，应把它当一次有预算且可能失败的调用，并用独立样例检查误分类；不能说保存一个 `_intent` 字段就实现了跨请求缓存。
 
-## 何时选用哪种模式（决策表）
+`RunnableParallel`的各分支可以并发处理独立工作，但不能让本应依赖统计结果的报告先执行。这里没有测出时延收益，也没有真实并发模型请求。并行中的一个分支抛异常时，默认 `invoke` 不会返回一份完整成功字典；已发生的外部副作用也不会自动回滚。
 
-| 你的需求 | 选哪种模式 | 理由 |
-|---------|-----------|------|
-| 步骤固定、前步结果喂后步 | 顺序链 | 最自然，直接 `\|` 串联 |
-| 多个独立分析彼此无关 | 并行链 | 节省延迟，结果天然汇入 |
-| 路径由运行时输入决定 | 条件链 | 用 `RunnableBranch` 分流 |
-| 用户不能等完整结果 | 流式链 | `.stream()` 默认支持 |
-| 既要并行又要顺序 | 组合 | `RunnableParallel` 内嵌顺序链 |
-
-## 流式输出：为什么"边做边说"很重要
-
-实际应用中，用户不希望等 LLM 生成完整回复才看到内容。LCEL 构建的所有链都**天然支持流式输出**，无需额外代码：
+## 批量调用保留每条输入的失败
 
 ```python
-# 任何 LCEL 链都能 .stream() / .astream()
-for chunk in chain.stream({"question": "什么是量子纠缠？"}):
-    print(chunk, end="", flush=True)
+from langsmith import tracing_context
+from reference_code.langchain_patterns import build_intake_flow
+
+with tracing_context(enabled=False):
+    results = build_intake_flow().batch(
+        [{"question": "refund policy?"}, {"question": ""}],
+        config={"max_concurrency": 2}, return_exceptions=True,
+    )
+assert results[0]["intent"] == "policy"
+assert isinstance(results[1], ValueError)
+print([type(item).__name__ for item in results])
 ```
 
----
+结果中第一项是字典，第二项是 `ValueError`。`return_exceptions=True`让调用方逐条处理；它不会把错误变成可交付答案。`max_concurrency`限制这次批量工作，不是服务全局配额，也不是每秒请求率。
 
-## 小结
+异步接口在脚本中可以这样调用：
 
-LCEL（`|` 管道语法）是 LangChain 的核心构建方式：
-- **顺序链**：步骤间传递结果
-- **并行链**：`RunnableParallel` 同时执行
-- **条件链**：`RunnableBranch` 按条件路由（注意缓存分类结果）
-- **流式输出**：所有 LCEL 链都支持 `.stream()` 和 `.astream()`
+```python
+import asyncio
+from langsmith import tracing_context
+from reference_code.langchain_patterns import build_intake_flow
 
-> 📌 记住：Chain 解决的是"线性、可预测"的流程。当你的需求出现**循环、回溯、人工介入**时，链就不够用了——这正是第 13 章 LangGraph 要解决的。
+async def main():
+    with tracing_context(enabled=False):
+        return await build_intake_flow().ainvoke({"question": "refund"})
 
----
+assert asyncio.run(main())["intent"] == "policy"
+```
 
-*下一节：[12.3 使用 LangChain 构建 Agent](./03_langchain_agents.md)*
+在已有事件循环的Notebook或服务里直接 `await main()`，不要再嵌套 `asyncio.run`。`ainvoke`这个名字不保证底层是原生异步I/O：某些Runnable的默认实现会把同步工作交给线程。
+
+## 何时结束这条流程
+
+固定提供者返回文本，是执行结果；业务验收仍需问题范围、事实出处和必要要点。本练习的 `unsupported` 是应澄清的路由，不能和“生成失败”或“已经回答”混为一谈。真实订单事实和写权限见[10.5](./05_practice_customer_service.md)。
+
+练习：给流程输入空白问题、未知问题、额外的 `permissions` 字段。记录分别在哪一层结束，再让一个并行分支抛 `PermissionError`，确认没有把其余字段包装成完整成功。不要通过删除校验来让样例通过。
+
+*上一节：[10.1 架构全景](./01_langchain_overview.md)*
+
+*下一节：[10.3 使用LangChain构建Agent](./03_langchain_agents.md)*

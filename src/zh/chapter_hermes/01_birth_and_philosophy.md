@@ -1,22 +1,21 @@
-# 15.1 Hermes Agent 的诞生与"成长型 Agent"理念
+# 13.1 Hermes Agent 的诞生与"成长型 Agent"理念
 
 > ☤ *"The agent that grows with you."*——Hermes Agent 自描述
 
 ---
 
-## 一、从 OpenClaw 的同源兄弟说起
+## 一、从迁移入口看两个独立项目
 
-上一章我们看到了 OpenClaw——它把 Agent 推到了每个聊天 App 里，但**所有能力都需要人来维护**。Skill 文件要人写、人发版、人升级。
+[第12章](../chapter_openclaw/README.md)从聊天入口分析 OpenClaw。本章换一个观察重点：经验怎样形成记忆或技能候选，以及候选怎样经过检验。
 
-Hermes Agent 走了另一条路：**让 Agent 自己写 Skill**。它由 Nous Research 在 2025 年中后期发布，作者把它定位为"OpenClaw 的迭代继承者 + 自主进化分支"——直到今天，Hermes 都还为那些从 OpenClaw 迁过来的用户提供一键迁移命令。
+[Hermes Agent 官方仓库](https://github.com/NousResearch/hermes-agent)归属 Nous Research。固定版本的 README 记录了技能创建与更新目标，也提供 OpenClaw 迁移入口；迁移功能不证明两个项目同源或存在继承关系。
 
-但 Hermes 与 OpenClaw **不只是改名关系**——它们的**核心差异化在一个字：学**。
+以下比较是本章的阅读重点，不是其他项目缺少相同能力的排他性结论。
 
 | 项目 | 核心策略 | 技能来自 |
 |------|---------|---------|
-| OpenClaw | "用户/社区手写技能" | **人** |
-| Hermes | "Agent 自创技能 + 自迭代" | **人 + Agent** |
-| OpenCode/Codex | "模型能力 + 内置工具" | **厂商** |
+| OpenClaw | 本章对照聊天入口与扩展边界 | 不在此断言技能仅由人工编写 |
+| Hermes | 本章关注技能候选与记忆 | 区分内置、导入与自动生成 |
 
 这一节我们首先把 Hermes 的**诞生背景、设计哲学、与 OpenClaw 的边界**讲清楚。后 6 节再逐层深入。
 
@@ -24,14 +23,14 @@ Hermes Agent 走了另一条路：**让 Agent 自己写 Skill**。它由 Nous Re
 
 ## 二、Nous Research 与"Hermes"系列
 
-Hermes Agent 出自 **Nous Research**——一个以"开源模型 + 开源 Agent"为核心的非营利研究组织，旗下模型包括 Hermes 2、3、4 系列（多个尺寸、从 7B 到 405B）。
+Hermes Agent 出自 **Nous Research**——开发开放模型与 Agent 的研究团队，旗下模型包括 Hermes 2、3、4 系列（多个尺寸、从 7B 到 405B）。
 
 **Hermes** 这个名字有两层含义：
 
 1. **神话学**：Hermes（赫尔墨斯）——希腊神话里的使者之神，连接神界与人界、把消息送到各处——这与 Agent 的角色高度匹配；
 2. **品牌延续**：Nous 的开源模型系列本身就叫 Hermes（Hermes 3 LLM 等），所以开源自进化 Agent 也沿用了这个名字。
 
-**Hermes Agent**（本书语境特指）发布于 2025 年 7 月，本节整理的事实以官方仓库 `NousResearch/hermes-agent` `main` 分支为准，时间锚 2026-08。
+本次材料核验锚定[发行版 v0.22.4](https://github.com/NousResearch/hermes-agent/releases/tag/v0.22.4)及[提交 4d04303](https://github.com/NousResearch/hermes-agent/commit/4d04303818b61bf3aa09278af48356315515965b)，核验日为2026-10-22。这里不保留缺少一手依据的首次发布日期。
 
 ---
 
@@ -43,11 +42,11 @@ Hermes 的产品定位里反复出现一句话：**"The agent that grows with yo
 
 Agent 在完成任务后，**自主**把执行轨迹提炼为一个 Skill（`SKILL.md`），下回遇到类似任务时直接调用。
 
-> 这和 LangChain / AutoGPT 那种"每次从头规划"模式截然相反——一旦某个流程被固化，它就成为 Agent 的永久能力。
+> 技能文件只是候选产物；是否改善未见任务、是否仍有正确权限，必须单独评估。不能据此断言其他框架每次都从头规划或候选必然成为可靠能力。
 
 ### 3.2 持续自我迭代（Continuous Self-Improvement）
 
-不只是"创建 Skill"，还要"**更新** Skill"。Hermes 在每次使用 Skill 时记录使用结果，基于 DSPy/GEPA 的思路**离线**重新调优 Skill——成功的步骤强化，失败的步骤弱化或替换。
+不只是"创建 Skill"，还要"**更新** Skill"。官方 README 描述技能会在使用中改进，但本次没有核实 DSPy/GEPA、离线优化进程或每次调用后的自动更新算法。这些不能写成已证实的实现；本书将候选评估作为单独的实验设计。
 
 ### 3.3 主动反思（Active Reflection）
 
@@ -67,15 +66,15 @@ Skill 自动生成是被动的。Hermes 还内置一个 **Nudge Engine**——�
 
 在解释工程细节之前，先把"为什么"讲清楚：
 
-| 角度 | 没有自进化的 Agent | 有自进化的 Agent |
+| 角度 | 基线记录 | 启用候选后的检查 |
 |------|------------------|-----------------|
-| **首次使用** | 需要用户配置 / 装一堆 Skill | 默认能力 + 自创 Skill |
-| **30 天后** | 和 30 天前几乎一样（除了记忆数据） | 累积了十几个针对该用户的 Skill |
-| **90 天后** | 用户仍然要"教"它新事 | 已经能主动预测用户偏好 |
-| **1 年后** | 与新装一个 Agent 没差别 | 每个用户都养出了"自己的版本" |
-| **迁移成本** | 配置可以迁移，但能力不行 | 能力也迁移（Skill 文件可移植） |
+| **首次使用** | 记录配置和固定任务结果 | 将相同记录作为启用候选技能前的基线 |
+| **长期使用** | 保留人工维护记录 | 用未参与生成的任务比较改进、退化与成本 |
+| **迁移** | 核对配置与资料的导入范围 | 额外核对技能依赖、权限及失败后的恢复 |
 
-> 📌 **核心观察**：自进化让"长期使用"出现复利效应——这是普通 Agent 不会有的属性。15.4 我们会看到这件事的工程实现。
+> 长期使用是否带来收益，需要结果证明；不能从运行天数预测能力增长。技能候选与验收设计见[13.4节](./04_self_evolving_skills.md)。
+
+
 
 ---
 
@@ -83,20 +82,17 @@ Skill 自动生成是被动的。Hermes 还内置一个 **Nudge Engine**——�
 
 很多读者会把"OpenClaw"与"Hermes Agent"混为一谈。下面给一张"易混点澄清表"：
 
-| 维度 | OpenClaw（前一章） | Hermes Agent（本章） |
-|------|---------------------|---------------------|
-| **许可** | MIT | MIT |
-| **作者** | Peter Steinberger 社区 | Nous Research |
-| **主线焦点** | "多渠道 + Skill 生态" | "自进化技能 + 跨会话记忆" |
-| **Skill 来源** | 仅人工 | **人工 + 自动生成 + 自动迭代** |
-| **记忆** | SQLite 长期记忆 | **三层记忆**（长期语义 / 工作记忆 / 情景日志） |
-| **用户建模** | 无显式机制 | **Honcho dialectic 用户建模** |
-| **迁移工具** | — | **`hermes claw migrate` 一键平迁 OpenClaw** |
-| **Node.js 后端** | TypeScript | TypeScript |
-| **主模型** | 任意 | 任意（推荐 Nous Portal） |
-| **门槛** | 极低（npx） | 极低（curl \| bash） |
+| 维度 | 应保留的比较证据 |
+|---|---|
+| **许可** | 两者的固定版本均需查对应 LICENSE，不能用许可推断安全性 |
+| **Skill 来源** | 分别记录内置、人工导入和自动候选，不能预设一方“仅人工” |
+| **记忆与用户建模** | 按版本核对存储、隔离、同意和删除，而不是从产品定位推断有无 |
+| **迁移工具** | Hermes 的固定 README 记录迁移入口；导入范围与冲突处理需单独验证 |
+| **运行入口** | 根据当前任务选择渠道、CLI 或其他界面；不以安装口号判断使用成本 |
 
-两者不是替代关系——OpenClaw 是"现在能跑"，Hermes 是"还能自我进化"。
+
+
+两者是否适合替换当前实现，应依任务、权限与实际结果判断，不能用产品定位直接作结论。
 
 ---
 
@@ -104,31 +100,24 @@ Skill 自动生成是被动的。Hermes 还内置一个 **Nudge Engine**——�
 
 ![行动型 Agent Harness 谱系](../svg/chapter_openclaw_01_harness_spectrum.svg)
 
-Hermes 在"自进化"路线上是**当前开源生态做得最深的一个**——其他项目（OpenHuman 等）的"技能自创"想法都还在实验阶段，Hermes 已经在 v1.x 上跑了近一年。
+本章选 Hermes 研究记忆与技能候选，不作“最深”排名；产品自述也不能证明在未见任务上的改进。
 
 ---
 
-## 七、官方事实清单（以仓库 `main` 分支为准）
+## 七、已核验的来源与范围
 
-下面给一张"可核验事实"清单——任何会变化的数字（如 Star 数、PR 数）我都标了**不引用**，只列可独立核验的事实：
+| 项目 | 本次核验结果 |
+|---|---|
+| 仓库与材料 | [固定提交 README](https://github.com/NousResearch/hermes-agent/blob/4d04303818b61bf3aa09278af48356315515965b/README.md)，不是可变 `main` 的替代描述 |
+| 许可证 | 固定提交的 [MIT LICENSE](https://github.com/NousResearch/hermes-agent/blob/4d04303818b61bf3aa09278af48356315515965b/LICENSE) |
+| 文档 | [官方文档入口](https://hermes-agent.nousresearch.com/docs/)，网站内容可能与固定提交不同 |
+| Gateway 来源 | 固定提交包含 Python [gateway/run.py](https://github.com/NousResearch/hermes-agent/blob/4d04303818b61bf3aa09278af48356315515965b/gateway/run.py)；不能将其写成 TypeScript Gateway |
+| 迁移入口 | 固定 README 记录 `hermes claw migrate` 和 `--dry-run`；本书未实际执行迁移或验证资料完整性 |
+| 学习与记忆 | 技能创建、记忆和会话检索为项目自述；具体触发、数据路径与效果需要逐项核验 |
 
-| 项目 | 事实 |
-|------|------|
-| 仓库 | `github.com/NousResearch/hermes-agent` |
-| 许可证 | MIT（以仓库 `LICENSE` 文件为准） |
-| 主语言 | Python（核心 agents 子系统） + TS（gateway） |
-| 安装 | `curl -fsSL https://hermes-agent.nousresearch.com/install.sh \| bash` |
-| 文档站 | `hermes-agent.nousresearch.com/docs/` |
-| 技能市场协议 | 兼容 `agentskills.io` 开放标准 |
-| 消息平台 | 15+（Telegram / Discord / Slack / WhatsApp / Signal / CLI / TUI / …） |
-| 模型后端 | 多个主流后端（Nous Portal / OpenRouter / OpenAI / Anthropic / 本地 Ollama / 自定义，数量以仓库为准） |
-| 执行后端 | 6 种（local / Docker / SSH / Singularity / Modal / Daytona） |
-| OpenClaw 迁移 | `hermes claw migrate` 一键（skills / memories / API keys / persona） |
-| 自进化机制 | DSPy 风格 + GEPA 风格的离线迭代 |
-| 三层记忆 | `~/.hermes/MEMORY.md`（长期）/ `USER.md`（用户建模）/ Session 日志（情景） |
-| 全文检索 | SQLite FTS5 + LLM 摘要 |
+不以 Star、安装量或运行天数作为能力依据；固定版本仅便于复查，不代表本章所有命令与教学代码已得到验证。
 
-> 所有"会随时间变化"的具体数字（Star 数 / PR 数 / 安装数 / 用户数）本书**不引用**——这是 working memory 中明确约定的"内容可信度约定"。
+
 
 ---
 
@@ -139,10 +128,10 @@ Hermes 在"自进化"路线上是**当前开源生态做得最深的一个**—�
 | 项目定位 | 自进化个人 Agent，技能自动生成并自动迭代 |
 | 作者 | Nous Research（Hugo Botev 等） |
 | 设计哲学 | 自学习 / 持续自迭代 / 主动反思 / 跨平台人格 |
-| 与 OpenClaw 关系 | 同源继承 + 自进化分支；`hermes claw migrate` 一键迁移 |
+| 与 OpenClaw 关系 | 两个独立项目；迁移入口不等于共享谱系或完全兼容 |
 | 谱系坐标 | 多渠道 · 自进化 · 开源；与 Claude Code / OpenClaw / DeepSeek Harness 并列 |
-| 核心差异化 | "Skill 自动生成 + 自动迭代"——这件事的工程实现见 15.4 |
+| 核心差异化 | 技能候选、验证与回退的设计见[13.4节](./04_self_evolving_skills.md) |
 
 ---
 
-*下一节：[15.2 安装与快速上手（含 OpenClaw 迁移）](./02_install_and_migration.md)*
+*下一节：[13.2 安装与快速上手（含 OpenClaw 迁移）](./02_install_and_migration.md)*

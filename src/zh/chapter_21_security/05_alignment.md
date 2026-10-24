@@ -1,262 +1,72 @@
-# 21.5 Agent 行为的可控性与对齐
+# 19.5 Agent行为的可控性与对齐
 
-> **本节目标**：理解 Agent 对齐的重要性，学会设计行为边界和兜底机制。
+对齐涉及模型如何学习目标、系统接受谁的意图，以及行为是否满足人类要求。本节落实其中可在小项目验证的部分：宿主范围、具体审批、任务验收和停止条件。它们并不等于已经解决价值对齐。
 
-![Agent 行为对齐与边界控制](../svg/chapter_21_security_05_alignment.svg)
+![训练目标、宿主策略与任务结果分别评估](../svg/chapter_21_security_05_alignment.svg)
 
----
+## 三个层次不要混成一个分数
 
-## 什么是对齐（Alignment）？
+| 层次 | 主要问题 | 本书对应实践 |
+|---|---|---|
+| 模型训练与偏好 | 奖励/偏好如何塑造行为，是否过拟合 | 第24章，需独立数据与训练评估 |
+| 产品授权策略 | 当前主体在当前任务中允许做什么 | 本章宿主许可、审批与资源边界 |
+| 单次任务验收 | 实际结果是否支持且覆盖需求 | 第6章QA与主线独立规格 |
 
-对齐是指确保 Agent 的行为符合设计者和用户的意图与价值观。一个对齐良好的 Agent：
+一次动作通过权限检查，并不表示回答完整；答得完整也不表示有权读取资料。模型说“这是合规行为”不能授予工具权限。拒绝文本可以帮助沟通，但真正的拒绝还要使操作没有发生。
 
-- ✅ 做用户真正需要的事，而不是字面要求的事
-- ✅ 遇到不确定的情况时主动确认，而不是擅自行动
-- ✅ 在可能造成不可逆后果时停下来等待批准
-- ✅ 拒绝执行不道德或有害的请求
+## 把宽泛意图变成具体行动范围
 
----
+以本地公告为例，宿主先确定主体、可用目的地、内容上限及哪些动作已获授权。审批应展示准确正文和目的地，并继承当前用户已有的有效授权；不是对每次重复读取机械询问。当前任务范围不明确或动作超出既有授权时，才需要补充信息或取得相应批准。
 
-## 行为边界设计
-
-```python
-from enum import Enum
-from dataclasses import dataclass
-
-class ActionRisk(Enum):
-    """操作风险等级"""
-    LOW = "low"          # 只读操作，无副作用
-    MEDIUM = "medium"    # 有副作用但可撤销
-    HIGH = "high"        # 不可逆操作
-    CRITICAL = "critical"  # 可能造成重大影响
-
-@dataclass
-class ActionBoundary:
-    """行为边界定义"""
-    action: str
-    risk_level: ActionRisk
-    requires_confirmation: bool
-    max_daily_count: int = None
-    description: str = ""
-
-class BehaviorGuard:
-    """行为守护器 —— 确保 Agent 在安全边界内行动"""
-    
-    def __init__(self):
-        self.boundaries = {}
-        self.action_counts = {}  # 操作计数
-        
-        # 注册默认行为边界
-        self._register_defaults()
-    
-    def _register_defaults(self):
-        """注册默认的行为边界"""
-        defaults = [
-            ActionBoundary("search", ActionRisk.LOW, False,
-                          description="搜索信息"),
-            ActionBoundary("read_file", ActionRisk.LOW, False,
-                          description="读取文件"),
-            ActionBoundary("write_file", ActionRisk.MEDIUM, False,
-                          max_daily_count=100,
-                          description="写入文件"),
-            ActionBoundary("send_email", ActionRisk.HIGH, True,
-                          max_daily_count=20,
-                          description="发送邮件"),
-            ActionBoundary("delete_data", ActionRisk.CRITICAL, True,
-                          max_daily_count=5,
-                          description="删除数据"),
-            ActionBoundary("execute_code", ActionRisk.HIGH, True,
-                          max_daily_count=50,
-                          description="执行代码"),
-        ]
-        
-        for boundary in defaults:
-            self.boundaries[boundary.action] = boundary
-    
-    def check_action(self, action: str) -> dict:
-        """检查操作是否允许"""
-        boundary = self.boundaries.get(action)
-        
-        if boundary is None:
-            return {
-                "allowed": False,
-                "reason": f"未注册的操作: {action}"
-            }
-        
-        # 检查每日限额
-        if boundary.max_daily_count:
-            count = self.action_counts.get(action, 0)
-            if count >= boundary.max_daily_count:
-                return {
-                    "allowed": False,
-                    "reason": f"已达到每日限额 ({boundary.max_daily_count})"
-                }
-        
-        # 需要人工确认的操作
-        if boundary.requires_confirmation:
-            return {
-                "allowed": True,
-                "needs_confirmation": True,
-                "risk_level": boundary.risk_level.value,
-                "message": f"操作'{boundary.description}'需要您的确认"
-            }
-        
-        # 更新计数
-        self.action_counts[action] = self.action_counts.get(action, 0) + 1
-        
-        return {
-            "allowed": True,
-            "needs_confirmation": False,
-            "risk_level": boundary.risk_level.value
-        }
-```
-
----
-
-## 拒绝策略
-
-Agent 需要知道什么时候说"不"：
+本练习用宿主函数模拟一个明确的批准决定；不会自动读取用户对话、实现审批界面或证明真实身份。它只接受严格布尔`True`：
 
 ```python
-REFUSAL_GUIDELINES = """
-## 何时应该拒绝
+from reference_code.security_boundary import Rejected
+from reference_code.security_boundary.regression import new_lab, NOTICE
 
-### 必须拒绝
-- 用户要求执行可能违法的操作
-- 用户要求泄露其他用户的隐私信息
-- 用户要求绕过安全检查
-
-### 应该确认后再执行
-- 不可逆的操作（删除数据、发送邮件）
-- 涉及金钱的操作（下单、转账）
-- 影响范围大的操作（群发消息、批量修改）
-
-### 应该提醒但可以执行
-- 用户的请求可能有更好的替代方案
-- 操作结果可能不符合用户预期
-
-## 拒绝的方式
-- 礼貌但坚定
-- 解释原因
-- 如果可能，提供替代方案
-"""
-
-class RefusalHandler:
-    """优雅拒绝处理器"""
-    
-    TEMPLATES = {
-        "security": (
-            "抱歉，出于安全考虑，我无法执行这个操作。"
-            "{reason}。如果您有特殊需求，请联系管理员。"
-        ),
-        "scope": (
-            "这个请求超出了我的能力范围。"
-            "{reason}。建议您{suggestion}。"
-        ),
-        "confirmation": (
-            "这个操作{description}。"
-            "为了确保安全，需要您明确确认。要继续吗？(是/否)"
-        ),
-        "alternative": (
-            "我理解您的需求，不过{reason}。"
-            "作为替代，我可以{alternative}，您觉得如何？"
-        )
-    }
-    
-    @classmethod
-    def refuse(
-        cls,
-        refusal_type: str,
-        **kwargs
-    ) -> str:
-        """生成礼貌的拒绝消息"""
-        template = cls.TEMPLATES.get(refusal_type, cls.TEMPLATES["security"])
-        return template.format(**kwargs)
+runtime = new_lab()
+for decision in [False, 1, 'yes', {'approved': True}]:
+    try:
+        runtime.approvals.issue('alice', NOTICE, approved=decision)
+    except Rejected as exc:
+        assert str(exc) == 'approval_not_granted'
+    else:
+        raise AssertionError('Only literal True may represent host approval.')
+token = runtime.approvals.issue('alice', NOTICE, approved=True)
+assert runtime.execute(NOTICE, approval_token=token)['status'] == 'succeeded'
+assert runtime.backend.notices == [{'principal':'alice', 'destination':'board',
+                                    'text':'Approved fictional notice.'}]
+print('The exact local action has one recorded effect.')
 ```
 
----
+批准后的参数变化需要新判定，旧凭据不适用；权限撤回也不被旧批准覆盖。反复成功若干次，不能自动把用户升为管理员或取消所有审批。扩大自主范围应由宿主治理决定，有明确功能/资源/期限、回滚条件与独立证据。
 
-## 渐进式自主权
+## 重试不是新授权，也不是新的副作用
 
-根据信任等级，逐步增加 Agent 的自主权：
+同一请求ID、相同完整内容得到已有收据；同一ID换内容直接冲突。即使是读取已有收据，也先检查当前许可。这样可以处理本夹具中“本地动作已完成，但调用方没收到返回”的重试：
 
 ```python
-class TrustLevel(Enum):
-    """信任等级"""
-    NEW_USER = 1        # 新用户：所有操作都需要确认
-    REGULAR = 2         # 常规用户：只有高风险操作需要确认
-    TRUSTED = 3         # 受信任用户：只有关键操作需要确认
-    ADMIN = 4           # 管理员：完全自主
+from reference_code.security_boundary.regression import new_lab, NOTICE
 
-class ProgressiveAutonomy:
-    """渐进式自主权管理"""
-    
-    def __init__(self, initial_trust: TrustLevel = TrustLevel.NEW_USER):
-        self.trust_level = initial_trust
-        self.interaction_count = 0
-        self.error_count = 0
-    
-    def needs_confirmation(self, action_risk: ActionRisk) -> bool:
-        """根据信任等级判断是否需要确认"""
-        confirmation_matrix = {
-            TrustLevel.NEW_USER: {
-                ActionRisk.LOW: False,
-                ActionRisk.MEDIUM: True,
-                ActionRisk.HIGH: True,
-                ActionRisk.CRITICAL: True,
-            },
-            TrustLevel.REGULAR: {
-                ActionRisk.LOW: False,
-                ActionRisk.MEDIUM: False,
-                ActionRisk.HIGH: True,
-                ActionRisk.CRITICAL: True,
-            },
-            TrustLevel.TRUSTED: {
-                ActionRisk.LOW: False,
-                ActionRisk.MEDIUM: False,
-                ActionRisk.HIGH: False,
-                ActionRisk.CRITICAL: True,
-            },
-            TrustLevel.ADMIN: {
-                ActionRisk.LOW: False,
-                ActionRisk.MEDIUM: False,
-                ActionRisk.HIGH: False,
-                ActionRisk.CRITICAL: False,
-            },
-        }
-        
-        return confirmation_matrix[self.trust_level][action_risk]
-    
-    def update_trust(self, success: bool):
-        """根据交互结果更新信任等级"""
-        self.interaction_count += 1
-        
-        if not success:
-            self.error_count += 1
-        
-        # 升级条件：成功交互足够多，错误率低
-        error_rate = self.error_count / max(self.interaction_count, 1)
-        
-        if (self.interaction_count >= 50 
-            and error_rate < 0.05 
-            and self.trust_level.value < TrustLevel.TRUSTED.value):
-            self.trust_level = TrustLevel(self.trust_level.value + 1)
-            print(f"🆙 信任等级提升至: {self.trust_level.name}")
+runtime = new_lab()
+token = runtime.approvals.issue('alice', NOTICE, approved=True)
+first = runtime.execute(NOTICE, approval_token=token)
+second = runtime.execute(NOTICE)
+assert first == second
+assert runtime.backend.publish_calls == 1
+assert len(runtime.backend.notices) == 1
+assert runtime.attempts == 2
+print(first)
 ```
 
----
+这只是进程内收据复用；重启会丢失状态。远程服务还需持久幂等键、事务/补偿、查询与对账，不能由本例推出“网络请求恰好一次”。重试仍消耗预算，避免成功收据路径形成无限循环。
 
-## 小结
+## 用什么判断行为改进
 
-| 概念 | 说明 |
-|------|------|
-| 对齐 | 确保 Agent 行为符合人类意图和价值观 |
-| 行为边界 | 为每种操作定义风险等级和限制 |
-| 拒绝策略 | 礼貌但坚定地拒绝不当请求 |
-| 渐进式自主 | 根据信任等级逐步增加自主权 |
+先冻结正常任务、越权动作和无法判断的任务，再运行候选。分别记录任务覆盖、误拒、越权副作用、未知/错误与成本。只优化拒绝率会伤害正常任务；只优化完成率可能增加越权。评审者不能仅凭候选给自己的高分结束。
 
-> 🎓 **本章总结**：安全与可靠性是 Agent 从"能用"到"敢用"的关键一步。Prompt 注入防御、幻觉控制、权限管理、数据保护和行为对齐，构成了 Agent 安全的五道防线。
+主线练习保留一个资料不足问题与独立必答点。自由任务没有规格时报告`unknown`；发生冲突时留下可解释原因和已有证据，再按宿主流程处理，不用另一轮生成把冲突盖掉。更广泛的公平性、价值冲突与利益相关者需求需要明确场景、参与者和评估设计，不能由这个小公告练习统一判定。
 
----
+练习：冻结一项新增公告需求，分别注入缺项、越权目的地、审批后改文、工具异常和总预算耗尽。提交授权结果、实际效果、需求覆盖和停止原因四列，说明哪些失败需要修参数、重新授权或人工复核。
 
-[第22章 部署与生产化](../chapter_22_deployment/README.md)
+*继续：[19.6精选论文](./06_paper_readings.md)；运行时实现见[19.7](./07_guardrails_runtime.md)。*

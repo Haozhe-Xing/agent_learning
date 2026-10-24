@@ -1,53 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 300" font-family="Arial, sans-serif">
-  <!-- Background -->
-  <rect width="580" height="300" rx="12" fill="#f8f9fa"/>
-
-  <!-- Title -->
-  <text x="290" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">🧠 MemGPT Core Analogy: Operating System ↔ LLM Agent</text>
-
-  <!-- Left column: Computer OS -->
-  <rect x="30" y="55" width="245" height="230" rx="10" fill="#3498db" fill-opacity="0.1" stroke="#3498db" stroke-width="2"/>
-  <text x="152" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">🖥️ Computer Operating System</text>
-
-  <rect x="50" y="92" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="113" text-anchor="middle" font-size="12" fill="#2c3e50">CPU Registers</text>
-
-  <rect x="50" y="132" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="153" text-anchor="middle" font-size="12" fill="#2c3e50">Main Memory (RAM)</text>
-
-  <rect x="50" y="172" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="193" text-anchor="middle" font-size="12" fill="#2c3e50">Hard Disk / SSD</text>
-
-  <rect x="50" y="212" width="205" height="32" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="233" text-anchor="middle" font-size="12" fill="#2c3e50">Page Fault</text>
-
-  <rect x="50" y="252" width="205" height="28" rx="8" fill="#3498db" fill-opacity="0.2" stroke="#3498db" stroke-width="1.5"/>
-  <text x="152" y="271" text-anchor="middle" font-size="12" fill="#2c3e50">Page Replacement / Virtual Memory</text>
-
-  <!-- Middle arrows -->
-  <text x="290" y="113" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="153" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="193" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="233" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-  <text x="290" y="271" text-anchor="middle" font-size="16" fill="#f39c12">↔</text>
-
-  <!-- Right column: LLM Agent (MemGPT) -->
-  <rect x="305" y="55" width="245" height="230" rx="10" fill="#27ae60" fill-opacity="0.1" stroke="#27ae60" stroke-width="2"/>
-  <text x="427" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">🤖 LLM Agent (MemGPT)</text>
-
-  <rect x="325" y="92" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="113" text-anchor="middle" font-size="12" fill="#2c3e50">LLM Attention Focus</text>
-
-  <rect x="325" y="132" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="153" text-anchor="middle" font-size="12" fill="#2c3e50">Context Window</text>
-
-  <rect x="325" y="172" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="193" text-anchor="middle" font-size="12" fill="#2c3e50">External Storage (DB / Files)</text>
-
-  <rect x="325" y="212" width="205" height="32" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="233" text-anchor="middle" font-size="12" fill="#2c3e50">Info not in context → load in</text>
-
-  <rect x="325" y="252" width="205" height="28" rx="8" fill="#27ae60" fill-opacity="0.2" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="427" y="271" text-anchor="middle" font-size="12" fill="#2c3e50">Memory swap in/out / "Infinite" memory</text>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 590" role="img" aria-labelledby="title desc" font-family="Arial, PingFang SC, sans-serif">
+<title id="title">MemGPT: Storage and Visibility</title><desc id="desc">Finite main context contains system instructions, working context, and a FIFO queue. Recall and archival storage remain outside and require explicit function access.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8Z" fill="#475569"/></marker></defs>
+<rect width="560" height="590" rx="12" fill="#fff"/>
+<text x="280" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">MemGPT: Storage and Visibility</text>
+<rect x="30" y="62" width="500" height="230" rx="9" fill="#eff6ff" stroke="#64748b"/>
+<text x="280.0" y="90" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Main context: finite input window</text>
+<rect x="48" y="105" width="464" height="52" rx="9" fill="#fff" stroke="#64748b"/>
+<text x="280.0" y="133" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">System instructions: read-only</text>
+<rect x="48" y="163" width="464" height="52" rx="9" fill="#fff" stroke="#64748b"/>
+<text x="280.0" y="191" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">Working context: function-editable</text>
+<rect x="48" y="221" width="464" height="52" rx="9" fill="#fff" stroke="#64748b"/>
+<text x="280.0" y="249" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">FIFO queue: recent messages + summary</text>
+<path d="M160,292 L160,388" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="345" y="327" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Explicit data movement</text>
+<text x="345" y="352" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Warnings and eviction</text>
+<rect x="30" y="390" width="500" height="105" rx="9" fill="#f5f3ff" stroke="#64748b"/>
+<text x="280.0" y="418" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">External context: outside the window</text>
+<text x="280.0" y="445" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Recall storage: message history</text>
+<text x="280.0" y="469" text-anchor="middle" font-size="17" font-weight="normal" fill="#1e293b">Archival storage: additional content</text>
+<text x="280" y="536" text-anchor="middle" font-size="16" font-weight="normal" fill="#1e293b">Stored ≠ currently visible ≠ correctly recalled</text>
+<text x="280" y="576" text-anchor="middle" font-size="14" font-weight="normal" fill="#475569">Book diagram after Packer et al., v2 §2 (2024)</text>
 </svg>

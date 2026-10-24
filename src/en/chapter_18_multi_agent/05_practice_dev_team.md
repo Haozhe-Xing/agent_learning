@@ -1,263 +1,115 @@
-# 18.5 Practice: Multi-Agent Software Development Team
+# 16.5 Practice: Multi-Agent Software Development Team
 
-Combining all the knowledge from this chapter, we'll build a complete multi-Agent software development system that simulates real development team collaboration.
+## Iteration and Acceptance
+
+Build an executable workflow and record execution completion separately from acceptance.
+
+- **Success criteria**: Report `delivered` only after pytest exits with code `0` and deployment configuration and documentation have been written. Compare single-Agent and team approaches using identical requirements and independent acceptance tests, recording calls, duration, and repair attempts.
+- **Failure cases**: Cover persistent assertion failures, generation exceptions, collection errors, infinite loops, and background processes left by generated tests. Exhausting the budget or timing out must never enter successful delivery nodes.
+- **Execution boundary**: Each test run defaults to 30 seconds, with at most 3 generated versions. On macOS/Linux, cleanup covers the test process group. Temporary directories and process groups do not provide a security sandbox; untrusted generated code requires an external isolated executor.
+
+See [Chapter 18](../chapter_20_evaluation/README.md) for evaluation and [Chapter 19](../chapter_21_security/README.md) for trust and permissions.
 
 ## System Design
 
-This project simulates a complete software development team with 6 roles: Product Manager, Architect, Developer, QA Engineer, DevOps Engineer, and Documentation Engineer. Each role is handled by an independent Agent node, and they pass work results through **shared state** (`DevState`).
+The Product Manager, Architect, Developer, Tester, DevOps Engineer, and Documentation Engineer are six LangGraph nodes sharing `DevState`. The developer writes implementation and tests to disk. The tester executes pytest. Only a passing result allows the deployment and documentation nodes to create delivery artifacts.
 
-### Design Philosophy
+The runnable implementation is `examples/dev_team/dev_team.py`, with regression tests in `examples/dev_team/tests/test_dev_team.py`. This section shows the key contracts; the source file contains the complete implementation.
 
-This system's design follows two core principles:
-
-1. **Specialization**: Each Agent is only responsible for its area of expertise. The Product Manager doesn't write code; the Developer doesn't write test cases. This division of labor allows each Agent's prompt to be more focused, resulting in higher output quality.
-
-2. **Pipeline + Parallelism**: The workflow is not entirely sequential — after development is complete, testing, DevOps, and documentation can be executed in parallel (they have no dependencies on each other). LangGraph natively supports this parallel execution pattern.
-
-### Factory Function Pattern
-
-The code uses a `create_agent_node` factory function to create Agent nodes, rather than writing a separate function for each role. This is because all roles follow the same behavioral pattern (receive upstream output → call LLM → return result), with only the role name, task description, and input/output fields differing. The factory function parameterizes these differences, greatly reducing repetitive code.
+The offline `DeterministicDeveloper` produces only addition and multiplication functions. It demonstrates orchestration, artifacts, and failure handling; asking it for a user management system does not implement registration or login. Replace `Developer` for actual requirements. In this example, the developer generates both code and tests while the tester executes them, so passing these tests still requires independent acceptance coverage.
 
 ![Multi-Agent Software Development Team Flow](../svg/chapter_18_multi_agent_05_dev_team_flow.svg)
 
-## Complete Implementation
+> The image illustrates the roles. Actual routing is Product → Architecture → Development → Testing →, after a pass, DevOps → Documentation. Assertion failures can return to Development; exceptions, timeouts, and budget exhaustion terminate through the failure node.
 
-```python
-# dev_team_agent.py
-from langgraph.graph import StateGraph, END, START
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
-from typing import TypedDict, Optional
-from rich.console import Console
-from rich.panel import Panel
-from rich.markdown import Markdown
-import json
+## Completion Criteria and State Contract
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.3)
-console = Console()
+`status` describes the whole task; `test_status` describes its latest test run. Passing tests does not yet mean deployment artifacts and documentation have been written.
 
-class DevState(TypedDict):
-    """Development team shared state"""
-    original_requirement: str
-    product_spec: Optional[str]
-    technical_design: Optional[str]
-    implementation: Optional[str]
-    test_cases: Optional[str]
-    deployment_config: Optional[str]
-    documentation: Optional[str]
-    current_phase: str
-    issues: list
+| Final `status` | Trigger | Delivery behavior |
+|---|---|---|
+| `delivered` | Tests pass and both delivery nodes complete | Writes `Dockerfile` and `README.md` |
+| `failed` | Generation or delivery artifact writing raises, or pytest has an execution, collection, or configuration error | Stops through the failure node and saves a report |
+| `timed_out` | One test run exceeds `test_timeout_seconds` | Cleans up the process group, stops immediately, and saves a report |
+| `budget_exhausted` | Assertions still fail after `max_iterations` versions | Preserves every attempt and stops |
 
-def create_agent_node(role: str, task_template: str, input_key: str, output_key: str):
-    """Factory function: create a standard Agent node"""
-    
-    def agent_node(state: DevState) -> dict:
-        console.print(f"\n[bold cyan]👤 {role}[/bold cyan] starting work...")
-        
-        # Get context
-        context = state.get(input_key, state.get("original_requirement", ""))
-        
-        response = llm.invoke([
-            HumanMessage(content=f"""You are a {role}.
+During execution, `status` is `running`. The latest `test_status` is `pending`, `passed`, `failed`, `timed_out`, or `error`; `test_passed` retains the Boolean result. Each entry in `attempts` records its iteration, test status, real return code, time limit, diagnostic message, and output. A timeout has no normal exit code, so its recorded `returncode` is `None`.
 
-Task: {task_template}
+The failure node returns `failure_report` and saves the same structured object as `failure_report.json` in the workspace. For example:
 
-Input:
-{context}
-
-Please provide professional, detailed output:""")
-        ])
-        
-        result = response.content
-        console.print(f"[green]✅ {role} complete[/green]")
-        console.print(Panel(Markdown(result[:300] + "..." if len(result) > 300 else result), 
-                           title=role, border_style="blue", expand=False))
-        
-        return {
-            output_key: result,
-            "current_phase": role
-        }
-    
-    return agent_node
-
-# Create nodes for each role
-product_manager_node = create_agent_node(
-    role="Product Manager",
-    task_template="""Analyze the requirements and output a product specification document containing:
-1. Feature description (user story format: As a... I want to... So that...)
-2. Feature module list
-3. Non-functional requirements (performance, security, etc.)
-4. Acceptance criteria""",
-    input_key="original_requirement",
-    output_key="product_spec"
-)
-
-architect_node = create_agent_node(
-    role="System Architect",
-    task_template="""Based on the product specification, design a technical solution:
-1. Technology stack selection (language/framework/database) with justification
-2. System architecture diagram (text description)
-3. Database table design (main tables and fields)
-4. API interface design (endpoints, methods, parameters, responses)
-5. Key implementation considerations""",
-    input_key="product_spec",
-    output_key="technical_design"
-)
-
-developer_node = create_agent_node(
-    role="Python Developer",
-    task_template="""Based on the technical solution, implement code using Python/FastAPI:
-1. Main data models (Pydantic models)
-2. Core business logic functions
-3. API route implementation
-4. Utility functions
-
-Requirements:
-- Code is complete and runnable
-- Includes type annotations
-- Add necessary comments
-- Follow best practices""",
-    input_key="technical_design",
-    output_key="implementation"
-)
-
-tester_node = create_agent_node(
-    role="QA Engineer",
-    task_template="""Write test cases for the implementation code:
-1. pytest unit tests (covering main functionality)
-2. Boundary condition tests
-3. Exception handling tests
-4. Integration test case descriptions (no implementation needed)
-
-Code must be directly runnable (pip install pytest httpx fastapi)""",
-    input_key="implementation",
-    output_key="test_cases"
-)
-
-devops_node = create_agent_node(
-    role="DevOps Engineer",
-    task_template="""Prepare deployment configuration:
-1. Dockerfile (multi-stage build)
-2. docker-compose.yml (including database and application services)
-3. Example environment variable file (.env.example)
-4. Basic GitHub Actions CI/CD configuration""",
-    input_key="implementation",
-    output_key="deployment_config"
-)
-
-docs_node = create_agent_node(
-    role="Technical Documentation Engineer",
-    task_template="""Write API documentation (Markdown format):
-1. Project overview
-2. Quick start (installation, configuration, running)
-3. API reference (detailed description of each endpoint)
-4. Code examples (Python requests call examples)
-5. FAQ""",
-    input_key="technical_design",
-    output_key="documentation"
-)
-
-# ============================
-# Build the development workflow graph
-# ============================
-
-# The edges in the workflow graph define the dependencies between roles:
-# - Product Manager → Architect: architecture design requires a product spec first
-# - Architect → Developer: development requires a technical plan first
-# - Developer → Tester/DevOps/Docs (parallel): all three depend on the code implementation but are independent of each other
-#
-# Note: When LangGraph encounters a node with multiple outgoing edges, it executes all target nodes in parallel.
-# This means tester, devops, and docs nodes start simultaneously, greatly reducing total execution time.
-
-workflow = StateGraph(DevState)
-
-# Add nodes
-workflow.add_node("product_manager", product_manager_node)
-workflow.add_node("architect", architect_node)
-workflow.add_node("developer", developer_node)
-workflow.add_node("tester", tester_node)
-workflow.add_node("devops", devops_node)
-workflow.add_node("docs", docs_node)
-
-# Connect the workflow
-workflow.add_edge(START, "product_manager")
-workflow.add_edge("product_manager", "architect")
-workflow.add_edge("architect", "developer")
-workflow.add_edge("developer", "tester")
-workflow.add_edge("developer", "devops")  # Parallel: after development, testing and DevOps start simultaneously
-workflow.add_edge("developer", "docs")   # Parallel: documentation is also written simultaneously
-workflow.add_edge("tester", END)
-workflow.add_edge("devops", END)
-workflow.add_edge("docs", END)
-
-dev_team = workflow.compile()
-
-# ============================
-# Run the development team
-# ============================
-
-def develop(requirement: str) -> dict:
-    """Start the development process"""
-    console.print(Panel(
-        f"[bold]🚀 Starting Multi-Agent Development Team[/bold]\n"
-        f"Requirement: {requirement}",
-        border_style="green"
-    ))
-    
-    initial_state = {
-        "original_requirement": requirement,
-        "product_spec": None,
-        "technical_design": None,
-        "implementation": None,
-        "test_cases": None,
-        "deployment_config": None,
-        "documentation": None,
-        "current_phase": "Initialization",
-        "issues": []
-    }
-    
-    result = dev_team.invoke(initial_state)
-    
-    console.print("\n" + Panel(
-        "[bold green]🎉 Development Complete![/bold green]\n\n"
-        f"✅ Product Spec: {'Complete' if result['product_spec'] else 'Incomplete'}\n"
-        f"✅ Technical Design: {'Complete' if result['technical_design'] else 'Incomplete'}\n"
-        f"✅ Code Implementation: {'Complete' if result['implementation'] else 'Incomplete'}\n"
-        f"✅ Test Cases: {'Complete' if result['test_cases'] else 'Incomplete'}\n"
-        f"✅ Deployment Config: {'Complete' if result['deployment_config'] else 'Incomplete'}\n"
-        f"✅ API Documentation: {'Complete' if result['documentation'] else 'Incomplete'}",
-        border_style="green"
-    ))
-    
-    return result
-
-
-if __name__ == "__main__":
-    result = develop("User management system: including registration, login, profile editing, and password reset features")
-    
-    # Save to files
-    import os
-    os.makedirs("output", exist_ok=True)
-    
-    for key, value in result.items():
-        if value and isinstance(value, str) and key not in ["current_phase"]:
-            with open(f"output/{key}.md", "w", encoding="utf-8") as f:
-                f.write(f"# {key}\n\n{value}")
-    
-    print("\n📁 All files saved to the output/ directory")
+```json
+{
+  "reason": "max_iterations",
+  "message": "Tests did not pass within the iteration budget",
+  "status": "budget_exhausted",
+  "delivered": false,
+  "iteration": 3,
+  "max_iterations": 3,
+  "attempts": []
+}
 ```
 
-## Summary
+The attempt contents are omitted here; an actual exhausted-budget report contains all test runs. An empty list is appropriate when generation fails before testing starts. Failure preserves implementation, tests, and diagnostics and skips DevOps and documentation. `workspace_dir` must not exist yet or must be an empty directory. Previous successful runs, failed runs, and unrelated nonempty directories are rejected with `ValueError` before any files are written. Existing artifacts, failure reports, and user files are preserved. Choose a new directory for each run so historical artifacts cannot be mixed with the current delivery.
 
-Key points for multi-Agent collaboration:
+## Retry and Stop Rules
 
-| Element | Key Practice |
-|---------|-------------|
-| Role design | Specialized, clear boundaries |
-| Communication mechanism | Shared state (LangGraph) or message queue |
-| Architecture choice | Supervisor (recommended) or decentralized |
-| Parallel execution | Tasks without dependencies run simultaneously |
-| Error handling | Each Agent handles exceptions independently |
+The routing function separates a pass, a repairable failure, and a terminal failure:
+
+```python
+def route_after_test(state):
+    if state.get("status") in {"failed", "timed_out"}:
+        return "fail"
+    if state.get("test_passed"):
+        return "deliver"
+    if state["iteration"] >= state["max_iterations"]:
+        return "fail"
+    return "fix"
+```
+
+`deliver` enters DevOps, `fix` returns to Development, and `fail` enters the failure node before ending. A pytest exit code of `1` permits a repair attempt; execution errors such as codes `2`–`5` stop immediately. Before a retry, the developer receives the previous real test output appended to the design through `Developer.develop(design, requirement)`. Reaching the iteration limit is a stop condition, never a reason to declare success.
+
+`max_iterations` counts generated versions, including the first, and must be a positive integer. `test_timeout_seconds` must be finite and positive. Both values and the workspace condition are validated before writing files or starting the graph.
+
+## Test Process Lifecycle
+
+On macOS/Linux, the tester uses `Popen(..., start_new_session=True)` to create an independent session and applies a timeout to `wait()`. After every pass, failure, or timeout, it sends `SIGTERM` to that process group, then `SIGKILL` to terminate remaining processes, and calls `wait()` to reap the direct pytest process. Cleanup also runs after pytest exits normally because generated tests can leave background children behind.
+
+Output goes to a temporary file and is read after cleanup. With inherited stdout pipes, a background child can keep the pipe open after its parent exits, leaving code waiting for EOF indefinitely. Bounding only the parent process does not solve this case.
+
+These measures manage ordinary test processes. Malicious code can create a new session and escape its original group. Non-POSIX platforms only terminate the direct child. The example does not restrict filesystem, network, memory, or credential access. The per-test timeout also does not bound `Developer.develop`; a model integration needs separate request timeouts and call budgets.
+
+## Running the Example
+
+```bash
+cd examples/dev_team
+pip install -e .
+pytest -v
+python dev_team.py --max-iterations 3 --test-timeout-seconds 30
+```
+
+No API key is required for the offline demo. The CLI prints final status, test result, and workspace path. An unsuccessful run explicitly reports that delivery did not occur, prints the structured report, and exits with code `1`; success exits with code `0`. The same configuration is available through the API:
+
+```python
+from dev_team import develop
+
+result = develop(
+    "Arithmetic module: addition and multiplication",
+    max_iterations=3,
+    test_timeout_seconds=30,
+)
+if result["status"] == "delivered":
+    print("Delivered:", result["workspace_dir"])
+else:
+    print("Not delivered:", result["failure_report"])
+```
+
+The regression suite covers artifact creation, repair after failure, persistent failure exhausting the budget, generation and delivery exceptions, collection errors, configuration validation, nonempty workspace rejection with contents preserved, infinite-loop timeouts, and process-group cleanup after both normal parent exit and timeout on macOS/Linux. The child-process cases also ignore `SIGTERM` to exercise forced termination.
+
+## Model Integration and Independent Acceptance
+
+Implement `Developer.develop` to obtain implementation and test source from structured model output. `LLMDeveloper` remains an extension interface and does not yet call a model. Real development needs a fixed independent acceptance suite so a developer cannot conceal defects by rewriting its own acceptance criteria. Establish an isolated executor with credential, network, and filesystem restrictions before running untrusted generated programs.
+
+Preparation tasks can run in parallel when they do not depend on acceptance. Final deployment and delivery must wait for acceptance; files already produced by parallel nodes do not establish success.
 
 ---
 

@@ -1,4 +1,4 @@
-# 10.7 Latest Research Advances (2025–2026)
+# 24.7 Latest Research Advances (2025–2026)
 
 > 📖 *"What matters at the research frontier is not just which new algorithms have appeared, but that the objective of Agent training is fundamentally changing: from making a model answer like a human, to making a model actually get the task done inside an environment."*
 
@@ -72,7 +72,7 @@ DeepSeek-R1 is the most milestone-worthy work in this field. Its core finding is
 
 #### Core Technical Points
 
-1. **The GRPO algorithm**: uses Group Relative Policy Optimization (see [10.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md)) to optimize the policy through within-group competition among responses, avoiding an expensive Critic network. Total training cost was roughly $294,000.
+1. **The GRPO algorithm**: uses Group Relative Policy Optimization (see [24.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md)) to optimize the policy through within-group competition among responses, avoiding an expensive Critic network. Total training cost was roughly USD 294,000.
 
 2. **Multi-stage training framework**:
    - **R1-Zero stage**: uses only result correctness as the reward (verifiable reward, RLVR), with no SFT data at all. The model spontaneously exhibits an "Aha moment" — learning to self-reflect and self-correct during reasoning.
@@ -241,7 +241,7 @@ Since DeepSeek-R1 introduced GRPO, several papers have improved on it:
 | Token-level advantage | Token-level GRPO | Sequence-level advantage is too coarse for long sequences |
 | Online/offline hybrid | Hybrid GRPO | Pure online sampling is inefficient |
 
-> Among these, GSPO is the most practically influential improvement — it has already been used by Alibaba's Qwen team to train the Qwen3 series. For GSPO's detailed principles and implementation, see [10.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md#gspo-from-token-level-to-sequence-level-policy-optimization).
+> Among these, GSPO is the most practically influential improvement — it has already been used by Alibaba's Qwen team to train the Qwen3 series. For GSPO's detailed principles and implementation, see [24.5 GRPO/GSPO: Group Relative Policy Optimization and Reward Function Design](./05_grpo.md#gspo-from-token-level-to-sequence-level-policy-optimization).
 
 ---
 
@@ -634,35 +634,35 @@ A practical rule of thumb:
 
 Despite rapid progress, the field still faces many open challenges:
 
-### 7.8.1 Reward Hacking
+### 7.9.1 Reward Hacking
 
 A model may find loopholes in the reward function and "cheat" instead of genuinely improving. For example:
 - Generating long text that "looks like reasoning" but is actually nonsense
 - Exploiting formatting tricks (such as specific keywords) to obtain a high reward
 - Learning to "fool itself" during self-evaluation
 
-### 7.8.2 Training Stability
+### 7.9.2 Training Stability
 
 Large-model RL training is still not stable enough:
 - **KL divergence management**: excessive policy drift causes catastrophic forgetting
 - **Reward scale**: different reward dimensions have inconsistent scales
 - **Data diversity**: the diversity of training data directly affects exploration quality
 
-### 7.8.3 Generalization
+### 7.9.3 Generalization
 
 The reasoning ability produced by current RL training is mainly validated in math and code; generalization to the following areas still needs exploration:
 - Open-domain reasoning (scientific reasoning, commonsense reasoning)
 - Multimodal reasoning (vision-language, video understanding)
 - Cross-lingual reasoning
 
-### 7.8.4 Efficiency and Cost
+### 7.9.4 Efficiency and Cost
 
 The compute cost of RL training remains high:
 - Large amounts of rollout sampling
 - Multiple models (policy, reference, and possibly a critic) resident in GPU memory at once
 - Memory and time overhead of long-sequence inference
 
-### 7.8.5 Future Outlook
+### 7.9.5 Future Outlook
 
 Based on current research trends, we expect the following directions to become hot topics:
 
@@ -808,7 +808,7 @@ In 2025–2026, the Agentic-RL field went through a fundamental shift from "an a
 5. **Failed trajectories became assets**: tool errors, failed recoveries, over-calling, and edge cases are no longer just log noise but core data for training more reliable Agents
 6. **Attention moved from "stronger" to "more reliable and cheaper"**: overthinking, long-trajectory cost, and safety boundaries have become the key issues for taking Agentic-RL into production
 
-These advances are steadily turning the vision of **"letting models learn autonomously through practice"** into reality, and they lay the groundwork for the next section on Agent-specific fine-tuning and for [the data flywheel in Chapter 11 (Self-Evolving Agents)](../chapter_self_evolving/03_data_flywheel.md).
+These advances are steadily turning the vision of **"letting models learn autonomously through practice"** into reality, and they lay the groundwork for the next section on Agent-specific fine-tuning and for [the data flywheel in Chapter 25 (Self-Evolving Agents)](../chapter_self_evolving/03_data_flywheel.md).
 
 ---
 
@@ -830,7 +830,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: consistent improvements over baselines such as GRPO across four benchmark categories — embodied, interactive, reasoning, and planning tasks.
 
-**Relation to this chapter**: it directly improves the "credit is spread evenly across all steps" flaw of the GRPO algorithm in Section 10.5, and is a frontier solution for step-level credit assignment in multi-turn Agent RL training.
+**Relation to this chapter**: it directly improves the "credit is spread evenly across all steps" flaw of the GRPO algorithm in Section 24.5, and is a frontier solution for step-level credit assignment in multi-turn Agent RL training.
 
 ---
 
@@ -848,7 +848,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: Agent-World-8B/14B surpass strong proprietary models across 23 Agent benchmarks.
 
-**Relation to this chapter**: it is a paper-level implementation of the ["Agentic data flywheel" in Chapter 11 (Self-Evolving Agents)](../chapter_self_evolving/03_data_flywheel.md) — replacing manual data annotation with automatic synthesis of real-world tasks while realizing the self-evolving closed loop of the data flywheel.
+**Relation to this chapter**: it is a paper-level implementation of the ["Agentic data flywheel" in Chapter 25 (Self-Evolving Agents)](../chapter_self_evolving/03_data_flywheel.md) — replacing manual data annotation with automatic synthesis of real-world tasks while realizing the self-evolving closed loop of the data flywheel.
 
 ---
 
@@ -862,7 +862,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: up to **+2.6 points** accuracy improvement on math tasks and up to **13.7%** shorter reasoning chains, with generalization verified across multiple model scales.
 
-**Relation to this chapter**: it directly addresses the core "indiscriminate credit assignment" flaw of the GRPO algorithm in Section 10.5, and complements T-STAR's cognitive-tree approach in the same section — T-STAR builds step associations with a tree structure, while GRPO-VPS provides step-level signals through belief probabilities. Together they represent the two mainstream technical routes for step-level RL training in 2026.
+**Relation to this chapter**: it directly addresses the core "indiscriminate credit assignment" flaw of the GRPO algorithm in Section 24.5, and complements T-STAR's cognitive-tree approach in the same section — T-STAR builds step associations with a tree structure, while GRPO-VPS provides step-level signals through belief probabilities. Together they represent the two mainstream technical routes for step-level RL training in 2026.
 
 ---
 
@@ -876,7 +876,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: it provides a rigorous mathematical foundation, along both the convergence and generalization dimensions, for LVLM reinforcement fine-tuning practices such as Visual-ARFT.
 
-**Relation to this chapter**: it is a theoretical complement to the GRPO algorithm in Section 10.5 — establishing a rigorous mathematical basis for the RLVR paradigm along convergence and generalization, and helping readers understand "why GRPO works" and "how multiple reward components interact."
+**Relation to this chapter**: it is a theoretical complement to the GRPO algorithm in Section 24.5 — establishing a rigorous mathematical basis for the RLVR paradigm along convergence and generalization, and helping readers understand "why GRPO works" and "how multiple reward components interact."
 
 ---
 
@@ -890,7 +890,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: on programming and mathematical reasoning tasks it simultaneously achieves a significant drop in token usage and an increase in accuracy, lowering per-request cost and offering real economic value for industrial deployment.
 
-**Relation to this chapter**: it corresponds to this chapter's "reasoning model efficiency optimization" and the chain-of-thought RL topic in Section 10.5. It is an innovative transplant of skill-extraction ideas (à la Voyager) into the reasoning-LLM compression setting, offering a new path for deploying efficient reasoning Agents.
+**Relation to this chapter**: it corresponds to this chapter's "reasoning model efficiency optimization" and the chain-of-thought RL topic in Section 24.5. It is an innovative transplant of skill-extraction ideas (à la Voyager) into the reasoning-LLM compression setting, offering a new path for deploying efficient reasoning Agents.
 
 ---
 
@@ -904,7 +904,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: achieves maj@16 = 47.9 on HotPotQA, a **14.4 percentage point** improvement over GRPO.
 
-**Relation to this chapter**: it directly extends the theoretical boundary of the GRPO algorithm in Section 10.5, offering a unified framework to replace or augment GRPO in low initial-success-rate settings.
+**Relation to this chapter**: it directly extends the theoretical boundary of the GRPO algorithm in Section 24.5, offering a unified framework to replace or augment GRPO in low initial-success-rate settings.
 
 ---
 
@@ -918,7 +918,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: on math reasoning benchmarks such as AIME24, Pass@64 improves by up to **+10%** in absolute terms while Pass@1 performance is maintained.
 
-**Relation to this chapter**: it corresponds to the GRPO section in Section 10.5, exposing the diversity blind spot of mainstream RLVR/GRPO algorithms and providing a directly integrable improvement — an important complement to GRPO.
+**Relation to this chapter**: it corresponds to the GRPO section in Section 24.5, exposing the diversity blind spot of mainstream RLVR/GRPO algorithms and providing a directly integrable improvement — an important complement to GRPO.
 
 ---
 
@@ -932,7 +932,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: by constructing an orchestration-trace dataset and training with PPO/GRPO-style methods, the system learns to decide adaptively, in hierarchical tasks, when to split a subtask and which sub-Agent to delegate it to, substantially raising the overall task success rate.
 
-**Relation to this chapter**: it corresponds to this chapter's direction of extending the RL training paradigm, and is a frontier exploration of applying GRPO/PPO to multi-Agent orchestration optimization — a contrast and complement to the single-Agent RLVR of Section 10.5.
+**Relation to this chapter**: it corresponds to this chapter's direction of extending the RL training paradigm, and is a frontier exploration of applying GRPO/PPO to multi-Agent orchestration optimization — a contrast and complement to the single-Agent RLVR of Section 24.5.
 
 ---
 
@@ -950,7 +950,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: on ALFWorld (Qwen2.5-7B) it speeds up training by **10.7%** while also improving success rate on the held-out task set by **+2.5 percentage points**.
 
-**Relation to this chapter**: it directly targets the engineering pain point that the GRPO algorithm of Section 10.5 is too expensive in Agent training, and is the latest practice in efficiency optimization for multi-sample RL training — complementary to UCPO (which addresses diversity collapse).
+**Relation to this chapter**: it directly targets the engineering pain point that the GRPO algorithm of Section 24.5 is too expensive in Agent training, and is the latest practice in efficiency optimization for multi-sample RL training — complementary to UCPO (which addresses diversity collapse).
 
 ---
 
@@ -964,7 +964,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: on benchmarks including HH-RLHF, UltraFeedback, and MuJoCo, Hard-Pair-GRPO provides theoretical guarantees of monotonic policy improvement and reduced gradient variance, surpassing existing methods in both alignment quality and training stability.
 
-**Relation to this chapter**: it corresponds to the GRPO algorithm in Section 10.5, providing a more stable theoretical basis for preference alignment than standard GRPO. It is the latest theoretical extension of the GRPO family, complementary to UCPO (exploration diversity) and Selective Rollout (sampling efficiency).
+**Relation to this chapter**: it corresponds to the GRPO algorithm in Section 24.5, providing a more stable theoretical basis for preference alignment than standard GRPO. It is the latest theoretical extension of the GRPO family, complementary to UCPO (exploration diversity) and Selective Rollout (sampling efficiency).
 
 ---
 
@@ -982,7 +982,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: compared with GRPO it provides a monotonic-improvement guarantee, self-correcting gradients, and flexible divergence choices; it outperforms baselines such as GRPO and REINFORCE++ on math reasoning benchmarks while preserving training stability and response diversity.
 
-**Relation to this chapter**: it is a deep interpretation of the theoretical foundation of the GRPO algorithm in Section 10.5, recasting "why GRPO works" as a more general simplex-projection problem and giving a unified theoretical framework for designing future RLVR methods.
+**Relation to this chapter**: it is a deep interpretation of the theoretical foundation of the GRPO algorithm in Section 24.5, recasting "why GRPO works" as a more general simplex-projection problem and giving a unified theoretical framework for designing future RLVR methods.
 
 ---
 
@@ -1000,7 +1000,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: across dense and MoE architectures from 7B to 30B, NSR consistently improves training stability and final performance over strong baselines such as DAPO and GSPO, and it is plug-and-play with no change to the sampling pipeline.
 
-**Relation to this chapter**: it directly targets a core mechanism of GRPO in Section 10.5 — how the clipping ratio ε is handled — offering both a theoretical diagnosis and a minimal improvement, and is an important reference for understanding the root cause of RLVR optimization instability.
+**Relation to this chapter**: it directly targets a core mechanism of GRPO in Section 24.5 — how the clipping ratio ε is handled — offering both a theoretical diagnosis and a minimal improvement, and is an important reference for understanding the root cause of RLVR optimization instability.
 
 ---
 
@@ -1018,7 +1018,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: on seven math benchmarks it beats the strongest same-scale baselines by **3.26 and 2.62 percentage points** on Qwen3-8B and 14B respectively, and it performs well on code generation and out-of-domain evaluations.
 
-**Relation to this chapter**: it corresponds to the reward attribution problem of GRPO in Section 10.5, revealing at token granularity the intrinsic mechanism of "sequence-level reward → token probability change," and providing a new perspective for fine-grained RLVR optimization.
+**Relation to this chapter**: it corresponds to the reward attribution problem of GRPO in Section 24.5, revealing at token granularity the intrinsic mechanism of "sequence-level reward → token probability change," and providing a new perspective for fine-grained RLVR optimization.
 
 ---
 
@@ -1036,7 +1036,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: achieves SOTA performance on more than 800 Minecraft tasks, and is the first work to apply GRPO effectively to open-world multi-turn VLM Agent RL training.
 
-**Relation to this chapter**: it corresponds to the multi-turn trajectory application scenario of the GRPO algorithm in Section 10.5, directly resolving the "full trajectory is too long" training bottleneck and showing the latest path for extending GRPO to vision-language open-world Agents.
+**Relation to this chapter**: it corresponds to the multi-turn trajectory application scenario of the GRPO algorithm in Section 24.5, directly resolving the "full trajectory is too long" training bottleneck and showing the latest path for extending GRPO to vision-language open-world Agents.
 
 ---
 
@@ -1054,7 +1054,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: it consistently beats standard GRPO and RRPO across five reasoning benchmarks while using only the model itself with no external supervision; the correction rate for clean prefixes is nearly **2×** that for erroneous ones, making self-localization quality the active bottleneck.
 
-**Relation to this chapter**: it corresponds to the credit assignment problem in Section 10.5 and is a direct fix for the "outcome reward spread uniformly across all tokens" flaw — complementary to DelTA, which does token-level weighting while SRPO does trajectory-level reset sampling.
+**Relation to this chapter**: it corresponds to the credit assignment problem in Section 24.5 and is a direct fix for the "outcome reward spread uniformly across all tokens" flaw — complementary to DelTA, which does token-level weighting while SRPO does trajectory-level reset sampling.
 
 ---
 
@@ -1068,7 +1068,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: consistently outperforms GRPO and its variants across multiple backbone models and math reasoning benchmarks.
 
-**Relation to this chapter**: it corresponds to the core mechanism of the GRPO algorithm in Section 10.5, redefining the RLVR optimization objective from a contrastive learning perspective. It is a principled reconstruction of the GRPO family and, together with LPO (geometric unification), DelTA (token weighting), and SRPO (trajectory reset), forms a complete research map of the credit assignment direction.
+**Relation to this chapter**: it corresponds to the core mechanism of the GRPO algorithm in Section 24.5, redefining the RLVR optimization objective from a contrastive learning perspective. It is a principled reconstruction of the GRPO family and, together with LPO (geometric unification), DelTA (token weighting), and SRPO (trajectory reset), forms a complete research map of the credit assignment direction.
 
 ---
 
@@ -1086,7 +1086,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: an average improvement of about **4 percentage points** over strong baselines across 13 benchmarks, while keeping tool calls efficient.
 
-**Relation to this chapter**: it corresponds to the credit assignment problem in Section 10.5, directly answering the two core questions of "where to branch and how to assign credit in Agentic RL." It is the latest improvement of GRPO/PPO-style methods for multi-turn tool-calling scenarios, and is methodologically complementary to DelTA (token weighting) and SRPO (trajectory reset).
+**Relation to this chapter**: it corresponds to the credit assignment problem in Section 24.5, directly answering the two core questions of "where to branch and how to assign credit in Agentic RL." It is the latest improvement of GRPO/PPO-style methods for multi-turn tool-calling scenarios, and is methodologically complementary to DelTA (token weighting) and SRPO (trajectory reset).
 
 ---
 
@@ -1104,7 +1104,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: it proves theoretically that GraphPO lowers the variance of advantage estimation, and across three LLMs it consistently beats chain-based and tree-based baselines on reasoning and agentic search benchmarks under the same token/response budget.
 
-**Relation to this chapter**: it corresponds to the core mechanism of the GRPO algorithm in Section 10.5 and is the latest evolution of RLVR rollout structure from chain to tree to graph, directly addressing the GRPO family's two core flaws of redundant exploration and sparse credit. Together with ConSPO (contrastive perspective) and APPO (decision-point perspective) already covered in this chapter, it forms a multi-dimensional research map of RLVR optimization mechanisms.
+**Relation to this chapter**: it corresponds to the core mechanism of the GRPO algorithm in Section 24.5 and is the latest evolution of RLVR rollout structure from chain to tree to graph, directly addressing the GRPO family's two core flaws of redundant exploration and sparse credit. Together with ConSPO (contrastive perspective) and APPO (decision-point perspective) already covered in this chapter, it forms a multi-dimensional research map of RLVR optimization mechanisms.
 
 ---
 
@@ -1122,7 +1122,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Key results**: on three long-horizon benchmarks — WebShop, ALFWorld, and AppWorld — G2PO improves success rate over GRPO by up to **22.2%**.
 
-**Relation to this chapter**: it corresponds to the GRPO algorithm and the credit assignment problem in Section 10.5. G2PO upgrades the exploration structure of group-based RL from linear trajectories to a global graph and is the latest breakthrough for Agentic RL in long-horizon sparse-reward settings; together with SRPO (trajectory reset) and APPO (process-level branching) already covered, it forms three perspectives on credit assignment.
+**Relation to this chapter**: it corresponds to the GRPO algorithm and the credit assignment problem in Section 24.5. G2PO upgrades the exploration structure of group-based RL from linear trajectories to a global graph and is the latest breakthrough for Agentic RL in long-horizon sparse-reward settings; together with SRPO (trajectory reset) and APPO (process-level branching) already covered, it forms three perspectives on credit assignment.
 
 ---
 
@@ -1132,7 +1132,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Core contribution**: this paper systematically studies how RL post-training gains are distributed across Transformer layers and finds that training a single Transformer layer can reproduce the vast majority of the gains from full-parameter RL training — and sometimes even exceed them. It introduces a "layer contribution" metric covering two model families (Qwen3/Qwen2.5), three algorithms (GRPO/GiGPO/Dr. GRPO), and multiple domains (math reasoning, code generation, agentic decision making), revealing a highly stable structural regularity: **RL gains concentrate in the middle layers of the Transformer stack, while the input and output ends contribute very little**, and this layer-wise structure correlates strongly across datasets, tasks, model families, and RL algorithms.
 
-**Relation to this chapter**: it corresponds to the GRPO/RLVR algorithm mechanism in Section 10.5, revealing that RL post-training is essentially a concentrated modification of a few key layers. This offers a fresh perspective for compute-efficiency optimization and model interpretability research, and indirectly supports theoretical discussion of layer specialization in Agentic tasks.
+**Relation to this chapter**: it corresponds to the GRPO/RLVR algorithm mechanism in Section 24.5, revealing that RL post-training is essentially a concentrated modification of a few key layers. This offers a fresh perspective for compute-efficiency optimization and model interpretability research, and indirectly supports theoretical discussion of layer specialization in Agentic tasks.
 
 ---
 
@@ -1152,7 +1152,7 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 **Core contribution**: this paper proposes single-shot asynchronous optimization (SAO) to address off-policy bias and training instability in asynchronous RL. It has three core innovations: (1) using **single-shot sampling** (one rollout per prompt) instead of GRPO's group-level sampling to reduce off-policy drift in the asynchronous pipeline; (2) introducing a **strict two-sided token-level clipping** strategy that masks divergent updates to improve optimization stability; and (3) an enhanced value model training design (the value model updates faster than the policy, with observation-skipping GAE). SAO has been deployed in the Agentic RL training pipeline of the open-source GLM-5.2 (750B-A40B MoE), training stably for thousands of steps and consistently beating GRPO and its variants on SWE-Bench Verified (29.8%), BeyondAIME, and IMOAnswerBench.
 
-**Relation to this chapter**: it corresponds to the GRPO algorithm and asynchronous training topics in Section 10.5. SAO is the first asynchronous Agentic RL method verified as feasible on a production-scale hundred-billion-parameter model, exposing the efficiency bottleneck of group-level sampling in long-horizon Agent tasks and providing a new engineering paradigm for large-scale Agent RL training.
+**Relation to this chapter**: it corresponds to the GRPO algorithm and asynchronous training topics in Section 24.5. SAO is the first asynchronous Agentic RL method verified as feasible on a production-scale hundred-billion-parameter model, exposing the efficiency bottleneck of group-level sampling in long-horizon Agent tasks and providing a new engineering paradigm for large-scale Agent RL training.
 
 ---
 

@@ -1,4 +1,13 @@
-# 第24章 项目实战：智能数据分析 Agent
+# 第22章 项目实战：智能数据分析 Agent
+
+**阅读层次**：综合实践；第21–23章至少选择一个领域，不要求全部完成。
+
+## 本章迭代
+
+- **上一版的不足**：证据型任务的单位计算正确，不代表数据库查询遵守权限、分析口径一致，或报告数值能回查到源数据。
+- **本章增加**：把资料与计算契约迁移为只读数据连接、查询计划、口径记录、源数据对账和报告验收。
+- **怎样验证**：22.2提供真实SQLite边界与SQL提议接口；分析、图表及报告仍需读者组装并验收。以一份固定合成数据核对 SQL、聚合与报告总数；用写入语句、空结果、缺列及重复数据检查拒绝或显式缺失，数据库权限必须在后端限制。
+- **下一步**：通过领域验收即可结束应用路线；也可选择[编程](../chapter_23_coding_agent/README.md)或[多模态](../chapter_25_multimodal/README.md)分支，只有明确质量瓶颈才进入[研究进阶](../part7.md)。
 
 > 用自然语言做数据分析——从 "帮我分析上月销售" 到完整的分析报告。
 
@@ -9,32 +18,27 @@
 完成本章学习后，你将能够：
 
 - ✅ 设计智能数据分析 Agent 的完整架构
-- ✅ 实现自然语言到 SQL 的安全转换和多种数据库连接方式
+- ✅ 分离SQL提议、数据库执行许可和业务验收，并运行受限SQLite查询
 - ✅ 构建自动化数据分析和可视化能力，用 LLM 从数据中提取洞察
 - ✅ 自动生成结构化的数据分析报告
-- ✅ 交付一个端到端可用的数据分析 Agent
+- ✅ 围绕一个受限分析任务组装组件，交付可对账的报告和验收记录
 
 ## 📚 本章结构
 
-数据分析是 Agent 最实用的应用场景之一。本章构建一个智能数据分析 Agent，让用户用自然语言描述分析需求，Agent 自动完成 SQL 查询、统计分析、图表生成和报告输出。
-
-| 小节 | 内容 | 难度 |
-|------|------|------|
-| 24.1 需求分析与架构设计 | 功能规划和架构 | ⭐⭐ |
-| 24.2 数据连接与查询 | Text-to-SQL、安全访问 | ⭐⭐⭐ |
-| 24.3 自动化分析与可视化 | 统计分析、图表生成 | ⭐⭐⭐ |
-| 24.4 报告生成与导出 | Markdown 报告 | ⭐⭐ |
-| 24.5 完整项目实现 | 整合所有组件 | ⭐⭐⭐⭐ |
+| 小节 |
+|---|
+| [22.1 需求分析与架构设计](./01_requirements.md) |
+| [22.2 数据连接与查询](./02_data_connection.md) |
+| [22.3 自动化分析与可视化](./03_analysis_visualization.md) |
+| [22.4 报告生成与导出](./04_report_generation.md) |
+| [22.5 集成设计与可运行底座](./05_full_implementation.md) |
 
 ## 🔗 学习路径
 
-> **核心前置知识**：[第3章 工具调用（Tool Use / Function Calling）](../chapter_tools/README.md)、[第5章 规划与推理（Planning & Reasoning）](../chapter_planning/README.md)、[第13章 LangGraph：构建有状态的 Agent](../chapter_langgraph/README.md)
-> 推荐但非必须：[第20章 Agent 的评估与优化](../chapter_20_evaluation/README.md)
->
-> **同系列项目**：
-> - 🔨 [第23章 项目实战：AI 编程助手](../chapter_23_coding_agent/README.md)
-> - 🎨 [第25章 项目实战：多模态 Agent](../chapter_25_multimodal/README.md)
+[工具调用](../chapter_tools/README.md)与[Harness](../chapter_harness/README.md)中的任务、权限和验收记录。生产与领域交付前需通过[评估](../chapter_20_evaluation/README.md)和[安全](../chapter_21_security/README.md)检查。
+
+通过领域验收即可结束应用路线；也可选择[编程](../chapter_23_coding_agent/README.md)或[多模态](../chapter_25_multimodal/README.md)分支，只有明确质量瓶颈才进入[研究进阶](../part7.md)。
 
 ---
 
-*下一节：[24.1 需求分析与架构设计](./01_requirements.md)*
+*下一节：[22.1 需求分析与架构设计](./01_requirements.md)*

@@ -1,4 +1,4 @@
-# 24.3 Automated Analysis and Visualization
+# 22.3 Automated Analysis and Visualization
 
 > **Section Goal**: Implement automated data analysis and chart generation capabilities.
 
@@ -250,4 +250,4 @@ Return only the insight list, one per line, starting with "•".
 
 ---
 
-[Next: 20.4 Report Generation and Export →](./04_report_generation.md)
+[Next: 22.4 Report Generation and Export →](./04_report_generation.md)

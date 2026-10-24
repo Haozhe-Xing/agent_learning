@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8FBFF" />
+      <stop offset="100%" stop-color="#EEF5FF" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#B7C5D8" flood-opacity="0.35" />
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#5A7BB8" />
+    </marker>
+  </defs>
+  <rect width="980" height="360" rx="28" fill="url(#bg)" />
+  <text x="490" y="54" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28" font-weight="700" fill="#243B64">A Beginner’s Route into Large Language Models</text>
+  <text x="490" y="86" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="15" fill="#5E6D82">Start by using AI, then learn principles and build systems</text>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" text-anchor="middle">
+    <g filter="url(#shadow)">
+      <rect x="45" y="145" width="120" height="82" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="105" y="180" fill="#243B64">Meet</text>
+      <text x="105" y="205" fill="#243B64">an LLM</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="205" y="145" width="120" height="82" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="265" y="180" fill="#243B64">Discover</text>
+      <text x="265" y="205" fill="#243B64">its uses</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="365" y="145" width="120" height="82" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="425" y="180" fill="#243B64">Learn to</text>
+      <text x="425" y="205" fill="#243B64">ask clearly</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="525" y="145" width="120" height="82" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="585" y="180" fill="#243B64">Understand tokens</text>
+      <text x="585" y="205" fill="#243B64">and cost</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="685" y="145" width="120" height="82" rx="18" fill="#FFFFFF" stroke="#D7E4F5" />
+      <text x="745" y="180" fill="#243B64">Choose</text>
+      <text x="745" y="205" fill="#243B64">a model</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="845" y="145" width="90" height="82" rx="18" fill="#385FA8" />
+      <text x="890" y="180" fill="#FFFFFF">Explore</text>
+      <text x="890" y="205" fill="#FFFFFF">further</text>
+    </g>
+  </g>
+  <g stroke="#5A7BB8" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M165 186 H198" />
+    <path d="M325 186 H358" />
+    <path d="M485 186 H518" />
+    <path d="M645 186 H678" />
+    <path d="M805 186 H838" />
+  </g>
+  <rect x="160" y="280" width="660" height="42" rx="21" fill="#E2EDFF" />
+  <text x="490" y="307" text-anchor="middle" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="600" fill="#385FA8">Start with everyday tasks; technical depth can come later</text>
+</svg>

@@ -1,4 +1,4 @@
-# 23.3 代码生成与修改能力
+# 21.3 代码生成与修改能力
 
 > **本节目标**：实现 Agent 的代码生成和修改功能，确保生成的代码质量可控。
 
@@ -92,7 +92,7 @@ async def demo():
 
 修改现有代码比从头生成更复杂——需要理解上下文并精确地做出修改：
 
-```python
+````python
 class CodeModifier:
     """代码修改器 —— 基于 diff 的精确修改"""
     
@@ -166,7 +166,7 @@ class CodeModifier:
 """
         response = await self.llm.ainvoke(prompt)
         return response.content
-```
+````
 
 ---
 
@@ -256,4 +256,4 @@ class CodeValidator:
 
 ---
 
-[23.4 测试生成与 Bug 修复](./04_testing_debugging.md)
+[21.4 测试生成与 Bug 修复](./04_testing_debugging.md)

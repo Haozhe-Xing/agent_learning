@@ -1,4 +1,4 @@
-# 14.2 安装与四种部署方式
+# 12.2 安装与四种部署方式
 
 > 🦞 *"四种姿势把 OpenClaw 跑起来——从'尝鲜'到'生产'。"*
 
@@ -101,7 +101,7 @@ powershell -c "irm https://openclaw.ai/install.ps1 | iex"
 
 ## 四、方式 C：源码构建（读源码 / 二次开发）
 
-如果你想**读源码**（本书第 14.3/14.4/14.5 的架构讲解就建立在这上面）或**改功能**，就该从源码跑：
+如果你想**读源码**（对应本章的架构、渠道和技能分析）或**改功能**，就该从源码跑：
 
 ```bash
 $ git clone https://github.com/openclaw/openclaw.git
@@ -118,17 +118,17 @@ $ pnpm openclaw onboard    # 从源码运行 onboarding
 ```
 openclaw/
 ├── src/
-│   ├── agent/            # Agent Loop + 工具实现（14.3 节 Layer 3/4）
-│   ├── gateway/          # 消息中枢 + 渠道适配器（14.3 节 Layer 1/2）
+│   ├── agent/            # Agent Loop + 工具实现（12.3 节 Layer 3/4）
+│   ├── gateway/          # 消息中枢 + 渠道适配器（12.3 节 Layer 1/2）
 │   ├── config/           # 配置加载 + schema 校验
 │   ├── memory/           # 记忆系统（SQLite + 摘要）
 │   └── ...
 ├── extensions/           # 各平台的渠道插件（Telegram/WhatsApp/Discord...）
-├── skills/               # 内置 Skills（14.5 节讲）
+├── skills/               # 内置 Skills（12.5 节讲）
 └── packages/             # 共享工具包
 ```
 
-> 📌 **读源码的正确姿势**：从 `src/gateway/` 和 `src/agent/` 开始——这是第 14.3 节四层架构的落点，也是理解"消息怎么流动"最直接的入口。
+> 阅读源码时先核对所选版本的真实目录；[12.3 架构](./03_architecture.md)、[12.4 渠道](./04_channels.md)与[12.5 技能](./05_skills_and_plugins.md)提供阅读问题。下面的目录摘要不构成固定版本的源码索引。
 
 ---
 
@@ -224,4 +224,4 @@ $ openclaw doctor
 
 ---
 
-*下一节：[14.3 架构深度解析：Gateway / Agent Loop / Skills](./03_architecture.md)*
+*下一节：[12.3 架构深度解析：Gateway / Agent Loop / Skills](./03_architecture.md)*

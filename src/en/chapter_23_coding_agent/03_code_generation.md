@@ -1,4 +1,4 @@
-# 23.3 Code Generation and Modification
+# 21.3 Code Generation and Modification
 
 > **Section Goal**: Implement code generation and modification capabilities for the Agent, ensuring controllable code quality.
 
@@ -92,7 +92,7 @@ async def demo():
 
 Modifying existing code is more complex than generating from scratch — it requires understanding context and making precise changes:
 
-```python
+````python
 class CodeModifier:
     """Code modifier — precise modification based on diff"""
     
@@ -166,7 +166,7 @@ Please return the complete modified code directly.
 """
         response = await self.llm.ainvoke(prompt)
         return response.content
-```
+````
 
 ---
 
@@ -256,4 +256,4 @@ class CodeValidator:
 
 ---
 
-[Next: 19.4 Test Generation and Bug Fixing →](./04_testing_debugging.md)
+[Next: 21.4 Test Generation and Bug Fixing →](./04_testing_debugging.md)

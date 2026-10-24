@@ -1,4 +1,4 @@
-# 22.3 容器化与云部署
+# 20.3 容器化与云部署
 
 > **本节目标**：学会用 Docker 打包 Agent 服务，实现"一次构建，到处运行"。
 
@@ -366,4 +366,4 @@ docker compose down
 
 ---
 
-[22.4 流式响应与并发处理](./04_streaming_concurrency.md)
+[20.4 流式响应与并发处理](./04_streaming_concurrency.md)
