@@ -177,6 +177,8 @@ The following are core academic papers referenced in this book, organized by tec
 | The Rise and Potential of Large Language Model Based Agents: A Survey | Xi et al. | 2023 | Survey on the rise and potential of Agents | [arXiv:2309.07864](https://arxiv.org/abs/2309.07864) |
 | LLM Powered Autonomous Agents | Lilian Weng (OpenAI) | 2023 | Excellent technical blog, suitable for beginners | [lilianweng.github.io](https://lilianweng.github.io/posts/2023-06-23-agent/) |
 | Multi-Agent Collaboration Mechanisms: A Survey of LLMs | Nguyen et al. | 2025 | Survey on multi-Agent collaboration mechanisms | [arXiv:2501.06322](https://arxiv.org/abs/2501.06322) |
+| LLM Agents: A Survey | Jungseob Lee | 2026 | Survey organized by function: planning, memory, tool use, multi-agent systems, environments, evaluation and safety | [Preprints.org](https://www.preprints.org/manuscript/202608.0265/v1) |
+| The Agent Loop: A Survey of Control Strategies, Skills, and Harnesses for LLM Agents | Lee & Park | 2026 | Survey of the loop around the model: control strategies, agentic RL, skills and harnesses | [SSRN](https://ssrn.com/abstract=7186738) |
 
 > 💡 **Reading Recommendation**: If time is limited, prioritize these 7 "must-read" papers: ① ReAct (basic Agent paradigm) ② Generative Agents (memory system design) ③ Original RAG paper (knowledge augmentation) ④ Reflexion (self-improvement) ⑤ DeepSeek-R1 (reasoning model, 2025) ⑥ Magentic-One (general multi-Agent system, 2024) ⑦ A Survey on LLM based Autonomous Agents (panoramic survey).
 
