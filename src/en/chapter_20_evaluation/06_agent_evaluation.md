@@ -598,17 +598,17 @@ class OSWorldStyleEvaluator:
 
 ---
 
-## SWE-bench Verified: The Gold Standard for Coding Agents
+## SWE-bench Verified: A Historical Code-Repair Benchmark
 
 ### SWE-bench Overview
 
-SWE-bench [5] is a benchmark that measures how well coding Agents resolve real GitHub issues. The **SWE-bench Verified** version released in 2024 was human-reviewed to filter out problematic test cases, making the results far more reliable.
+SWE-bench [5] is a benchmark that measures how well coding Agents resolve real GitHub issues. The **SWE-bench Verified** version released in 2024 is a human-reviewed subset used for historical comparisons.
 
 | Version | Number of issues | Description |
 |------|-----------|------|
 | SWE-bench Full | 2294 | Full dataset; some issue descriptions are unclear |
 | SWE-bench Lite | 300 | Curated subset, but still has quality problems |
-| SWE-bench Verified | 500 | Human-verified; every issue is confirmed solvable |
+| SWE-bench Verified | 500 | Human-reviewed subset with documented test defects and contamination |
 
 ### How SWE-bench Verified Evaluates
 
@@ -742,17 +742,17 @@ class SWEBenchEvaluator:
         }
 ```
 
-### Latest Progress on SWE-bench Verified (2025—2026)
+### 2026 audits and complementary evaluations
 
-| Rank | Method | Resolution rate | Description |
-|------|------|--------|------|
-| OpenHands + CodeAct | ~53% | Early 2025 | Best open source |
-| Devin | ~50% | Early 2025 | Commercial product |
-| SWE-Agent + GPT-4.1 | ~48% | 2025 | Agent framework |
-| AutoCodeRover | ~45% | 2024 | Spectrum analysis + LLM |
-| Amazon Q Developer | ~42% | 2024 | Built by Amazon |
+OpenAI's Verified audit found that some tests rejected functionally correct patches and that models may have seen original solutions during training. A later audit found task and verifier quality issues in Pro too. Keep dataset versions, dates, and experimental conditions with historical scores. Add fresh internal tasks and independently maintained acceptance tests when measuring production capability. See the [Verified audit](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/) and [SWE-bench Pro audit](https://openai.com/index/separating-signal-from-noise-coding-evaluations/).
 
-> 💡 **Trend watch**: the resolution rate on SWE-bench Verified passed 50% in 2025, yet nearly half of all issues still cannot be resolved automatically. The core bottlenecks are long-context understanding, multi-file edits, and complex debugging reasoning.
+[Terminal-Bench 2.1](https://www.tbench.ai/news/terminal-bench-2-1) revised 28 tasks from 2.0 and is an option for evaluating terminal workflows. Use a pinned [OSWorld 2.1](https://github.com/xlang-ai/OSWorld-V2/releases/tag/osworld-v2.1) release for desktop workflows. Report the dataset, environment image, model snapshot, harness commit, time and tool budgets, and number of runs.
+
+**Illustrative report**: Run the same 50 tasks three times with the same model snapshot, container image, and harness commit. Allow 10 minutes or 40 tool calls per task. If 29, 31, and 30 tasks pass, report the 60% average and the individual runs, alongside counts of timeouts, tool errors, and failed acceptance checks. Change only the harness when measuring a harness update.
+
+### Long-horizon evaluation: reading Time Horizon
+
+METR's November 2026 update uses TH1.1 and TH2 and fits agent success probabilities against how long tasks take humans, using measured or estimated durations. The 50% and 80% time horizons refer to human task durations at those success thresholds. Record the agent's own elapsed time and cost separately. Report the task distribution, threshold, confidence interval, and harness. See [METR's November 2026 report](https://metr.org/blog/2026-11-20-q4-2026-capability-update/).
 
 ---
 
@@ -815,28 +815,15 @@ No single benchmark covers everything an Agent can do. Production teams usually 
 |--------|----------|--------------|-------------------|
 | **Tool calling** | τ-bench, ToolBench, API-Bank | Tool selection, argument filling, multi-turn tool use | Tool Agents, customer-service Agents |
 | **Web operation** | WebArena, VisualWebArena, Mind2Web | Web navigation, DOM/visual understanding, form handling | Browser Use / Web Agents |
-| **Desktop operation** | OSWorld, AndroidWorld | GUI operation, cross-application workflows, environment state verification | Computer Use Agents |
-| **Coding tasks** | SWE-bench Verified, HumanEval, RepoBench | Issue fixing, code generation, multi-file understanding | Coding Agents |
+| **Desktop operation** | OSWorld 2.1, AndroidWorld | GUI operation, cross-application workflows, environment state verification | Computer Use Agents |
+| **Coding tasks** | SWE-bench, Terminal-Bench 2.1, internal regression tasks | Issue fixing, code generation, multi-file understanding | Coding Agents |
 | **Deep research** | GAIA, HLE, BrowseComp, FRAMES | Multi-step retrieval, evidence synthesis, complex Q&A | Deep Research Agents |
 | **Security robustness** | AgentDojo, InjecAgent, ASB, PromptBench | Indirect prompt injection, tool abuse, privilege escalation | Web/RAG/Tool Agents |
 | **Long-term memory** | LoCoMo, LongMemEval, ConvoMem | Long-conversation memory, temporal reasoning, user-profile consistency | Memory Agents, personal assistants |
 
-### Side-by-Side Comparison of Mainstream Benchmarks
+### Keep results comparable
 
-| Benchmark | Domain | Core capability | Best performance | Limitations |
-|------|------|----------|----------|--------|
-| τ-bench | Tool use | Tool selection and argument filling | ~68% | Simulated environment, not real |
-| OSWorld | Desktop operation | Cross-application workflows | ~12.5% | Low success rate, high cost |
-| VisualWebArena | Web operation | Visual understanding + DOM operation | ~14.6% | Web environments only |
-| SWE-bench Verified | Code fixing | Fault localization + patch generation | ~53% | Python projects only |
-| WebArena | Web navigation | Information retrieval + operation | ~35.9% | Version without visual input |
-| GAIA | General reasoning | Multi-step reasoning + tool calling | ~45% | Limited number of tasks |
-| BrowseComp | Browsing research | Web retrieval + complex Q&A | Changes fast | Depends on the live web |
-| AgentDojo | Agent security | Tool injection attack/defense | Task dependent | Security-specific |
-| InjecAgent | Indirect injection | Injection attacks on tool-integrated Agents | Task dependent | Attack-focused evaluation |
-| LoCoMo | Long-term memory | Long conversations, multi-hop memory reasoning | Varies widely by design | Mainly evaluates the memory layer |
-| LongMemEval | Long-term memory | Long-context memory retrieval and Q&A | Varies widely by design | Tightly coupled to the memory architecture |
-| AgentBench | Multi-task | A range of Agent capabilities | ~35% | Evaluation dimensions are not fine-grained enough |
+Use original reports that record dates, dataset revisions, and evaluation conditions when quoting leaderboard results.
 
 ### How Do You Combine Them Into a Production Evaluation Suite?
 
@@ -872,8 +859,8 @@ This avoids a common misconception: **a high benchmark score does not mean produ
 | Agent-as-Judge | Uses an Agent to evaluate another Agent's full execution trajectory, going beyond the single-turn verdict of LLM-as-Judge |
 | τ-bench | A benchmark dedicated to tool-use ability, focused on tool selection and argument filling |
 | WebArena / VisualWebArena | The core benchmarks for browser and web-operation Agents |
-| OSWorld | Multimodal Agent evaluation in real desktop environments; success rates are still very low |
-| SWE-bench Verified | The gold standard for coding Agents; human verification makes the results reliable |
+| OSWorld 2.1 | Desktop-agent evaluation with versioned tasks and environments |
+| SWE-bench Verified | Historical code-repair benchmark with documented contamination and test defects |
 | GAIA / BrowseComp | Important references for Deep Research Agents and multi-step retrieval reasoning |
 | AgentDojo / InjecAgent / ASB | Benchmarks for Agent security and indirect prompt injection |
 | LoCoMo / LongMemEval | Benchmarks for long-term memory and memory governance |

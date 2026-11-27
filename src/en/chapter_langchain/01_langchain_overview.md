@@ -15,11 +15,12 @@ Since its release in late 2022, LangChain has undergone three major architectura
 | **v0.0.x (2022.11–2023.12)** | Monolithic package | All features in one `langchain` package | `from langchain.llms import OpenAI` |
 | **v0.1.x (2024.01–2024.06)** | Multi-package architecture | Split into `langchain-core`, `langchain-community` | Dual import paths coexist; old API marked deprecated |
 | **v0.2.x (2024.07–2024.12)** | LCEL-first | LCEL becomes the standard paradigm; legacy chains like `LLMChain` removed | Pydantic V2 support; Python 3.8 dropped |
-| **v0.3.x (2025.01–present)** | Stable phase | Deprecated APIs fully removed; integration packages released independently | `langchain-openai`, `langchain-anthropic`, etc. with independent versioning |
+| **v0.3.x** | Historical branch | Continued package separation | Common in older tutorials |
+| **v1.x** | Current major version | `create_agent`, middleware, and a smaller namespace | Legacy components moved to `langchain-classic` |
 
 ### Multi-Package Design Philosophy
 
-LangChain 0.3's package structure follows the "layered dependency" principle [1]:
+LangChain v1's package structure follows the "layered dependency" principle [1]:
 
 ```
 langchain-core          ← Stable core (Runnable protocol, message types, Prompt templates)
@@ -97,7 +98,7 @@ When choosing a development framework, understanding the positioning of differen
 ## Quick Start
 
 ```python
-# pip install langchain langchain-openai langchain-community
+# pip install "langchain>=1,<2" "langchain-openai>=1,<2"
 
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -204,34 +205,9 @@ print(reply1)
 print(reply2)  # Should remember "Alice"
 ```
 
-## Version Notes
+## Version notes
 
-LangChain evolves rapidly and is currently in the **0.3.x** stable version. Key version differences:
-
-```python
-# Old-style imports (before langchain 0.1, deprecated)
-# from langchain.llms import OpenAI
-# from langchain.chains import LLMChain
-
-# New-style imports (recommended, langchain >= 0.3)
-from langchain_openai import ChatOpenAI       # Import from sub-package
-from langchain_core.prompts import ChatPromptTemplate  # core is the stable foundation
-
-# LCEL (LangChain Expression Language) is the standard way to build chains
-chain = prompt | llm | StrOutputParser()  # Pipe syntax
-
-# LangChain 0.3 key changes:
-# - Deprecated APIs from langchain 0.1 fully removed
-# - Integrations in langchain-community gradually migrated to independent packages
-# - Recommended to use LangGraph for complex Agent workflows
-# - Built-in Pydantic V2 support
-
-# Check version
-import langchain
-print(langchain.__version__)  # Should be 0.3.x
-```
-
----
+Use Python 3.10 or later. Use `langchain.agents.create_agent` for tool-using agents and LCEL for fixed pipelines. Legacy components such as `LLMChain` are available from `langchain-classic`. See the [LangChain v1 migration guide](https://docs.langchain.com/oss/python/migrate/langchain-v1).
 
 ## Summary
 

@@ -812,6 +812,12 @@ These advances are steadily turning the vision of **"letting models learn autono
 
 ---
 
+## October 2026 research reading: CoHARL
+
+CoHARL trains a shared policy alongside a population of executable harnesses. The policy learns from rollouts across the population, and a proposer revises harness code from the traces. On SWE-rebench, the authors report a 27.6% mean resolved rate, 6.4 percentage points above harness-only search.
+
+When reading the preprint, compare the training budgets for fixed harnesses, search followed by training, and joint optimization. Separate improvements from policy changes from those due to verifier, tool interface, and feedback changes. In a course exercise, keep the model and tasks fixed and first measure the effect of a harness change. See the [CoHARL preprint](https://arxiv.org/abs/2610.36469).
+
 ## 📰 Latest Paper Digest
 
 > 🗓️ This section is maintained by a daily automated update task. Last updated: **August 5, 2026**

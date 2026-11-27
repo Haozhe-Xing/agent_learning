@@ -586,7 +586,7 @@ Evaluating GUI Agents is an active research direction today:
 | **Mind2Web** | Web operations | Element-grounding accuracy | 2000+ real web operation tasks |
 | **AndroidWorld** | Android phones | Task completion rate | 116 Android operation tasks |
 
-> 💡 **Frontier progress**: As of July 2026, the best Agent on OSWorld scores about 12.5% (humans score about 72%), and about 38% on VisualWebArena (humans about 88%). GUI Agents are still at an early stage, but progress is remarkably fast — in mid-2024 the best OSWorld score was only about 5%.
+> [OSWorld 2.1](https://github.com/xlang-ai/OSWorld-V2/releases/tag/osworld-v2.1) pins task, asset, and environment revisions. Report the environment image, resolution, action budget, and number of runs. The original OSWorld, OSWorld-Verified, OSWorld 2.1, and VisualWebArena have different tasks and acceptance criteria. Report scores with their versions and conditions.
 
 ---
 

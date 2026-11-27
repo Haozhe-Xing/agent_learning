@@ -32,12 +32,13 @@ LangChain 自 2022 年底发布以来经历了三次重大架构变革，理解�
 |------|------|---------|---------|
 | **v0.0.x（2022.11—2023.12）** | 单体包 | 所有功能在一个 `langchain` 包中 | `from langchain.llms import OpenAI` |
 | **v0.1.x（2024.01—2024.06）** | 分包架构 | 拆分出 `langchain-core`、`langchain-community` | 双重导入路径并存，旧 API 标记 deprecated |
-| **v0.2.x（2024.07—2024.12）** | LCEL 优先 | LCEL 成为标准范式，`LLMChain` 等老式链被移除 | Pydantic V2 支持，Python 3.8 停止支持 |
-| **v0.3.x（2025.01—至今）** | 稳定期 | 完全移除废弃 API，集成包独立发布 | `langchain-openai`、`langchain-anthropic` 等独立版本管理 |
+| **v0.2.x（2024.07—2024.12）** | LCEL 优先 | LCEL 成为标准范式，`LLMChain` 等老式链逐步弃用 | Pydantic V2 支持，Python 3.8 停止支持 |
+| **v0.3.x** | 历史版本 | 维护分层和独立集成包 | 旧教程常见 |
+| **v1.x** | 当前主线 | `create_agent`、middleware 与精简命名空间 | 旧组件移入 `langchain-classic` |
 
 ### 分包设计理念
 
-LangChain 0.3 的包结构遵循「分层依赖」原则 [1]：
+LangChain v1 的包结构遵循「分层依赖」原则 [1]：
 
 | 层级 | 包名 | 职责 |
 |------|------|------|
@@ -97,7 +98,7 @@ parallel = RunnableParallel(              # 同一个输入同时执行多条链
 下面的片段展示 LangChain 的"最小可运行骨架"——后续所有能力都建立在这三行之上：
 
 ```python
-# pip install langchain langchain-openai langchain-community
+# pip install "langchain>=1,<2" "langchain-openai>=1,<2"
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -112,7 +113,7 @@ print(chain.invoke({"role": "Python 专家", "domain": "机器学习",
                     "question": "如何用 sklearn 训练一个分类器？"}))
 ```
 
-> 📌 版本说明：LangChain 已进入 **0.3.x** 稳定版，推荐使用分包导入（`langchain_openai`、`langchain_core`）。`LLMChain` 等旧式链已被移除，**LCEL（`prompt | llm | parser`）是标准的链构建方式**。新项目构建 Agent 也建议直接用 LangGraph（见第 13 章）。
+> 使用 Python 3.10 或以上版本。新项目用 `langchain.agents.create_agent` 构建工具型 Agent，并用 LCEL 组合固定处理链。旧版 `LLMChain` 等组件可通过 `langchain-classic` 使用。详见 [LangChain v1 迁移指南](https://docs.langchain.com/oss/python/migrate/langchain-v1)。
 
 ---
 

@@ -84,72 +84,7 @@ That is all it takes. Once the environment variables are set, every call execute
 
 ### Tracing an Agent's Complete Execution
 
-For Agent applications tracing is even more valuable — you get to see the reasoning at every step:
-
-```python
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-# ============================
-# Tool definitions
-# ============================
-
-@tool
-def search_database(query: str) -> str:
-    """Search for information in the internal database."""
-    # Simulate a database query
-    db = {
-        "sales": "Total Q4 2024 sales were 12.5 million yuan, up 18% year over year",
-        "users": "Currently 520K monthly active users and 120K daily active users",
-        "conversion": "Signup-to-paid conversion rate is 3.2%, up 0.3% from last month",
-    }
-    for keyword, value in db.items():
-        if keyword in query:
-            return value
-    return "No matching data found"
-
-@tool
-def generate_chart(data_description: str) -> str:
-    """Generate a chart from a data description. Input: the data description text."""
-    return f"Chart generated: {data_description} — saved as chart_{hash(data_description) % 10000}.png"
-
-# ============================
-# Building the Agent
-# ============================
-
-tools = [search_database, generate_chart]
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """You are a data analysis assistant.
-You can use tools to query the database and generate charts.
-Query the data first, then answer the user's question based on the result."""),
-    MessagesPlaceholder(variable_name="chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder(variable_name="agent_scratchpad"),
-])
-
-llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True,
-    max_iterations=5,
-)
-
-# Execute — automatically traced to LangSmith
-result = agent_executor.invoke({
-    "input": "Look up the recent sales figures for me, then generate a chart",
-    "chat_history": []
-})
-print(result["output"])
-```
+Agent tracing shows model requests, tool calls, and results. Enable tracing and run the [tool-calling example in 12.3](./03_langchain_agents.md). A multi-step analysis workflow would produce a trace like the one below.
 
 In the LangSmith trace view you will see something like:
 

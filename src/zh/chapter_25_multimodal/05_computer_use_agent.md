@@ -584,7 +584,7 @@ GUI Agent 的评估是目前活跃的研究方向：
 | **Mind2Web** | Web 操作 | 元素定位准确率 | 2000+ 真实网页操作任务 |
 | **AndroidWorld** | Android 手机 | 任务完成率 | 116 个 Android 操作任务 |
 
-> 💡 **前沿进展**：截至 2026 年 7 月，OSWorld 上的最佳 Agent 得分约 12.5%（人类约 72%），VisualWebArena 上约 38%（人类约 88%）。GUI Agent 仍处于早期阶段，但进步速度惊人——2024 年中 OSWorld 最佳得分仅约 5%。
+> [OSWorld 2.1](https://github.com/xlang-ai/OSWorld-V2/releases/tag/osworld-v2.1) 固定了任务、资源和运行环境版本。使用该版本时，记录环境镜像、分辨率、动作预算和运行次数。旧版 OSWorld、OSWorld-Verified、OSWorld 2.1 和 VisualWebArena 各自的任务与验收条件不同，分数应连同版本和条件一起报告。
 
 ---
 

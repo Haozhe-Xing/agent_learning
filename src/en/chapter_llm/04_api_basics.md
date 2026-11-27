@@ -2,6 +2,8 @@
 
 Enough theory — let's write some code! This section will walk you through your first real model API call and help you master production-essential skills like streaming output and error handling.
 
+The examples in this section use models that support Chat Completions. When switching models, check endpoint and tool support. GPT-6.2 tool calling, for example, uses the Responses API. The Assistants API was retired on August 26, 2026. See the [API changelog](https://developers.openai.com/api/docs/changelog) and [Assistants migration guide](https://developers.openai.com/api/docs/assistants/migration).
+
 ![Model API Call Flow and Best Practices](../svg/chapter_llm_04_api_basics.svg)
 
 ## Environment Setup

@@ -2,6 +2,8 @@
 
 理论学够了，动手写代码！本节将带你完成第一次真正的模型 API 调用，并掌握流式输出、错误处理等生产环境必备技能。
 
+本节使用支持 Chat Completions 的模型。接入其他模型时，先确认端点和工具调用支持，例如 GPT-6.2 的工具调用使用 Responses API。旧版 Assistants API 已于 2026 年 8 月 26 日停用。参见 [API 更新记录](https://developers.openai.com/api/docs/changelog)和 [Assistants 迁移指南](https://developers.openai.com/api/docs/assistants/migration)。
+
 ![模型 API 调用流程与最佳实践](../svg/chapter_llm_04_api_basics.svg)
 
 ## 环境准备

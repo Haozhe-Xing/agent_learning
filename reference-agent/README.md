@@ -1,8 +1,8 @@
 # reference-agent
 
-《从零开始学 Agent 开发》第 12–23 章的**统一、可运行**参考实现。
+《从零开始学 Agent 开发》配套的可运行教学实现。
 
-本书前半部分（概念、RAG、规划、记忆等）重在讲清原理；后半部分（框架实战、多 Agent、协议、评估、安全、部署、综合项目）的每个"实战"小节都以本目录的代码为**唯一可信来源**——不再把未验证的伪代码嵌在书里。
+本书前半部分（概念、RAG、规划、记忆等）重在讲清原理；后半部分（框架实战、多 Agent、协议、评估、安全、部署、综合项目）可用本目录的代码练习 Agent 循环、协议、评估和部署。
 
 ## 设计原则（诚实化 + 可运行化）
 
@@ -23,9 +23,9 @@ reference-agent/
 │   ├── agent.py           # 最小 ReAct 循环，真实执行工具
 │   ├── security/          # InjectionGuard（fail-closed）
 │   ├── service/           # FastAPI 服务：/chat 真返回、/stream 真流式
-│   ├── mcp_server.py      # 最小可运行 MCP Server（stdio + JSON-RPC）
+│   ├── mcp_server.py      # 最小旧版 MCP Server（2024-11-05，stdio）
 │   └── evaluation/        # 固定任务集 + 通过率报告
-├── tests/                 # 16 个测试，覆盖 agent/security/evaluation/service/mcp
+├── tests/                 # 离线测试，覆盖 agent/security/evaluation/service/mcp
 ├── data/eval_samples.jsonl
 └── docker/Dockerfile
 ```
@@ -52,11 +52,11 @@ AGENT_REAL=1 OPENAI_API_KEY=sk-... uvicorn reference_agent.service.app:app --por
 | 章节 | 对应模块 |
 |------|---------|
 | 12–13 框架实战 | `agent.py` / `tools/` |
-| 17 协议（MCP） | `mcp_server.py` |
-| 19 安全 | `security/guardrails.py` |
-| 20 部署 | `service/app.py` + `docker/Dockerfile` |
-| 18 评估 | `evaluation/harness.py` |
-| 21–23 综合项目 | 以本底座为共享基础，按任务域扩展 |
+| 19 协议（MCP） | `mcp_server.py` |
+| 21 安全 | `security/guardrails.py` |
+| 22 部署 | `service/app.py` + `docker/Dockerfile` |
+| 20 评估 | `evaluation/harness.py` |
+| 23–25 综合项目 | 以本底座为共享基础，按任务域扩展 |
 
 ## 已知边界（不夸大）
 

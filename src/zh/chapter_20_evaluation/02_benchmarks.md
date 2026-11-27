@@ -524,6 +524,8 @@ def swe_bench_evaluate(
 
 ### 当前 SOTA（截至 2025）
 
+> 这组分数仅用于历史对照。近期审计及如何报告新评估见 [20.6](./06_agent_evaluation.md)。
+
 | Agent | SWE-bench Verified | 方法 |
 |-------|-------------------|------|
 | **DeepSWE** | 59.0% | GRPO 强化学习训练 |

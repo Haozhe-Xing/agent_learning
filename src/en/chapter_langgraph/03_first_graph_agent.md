@@ -2,7 +2,7 @@
 
 This section walks you through building a complete LangGraph Agent step by step, including tool calls and iterative reasoning.
 
-Unlike the previous approach of using the OpenAI native API or LangChain's AgentExecutor, LangGraph uses a **graph** to describe Agent behavior. The advantage of this approach is that the execution flow is **visualizable, controllable, and persistable** — you can clearly see which steps the Agent took, pause and resume at any node, and precisely control the flow direction by adding edges.
+Unlike the previous approach of using the OpenAI native API or LangChain's `create_agent`, LangGraph uses a **graph** to describe Agent behavior. The advantage of this approach is that the execution flow is **visualizable, controllable, and persistable** — you can clearly see which steps the Agent took, pause and resume at any node, and precisely control the flow direction by adding edges.
 
 Building a Graph Agent involves four steps:
 1. **Define tools**: same as before, use the `@tool` decorator to define tool functions
@@ -159,36 +159,9 @@ for event in app.stream({"messages": [HumanMessage(content="What is Earth's diam
                         print(f"  Tool call: {tc['name']}({tc['args']})")
 ```
 
-## Comparison with LangChain AgentExecutor
+## When to build a graph directly
 
-If you've used LangChain's `AgentExecutor` (Chapter 13), you might ask: why go through the trouble of building an Agent with a graph? Let's understand the fundamental difference between the two through a comparison:
-
-```python
-# LangChain AgentExecutor approach (black box)
-from langchain.agents import create_openai_tools_agent, AgentExecutor
-
-agent = create_openai_tools_agent(llm, tools, prompt)
-executor = AgentExecutor(agent=agent, tools=tools)
-result = executor.invoke({"input": "Calculate sqrt(2)"})
-# The internal loop is opaque to you
-
-# LangGraph approach (white box)
-graph = StateGraph(MessagesState)
-graph.add_node("agent", agent_node)
-graph.add_node("tools", ToolNode(tools))
-# You have full control over the graph structure, edge conditions, and when to terminate
-app = graph.compile()
-```
-
-| Dimension | AgentExecutor | LangGraph |
-|-----------|--------------|-----------|
-| Transparency | Black-box loop | Every node and edge is visible |
-| Control | Limited configuration | Fully customizable |
-| Persistence | Not supported | Checkpoint natively supported |
-| Human-AI collaboration | Requires extra implementation | Built-in interrupt/resume |
-| Use case | Simple tool calls | Complex multi-step workflows |
-
-> 💡 **Migration advice**: If your Agent only needs a simple "LLM + tool call" loop, `AgentExecutor` is sufficient. When you need conditional branching, multi-stage flows, human approval nodes, or intermediate state persistence, migrate to LangGraph.
+[The `create_agent` API in 12.3](../chapter_langchain/03_langchain_agents.md) already runs on LangGraph. It handles the standard tool loop and supports middleware, checkpoints, and approval. Use `StateGraph` to define your own state, connect stages, or control routing explicitly.
 
 ## Common Pitfalls and Best Practices
 

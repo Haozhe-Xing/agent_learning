@@ -5,6 +5,8 @@
 
 ---
 
+Hands-on exercise: [8.7 Resume a Long-Running Task Across Processes](./07_resumable_tasks.md).
+
 ## Chapter Overview
 
 In Chapter 8, we dove deep into **context engineering** — how to carefully design the information fed to the model.
