@@ -13,13 +13,13 @@ In Parts I–II you hand-built Agents with **Prompt + tool calling + context eng
 | Route | Representative | What it abstracts | For |
 |-------|---------------|-------------------|-----|
 | **Code framework** | LangChain / LangGraph | an Agent as a tunable library | writing code, shipping products |
-| **Action harness** | OpenClaw / Hermes / Claude Code / DeepSeek Harness | an Agent as a whole product you *use* | wanting a capable assistant now |
+| **Action harness** | OpenClaw / Hermes / Claude Code / OpenCode / DeepSeek Harness | an Agent as a whole product you *use* | wanting a capable assistant now |
 
-This part focuses on the latter — **6 deep chapters**, one project each, from usage to architecture.
+This part focuses on the latter — **7 chapters**, one project each, from usage to architecture.
 
 ---
 
-## The 6-Chapter / Harness Decision Matrix
+## Framework and Harness Decision Matrix
 
 | Ch | Project | Route | Type | License | One-liner |
 |----|---------|-------|------|---------|-----------|
@@ -28,6 +28,7 @@ This part focuses on the latter — **6 deep chapters**, one project each, from 
 | 14 | **OpenClaw** | action harness | consumer personal assistant | MIT | an Agent living in all your chat apps |
 | 15 | **Hermes Agent** | action harness | self-evolving assistant | MIT | "the agent that grows with you" |
 | 16 | **Claude Code** | action harness | industrial IDE | source-available | the benchmark harness: six layers |
+| 16A | [**OpenCode V2**](./chapter_opencode/README.md) | action harness | open-source coding agent | MIT | terminal workflows, multiple providers, and tool permissions |
 | 17 | **DeepSeek Harness** | action harness | developer workshop | MIT | "everything is a plugin" foundation |
 
 ### Decision Tree
@@ -38,6 +39,7 @@ Q1: "Use" an Agent, or "build" one?
 │   ├─ chat apps? → OpenClaw (Ch.14)
 │   ├─ grow to know me? → Hermes (Ch.15)
 │   ├─ software-engineering IDE? → Claude Code (Ch.16)
+│   ├─ open-source terminal coding with your choice of provider? → OpenCode (Ch.16A)
 │   └─ long-term controllable platform? → DeepSeek Harness (Ch.17)
 └─ build → code-framework subtree
     ├─ complex flows + state? → LangGraph (Ch.13)
@@ -47,14 +49,14 @@ Q1: "Use" an Agent, or "build" one?
 
 ### Selection Dimensions
 
-| Dimension | LangChain | LangGraph | OpenClaw | Hermes | Claude Code | DeepSeek Harness |
-|-----------|-----------|-----------|----------|--------|-------------|------------------|
-| Core paradigm | Runnable chain | state graph | multi-channel | self-evolving | industrial IDE | all-plugins |
-| Swappable kernel | — | — | ❌ | ❌ | ❌ | ✅ |
-| Model-agnostic | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-| Customization | high (code) | high (code) | mid (skill) | mid (skill) | low (config) | very high (plugin) |
-| Production-ready | high | high | high | high | high | preview (v0.1) |
-| License | MIT | MIT | MIT | MIT | source-avail | MIT |
+| Dimension | LangChain | LangGraph | OpenClaw | Hermes | Claude Code | OpenCode | DeepSeek Harness |
+|-----------|-----------|-----------|----------|--------|-------------| --------- |------------------|
+| Core paradigm | Runnable chain | state graph | multi-channel | self-evolving | industrial IDE | terminal coding agent | all-plugins |
+| Swappable kernel | — | — | ❌ | ❌ | ❌ | — | ✅ |
+| Model-agnostic | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Customization | high (code) | high (code) | mid (skill) | mid (skill) | low (config) | agents, skills, MCP, plugins | very high (plugin) |
+| Production-ready | high | high | high | high | high | depends on provider and deployment | preview (v0.1) |
+| License | MIT | MIT | MIT | MIT | source-avail | MIT | MIT |
 
 > ⚠️ Licenses per each repo's `LICENSE`. DeepSeek Harness is a **v0.1 developer preview** with expected breaking changes. Time-varying numbers (stars, installs) are **not cited**.
 
@@ -93,9 +95,10 @@ They're not mutually exclusive — Hermes' generated skills also enter a skill d
 | 14 OpenClaw | channels, Skills, consumer harness | put the Agent in chat apps |
 | 15 Hermes | self-evolving skills, memory, Nudge | how a "growing Agent" is engineered |
 | 16 Claude Code | six layers, System Prompt, permissions, cache | reverse-engineer industrial design |
+| 16A [OpenCode V2](./chapter_opencode/README.md) | Plan / Build, project permissions, Skills and MCP | verify a small change from the terminal |
 | 17 DeepSeek Harness | Cordis kernel, 4 modes, plugins | open + model-agnostic + pluginized |
 
-After these 6 chapters, you'll have the ability to read **any new harness** — judging which branch it belongs to, what it solves, and what it can't.
+After these 7 chapters, you'll have the ability to read **any new harness** — judging which branch it belongs to, what it solves, and what it can't.
 
 ---
 

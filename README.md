@@ -17,7 +17,7 @@ From Function Calling, memory, planning, RAG, and context engineering to Agentic
 <a href="https://github.com/Haozhe-Xing/agent_learning/stargazers"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=flat-square&logo=github&color=gold" alt="GitHub stars"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License"></a>
 <a href="https://github.com/Haozhe-Xing/agent_learning/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs welcome"></a>
-<img src="https://img.shields.io/badge/Chapters-25-6f42c1?style=flat-square" alt="25 chapters">
+<img src="https://img.shields.io/badge/Chapters-26-6f42c1?style=flat-square" alt="26 chapters">
 <img src="https://img.shields.io/badge/Languages-English%20%7C%20中文-0969da?style=flat-square" alt="Bilingual">
 </p>
 
@@ -37,7 +37,7 @@ Instead of teaching isolated framework APIs, the book builds one connected menta
 
 The repository includes:
 
-- **25 chapters** across foundations, core capabilities, frameworks, multi-agent systems, production, and capstone projects.
+- **26 chapters** across foundations, core capabilities, frameworks, multi-agent systems, production, and capstone projects.
 - English and Chinese editions with matching tables of contents.
 - **330+ original SVG diagrams** and **5 interactive demos** for architecture, state, sequence, and training flows.
 - **Paper-to-practice explanations** covering ReAct, Reflexion, MemGPT/Letta, GraphRAG, GRPO, MCP, A2A, and more.
@@ -73,6 +73,7 @@ The repository includes:
   - [14. OpenClaw](https://Haozhe-Xing.github.io/agent_learning/en/chapter_openclaw/)
   - [15. Hermes Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_hermes/)
   - [16. Claude Code](https://Haozhe-Xing.github.io/agent_learning/en/chapter_claude_code/)
+  - [16A. OpenCode V2](https://Haozhe-Xing.github.io/agent_learning/en/chapter_opencode/)
   - [17. DeepSeek Harness](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deepseek_harness/)
 - **Multi-agent systems**
   - [18. Multi-Agent Collaboration](https://Haozhe-Xing.github.io/agent_learning/en/chapter_18_multi_agent/)
@@ -168,7 +169,7 @@ Please keep claims verifiable and prefer primary sources for papers, protocols, 
 
 ## Roadmap
 
-- [x] 25-chapter bilingual mdBook
+- [x] 26-chapter bilingual mdBook
 - [x] Localized diagrams and interactive demos
 - [x] Agentic RL, context engineering, harness engineering, and self-evolving Agent coverage
 - [x] Runnable `reference-agent` baseline with offline tests

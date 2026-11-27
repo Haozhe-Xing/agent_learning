@@ -153,6 +153,12 @@
   - [16.5 高级用法：MCP、Hooks 与 Skills](./chapter_claude_code/05_advanced_usage.md)
   - [16.6 生产实践与团队配置](./chapter_claude_code/06_production_and_team.md)
 
+- [第16A章 OpenCode V2：开源编程 Agent 实战](./chapter_opencode/README.md)
+  - [16A.1 安装、连接模型与首次会话](./chapter_opencode/01_getting_started.md)
+  - [16A.2 项目规则、权限与 V1 迁移](./chapter_opencode/02_project_config.md)
+  - [16A.3 自定义 Agents、Skills 与 MCP](./chapter_opencode/03_extensions.md)
+  - [16A.4 实战：修复一个排名 Bug](./chapter_opencode/04_workshop.md)
+
 - [第17章 DeepSeek Harness：一切皆插件的开源底座](./chapter_deepseek_harness/README.md)
   - [17.1 DeepSeek Harness 是什么：Cordis 内核与"一切皆插件"](./chapter_deepseek_harness/01_what_is_dsh.md)
   - [17.2 安装与四种运行模式](./chapter_deepseek_harness/02_install_and_modes.md)
