@@ -1,48 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" width="680" height="280" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
-  <rect width="680" height="280" rx="12" fill="#f8f9fa"/>
-  <!-- [CN] Node-->
-  <rect x="220" y="16" width="240" height="36" rx="8" fill="#2c3e50"/>
-  <text x="340" y="39" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Chapter 1: What is an Agent?</text>
-  <!-- [CN] Main [CN] -->
-  <line x1="340" y1="52" x2="340" y2="72" stroke="#7f8c8d" stroke-width="2"/>
-  <!--Main [CN] Line-->
-  <line x1="80" y1="72" x2="80" y2="252" stroke="#7f8c8d" stroke-width="2"/>
-  <!-- [CN] Line [CN] Node-->
-  <line x1="80" y1="88" x2="120" y2="88" stroke="#7f8c8d" stroke-width="2"/>
-  <line x1="80" y1="130" x2="120" y2="130" stroke="#7f8c8d" stroke-width="2"/>
-  <line x1="80" y1="172" x2="120" y2="172" stroke="#7f8c8d" stroke-width="2"/>
-  <line x1="80" y1="214" x2="120" y2="214" stroke="#7f8c8d" stroke-width="2"/>
-  <line x1="80" y1="252" x2="120" y2="252" stroke="#7f8c8d" stroke-width="2"/>
-  <!-- [CN] Main [CN] -->
-  <line x1="340" y1="72" x2="80" y2="72" stroke="#7f8c8d" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="404" viewBox="0 0 560 404" role="img" aria-labelledby="title" lang="en">
+  <title id="title">Chapter 1 reading guide</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+    .number { font-size: 18px; font-weight: 650; fill: #146964; }
+    .topic { font-size: 23px; font-weight: 650; fill: #172d33; }
+    .detail { font-size: 17px; fill: #485d64; }
+  </style>
 
-  <!-- Node1 -->
-  <rect x="120" y="70" width="520" height="36" rx="6" fill="#3498db" opacity="0.15"/>
-  <rect x="120" y="70" width="4" height="36" rx="2" fill="#3498db"/>
-  <text x="136" y="84" font-size="12" font-weight="bold" fill="#2980b9">1.1 Evolution from Chatbots to Agents</text>
-  <text x="136" y="100" font-size="11" fill="#7f8c8d">Understand AI interaction evolution</text>
+  <rect x=".5" y=".5" width="559" height="403" rx="20" fill="#f8fbfa" stroke="#cadbd8"/>
+  <path d="M92 74.5H536 M92 138.5H536 M92 202.5H536 M92 266.5H536 M92 330.5H536" fill="none" stroke="#dce8e5"/>
 
-  <!-- Node2 -->
-  <rect x="120" y="112" width="520" height="36" rx="6" fill="#9b59b6" opacity="0.15"/>
-  <rect x="120" y="112" width="4" height="36" rx="2" fill="#9b59b6"/>
-  <text x="136" y="126" font-size="12" font-weight="bold" fill="#8e44ad">1.2 Core Concepts and Definition</text>
-  <text x="136" y="142" font-size="11" fill="#7f8c8d">Master formal definition and key features</text>
-
-  <!-- Node3 -->
-  <rect x="120" y="154" width="520" height="36" rx="6" fill="#27ae60" opacity="0.15"/>
-  <rect x="120" y="154" width="4" height="36" rx="2" fill="#27ae60"/>
-  <text x="136" y="168" font-size="12" font-weight="bold" fill="#27ae60">1.3 Architecture: Perceive-Think-Act Loop</text>
-  <text x="136" y="184" font-size="11" fill="#7f8c8d">Understand the internal working mechanism</text>
-
-  <!-- Node4 -->
-  <rect x="120" y="196" width="520" height="36" rx="6" fill="#e67e22" opacity="0.15"/>
-  <rect x="120" y="196" width="4" height="36" rx="2" fill="#e67e22"/>
-  <text x="136" y="210" font-size="12" font-weight="bold" fill="#e67e22">1.4 Agent vs Traditional Programs</text>
-  <text x="136" y="226" font-size="11" fill="#7f8c8d">Identify unique advantages of Agents</text>
-
-  <!-- Node5 -->
-  <rect x="120" y="234" width="520" height="36" rx="6" fill="#e74c3c" opacity="0.15"/>
-  <rect x="120" y="234" width="4" height="36" rx="2" fill="#e74c3c"/>
-  <text x="136" y="248" font-size="12" font-weight="bold" fill="#e74c3c">1.5 Use Cases Overview</text>
-  <text x="136" y="264" font-size="11" fill="#7f8c8d">Explore practical application possibilities</text>
+  <g transform="translate(0 10)">
+    <rect x="20" y="16" width="52" height="32" rx="8" fill="#dceeea"/>
+    <text class="number" x="46" y="38" text-anchor="middle">1.1</text>
+    <text class="topic" x="92" y="28">From chatbots to agents</text>
+    <text class="detail" x="92" y="51">From rule-based dialogue to tool use</text>
+  </g>
+  <g transform="translate(0 74)">
+    <rect x="20" y="16" width="52" height="32" rx="8" fill="#dceeea"/>
+    <text class="number" x="46" y="38" text-anchor="middle">1.2</text>
+    <text class="topic" x="92" y="28">What defines an agent</text>
+    <text class="detail" x="92" y="51">Autonomy, goals, and interaction with the environment</text>
+  </g>
+  <g transform="translate(0 138)">
+    <rect x="20" y="16" width="52" height="32" rx="8" fill="#dceeea"/>
+    <text class="number" x="46" y="38" text-anchor="middle">1.3</text>
+    <text class="topic" x="92" y="28">The perceive–think–act loop</text>
+    <text class="detail" x="92" y="51">Use feedback to guide decisions and tool calls</text>
+  </g>
+  <g transform="translate(0 202)">
+    <rect x="20" y="16" width="52" height="32" rx="8" fill="#dceeea"/>
+    <text class="number" x="46" y="38" text-anchor="middle">1.4</text>
+    <text class="topic" x="92" y="28">Agents and traditional programs</text>
+    <text class="detail" x="92" y="51">Compare reliability and execution costs</text>
+  </g>
+  <g transform="translate(0 266)">
+    <rect x="20" y="16" width="52" height="32" rx="8" fill="#dceeea"/>
+    <text class="number" x="46" y="38" text-anchor="middle">1.5</text>
+    <text class="topic" x="92" y="28">Where agents are used</text>
+    <text class="detail" x="92" y="51">Explore coding, data analysis, and office work</text>
+  </g>
+  <g transform="translate(0 330)">
+    <rect x="20" y="16" width="52" height="32" rx="8" fill="#dceeea"/>
+    <text class="number" x="46" y="38" text-anchor="middle">1.6</text>
+    <text class="topic" x="92" y="28">A history of intelligent agents</text>
+    <text class="detail" x="92" y="51">From symbolic AI to LLM-powered agents</text>
+  </g>
 </svg>
