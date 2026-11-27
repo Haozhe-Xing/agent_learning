@@ -29,7 +29,7 @@
 
 ## 📚 本章结构
 
-![第1章章节结构](../svg/chapter_intro_readme_structure.svg)
+![1.1 从聊天机器人到智能体，1.2 Agent 的定义与特征，1.3 感知、思考与行动，1.4 Agent 与传统程序，1.5 Agent 的应用场景，1.6 智能体发展史](../svg/chapter_intro_readme_structure.svg)
 
 ---
 

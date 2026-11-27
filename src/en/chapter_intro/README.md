@@ -29,7 +29,7 @@ After completing this chapter, you will be able to:
 
 ## 📑 Chapter Structure
 
-![Chapter 1 Structure](../svg/chapter_intro_readme_structure.svg)
+![1.1 From chatbots to agents, 1.2 What defines an agent, 1.3 The perceive–think–act loop, 1.4 Agents and traditional programs, 1.5 Where agents are used, 1.6 A history of intelligent agents](../svg/chapter_intro_readme_structure.svg)
 
 ## ⏱️ Estimated Study Time
 
