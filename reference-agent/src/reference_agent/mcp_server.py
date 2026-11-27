@@ -1,8 +1,4 @@
-"""A minimal, runnable MCP (Model Context Protocol) server over stdio.
-
-This is a self-contained JSON-RPC 2.0 server. It fixes the old book bug where
-the example returned tools bound to an already-closed session: here the
-server owns the tools and stays alive for the whole stdio session.
+"""A minimal legacy MCP 2024-11-05 teaching server over stdio.
 
 Run with:  python -m reference_agent.mcp_server
 """
@@ -64,7 +60,9 @@ def _tools_call(params: dict):
     }
 
 
-def handle(request: dict) -> dict:
+def handle(request: dict) -> dict | None:
+    if "id" not in request:
+        return None
     method = request.get("method")
     rid = request.get("id")
     if method == "initialize":

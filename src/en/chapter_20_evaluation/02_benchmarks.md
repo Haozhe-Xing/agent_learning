@@ -525,6 +525,8 @@ def swe_bench_evaluate(
 
 ### Current SOTA (as of 2025)
 
+> These scores are historical. See [20.6](./06_agent_evaluation.md) for the 2026 audits and reporting guidance.
+
 | Agent | SWE-bench Verified | Method |
 |-------|-------------------|--------|
 | **DeepSWE** | 59.0% | GRPO reinforcement learning training |

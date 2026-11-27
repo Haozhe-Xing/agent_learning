@@ -22,7 +22,7 @@ LangChain 通过提供标准化的抽象层，大大简化了 LLM 应用开发�
 |------|------|------|
 | 12.1 LangChain 架构全景 | 核心概念和组件关系 | ⭐⭐ |
 | 12.2 Chain：构建处理管道 | LCEL 链式调用 | ⭐⭐⭐ |
-| 12.3 使用 LangChain 构建 Agent | Tools、AgentExecutor | ⭐⭐⭐ |
+| 12.3 使用 LangChain 构建 Agent | Tools、`create_agent` | ⭐⭐⭐ |
 | 12.4 LCEL：表达式语言 | 声明式管道构建 | ⭐⭐⭐ |
 | 12.5 实战：多功能客服 Agent | 完整系统 | ⭐⭐⭐⭐ |
 | 12.6 LangSmith 集成与可观测性 | 追踪、评估、Prompt 管理 | ⭐⭐⭐ |

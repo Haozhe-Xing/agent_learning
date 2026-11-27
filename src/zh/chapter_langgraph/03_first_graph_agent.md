@@ -1,6 +1,6 @@
 # 13.3 构建你的第一个 Graph Agent
 
-本节用 LangGraph 构建一个完整的、带工具调用与循环推理的 Agent。与前面用原生 API 或 `AgentExecutor` 不同，LangGraph 用**图**描述 Agent 行为——执行流程**可视化、可控、可持久化**：你能清楚看到 Agent 走了哪些步骤，能在任意节点暂停/恢复，也能通过加边精确控制走向。
+本节用 LangGraph 构建一个完整的、带工具调用与循环推理的 Agent。与前面用原生 API 或 `create_agent` 不同，LangGraph 用**图**描述 Agent 行为——执行流程**可视化、可控、可持久化**：你能清楚看到 Agent 走了哪些步骤，能在任意节点暂停/恢复，也能通过加边精确控制走向。
 
 构建一个 Graph Agent 分四步：①定义工具 → ②创建节点（接收 State、返回更新）→ ③构建图（加节点与边）→ ④`compile()` 运行。下面用 LangGraph 内置的 `MessagesState`、`ToolNode`、`tools_condition` 来搭——这些是常见 Agent 模式的快捷组件。
 
@@ -46,17 +46,9 @@ for event in app.stream({"messages": [HumanMessage(content="地球直径多少�
             print(f"[{node}] 调用：{[tc['name'] for tc in last.tool_calls]}")
 ```
 
-## 与 AgentExecutor 的本质差异
+## 何时直接构建状态图
 
-| 维度 | AgentExecutor | LangGraph |
-|------|--------------|-----------|
-| 透明度 | 黑盒循环，内部不透明 | 每个节点/边都可见 |
-| 控制力 | 有限配置项 | 完全自定义拓扑与终止条件 |
-| 持久化 | 不支持 | Checkpoint 原生支持 |
-| 人在回路 | 需额外实现 | 内置 `interrupt` / resume |
-| 适用 | 简单工具调用 | 复杂多步、有状态工作流 |
-
-> 💡 **迁移建议**：若只需"LLM + 工具"的简单循环，`AgentExecutor` 已够用；一旦需要条件分支、多阶段流程、人工审批、中间状态持久化，就该上 LangGraph。
+[12.3 的 `create_agent`](../chapter_langchain/03_langchain_agents.md) 已经运行于 LangGraph，可通过 middleware、checkpointer 和人工审批扩展。需要自定义状态字段、连接多个处理阶段或显式定义路由时，使用本节的 `StateGraph` 写法。
 
 ## 常见陷阱（用 prose 记牢，不必背代码）
 

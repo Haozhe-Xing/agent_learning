@@ -598,17 +598,17 @@ class OSWorldStyleEvaluator:
 
 ---
 
-## SWE-bench Verified：代码 Agent 的黄金基准
+## SWE-bench Verified：代码修复的历史基准
 
 ### SWE-bench 概述
 
-SWE-bench [5] 是评估代码 Agent 解决真实 GitHub Issue 能力的基准。2024 年推出的 **SWE-bench Verified** 版本通过人工验证，过滤掉了有问题的测试用例，使评估结果更可靠。
+SWE-bench [5] 是评估代码 Agent 解决真实 GitHub Issue 能力的基准。2024 年推出的 **SWE-bench Verified** 是人工筛选的子集，常用于解读历史结果。
 
 | 版本 | Issue 数量 | 说明 |
 |------|-----------|------|
 | SWE-bench Full | 2294 | 全量数据集，部分 Issue 描述不清晰 |
 | SWE-bench Lite | 300 | 精选子集，但仍有质量问题 |
-| SWE-bench Verified | 500 | 人工验证，每个 Issue 都确认可解决 |
+| SWE-bench Verified | 500 | 人工筛选的子集，仍可能有测试缺陷与数据污染 |
 
 ### SWE-bench Verified 评估方式
 
@@ -742,17 +742,17 @@ class SWEBenchEvaluator:
         }
 ```
 
-### SWE-bench Verified 最新进展（2025—2026）
+### 2026 年审计与替代评估
 
-| 排名 | 方法 | 解决率 | 说明 |
-|------|------|--------|------|
-| OpenHands + CodeAct | ~53% | 2025 年初 | 开源最佳 |
-| Devin | ~50% | 2025 年初 | 商业产品 |
-| SWE-Agent + GPT-4.1 | ~48% | 2025 年 | Agent 框架 |
-| AutoCodeRover | ~45% | 2024 年 | 谱分析 + LLM |
-| Amazon Q Developer | ~42% | 2024 年 | Amazon 出品 |
+OpenAI 对 Verified 的审计发现两类问题：部分测试会拒绝功能正确的补丁，部分题目的原始修复也可能出现在模型训练数据中。后续对 Pro 的审计同样发现题目与验证器质量问题。保留旧分数时标明版本、日期和实验条件。衡量线上能力时，加入新鲜的自有任务和独立验收测试。参见 [Verified 审计](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)和 [SWE-bench Pro 审计](https://openai.com/index/separating-signal-from-noise-coding-evaluations/)。
 
-> 💡 **趋势观察**：SWE-bench Verified 的解决率在 2025 年已突破 50%，但仍有近半数 Issue 无法自动解决。核心瓶颈在于长上下文理解、多文件修改和复杂调试推理。
+[Terminal-Bench 2.1](https://www.tbench.ai/news/terminal-bench-2-1) 修订了 2.0 中的 28 个任务，适合练习可执行终端任务的评估。对桌面操作可用带固定任务与环境版本的 [OSWorld 2.1](https://github.com/xlang-ai/OSWorld-V2/releases/tag/osworld-v2.1)。报告结果时标明任务集、环境镜像、模型快照、Harness 提交、时间与工具预算，以及运行次数。
+
+**记录示例（虚构数据）**：固定 50 个任务、模型快照、容器镜像和 Harness 提交，每个任务运行 3 次，每次限时 10 分钟或 40 次工具调用。三轮分别通过 29、31、30 个任务，报告平均 60% 及各轮结果，同时记录超时、工具失败和验收失败的数量。改动 Harness 时只变更这一项，让比较可以复现。
+
+### 长时程评估：如何读 Time Horizon
+
+METR 在 2026 年 11 月的更新中结合 TH1.1 与 TH2，使用人类完成任务的耗时或估计耗时，拟合 Agent 在这些任务上的成功概率。50% 和 80% Time Horizon 分别对应两个成功率阈值下的人类任务时长。Agent 的实际运行时间和成本应另行记录。报告该指标时同时写明任务分布、成功率阈值、置信区间和 Harness。参见 [METR 2026 年 11 月原始报告](https://metr.org/blog/2026-11-20-q4-2026-capability-update/)。
 
 ---
 
@@ -815,28 +815,15 @@ pytest                      # 含 evaluation 测试，离线通过
 |--------|----------|--------------|-------------------|
 | **工具调用** | τ-bench、ToolBench、API-Bank | 工具选择、参数填充、多轮工具使用 | 工具型 Agent、客服 Agent |
 | **网页操作** | WebArena、VisualWebArena、Mind2Web | 网页导航、DOM/视觉理解、表单操作 | Browser Use / Web Agent |
-| **桌面操作** | OSWorld、AndroidWorld | GUI 操作、多应用协作、环境状态验证 | Computer Use Agent |
-| **代码任务** | SWE-bench Verified、HumanEval、RepoBench | Issue 修复、代码生成、多文件理解 | Coding Agent |
+| **桌面操作** | OSWorld 2.1、AndroidWorld | GUI 操作、多应用协作、环境状态验证 | Computer Use Agent |
+| **代码任务** | SWE-bench 系列、Terminal-Bench 2.1、自有回归集 | Issue 修复、代码生成、多文件理解 | Coding Agent |
 | **深度研究** | GAIA、HLE、BrowseComp、FRAMES | 多步检索、证据整合、复杂问答 | Deep Research Agent |
 | **安全鲁棒性** | AgentDojo、InjecAgent、ASB、PromptBench | 间接提示注入、工具滥用、越权行为 | Web/RAG/Tool Agent |
 | **长期记忆** | LoCoMo、LongMemEval、ConvoMem | 长对话记忆、时序推理、用户画像一致性 | Memory Agent、个人助理 |
 
-### 主流基准横向对比
+### 报告如何保持可比
 
-| 基准 | 领域 | 核心能力 | 最佳表现 | 局限性 |
-|------|------|----------|----------|--------|
-| τ-bench | 工具使用 | 工具选择与参数填充 | ~68% | 环境模拟，非真实 |
-| OSWorld | 桌面操作 | 多应用协作 | ~12.5% | 成功率低，成本高 |
-| VisualWebArena | 网页操作 | 视觉理解+DOM操作 | ~14.6% | 仅限网页环境 |
-| SWE-bench Verified | 代码修复 | 问题定位+Patch生成 | ~53% | 仅限 Python 项目 |
-| WebArena | 网页导航 | 信息检索+操作 | ~35.9% | 无视觉输入版本 |
-| GAIA | 通用推理 | 多步推理+工具调用 | ~45% | 任务数量有限 |
-| BrowseComp | 浏览研究 | 网页检索+复杂问答 | 快速变化 | 依赖实时网页环境 |
-| AgentDojo | Agent 安全 | 工具注入攻防 | 任务相关 | 偏安全专项 |
-| InjecAgent | 间接注入 | 工具集成 Agent 的注入攻击 | 任务相关 | 偏攻击评估 |
-| LoCoMo | 长期记忆 | 长对话、多跳记忆推理 | 方案差异大 | 主要评估记忆层 |
-| LongMemEval | 长期记忆 | 长上下文记忆检索与问答 | 方案差异大 | 与具体记忆架构强相关 |
-| AgentBench | 多任务 | 多种 Agent 能力 | ~35% | 评估维度不够细 |
+基准榜单是特定版本和运行条件下的结果。优先引用带版本号、日期和完整运行条件的原始报告。
 
 ### 如何组合成生产评估套件？
 
@@ -872,8 +859,8 @@ pytest                      # 含 evaluation 测试，离线通过
 | Agent-as-Judge | 用 Agent 评估 Agent 的完整执行轨迹，超越 LLM-as-Judge 的单轮评判 |
 | τ-bench | 面向工具使用能力的专项基准，关注工具选择和参数填充 |
 | WebArena / VisualWebArena | 浏览器与网页操作 Agent 的核心评估基准 |
-| OSWorld | 真实桌面环境中的多模态 Agent 评估，成功率仍很低 |
-| SWE-bench Verified | 代码 Agent 的黄金基准，人工验证确保评估可靠性 |
+| OSWorld 2.1 | 固定任务和运行环境版本的桌面 Agent 评估 |
+| SWE-bench Verified | 历史代码修复基准，解读时考虑污染和测试质量 |
 | GAIA / BrowseComp | Deep Research Agent 和多步检索推理的重要参考 |
 | AgentDojo / InjecAgent / ASB | Agent 安全与间接提示注入评估基准 |
 | LoCoMo / LongMemEval | 长期记忆与 Memory Governance 的评估基准 |

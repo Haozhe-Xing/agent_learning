@@ -17,13 +17,33 @@ from dataclasses import dataclass, field
 class Message:
     role: str  # "user" | "assistant" | "tool" | "system"
     content: str
+    tool_calls: list[dict] = field(default_factory=list)
+    tool_call_id: str | None = None
+
+    def to_chat_message(self) -> dict:
+        message = {"role": self.role, "content": self.content}
+        if self.tool_calls:
+            message["tool_calls"] = [
+                {
+                    "id": call["id"],
+                    "type": "function",
+                    "function": {
+                        "name": call["name"],
+                        "arguments": call["raw_arguments"],
+                    },
+                }
+                for call in self.tool_calls
+            ]
+        if self.tool_call_id is not None:
+            message["tool_call_id"] = self.tool_call_id
+        return message
 
 
 @dataclass
 class Completion:
     content: str = ""
     tool_calls: list = field(default_factory=list)
-    # each item: {"name": str, "arguments": dict}
+    # Each item has a name and arguments. Wire calls also retain their ID and raw arguments.
 
 
 def _normalize_math(text: str) -> str:
@@ -86,7 +106,7 @@ class OpenAIProvider:
     def complete(self, messages, tools=None, max_tokens=512, temperature=0.0) -> Completion:
         payload: dict = {
             "model": self.model,
-            "messages": [{"role": m.role, "content": m.content} for m in messages],
+            "messages": [message.to_chat_message() for message in messages],
             "max_tokens": max_tokens,
             "temperature": temperature,
         }
@@ -99,9 +119,18 @@ class OpenAIProvider:
         resp = self.client.chat.completions.create(**payload)
         msg = resp.choices[0].message
         tool_calls = []
-        if msg.tool_calls:
-            for tc in msg.tool_calls:
-                tool_calls.append(
-                    {"name": tc.function.name, "arguments": json.loads(tc.function.arguments or "{}")}
-                )
+        for call in msg.tool_calls or []:
+            raw_arguments = call.function.arguments
+            try:
+                arguments = json.loads(raw_arguments)
+            except json.JSONDecodeError:
+                arguments = None
+            tool_calls.append(
+                {
+                    "id": call.id,
+                    "name": call.function.name,
+                    "arguments": arguments,
+                    "raw_arguments": raw_arguments,
+                }
+            )
         return Completion(content=msg.content or "", tool_calls=tool_calls)

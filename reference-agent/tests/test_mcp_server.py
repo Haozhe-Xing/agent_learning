@@ -6,6 +6,10 @@ def test_initialize():
     assert resp["result"]["serverInfo"]["name"] == "reference-agent"
 
 
+def test_initialized_notification_has_no_response():
+    assert handle({"jsonrpc": "2.0", "method": "notifications/initialized"}) is None
+
+
 def test_tools_list():
     resp = handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
     names = [t["name"] for t in resp["result"]["tools"]]

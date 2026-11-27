@@ -1,5 +1,7 @@
 # 7.3 Context Strategies for Long-Horizon Tasks
 
+Use [8.7, the cross-process recovery exercise](../chapter_harness/07_resumable_tasks.md), to see how external task state, approval, and artifact verification fit together.
+
 > 📖 *"Short conversations rely on prompt techniques; long tasks rely on context strategies — when an Agent needs to work for hours or even days, context management is the lifeline."*
 
 In the previous section, we learned the basic context management techniques (sliding window, summary compression, semantic filtering). These techniques work well for medium-length conversations, but when task complexity increases further — requiring **dozens to hundreds of rounds of interaction** to complete — we need more advanced strategies.

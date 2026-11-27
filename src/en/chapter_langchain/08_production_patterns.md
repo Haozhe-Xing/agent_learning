@@ -73,90 +73,29 @@ asyncio.run(stream_response("Explain what a vector database is"))
 For Agent applications, streaming is more involved — you have to handle the LLM's text output *and* its tool calls at the same time. Here is a complete streaming Agent implementation:
 
 ```python
+from langchain.agents import create_agent
+from langchain.tools import tool
 from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.callbacks import StreamingStdOutCallbackHandler
-from langchain_core.output_parsers import StrOutputParser
-import sys
 
-# ============================
-# Tool definitions
-# ============================
 
 @tool
-def search_knowledge(query: str) -> str:
-    """Search the knowledge base"""
-    return f"Knowledge base search result: information related to '{query}'..."
+def multiply(a: int, b: int) -> int:
+    """Multiply two integers."""
+    return a * b
 
-@tool
-def calculate(expression: str) -> str:
-    """Evaluate a math expression"""
-    try:
-        result = eval(expression, {"__builtins__": {}}, {})
-        return f"{expression} = {result}"
-    except Exception as e:
-        return f"Calculation error: {e}"
 
-# ============================
-# Build the streaming Agent
-# ============================
-
-tools = [search_knowledge, calculate]
-
-# Streaming LLM: set streaming=True plus a custom handler
-llm = ChatOpenAI(
-    model="gpt-4.1",
-    temperature=0,
-    streaming=True,
-    callbacks=[StreamingStdOutCallbackHandler()],  # stream to stdout in real time
-)
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """You are an intelligent assistant. Use the tools to answer questions.
-Explain your reasoning first, then give the conclusion."""),
-    MessagesPlaceholder("chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder("agent_scratchpad"),
-])
-
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True,  # show intermediate steps
-    max_iterations=5,
-)
-
-# ============================
-# Streaming invocation
-# ============================
-
-def run_streaming_agent(user_input: str):
-    """Run the streaming Agent"""
-    print(f"\n🤔 User: {user_input}")
-    print("📝 Assistant: ", end="", flush=True)
-
-    for chunk in agent_executor.stream({
-        "input": user_input,
-        "chat_history": [],
-    }):
-        # AgentExecutor.stream() yields the output of every step
-        if "actions" in chunk:
-            # The Agent decided to call a tool
-            for action in chunk["actions"]:
-                print(f"\n🔧 Calling tool: {action.tool}({action.tool_input})")
-        elif "steps" in chunk:
-            # Tool execution result
-            for step in chunk["steps"]:
-                print(f"📊 Tool result: {step.observation[:100]}...")
-        elif "output" in chunk:
-            # Final output
-            print(f"\n✅ Final answer: {chunk['output']}")
-
-run_streaming_agent("Search for RAG techniques, and calculate 42 * 17")
+agent = create_agent(ChatOpenAI(model="gpt-4.1-mini"), tools=[multiply])
+for update in agent.stream(
+    {"messages": [{"role": "user", "content": "What is 42 times 17?"}]},
+    config={"recursion_limit": 12},
+    stream_mode="updates",
+):
+    for node, state in update.items():
+        for message in state.get("messages", []):
+            print(node, message.type, message.content)
 ```
+
+Use `updates` to see model and tool node updates. Use `messages` mode for token streaming.
 
 ### FastAPI + SSE Streaming API
 

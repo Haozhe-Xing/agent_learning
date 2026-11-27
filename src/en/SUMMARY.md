@@ -77,6 +77,7 @@
   - [8.4 Production Case Studies: OpenAI, LangChain, Stripe](./chapter_harness/04_production_cases.md)
   - [8.5 Practice: Building Your First Harness System](./chapter_harness/05_practice_harness_builder.md)
   - [8.6 Structured Output: Engineering Reliable JSON](./chapter_harness/06_structured_output.md)
+  - [8.7 Practice: Resume a Long-Running Task Across Processes](./chapter_harness/07_resumable_tasks.md)
 
 - [Chapter 9: Skill System](./chapter_skill/README.md)
   - [9.1 Skill System Overview](./chapter_skill/01_skill_overview.md)
@@ -98,6 +99,11 @@
   - [10.6 Practice: Complete SFT + GRPO Training Pipeline](./chapter_agentic_rl/06_practice_training.md)
   - [10.7 Latest Research Progress (2025–2026)](./chapter_agentic_rl/07_latest_research.md)
   - [10.8 Agent-Specific Fine-Tuning: Teaching Models to Use Tools](./chapter_agentic_rl/08_agent_finetuning.md)
+
+- [Chapter 11: Self-Evolving Agents and Continual Learning](./chapter_self_evolving/README.md)
+  - [11.1 Automatic Prompt Optimization](./chapter_self_evolving/01_automatic_prompt_optimization.md)
+  - [11.2 Self-Evolution Agents](./chapter_self_evolving/02_self_evolution_agent.md)
+  - [11.3 The Agentic Data Flywheel](./chapter_self_evolving/03_data_flywheel.md)
 
 ---
 

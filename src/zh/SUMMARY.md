@@ -77,6 +77,7 @@
   - [8.4 生产级案例：OpenAI、LangChain、Stripe](./chapter_harness/04_production_cases.md)
   - [8.5 实战：构建你的第一个 Harness 系统](./chapter_harness/05_practice_harness_builder.md)
   - [8.6 结构化输出：保障 JSON 可靠性的工程实践](./chapter_harness/06_structured_output.md)
+  - [8.7 实战：跨进程恢复长任务](./chapter_harness/07_resumable_tasks.md)
 
 - [第9章 Skill System](./chapter_skill/README.md)
   - [9.1 技能系统概述](./chapter_skill/01_skill_overview.md)

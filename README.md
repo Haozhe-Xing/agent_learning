@@ -17,7 +17,7 @@ From Function Calling, memory, planning, RAG, and context engineering to Agentic
 <a href="https://github.com/Haozhe-Xing/agent_learning/stargazers"><img src="https://img.shields.io/github/stars/Haozhe-Xing/agent_learning?style=flat-square&logo=github&color=gold" alt="GitHub stars"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License"></a>
 <a href="https://github.com/Haozhe-Xing/agent_learning/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs welcome"></a>
-<img src="https://img.shields.io/badge/Chapters-23-6f42c1?style=flat-square" alt="23 chapters">
+<img src="https://img.shields.io/badge/Chapters-25-6f42c1?style=flat-square" alt="25 chapters">
 <img src="https://img.shields.io/badge/Languages-English%20%7C%20中文-0969da?style=flat-square" alt="Bilingual">
 </p>
 
@@ -37,11 +37,11 @@ Instead of teaching isolated framework APIs, the book builds one connected menta
 
 The repository includes:
 
-- **23 chapters** across foundations, core capabilities, frameworks, multi-agent systems, production, and capstone projects.
-- **188 Markdown pages per language**, maintained in English and Chinese.
+- **25 chapters** across foundations, core capabilities, frameworks, multi-agent systems, production, and capstone projects.
+- English and Chinese editions with matching tables of contents.
 - **330+ original SVG diagrams** and **5 interactive demos** for architecture, state, sequence, and training flows.
 - **Paper-to-practice explanations** covering ReAct, Reflexion, MemGPT/Letta, GraphRAG, GRPO, MCP, A2A, and more.
-- **`reference-agent/`**, a small runnable Agent baseline with tools, memory, security gates, evaluation, an MCP server, a FastAPI service, and 16 tests.
+- **`reference-agent/`**, a small runnable Agent baseline with tools, memory, security gates, evaluation, an MCP server, a FastAPI service, and offline tests.
 
 > This is not an awesome-list and not a framework manual. It is a structured path from first principles to production engineering.
 
@@ -70,19 +70,21 @@ The repository includes:
 - **Framework practice**
   - [12. LangChain](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langchain/)
   - [13. LangGraph](https://Haozhe-Xing.github.io/agent_learning/en/chapter_langgraph/)
-  - [14. Agent Frameworks](https://Haozhe-Xing.github.io/agent_learning/en/chapter_frameworks/)
-  - [15. Claude Code](https://Haozhe-Xing.github.io/agent_learning/en/chapter_claude_code/)
+  - [14. OpenClaw](https://Haozhe-Xing.github.io/agent_learning/en/chapter_openclaw/)
+  - [15. Hermes Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_hermes/)
+  - [16. Claude Code](https://Haozhe-Xing.github.io/agent_learning/en/chapter_claude_code/)
+  - [17. DeepSeek Harness](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deepseek_harness/)
 - **Multi-agent systems**
-  - [16. Multi-Agent Collaboration](https://Haozhe-Xing.github.io/agent_learning/en/chapter_multi_agent/)
-  - [17. Agent Protocols](https://Haozhe-Xing.github.io/agent_learning/en/chapter_protocol/)
+  - [18. Multi-Agent Collaboration](https://Haozhe-Xing.github.io/agent_learning/en/chapter_18_multi_agent/)
+  - [19. Agent Protocols](https://Haozhe-Xing.github.io/agent_learning/en/chapter_19_protocol/)
 - **Production engineering**
-  - [18. Evaluation](https://Haozhe-Xing.github.io/agent_learning/en/chapter_evaluation/)
-  - [19. Security](https://Haozhe-Xing.github.io/agent_learning/en/chapter_security/)
-  - [20. Deployment](https://Haozhe-Xing.github.io/agent_learning/en/chapter_deployment/)
+  - [20. Evaluation](https://Haozhe-Xing.github.io/agent_learning/en/chapter_20_evaluation/)
+  - [21. Security](https://Haozhe-Xing.github.io/agent_learning/en/chapter_21_security/)
+  - [22. Deployment](https://Haozhe-Xing.github.io/agent_learning/en/chapter_22_deployment/)
 - **Capstone projects**
-  - [21. Coding Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_coding_agent/)
-  - [22. Data Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_data_agent/)
-  - [23. Multimodal Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_multimodal/)
+  - [23. Coding Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_23_coding_agent/)
+  - [24. Data Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_24_data_agent/)
+  - [25. Multimodal Agent](https://Haozhe-Xing.github.io/agent_learning/en/chapter_25_multimodal/)
 - **Appendices**
   - [Prompt templates](https://Haozhe-Xing.github.io/agent_learning/en/appendix/prompt_templates.html)
   - [FAQ](https://Haozhe-Xing.github.io/agent_learning/en/appendix/faq.html)
@@ -114,7 +116,7 @@ The repository includes:
 - offline `FakeProvider` and optional OpenAI provider;
 - memory, prompt-injection guardrails, and fail-closed permission checks;
 - an MCP server, FastAPI endpoints, streaming, evaluation harness, and Dockerfile;
-- **16 tests** that run without an API key.
+- **Offline tests** that run without an API key.
 
 ```bash
 cd reference-agent
@@ -166,7 +168,7 @@ Please keep claims verifiable and prefer primary sources for papers, protocols, 
 
 ## Roadmap
 
-- [x] 23-chapter bilingual mdBook
+- [x] 25-chapter bilingual mdBook
 - [x] Localized diagrams and interactive demos
 - [x] Agentic RL, context engineering, harness engineering, and self-evolving Agent coverage
 - [x] Runnable `reference-agent` baseline with offline tests

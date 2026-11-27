@@ -84,7 +84,7 @@ print(result)
 
 ### 追踪 Agent 的完整执行过程
 
-对于 Agent 应用，追踪的价值更大——你能看到每一步的推理过程。复用 [12.3](./03_langchain_agents.md) 的 `AgentExecutor` + 两个工具（`search_database` / `generate_chart`），**设置好环境变量后直接 `invoke`，无需任何额外埋点**：
+对于 Agent 应用，追踪可以显示模型请求、工具调用和返回结果。启用 LangSmith 后运行 [12.3 的工具调用示例](./03_langchain_agents.md) 即可看到相应节点。以下是多步骤数据分析任务的示意轨迹。
 
 ```python
 result = agent_executor.invoke({

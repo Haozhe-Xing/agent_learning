@@ -73,90 +73,29 @@ asyncio.run(stream_response("解释一下什么是向量数据库"))
 对于 Agent 应用，流式输出更复杂——你需要同时处理 LLM 的文本输出和工具调用。以下是完整的流式 Agent 实现：
 
 ```python
+from langchain.agents import create_agent
+from langchain.tools import tool
 from langchain_openai import ChatOpenAI
-from langchain_core.tools import tool
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.callbacks import StreamingStdOutCallbackHandler
-from langchain_core.output_parsers import StrOutputParser
-import sys
 
-# ============================
-# 工具定义
-# ============================
 
 @tool
-def search_knowledge(query: str) -> str:
-    """搜索知识库"""
-    return f"知识库搜索结果：关于「{query}」的相关信息..."
+def multiply(a: int, b: int) -> int:
+    """Multiply two integers."""
+    return a * b
 
-@tool
-def calculate(expression: str) -> str:
-    """计算数学表达式"""
-    try:
-        result = eval(expression, {"__builtins__": {}}, {})
-        return f"{expression} = {result}"
-    except Exception as e:
-        return f"计算错误：{e}"
 
-# ============================
-# 构建流式 Agent
-# ============================
-
-tools = [search_knowledge, calculate]
-
-# 流式 LLM：设置 streaming=True + 自定义 handler
-llm = ChatOpenAI(
-    model="gpt-4.1",
-    temperature=0,
-    streaming=True,
-    callbacks=[StreamingStdOutCallbackHandler()],  # 实时输出到 stdout
-)
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """你是一个智能助手。请使用工具来回答问题。
-回答时先说明思路，再给出结论。"""),
-    MessagesPlaceholder("chat_history"),
-    ("human", "{input}"),
-    MessagesPlaceholder("agent_scratchpad"),
-])
-
-agent = create_openai_tools_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True,  # 显示中间步骤
-    max_iterations=5,
-)
-
-# ============================
-# 流式调用
-# ============================
-
-def run_streaming_agent(user_input: str):
-    """运行流式 Agent"""
-    print(f"\n🤔 用户: {user_input}")
-    print("📝 助手: ", end="", flush=True)
-
-    for chunk in agent_executor.stream({
-        "input": user_input,
-        "chat_history": [],
-    }):
-        # AgentExecutor.stream() 返回每一步的输出
-        if "actions" in chunk:
-            # Agent 决定调用工具
-            for action in chunk["actions"]:
-                print(f"\n🔧 调用工具: {action.tool}({action.tool_input})")
-        elif "steps" in chunk:
-            # 工具执行结果
-            for step in chunk["steps"]:
-                print(f"📊 工具结果: {step.observation[:100]}...")
-        elif "output" in chunk:
-            # 最终输出
-            print(f"\n✅ 最终回答: {chunk['output']}")
-
-run_streaming_agent("搜索一下 RAG 技术，并计算 42 * 17")
+agent = create_agent(ChatOpenAI(model="gpt-4.1-mini"), tools=[multiply])
+for update in agent.stream(
+    {"messages": [{"role": "user", "content": "What is 42 times 17?"}]},
+    config={"recursion_limit": 12},
+    stream_mode="updates",
+):
+    for node, state in update.items():
+        for message in state.get("messages", []):
+            print(node, message.type, message.content)
 ```
+
+这里用 `updates` 查看模型与工具节点的更新。需要逐 token 文本时用 `messages` 流模式。
 
 ### FastAPI + SSE 流式 API
 

@@ -31,15 +31,18 @@ class Agent:
             completion = self.provider.complete(messages, tools=self._tool_specs())
             if not completion.tool_calls:
                 return completion.content
+            messages.append(Message("assistant", completion.content, tool_calls=completion.tool_calls))
             for tc in completion.tool_calls:
                 tool = self.tools.get(tc["name"])
                 if tool is None:
-                    messages.append(Message("tool", f"unknown tool: {tc['name']}"))
-                    continue
-                try:
-                    result = tool.run(**tc["arguments"])
-                except Exception as exc:  # noqa: BLE001 - surfaced to the model
-                    result = f"error: {exc}"
-                messages.append(Message("tool", str(result)))
+                    result = f"unknown tool: {tc['name']}"
+                elif not isinstance(tc["arguments"], dict):
+                    result = "error: tool arguments must be a JSON object"
+                else:
+                    try:
+                        result = tool.run(**tc["arguments"])
+                    except Exception as exc:  # noqa: BLE001 - surfaced to the model
+                        result = f"error: {exc}"
+                messages.append(Message("tool", str(result), tool_call_id=tc.get("id")))
         # Budget exhausted: ask the model for a final summary.
         return self.provider.complete(messages, tools=self._tool_specs()).content

@@ -20,142 +20,29 @@
 用户消息 → 检索长期记忆(按 query 找相关) → 拼装 prompt
          → 调用 LLM → 回复
          → 追加到短期记忆(滑动窗口)
-         → 自动提取新记忆(异步) → 写入长期记忆
+         → 同步提取新记忆 → 写入长期记忆
 ```
 
 ## 核心实现
 
-整个系统的核心是 `chat` 方法——它实现了"检索 → 调用 → 更新 → 提取"四步流水线。下面展示关键流程，完整工程化代码（富文本日志、错误处理、交互式 REPL）见仓库。
+从仓库根目录运行[完整示例](https://github.com/Haozhe-Xing/agent_learning/blob/main/examples/chapter04/personal_assistant.py)。先设置 `OPENAI_API_KEY`。用同一个用户名重启即可读取上次保存的长期记忆。示例中的模型也可通过 `ASSISTANT_MODEL` 和 `MEMORY_MODEL` 配置。
 
-```python
-import json, uuid, datetime, chromadb
-from openai import OpenAI
-
-client = OpenAI()
-
-class PersonalAssistant:
-    def __init__(self, user_id: str, assistant_name: str = "小助"):
-        self.user_id = user_id
-        self.assistant_name = assistant_name
-        # 长期记忆：ChromaDB
-        self.memory = chromadb.PersistentClient(
-            path=f"./data/memory_{user_id}"
-        ).get_or_create_collection(
-            name="long_term_memory",
-            metadata={"hnsw:space": "cosine"}
-        )
-        # 短期记忆：滑动窗口（最近 10 轮 = 20 条消息）
-        self.history: list[dict] = []
-        self.max_history_turns = 10
-
-    def _embed(self, text: str) -> list[float]:
-        return client.embeddings.create(
-            input=text, model="text-embedding-3-small"
-        ).data[0].embedding
-
-    def recall(self, query: str, n: int = 5) -> list[dict]:
-        """按 query 检索最相关的长期记忆，过滤低相关度（< 0.4）。"""
-        if self.memory.count() == 0:
-            return []
-        results = self.memory.query(
-            query_embeddings=[self._embed(query)],
-            n_results=min(n, self.memory.count()),
-            where={"user_id": self.user_id},
-            include=["documents", "metadatas", "distances"]
-        )
-        memories = []
-        for doc, meta, dist in zip(
-            results["documents"][0], results["metadatas"][0],
-            results["distances"][0]
-        ):
-            relevance = 1 - dist
-            if relevance > 0.4:        # ← 关键阈值
-                memories.append({
-                    "content": doc, "type": meta.get("type", "general"),
-                    "importance": meta.get("importance", 5),
-                    "relevance": relevance
-                })
-        return sorted(memories, key=lambda x: x["relevance"], reverse=True)
-
-    def _auto_extract(self, user_msg: str, assistant_reply: str):
-        """每轮对话后用小模型提取值得长期记忆的内容。"""
-        prompt = f"""从以下对话中提取值得长期记忆的用户信息。
-用户说：{user_msg}
-助手回复：{assistant_reply[:200]}
-
-提取规则：
-✅ 要提取：用户的个人信息、偏好、工作、技能、正在做的项目、明确表达的需求
-❌ 不提取：日常问候、临时查询、没有持久价值的内容
-
-返回JSON数组（无则返回 []）：[{{"content": "...", "type": "fact|preference|task|skill", "importance": 1-10}}]"""
-        try:
-            resp = client.chat.completions.create(
-                model="gpt-4.1-mini",
-                messages=[{"role": "user", "content": prompt}],
-                response_format={"type": "json_object"},
-                max_tokens=300
-            )
-            data = json.loads(resp.choices[0].message.content)
-            memories = data if isinstance(data, list) else data.get("memories", [])
-            for m in memories:
-                if isinstance(m, dict) and m.get("content"):
-                    self.memory.add(
-                        ids=[str(uuid.uuid4())],
-                        embeddings=[self._embed(m["content"])],
-                        documents=[m["content"]],
-                        metadatas=[{
-                            "type": m.get("type", "general"),
-                            "importance": m.get("importance", 5),
-                            "user_id": self.user_id,
-                            "created_at": datetime.datetime.now().isoformat()
-                        }]
-                    )
-        except Exception:
-            pass     # 提取失败不影响主对话
-
-    def chat(self, user_message: str) -> str:
-        """核心流水线：检索 → 调用 → 更新 → 提取。"""
-        # ① 检索相关长期记忆
-        memories = self.recall(user_message, n=5)
-
-        # ② 拼装 system prompt
-        system = f"你是 {self.assistant_name}，用户 {self.user_id} 的专属助理。"
-        if memories:
-            memory_text = "\n".join(
-                f"- [{m['type']}] {m['content']}" for m in memories[:3]
-            )
-            system += f"\n\n【关于用户的记忆】\n{memory_text}"
-
-        # ③ 滑动窗口内的近期消息 + 当前用户消息
-        window = self.history[-(self.max_history_turns * 2):]
-        messages = [{"role": "system", "content": system}] + window \
-                 + [{"role": "user", "content": user_message}]
-
-        # ④ 调用 LLM
-        resp = client.chat.completions.create(
-            model="gpt-4.1", messages=messages, max_tokens=800
-        )
-        reply = resp.choices[0].message.content
-
-        # ⑤ 更新短期记忆（滑动窗口）
-        self.history.append({"role": "user", "content": user_message})
-        self.history.append({"role": "assistant", "content": reply})
-
-        # ⑥ 自动提取新记忆（不影响本次响应）
-        self._auto_extract(user_message, reply)
-
-        return reply
+```bash
+python -m pip install "chromadb>=1,<2" openai python-dotenv rich
+python examples/chapter04/personal_assistant.py
 ```
 
-> 📦 **完整代码（含 `show_memories`、交互式 REPL、`rich` 美化日志）见仓库** `examples/chapter04/personal_assistant.py`。
+```python
+{{#include ../../../examples/chapter04/personal_assistant.py}}
+```
 
 ## 关键实现细节
 
-**相关性阈值过滤**：`recall` 设置 `relevance > 0.4` 是因为向量检索总会返回"最相似"的 N 个结果，但这些结果不一定真的相关。例如用户问"今天吃什么"时，记忆库里没有饮食信息，ChromaDB 仍会返回 5 个"最不无关"的结果（相似度可能只有 0.2）。0.4 这个阈值能有效过滤噪音——但具体值需要根据你的 embedding 模型和场景调优。
+**相关性阈值过滤**：`recall_memories` 设置 `relevance > 0.4` 是因为向量检索总会返回"最相似"的 N 个结果，但这些结果不一定真的相关。例如用户问"今天吃什么"时，记忆库里没有饮食信息，ChromaDB 仍会返回 5 个"最不无关"的结果（相似度可能只有 0.2）。0.4 这个阈值能有效过滤噪音——但具体值需要根据你的 embedding 模型和场景调优。
 
-**记忆注入 System Prompt** 而不是 User Message：检索到的相关记忆放在 system prompt 里，模型会将其视为"背景知识"，更自然地融入回答；放在 user 消息里，模型可能机械地"引用"原文，显得生硬。
+**检索内容的信任边界**：记忆放在用户消息的数据区，系统提示说明如何使用它。生产系统还需独立验证记忆来源，并支持用户查看和删除。
 
-**静默的记忆提取**：`_auto_extract` 用 `try/except` 包裹，失败时不影响主对话。这是"锦上添花"功能的标准做法——不稳定的副作用不能阻塞主流程。
+**提取失败的处理**：示例同步提取并报告失败，已生成的回复仍会返回。
 
 **滑动窗口与长期记忆的配合**：
 

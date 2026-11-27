@@ -24,7 +24,7 @@ After completing this chapter, you will be able to:
 |---------|---------|------------|
 | 12.1 LangChain Architecture Overview | Core concepts and component relationships | ⭐⭐ |
 | 12.2 Chain: Building Processing Pipelines | LCEL chained calls | ⭐⭐⭐ |
-| 12.3 Building Agents with LangChain | Tools, AgentExecutor | ⭐⭐⭐ |
+| 12.3 Building Agents with LangChain | Tools, `create_agent` | ⭐⭐⭐ |
 | 12.4 LCEL: Expression Language | Declarative pipeline construction | ⭐⭐⭐ |
 | 12.5 Practice: Multi-Function Customer Service Agent | Complete system | ⭐⭐⭐⭐ |
 
