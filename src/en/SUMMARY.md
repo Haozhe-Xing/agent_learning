@@ -153,6 +153,12 @@
   - [16.5 Advanced Usage: MCP, Hooks, and Skills](./chapter_claude_code/05_advanced_usage.md)
   - [16.6 Production Practice](./chapter_claude_code/06_production_and_team.md)
 
+- [Chapter 16A: OpenCode V2 in Practice](./chapter_opencode/README.md)
+  - [16A.1 Install, Connect a Model, and Start a Session](./chapter_opencode/01_getting_started.md)
+  - [16A.2 Project Instructions, Permissions, and V1 Migration](./chapter_opencode/02_project_config.md)
+  - [16A.3 Custom Agents, Skills, and MCP](./chapter_opencode/03_extensions.md)
+  - [16A.4 Workshop: Fix a Ranking Bug](./chapter_opencode/04_workshop.md)
+
 - [Chapter 17: DeepSeek Harness — The Everything-Is-a-Plugin Foundation](./chapter_deepseek_harness/README.md)
   - [17.1 What Is DeepSeek Harness: Cordis Kernel and "Everything Is a Plugin"](./chapter_deepseek_harness/01_what_is_dsh.md)
   - [17.2 Installation & 4 Run Modes](./chapter_deepseek_harness/02_install_and_modes.md)
